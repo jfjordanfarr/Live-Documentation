@@ -164,6 +164,12 @@ export const LAYOUT_VERSION = 1;
 /** Files per section of records. */
 export const CHUNK = 256;
 
+/**
+ * The most raw bytes a reader inflates ahead of the section it is checking: 8 MiB, the smaller constant, owed to a
+ * weak machine. A file refused by a section has cost at most this much inflation past that section.
+ */
+export const READ_AHEAD = 8 * 1024 * 1024;
+
 /** The most bytes one section may inflate to. A writer refuses facts that would need more. */
 export const MAX_SECTION = 64 * 1024 * 1024;
 
@@ -280,6 +286,11 @@ class Out {
 class In {
   at = 0;
   private readonly b: Uint8Array;
+
+  /** The bytes read from. */
+  get bytes(): Uint8Array {
+    return this.b;
+  }
   private readonly what: string;
 
   constructor(b: Uint8Array, what: string) {
@@ -512,6 +523,11 @@ interface Codec {
   num(value: number | undefined, what: string): number;
   bits(value: number | undefined, defined: number, what: string): number;
   list<T>(items: T[] | undefined, what: string, each: (item: T | undefined) => T): T[];
+  /**
+   * A file's own list (its entries, symbols or dependencies): `each` is given the codec to walk the item with, so that
+   * a decoding after the walk can decode an item when it is read, from where it begins.
+   */
+  items<T>(items: T[] | undefined, what: string, each: (c: Codec, item: T | undefined) => T): T[];
 }
 
 function walkFile(c: Codec, f: StoredFile | undefined): StoredFile {
@@ -531,11 +547,11 @@ function walkFacts(c: Codec, f: StoredFile | undefined, codePath: string): Store
   const presence = c.bits(f && (+(f.archetype !== undefined) | (+(f.generatedAt !== undefined) << 1) | (+(f.citedBy !== undefined) << 2) | (+(f.reExports !== undefined) << 3)), 0b1111, `its marks`);
   const file: StoredFile = { codePath, layer, entries: [], authored: "", symbols: [], dependencies: [] };
   if (presence & 1) file.archetype = c.str(f?.archetype, `its archetype`);
-  file.entries = c.list(f?.entries, `its entries`, (e) => walkEntry(c, e));
+  file.entries = c.items(f?.entries, `its entries`, (cc, e) => walkEntry(cc, e));
   if (presence & 2) file.generatedAt = c.str(f?.generatedAt, `when it was generated`);
   file.authored = c.str(f?.authored, `its authored words`);
-  file.symbols = c.list(f?.symbols, `its symbols`, (s) => walkSymbol(c, s));
-  file.dependencies = c.list(f?.dependencies, `its dependencies`, (d) => walkDependency(c, d));
+  file.symbols = c.items(f?.symbols, `its symbols`, (cc, s) => walkSymbol(cc, s));
+  file.dependencies = c.items(f?.dependencies, `its dependencies`, (cc, d) => walkDependency(cc, d));
   if (presence & 4) {
     file.citedBy = c.list(f?.citedBy, `what cites it`, (x) => ({ label: c.str(x?.label, `a citing label`), link: c.link(x?.link, `a citing link`) }));
   }
@@ -681,6 +697,10 @@ class Encoding implements Codec {
     this.out.varint(items.length);
     return items.map((item) => each(item));
   }
+
+  items<T>(items: T[] | undefined, what: string, each: (c: Codec, item: T | undefined) => T): T[] {
+    return this.list(items, what, (item) => each(this, item));
+  }
 }
 
 /** The length of a well-formed string's UTF-8, counted from its UTF-16 units without encoding it. */
@@ -722,6 +742,10 @@ class Measuring implements Codec {
   list<T>(items: T[] | undefined, _what: string, each: (item: T | undefined) => T): T[] {
     return (items ?? []).map((item) => each(item));
   }
+
+  items<T>(items: T[] | undefined, what: string, each: (c: Codec, item: T | undefined) => T): T[] {
+    return this.list(items, what, (item) => each(this, item));
+  }
 }
 
 /**
@@ -734,12 +758,18 @@ class Decoding implements Codec {
   private readonly strings: string[];
   private readonly checked: number[];
 
-  /** `checked` marks, by a string's number, that it was found a path (1) or a link (2): each is checked once a scan. */
-  constructor(input: In, strings: string[], met: number, checked: number[]) {
+  private readonly lazy: boolean;
+
+  /**
+   * `checked` marks, by a string's number, that it was found a path (1) or a link (2): each is checked once a scan.
+   * `lazy`, after the walk, makes a file's own lists decode an item only when it is read.
+   */
+  constructor(input: In, strings: string[], met: number, checked: number[], lazy = false) {
     this.input = input;
     this.strings = strings;
     this.met = met;
     this.checked = checked;
+    this.lazy = lazy;
   }
 
   private id(): number {
@@ -786,6 +816,25 @@ class Decoding implements Codec {
     const out: T[] = [];
     for (let i = 0; i < n; i += 1) out.push(each(undefined));
     return out;
+  }
+
+  items<T>(items: T[] | undefined, what: string, each: (c: Codec, item: T | undefined) => T): T[] {
+    if (!this.lazy) return this.list(items, what, () => each(this, undefined));
+    // After the walk: where each item begins is found by walking it once, and nothing of it is kept; an item is then
+    // decoded from where it begins when it is read. Every string is met, and every check was made in the walk.
+    const n = this.input.count();
+    const starts = new Uint32Array(n);
+    for (let i = 0; i < n; i += 1) {
+      starts[i] = this.input.at;
+      each(this, undefined);
+    }
+    const bytes = this.input.bytes;
+    const { strings, checked } = this;
+    return lazyList(n, (i) => {
+      const input = new In(bytes, what);
+      input.at = starts[i];
+      return each(new Decoding(input, strings, strings.length, checked, true), undefined);
+    });
   }
 }
 
@@ -1277,10 +1326,10 @@ function loadStrings(raw: Uint8Array, count: number, strings: string[], seen: Se
   }
 }
 
-function decodeChunk(raw: Uint8Array, count: number, strings: string[], met: number, previous: string | undefined, checked: number[]): { files: StoredFile[]; met: number } {
+function decodeChunk(raw: Uint8Array, count: number, strings: string[], met: number, previous: string | undefined, checked: number[], lazy = false): { files: StoredFile[]; met: number } {
   const input = new In(raw, "a section of records");
   if (count > raw.length) refuse(`a section of records claims ${count} files in ${raw.length} bytes`);
-  const decoding = new Decoding(input, strings, met, checked);
+  const decoding = new Decoding(input, strings, met, checked, lazy);
   const files: StoredFile[] = [];
   for (let i = 0; i < count; i += 1) {
     const file = walkFile(decoding, undefined);
@@ -1321,14 +1370,43 @@ export async function openScan(bytes: Uint8Array): Promise<Result<OpenedScan>> {
  * The reading both readers share: the quick open's checks, then each section inflated only when it is read, after the
  * checks on every section before it.
  */
-async function opening(bytes: Uint8Array): Promise<OpenedScan & { chunks: number; readChunk(k: number): Promise<StoredFile[]>; fileAt(i: number): StoredFile; forget(): void }> {
+async function opening(bytes: Uint8Array): Promise<OpenedScan & { chunks: number; readChunk(k: number): Promise<StoredFile[]>; fileAt(i: number): StoredFile; forget(): void; graphIndex(): { paths: readonly string[]; inbound: number[][]; documentedBy: Map<number, number[]> } }> {
   {
     const { frames, cut } = hop(bytes);
     if (cut || frames[frames.length - 1]?.kind !== END) refuse("the file stops before its end: a stopped write, which `resumeFrom` can go on from");
     checkOrder(frames, true);
-    // Each section is inflated when it is read, after every check on the sections before it: a file refused by its
-    // tenth section costs ten sections' inflation, never the rest's.
-    const rawOf_ = (f: Frame, what: string): Promise<Uint8Array> => rawOf(bytes, f, what);
+    // Sections are inflated in order, and ahead of the one being read only within READ_AHEAD raw bytes, of sections
+    // whose headers every header-only check has passed (they all have, by here). So a file refused by one section has
+    // cost at most READ_AHEAD bytes of inflation past it, whatever follows; and the platform inflates the next sections
+    // on its own threads while this one is checked. Measured on DNN and five times DNN, inflating strictly one at a time
+    // was 6 to 30 % slower.
+    // The window runs over the strings and records, which are read in order after the head, the paths and the wires.
+    const pending = new Map<Frame, Promise<Uint8Array>>();
+    const recordsEnd = frames.length - 3;
+    let ahead = 1;
+    let inFlight = 0;
+    const topUp = (): void => {
+      while (ahead < recordsEnd && (inFlight === 0 || inFlight + frames[ahead].rawLength <= READ_AHEAD)) {
+        const f = frames[ahead++];
+        const p = rawOf(bytes, f, KIND_NAMES[f.kind]);
+        // Marked as seen, so that a refusal found in one while another is read is not taken for an unhandled one.
+        p.catch(() => undefined);
+        pending.set(f, p);
+        inFlight += f.rawLength;
+      }
+    };
+    const rawOf_ = async (f: Frame, what: string): Promise<Uint8Array> => {
+      if (!pending.has(f) && (f.kind === STRINGS || f.kind === RECORDS)) topUp();
+      const p = pending.get(f);
+      if (p === undefined) return rawOf(bytes, f, what);
+      pending.delete(f);
+      try {
+        return await p;
+      } finally {
+        inFlight -= f.rawLength;
+        topUp();
+      }
+    };
     const endRaw = await rawOf_(frames[frames.length - 1], "the end");
     const name = await nameOfFrames(frames.slice(0, -1));
     if (!equalBytes(endRaw, name)) refuse("the end does not name the sections before it");
@@ -1338,6 +1416,7 @@ async function opening(bytes: Uint8Array): Promise<OpenedScan & { chunks: number
     const paths = readPaths(await rawOf_(frames[frames.length - 3], "the paths"), count, stringBytes);
     const outbound = readWires(await rawOf_(frames[frames.length - 2], "the wires"), count);
     const inboundLists: number[][] = paths.map(() => []);
+    const documentedBy = new Map<number, number[]>();
     outbound.forEach((list, i) => list.forEach((j) => inboundLists[j].push(i)));
     const index = new Map(paths.map((p, i) => [p, i]));
     const chunkFrames = frames.filter((f) => f.kind === RECORDS);
@@ -1355,7 +1434,7 @@ async function opening(bytes: Uint8Array): Promise<OpenedScan & { chunks: number
       const target = chunkFrames[k];
       const first = k * CHUNK;
       // Checked in the walk; decoded again here with every string already met.
-      const files = decodeChunk(kept[k], target.count, strings, strings.length, first > 0 ? paths[first - 1] : undefined, checked).files;
+      const files = decodeChunk(kept[k], target.count, strings, strings.length, first > 0 ? paths[first - 1] : undefined, checked, true).files;
       last = { k, files };
       return files;
     };
@@ -1376,6 +1455,7 @@ async function opening(bytes: Uint8Array): Promise<OpenedScan & { chunks: number
         decoded.files.forEach((file, i) => {
           if (file.codePath !== paths[first + i]) refuse(`the paths name ${JSON.stringify(paths[first + i])} where the records hold ${JSON.stringify(file.codePath)}`);
           const wires = outboundOf(file, index);
+          for (const to of numbered(documentedTargets(file), file.codePath, index)) pushTo(documentedBy, to, first + i);
           if (!equalLists(wires, outbound[first + i])) refuse(`the wires of ${JSON.stringify(file.codePath)} are not those its links name`);
         });
         kept.push(raw);
@@ -1389,6 +1469,7 @@ async function opening(bytes: Uint8Array): Promise<OpenedScan & { chunks: number
       readChunk,
       // After the walk, nothing decoded is kept: what is held is the strings, the paths, the wires and the sections'
       // inflated bytes.
+      graphIndex: () => ({ paths, inbound: inboundLists, documentedBy }),
       forget: (): void => {
         last = undefined;
       },
@@ -1422,7 +1503,9 @@ export async function readScan(bytes: Uint8Array): Promise<Result<Scan & { name:
     // The walk: every section read and checked in order, nothing of its facts kept.
     for (let k = 0; k < scan.chunks; k += 1) await scan.readChunk(k);
     scan.forget();
-    return { head: scan.head, files: lazyList(scan.paths.length, (i) => scan.fileAt(i)), name: scan.name };
+    const files = lazyList(scan.paths.length, (i) => scan.fileAt(i));
+    graphIndexes.set(files, scan.graphIndex());
+    return { head: scan.head, files, name: scan.name };
   });
 }
 
@@ -1791,21 +1874,22 @@ export interface GraphView extends Location {
  * rest wait until it is asked for. A link lands on a file when what it names was scanned.
  */
 export function graphViewOf(scan: Scan): GraphView {
-  const paths = scan.files.map((f) => f.codePath);
+  // A scan read back carries its index from the walk: who lands on each file, and whose documentation names it, as
+  // file numbers. A scan made in memory has it gathered here, in one pass over the targets.
+  const given = graphIndexes.get(scan.files);
+  const paths: readonly string[] = given?.paths ?? scan.files.map((f) => f.codePath);
   const index = new Map(paths.map((path, i) => [path, i]));
-  const byPath = new Map(scan.files.map((f) => [f.codePath, f]));
-  const landingOn = (targets: (string | undefined)[], self: string): string[] => numbered(targets, self, index).map((i) => paths[i]);
-  const inbound = new Map<string, string[]>();
-  const documentedBy = new Map<string, string[]>();
-  const push = (lists: Map<string, string[]>, key: string, value: string): void => {
-    const list = lists.get(key);
-    if (list) list.push(value);
-    else lists.set(key, [value]);
-  };
-  for (const f of scan.files) {
-    for (const to of landingOn(linkedTargets(f), f.codePath)) push(inbound, to, f.codePath);
-    const named = f.symbols.flatMap((s) => s.documentation.filter((d) => d.link !== undefined).map((d) => d.target));
-    for (const to of landingOn(named, f.codePath)) push(documentedBy, to, f.codePath);
+  let inbound: number[][];
+  let documentedBy: Map<number, number[]>;
+  if (given) {
+    ({ inbound, documentedBy } = given);
+  } else {
+    inbound = paths.map(() => []);
+    documentedBy = new Map();
+    scan.files.forEach((f, i) => {
+      for (const to of numbered(linkedTargets(f), f.codePath, index)) inbound[to].push(i);
+      for (const to of numbered(documentedTargets(f), f.codePath, index)) pushTo(documentedBy, to, i);
+    });
   }
   const built = new Map<string, GraphFile>();
   const { root, baseLayer, extension } = scan.head.location;
@@ -1815,16 +1899,33 @@ export function graphViewOf(scan: Scan): GraphView {
     extension,
     paths,
     file: (path) => {
-      const f = byPath.get(path);
-      if (f === undefined) return undefined;
+      const i = index.get(path);
+      if (i === undefined) return undefined;
       let file = built.get(path);
       if (file === undefined) {
-        file = graphFileOf(f, scan.head.location, index, paths, inbound.get(path) ?? [], documentedBy.get(path));
+        const named = documentedBy.get(i);
+        file = graphFileOf(scan.files[i], scan.head.location, index, paths, inbound[i].map((j) => paths[j]), named && named.map((j) => paths[j]));
         built.set(path, file);
       }
       return file;
     }
   };
+}
+
+/** What a scan read back gathered in its walk for its graph, kept apart and found by the scan's list of files. */
+const graphIndexes = new WeakMap<object, { paths: readonly string[]; inbound: number[][]; documentedBy: Map<number, number[]> }>();
+
+/** The targets a file's documentation references name, where they have a link. */
+function documentedTargets(f: StoredFile): (string | undefined)[] {
+  const out: (string | undefined)[] = [];
+  for (const sym of f.symbols) for (const d of sym.documentation) if (d.link !== undefined) out.push(d.target);
+  return out;
+}
+
+function pushTo(lists: Map<number, number[]>, key: number, value: number): void {
+  const list = lists.get(key);
+  if (list) list.push(value);
+  else lists.set(key, [value]);
 }
 
 /**

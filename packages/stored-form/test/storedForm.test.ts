@@ -307,6 +307,34 @@ describe("the text form's bytes, as the specification states them", () => {
   });
 });
 
+describe("a file's own lists, read back", () => {
+  it("are decoded as they are read: asking a file of 300,000 symbols for their count keeps none of them, and each symbol reads as it was written", async () => {
+    const symbol = (i: number): StoredFile["symbols"][number] => ({ name: `s${i}`, kind: "method", flags: [], references: [], sections: [], documentation: [] });
+    const scan: Scan = { head: everyFact().head, files: [{ codePath: "a", layer: 4, entries: [], authored: "", symbols: Array.from({ length: 300_000 }, (_, i) => symbol(i)), dependencies: [] }] };
+    const bytes = await bytesOf(scan);
+    const { setFlagsFromString } = await import("node:v8");
+    const { runInNewContext } = await import("node:vm");
+    setFlagsFromString("--expose-gc");
+    const gc = runInNewContext("gc") as () => void;
+    const used = (): number => {
+      const m = process.memoryUsage();
+      return m.heapUsed + m.arrayBuffers;
+    };
+    const read = await readScan(bytes);
+    if (!read.ok) throw new Error(read.reason);
+    gc();
+    const before = used();
+    const symbols = read.value.files[0].symbols;
+    expect(symbols.length).toBe(300_000);
+    gc();
+    const held = used() - before;
+    // What a count keeps is the list's starts, four bytes a symbol; 300,000 symbols built would hold tens of MB.
+    expect(held, `${held} bytes held`).toBeLessThan(4 * 1024 * 1024);
+    expect(symbols[123_456]).toEqual(symbol(123_456));
+    expect(symbols[299_999].name).toBe("s299999");
+  }, 60_000);
+});
+
 describe("the text's end line", () => {
   // The five forms the second blind reading of 2026-11-22 found the module accepting before the end line was written
   // again and compared (its finding 2): each is the end line of a text of three files, written another way.

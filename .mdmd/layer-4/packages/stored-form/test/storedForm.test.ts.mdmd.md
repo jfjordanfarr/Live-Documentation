@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: `packages/stored-form/test/storedForm.test.ts`
-- Generated At: 2026-11-22T02:13:56.342Z
+- Generated At: 2026-11-22T07:10:51.848Z
 
 ## Authored
 ### Purpose
@@ -23,6 +23,8 @@ _No public symbols detected_
 ### Dependencies
 - `node:fs` - `readFileSync`
 - `node:path` - `path`
+- `node:v8`
+- `node:vm`
 - `node:zlib` - `deflateRawSync`, `inflateRawSync`
 - [`storedForm.CHUNK`](../src/storedForm.ts.mdmd.md#symbol-chunk)
 - [`storedForm.SIGNATURE`](../src/storedForm.ts.mdmd.md#symbol-signature)
