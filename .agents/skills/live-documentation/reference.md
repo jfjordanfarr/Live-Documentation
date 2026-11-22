@@ -55,7 +55,7 @@ The symbol's docstring, when it has one.
 | Option | Meaning |
 | --- | --- |
 | `--from <path>` | The start; `path#Symbol` for a symbol-level search |
-| `--to <path>` | The target; the route is found either way and told from `--from` to `--to`, each step said as `uses` or `is used by`; omit for the direct neighbours of `--from`, counted |
+| `--to <path>` | The target; the route is found either way and told from `--from` to `--to`, each step said as `uses` or `is used by`; omit for the direct neighbours of `--from`, counted, then what its documentation names and whose documentation names it (an author's word, never a use, which reach and paths do not follow) |
 | `--reachable` | Every file a path reaches from `--from`, nearest first, with its hops; without `--from`, the entry points, what they reach, what nothing reaches, what only a test reaches |
 | `--direction outbound\|inbound\|both` | Outbound (default) follows what a file depends on; inbound what depends on it; both, each way |
 | `--max-depth <n>` | Default 25 |
