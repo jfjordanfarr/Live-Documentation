@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: `scripts/live-docs/board.ts`
 - Entry: command `live-docs:board` of [`package.json`](../../package.json.mdmd.md)
-- Generated At: 2026-11-19T19:18:27.860Z
+- Generated At: 2026-11-22T03:15:27.098Z
 
 ## Authored
 ### Purpose
@@ -21,7 +21,20 @@ The command `npm run live-docs:board -- <board.md>`: reads a board, refuses a fa
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
-_No public symbols detected_
+#### `LISTED` {#symbol-listed}
+- Type: const
+- Source: [source](../../../../scripts/live-docs/board.ts#L42)
+
+##### `LISTED` — Summary
+How many of a thing's files, or of a wire's edges, `--files` lists before it counts the rest.
+
+#### `renderBoardReport` {#symbol-renderboardreport}
+- Type: function
+- Source: [source](../../../../scripts/live-docs/board.ts#L94)
+- Parameters: `derived`: [`BoardGraph`](../../packages/engine/src/live-docs/boardGraph.ts.mdmd.md#symbol-boardgraph)
+
+##### `renderBoardReport` — Summary
+The lines the report prints; with `files`, each thing's files and each wire's edges, each list cut at {@link LISTED}.
 <!-- LIVE-DOC:END Public Symbols -->
 
 <!-- LIVE-DOC:BEGIN Dependencies -->

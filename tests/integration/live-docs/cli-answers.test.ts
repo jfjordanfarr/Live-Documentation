@@ -86,21 +86,49 @@ describe("live-docs:inspect, a file alone", () => {
   });
 });
 
-describe("live-docs:inspect, no path this way", () => {
-  it("says so in one line and gives the command that asks the way back, which answers", () => {
+describe("live-docs:inspect, a route between two files", () => {
+  // The owner, 2026-11-22: a route asked is told as asked, the relation of each step said in the product's word.
+  it("is told from --from to --to when the dependency runs the other way, each step said as used by the next", () => {
     const result = cli("inspect.ts", estate, ["--from", "Database/SqlServer/dbo.Payment.sql", "--to", "Portal/Pages/Default.aspx"]);
+    assert.strictEqual(result.status, 0, result.stderr);
+    const lines = result.stdout.replace(/ \[[^\]]+\]/g, "").split("\n");
+    assert.strictEqual(lines[0], "Path from Database/SqlServer/dbo.Payment.sql to Portal/Pages/Default.aspx, 11 hop(s): each file is used by the next.");
+    assert.strictEqual(lines[1], "  1. Database/SqlServer/dbo.Payment.sql is used by PaymentService/Data/Payment.cs");
+    assert.strictEqual(lines[11], "  11. Portal/Scripts/portal.js is used by Portal/Pages/Default.aspx");
+    const json = JSON.parse(cli("inspect.ts", estate, ["--from", "Database/SqlServer/dbo.Payment.sql", "--to", "Portal/Pages/Default.aspx", "--json"]).stdout) as { direction: string; each: string };
+    assert.deepStrictEqual([json.direction, json.each], ["inbound", "is used by"]);
+  });
+
+  it("is told with each file using the next when the dependency runs as asked", () => {
+    const result = cli("inspect.ts", estate, ["--from", "Portal/Pages/Default.aspx", "--to", "Database/SqlServer/dbo.Payment.sql"]);
+    assert.strictEqual(result.status, 0, result.stderr);
+    assert.match(result.stdout.replace(/ \[[^\]]+\]/g, ""), /^Path from Portal\/Pages\/Default\.aspx to Database\/SqlServer\/dbo\.Payment\.sql, 11 hop\(s\): each file uses the next\.\n {2}1\. Portal\/Pages\/Default\.aspx uses Portal\/Scripts\/portal\.js\n/u);
+  });
+
+  it("kept to one way by --direction, says in one line that none runs and gives the command for the way back, which answers", () => {
+    const result = cli("inspect.ts", estate, ["--from", "Database/SqlServer/dbo.Payment.sql", "--to", "Portal/Pages/Default.aspx", "--direction", "outbound"]);
     assert.strictEqual(result.status, 1);
     assert.strictEqual(result.stdout,
       "No path runs from Database/SqlServer/dbo.Payment.sql to Portal/Pages/Default.aspx (outbound); one runs the other way, 11 hop(s): npm run live-docs:inspect -- --from Portal/Pages/Default.aspx --to Database/SqlServer/dbo.Payment.sql\n");
     const offered = result.stdout.slice(result.stdout.indexOf("-- ") + 3).trim().split(" ");
     const back = cli("inspect.ts", estate, offered);
     assert.strictEqual(back.status, 0, back.stderr);
-    assert.match(back.stdout, /^Path from Portal\/Pages\/Default\.aspx to Database\/SqlServer\/dbo\.Payment\.sql \(11 hop\(s\), outbound\)\./u);
+    assert.match(back.stdout, /^Path from Portal\/Pages\/Default\.aspx to Database\/SqlServer\/dbo\.Payment\.sql, 11 hop\(s\): each file uses the next\./u);
   });
 
-  it("says that no path runs either way when none does", () => {
+  it("says in one line that none runs either way when none does", () => {
     const result = cli("inspect.ts", estate, ["--from", "Estate.sln", "--to", "Hub/ServiceRouting.cs"]);
     assert.strictEqual(result.status, 1);
-    assert.strictEqual(result.stdout, "No path runs from Estate.sln to Hub/ServiceRouting.cs (outbound), nor the other way.\n");
+    assert.strictEqual(result.stdout, "No path runs between Estate.sln and Hub/ServiceRouting.cs, either way.\n");
+  });
+});
+
+describe("live-docs:board --files", () => {
+  it("lists each thing's files and each wire's file-level edges", () => {
+    const result = cli("board.ts", estate, ["board.md", "--files"]);
+    assert.strictEqual(result.status, 0, result.stderr);
+    assert.match(result.stdout, /\n {2}portal \(web\) {2}from Portal: 11 files\n[\s\S]*?\n {4}files \(11\):\n {6}Portal\/App_Code\/Globals\.cs\n/u);
+    assert.match(result.stdout, /\n {2}gateway -> contracts {2}\[source\] {2}x13\n(?: {6}\S.*\n){13}/u);
+    assert.ok(result.stdout.includes("\n      Gateway/Wcf/HubProxy.cs uses Contracts/IPaymentHub.cs (IPaymentHub)\n"), result.stdout);
   });
 });
