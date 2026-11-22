@@ -1,0 +1,147 @@
+{
+ "reader": "python-reader-2 snapshot of 05:01",
+ "tally": {
+  "corpora read same": 3,
+  "corpora graph both answer, differently": 3,
+  "corpora name same": 3,
+  "made read same": 11,
+  "made graph same": 4,
+  "made name same": 11,
+  "made graph both answer, differently": 7,
+  "refusals read both refuse": 415,
+  "refusals read same": 7,
+  "refusals graph both answer, differently": 6,
+  "refusals read same text, past the export bound, which the module refuses": 1,
+  "refusals graph same": 2,
+  "refusals name both refuse": 23,
+  "second read both refuse": 4,
+  "second read same": 1,
+  "second graph both answer, differently": 1,
+  "second name both refuse": 13,
+  "second name same": 2
+ },
+ "slowest": [
+  "corpus-dnn.txt 14223 ms, 226 MB",
+  "corpus-dnn.fpk 9110 ms, 58 MB",
+  "corpus-dnn.fpk 7898 ms, 64 MB",
+  "text-byte-ff.txt 4447 ms, 19 MB",
+  "second-text-past-the-export-bound.txt 4243 ms, 271 MB"
+ ],
+ "heaviest": [
+  "second-text-past-the-export-bound.txt 271 MB of 17074",
+  "corpus-dnn.txt 226 MB of 10103",
+  "corpus-dnn.fpk 64 MB of 1535",
+  "corpus-repository.txt 64 MB of 2837",
+  "corpus-dnn.fpk 58 MB of 1535"
+ ],
+ "disagreements": [
+  {
+   "dir": "corpora",
+   "file": "corpus-dnn.fpk",
+   "kind": "graph",
+   "outcome": "both answer, differently"
+  },
+  {
+   "dir": "corpora",
+   "file": "corpus-estate.fpk",
+   "kind": "graph",
+   "outcome": "both answer, differently"
+  },
+  {
+   "dir": "corpora",
+   "file": "corpus-repository.fpk",
+   "kind": "graph",
+   "outcome": "both answer, differently"
+  },
+  {
+   "dir": "made",
+   "file": "made-doc-references.fpk",
+   "kind": "graph",
+   "outcome": "both answer, differently"
+  },
+  {
+   "dir": "made",
+   "file": "made-no-wires.fpk",
+   "kind": "graph",
+   "outcome": "both answer, differently"
+  },
+  {
+   "dir": "made",
+   "file": "made-seeded-1-40.fpk",
+   "kind": "graph",
+   "outcome": "both answer, differently"
+  },
+  {
+   "dir": "made",
+   "file": "made-seeded-11-773.fpk",
+   "kind": "graph",
+   "outcome": "both answer, differently"
+  },
+  {
+   "dir": "made",
+   "file": "made-seeded-2-257.fpk",
+   "kind": "graph",
+   "outcome": "both answer, differently"
+  },
+  {
+   "dir": "made",
+   "file": "made-seeded-3-300.fpk",
+   "kind": "graph",
+   "outcome": "both answer, differently"
+  },
+  {
+   "dir": "made",
+   "file": "made-seeded-7-529.fpk",
+   "kind": "graph",
+   "outcome": "both answer, differently"
+  },
+  {
+   "dir": "refusals",
+   "file": "mutant-0014-made-seeded-3-300-frames-rearranged.fpk",
+   "kind": "graph",
+   "outcome": "both answer, differently"
+  },
+  {
+   "dir": "refusals",
+   "file": "mutant-0134-made-seeded-3-300-frames-rearranged.fpk",
+   "kind": "graph",
+   "outcome": "both answer, differently"
+  },
+  {
+   "dir": "refusals",
+   "file": "mutant-0158-made-seeded-3-300-frames-rearranged.fpk",
+   "kind": "graph",
+   "outcome": "both answer, differently"
+  },
+  {
+   "dir": "refusals",
+   "file": "mutant-0190-corpus-estate-frames-rearranged.fpk",
+   "kind": "graph",
+   "outcome": "both answer, differently"
+  },
+  {
+   "dir": "refusals",
+   "file": "mutant-0246-made-every-fact-frames-rearranged.fpk",
+   "kind": "graph",
+   "outcome": "both answer, differently"
+  },
+  {
+   "dir": "refusals",
+   "file": "probe-as-written.fpk",
+   "kind": "graph",
+   "outcome": "both answer, differently"
+  },
+  {
+   "dir": "refusals",
+   "file": "probe-text-past-the-file-bound.fpk",
+   "kind": "read",
+   "outcome": "same text, past the export bound, which the module refuses"
+  },
+  {
+   "dir": "second",
+   "file": "second-extension-empty.fpk",
+   "kind": "graph",
+   "outcome": "both answer, differently"
+  }
+ ]
+}

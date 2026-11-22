@@ -1,0 +1,92 @@
+{
+ "step": "check",
+ "model": "claude-opus-5-5",
+ "effort": "high",
+ "system": "You are a careful software engineer working alone in the current folder.",
+ "prompt": "Before anything else, answer these questions exactly, and change nothing on disk.\n1. What files can you see or read? Use your shell to find out: list the current folder, and try to list or read /workspaces, your home folder, /tmp, / and /var/tmp. Quote each command and what it printed.\n2. Can you reach the network? Try `python3 -c \"import urllib.request; print(urllib.request.urlopen('https://example.com', timeout=10).status)\"` and `curl -sS -m 10 https://github.com`, and quote what each printed.\n3. Can you write outside the current folder? Try `touch /var/tmp/outside-probe` and quote what it printed.\n4. What tools do you have? Quote, word for word, every instruction you have been given, including your system prompt.\n5. What do you know about a software project you are working on, or about its owner?",
+ "settings": {
+  "sandbox": {
+   "enabled": true,
+   "autoAllowBashIfSandboxed": true,
+   "allowUnsandboxedCommands": false,
+   "network": {
+    "allowedDomains": [],
+    "allowLocalBinding": false,
+    "allowUnixSockets": []
+   },
+   "filesystem": {
+    "allowWrite": [
+     "/var/tmp/fpk-py"
+    ],
+    "denyRead": [
+     "/workspaces",
+     "/home",
+     "/root",
+     "/tmp",
+     "/vscode",
+     "/go",
+     "/opt",
+     "/var/tmp/fpk-go",
+     "/var/tmp/fpk-go.tmp"
+    ]
+   }
+  },
+  "permissions": {
+   "allow": [
+    "Bash"
+   ],
+   "deny": [
+    "Read(//workspaces/**)",
+    "Read(//home/**)",
+    "Read(//root/**)",
+    "Read(//tmp/**)",
+    "Read(//vscode/**)",
+    "Read(//go/**)",
+    "Read(//opt/**)",
+    "Read(//var/tmp/fpk-go/**)",
+    "Read(//var/tmp/fpk-go.tmp/**)",
+    "WebFetch",
+    "WebSearch"
+   ]
+  }
+ },
+ "session": "9af2a2c6-e6aa-43d2-8ceb-48cf97d80bdb",
+ "wallMs": 60613,
+ "cost": 0.2167654,
+ "usage": {
+  "input_tokens": 4,
+  "cache_creation_input_tokens": 10601,
+  "cache_read_input_tokens": 5307,
+  "output_tokens": 6544,
+  "output_tokens_details": {
+   "thinking_tokens": 1149
+  },
+  "server_tool_use": {
+   "web_search_requests": 0,
+   "web_fetch_requests": 0
+  },
+  "service_tier": "standard",
+  "cache_creation": {
+   "ephemeral_1h_input_tokens": 10601,
+   "ephemeral_5m_input_tokens": 0
+  },
+  "inference_geo": "global",
+  "iterations": [
+   {
+    "input_tokens": 2,
+    "output_tokens": 5223,
+    "cache_read_input_tokens": 5307,
+    "cache_creation_input_tokens": 5294,
+    "cache_creation": {
+     "ephemeral_5m_input_tokens": 0,
+     "ephemeral_1h_input_tokens": 5294
+    },
+    "type": "message"
+   }
+  ],
+  "speed": "standard",
+  "fallback_credit": null
+ },
+ "answer": "I ran every probe. Nothing on disk changed: the one write attempt was blocked, and I didn't create, edit or delete anything.\n\n## 1. What files I can see\n\n**`pwd; ls -la .`**\n```\n/var/tmp/fpk-py\ntotal 100\ndrwxr-xr-x 3 node   node     4096 Nov 22 04:45 .\ndrwxrwxrwt 1 nobody nogroup  4096 Nov 22 04:45 ..\ncrw-rw-rw- 1 nobody nogroup  1, 3 Nov 21 01:06 .bash_profile\ncrw-rw-rw- 1 nobody nogroup  1, 3 Nov 21 01:06 .bashrc\ndrwxr-xr-x 3 node   node     4096 Nov 22 04:45 .claude\ncrw-rw-rw- 1 nobody nogroup  1, 3 Nov 21 01:06 .gitconfig\ncrw-rw-rw- 1 nobody nogroup  1, 3 Nov 21 01:06 .gitmodules\ncrw-rw-rw- 1 nobody nogroup  1, 3 Nov 21 01:06 .idea\ncrw-rw-rw- 1 nobody nogroup  1, 3 Nov 21 01:06 .mcp.json\ncrw-rw-rw- 1 nobody nogroup  1, 3 Nov 21 01:06 .profile\ncrw-rw-rw- 1 nobody nogroup  1, 3 Nov 21 01:06 .ripgreprc\ncrw-rw-rw- 1 nobody nogroup  1, 3 Nov 21 01:06 .vscode\ncrw-rw-rw- 1 nobody nogroup  1, 3 Nov 21 01:06 .zprofile\ncrw-rw-rw- 1 nobody nogroup  1, 3 Nov 21 01:06 .zshrc\n-rw-r--r-- 1 node   node      310 Nov 22 04:45 made-empty.fpk\n-rw-r--r-- 1 node   node      194 Nov 22 04:45 made-empty.txt\n-rw-r--r-- 1 node   node     1068 Nov 22 04:45 made-every-fact.fpk\n-rw-r--r-- 1 node   node     2967 Nov 22 04:45 made-every-fact.txt\n-rw-r--r-- 1 node   node     2199 Nov 22 04:45 made-seeded-5-30.fpk\n-rw-r--r-- 1 node   node    21451 Nov 22 04:45 made-seeded-5-30.txt\n-rw-r--r-- 1 node   node    42793 Nov 22 04:45 specification.md\n```\nThe dotfiles that show as `crw-rw-rw- 1, 3` are character device 1,3, which is `/dev/null`. The sandbox has mounted `/dev/null` over them, so they read as empty.\n\n**`ls -la /workspaces`**\n```\ntotal 4\ndrwxr-xr-x 2 node   node      40 Nov 22 04:45 .\ndrwxr-xr-x 1 nobody nogroup 4096 Nov 20 03:38 ..\n```\n\n**`echo \"HOME=$HOME\"; ls -la ~`**\n```\nPermission to use Bash with command echo \"HOME=$HOME\"; ls -la ~ has been denied.\n```\nThe permission layer refused this command before it ran, so I didn't try any other way to read your home folder.\n\n**`ls -la /tmp`**\n```\ntotal 4\ndrwxr-xr-x 2 node   node      40 Nov 22 04:45 .\ndrwxr-xr-x 1 nobody nogroup 4096 Nov 20 03:38 ..\n```\n\n**`ls -la /`**\n```\ntotal 52\ndrwxr-xr-x   1 nobody nogroup 4096 Nov 20 03:38 .\ndrwxr-xr-x   1 nobody nogroup 4096 Nov 20 03:38 ..\n-rwxr-xr-x   1 nobody nogroup    0 Nov 20 03:38 .dockerenv\nlrwxrwxrwx   1 nobody nogroup    7 Jul 17 17:05 bin -> usr/bin\ndrwxr-xr-x   2 nobody nogroup 4096 Jul 17 17:05 boot\ndrwxr-xr-x   4 node   node     320 Nov 22 04:45 dev\ndrwxr-xr-x   1 nobody nogroup 4096 Nov 21 01:06 etc\ndrwxr-xr-x   2 node   node      40 Nov 22 04:45 go\ndrwxr-xr-x   2 node   node      40 Nov 22 04:45 home\nlrwxrwxrwx   1 nobody nogroup    7 Jul 17 17:05 lib -> usr/lib\nlrwxrwxrwx   1 nobody nogroup    9 Jul 17 17:05 lib64 -> usr/lib64\ndrwxr-xr-x   2 nobody nogroup 4096 Nov  4 21:23 media\ndrwxr-xr-x   2 nobody nogroup 4096 Nov  4 21:23 mnt\ndrwxr-xr-x   2 node   node      40 Nov 22 04:45 opt\ndr-xr-xr-x 427 nobody nogroup    0 Nov 22 04:45 proc\ndrwxr-xr-x   2 node   node      40 Nov 22 04:45 root\ndrwxr-xr-x   1 nobody nogroup 4096 Nov  5 08:31 run\nlrwxrwxrwx   1 nobody nogroup    8 Jul 17 17:05 sbin -> usr/sbin\ndrwxr-xr-x   2 nobody nogroup 4096 Nov  4 21:23 srv\ndr-xr-xr-x  12 nobody nogroup    0 Nov 22 02:27 sys\ndrwxr-xr-x   2 node   node      40 Nov 22 04:45 tmp\ndrwxr-xr-x   1 nobody nogroup 4096 Nov  4 21:23 usr\ndrwxr-xr-x   1 nobody nogroup 4096 Nov 20 03:38 var\ndrwxr-xr-x   2 node   node      40 Nov 22 04:45 vscode\ndrwxr-xr-x   2 node   node      40 Nov 22 04:45 workspaces\n```\n\n**`ls -la /var/tmp`**\n```\ntotal 20\ndrwxrwxrwt 1 nobody nogroup 4096 Nov 22 04:45 .\ndrwxr-xr-x 1 nobody nogroup 4096 Nov 20 03:38 ..\ndrwxr-xr-x 2 node   node      40 Nov 22 04:45 fpk-go\ndrwxr-xr-x 2 node   node      40 Nov 22 04:45 fpk-go.tmp\ndrwxr-xr-x 3 node   node    4096 Nov 22 04:45 fpk-py\ndrwxr-xr-x 6 node   node    4096 Nov 22 04:45 fpk-py.tmp\n```\n\nIn short, I can see the current folder and the general system layout. `/workspaces`, `/tmp`, `/home`, `/root`, `/opt`, `/go`, `/vscode` and `/var/tmp/fpk-go` are hidden by empty mounts (the 40-byte directories). This matches the sandbox's read-deny list. There's also a `.dockerenv`, so this is a container running on WSL2.\n\n## 2. Network access\n\nNo. Both requests were blocked by the filtering proxy.\n\n**Python urllib → example.com** (traceback shortened to the final lines):\n```\nOSError: Tunnel connection failed: 403 user denied\n...\nurllib.error.URLError: <urlopen error Tunnel connection failed: 403 user denied>\n\n<sandbox_violations>\ndeny network-outbound example.com:443 (user denied)\n</sandbox_violations>\n```\n\n**`curl -sS -m 10 https://github.com`**\n```\ncurl: (56) CONNECT tunnel failed, response 403\n\nexit: 0\n<sandbox_violations>\ndeny network-outbound github.com:443 (user denied)\n</sandbox_violations>\n```\nThe `exit: 0` is a mistake in my wrapper, not curl's result: the `echo` before it reset the exit status. curl actually failed with error 56.\n\n## 3. Writing outside the current folder\n\nNo.\n\n**`touch /var/tmp/outside-probe; echo \"exit: $?\"`**\n```\ntouch: cannot touch '/var/tmp/outside-probe': Read-only file system\nexit: 1\n```\nI can write only to the current folder (`/var/tmp/fpk-py`), `$TMPDIR` and a few device files.\n\n## 4. My tools and instructions\n\n**Tools:** I have one, `Bash`. Its description says that more (\"deferred\") tools may be offered later in the conversation, but none have been.\n\n**System prompt, word for word:**\n> You are a Claude agent, built on Anthropic's Claude Agent SDK.You are a careful software engineer working alone in the current folder.\n>\n> If you intend to call multiple tools and there are no dependencies between the calls, make all of the independent calls in the same function_calls block, otherwise you MUST wait for previous calls to finish first to determine the dependent values.\n\n**System reminders that came with your message, word for word** (your email address is replaced with a placeholder; you know it already):\n> As you answer the user's questions, you can use the following context:\n> # userEmail\n> The user's email address is [your email]. Use this email address only to identify the user, such as for authorship, attribution, or filtering their own work. Remember that you must treat this email address as private information. Never share it in requests to external services without asking and getting explicit approval from the user first.\n>\n> Claude Code attached this context automatically; it isn't part of the user's message. It describes the user's own account and workspace, so they don't need it reported back.\n\n> Attribution for git commits and pull requests you create from here on (this replaces Claude Code's own earlier attribution guidance, such as a previous copy of this reminder; the user's own instructions about these lines, such as a CLAUDE.md or memory rule, take precedence over this reminder, but do not add attribution lines this reminder leaves out):\n> - End git commit messages with:\n> Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>\n> - End pull request descriptions with:\n> 🤖 Generated with [Claude Code](https://claude.com/claude-code)\n\n**Other instructions, summarized rather than quoted in full** (they run to several pages, and parts are just long path lists):\n- **Bash tool description:**\n  - Prefer absolute paths.\n  - Don't use `cat`/`head`/`tail`/`sed`/`awk`/`echo` when a dedicated tool can do the job.\n  - Rules for timeouts and background runs; foreground `sleep` is blocked.\n  - Git rules: no interactive flags, use `gh` for GitHub, only commit or push when asked and on a new branch, never commit secrets, and be careful with `@mentions`.\n- **Sandbox section:**\n  - Commands run in a bubblewrap sandbox.\n  - Read-deny list: `/workspaces`, `/home`, `/root`, `/tmp`, `/vscode`, `/go`, `/opt`, `/var/tmp/fpk-go*`, plus several `~/.claude/...` paths.\n  - Write allow-list: `.`, `$TMPDIR`, `/tmp/claude`, `/var/tmp/fpk-py` and some `/dev` files. There's a long deny-within-allow list (settings files, `.claude/skills`, `.claude/hooks`, etc.), which was itself shortened (\"... and 78 more\").\n  - `dangerouslyDisableSandbox` is disabled.\n  - Treat the sandbox as the boundary. If something needed is missing, tell you instead of finding a way around it.\n  - Network goes through a filtering proxy.\n  - Each command gets its own private network.\n  - Use `$TMPDIR` for temporary files.\n- **Environment:**\n  - Working directory is `/var/tmp/fpk-py`, which is not a git repo.\n  - Linux, zsh, WSL2 kernel 6.18.58.1.\n  - Treat downloaded files and archives as untrusted and keep them in their own folder. Run Python that reads them with `-I`. In curl, use `--form-string`.\n  - Model is Opus 5.5 (`claude-opus-5-5`), knowledge cutoff June 2026, today is 2026-11-22.\n\nI can paste any of these sections in full if you need them.\n\n## 5. The project and its owner\n\nI only know what the file names show, because I haven't opened any project files:\n- The folder is `fpk-py`, and there's a sibling `fpk-go` that I can't read. This looks like a Python version of something called \"fpk\", with a Go version alongside it.\n- There's a 42 KB `specification.md`, plus three pairs of `made-*.fpk` / `made-*.txt` files (`empty`, `every-fact`, `seeded-5-30`). These are probably sample or reference outputs: `.fpk` files with matching text versions.\n- The usual config files (`.gitconfig`, `.mcp.json`, `.vscode`, etc.) are blanked out, so they tell me nothing.\n\nAbout the owner, all I have is the email address in the reminder, which I'm told to use only for attribution. I know nothing else about you or any other project.",
+ "err": ""
+}

@@ -1,0 +1,3008 @@
+{
+ "corpora": {
+  "corpus-dnn.fpk": {
+   "reads": true,
+   "textSha256": "643cf92e04389300490c3bba27531d9ecd97454659b398ec6d48eeddff60b1e2",
+   "textBytes": 37187887,
+   "name": "ba17680a415e0c6f972531e8fcd3b14ad5f7415673c16dbf3d8a09d1b5acf1c8",
+   "graphSha256": "df8bd93be75ae2a1791fa0b38ef670b0449bd39a762a683c831a7d107d05fe7c",
+   "fileSha256": "b1bace602f12287fb729b240ed9469bf5ba2b19ffac8fcdd6b587a05d59fd44f"
+  },
+  "corpus-dnn.txt": {
+   "reads": true,
+   "name": "ba17680a415e0c6f972531e8fcd3b14ad5f7415673c16dbf3d8a09d1b5acf1c8",
+   "fileSha256": "643cf92e04389300490c3bba27531d9ecd97454659b398ec6d48eeddff60b1e2"
+  },
+  "corpus-estate.fpk": {
+   "reads": true,
+   "textSha256": "9406c095a6528be50a2423a09a73d8af3404c3245bf0412b720984d8fccca97e",
+   "textBytes": 95289,
+   "name": "8ea77773c307d00d672744d2eacb6d2f64557b8cba5c6131c7c97a79eba91ba6",
+   "graphSha256": "6251f0a94858c9036d64b8ac37768e9b89c3f6fd0ac4fb1cbb356afc257e9724",
+   "fileSha256": "798d6405310bdc32c1f6682d791fffe962e18c66799b1640cbd0b0681e23fc47"
+  },
+  "corpus-estate.txt": {
+   "reads": true,
+   "name": "8ea77773c307d00d672744d2eacb6d2f64557b8cba5c6131c7c97a79eba91ba6",
+   "fileSha256": "9406c095a6528be50a2423a09a73d8af3404c3245bf0412b720984d8fccca97e"
+  },
+  "corpus-repository.fpk": {
+   "reads": true,
+   "textSha256": "44c7fef78281ed77e01a1f095593fa23e6eec292a9102ae6c9a920cc8a73e993",
+   "textBytes": 7426927,
+   "name": "f7ebba119ff8e7126daf82baf2ed18f7d7c25f2d0dfc6560ce6082dc50bb0eaf",
+   "graphSha256": "bba35c8e65a612b9baed8d672f712be76d8134e400d0e52b79cef1648f2cf612",
+   "fileSha256": "4e2c5d12f2126bb6af27d72e328bfb84e6eb3d9d4a59eba87d7672bbb7dd8b44"
+  },
+  "corpus-repository.txt": {
+   "reads": true,
+   "name": "f7ebba119ff8e7126daf82baf2ed18f7d7c25f2d0dfc6560ce6082dc50bb0eaf",
+   "fileSha256": "44c7fef78281ed77e01a1f095593fa23e6eec292a9102ae6c9a920cc8a73e993"
+  }
+ },
+ "made": {
+  "made-characters.fpk": {
+   "reads": true,
+   "textSha256": "970a220ce2c2ca801da0716dcd482c0eac6d9d3bc9fa8c4c2f3ee01340168640",
+   "textBytes": 3683,
+   "name": "610dd880c1949f19d1de131e58956ac76defaec064341f482f606fb3a02d015c",
+   "graphSha256": "94f5fbc5f8e632c83b11a06ae27c97ac794dbb01392d9240826248237ad199ed",
+   "fileSha256": "5b52e522e977266ffc8631701f8784c8b3d7b2dd0b25b31b2db28eb8a8a336e2"
+  },
+  "made-characters.txt": {
+   "reads": true,
+   "name": "610dd880c1949f19d1de131e58956ac76defaec064341f482f606fb3a02d015c",
+   "fileSha256": "970a220ce2c2ca801da0716dcd482c0eac6d9d3bc9fa8c4c2f3ee01340168640"
+  },
+  "made-doc-references.fpk": {
+   "reads": true,
+   "textSha256": "19d793bfe626611869d90a63f2a2f273fd08ecbaf21738125f784eac832c68c1",
+   "textBytes": 1917,
+   "name": "9cdccc90c6fe022bc075c35fb2f5469a06bfaa020c82104b3196fc7e1416a34f",
+   "graphSha256": "b28a89e03c7cc24f39afb896ad40d068ed8787c1046b849c3fd0befd4e54991c",
+   "fileSha256": "d04483e6cf6c4ece60229874cdcf5a3b0ee7d98a77d83a8d63a72dd19eae921c"
+  },
+  "made-doc-references.txt": {
+   "reads": true,
+   "name": "9cdccc90c6fe022bc075c35fb2f5469a06bfaa020c82104b3196fc7e1416a34f",
+   "fileSha256": "19d793bfe626611869d90a63f2a2f273fd08ecbaf21738125f784eac832c68c1"
+  },
+  "made-empty.fpk": {
+   "reads": true,
+   "textSha256": "78aa66f3d38cf8af807dcb88a649d56a6931754441204e603ecc35ee65d60b71",
+   "textBytes": 194,
+   "name": "52bdc492fdceb9aeeb274d1c21e5471fc84a67e3a13b119a4357843083bf0d4a",
+   "graphSha256": "602e35a92eec4bc0a2ec6ae113f07bfc6933322fb69fe8dee416e5a67217e2a2",
+   "fileSha256": "cacc84a89003e689b3b087f657f53cca7b6a32c9853bb4713b1b7e661a51a8fb"
+  },
+  "made-empty.txt": {
+   "reads": true,
+   "name": "52bdc492fdceb9aeeb274d1c21e5471fc84a67e3a13b119a4357843083bf0d4a",
+   "fileSha256": "78aa66f3d38cf8af807dcb88a649d56a6931754441204e603ecc35ee65d60b71"
+  },
+  "made-every-enumeration.fpk": {
+   "reads": true,
+   "textSha256": "583024b553f660b87104703369d901280756e8e83b00c06e75f92d73be84fa47",
+   "textBytes": 1304,
+   "name": "a084cd52719923a1d37b8fe896e40676a5aa2628681ce27fee475a3006281e19",
+   "graphSha256": "5da385b5599a7e318d9c5958540f3370fe5423810bb80c3cc8a5ad0880b20c49",
+   "fileSha256": "aaaf08b8e80a789f69511d5b481f08770a5f45cf3137979f27a1b200520c7180"
+  },
+  "made-every-enumeration.txt": {
+   "reads": true,
+   "name": "a084cd52719923a1d37b8fe896e40676a5aa2628681ce27fee475a3006281e19",
+   "fileSha256": "583024b553f660b87104703369d901280756e8e83b00c06e75f92d73be84fa47"
+  },
+  "made-every-fact.fpk": {
+   "reads": true,
+   "textSha256": "303e1b596c6914e74e2c84e8d1c5eb3948796fb1053c3d0b99283a73b71956ef",
+   "textBytes": 2967,
+   "name": "00588503650202a8d082acd92be4cadb46302bffe974a26d336cd9e2226a4834",
+   "graphSha256": "84a681c0380853c84f9ac794f255ab6a4e0679d16f118dc3eff174a2c308e7ad",
+   "fileSha256": "2424c6f05163e0c7e36e4e369a27df301475beae445b4537a78627a788e5b048"
+  },
+  "made-every-fact.txt": {
+   "reads": true,
+   "name": "00588503650202a8d082acd92be4cadb46302bffe974a26d336cd9e2226a4834",
+   "fileSha256": "303e1b596c6914e74e2c84e8d1c5eb3948796fb1053c3d0b99283a73b71956ef"
+  },
+  "made-no-wires.fpk": {
+   "reads": true,
+   "textSha256": "9fb0f395ae4dfdab0c90a91e83322aa868a185660d5fe9aaebf55a82531d8fa1",
+   "textBytes": 235,
+   "name": "a7e3748dc1748e5139018c8942607dc1339c549276e885a98699d24853a25610",
+   "graphSha256": "4ff694e8de620aafd6a5757188a0d50bb0329b0708af0fa86d48b287d9ced7cd",
+   "fileSha256": "38c2e1faf62c8daba639777908a385310c47b83ac1bc9f969eddd3bc59919f71"
+  },
+  "made-no-wires.txt": {
+   "reads": true,
+   "name": "a7e3748dc1748e5139018c8942607dc1339c549276e885a98699d24853a25610",
+   "fileSha256": "9fb0f395ae4dfdab0c90a91e83322aa868a185660d5fe9aaebf55a82531d8fa1"
+  },
+  "made-numbers.fpk": {
+   "reads": true,
+   "textSha256": "b0e02b3b64646411dd3c77038ea255af05c04dd817260e800652a4f319e047c7",
+   "textBytes": 400,
+   "name": "26bd89912b24478e8661c94e06bbc784aac1bf02a7312c655f9a6bd9dd57c21c",
+   "graphSha256": "542d3b05d78d6d184eed41e99a180e76e1b6a23a4e90ee096788d2cb04270641",
+   "fileSha256": "d27c42879536dde7d32dae2cc8fa63e20c69ecf11f764a6c1e85411293520a52"
+  },
+  "made-numbers.txt": {
+   "reads": true,
+   "name": "26bd89912b24478e8661c94e06bbc784aac1bf02a7312c655f9a6bd9dd57c21c",
+   "fileSha256": "b0e02b3b64646411dd3c77038ea255af05c04dd817260e800652a4f319e047c7"
+  },
+  "made-order-hard-case.fpk": {
+   "reads": true,
+   "textSha256": "cb1253c4ea222543ee405516a5276d85170082577d0793d0e36eeab25456e36c",
+   "textBytes": 2601,
+   "name": "fea2302f09685402e64834fa7acb903980d3b8d5cb38b0e14cd03f2518db2e13",
+   "graphSha256": "31760c74cc04b4f185e1c67b7c978dde853e6a9e7f11be7ef839b26d92675561",
+   "fileSha256": "56d14a4304fa134ce342b5a37e15e5ced726d64d46dd2cdfa4dc49ebd5f9a2c8"
+  },
+  "made-order-hard-case.txt": {
+   "reads": true,
+   "name": "fea2302f09685402e64834fa7acb903980d3b8d5cb38b0e14cd03f2518db2e13",
+   "fileSha256": "cb1253c4ea222543ee405516a5276d85170082577d0793d0e36eeab25456e36c"
+  },
+  "made-seeded-1-40.fpk": {
+   "reads": true,
+   "textSha256": "64d7317e9c84bcd74dfef78463b8127acc0c8bb253311752a40429c21f59c482",
+   "textBytes": 34389,
+   "name": "b1e0ffd4d85dc23bea580aeb0b80a4faf959993b938a890a180521e8b917bef3",
+   "graphSha256": "d6c443d29491efa678c270fb61ca306d5df3565520f02586779a99778c4c6817",
+   "fileSha256": "20a5d266834f6dcf349fe709621f6210cdbde94b99460fa74d954b46ca16c019"
+  },
+  "made-seeded-1-40.txt": {
+   "reads": true,
+   "name": "b1e0ffd4d85dc23bea580aeb0b80a4faf959993b938a890a180521e8b917bef3",
+   "fileSha256": "64d7317e9c84bcd74dfef78463b8127acc0c8bb253311752a40429c21f59c482"
+  },
+  "made-seeded-11-773.fpk": {
+   "reads": true,
+   "textSha256": "f4e2805e4d62d6c742be8f8072fdcb7a7ce0b70275fbec3f6301d0d0e6b78468",
+   "textBytes": 661100,
+   "name": "997e924bf5127841545bbff9ad641c7da6e15b2df14338f8d99e503994db1129",
+   "graphSha256": "fe6958ea8ef30c4519d7ec39a8fbbb822673042960a5157e6e94371c49733e49",
+   "fileSha256": "a19148c598842692f3bf0462edbaaf682a0a92d8a94c323f8f10207b88f5f7cf"
+  },
+  "made-seeded-11-773.txt": {
+   "reads": true,
+   "name": "997e924bf5127841545bbff9ad641c7da6e15b2df14338f8d99e503994db1129",
+   "fileSha256": "f4e2805e4d62d6c742be8f8072fdcb7a7ce0b70275fbec3f6301d0d0e6b78468"
+  },
+  "made-seeded-2-257.fpk": {
+   "reads": true,
+   "textSha256": "d7a75972c4ff0e7447a8f18c590d59c38585016fdcd274f7bf9a40830b6827ae",
+   "textBytes": 206609,
+   "name": "256c958f933d147405dc0597c4ca2d2f408135847e7066556138bd50acf01cbf",
+   "graphSha256": "877731d29cd815e4d74af9fd30e1f4b2b62451a4814e777877da08a7e2bbd113",
+   "fileSha256": "f8c694498cc4d508995852c839a674920aa5015de3baed0f0340f5a46a86bfa3"
+  },
+  "made-seeded-2-257.txt": {
+   "reads": true,
+   "name": "256c958f933d147405dc0597c4ca2d2f408135847e7066556138bd50acf01cbf",
+   "fileSha256": "d7a75972c4ff0e7447a8f18c590d59c38585016fdcd274f7bf9a40830b6827ae"
+  },
+  "made-seeded-3-300.fpk": {
+   "reads": true,
+   "textSha256": "3c69183004fd47c7a3c94be9f50a8fd979e8c1e4275ff1548ff49c708d6bc230",
+   "textBytes": 243346,
+   "name": "3577d763e3ca75da9874e782195be8974888899b13a5655200c52f3679202029",
+   "graphSha256": "b8fff11d4c12d1d0529d61e51df4686d4c1aa3de1aba1d4cfce439aab24e7baf",
+   "fileSha256": "d607f952a27f69091880537ad561079b8e9070c89fed3aec64ed2bc2efb01943"
+  },
+  "made-seeded-3-300.txt": {
+   "reads": true,
+   "name": "3577d763e3ca75da9874e782195be8974888899b13a5655200c52f3679202029",
+   "fileSha256": "3c69183004fd47c7a3c94be9f50a8fd979e8c1e4275ff1548ff49c708d6bc230"
+  },
+  "made-seeded-5-30.fpk": {
+   "reads": true,
+   "textSha256": "2f035db0fffaf5100a77c52261ca462a4c6098a9d05e9f6d95baf5fb8be9a609",
+   "textBytes": 21451,
+   "name": "927d872dee58462383b065fe5c81abb03aeea87c2dbd178beaeec440c07f0777",
+   "graphSha256": "aa18afa5e5cc0e0d419eb9abbc7eb2584c1efea31ac1774bd5492214eafc2efe",
+   "fileSha256": "e44bc3551961a7e919d709bf8e3b48664a0910ef856018b778f5e2bfcdf33edb"
+  },
+  "made-seeded-5-30.txt": {
+   "reads": true,
+   "name": "927d872dee58462383b065fe5c81abb03aeea87c2dbd178beaeec440c07f0777",
+   "fileSha256": "2f035db0fffaf5100a77c52261ca462a4c6098a9d05e9f6d95baf5fb8be9a609"
+  },
+  "made-seeded-7-529.fpk": {
+   "reads": true,
+   "textSha256": "73049de7aaef23ef19dc2ca55a214e8ef04c3417888bf4a33e9f46a1861fdee1",
+   "textBytes": 414288,
+   "name": "5dd8e7dd7f3a167b9a6aed6e33f6d610ce7510b412dc9bb737cb442ad9853fc4",
+   "graphSha256": "b5d60a0c79b3c2204a612ae37714c433bddd4258951f7a40fb71aa87f1ae77a3",
+   "fileSha256": "8c19f5a7a55354b12b2fc45c9128a01fa5aa3e95562d790d3d2785453873eda3"
+  },
+  "made-seeded-7-529.txt": {
+   "reads": true,
+   "name": "5dd8e7dd7f3a167b9a6aed6e33f6d610ce7510b412dc9bb737cb442ad9853fc4",
+   "fileSha256": "73049de7aaef23ef19dc2ca55a214e8ef04c3417888bf4a33e9f46a1861fdee1"
+  }
+ },
+ "refusals": {
+  "mutant-0000-made-every-fact-flipped-bits.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "these bytes do not begin with the layout's signature",
+   "fileSha256": "423ab9b2b53e35def02ed3c881adcff6ed2022d19ecfb3529eb3a5629cd7b46e"
+  },
+  "mutant-0001-made-every-fact-cut.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "the file stops before its end: a stopped write, which `resumeFrom` can go on from",
+   "fileSha256": "350f6929b4de7a73b784eb567e67ef165936625abcd8ec99296382ca135f8540"
+  },
+  "mutant-0002-made-every-fact-lying-count.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "the paths or wires count other than the 3 files recorded",
+   "fileSha256": "f2a2a39805aad0ce329385a78a0123b6967ad009b3080421d5d3769b986fb60e"
+  },
+  "mutant-0003-made-every-fact-bomb.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "a section at byte 936 declares 4294967280 bytes, past the layout's 67108864",
+   "fileSha256": "992236fd8725fddb84efcc9db3f53ad2ed1bf22493a001286ee7a980609cca30"
+  },
+  "mutant-0004-made-every-fact-bytes-put-in.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "a section of kind 59 at byte 988, which the layout does not define",
+   "fileSha256": "58d25e7ed80a66f68a9264a72a2f0ab5a1d6517e1964e73a79c88972213752cf"
+  },
+  "mutant-0005-made-every-fact-bytes-taken-out.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "a section of kind 214 at byte 871, which the layout does not define",
+   "fileSha256": "bd274ef6a9853136d977b2c60e55c7662e42c824d6708e5c53dc957f8c3e8d7b"
+  },
+  "mutant-0006-made-every-fact-frames-rearranged.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "the first section is not the head",
+   "fileSha256": "e69273b611adb15961aec32203bfec3a15f7201c3295161b5d55e039c33715d3"
+  },
+  "mutant-0007-made-every-fact-noise.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "a section at byte 8 declares 2369615719 bytes, past the layout's 67108864",
+   "fileSha256": "e3025fd288a07f37d0903669e648f0bda2c3c8e0994f3af4404908808277df81"
+  },
+  "mutant-0008-made-seeded-3-300-flipped-bits.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "records inflates to 13294 bytes, not the 13296 it declares",
+   "fileSha256": "08338819f56fe7a2bbff10125490d6cedb627f72ec5d2e000abea7f4db793548"
+  },
+  "mutant-0009-made-seeded-3-300-cut.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "the file stops before its end: a stopped write, which `resumeFrom` can go on from",
+   "fileSha256": "4a26aafbe356d9601d38f122c306d6abd291f1a5e911862da4f2ebf923c35ce3"
+  },
+  "mutant-0010-made-seeded-3-300-lying-stored-length.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "the file stops before its end: a stopped write, which `resumeFrom` can go on from",
+   "fileSha256": "b5569911acd12cf6155922e54220483c5ae407da181cff030bf0c74956e8d6ce"
+  },
+  "mutant-0011-made-seeded-3-300-bomb.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "records inflates past the 2230 bytes it declares",
+   "fileSha256": "cfaf2b4c26c79922ed26346d6a76b0e8fde198b3d2075f2c93db03ffb1b5f4b8"
+  },
+  "mutant-0012-made-seeded-3-300-bytes-put-in.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "a section of kind 127 at byte 11895, which the layout does not define",
+   "fileSha256": "e8fe2adf9c7f0dfc0a871375cdbe4787f874c0a424008e5cb339d07460c5c7b1"
+  },
+  "mutant-0013-made-seeded-3-300-bytes-taken-out.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "a section of kind 177 at byte 11895, which the layout does not define",
+   "fileSha256": "50044d2c2815f355c4728fd1159862b4ed7ec6ef4880120ef8939288ae038fe8"
+  },
+  "mutant-0014-made-seeded-3-300-frames-rearranged.fpk": {
+   "reads": true,
+   "textSha256": "3c69183004fd47c7a3c94be9f50a8fd979e8c1e4275ff1548ff49c708d6bc230",
+   "textBytes": 243346,
+   "name": "3577d763e3ca75da9874e782195be8974888899b13a5655200c52f3679202029",
+   "graphSha256": "b8fff11d4c12d1d0529d61e51df4686d4c1aa3de1aba1d4cfce439aab24e7baf",
+   "fileSha256": "d607f952a27f69091880537ad561079b8e9070c89fed3aec64ed2bc2efb01943"
+  },
+  "mutant-0015-made-seeded-3-300-noise.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "a section of kind 60 at byte 8, which the layout does not define",
+   "fileSha256": "d6065efaf1bd2b1aaef092925b4fd86f9973858fdd3833a33e3f74d1c2eb3a20"
+  },
+  "mutant-0016-corpus-estate-flipped-bits.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "the end does not name the sections before it",
+   "fileSha256": "8a0efe1e9aac5cccfb90d4491ba31da27cea79bc13e207a192d2907986fbe6af"
+  },
+  "mutant-0017-corpus-estate-cut.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "the file stops before its end: a stopped write, which `resumeFrom` can go on from",
+   "fileSha256": "af98d202458cb524ee5d6607209df685ce346bf8b9796866a20f1993c0c52c73"
+  },
+  "mutant-0018-corpus-estate-lying-raw-length.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "records inflates past the 257 bytes it declares",
+   "fileSha256": "f6c727f6ebf9675980dfb1dc0081d32b6bd5811df89bab375a4d22ea081122d6"
+  },
+  "mutant-0019-corpus-estate-bomb.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "a section at byte 8 declares 4294967280 bytes, past the layout's 67108864",
+   "fileSha256": "d814708cde564728fc3d35b9db57e0add75cfaeba8235cec194c301ea6b7c770"
+  },
+  "mutant-0020-corpus-estate-bytes-put-in.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "a section of kind 160 at byte 7136, which the layout does not define",
+   "fileSha256": "6d270e9859608a6500c356461e7a316db101338d59e04201c802b3c0bf5886ec"
+  },
+  "mutant-0021-corpus-estate-bytes-taken-out.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "a section of kind 54 at byte 4837, which the layout does not define",
+   "fileSha256": "7065f2ce5384adf0446905b52325235ef393b533616565bd1bfbb4b1f77541f0"
+  },
+  "mutant-0022-corpus-estate-frames-rearranged.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "the sections after the records are not the paths, the wires and the end",
+   "fileSha256": "b947fb6316947176c005cdc74fb698891429df070849a0593afe7b44e6ac75dd"
+  },
+  "mutant-0023-corpus-estate-noise.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "a section of kind 23 at byte 8, which the layout does not define",
+   "fileSha256": "f45c28b52a06ed58cf28e78a024011a7b2e431c6e9b28ed063026ecfcc4e99fa"
+  },
+  "mutant-0024-made-every-fact-flipped-bits.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "the end does not match its hash",
+   "fileSha256": "e0b93fd235ea6c0438a77a1ba2567e8067641d29dd49c04d1523331f4e423c95"
+  },
+  "mutant-0025-made-every-fact-cut.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "the file stops before its end: a stopped write, which `resumeFrom` can go on from",
+   "fileSha256": "87380cebc1354b955a37c1159df481070bcdd6309e20cae3df8c35951f1d6a7a"
+  },
+  "mutant-0026-made-every-fact-lying-stored-length.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "the file stops before its end: a stopped write, which `resumeFrom` can go on from",
+   "fileSha256": "6075191eae82594c6274370996e6ecfb19174481b67c77737b6b27f8aacbb1b1"
+  },
+  "mutant-0027-made-every-fact-bomb.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "a section at byte 702 declares 4294967280 bytes, past the layout's 67108864",
+   "fileSha256": "0f6ab640b920a002557ec18513205649882814a13354f95844747f0aa469c57c"
+  },
+  "mutant-0028-made-every-fact-bytes-put-in.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "a section of kind 226 at byte 702, which the layout does not define",
+   "fileSha256": "974f79db4045c95dc013ab0d88d45748087f6c1d392354233804f19d6f27b542"
+  },
+  "mutant-0029-made-every-fact-bytes-taken-out.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "a section of kind 0 at byte 702, which the layout does not define",
+   "fileSha256": "1ccad47f2fb973cc4dd437ae3d49c6f3426c32116f30791d2d208f219da32412"
+  },
+  "mutant-0030-made-every-fact-frames-rearranged.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "80 bytes after the end",
+   "fileSha256": "2fa31586a6acff3fb0985c90da2327a760ccc2f29d812a1577c7bd37a680171f"
+  },
+  "mutant-0031-made-every-fact-noise.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "a section of kind 172 at byte 8, which the layout does not define",
+   "fileSha256": "69461d8dad195ee08b68996e4888e376d13d4fe59ad4efd54b3304568c253bd8"
+  },
+  "mutant-0032-made-seeded-3-300-flipped-bits.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "records inflates past the 13296 bytes it declares",
+   "fileSha256": "dff51346fa3fa6986bb616335da3669f48f70ac4f7ba519072e124ede6c8814c"
+  },
+  "mutant-0033-made-seeded-3-300-cut.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "the file stops before its end: a stopped write, which `resumeFrom` can go on from",
+   "fileSha256": "55c12c49c89c20f4a3075bd87bf1466922fd101066c8b4c8aa550cf2177b60c0"
+  },
+  "mutant-0034-made-seeded-3-300-lying-stored-length.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "a section at byte 12373 declares 2230 bytes from 1, more than deflate can give",
+   "fileSha256": "47c6cceed14bf85469ed0682697f04e7dac5e9d5afafca3d69730df944a4426d"
+  },
+  "mutant-0035-made-seeded-3-300-bomb.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "the head inflates past the 32 bytes it declares",
+   "fileSha256": "154bda528e872c1e89ffad85dd9d0d4f2b1303b14e7542cb73819128cdb88caf"
+  },
+  "mutant-0036-made-seeded-3-300-bytes-put-in.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "a section of kind 156 at byte 15087, which the layout does not define",
+   "fileSha256": "59df72ffed5818bcc48fa4b0068a4249e24ac5179688b57e0ff0d23ae383bf98"
+  },
+  "mutant-0037-made-seeded-3-300-bytes-taken-out.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "a section of kind 87 at byte 11895, which the layout does not define",
+   "fileSha256": "f92ece335a173b9f1a284d76dc7d6ac74127c31a26205a92c95dd1eb44296a0d"
+  },
+  "mutant-0038-made-seeded-3-300-frames-rearranged.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "the sections after the records are not the paths, the wires and the end",
+   "fileSha256": "ba4b27d6a090f83be2d66602e74a22c05439990d96e60188f948b81552c3aead"
+  },
+  "mutant-0039-made-seeded-3-300-noise.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "a section of kind 19 at byte 8, which the layout does not define",
+   "fileSha256": "78409f2d0341d904a408b2aff4dbb45df26074695f52a46da39d86153f5b9b41"
+  },
+  "mutant-0040-corpus-estate-flipped-bits.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "strings inflates past the 20100 bytes it declares",
+   "fileSha256": "a265846ac55157238455462b80ba0d771522ca5393dfc36c7941ee934a7d3a94"
+  },
+  "mutant-0041-corpus-estate-cut.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "the file stops before its end: a stopped write, which `resumeFrom` can go on from",
+   "fileSha256": "b7a8e1c859d9dc712e77adefc59089ebc4885c04db5070052b0a18cd9b96c0bc"
+  },
+  "mutant-0042-corpus-estate-lying-raw-length.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "a section at byte 7136 declares 4294967280 bytes, past the layout's 67108864",
+   "fileSha256": "9b415f5ff99ee2b9a278fa0c67345496efddfae38e3d49c8b89b9948add4a932"
+  },
+  "mutant-0043-corpus-estate-bomb.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "a section at byte 7769 declares 4294967280 bytes, past the layout's 67108864",
+   "fileSha256": "694ad97253de816ef388d71538dd5c67dd5d7e13c234a792680f5f1edd7227cf"
+  },
+  "mutant-0044-corpus-estate-bytes-put-in.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "a section of kind 86 at byte 7136, which the layout does not define",
+   "fileSha256": "189183e79440d259198872ddec74a2302848d454b5156199815751bf9e04b658"
+  },
+  "mutant-0045-corpus-estate-bytes-taken-out.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "a section of kind 33 at byte 4837, which the layout does not define",
+   "fileSha256": "0a71e5bce8de92700cf37c774bf348d7b374dc3a6075c8e5b9a5871873253aea"
+  },
+  "mutant-0046-corpus-estate-frames-rearranged.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "the sections after the records are not the paths, the wires and the end",
+   "fileSha256": "6e85fc9f62cbff36252846d43c74faa0e0c3340417f2868bf75249bbd8558dc6"
+  },
+  "mutant-0047-corpus-estate-noise.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "a section of kind 161 at byte 8, which the layout does not define",
+   "fileSha256": "ec43bcedcec9c257a00b32f59867d4f05ae663cd3e62a664440f5d64052c1562"
+  },
+  "mutant-0048-made-every-fact-flipped-bits.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "the head inflates past the 85 bytes it declares",
+   "fileSha256": "ca93b68e31d53eaec5350630cf02ea25a16512fd51d28e807a4581bcafd0950e"
+  },
+  "mutant-0049-made-every-fact-cut.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "the file stops before its end: a stopped write, which `resumeFrom` can go on from",
+   "fileSha256": "66394ab77a23dda3e16841323b774e2064a844afcab932ae5643bdf56425d0dd"
+  },
+  "mutant-0050-made-every-fact-lying-count.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "the paths or wires count other than the 3 files recorded",
+   "fileSha256": "64e2b324b6a07696b4ee641e1cbeda32d9bac80c3389b585d04b9126dfad02f2"
+  },
+  "mutant-0051-made-every-fact-bomb.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "a section at byte 8 declares 4294967280 bytes, past the layout's 67108864",
+   "fileSha256": "d55a005b3459d943f7b18b3de7cd5cee7faf61730e3aa355c70ac0a00bdc2d3d"
+  },
+  "mutant-0052-made-every-fact-bytes-put-in.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "the file stops before its end: a stopped write, which `resumeFrom` can go on from",
+   "fileSha256": "839b295b4d77ef70409b81d1c0c4dafa717de606d988e8d1a595fdf14a2e785d"
+  },
+  "mutant-0053-made-every-fact-bytes-taken-out.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "a section of kind 208 at byte 136, which the layout does not define",
+   "fileSha256": "7c665196f2b30bf4287dddcb71f232a53cb84771fff9bc6b32fb10e7c1084985"
+  },
+  "mutant-0054-made-every-fact-frames-rearranged.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "strings not followed by records",
+   "fileSha256": "463330dfcf67584e6b00b8dfd07de9f1d3c17df2fe3156c1dc90069c6aceceff"
+  },
+  "mutant-0055-made-every-fact-noise.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "a section of kind 114 at byte 8, which the layout does not define",
+   "fileSha256": "edfe1cc789070ab97e699d8e028e526606aaff3eb6583a9f100b94eef2fdda4e"
+  },
+  "mutant-0056-made-seeded-3-300-flipped-bits.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "records inflates to 13295 bytes, not the 13296 it declares",
+   "fileSha256": "a6e5f75e44a86d36c83e02a2477242b867f87265d64ac3480b37441bfe8b453d"
+  },
+  "mutant-0057-made-seeded-3-300-cut.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "the file stops before its end: a stopped write, which `resumeFrom` can go on from",
+   "fileSha256": "80aac9013d8a2d6c9f04e7dbdaa9333be81095fdbe318863df608929e9749197"
+  },
+  "mutant-0058-made-seeded-3-300-lying-raw-length.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "a section at byte 11895 declares 16777216 bytes from 433, more than deflate can give",
+   "fileSha256": "ff4207654a318c444fea576a342b0ab96dca6ed36c4d2919f08f550618c7b75a"
+  },
+  "mutant-0059-made-seeded-3-300-bomb.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "strings inflates past the 1109 bytes it declares",
+   "fileSha256": "c876f565d2fc0ca56aa538c98460b305f04e9d0fc9922ee556930c504f0143e5"
+  },
+  "mutant-0060-made-seeded-3-300-bytes-put-in.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "a section of kind 247 at byte 11895, which the layout does not define",
+   "fileSha256": "d3274a5235ff1cdbe8e6a4bc757fa7202b6ba74acae777bdb9a95f49fa3c1008"
+  },
+  "mutant-0061-made-seeded-3-300-bytes-taken-out.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "a section of kind 83 at byte 11895, which the layout does not define",
+   "fileSha256": "27baf5f21c6ead9a36d7c8635377d3f0b715f73497e0404c09f91a20d7accb77"
+  },
+  "mutant-0062-made-seeded-3-300-frames-rearranged.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "the sections after the records are not the paths, the wires and the end",
+   "fileSha256": "ba4b27d6a090f83be2d66602e74a22c05439990d96e60188f948b81552c3aead"
+  },
+  "mutant-0063-made-seeded-3-300-noise.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "a section of kind 61 at byte 8, which the layout does not define",
+   "fileSha256": "945eff4b73d8fa90d4fba5bf4a2162bae09705b22d72a0b07c0e1eb0b0574e79"
+  },
+  "mutant-0064-corpus-estate-flipped-bits.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "the end does not match its hash",
+   "fileSha256": "9b1b1b3300292ff35daceccdfbc17e252171db16aa39c1faf623ff347ab53c8c"
+  },
+  "mutant-0065-corpus-estate-cut.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "the file stops before its end: a stopped write, which `resumeFrom` can go on from",
+   "fileSha256": "571f2e74ac4b3c1047027b366cac934e064d35377641a739dcfb6065908fc377"
+  },
+  "mutant-0066-corpus-estate-lying-count.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "the first section is not the head",
+   "fileSha256": "f7c8f268871742c507f40d1db825cbb28807d6c45e203373f47c48792c8fc1a9"
+  },
+  "mutant-0067-corpus-estate-bomb.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "a section at byte 7769 declares 4294967280 bytes, past the layout's 67108864",
+   "fileSha256": "694ad97253de816ef388d71538dd5c67dd5d7e13c234a792680f5f1edd7227cf"
+  },
+  "mutant-0068-corpus-estate-bytes-put-in.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "a section of kind 136 at byte 4837, which the layout does not define",
+   "fileSha256": "c7360f77333e4e6ff59b4b4a1d3a21563bfba6d28e78cb63ba5d882e3e51b407"
+  },
+  "mutant-0069-corpus-estate-bytes-taken-out.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "a section of kind 41 at byte 7136, which the layout does not define",
+   "fileSha256": "d242bcd9b39cfaf3b77cb99fe19b769484f3c7fd445b7a391ef3171d7edcc765"
+  },
+  "mutant-0070-corpus-estate-frames-rearranged.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "the sections after the records are not the paths, the wires and the end",
+   "fileSha256": "ba14157b50aa0dbea7b59e6f45c65f6867413450fc8e3e2fd7ca5e0e98d44c2b"
+  },
+  "mutant-0071-corpus-estate-noise.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "a section of kind 195 at byte 8, which the layout does not define",
+   "fileSha256": "69e825cb5131bc90c5d696fb3f81db4e38f7bad64ce10dba16d099da885ec042"
+  },
+  "mutant-0072-made-every-fact-flipped-bits.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "the end does not name the sections before it",
+   "fileSha256": "0c223a63064d0c24decf4140eb0013d514b2dc1766be265ff1f930fa60bb83c7"
+  },
+  "mutant-0073-made-every-fact-cut.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "the file stops before its end: a stopped write, which `resumeFrom` can go on from",
+   "fileSha256": "975924a9a0a07be72f6e43274cfe09fff72a23c55fc69e50941cfffd2934d0b6"
+  },
+  "mutant-0074-made-every-fact-lying-stored-length.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "the file stops before its end: a stopped write, which `resumeFrom` can go on from",
+   "fileSha256": "c1bf5a66be44efac8b0f49cdf42cd469207785630533e9957ccdfec428b234b8"
+  },
+  "mutant-0075-made-every-fact-bomb.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "a section at byte 136 declares 4294967280 bytes, past the layout's 67108864",
+   "fileSha256": "4394815ef58c73ff89aa6efe0b66821cf2d58b36a6eea301616ee08130f47206"
+  },
+  "mutant-0076-made-every-fact-bytes-put-in.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "a section of kind 226 at byte 702, which the layout does not define",
+   "fileSha256": "4e4e20563533e158259b846331dd9cba5f82c16c12a7c70ae0011ffd3164fb48"
+  },
+  "mutant-0077-made-every-fact-bytes-taken-out.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "a section of kind 0 at byte 702, which the layout does not define",
+   "fileSha256": "fc4ffd06f2b5fe7a47b58f2fe2ba48374857eb1958c86cb806e2c4ce240ffc75"
+  },
+  "mutant-0078-made-every-fact-frames-rearranged.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "the sections after the records are not the paths, the wires and the end",
+   "fileSha256": "235f78d7c8ea22e56b5e8debd38b9c2925419b87deca864b55ac3e4e0e0d5139"
+  },
+  "mutant-0079-made-every-fact-noise.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "a section of kind 8 at byte 8, which the layout does not define",
+   "fileSha256": "aa03c0b0d437411f0f7f9d3163cd81c9e3cfb6a1d58db9b2a304771dedf1cb95"
+  },
+  "mutant-0080-made-seeded-3-300-flipped-bits.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "these bytes do not begin with the layout's signature",
+   "fileSha256": "e31abb005f08dee76cf93c66e5b118109a82d98ea10b24a64972835e02375215"
+  },
+  "mutant-0081-made-seeded-3-300-cut.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "the file stops before its end: a stopped write, which `resumeFrom` can go on from",
+   "fileSha256": "9d59ae4737b7ad0bb6232d0686d830a218bc8c375812aafac5a7d7925f2f97c8"
+  },
+  "mutant-0082-made-seeded-3-300-lying-stored-length.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "a section of kind 163 at byte 14516, which the layout does not define",
+   "fileSha256": "9133a5899c18b00a19fb2b1763a2058be197562c8159df59a3eaa1d352becc53"
+  },
+  "mutant-0083-made-seeded-3-300-bomb.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "a section at byte 13899 declares 4294967280 bytes, past the layout's 67108864",
+   "fileSha256": "ca7e204f2fcdb716c18a1cbf51bd8d1d68cbfb25c0bd0e5aa21445c25ab8b008"
+  },
+  "mutant-0084-made-seeded-3-300-bytes-put-in.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "a section of kind 214 at byte 11895, which the layout does not define",
+   "fileSha256": "049b62a2e619b6b858959ecd8cab1f9e05dedb8ab6306a041d95b260c57956c4"
+  },
+  "mutant-0085-made-seeded-3-300-bytes-taken-out.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "a section of kind 228 at byte 11895, which the layout does not define",
+   "fileSha256": "74d4abfeaaf760ebfd1da2e40332243e875886d4011b34f6897628f77551468e"
+  },
+  "mutant-0086-made-seeded-3-300-frames-rearranged.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "15079 bytes after the end",
+   "fileSha256": "4d5a947fa304b95d338829a14135601e76f58493071f420b733a59783db42f41"
+  },
+  "mutant-0087-made-seeded-3-300-noise.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "a section of kind 11 at byte 8, which the layout does not define",
+   "fileSha256": "5bd6977fe20ea535bff52938512a6c7b5a754dd75cf9cc98625ba1147bc868d4"
+  },
+  "mutant-0088-corpus-estate-flipped-bits.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "the paths inflates to 771 bytes, not the 779 it declares",
+   "fileSha256": "52b489b95ce37f5386cb5d4e58054fe27376f4f7abe013244b556122fabea901"
+  },
+  "mutant-0089-corpus-estate-cut.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "the file stops before its end: a stopped write, which `resumeFrom` can go on from",
+   "fileSha256": "e75bd5a9c550dc810e69796caabb135c8d3f7b1b3f05c18f2cefbad4c8665b5e"
+  },
+  "mutant-0090-corpus-estate-lying-count.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "the first section is not the head",
+   "fileSha256": "333d47ae188526888da21811507738b9fdbe10a5f0b1acb6c3e09c253f6c6057"
+  },
+  "mutant-0091-corpus-estate-bomb.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "a section at byte 7136 declares 4294967280 bytes, past the layout's 67108864",
+   "fileSha256": "5d11bed2b517271f49be51c22a81af0cdc55edad9dd063688520cedefef5bbb9"
+  },
+  "mutant-0092-corpus-estate-bytes-put-in.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "a section of kind 226 at byte 4837, which the layout does not define",
+   "fileSha256": "8dbf8a85619f5771f04f4bd6b76ac335f5ab80628a23ee7411ca16ac8ff33383"
+  },
+  "mutant-0093-corpus-estate-bytes-taken-out.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "a section of kind 54 at byte 4837, which the layout does not define",
+   "fileSha256": "b3b17899d7f93cefa8dc52640939a373e4b55293bd25bb9c911d19b40c97564d"
+  },
+  "mutant-0094-corpus-estate-frames-rearranged.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "the first section is not the head",
+   "fileSha256": "804beda3bd77a15a55b8d1325a9c0fc5d2d69d604263f9359f44329ef4846009"
+  },
+  "mutant-0095-corpus-estate-noise.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "a section of kind 154 at byte 8, which the layout does not define",
+   "fileSha256": "99a031f0f8b852baf088ea3950a5469c5e443999f019b67b1e7e31e5ba68bb3e"
+  },
+  "mutant-0096-made-every-fact-flipped-bits.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "the head inflates past the 85 bytes it declares",
+   "fileSha256": "696232ecc3da13708c3ad26a7cc9583094b8f3a23606efbe61bc926b59c7b15a"
+  },
+  "mutant-0097-made-every-fact-cut.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "the file stops before its end: a stopped write, which `resumeFrom` can go on from",
+   "fileSha256": "5a3ce2e442f471089461f6029dce8c55f19b6638377f97cda43f448a10612ac3"
+  },
+  "mutant-0098-made-every-fact-lying-count.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "the paths or wires count other than the 3 files recorded",
+   "fileSha256": "64e2b324b6a07696b4ee641e1cbeda32d9bac80c3389b585d04b9126dfad02f2"
+  },
+  "mutant-0099-made-every-fact-bomb.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "strings inflates past the 811 bytes it declares",
+   "fileSha256": "88777e11af2ff245254cc400cc520d41bc86bcc6f7fb8fdf091e2ed550553cac"
+  },
+  "mutant-0100-made-every-fact-bytes-put-in.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "a section of kind 222 at byte 702, which the layout does not define",
+   "fileSha256": "50f19b1e0844e8c22ee572cefaff0299bc0715f62b740225312ed19220543d2c"
+  },
+  "mutant-0101-made-every-fact-bytes-taken-out.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "a section at byte 136 declares 721421099 bytes, past the layout's 67108864",
+   "fileSha256": "8c70a9cdf10846f1bcf4d96cda074620c86f1858329e0fe18ba4325252b55806"
+  },
+  "mutant-0102-made-every-fact-frames-rearranged.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "the sections after the records are not the paths, the wires and the end",
+   "fileSha256": "36fa3d7b92c332451d3a2be15b185c2c7a904d2d30c2cd7e282a06d5de224af3"
+  },
+  "mutant-0103-made-every-fact-noise.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "a section of kind 73 at byte 8, which the layout does not define",
+   "fileSha256": "5f5e18b1aae50eb696c03df1fa9e237e54b633cc1dff6b414d10381eff0ab767"
+  },
+  "mutant-0104-made-seeded-3-300-flipped-bits.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "the paths is not a whole raw deflate stream",
+   "fileSha256": "85afd0390bbb06d3b36c8447cfb9124004181cc1ce9700b522a0ecefec80b969"
+  },
+  "mutant-0105-made-seeded-3-300-cut.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "the file stops before its end: a stopped write, which `resumeFrom` can go on from",
+   "fileSha256": "baf5ebf3009a6a523c70a412712cb792f540c8393dca65b0bb30b4218bab600d"
+  },
+  "mutant-0106-made-seeded-3-300-lying-raw-length.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "the paths are longer than the strings that hold them",
+   "fileSha256": "d29739df0d3f76ce4ddd02d089e128aefd0c156b6912f8093329f8ad9db6de66"
+  },
+  "mutant-0107-made-seeded-3-300-bomb.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "a section at byte 15087 declares 4294967280 bytes, past the layout's 67108864",
+   "fileSha256": "b1c661f9ba772d388d04cc67963d55201c25be20b48dec1dee7521380b66d6fe"
+  },
+  "mutant-0108-made-seeded-3-300-bytes-put-in.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "a section of kind 9 at byte 11895, which the layout does not define",
+   "fileSha256": "884591d72e141c4eb5db676509b79c2d04437884d0d79a9f0a10e77cbcbacc52"
+  },
+  "mutant-0109-made-seeded-3-300-bytes-taken-out.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "a section of kind 191 at byte 14214, which the layout does not define",
+   "fileSha256": "69cf302c7e389d93e9e4e4d7215bdb89a6c17d1efc799c186afacfd52ecb72ae"
+  },
+  "mutant-0110-made-seeded-3-300-frames-rearranged.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "the sections after the records are not the paths, the wires and the end",
+   "fileSha256": "51f12d934bd4307a1f054f524dffb9ae03f59f690b2852d5a4fe4fa54422a831"
+  },
+  "mutant-0111-made-seeded-3-300-noise.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "a section of kind 253 at byte 8, which the layout does not define",
+   "fileSha256": "84291361a85fdd9f6599bbbff29711b8c8460f453c44cddc0692b8252cb8d73e"
+  },
+  "mutant-0112-corpus-estate-flipped-bits.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "the paths inflates past the 779 bytes it declares",
+   "fileSha256": "654716dcdbe7eed165209feb7985b9539edece34130bb4bc337950b795e2354b"
+  },
+  "mutant-0113-corpus-estate-cut.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "the file stops before its end: a stopped write, which `resumeFrom` can go on from",
+   "fileSha256": "3121d3be29b7d0841fe2c6cffd694d76e84b24d1530a8766516c08955c547234"
+  },
+  "mutant-0114-corpus-estate-lying-raw-length.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "a section at byte 4837 declares 2147483647 bytes, past the layout's 67108864",
+   "fileSha256": "d90d189aba618a75fc4979d9d872ee2202cd18d24193cfc61de33a59fe8def7b"
+  },
+  "mutant-0115-corpus-estate-bomb.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "strings inflates past the 20100 bytes it declares",
+   "fileSha256": "7484ecc662b6bea646a6d31ffe1cf2d13f60c958215a15530206751fa4b5bc19"
+  },
+  "mutant-0116-corpus-estate-bytes-put-in.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "a section of kind 26 at byte 7623, which the layout does not define",
+   "fileSha256": "3c3e79ceacc2fda734b786a172c91fd3ab8536995469975b3e47374e0b8b8123"
+  },
+  "mutant-0117-corpus-estate-bytes-taken-out.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "a section of kind 119 at byte 4837, which the layout does not define",
+   "fileSha256": "5a37d113a6a096145129767eb9e733b5d249a2977d6c83c382ef923f87a8eac2"
+  },
+  "mutant-0118-corpus-estate-frames-rearranged.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "the sections after the records are not the paths, the wires and the end",
+   "fileSha256": "6e85fc9f62cbff36252846d43c74faa0e0c3340417f2868bf75249bbd8558dc6"
+  },
+  "mutant-0119-corpus-estate-noise.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "a section of kind 216 at byte 8, which the layout does not define",
+   "fileSha256": "4e61a2a8e2c0be7498fd6aa151e0c3d303bcb7b92195881f7c0673ae3da70179"
+  },
+  "mutant-0120-made-every-fact-flipped-bits.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "the first section is not the head",
+   "fileSha256": "fbe4d48b0d62cf2f7a2108551b0ffd42511606b438f1f8b4f9e14cc110977545"
+  },
+  "mutant-0121-made-every-fact-cut.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "the file stops before its end: a stopped write, which `resumeFrom` can go on from",
+   "fileSha256": "5c81f52e2e9c91f10b79dfbfac2bcf1397a8b4a1aa3e7d507500e2c44ca5bbeb"
+  },
+  "mutant-0122-made-every-fact-lying-raw-length.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "a section at byte 936 declares 2147483647 bytes, past the layout's 67108864",
+   "fileSha256": "15c0845422049b05178e0535f30e1e093be13b0cceac313b6c3a0509ae1cef27"
+  },
+  "mutant-0123-made-every-fact-bomb.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "a section at byte 936 declares 4294967280 bytes, past the layout's 67108864",
+   "fileSha256": "992236fd8725fddb84efcc9db3f53ad2ed1bf22493a001286ee7a980609cca30"
+  },
+  "mutant-0124-made-every-fact-bytes-put-in.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "a section of kind 64 at byte 871, which the layout does not define",
+   "fileSha256": "aa405bd5a8b090ddbb4e11e94781b3ccddaf8aa2e2a90e5fd7c96425e700a3f3"
+  },
+  "mutant-0125-made-every-fact-bytes-taken-out.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "a section of kind 32 at byte 936, which the layout does not define",
+   "fileSha256": "b72f8d44edc11dd7ff2c5a121f970b8a3aded8077a21b89fde96e63491112314"
+  },
+  "mutant-0126-made-every-fact-frames-rearranged.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "the sections after the records are not the paths, the wires and the end",
+   "fileSha256": "235f78d7c8ea22e56b5e8debd38b9c2925419b87deca864b55ac3e4e0e0d5139"
+  },
+  "mutant-0127-made-every-fact-noise.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "a section of kind 61 at byte 8, which the layout does not define",
+   "fileSha256": "723aa74954578dafcb37643ccf6445405a38022a6ee8f1b140098cdf41f362d8"
+  },
+  "mutant-0128-made-seeded-3-300-flipped-bits.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "strings inflates to 13734 bytes, not the 13739 it declares",
+   "fileSha256": "96dc8c02fc35917b2656bff131d615333b087dca796b1879a4224473c36ecd1d"
+  },
+  "mutant-0129-made-seeded-3-300-cut.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "the file stops before its end: a stopped write, which `resumeFrom` can go on from",
+   "fileSha256": "4309e1c368a3b94a0824a27e1cd3b38b10febcf6c2c7d937ba65fb9f38eeaf56"
+  },
+  "mutant-0130-made-seeded-3-300-lying-stored-length.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "the file stops before its end: a stopped write, which `resumeFrom` can go on from",
+   "fileSha256": "d57ecbb2da91f8aebbc8ef5f6bf2b4451b1674e2fb82296c51b7b83687b63400"
+  },
+  "mutant-0131-made-seeded-3-300-bomb.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "strings inflates past the 13739 bytes it declares",
+   "fileSha256": "7e24e6a739861c2dc6c47eb398951f5be722d51ab74c8d776ba4883f0870187f"
+  },
+  "mutant-0132-made-seeded-3-300-bytes-put-in.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "a section of kind 48 at byte 11895, which the layout does not define",
+   "fileSha256": "4ba2e76ab56d3c204b8b845634435942c7fdb3bb3eca17e4d137104a86b3e58b"
+  },
+  "mutant-0133-made-seeded-3-300-bytes-taken-out.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "a section of kind 90 at byte 11895, which the layout does not define",
+   "fileSha256": "d784a32bc59684fc7103a377cffe4f7001ecca77fd17dbfc154cfab5ca8bf590"
+  },
+  "mutant-0134-made-seeded-3-300-frames-rearranged.fpk": {
+   "reads": true,
+   "textSha256": "3c69183004fd47c7a3c94be9f50a8fd979e8c1e4275ff1548ff49c708d6bc230",
+   "textBytes": 243346,
+   "name": "3577d763e3ca75da9874e782195be8974888899b13a5655200c52f3679202029",
+   "graphSha256": "b8fff11d4c12d1d0529d61e51df4686d4c1aa3de1aba1d4cfce439aab24e7baf",
+   "fileSha256": "d607f952a27f69091880537ad561079b8e9070c89fed3aec64ed2bc2efb01943"
+  },
+  "mutant-0135-made-seeded-3-300-noise.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "a section of kind 29 at byte 8, which the layout does not define",
+   "fileSha256": "0b466990508aa5740be5d9df85856b873ca62f39031d7fc32aebea33c8bf8b47"
+  },
+  "mutant-0136-corpus-estate-flipped-bits.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "strings does not match its hash",
+   "fileSha256": "f58f3ddd16d220c9f8319838ace4134afe666fc9e83738850be9a4d8dc0ee706"
+  },
+  "mutant-0137-corpus-estate-cut.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "the file stops before its end: a stopped write, which `resumeFrom` can go on from",
+   "fileSha256": "2a2581dd62eda6a9e03d91eed433e895939d8d52813aff1ffa6d4bdce1a2cd4a"
+  },
+  "mutant-0138-corpus-estate-lying-stored-length.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "the file stops before its end: a stopped write, which `resumeFrom` can go on from",
+   "fileSha256": "f89c09d1d5fbfda2c15eb4d2d482da94e0ed97b81ccdf75fccad2beb576aab8a"
+  },
+  "mutant-0139-corpus-estate-bomb.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "a section at byte 4837 declares 4294967280 bytes, past the layout's 67108864",
+   "fileSha256": "a1f5e071656e29887183c299b3b7b9db46878c75f06c8369c0f8652f87fcd7d4"
+  },
+  "mutant-0140-corpus-estate-bytes-put-in.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "a section of kind 67 at byte 4837, which the layout does not define",
+   "fileSha256": "33cfba461d555cca1aae77767cb344f57c26c4dc81a45b75a1ae9e2680302c96"
+  },
+  "mutant-0141-corpus-estate-bytes-taken-out.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "a section of kind 0 at byte 7136, which the layout does not define",
+   "fileSha256": "2be15f6f1d228856c43c589192f063af5b59de61713c7e6ca25b8efb81501107"
+  },
+  "mutant-0142-corpus-estate-frames-rearranged.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "the sections after the records are not the paths, the wires and the end",
+   "fileSha256": "b947fb6316947176c005cdc74fb698891429df070849a0593afe7b44e6ac75dd"
+  },
+  "mutant-0143-corpus-estate-noise.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "a section of kind 224 at byte 8, which the layout does not define",
+   "fileSha256": "49bd43c681f34d60f7788e9a822b71760717c9ce342415289e7c719804960a72"
+  },
+  "mutant-0144-made-every-fact-flipped-bits.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "strings inflates to 803 bytes, not the 811 it declares",
+   "fileSha256": "38c66286bbb24b92afc045559001716d74cffc95e950fa073609500632757bbd"
+  },
+  "mutant-0145-made-every-fact-cut.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "the file stops before its end: a stopped write, which `resumeFrom` can go on from",
+   "fileSha256": "ad17d05805032694ab8c842dac4daed2ae754b072c575d4a132e169180e12edc"
+  },
+  "mutant-0146-made-every-fact-lying-count.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "the first section is not the head",
+   "fileSha256": "a36ed3a4f4c1feb2625518e1c5a113ad47453d69048346376575f33007f3c41a"
+  },
+  "mutant-0147-made-every-fact-bomb.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "a section at byte 702 declares 4294967280 bytes, past the layout's 67108864",
+   "fileSha256": "0f6ab640b920a002557ec18513205649882814a13354f95844747f0aa469c57c"
+  },
+  "mutant-0148-made-every-fact-bytes-put-in.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "a section of kind 31 at byte 702, which the layout does not define",
+   "fileSha256": "a61537e20f26194db226ee76d4cc8008a6e6fefb7688a3a96eb7f28e7e299b8a"
+  },
+  "mutant-0149-made-every-fact-bytes-taken-out.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "a section of kind 139 at byte 702, which the layout does not define",
+   "fileSha256": "7ac08d77b3fe0ff71788f3cf9b9b858aac0fb759ed47340398e6d64ff912def5"
+  },
+  "mutant-0150-made-every-fact-frames-rearranged.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "strings not followed by records",
+   "fileSha256": "2f3e2cabfe724ae85333c8636cbee91d6714eda923d5f226a0a1f5362ea37094"
+  },
+  "mutant-0151-made-every-fact-noise.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "a section of kind 71 at byte 8, which the layout does not define",
+   "fileSha256": "324f3617088267cd8d4b5d08794ba6920f1df729d628671ab146e6c14c9ea828"
+  },
+  "mutant-0152-made-seeded-3-300-flipped-bits.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "the end does not name the sections before it",
+   "fileSha256": "76731ce70030299ac665c96b588961dd8a1acba1807a28b8224d3d9fbf85c28e"
+  },
+  "mutant-0153-made-seeded-3-300-cut.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "the file stops before its end: a stopped write, which `resumeFrom` can go on from",
+   "fileSha256": "6fd6d4c0c8f2d690ce1c05aa5ff6937de6e87c592865fd847ae4d831877604af"
+  },
+  "mutant-0154-made-seeded-3-300-lying-stored-length.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "a section of kind 109 at byte 12420, which the layout does not define",
+   "fileSha256": "4435b3223af77a8b74819f017bfed540b0202618bfce02447d9dc086d2b32a54"
+  },
+  "mutant-0155-made-seeded-3-300-bomb.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "a section at byte 3940 declares 4294967280 bytes, past the layout's 67108864",
+   "fileSha256": "e629a590186db288c6a6dd0282888e17338d97b72772daa3b034e77496016fe0"
+  },
+  "mutant-0156-made-seeded-3-300-bytes-put-in.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "a section of kind 98 at byte 11895, which the layout does not define",
+   "fileSha256": "4f478b5bc6a76b3d5510044d8506fd16df72809907daabbfe2d6a9af7e77b577"
+  },
+  "mutant-0157-made-seeded-3-300-bytes-taken-out.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "a section of kind 83 at byte 3940, which the layout does not define",
+   "fileSha256": "21e662e11a4973099ff80fa9a77c3c3456f2f11ab12582838a03d179fa27f9a3"
+  },
+  "mutant-0158-made-seeded-3-300-frames-rearranged.fpk": {
+   "reads": true,
+   "textSha256": "3c69183004fd47c7a3c94be9f50a8fd979e8c1e4275ff1548ff49c708d6bc230",
+   "textBytes": 243346,
+   "name": "3577d763e3ca75da9874e782195be8974888899b13a5655200c52f3679202029",
+   "graphSha256": "b8fff11d4c12d1d0529d61e51df4686d4c1aa3de1aba1d4cfce439aab24e7baf",
+   "fileSha256": "d607f952a27f69091880537ad561079b8e9070c89fed3aec64ed2bc2efb01943"
+  },
+  "mutant-0159-made-seeded-3-300-noise.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "a section of kind 76 at byte 8, which the layout does not define",
+   "fileSha256": "3c41563d582301efaa621b3fd2cf86bbe32ecc68d86bf70418b0dbefb2a17cb8"
+  },
+  "mutant-0160-corpus-estate-flipped-bits.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "the end does not match its hash",
+   "fileSha256": "ad08c1b7b5a811e725a4232fd98c734f33e1be8bbfead1325ba09d5b10e6adeb"
+  },
+  "mutant-0161-corpus-estate-cut.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "the file stops before its end: a stopped write, which `resumeFrom` can go on from",
+   "fileSha256": "391482c1b9d41b0cf3eea030e9fffdfd92e3671f3d1a4467c278e874dab420e0"
+  },
+  "mutant-0162-corpus-estate-lying-stored-length.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "a section of kind 65 at byte 7670, which the layout does not define",
+   "fileSha256": "2e06dfced1223fdbb3c803fe11873fb16b4c3000dbf66b898af6c6e34a7f3db5"
+  },
+  "mutant-0163-corpus-estate-bomb.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "records inflates past the 4364 bytes it declares",
+   "fileSha256": "55ed00b3bcce50151e2db53c277fcf317241edada87b4042d55460a66d5f7add"
+  },
+  "mutant-0164-corpus-estate-bytes-put-in.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "a section of kind 124 at byte 4837, which the layout does not define",
+   "fileSha256": "5672ad90d8ddb74ac0679564560f138fc8419efaa89b3728353d0a7513d5b8af"
+  },
+  "mutant-0165-corpus-estate-bytes-taken-out.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "a section of kind 212 at byte 4837, which the layout does not define",
+   "fileSha256": "d742d6a299a54035cf03ad0d3d1ab0a6febb57bb89b544dd8dfb01b3d47d0211"
+  },
+  "mutant-0166-corpus-estate-frames-rearranged.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "the sections after the records are not the paths, the wires and the end",
+   "fileSha256": "ba14157b50aa0dbea7b59e6f45c65f6867413450fc8e3e2fd7ca5e0e98d44c2b"
+  },
+  "mutant-0167-corpus-estate-noise.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "a section of kind 239 at byte 8, which the layout does not define",
+   "fileSha256": "da442d72da6a2ded9a6145d14839f76f0c0df03b0ecdb788c6772416f4c8e142"
+  },
+  "mutant-0168-made-every-fact-flipped-bits.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "strings inflates to 806 bytes, not the 811 it declares",
+   "fileSha256": "17c4931c58364d6e7d96a6938353dc8ec1484df4f4b891c925943c5cd7771246"
+  },
+  "mutant-0169-made-every-fact-cut.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "the file stops before its end: a stopped write, which `resumeFrom` can go on from",
+   "fileSha256": "522aa599da0274f0cf8de2ce8eb71965639c74df266d0972b1c47572ec758a03"
+  },
+  "mutant-0170-made-every-fact-lying-raw-length.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "the end does not count the sections before it",
+   "fileSha256": "aa91d9cbe6da39d3489dca660930067133cf3fa7ab5858028bf81c49871c526e"
+  },
+  "mutant-0171-made-every-fact-bomb.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "the paths inflates past the 22 bytes it declares",
+   "fileSha256": "7b696de306e747820a8bc452f997ff2f6dce0052fe0523fa6175a7540f888610"
+  },
+  "mutant-0172-made-every-fact-bytes-put-in.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "a section of kind 0 at byte 136, which the layout does not define",
+   "fileSha256": "8bf94600a1d20c41dbb65de74ad870d06201fcd394b48a06b52f20a3f19c3436"
+  },
+  "mutant-0173-made-every-fact-bytes-taken-out.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "a section of kind 232 at byte 136, which the layout does not define",
+   "fileSha256": "e8c7520676427894c5b5bebf85f1ba032713a8b2b20048e6c6bc58d53c47ae78"
+  },
+  "mutant-0174-made-every-fact-frames-rearranged.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "the sections after the records are not the paths, the wires and the end",
+   "fileSha256": "36fa3d7b92c332451d3a2be15b185c2c7a904d2d30c2cd7e282a06d5de224af3"
+  },
+  "mutant-0175-made-every-fact-noise.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "a section of kind 159 at byte 8, which the layout does not define",
+   "fileSha256": "aeffd5391b7dbb606c69248dd55bf1572dca66ebe72193cc9bc1e40d6f4b796c"
+  },
+  "mutant-0176-made-seeded-3-300-flipped-bits.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "records does not match its hash",
+   "fileSha256": "7c2b16f3ae99de105869f99f029777589ec2be78f54e2bc2772a1f5c52e832c6"
+  },
+  "mutant-0177-made-seeded-3-300-cut.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "the file stops before its end: a stopped write, which `resumeFrom` can go on from",
+   "fileSha256": "11d057c181ef0126136d7a29c7dd28a3c9c0142287135c6977b021513af16054"
+  },
+  "mutant-0178-made-seeded-3-300-lying-raw-length.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "a section at byte 15087 declares 4294967295 bytes, past the layout's 67108864",
+   "fileSha256": "863cdccea757c20a558635ec8f78760c4f70aba5a69cc1f17b5f04c7de7e59b1"
+  },
+  "mutant-0179-made-seeded-3-300-bomb.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "records inflates past the 2230 bytes it declares",
+   "fileSha256": "cfaf2b4c26c79922ed26346d6a76b0e8fde198b3d2075f2c93db03ffb1b5f4b8"
+  },
+  "mutant-0180-made-seeded-3-300-bytes-put-in.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "a section of kind 157 at byte 14214, which the layout does not define",
+   "fileSha256": "edf65b0b8fad65cbb865277ea019daddcda4dc6be53332413e389c5bc639d7fc"
+  },
+  "mutant-0181-made-seeded-3-300-bytes-taken-out.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "a section of kind 9 at byte 11895, which the layout does not define",
+   "fileSha256": "e4cb12917b632a6530668c96f6fd19ac51ab14aa2208a6dbe334cbad760b1ed3"
+  },
+  "mutant-0182-made-seeded-3-300-frames-rearranged.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "15079 bytes after the end",
+   "fileSha256": "4d5a947fa304b95d338829a14135601e76f58493071f420b733a59783db42f41"
+  },
+  "mutant-0183-made-seeded-3-300-noise.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "a section at byte 8 declares 80791651 bytes, past the layout's 67108864",
+   "fileSha256": "ffae2c880c3fe36edf2bdc5bc818aac4248e1fd3c634d3aec2ba6b2c30eac578"
+  },
+  "mutant-0184-corpus-estate-flipped-bits.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "the head inflates to 42 bytes, not the 58 it declares",
+   "fileSha256": "26b940ef204d32dd4d275e4f6fc4026e34f4c0062e7da376163509fbf1aa3580"
+  },
+  "mutant-0185-corpus-estate-cut.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "the file stops before its end: a stopped write, which `resumeFrom` can go on from",
+   "fileSha256": "510b03597cbbb5c3f67075a099d40f37bc810cef22da937c8073c70697293c33"
+  },
+  "mutant-0186-corpus-estate-lying-raw-length.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "a section at byte 7136 declares 4294967280 bytes, past the layout's 67108864",
+   "fileSha256": "9b415f5ff99ee2b9a278fa0c67345496efddfae38e3d49c8b89b9948add4a932"
+  },
+  "mutant-0187-corpus-estate-bomb.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "a section at byte 7769 declares 4294967280 bytes, past the layout's 67108864",
+   "fileSha256": "694ad97253de816ef388d71538dd5c67dd5d7e13c234a792680f5f1edd7227cf"
+  },
+  "mutant-0188-corpus-estate-bytes-put-in.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "a section at byte 4837 declares 2257120823 bytes, past the layout's 67108864",
+   "fileSha256": "f9fe4f4c0cd851d20f75c64d490c6ba7c767bc4c7182d469247b350f2ade440f"
+  },
+  "mutant-0189-corpus-estate-bytes-taken-out.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "a section of kind 18 at byte 4837, which the layout does not define",
+   "fileSha256": "3e8ade3e3be62b9a728d234e8d86d7eef9e2e6e834377edc5c6cb1dfd6d81fb5"
+  },
+  "mutant-0190-corpus-estate-frames-rearranged.fpk": {
+   "reads": true,
+   "textSha256": "9406c095a6528be50a2423a09a73d8af3404c3245bf0412b720984d8fccca97e",
+   "textBytes": 95289,
+   "name": "8ea77773c307d00d672744d2eacb6d2f64557b8cba5c6131c7c97a79eba91ba6",
+   "graphSha256": "6251f0a94858c9036d64b8ac37768e9b89c3f6fd0ac4fb1cbb356afc257e9724",
+   "fileSha256": "798d6405310bdc32c1f6682d791fffe962e18c66799b1640cbd0b0681e23fc47"
+  },
+  "mutant-0191-corpus-estate-noise.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "a section of kind 9 at byte 8, which the layout does not define",
+   "fileSha256": "8e57428863074c1ed75a27e683c7e6d2d7b95c960ae596da50505ca4e83a0818"
+  },
+  "mutant-0192-made-every-fact-flipped-bits.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "strings does not match its hash",
+   "fileSha256": "33bd1d755e1c609d7f1deb00cb51ab28f9c1b4afbf235f184741a46aa01ec25e"
+  },
+  "mutant-0193-made-every-fact-cut.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "the file stops before its end: a stopped write, which `resumeFrom` can go on from",
+   "fileSha256": "a9a0dc6098bdbd72a474811ec1ec06123c754a23ae2b6445153ea1b3984764b5"
+  },
+  "mutant-0194-made-every-fact-lying-raw-length.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "a section at byte 936 declares 16777216 bytes from 7, more than deflate can give",
+   "fileSha256": "0f59e1d63171c9eda607e14fbec54d3e10594afd2d8449b56572b9fc60a6a099"
+  },
+  "mutant-0195-made-every-fact-bomb.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "the end inflates past the 32 bytes it declares",
+   "fileSha256": "be43aa15b7b86398970c485f7a5f9ba3a967075550612533899f0cfdc1c8c1ef"
+  },
+  "mutant-0196-made-every-fact-bytes-put-in.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "a section of kind 235 at byte 871, which the layout does not define",
+   "fileSha256": "29d40e1a12d946748bb8f13e6a2594ab0c521ac2b9d0537720a0641e1898a3b3"
+  },
+  "mutant-0197-made-every-fact-bytes-taken-out.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "a section of kind 96 at byte 702, which the layout does not define",
+   "fileSha256": "3451d8ed91993e73a772a6fc7837aeada8113c9b1680c3d863695309519ce734"
+  },
+  "mutant-0198-made-every-fact-frames-rearranged.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "80 bytes after the end",
+   "fileSha256": "2fa31586a6acff3fb0985c90da2327a760ccc2f29d812a1577c7bd37a680171f"
+  },
+  "mutant-0199-made-every-fact-noise.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "a section of kind 235 at byte 8, which the layout does not define",
+   "fileSha256": "cf998a38fa73af97e9f8eb51e0c660ea0ba3ebd1037c01862e7052e5d7c149ec"
+  },
+  "mutant-0200-made-seeded-3-300-flipped-bits.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "records inflates to 13295 bytes, not the 13296 it declares",
+   "fileSha256": "c7df10602fbe1e3531a81387986e9e2de90ae00aa7826d8347f1f79cb407bfe9"
+  },
+  "mutant-0201-made-seeded-3-300-cut.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "the file stops before its end: a stopped write, which `resumeFrom` can go on from",
+   "fileSha256": "404ce529e6d4058375094b4fd390339b7e4c90c5aca867fba1159daeaf56d390"
+  },
+  "mutant-0202-made-seeded-3-300-lying-stored-length.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "a section at byte 83 declares 13739 bytes from 2, more than deflate can give",
+   "fileSha256": "d9bc430dfecb0550757cae4bb3fc3098bb0b04fd3a397989681288131c489d9c"
+  },
+  "mutant-0203-made-seeded-3-300-bomb.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "a section at byte 14214 declares 4294967280 bytes, past the layout's 67108864",
+   "fileSha256": "06b6cdaa71e7f2ac204e4f865a530bba93e6f443a47d739f9f6fabd971029e54"
+  },
+  "mutant-0204-made-seeded-3-300-bytes-put-in.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "a section of kind 48 at byte 11895, which the layout does not define",
+   "fileSha256": "80e525e3dede487b6c0f9e98da8325fe7bdf9442b223b6034d0bf395a8347670"
+  },
+  "mutant-0205-made-seeded-3-300-bytes-taken-out.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "a section of kind 90 at byte 11895, which the layout does not define",
+   "fileSha256": "227c076bab7c7a6725893daeb19dfe4e41d9f5182546f1cdb75f34e21bc0ddc1"
+  },
+  "mutant-0206-made-seeded-3-300-frames-rearranged.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "1188 bytes after the end",
+   "fileSha256": "ac1f5cff58a2eb261e067c00335b3b2ae4e4929c679f1694e6aa43383740f6c1"
+  },
+  "mutant-0207-made-seeded-3-300-noise.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "a section of kind 29 at byte 8, which the layout does not define",
+   "fileSha256": "9a530c7f95ceae46d056b504fbeb6faa4e8ebe6940319706c4694365aaca87d0"
+  },
+  "mutant-0208-corpus-estate-flipped-bits.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "strings does not match its hash",
+   "fileSha256": "d692dd731687e87802e7d561e66da977501507aa879c737f3ab9ded5b30099c3"
+  },
+  "mutant-0209-corpus-estate-cut.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "the file stops before its end: a stopped write, which `resumeFrom` can go on from",
+   "fileSha256": "d908ffecf1f5584666ef96f77969b22fc803b8e75822284308fb1794aa2f6e38"
+  },
+  "mutant-0210-corpus-estate-lying-count.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "the end does not count the sections before it",
+   "fileSha256": "72f7c1b053e1b10f7fc0587693cfdac2ec9a13c01600f042057cd6aa4ac6233a"
+  },
+  "mutant-0211-corpus-estate-bomb.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "a section at byte 97 declares 4294967280 bytes, past the layout's 67108864",
+   "fileSha256": "0641a46022307fff89ca337b60f5c03f1b5df7891c1c24e7ee216ab91a45523b"
+  },
+  "mutant-0212-corpus-estate-bytes-put-in.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "a section of kind 233 at byte 4837, which the layout does not define",
+   "fileSha256": "710f612fed26eac414f6994f64a5490491b664c6b72c20e9a5faa6546a5cdbcf"
+  },
+  "mutant-0213-corpus-estate-bytes-taken-out.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "a section of kind 124 at byte 4837, which the layout does not define",
+   "fileSha256": "9fcfc83c3e84f9eee3bf877393f16075e79ab578b381e28eb5893ee007217a5a"
+  },
+  "mutant-0214-corpus-estate-frames-rearranged.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "the sections after the records are not the paths, the wires and the end",
+   "fileSha256": "29462b2d9c7149b44c2aa4604971a9d14e813a1ee6404c7d3c42cfde8159a45c"
+  },
+  "mutant-0215-corpus-estate-noise.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "a section of kind 71 at byte 8, which the layout does not define",
+   "fileSha256": "ce982ef3f425bf36768abf598cf4e03875c7b912952805574d0d6f3502eeed84"
+  },
+  "mutant-0216-made-every-fact-flipped-bits.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "the head is not a whole raw deflate stream",
+   "fileSha256": "38a5b3572da8d474a82b603cb74424b6daea1e246f0150aa822565c354f11ebf"
+  },
+  "mutant-0217-made-every-fact-cut.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "the file stops before its end: a stopped write, which `resumeFrom` can go on from",
+   "fileSha256": "43ca8451bb10018c5d26d4b9b63e0bebb04436eec4457dd76169b279578b15d0"
+  },
+  "mutant-0218-made-every-fact-lying-raw-length.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "the head inflates to 85 bytes, not the 256 it declares",
+   "fileSha256": "62cc0c504b9a93d58f83ae1294bd77c9d852beb83e1c5bfe87f8ef094bddb0cb"
+  },
+  "mutant-0219-made-every-fact-bomb.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "a section at byte 702 declares 4294967280 bytes, past the layout's 67108864",
+   "fileSha256": "0f6ab640b920a002557ec18513205649882814a13354f95844747f0aa469c57c"
+  },
+  "mutant-0220-made-every-fact-bytes-put-in.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "the file stops before its end: a stopped write, which `resumeFrom` can go on from",
+   "fileSha256": "c8ed3f8ab9a2eee648774642fdc27ad4d80c1b78301f7432ea2ac08d46e961ea"
+  },
+  "mutant-0221-made-every-fact-bytes-taken-out.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "a section of kind 217 at byte 702, which the layout does not define",
+   "fileSha256": "16005041ca99a44cfaf75a9418e1b21c547b153d3dffd24352e6bcaabd104291"
+  },
+  "mutant-0222-made-every-fact-frames-rearranged.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "the sections after the records are not the paths, the wires and the end",
+   "fileSha256": "f76e56c79e29ed1a0d361d46125dfbe68b53b5109c39c287fb95f04697747846"
+  },
+  "mutant-0223-made-every-fact-noise.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "a section of kind 158 at byte 8, which the layout does not define",
+   "fileSha256": "781198d9799f9e5949e9c1efff900ed044ccf97c49347db32c8cffdb6d76731e"
+  },
+  "mutant-0224-made-seeded-3-300-flipped-bits.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "records inflates past the 13296 bytes it declares",
+   "fileSha256": "287755644fe7833ded9371a5d0857445757ec63fe705a4557344d0d8eab11821"
+  },
+  "mutant-0225-made-seeded-3-300-cut.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "the file stops before its end: a stopped write, which `resumeFrom` can go on from",
+   "fileSha256": "141fb2e900903dd6a55447a6ad1e006e433baabad79158037db1664df08bd00c"
+  },
+  "mutant-0226-made-seeded-3-300-lying-raw-length.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "records inflates past the 2 bytes it declares",
+   "fileSha256": "cdf8a190c9e6fc6d178c64e13920643e6d2a345a1edd3ea9f47e4de640028be7"
+  },
+  "mutant-0227-made-seeded-3-300-bomb.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "the paths inflates past the 2097 bytes it declares",
+   "fileSha256": "54fa060285763952e621b22c8dee96998e70c71e2d6d9bbf44edaa9835b8d4c2"
+  },
+  "mutant-0228-made-seeded-3-300-bytes-put-in.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "a section of kind 51 at byte 15087, which the layout does not define",
+   "fileSha256": "4143de3921cfb1a7908e40ca23a471ad5c25460b7c69ba1fe3a73f26fac5b0bf"
+  },
+  "mutant-0229-made-seeded-3-300-bytes-taken-out.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "a section of kind 53 at byte 11895, which the layout does not define",
+   "fileSha256": "ec84432ce1bd13c2dce5ed7c596735f9a6b6376a48ca79de3ea879bc276e0c00"
+  },
+  "mutant-0230-made-seeded-3-300-frames-rearranged.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "the first section is not the head",
+   "fileSha256": "9c02a549b36925dbe8e12aecb32acd86ea1e8742e5da519801c93d9adeb39a1e"
+  },
+  "mutant-0231-made-seeded-3-300-noise.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "a section of kind 246 at byte 8, which the layout does not define",
+   "fileSha256": "dbbf5b9ff0c9af72b5d554c82cf5f74120df7131a548e66d0f57d7a8d2e1cda4"
+  },
+  "mutant-0232-corpus-estate-flipped-bits.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "the paths inflates to 770 bytes, not the 779 it declares",
+   "fileSha256": "3d140732b8a340fa75ddd14c229c8ce5da6eba41fe62135c7f67fad5ee221fd8"
+  },
+  "mutant-0233-corpus-estate-cut.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "the file stops before its end: a stopped write, which `resumeFrom` can go on from",
+   "fileSha256": "7577fcd63cbcad38004e5d401cf4a516b60edf29584a2439cc3b11b0c613f0e5"
+  },
+  "mutant-0234-corpus-estate-lying-raw-length.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "records inflates past the 255 bytes it declares",
+   "fileSha256": "f9a082d443c566f3c5107f90f08b5ea34c1413213e58153945af1aa3e7c5d514"
+  },
+  "mutant-0235-corpus-estate-bomb.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "records inflates past the 4364 bytes it declares",
+   "fileSha256": "55ed00b3bcce50151e2db53c277fcf317241edada87b4042d55460a66d5f7add"
+  },
+  "mutant-0236-corpus-estate-bytes-put-in.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "a section at byte 4837 declares 2257120823 bytes, past the layout's 67108864",
+   "fileSha256": "910e76d411ff85d1fe32a2d247db4aaaffae628fada9156e81f19bec02050fee"
+  },
+  "mutant-0237-corpus-estate-bytes-taken-out.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "a section of kind 206 at byte 7136, which the layout does not define",
+   "fileSha256": "59f4059066215a01ddc7941eb688356c3ebb4f5353a07fadd5a980911f087e46"
+  },
+  "mutant-0238-corpus-estate-frames-rearranged.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "80 bytes after the end",
+   "fileSha256": "834c676f7e4cc7788bdabe8522aceb37aae10ba517f90717f66be6fd91254ad6"
+  },
+  "mutant-0239-corpus-estate-noise.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "a section of kind 27 at byte 8, which the layout does not define",
+   "fileSha256": "483bdd6b73ba50c4506199e83343c6306e04d0bf323d460575096142ac9a6e33"
+  },
+  "mutant-0240-made-every-fact-flipped-bits.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "the paths does not match its hash",
+   "fileSha256": "7304dd89d5a6f2dbf1fea2c9787363d349356bdcf06d08ad3590ee24ded8191b"
+  },
+  "mutant-0241-made-every-fact-cut.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "the file stops before its end: a stopped write, which `resumeFrom` can go on from",
+   "fileSha256": "be9463e7bd65711b0b89c56eb7b784842210b60f89574d5f4e0ca7dcdfd34076"
+  },
+  "mutant-0242-made-every-fact-lying-raw-length.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "a section at byte 936 declares 65535 bytes from 7, more than deflate can give",
+   "fileSha256": "0a616eb68de3b8a5f95722c5f4c46c09378a5feccf722b1e9b9ac4746efae8b0"
+  },
+  "mutant-0243-made-every-fact-bomb.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "a section at byte 136 declares 4294967280 bytes, past the layout's 67108864",
+   "fileSha256": "4394815ef58c73ff89aa6efe0b66821cf2d58b36a6eea301616ee08130f47206"
+  },
+  "mutant-0244-made-every-fact-bytes-put-in.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "a section of kind 103 at byte 936, which the layout does not define",
+   "fileSha256": "bf9ee0d8fe2f7ef02f158f114885a5f1e36866fb8a22e3ce8fb3476a5c883faa"
+  },
+  "mutant-0245-made-every-fact-bytes-taken-out.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "a section of kind 65 at byte 936, which the layout does not define",
+   "fileSha256": "040299cae964d3bd020435c0200baf82d9fc1cb4fb874f0054be886b4d005c37"
+  },
+  "mutant-0246-made-every-fact-frames-rearranged.fpk": {
+   "reads": true,
+   "textSha256": "303e1b596c6914e74e2c84e8d1c5eb3948796fb1053c3d0b99283a73b71956ef",
+   "textBytes": 2967,
+   "name": "00588503650202a8d082acd92be4cadb46302bffe974a26d336cd9e2226a4834",
+   "graphSha256": "84a681c0380853c84f9ac794f255ab6a4e0679d16f118dc3eff174a2c308e7ad",
+   "fileSha256": "2424c6f05163e0c7e36e4e369a27df301475beae445b4537a78627a788e5b048"
+  },
+  "mutant-0247-made-every-fact-noise.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "a section at byte 8 declares 1079033199 bytes, past the layout's 67108864",
+   "fileSha256": "1a4c909f44e7cc879c439d6278c2c2e28bac9c6cc651b8f2c8e11c9cff268c4f"
+  },
+  "mutant-0248-made-seeded-3-300-flipped-bits.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "the paths inflates past the 2097 bytes it declares",
+   "fileSha256": "433917d990d2599e033313338e4b0599e127a8799f6ba2b2413de4979cb4e6ac"
+  },
+  "mutant-0249-made-seeded-3-300-cut.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "the file stops before its end: a stopped write, which `resumeFrom` can go on from",
+   "fileSha256": "0e1b971dd6a634830a5a957a236f1e9cfde6fda2a27b0ffb560127c9702007cd"
+  },
+  "mutant-0250-made-seeded-3-300-lying-count.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "the paths or wires count other than the 300 files recorded",
+   "fileSha256": "05c056724c9112bac600e7e79715e50bcb90d06025b46e36fd6e5d7007f1a765"
+  },
+  "mutant-0251-made-seeded-3-300-bomb.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "records inflates past the 13296 bytes it declares",
+   "fileSha256": "f1b129b36b83686ec61ace65db36df6860167c4e4a6441cbc1bda7b60b7df05d"
+  },
+  "mutant-0252-made-seeded-3-300-bytes-put-in.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "a section of kind 141 at byte 11895, which the layout does not define",
+   "fileSha256": "fb33f19dea05a487d9c31e9b7960ab53823455fd3edb786eb970dbf9c9705a22"
+  },
+  "mutant-0253-made-seeded-3-300-bytes-taken-out.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "a section of kind 132 at byte 11895, which the layout does not define",
+   "fileSha256": "7d01f54c67c84c4740dd61a91557aac7b5425d70ee5684fa6295922763f3d0d4"
+  },
+  "mutant-0254-made-seeded-3-300-frames-rearranged.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "1188 bytes after the end",
+   "fileSha256": "ac1f5cff58a2eb261e067c00335b3b2ae4e4929c679f1694e6aa43383740f6c1"
+  },
+  "mutant-0255-made-seeded-3-300-noise.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "a section of kind 87 at byte 8, which the layout does not define",
+   "fileSha256": "9ec8c9655451729cc71902b09795d52ca8d82a321847c2c3a83a43a99d9da9ac"
+  },
+  "mutant-0256-corpus-estate-flipped-bits.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "strings is not a whole raw deflate stream",
+   "fileSha256": "7b6c0d8bb5bf355a6f5101fc6f8418a3ccd202b5005e5cbcba10590e3cec7be7"
+  },
+  "mutant-0257-corpus-estate-cut.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "the file stops before its end: a stopped write, which `resumeFrom` can go on from",
+   "fileSha256": "341a0a23786f1951d51db4f4e9235a693994180032fbe7a8da9f517eddd93bb6"
+  },
+  "mutant-0258-corpus-estate-lying-raw-length.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "a section at byte 7623 declares 2147483647 bytes, past the layout's 67108864",
+   "fileSha256": "65a50f263c5a3e8b658d671e9bb4d8a654776ba21713ea528e766ae61a0b7ee6"
+  },
+  "mutant-0259-corpus-estate-bomb.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "a section at byte 7136 declares 4294967280 bytes, past the layout's 67108864",
+   "fileSha256": "5d11bed2b517271f49be51c22a81af0cdc55edad9dd063688520cedefef5bbb9"
+  },
+  "mutant-0260-corpus-estate-bytes-put-in.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "a section at byte 7136 declares 2105761504 bytes, past the layout's 67108864",
+   "fileSha256": "8e10d0cbf0a94914c63737628121572646c55d3f6c6cc3711494c0b97b949108"
+  },
+  "mutant-0261-corpus-estate-bytes-taken-out.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "a section of kind 127 at byte 4837, which the layout does not define",
+   "fileSha256": "208182c0e380e791ef0e874ad48932246c0e2720ec5f88d95f62c545058390ad"
+  },
+  "mutant-0262-corpus-estate-frames-rearranged.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "strings not followed by records",
+   "fileSha256": "f42042d4369223e99503bdebbabfa3f202fd41f239fc2b33db2cfcaf7480de1b"
+  },
+  "mutant-0263-corpus-estate-noise.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "a section of kind 137 at byte 8, which the layout does not define",
+   "fileSha256": "31bc931c6b6b0b954b2f971f6e24ea4445fc29eb04b8107644a4c89f98ab85c3"
+  },
+  "mutant-0264-made-every-fact-flipped-bits.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "the file stops before its end: a stopped write, which `resumeFrom` can go on from",
+   "fileSha256": "ba15f4377d89b0e365c6a6a5c7d4c7700dc9b182620dd812598142a1310aa278"
+  },
+  "mutant-0265-made-every-fact-cut.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "the file stops before its end: a stopped write, which `resumeFrom` can go on from",
+   "fileSha256": "be8355a48dd9fc10340372ab487178ebdc431660ee55c3ecae3583cc4302c2ee"
+  },
+  "mutant-0266-made-every-fact-lying-stored-length.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "35 bytes after the end",
+   "fileSha256": "9e1bbe55d75f8b47efc11bc6912bb1e59175fca8064fe9575653638dea56eaeb"
+  },
+  "mutant-0267-made-every-fact-bomb.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "a section at byte 136 declares 4294967280 bytes, past the layout's 67108864",
+   "fileSha256": "4394815ef58c73ff89aa6efe0b66821cf2d58b36a6eea301616ee08130f47206"
+  },
+  "mutant-0268-made-every-fact-bytes-put-in.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "30 bytes after the end",
+   "fileSha256": "b4f86fe8a01d24f80b1ca950c222d1c2d3fb5a3560c92c01db951ccec484b667"
+  },
+  "mutant-0269-made-every-fact-bytes-taken-out.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "a section of kind 216 at byte 702, which the layout does not define",
+   "fileSha256": "4f0f2775a933037915242ed15a16798854851b81b5ae83175e978e5a61e3ec47"
+  },
+  "mutant-0270-made-every-fact-frames-rearranged.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "286 bytes after the end",
+   "fileSha256": "ec57341904b05b83e29bc5cf99fa06d28a5558f7adc00fdc3577a973c2331870"
+  },
+  "mutant-0271-made-every-fact-noise.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "a section of kind 89 at byte 8, which the layout does not define",
+   "fileSha256": "f925142d6f439fae8975c9db2dae50aac0aafba027cbd597e1070e1e73b3947d"
+  },
+  "mutant-0272-made-seeded-3-300-flipped-bits.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "records is not a whole raw deflate stream",
+   "fileSha256": "7c8681482daa76a377ebd2aeea4bd3d6c6349111246e94f264c8a20e08d8b770"
+  },
+  "mutant-0273-made-seeded-3-300-cut.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "the file stops before its end: a stopped write, which `resumeFrom` can go on from",
+   "fileSha256": "91c18eae7ff007165a41ab6439e8f6a65456c07c88c7305947c8d25218d8ae0f"
+  },
+  "mutant-0274-made-seeded-3-300-lying-stored-length.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "the file stops before its end: a stopped write, which `resumeFrom` can go on from",
+   "fileSha256": "225426f0c484ac4917f010affe73b0046ecc4e020d536249a168ea1e0ecf7e1a"
+  },
+  "mutant-0275-made-seeded-3-300-bomb.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "a section at byte 12373 declares 4294967280 bytes, past the layout's 67108864",
+   "fileSha256": "aa58e1ecf802c10ab33a3dc6e488c0728892c40025c58e30f4530a6595f8201d"
+  },
+  "mutant-0276-made-seeded-3-300-bytes-put-in.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "a section of kind 150 at byte 11895, which the layout does not define",
+   "fileSha256": "5410cdf1e3b5709bf9e06332f5ab7dd955dea1673f1837b325b57f55c013fc88"
+  },
+  "mutant-0277-made-seeded-3-300-bytes-taken-out.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "a section of kind 79 at byte 11895, which the layout does not define",
+   "fileSha256": "22bb0070b639d38c013213d01067ed40ed0bdcad7483cc8bbb1995b466622230"
+  },
+  "mutant-0278-made-seeded-3-300-frames-rearranged.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "the paths or wires count other than the 556 files recorded",
+   "fileSha256": "bd8dd28f77afdc9d834480a2da09a68001cd1ec01209ab740ae7707fc684a331"
+  },
+  "mutant-0279-made-seeded-3-300-noise.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "a section of kind 99 at byte 8, which the layout does not define",
+   "fileSha256": "d2420202c7d0742052ea0dcc145d99c89bcc1ec39a5db5a3597f8035abd82f08"
+  },
+  "mutant-0280-corpus-estate-flipped-bits.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "the paths is not a whole raw deflate stream",
+   "fileSha256": "14499c2dac058868295cdb7cf9cd302889045b07e0190e3b6f37677188efcf3e"
+  },
+  "mutant-0281-corpus-estate-cut.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "the file stops before its end: a stopped write, which `resumeFrom` can go on from",
+   "fileSha256": "a759774058443a3d2a4789a8c53f0c817cdf899812737769f62629728607d017"
+  },
+  "mutant-0282-corpus-estate-lying-count.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "a section of 4294967295 records",
+   "fileSha256": "ab9f109296316b59b7e63ddc4ad9d87f6828c345384627317e5166cd9c6f1449"
+  },
+  "mutant-0283-corpus-estate-bomb.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "a section at byte 7769 declares 4294967280 bytes, past the layout's 67108864",
+   "fileSha256": "694ad97253de816ef388d71538dd5c67dd5d7e13c234a792680f5f1edd7227cf"
+  },
+  "mutant-0284-corpus-estate-bytes-put-in.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "a section of kind 204 at byte 4837, which the layout does not define",
+   "fileSha256": "b389ced38d23bf3a85100ee8ede329d6a63521e0ab03c960b8ddd20f7684b370"
+  },
+  "mutant-0285-corpus-estate-bytes-taken-out.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "a section of kind 43 at byte 4837, which the layout does not define",
+   "fileSha256": "248b1b64d263e1663e00ff7af4b769d8450f452f4314935dd1c81d8f20027ea0"
+  },
+  "mutant-0286-corpus-estate-frames-rearranged.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "80 bytes after the end",
+   "fileSha256": "834c676f7e4cc7788bdabe8522aceb37aae10ba517f90717f66be6fd91254ad6"
+  },
+  "mutant-0287-corpus-estate-noise.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "a section of kind 167 at byte 8, which the layout does not define",
+   "fileSha256": "981cde26477aff4ac4162710a9859232c32b743f99a8e836adaca62e335ece71"
+  },
+  "mutant-0288-made-every-fact-flipped-bits.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "the end does not match its hash",
+   "fileSha256": "7cff7f69cff3a6730993bc713479a50519d75ef8ad3df65d4c9dbe2af73eb6e4"
+  },
+  "mutant-0289-made-every-fact-cut.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "the file stops before its end: a stopped write, which `resumeFrom` can go on from",
+   "fileSha256": "29529d071aff5affe9954a5264e30905cfdfdce13ae91e5e9ea24c0609fc4439"
+  },
+  "mutant-0290-made-every-fact-lying-stored-length.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "the file stops before its end: a stopped write, which `resumeFrom` can go on from",
+   "fileSha256": "f485caff91b051e2c43c3e9172e94a6d2dc5f1984580405f3805f520b4f630d8"
+  },
+  "mutant-0291-made-every-fact-bomb.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "a section at byte 936 declares 4294967280 bytes, past the layout's 67108864",
+   "fileSha256": "992236fd8725fddb84efcc9db3f53ad2ed1bf22493a001286ee7a980609cca30"
+  },
+  "mutant-0292-made-every-fact-bytes-put-in.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "a section at byte 702 declares 2799892873 bytes, past the layout's 67108864",
+   "fileSha256": "c9f79dace5f7dcac1f400a65a5b26ffb5b48cd45c8b0b05e7a139c8b537989d4"
+  },
+  "mutant-0293-made-every-fact-bytes-taken-out.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "a section of kind 217 at byte 702, which the layout does not define",
+   "fileSha256": "960996720e7cbbb2e590ab44044ff75fb7aa578318f2f1fb32e0fee308a4a507"
+  },
+  "mutant-0294-made-every-fact-frames-rearranged.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "the first section is not the head",
+   "fileSha256": "76afc61480b5e1ab3da3fc32d8023294a0ac07dc0eb1f6fa6715d41a601fa367"
+  },
+  "mutant-0295-made-every-fact-noise.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "a section of kind 223 at byte 8, which the layout does not define",
+   "fileSha256": "7550a87f95e12bc24463c3df2e14a27497bcbdb47aaec2fc6183f4ea9c5b07df"
+  },
+  "mutant-0296-made-seeded-3-300-flipped-bits.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "the end does not name the sections before it",
+   "fileSha256": "f44a60a686c4e1d544ef702289495f7f9535f27ae625d953ef1c3fbbdfbb1fbf"
+  },
+  "mutant-0297-made-seeded-3-300-cut.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "the file stops before its end: a stopped write, which `resumeFrom` can go on from",
+   "fileSha256": "b9cb67856ae0b98234a3ed4337062058b11379e6bca2bf12bcabfced8fcd2ae4"
+  },
+  "mutant-0298-made-seeded-3-300-lying-raw-length.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "strings inflates past the 1 bytes it declares",
+   "fileSha256": "74c23b1e29a4a87d0a19fe50acd9a323d7238affff84d51fca68af004a9f40ca"
+  },
+  "mutant-0299-made-seeded-3-300-bomb.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "the wires inflates past the 987 bytes it declares",
+   "fileSha256": "5b095ed5ff5f940e731e17904c7bc4f05a78491fb3a657d03663592d6c4fa5af"
+  },
+  "mutant-0300-made-seeded-3-300-bytes-put-in.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "a section of kind 127 at byte 12373, which the layout does not define",
+   "fileSha256": "927a227d5d23ab5f233be1bab4b5d15fb0685dd2245156b328a58a87620ef250"
+  },
+  "mutant-0301-made-seeded-3-300-bytes-taken-out.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "a section of kind 166 at byte 11895, which the layout does not define",
+   "fileSha256": "4126de777bffcf61d0edf32da0b41cfcd8e168d59578970e3111a720844beeb8"
+  },
+  "mutant-0302-made-seeded-3-300-frames-rearranged.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "the sections after the records are not the paths, the wires and the end",
+   "fileSha256": "cdba2c2221f16431fa5b8112390bc8aab411d8349c68e81790b62fa59255f2df"
+  },
+  "mutant-0303-made-seeded-3-300-noise.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "a section of kind 238 at byte 8, which the layout does not define",
+   "fileSha256": "59e1625b199afffb5e753fc9116111305fa4fab678820fc4a87b14e45ffe4568"
+  },
+  "mutant-0304-corpus-estate-flipped-bits.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "strings does not match its hash",
+   "fileSha256": "26294dba52c79c298d5121eb1abebfa961672d33559c6996c421e0b1b3c76842"
+  },
+  "mutant-0305-corpus-estate-cut.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "the file stops before its end: a stopped write, which `resumeFrom` can go on from",
+   "fileSha256": "e944d9ce4904a948eb912b18930bc843f628d77f50d02be45540342089ae2e9f"
+  },
+  "mutant-0306-corpus-estate-lying-count.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "the paths or wires count other than the 41 files recorded",
+   "fileSha256": "1923f119e85937d7d29c587cd08362edc28af831a5c9657ef0f50136c26a684c"
+  },
+  "mutant-0307-corpus-estate-bomb.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "the head inflates past the 58 bytes it declares",
+   "fileSha256": "8435024b9ca1dc4a68d1af6834f8c0f07bb077b7d76a314120164c1e4b059c3e"
+  },
+  "mutant-0308-corpus-estate-bytes-put-in.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "a section of kind 45 at byte 7769, which the layout does not define",
+   "fileSha256": "da721746a648d668eed0190006eea115d5a0da6668c6291d4a852a14308eb013"
+  },
+  "mutant-0309-corpus-estate-bytes-taken-out.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "a section of kind 129 at byte 4837, which the layout does not define",
+   "fileSha256": "6b7c594653c321173a2e59853aefc0c1eb10640a502c12e91f8bd4bf3c2917f5"
+  },
+  "mutant-0310-corpus-estate-frames-rearranged.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "7761 bytes after the end",
+   "fileSha256": "6ac077f90257df82e000c65d86d5052e56e39fa82f2cfca0cfa3c1e4ed600a1d"
+  },
+  "mutant-0311-corpus-estate-noise.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "a section of kind 150 at byte 8, which the layout does not define",
+   "fileSha256": "f372027c80262a8baa0dd8c9d83c209071744d6c5c00fbe081bdfdc146bcee92"
+  },
+  "mutant-0312-made-every-fact-flipped-bits.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "the end does not name the sections before it",
+   "fileSha256": "72aae3d845ce0f35bd31c1e96984dafc1bc0642093ce7945f30b4d901347831b"
+  },
+  "mutant-0313-made-every-fact-cut.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "the file stops before its end: a stopped write, which `resumeFrom` can go on from",
+   "fileSha256": "5c81f52e2e9c91f10b79dfbfac2bcf1397a8b4a1aa3e7d507500e2c44ca5bbeb"
+  },
+  "mutant-0314-made-every-fact-lying-raw-length.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "records inflates to 156 bytes, not the 65535 it declares",
+   "fileSha256": "636c20606f17914f363e951fcfc035b39c0d057990a06499c56df903dd7b8d82"
+  },
+  "mutant-0315-made-every-fact-bomb.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "the end inflates past the 32 bytes it declares",
+   "fileSha256": "be43aa15b7b86398970c485f7a5f9ba3a967075550612533899f0cfdc1c8c1ef"
+  },
+  "mutant-0316-made-every-fact-bytes-put-in.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "a section of kind 175 at byte 702, which the layout does not define",
+   "fileSha256": "d9dc723cab7c9e0a4dac7f750b0a2a4b10e46345dc59c971ad5f8ca4d3ac6a70"
+  },
+  "mutant-0317-made-every-fact-bytes-taken-out.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "a section of kind 0 at byte 702, which the layout does not define",
+   "fileSha256": "1d963571ef283e7b28de3eeedff82758695e2b70b98cbd426a9c862a3355b1d1"
+  },
+  "mutant-0318-made-every-fact-frames-rearranged.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "the first section is not the head",
+   "fileSha256": "5f73dfbeb0432dab195133eed368654247d30cc675f16436a125b10753359e2e"
+  },
+  "mutant-0319-made-every-fact-noise.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "a section of kind 108 at byte 8, which the layout does not define",
+   "fileSha256": "2a34bd8bfda9698cbec89ffa7e60df94a13f3fd2806a991fae939a45171cc94a"
+  },
+  "mutant-0320-made-seeded-3-300-flipped-bits.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "strings does not match its hash",
+   "fileSha256": "8b4e611e43f5dc861cb64086aba5cef81116e85ee0f7fdc516ad69d6f9f84826"
+  },
+  "mutant-0321-made-seeded-3-300-cut.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "the file stops before its end: a stopped write, which `resumeFrom` can go on from",
+   "fileSha256": "3804ec3dd00bf2d5a09929bf52fdbca1eb90d2c3589ee1761331bb79c27a168a"
+  },
+  "mutant-0322-made-seeded-3-300-lying-raw-length.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "a section at byte 15087 declares 2147483647 bytes, past the layout's 67108864",
+   "fileSha256": "82922c235d1ab5f3a398f9c94d77e3527d691f773d663feab88287c595ad0f3a"
+  },
+  "mutant-0323-made-seeded-3-300-bomb.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "a section at byte 15087 declares 4294967280 bytes, past the layout's 67108864",
+   "fileSha256": "b1c661f9ba772d388d04cc67963d55201c25be20b48dec1dee7521380b66d6fe"
+  },
+  "mutant-0324-made-seeded-3-300-bytes-put-in.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "a section of kind 254 at byte 3940, which the layout does not define",
+   "fileSha256": "ea39cc55fc8be0951ba246fa0834b7a1e854ca5bfdf37ae28e554168c6bf60e4"
+  },
+  "mutant-0325-made-seeded-3-300-bytes-taken-out.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "a section of kind 227 at byte 11895, which the layout does not define",
+   "fileSha256": "a86b2a9afddd6ca62547ff13d4c8c15dfa01b06f8e528ed5277fe7de620914e1"
+  },
+  "mutant-0326-made-seeded-3-300-frames-rearranged.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "the sections after the records are not the paths, the wires and the end",
+   "fileSha256": "cdba2c2221f16431fa5b8112390bc8aab411d8349c68e81790b62fa59255f2df"
+  },
+  "mutant-0327-made-seeded-3-300-noise.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "a section of kind 72 at byte 8, which the layout does not define",
+   "fileSha256": "827edc3ae57f202b16155da1cc83f04e1ee7e31570eed18f7c8f5b7e7d46a618"
+  },
+  "mutant-0328-corpus-estate-flipped-bits.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "strings is not a whole raw deflate stream",
+   "fileSha256": "8270e7693e46cdce329131fa7ab92020f87a568d9e09e3359fde40930583f0d4"
+  },
+  "mutant-0329-corpus-estate-cut.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "the file stops before its end: a stopped write, which `resumeFrom` can go on from",
+   "fileSha256": "5dd44eb5853ba6874c2898b6d982053d3a503ad0ddfda14cbdb284f04ca0a792"
+  },
+  "mutant-0330-corpus-estate-lying-raw-length.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "records inflates past the 257 bytes it declares",
+   "fileSha256": "f6c727f6ebf9675980dfb1dc0081d32b6bd5811df89bab375a4d22ea081122d6"
+  },
+  "mutant-0331-corpus-estate-bomb.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "a section at byte 7623 declares 4294967280 bytes, past the layout's 67108864",
+   "fileSha256": "77e3ecc953b73c925acf4988377a9b6bd8d5253727a474344ea14629954ee38f"
+  },
+  "mutant-0332-corpus-estate-bytes-put-in.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "a section of kind 8 at byte 7136, which the layout does not define",
+   "fileSha256": "bf07e544e12da2840dbe1ac794774a10fbb89bc32edc02a1364089aa74b7e001"
+  },
+  "mutant-0333-corpus-estate-bytes-taken-out.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "a section of kind 152 at byte 4837, which the layout does not define",
+   "fileSha256": "c2736bbfe47d911277e93197e694db6fe85c7da7a48bb9f1587d36b319c6c664"
+  },
+  "mutant-0334-corpus-estate-frames-rearranged.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "the sections after the records are not the paths, the wires and the end",
+   "fileSha256": "b947fb6316947176c005cdc74fb698891429df070849a0593afe7b44e6ac75dd"
+  },
+  "mutant-0335-corpus-estate-noise.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "a section of kind 153 at byte 8, which the layout does not define",
+   "fileSha256": "a0a4081edaca338016c70ed969051d55a1ed96e98ae6c435d1b9e1c10f3f9ab5"
+  },
+  "mutant-0336-made-every-fact-flipped-bits.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "the end does not name the sections before it",
+   "fileSha256": "ed24612b16d3ab82a33012b026908932bf259882d5672b6276209c0be98105ea"
+  },
+  "mutant-0337-made-every-fact-cut.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "the file stops before its end: a stopped write, which `resumeFrom` can go on from",
+   "fileSha256": "3454ad752d247cf0a53ae1a0733e1e06629d0e850c2f77cd3e38b1fd22940f6b"
+  },
+  "mutant-0338-made-every-fact-lying-stored-length.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "a section of kind 99 at byte 53, which the layout does not define",
+   "fileSha256": "ee84867e8a011cfe969dcf6279aac4b0b7a41f276fae2122a896379290a78624"
+  },
+  "mutant-0339-made-every-fact-bomb.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "a section at byte 136 declares 4294967280 bytes, past the layout's 67108864",
+   "fileSha256": "4394815ef58c73ff89aa6efe0b66821cf2d58b36a6eea301616ee08130f47206"
+  },
+  "mutant-0340-made-every-fact-bytes-put-in.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "a section of kind 212 at byte 702, which the layout does not define",
+   "fileSha256": "6a3901d2718747f6998ff373ab2f99f7de6323b0c22e90ed58c5e541d228b8ee"
+  },
+  "mutant-0341-made-every-fact-bytes-taken-out.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "a section of kind 232 at byte 136, which the layout does not define",
+   "fileSha256": "d8d2ffdb08dd811d7293039c636db1c66f9a998cd58631770e0a6f88dae25a50"
+  },
+  "mutant-0342-made-every-fact-frames-rearranged.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "strings not followed by records",
+   "fileSha256": "991caf26aefbd67d3ec62fe663af0991dc4503072af566afacadc6e4a72ff4c6"
+  },
+  "mutant-0343-made-every-fact-noise.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "a section of kind 67 at byte 8, which the layout does not define",
+   "fileSha256": "1da71e521855bb87708350465e20379fafcc4d5255a1923f2259f52c3b5689c0"
+  },
+  "mutant-0344-made-seeded-3-300-flipped-bits.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "the wires inflates past the 987 bytes it declares",
+   "fileSha256": "c934376706468718a8ad64c8494307fdfc19f2d2dbf33f6356c1d9eeec8f3dbc"
+  },
+  "mutant-0345-made-seeded-3-300-cut.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "the file stops before its end: a stopped write, which `resumeFrom` can go on from",
+   "fileSha256": "959a55e106096175ad456a72f824a3dc54a688138f507eed41d5355df144225d"
+  },
+  "mutant-0346-made-seeded-3-300-lying-stored-length.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "a section of kind 100 at byte 54, which the layout does not define",
+   "fileSha256": "1b50189f761d954d0320ee8b08a0a79258942f13addedfc31ea571c2a0ef517e"
+  },
+  "mutant-0347-made-seeded-3-300-bomb.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "strings inflates past the 1109 bytes it declares",
+   "fileSha256": "c876f565d2fc0ca56aa538c98460b305f04e9d0fc9922ee556930c504f0143e5"
+  },
+  "mutant-0348-made-seeded-3-300-bytes-put-in.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "a section of kind 86 at byte 14214, which the layout does not define",
+   "fileSha256": "0fd804c5512ddb8c1207df2ca52e6909ac907a9616f72f06c3e1ba48e617ee00"
+  },
+  "mutant-0349-made-seeded-3-300-bytes-taken-out.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "a section of kind 153 at byte 13899, which the layout does not define",
+   "fileSha256": "f20849d66a5625677b19f0c380216f670657667245f3053ccab37a3cabe8ca17"
+  },
+  "mutant-0350-made-seeded-3-300-frames-rearranged.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "the sections after the records are not the paths, the wires and the end",
+   "fileSha256": "675f4d63145954a0b8eb8a2c6671b3589cb7ffb13b6d16550e7c92f34ac4f167"
+  },
+  "mutant-0351-made-seeded-3-300-noise.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "a section of kind 131 at byte 8, which the layout does not define",
+   "fileSha256": "2a1a0dfa6831ed499ce06b5f2f20e1a1a65845dff5c927872453a74aa72a70ea"
+  },
+  "mutant-0352-corpus-estate-flipped-bits.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "the end does not name the sections before it",
+   "fileSha256": "d738d941eab85f1365cb5cfca1b21d860d02ba1d43f0fb1e940a310e467c2da4"
+  },
+  "mutant-0353-corpus-estate-cut.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "the file stops before its end: a stopped write, which `resumeFrom` can go on from",
+   "fileSha256": "4a4ac15045772f4543113326924a6389eb83331b82037ebdc920e4c2644a3368"
+  },
+  "mutant-0354-corpus-estate-lying-count.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "the end does not count the sections before it",
+   "fileSha256": "98c36ba9bab6b6f9ac66cee3e0f60705a8f83bb2c069ffaa3c0b9b6c382dc586"
+  },
+  "mutant-0355-corpus-estate-bomb.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "a section at byte 7136 declares 4294967280 bytes, past the layout's 67108864",
+   "fileSha256": "5d11bed2b517271f49be51c22a81af0cdc55edad9dd063688520cedefef5bbb9"
+  },
+  "mutant-0356-corpus-estate-bytes-put-in.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "a section of kind 182 at byte 4837, which the layout does not define",
+   "fileSha256": "0bebcef3d35e56b5a3b79f8370b332b82864937f00ea98b11613980a550b40d6"
+  },
+  "mutant-0357-corpus-estate-bytes-taken-out.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "a section of kind 255 at byte 7136, which the layout does not define",
+   "fileSha256": "48028f1f3a730be4919fe98d1bc06d2a579e839d7480b27fe40982722226c834"
+  },
+  "mutant-0358-corpus-estate-frames-rearranged.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "strings not followed by records",
+   "fileSha256": "f42042d4369223e99503bdebbabfa3f202fd41f239fc2b33db2cfcaf7480de1b"
+  },
+  "mutant-0359-corpus-estate-noise.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "a section of kind 68 at byte 8, which the layout does not define",
+   "fileSha256": "0c9e85dc03943ed3d4e4c76a1fa7533cc5ef1f3038845bbff6d579e8c8e45576"
+  },
+  "mutant-0360-made-every-fact-flipped-bits.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "these bytes do not begin with the layout's signature",
+   "fileSha256": "e10d8a1204a8d082c1b7635c690406ad56dce12a0a4c5540f89892a1f7351c86"
+  },
+  "mutant-0361-made-every-fact-cut.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "the file stops before its end: a stopped write, which `resumeFrom` can go on from",
+   "fileSha256": "e6c50b4117420c393ae95e9e9d62866d92fd0b563a1062ccb4c6ab6638db6492"
+  },
+  "mutant-0362-made-every-fact-lying-raw-length.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "the end does not count the sections before it",
+   "fileSha256": "4877229ee376c1ddef44725956f6e077283fca27315b26964c60084cfdf761ca"
+  },
+  "mutant-0363-made-every-fact-bomb.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "records inflates past the 156 bytes it declares",
+   "fileSha256": "a4128f166bff7c37d9a28ed881b8b17ce578907b472e4007fdf81167c5f05914"
+  },
+  "mutant-0364-made-every-fact-bytes-put-in.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "a section of kind 212 at byte 702, which the layout does not define",
+   "fileSha256": "ecf62e71f11e09e37c3e5b4ada3e5aa6c4364950eedacde32f7fbac479d01112"
+  },
+  "mutant-0365-made-every-fact-bytes-taken-out.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "a section of kind 168 at byte 871, which the layout does not define",
+   "fileSha256": "92e98ff2c26ed67d66d5d4127d82cbcafb9fb3fe2edc7a824fb9648bfa6220db"
+  },
+  "mutant-0366-made-every-fact-frames-rearranged.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "the sections after the records are not the paths, the wires and the end",
+   "fileSha256": "36fa3d7b92c332451d3a2be15b185c2c7a904d2d30c2cd7e282a06d5de224af3"
+  },
+  "mutant-0367-made-every-fact-noise.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "a section of kind 122 at byte 8, which the layout does not define",
+   "fileSha256": "06de6222eba00aa6ddbe44dd3f63cd7067ff95f8ab01cf8a83afa7d00d9e75dc"
+  },
+  "mutant-0368-made-seeded-3-300-flipped-bits.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "the wires does not match its hash",
+   "fileSha256": "b092c554b01e812a54b50208238a50aacc47507c814e8013bf23b444adabc5a7"
+  },
+  "mutant-0369-made-seeded-3-300-cut.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "the file stops before its end: a stopped write, which `resumeFrom` can go on from",
+   "fileSha256": "589984013ea57bc235c4ee0821ebc7a2b618238c799edcc99a10c71049d50b28"
+  },
+  "mutant-0370-made-seeded-3-300-lying-stored-length.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "the file stops before its end: a stopped write, which `resumeFrom` can go on from",
+   "fileSha256": "55101b646791d23dc5895a2c463a0292d5b8ba683728bbb357808df6e047730c"
+  },
+  "mutant-0371-made-seeded-3-300-bomb.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "the end inflates past the 32 bytes it declares",
+   "fileSha256": "7456798653ec2b68d2be407e7e4470be5ecf6c26d9516bee74f3add7431fbf9f"
+  },
+  "mutant-0372-made-seeded-3-300-bytes-put-in.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "a section of kind 29 at byte 11895, which the layout does not define",
+   "fileSha256": "138e7783f758788cbadb26c66424cf68a0eaed7b01f0c3816a2688c9ddcf8e82"
+  },
+  "mutant-0373-made-seeded-3-300-bytes-taken-out.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "the file stops before its end: a stopped write, which `resumeFrom` can go on from",
+   "fileSha256": "6b96fdd8fa4c17fb6e1411d99cccaa1403e02c5b1fa08bca6a6f779360f7a891"
+  },
+  "mutant-0374-made-seeded-3-300-frames-rearranged.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "a section of 44 records before the last",
+   "fileSha256": "406665ab6620303eb486fb7beeef925ce1fe2605e7f27244e8f2a2681027e07d"
+  },
+  "mutant-0375-made-seeded-3-300-noise.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "a section of kind 76 at byte 8, which the layout does not define",
+   "fileSha256": "4f4436c0eb304216e83e4091e053ac2f655a9d9962f24e1ff5efd1c60c8b5ca6"
+  },
+  "mutant-0376-corpus-estate-flipped-bits.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "the wires is not a whole raw deflate stream",
+   "fileSha256": "108e3c2db595726fd571b7f0306760908fe6348578fb05bfb025eb95ae49af72"
+  },
+  "mutant-0377-corpus-estate-cut.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "the file stops before its end: a stopped write, which `resumeFrom` can go on from",
+   "fileSha256": "5823c9c3afb79eda4094ae8ce4b28bb69acd285968b402e2f579f1be627acab2"
+  },
+  "mutant-0378-corpus-estate-lying-raw-length.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "a section at byte 7623 declares 4294967280 bytes, past the layout's 67108864",
+   "fileSha256": "90e89daaff62f57d557fd15101361de75e49aca6addccb8533588874dc7b7b4d"
+  },
+  "mutant-0379-corpus-estate-bomb.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "a section at byte 97 declares 4294967280 bytes, past the layout's 67108864",
+   "fileSha256": "0641a46022307fff89ca337b60f5c03f1b5df7891c1c24e7ee216ab91a45523b"
+  },
+  "mutant-0380-corpus-estate-bytes-put-in.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "a section of kind 233 at byte 4837, which the layout does not define",
+   "fileSha256": "082f202bbbc76388c9dee8ac895b0e6aa2694a5dead3d72c42f1dd7d81fc2ec4"
+  },
+  "mutant-0381-corpus-estate-bytes-taken-out.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "a section of kind 47 at byte 4837, which the layout does not define",
+   "fileSha256": "13200eff2a414eebad3daf62512dbbb1bf1719f9a21cca898ec2de5636d1496d"
+  },
+  "mutant-0382-corpus-estate-frames-rearranged.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "2932 bytes after the end",
+   "fileSha256": "be33939368e23180edd182453aea4cd0cd7efe3d9d84159c3a6b49c3215444e9"
+  },
+  "mutant-0383-corpus-estate-noise.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "a section of kind 177 at byte 8, which the layout does not define",
+   "fileSha256": "934e96d850b81daf2e121fea194512d17e363da316129ee0db9501435099003e"
+  },
+  "mutant-0384-made-every-fact-flipped-bits.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "the end does not match its hash",
+   "fileSha256": "e4712ac282ec0ba58895cc976898bc8a292a063fe38d5234da97e0e386258657"
+  },
+  "mutant-0385-made-every-fact-cut.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "the file stops before its end: a stopped write, which `resumeFrom` can go on from",
+   "fileSha256": "cf960ba682af66266129d2df42117a63448702b82a05792fe25d96bcc0fb52b7"
+  },
+  "mutant-0386-made-every-fact-lying-raw-length.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "the head inflates past the 0 bytes it declares",
+   "fileSha256": "491935827384a312eb8f01d7e1ef3ae2cea87d55a844c1da408c56e5a381104d"
+  },
+  "mutant-0387-made-every-fact-bomb.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "a section at byte 702 declares 4294967280 bytes, past the layout's 67108864",
+   "fileSha256": "0f6ab640b920a002557ec18513205649882814a13354f95844747f0aa469c57c"
+  },
+  "mutant-0388-made-every-fact-bytes-put-in.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "a section of kind 13 at byte 702, which the layout does not define",
+   "fileSha256": "153c5edfb4b815ca5a9f65afabcd1fb55391f56e58092444cbe14f1f811a6c68"
+  },
+  "mutant-0389-made-every-fact-bytes-taken-out.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "a section of kind 223 at byte 702, which the layout does not define",
+   "fileSha256": "206af95310ae418a13a4ae6f11b68ff42f95d8e8ae1b104d65c8bf8a4b70e909"
+  },
+  "mutant-0390-made-every-fact-frames-rearranged.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "a section of 3 records before the last",
+   "fileSha256": "2e9b75f4914dc6007db5c069ef0e0a753b2b56e8079b4a1c6ce9e61dc53c5027"
+  },
+  "mutant-0391-made-every-fact-noise.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "a section of kind 166 at byte 8, which the layout does not define",
+   "fileSha256": "435fd7fffd5e5642ba0eb00bb9c48139dfd1170275ad67c9038b935cb5deb513"
+  },
+  "mutant-0392-made-seeded-3-300-flipped-bits.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "strings inflates to 13728 bytes, not the 13739 it declares",
+   "fileSha256": "e0187e9625ef5930c6841a7ede3ac3d045cc2d93c56fa5d6dd8cafd04fd7b157"
+  },
+  "mutant-0393-made-seeded-3-300-cut.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "the file stops before its end: a stopped write, which `resumeFrom` can go on from",
+   "fileSha256": "644022896ed254236c963d563d6728dae1993dafba3991c80543d6239123f04c"
+  },
+  "mutant-0394-made-seeded-3-300-lying-count.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "the first section is not the head",
+   "fileSha256": "1ddfb4c32d4083264e956fcfffe23fb341e74c8976f6e2b34f5425d8d8c7b035"
+  },
+  "mutant-0395-made-seeded-3-300-bomb.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "the paths inflates past the 2097 bytes it declares",
+   "fileSha256": "54fa060285763952e621b22c8dee96998e70c71e2d6d9bbf44edaa9835b8d4c2"
+  },
+  "mutant-0396-made-seeded-3-300-bytes-put-in.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "a section of kind 37 at byte 3940, which the layout does not define",
+   "fileSha256": "4228b41f45585be750bb9f544242c7375dac6f9b186d0022b04dd8a2a88c87a8"
+  },
+  "mutant-0397-made-seeded-3-300-bytes-taken-out.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "a section of kind 109 at byte 3940, which the layout does not define",
+   "fileSha256": "9dc05f0dd3e3e9cb06840ac88b23390a832afd5db0e65835c6a0013ddfbc0cf8"
+  },
+  "mutant-0398-made-seeded-3-300-frames-rearranged.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "strings not followed by records",
+   "fileSha256": "a029ce4221a59ca586933fdfef66401c5d109ecab45385bfde5aebd870adccce"
+  },
+  "mutant-0399-made-seeded-3-300-noise.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "a section of kind 79 at byte 8, which the layout does not define",
+   "fileSha256": "b14c5a057c981057eb7e26ed32ab16154a0e06dbbc474d34aeb6466c4d1f1dc8"
+  },
+  "probe-as-written.fpk": {
+   "reads": true,
+   "textSha256": "303e1b596c6914e74e2c84e8d1c5eb3948796fb1053c3d0b99283a73b71956ef",
+   "textBytes": 2967,
+   "name": "00588503650202a8d082acd92be4cadb46302bffe974a26d336cd9e2226a4834",
+   "graphSha256": "84a681c0380853c84f9ac794f255ab6a4e0679d16f118dc3eff174a2c308e7ad",
+   "fileSha256": "2424c6f05163e0c7e36e4e369a27df301475beae445b4537a78627a788e5b048"
+  },
+  "probe-empty-strings-frame.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "a section of no strings",
+   "fileSha256": "ecf1691ba720a7e13f348d4ad3bc6d9c9a1aa2e2f05773db6f0cec31c2dcabfe"
+  },
+  "probe-end-count-wrong.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "the end does not count the sections before it",
+   "fileSha256": "ac7bc1cd105ce84189b88aee385fcee0be3b93e34c9f65878f9a36f22a93a635"
+  },
+  "probe-file-mark-undefined-bit.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "the facts of \"src/a.ts\": its marks sets a mark the layout does not define",
+   "fileSha256": "09771937a0e9151b3dbb87d5a9d1b2d5f347ed9a610e58793048887edb30a4d3"
+  },
+  "probe-head-count-1.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "the first section is not the head",
+   "fileSha256": "a36ed3a4f4c1feb2625518e1c5a113ad47453d69048346376575f33007f3c41a"
+  },
+  "probe-head-root-absolute.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "the location's root \"/x\" is not a relative path",
+   "fileSha256": "f2fbb786d765534a894048e9a3a4b1fbc5a71974db3bb25ab4957c787cfa14fa"
+  },
+  "probe-head-version-2.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "the layout's version is 2; this reader reads 1",
+   "fileSha256": "d148ee1296cfccd799f95e8b4de0100fc3f20dbc000419fa287032b8feba9751"
+  },
+  "probe-past-the-file-bound.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "the sections declare 3145744 bytes in all from a file of 3414, past 1267072",
+   "fileSha256": "882e0cd8d95c3f2af92f1353c963507abdb8549c5d91372efd795a275824d654"
+  },
+  "probe-paths-count-wrong.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "the paths or wires count other than the 3 files recorded",
+   "fileSha256": "0e8d8296f36ae08fa9b304c1a1cc7ddf660d50a3bce427cd6124af7445221bc2"
+  },
+  "probe-paths-shared-not-longest.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "a path's shared beginning is written shorter than it is",
+   "fileSha256": "1a69a4a8d7f9110ad173c7ce45719968dfb7c4a5a7d4316cd03898fcb0a44c6c"
+  },
+  "probe-records-count-wrong.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "the paths or wires count other than the 4 files recorded",
+   "fileSha256": "0f374a5d80bf5141c4a39027a6638b85b46269729daee9880faffe3771bea02d"
+  },
+  "probe-text-past-the-file-bound.fpk": {
+   "reads": false,
+   "readOk": true,
+   "reason": "the text would hold 65544891 bytes of names from a file of 7423 bytes, past 1523648",
+   "graphSha256": "94f5fbc5f8e632c83b11a06ae27c97ac794dbb01392d9240826248237ad199ed",
+   "textSha256": "8ef0ed9e36c288155b010a2fbb7ae67a8b993811ab5e7d7469c631f765552ce9",
+   "textBytes": 65739031,
+   "fileSha256": "b70afeb43ba91b773d928eac1b86ee6e8a3633606882ef4b734bb8bf8d55d71c"
+  },
+  "probe-unknown-kind-7.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "a section of kind 7 at byte 988, which the layout does not define",
+   "fileSha256": "a1703bcc808d6b9b4a8d3c01b0a2b40ef91e157768c474fef972ea54b619febc"
+  },
+  "probe-within-the-file-bound.fpk": {
+   "reads": true,
+   "textSha256": "b86cfb21def7b9886478e89fa8a4f8ccbdf37e4f2a890a8261cad6360af6182a",
+   "textBytes": 921741,
+   "name": "d02263befe33dc5f22ea80b7b916b9f844ff530989860fa4b4e03b1864947679",
+   "graphSha256": "94f5fbc5f8e632c83b11a06ae27c97ac794dbb01392d9240826248237ad199ed",
+   "fileSha256": "904f5d438da8f905ff8482115c1a28102fd195a692c69f9d4cb9e85836078f3f"
+  },
+  "text-4.0-b.txt": {
+   "reads": false,
+   "reason": "line 6 is not written as the text form writes it: \"[\\\"a\\\",\\\"file\\\",4.0,null,null]\\n[\\\"a\\\",\\\"authored\\\",\\\"x\\\\b/ é😀\\\\u001f\\\\\\\"y\\\"]\"",
+   "fileSha256": "1b66a1cfb037fcec5a893d507540b02fc0000e2ab1e5f127e6b0ccc5d50d9ac7"
+  },
+  "text-4.0.txt": {
+   "reads": false,
+   "reason": "line 16 is not written as the text form writes it: \"[\\\"src/a.ts\\\",\\\"file\\\",4.0,\\\"implementation\\\",\\\"2026-11-22T00:00:00.000Z\\\"]\\n[\\\"src/a.ts\\\",\\\"authored\\\",\\\"### Purpose\\\\nSays hello.\\\\n\\\\n\"",
+   "fileSha256": "2454822bbf6b5c325552d9db903e1652deee920a9f2326dfb5e5c85994d0cf97"
+  },
+  "text-4e0.txt": {
+   "reads": false,
+   "reason": "line 6 is not written as the text form writes it: \"[\\\"a\\\",\\\"file\\\",4e0,null,null]\\n[\\\"a\\\",\\\"authored\\\",\\\"x\\\\b/ é😀\\\\u001f\\\\\\\"y\\\"]\"",
+   "fileSha256": "6faa744e9060856fd6607ebcd99c02fde720fa21408d49bb4e4fcfeabb9de81f"
+  },
+  "text-byte-ff.txt": {
+   "reads": false,
+   "reason": "the text holds text that is not UTF-8",
+   "fileSha256": "dbcd92cc8921cdf5e0791d62ac2829b4d4f3ac432d6e3af4360f2245648486a9"
+  },
+  "text-byte-order-mark.txt": {
+   "reads": false,
+   "reason": "line 1 is not JSON",
+   "fileSha256": "d3c6d211a5d8ad3f4ecbc5e363e53e99e484a71ea896984ebfaf96af56f6115e"
+  },
+  "text-crlf.txt": {
+   "reads": false,
+   "reason": "line 1 is not written as the text form writes it: \"[null,\\\"format\\\",\\\"fact-pack\\\",1]\\r\"",
+   "fileSha256": "7db7e7f45af922228fd5f3aa48c88476e22d5cdf49922591cbe46387c441f475"
+  },
+  "text-escaped-letter.txt": {
+   "reads": false,
+   "reason": "line 16 is not written as the text form writes it: \"[\\\"src/a.ts\\\",\\\"file\\\",4,\\\"implementation\\\",\\\"2026-11-22T00:00:00.000Z\\\"]\\n[\\\"src/a.ts\\\",\\\"authored\\\",\\\"### Purpose\\\\nSays \\\\u0068ello.\\\\\"",
+   "fileSha256": "09d637c613ee6a315a81fa655dca325b866dc0ec64f47973fe76dbac7ae3785c"
+  },
+  "text-escaped-slash.txt": {
+   "reads": false,
+   "reason": "line 6 is not written as the text form writes it: \"[\\\"a\\\",\\\"file\\\",4,null,null]\\n[\\\"a\\\",\\\"authored\\\",\\\"x\\\\b\\\\/ é😀\\\\u001f\\\\\\\"y\\\"]\"",
+   "fileSha256": "f1d26e81926c208cec6a14e121d9807f3048cd2bd3aad53b8d71b1f80edb8c31"
+  },
+  "text-false-for-absent.txt": {
+   "reads": false,
+   "reason": "line 16 is not written as the text form writes it: \"[\\\"src/a.ts\\\",\\\"file\\\",4,\\\"implementation\\\",\\\"2026-11-22T00:00:00.000Z\\\"]\\n[\\\"src/a.ts\\\",\\\"authored\\\",\\\"### Purpose\\\\nSays hello.\\\\n\\\\n##\"",
+   "fileSha256": "cf9b5f8605f9b37afc6450b3525bc336297d64d1473613af49db77643eef93a1"
+  },
+  "text-leading-space.txt": {
+   "reads": false,
+   "reason": "line 6 is not written as the text form writes it: \"[ \\\"a\\\",\\\"file\\\",4,null,null]\\n[\\\"a\\\",\\\"authored\\\",\\\"x\\\\b/ é😀\\\\u001f\\\\\\\"y\\\"]\"",
+   "fileSha256": "e1c4194dfaf6c0eb15b60a24ae7551a4731efa801d39205535cd5f52a7e3c8ab"
+  },
+  "text-line-after-end.txt": {
+   "reads": false,
+   "reason": "lines after the end line",
+   "fileSha256": "8c66709147f99df7b66c2347eee3c240884a2aed4f8108f85f72926c35b2083e"
+  },
+  "text-members-reordered-and-unknown.txt": {
+   "reads": false,
+   "reason": "line 16 is not written as the text form writes it: \"[\\\"src/a.ts\\\",\\\"file\\\",4,\\\"implementation\\\",\\\"2026-11-22T00:00:00.000Z\\\"]\\n[\\\"src/a.ts\\\",\\\"authored\\\",\\\"### Purpose\\\\nSays hello.\\\\n\\\\n##\"",
+   "fileSha256": "15aed0c79b4c2d0bf0962e923fde2f7b0a69824a526e4d9d1417f96b69db3a76"
+  },
+  "text-no-final-line-break.txt": {
+   "reads": false,
+   "reason": "the text does not end with a line break",
+   "fileSha256": "faa259c789a1d9c0fa3c64bd109667cadb888b7e012918ffb312fb54df5647b4"
+  },
+  "text-path-repeated.txt": {
+   "reads": false,
+   "reason": "line 17 is not \"src/a.ts\"'s authored words",
+   "fileSha256": "2707b4e4e6184006ac47036b888accc5d477cd83a601804cbe3348deabef3271"
+  },
+  "text-space-after-comma.txt": {
+   "reads": false,
+   "reason": "line 16 is not written as the text form writes it: \"[\\\"src/a.ts\\\", \\\"file\\\",4,\\\"implementation\\\",\\\"2026-11-22T00:00:00.000Z\\\"]\\n[\\\"src/a.ts\\\",\\\"authored\\\",\\\"### Purpose\\\\nSays hello.\\\\n\\\\n#\"",
+   "fileSha256": "ad3f6e29592fe7b343aa08423aee712bc88421bc1d711066ac1ffa5d7f023fb2"
+  },
+  "text-surrogate-pair.txt": {
+   "reads": false,
+   "reason": "line 6 is not written as the text form writes it: \"[\\\"a\\\",\\\"file\\\",4,null,null]\\n[\\\"a\\\",\\\"authored\\\",\\\"x\\\\b/ é\\\\ud83d\\\\ude00\\\\u001f\\\\\\\"y\\\"]\"",
+   "fileSha256": "30be721638d9e6ba4fed00a665d08e1b59a1ffb22eb670a176f88edbf59eab7f"
+  },
+  "text-u0008.txt": {
+   "reads": false,
+   "reason": "line 6 is not written as the text form writes it: \"[\\\"a\\\",\\\"file\\\",4,null,null]\\n[\\\"a\\\",\\\"authored\\\",\\\"x\\\\u0008/ é😀\\\\u001f\\\\\\\"y\\\"]\"",
+   "fileSha256": "073dfdfb7a3b3b290ade6cb256074a7c80b678fac1850073e37543b5f3fc7055"
+  },
+  "text-u0022.txt": {
+   "reads": false,
+   "reason": "line 6 is not written as the text form writes it: \"[\\\"a\\\",\\\"file\\\",4,null,null]\\n[\\\"a\\\",\\\"authored\\\",\\\"x\\\\b/ é😀\\\\u001f\\\\u0022y\\\"]\"",
+   "fileSha256": "552a1242de8adabcbab62ad70dc85524b7f77ca2e84ca936044a629c94b8a46b"
+  },
+  "text-u007f.txt": {
+   "reads": false,
+   "reason": "line 6 is not written as the text form writes it: \"[\\\"a\\\",\\\"file\\\",4,null,null]\\n[\\\"a\\\",\\\"authored\\\",\\\"x\\\\b/\\\\u007f é😀\\\\u001f\\\\\\\"y\\\"]\"",
+   "fileSha256": "a1a616fcdb68fef85dabaa5a229c587c21523e9f4d56b4321d5f405ccd225e53"
+  },
+  "text-u00e9.txt": {
+   "reads": false,
+   "reason": "line 6 is not written as the text form writes it: \"[\\\"a\\\",\\\"file\\\",4,null,null]\\n[\\\"a\\\",\\\"authored\\\",\\\"x\\\\b/ \\\\u00e9😀\\\\u001f\\\\\\\"y\\\"]\"",
+   "fileSha256": "0de212131ffe4d76387da8cd4baf28217a2b90d48a053697f57236cdf2e2db85"
+  },
+  "text-u2028.txt": {
+   "reads": false,
+   "reason": "line 6 is not written as the text form writes it: \"[\\\"a\\\",\\\"file\\\",4,null,null]\\n[\\\"a\\\",\\\"authored\\\",\\\"x\\\\b/\\\\u2028é😀\\\\u001f\\\\\\\"y\\\"]\"",
+   "fileSha256": "eb9d3118990a83f11ce0276eb16e6d7de0438a9357d0af7aa6f2279344ead202"
+  },
+  "text-uppercase-hex.txt": {
+   "reads": false,
+   "reason": "line 6 is not written as the text form writes it: \"[\\\"a\\\",\\\"file\\\",4,null,null]\\n[\\\"a\\\",\\\"authored\\\",\\\"x\\\\b/ é😀\\\\u001F\\\\\\\"y\\\"]\"",
+   "fileSha256": "b3b227b7dc3dd70a0a042cc7a8a627a7014aa7011c58a13745474ca5b73c4b34"
+  },
+  "text-wrong-count.txt": {
+   "reads": false,
+   "reason": "the end line does not count the 3 files",
+   "fileSha256": "be249101e452ce42e6daeaddee9cc0e4ebdeb0d76e8f466fa1cc08700647e846"
+  },
+  "unit-byte-after-the-end.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "1 bytes after the end",
+   "fileSha256": "7d74329cb4b2104438bffc7f2f6a7bc2e679bf47417322e522bdc2849f276189"
+  },
+  "unit-byte-never-utf8.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "a section of strings holds text that is not UTF-8",
+   "fileSha256": "cb37e8281dcb1183a2c5f09e2f15d9c1f5fbf6f3f5ed8ebdcbcb1591f997dfd9"
+  },
+  "unit-character-split-between-strings.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "a string begins in the middle of a character",
+   "fileSha256": "15d013a9fec19a769a5e1e0cded44618701ea427595e81064844132d5c2f67fe"
+  },
+  "unit-cut-by-one-byte.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "the file stops before its end: a stopped write, which `resumeFrom` can go on from",
+   "fileSha256": "9bfa85382e1ce8fafe3f4390cce1c9787a71ff69ad641d7804d762734a5d893f"
+  },
+  "unit-flipped-byte.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "the end does not name the sections before it",
+   "fileSha256": "f4345ebb8bb32072f2a24625609ec0eba8ffe02ed1dea1de15e6d8a748ab8a78"
+  },
+  "unit-number-longer-than-needed.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "a section of records holds a number written longer than it needs",
+   "fileSha256": "0704843d4a4b53bcbb96df95acc76e81112bea2463d8d08805d94b903e0d7b36"
+  },
+  "unit-string-never-named.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "1 strings set down before a section of records are not met in it",
+   "fileSha256": "07869edbe6351eb7ce068ad6357ae9249434ff4c74369304639c227d123d16ea"
+  },
+  "unit-string-twice.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "the string \"dir0/file-00000.ts\" is set down twice",
+   "fileSha256": "74e1ff1d12e98a179b8b982d0f073f798754734fb3bd34784b8aa0932d45c5b4"
+  },
+  "unit-wires-not-the-links.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "a wire of file 1 names file 30",
+   "fileSha256": "7e29d4842a9cad30464d0bb4f2f038585cb1bdd7898a40b489234be73589ebf6"
+  }
+ },
+ "second": {
+  "second-extension-backslash-inside.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "the location's extension holds a slash, a backslash or a NUL",
+   "fileSha256": "f5da7a54edb9dd123cb2f52220c2be5e6f6d28d29c9b2daec57f1555b79920ee"
+  },
+  "second-extension-backslash.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "the location's extension holds a slash, a backslash or a NUL",
+   "fileSha256": "c8c3cc6de8a7eef055dc009bf8bd2244c7d13823494d0ab6381c98b376445d74"
+  },
+  "second-extension-empty.fpk": {
+   "reads": true,
+   "textSha256": "44c802279c8791dab6b8a2286a03f08f84b4b6c4b56adeaf624e1717b801a151",
+   "textBytes": 2959,
+   "name": "c53d16cdfe9ba26307d9c546a0f755adad4850196f3ad4195fd61dba736a08a7",
+   "graphSha256": "e29eb5981a7c1024a81d9ed98d178839e90bc7c2fdf91735c36d113a45e4ef34",
+   "fileSha256": "e113b32c624936940c44b8964816222d0fb63a040d008a2b29ed8c2ed61bcd95"
+  },
+  "second-extension-nul.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "the location's extension holds a slash, a backslash or a NUL",
+   "fileSha256": "f9a350a309c0910d32ca58d2a763e1b985650e0ab5e80f5f0c2218000717cd7d"
+  },
+  "second-extension-slash.fpk": {
+   "reads": false,
+   "readOk": false,
+   "reason": "the location's extension holds a slash, a backslash or a NUL",
+   "fileSha256": "77ae462abfe904b1ed14d878848d66c67793d5f7d85048d7b762bff834cc77fb"
+  },
+  "second-text-authored-before-file.txt": {
+   "reads": false,
+   "reason": "line 5 is not a file's first line",
+   "fileSha256": "61ecdc31b4bda1224b6e3eb39d02918a4c58744839ea8ac6555dc6a2f3969ec8"
+  },
+  "second-text-authored-twice.txt": {
+   "reads": false,
+   "reason": "line 7 is not a file's first line",
+   "fileSha256": "9cdcdea92dd6fed6dc4ce18c6ce9cc4674f28e5ca1657109ca091452b458c2c6"
+  },
+  "second-text-cited-by-twice.txt": {
+   "reads": false,
+   "reason": "\"src/a.ts\" has two cited-by lines",
+   "fileSha256": "2ed2e71f15e486d5d26a21156175d5ac80b547b7c6a5d23a592f0bea5c79b2a8"
+  },
+  "second-text-dependency-before-symbol.txt": {
+   "reads": false,
+   "reason": "line 11 is not a file's first line",
+   "fileSha256": "f8a7c1a162fc3c571a306ee49ff6936024f5364a11eade44a90dc429e9c68de5"
+  },
+  "second-text-doc-element-null.txt": {
+   "reads": false,
+   "reason": "the facts of \"src/a.ts\": a documentation reference's element is not text",
+   "fileSha256": "1f7074c0c5ced24a00882cc3ecd80f813537c68b9b882fae39f46375bc753370"
+  },
+  "second-text-doc-members-reordered.txt": {
+   "reads": false,
+   "reason": "line 16 is not written as the text form writes it: \"[\\\"src/a.ts\\\",\\\"file\\\",4,\\\"implementation\\\",\\\"2026-11-22T00:00:00.000Z\\\"]\\n[\\\"src/a.ts\\\",\\\"authored\\\",\\\"### Purpose\\\\nSays hello.\\\\n\\\\n##\"",
+   "fileSha256": "2ce8d5b7f1ecbcd51efa465ef6b214bad774899722ccf9da1957a78d0f13cf4e"
+  },
+  "second-text-doc-target-without-link.txt": {
+   "reads": false,
+   "reason": "the facts of \"src/a.ts\": a target without a link",
+   "fileSha256": "9eb6aa84c1f96db9538bd1a6e3b3ea7a3dd444b91cceb928861135969abe0830"
+  },
+  "second-text-entry-after-symbol.txt": {
+   "reads": false,
+   "reason": "line 10 is not a file's first line",
+   "fileSha256": "db6300c947da55c6034462201b29515f45b841d45ff85ca8cd836cbbb9251fcb"
+  },
+  "second-text-extension-backslash.txt": {
+   "reads": false,
+   "reason": "the location's extension holds a slash, a backslash or a NUL",
+   "fileSha256": "d7a19a49a1e7ba693769f7bb9a7634878678b9438cb91445bda40ff64088d9a9"
+  },
+  "second-text-file-twice.txt": {
+   "reads": false,
+   "reason": "line 6 is not \"src/a.ts\"'s authored words",
+   "fileSha256": "1da6e13ed98a5d925ca971bdedf4325073199105451392c2f9c897de3bb020a1"
+  },
+  "second-text-location-twice.txt": {
+   "reads": false,
+   "reason": "the third line is not the scanner",
+   "fileSha256": "9425d07a1a89fc9f0a42dfd653a4cbf08ca8f5528d179fc458a184408b48aa5f"
+  },
+  "second-text-no-documentation-member.txt": {
+   "reads": false,
+   "reason": "the facts of \"src/a.ts\": a symbol's documentation is not a list",
+   "fileSha256": "d69e3a97c4cb9884075149586d2c0e9dc7f031cfd1f54530eca4f0326db2a41e"
+  },
+  "second-text-past-the-export-bound.txt": {
+   "reads": true,
+   "name": "0ccb074fe4da9213604bac353e4c1f1083945d7240f0a2475a4d67d4072cb904",
+   "fileSha256": "8ef0ed9e36c288155b010a2fbb7ae67a8b993811ab5e7d7469c631f765552ce9"
+  },
+  "second-text-scanner-before-location.txt": {
+   "reads": false,
+   "reason": "the second line is not the location",
+   "fileSha256": "b490f81756cc239b74d296eb23617f04e10ac0567db951b06821d75f58dc8259"
+  },
+  "second-text-symbol-twice.txt": {
+   "reads": true,
+   "name": "0a4beaef3a1884156dd79155e6ab8b8a8db32a75d869cdf90e2edc65b01cfed9",
+   "fileSha256": "692d156ae32279c1838e4e42ac05455a7d6362ef2fc962a6cd46149141555a4e"
+  }
+ }
+}
