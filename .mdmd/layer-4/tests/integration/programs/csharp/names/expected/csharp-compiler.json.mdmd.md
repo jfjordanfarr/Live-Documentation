@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `tests/integration/programs/csharp/names/expected/csharp-compiler.json`
-- Generated At: 2026-11-21T07:28:52.353Z
+- Generated At: 2026-11-22T01:24:27.269Z
 
 ## Authored
 ### Purpose
@@ -46,6 +46,9 @@ The C# compiler's binding of the `names` sample, written by `npm run oracle:csha
 #### `declared:App/Derived.cs` {#symbol-declaredappderivedcs}
 - Type: key
 
+#### `declared:App/Documented.cs` {#symbol-declaredappdocumentedcs}
+- Type: key
+
 #### `declared:App/Helper.cs` {#symbol-declaredapphelpercs}
 - Type: key
 
@@ -58,10 +61,19 @@ The C# compiler's binding of the `names` sample, written by `npm run oracle:csha
 #### `declared:App/Other.cs` {#symbol-declaredappothercs}
 - Type: key
 
+#### `declared:App/Runner.Text.cs` {#symbol-declaredapprunnertextcs}
+- Type: key
+
+#### `declared:App/Runner.cs` {#symbol-declaredapprunnercs}
+- Type: key
+
 #### `declared:App/Use.cs` {#symbol-declaredappusecs}
 - Type: key
 
 #### `declared:B/Thing.cs` {#symbol-declaredbthingcs}
+- Type: key
+
+#### `crefs` {#symbol-crefs}
 - Type: key
 
 #### `sources` {#symbol-sources}
@@ -82,6 +94,9 @@ The C# compiler's binding of the `names` sample, written by `npm run oracle:csha
 #### `sources:App/Derived.cs` {#symbol-sourcesappderivedcs}
 - Type: key
 
+#### `sources:App/Documented.cs` {#symbol-sourcesappdocumentedcs}
+- Type: key
+
 #### `sources:App/Helper.cs` {#symbol-sourcesapphelpercs}
 - Type: key
 
@@ -92,6 +107,12 @@ The C# compiler's binding of the `names` sample, written by `npm run oracle:csha
 - Type: key
 
 #### `sources:App/Other.cs` {#symbol-sourcesappothercs}
+- Type: key
+
+#### `sources:App/Runner.Text.cs` {#symbol-sourcesapprunnertextcs}
+- Type: key
+
+#### `sources:App/Runner.cs` {#symbol-sourcesapprunnercs}
 - Type: key
 
 #### `sources:App/Use.cs` {#symbol-sourcesappusecs}

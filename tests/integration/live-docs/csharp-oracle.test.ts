@@ -20,7 +20,7 @@ import os from "node:os";
 import path from "node:path";
 import { describe, expect, it } from "vitest";
 
-import { compareCSharp, compiledSources, type CompilerRecord, type CSharpReport } from "../../../scripts/oracle/csharp-compare";
+import { compareCSharp, compiledSources, type CompilerRecord, type CSharpReport, type DocumentationReference } from "../../../scripts/oracle/csharp-compare";
 import { folderFiles } from "../../../scripts/oracle/powershell-compare";
 import { sourceDigests, sourcesDiffer } from "../../../scripts/oracle/sources";
 
@@ -49,6 +49,64 @@ const MEASURED_MISSES: Record<string, string[]> = {
   "programs/csharp/webforms": []
 };
 
+/**
+ * The compiler's answer for every documentation reference (`cref`) the samples hold, and the C# file pairs they make.
+ * `names/App/Documented.cs`, written on 2026-11-22, holds one of each kind worth telling apart: a type, a member, a
+ * nested type, a generic beside the type of its name without one, each of two overloads declared in two parts of a
+ * partial class, the overloads' name alone (the compiler cannot choose, its warning CS0419), a namespace, a name
+ * nothing declares and a type of a project the file's project does not reference (both resolved to nothing, CS1574);
+ * `estate/Hub/PaymentHub.cs` names an overload in another project, a pair its code binds as well. Rosetta's
+ * `ArgumentException` resolves to nothing because the compilation has no framework references.
+ *
+ * `drawn` is the pairs the adapter draws, by its dependency lines: today only those the code makes too. The owner's
+ * word of 2026-11-21 is that an author's documentation reference is to be honoured; when the reader draws it, as a
+ * relation of its own kind, this register changes with it.
+ */
+const DOCUMENTATION: Record<string, { references: string[]; alsoCode: string[]; authorOnly: string[]; drawn: string[] }> = {
+  "programs/csharp/basic":  { references: [], alsoCode: [], authorOnly: [], drawn: [] },
+  "programs/csharp/estate": {
+    references: ["Hub/PaymentHub.cs:12 <seealso> IPaymentService.Post(PaymentRequest): resolved, Method Estate.Contracts.IPaymentService.Post(Estate.Contracts.PaymentRequest) in Contracts/IPaymentService.cs"],
+    alsoCode:   ["Hub/PaymentHub.cs → Contracts/IPaymentService.cs"],
+    authorOnly: [],
+    drawn:      ["Hub/PaymentHub.cs → Contracts/IPaymentService.cs"]
+  },
+  "programs/csharp/names": {
+    references: [
+      "App/Documented.cs:5 <see> Base: resolved, NamedType App.Base in App/Base.cs",
+      "App/Documented.cs:5 <see> Base.Gadget: resolved, Property App.Base.Gadget in App/Base.cs",
+      "App/Documented.cs:5 <see> Base.Options: resolved, NamedType App.Base.Options in App/Base.cs",
+      "App/Documented.cs:6 <see> Lib.Helper{T}: resolved, NamedType Lib.Helper<T> in App/HelperOfT.cs",
+      "App/Documented.cs:6 <see> Lib.Helper: resolved, NamedType Lib.Helper in App/Helper.cs",
+      "App/Documented.cs:7 <see> Runner.Run(Runner.Count): resolved, Method App.Runner.Run(App.Runner.Count) in App/Runner.cs",
+      "App/Documented.cs:8 <seealso> Runner.Run(Runner.Text): resolved, Method App.Runner.Run(App.Runner.Text) in App/Runner.Text.cs",
+      "App/Documented.cs:8 <see> Runner.Run: Ambiguous, Method App.Runner.Run(App.Runner.Count) in App/Runner.cs; Method App.Runner.Run(App.Runner.Text) in App/Runner.Text.cs",
+      "App/Documented.cs:9 <see> App.Other: resolved, Namespace App.Other in App/Other.cs",
+      "App/Documented.cs:10 <see> Missing: unresolved",
+      "App/Documented.cs:12 <permission> Derived: resolved, NamedType App.Derived in App/Derived.cs",
+      "App/Documented.cs:15 <inheritdoc> Base.Gadget: resolved, Property App.Base.Gadget in App/Base.cs",
+      "App/Documented.cs:16 <exception> Lib.Thing: unresolved"
+    ],
+    alsoCode:   [],
+    authorOnly: [
+      "App/Documented.cs → App/Base.cs",
+      "App/Documented.cs → App/Derived.cs",
+      "App/Documented.cs → App/Helper.cs",
+      "App/Documented.cs → App/HelperOfT.cs",
+      "App/Documented.cs → App/Runner.Text.cs",
+      "App/Documented.cs → App/Runner.cs"
+    ],
+    drawn: []
+  },
+  "programs/csharp/rosetta":  { references: ["src/Processor/Processor.cs:33 <exception> ArgumentException: unresolved"], alsoCode: [], authorOnly: [], drawn: [] },
+  "programs/csharp/webforms": { references: [], alsoCode: [], authorOnly: [], drawn: [] }
+};
+
+/** A documentation reference and the compiler's answer for it, in words. */
+function answered(reference: DocumentationReference): string {
+  const symbols = reference.resolved.map((symbol) => `${symbol.kind} ${symbol.symbol} in ${symbol.files.join(", ")}`).join("; ");
+  return `${reference.from}:${reference.line} <${reference.element}> ${reference.written}: ${reference.outcome}${symbols ? `, ${symbols}` : ""}`;
+}
+
 /** Discover compiler records independently of the register of measured misses. */
 function measuredFixtures(root = INTEGRATION_ROOT): string[] {
   return globSync(["programs/**/expected/csharp-compiler.json", "fixtures/**/expected/csharp-compiler.json"], { cwd: root, dot: true, nodir: true })
@@ -72,6 +130,7 @@ function disagreements(report: CSharpReport): string[] {
 describe("the C# adapter against the C# compiler's binding", () => {
   it("finds the fixtures that carry the compiler's record", () => {
     expect(measuredFixtures()).toEqual(Object.keys(MEASURED_MISSES).sort());
+    expect(measuredFixtures()).toEqual(Object.keys(DOCUMENTATION).sort());
   });
 
   it("discovers a new compiler record without adding it to the miss register", () => {
@@ -95,6 +154,13 @@ describe("the C# adapter against the C# compiler's binding", () => {
       const report     = await compareCSharp(fixtureDir, kept);
       expect(report.edges.compiler).toBeGreaterThan(0);
       expect(disagreements(report)).toEqual(MEASURED_MISSES[fixture]);
+      const documentation = report.documentation;
+      expect({
+        references: (kept.crefs ?? []).map(answered),
+        alsoCode:   documentation.alsoCode,
+        authorOnly: documentation.authorOnly,
+        drawn:      documentation.drawn
+      }).toEqual(DOCUMENTATION[fixture]);
     });
   }
 });

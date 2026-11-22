@@ -298,6 +298,16 @@
       "Status"
     ]
   },
+  "crefs": [
+    {
+      "from": "src/Processor/Processor.cs",
+      "line": 33,
+      "element": "exception",
+      "written": "ArgumentException",
+      "outcome": "unresolved",
+      "resolved": []
+    }
+  ],
   "sources": {
     "Rosetta.csproj": "761545b787fedf9c7f1a2ef6966255e8f00dca6da9643d1b3efab0c92e69a621",
     "src/App/Main.cs": "d8852282c1d0d47c6a7d645257e6c319ed0d1201c33ab91cd2da0174e236bf6a",

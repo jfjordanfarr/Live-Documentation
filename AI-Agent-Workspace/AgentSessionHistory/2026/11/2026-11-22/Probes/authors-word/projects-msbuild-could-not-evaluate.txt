@@ -1,0 +1,40 @@
+dnn.log:
+  DNN Platform/Admin Modules/Dnn.Modules.Console/Dnn.Modules.Console.csproj
+  DNN Platform/Connectors/Azure/Dnn.AzureConnector.csproj
+  DNN Platform/Connectors/GoogleAnalytics/Dnn.GoogleAnalyticsConnector.csproj
+  DNN Platform/Connectors/GoogleAnalytics4/Dnn.GoogleAnalytics4Connector.csproj
+  DNN Platform/Connectors/GoogleTagManager/Dnn.GoogleTagManagerConnector.csproj
+  DNN Platform/Dnn.AuthServices.Jwt/Dnn.AuthServices.Jwt.csproj
+  DNN Platform/Modules/CoreMessaging/DotNetNuke.Modules.CoreMessaging.csproj
+  DNN Platform/Modules/DDRMenu/DotNetNuke.Modules.DDRMenu.csproj
+  DNN Platform/Modules/DnnExportImport/DnnExportImport.csproj
+  DNN Platform/Modules/Groups/DotNetNuke.Modules.Groups.csproj
+  DNN Platform/Modules/HTML/DotNetNuke.Modules.Html.csproj
+  DNN Platform/Modules/HtmlEditorManager/DotNetNuke.Modules.HtmlEditorManager.csproj
+  DNN Platform/Modules/Journal/DotNetNuke.Modules.Journal.csproj
+  DNN Platform/Modules/MemberDirectory/DotNetNuke.Modules.MemberDirectory.csproj
+  DNN Platform/Modules/RazorHost/DotNetNuke.Modules.RazorHost.csproj
+  DNN Platform/Modules/ResourceManager/Dnn.Modules.ResourceManager.csproj
+  DNN Platform/Modules/Samples/Dnn.ContactList.Mvc/Dnn.ContactList.Mvc.csproj
+  DNN Platform/Modules/Samples/Dnn.ContactList.Spa/Dnn.ContactList.Spa.csproj
+  DNN Platform/Modules/Samples/Dnn.ContactList.SpaReact/Dnn.ContactList.SpaReact.csproj
+  DNN Platform/Modules/TelerikRemoval/Dnn.Modules.TelerikRemoval.csproj
+  DNN Platform/Providers/AuthenticationProviders/DotNetNuke.Authentication.Facebook/DotNetNuke.Authentication.Facebook.csproj
+  DNN Platform/Providers/AuthenticationProviders/DotNetNuke.Authentication.Google/DotNetNuke.Authentication.Google.csproj
+  DNN Platform/Providers/AuthenticationProviders/DotNetNuke.Authentication.LiveConnect/DotNetNuke.Authentication.LiveConnect.csproj
+  DNN Platform/Providers/AuthenticationProviders/DotNetNuke.Authentication.Twitter/DotNetNuke.Authentication.Twitter.csproj
+  DNN Platform/Providers/CachingProviders/DotNetNuke.Providers.Caching.SimpleWebFarmCachingProvider/DotNetNuke.Providers.Caching.SimpleWebFarmCachingProvider.csproj
+  DNN Platform/Providers/ClientCapabilityProviders/Provider.AspNetCCP/DotNetNuke.Providers.AspNetCCP.csproj
+  DNN Platform/Providers/FolderProviders/DotNetNuke.Providers.FolderProviders.csproj
+  DNN Platform/Providers/HtmlEditorProviders/DNNConnect.CKE/DNNConnect.CKEditorProvider.csproj
+  DNN Platform/Providers/SmtpOAuthProviders/ExchangeOnlineAuthProvider/Dnn.ExchangeOnlineAuthProvider.csproj
+  DNN Platform/Providers/SmtpOAuthProviders/GoogleMailAuthProvider/Dnn.GoogleMailAuthProvider.csproj
+  DNN Platform/Website/DotNetNuke.Website.csproj
+  Dnn.AdminExperience/Dnn.PersonaBar.Extensions/Dnn.PersonaBar.Extensions.csproj
+  Dnn.AdminExperience/EditBar/Dnn.EditBar.UI/Dnn.EditBar.UI.csproj
+  Dnn.AdminExperience/Library/Dnn.PersonaBar.UI/Dnn.PersonaBar.UI.csproj
+mojo.log:
+  Plugins/SuperFlexi/SuperFlexiUI/SuperFlexiUI.csproj
+  Plugins/mojoPortal.Plugins.HtmlInclude/mojoPortal.Plugins.HtmlInclude.csproj
+  Web/mojoPortal.Web.csproj
+  mojoPortal.Features.UI/mojoPortal.Features.UI.csproj
