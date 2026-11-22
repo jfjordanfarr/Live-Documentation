@@ -3,8 +3,8 @@ import path from "node:path";
 import { deflateRawSync, inflateRawSync } from "node:zlib";
 import { describe, expect, it } from "vitest";
 
-import { bytesOfText, CHUNK, createWriter, graphOf, openScan, readScan, resumeFrom, scanOfText, SIGNATURE, textOf, textOfScan, writeScan, type Scan, type StoredFile } from "./storedForm";
-import { everyFact, seededScan } from "./testScans";
+import { bytesOfText, CHUNK, comparePaths, createWriter, graphOf, openScan, readScan, resumeFrom, scanOfText, SIGNATURE, textOf, textOfScan, writeScan, type Scan, type StoredFile } from "../src/storedForm";
+import { everyFact, random, seededScan } from "./testScans";
 
 async function bytesOf(scan: Scan): Promise<Uint8Array> {
   const written = await writeScan(scan);
@@ -167,6 +167,12 @@ describe("the stored form", () => {
     const wires = at(5);
     const lying = frames.map((f, i) => (i === wires ? { ...f, raw: Buffer.concat([Buffer.from([1, frames[wires].count - 1]), f.raw.subarray(1)]) } : f));
     expect(await refusal(await framed(lying))).toMatch(/wires|after its last fact|names file/u);
+    // A character cut between two strings: `é` is C3 A9, the first string ending in C3 and the next beginning A9.
+    // Joined, the two would decode; each alone is not UTF-8. And a byte that is never UTF-8, FF.
+    const split = frames.map((f, i) => (i === strings ? { ...f, count: f.count + 2, raw: Buffer.concat([f.raw, Buffer.from([2, 0x61, 0xc3, 1, 0xa9])]) } : f));
+    expect(await refusal(await framed(split))).toMatch(/middle of a character/u);
+    const never = frames.map((f, i) => (i === strings ? { ...f, count: f.count + 1, raw: Buffer.concat([f.raw, Buffer.from([2, 0x61, 0xff])]) } : f));
+    expect(await refusal(await framed(never))).toMatch(/not UTF-8/u);
     // Bytes after the end, and a file cut short.
     expect(await refusal(Buffer.concat([bytes, Buffer.from([0])]))).toMatch(/after the end/u);
     expect(await refusal(bytes.subarray(0, bytes.length - 1))).toMatch(/stops before its end/u);
@@ -177,8 +183,126 @@ describe("the stored form", () => {
   });
 
   it("is one module that imports nothing", () => {
-    const source = readFileSync(path.join(__dirname, "storedForm.ts"), "utf8");
+    const source = readFileSync(path.join(__dirname, "../src/storedForm.ts"), "utf8");
     expect(source).not.toMatch(/^\s*import\s/mu);
     expect(source).not.toMatch(/\brequire\(|\bimport\(|\bprocess\.|\bglobalThis\.|\bwindow\.|\bdocument\.|\beval\(|new Function/u);
+  });
+});
+
+describe("the order of paths", () => {
+  const head = everyFact().head;
+  const file = (codePath: string): StoredFile => ({ codePath, layer: 4, entries: [], authored: "", symbols: [], dependencies: [] });
+  // U+E000 is three bytes of UTF-8 (EE 80 80) and one UTF-16 unit (E000); U+1F600 is four bytes (F0 9F 98 80) and two
+  // units (D83D DE00). By bytes U+E000 comes first; by UTF-16 units it comes last.
+  const private_ = "dir/\u{E000}.ts";
+  const astral = "dir/\u{1F600}.ts";
+
+  it("is the order of the paths' UTF-8 bytes, which is the order of their code points", () => {
+    expect(Buffer.compare(Buffer.from(private_), Buffer.from(astral))).toBe(-1);
+    expect(comparePaths(private_, astral)).toBe(-1);
+    expect(comparePaths(astral, private_)).toBe(1);
+    expect(comparePaths(astral, astral)).toBe(0);
+  });
+
+  it("agrees with a comparison of UTF-8 bytes on strings drawn from every range", () => {
+    const next = random(17);
+    const ranges = [[0x20, 0x7f], [0x80, 0x7ff], [0x800, 0xd7ff], [0xe000, 0xffff], [0x10000, 0x10ffff]];
+    const draw = (): string =>
+      Array.from({ length: 1 + Math.floor(next() * 4) }, () => {
+        const [lo, hi] = ranges[Math.floor(next() * ranges.length)];
+        return String.fromCodePoint(lo + Math.floor(next() * (hi - lo + 1)));
+      }).join("");
+    for (let i = 0; i < 20_000; i += 1) {
+      const a = draw();
+      const b = next() < 0.3 ? a + draw() : draw();
+      expect(comparePaths(a, b), `${JSON.stringify(a)} against ${JSON.stringify(b)}`).toBe(Math.sign(Buffer.compare(Buffer.from(a), Buffer.from(b))));
+    }
+  });
+
+  it("is what the writer, the reader and the text form keep", async () => {
+    const written = await writeScan({ head, files: [file(private_), file(astral)] });
+    if (!written.ok) throw new Error(written.reason);
+    const read = await readScan(written.value);
+    expect(read.ok && read.value.files.map((f) => f.codePath)).toEqual([private_, astral]);
+    const text = await textOf(written.value);
+    expect(text.ok && scanOfText(text.value).ok).toBe(true);
+    expect((await writeScan({ head, files: [file(astral), file(private_)] })).ok).toBe(false);
+    expect(scanOfText(textOfScan({ head, files: [file(astral), file(private_)] })).ok).toBe(false);
+  });
+});
+
+describe("the text form's bytes, as the specification states them", () => {
+  const head = { location: { root: "", baseLayer: "", extension: ".md" }, scanner: "s", leftOut: [] };
+  // Every character class the rule names, and what it is written as, by hand: the expectation is the specification's
+  // words, not a JSON library's output.
+  const corners: [string, string][] = [
+    ['"', '\\"'],
+    ["\\", "\\\\"],
+    ["\b", "\\b"],
+    ["\t", "\\t"],
+    ["\n", "\\n"],
+    ["\f", "\\f"],
+    ["\r", "\\r"],
+    ["\u0000", "\\u0000"],
+    ["\u0001", "\\u0001"],
+    ["\u000b", "\\u000b"],
+    ["\u001f", "\\u001f"],
+    ["/", "/"],
+    ["\u007f", "\u007f"],
+    ["\u0080", "\u0080"],
+    ["é", "é"],
+    [" ", " "],
+    [" ", " "],
+    ["﻿", "﻿"],
+    ["\u{E000}", "\u{E000}"],
+    ["\u{1F600}", "\u{1F600}"],
+    ["\u{10FFFF}", "\u{10FFFF}"]
+  ];
+  const scanWith = (authored: string, layer = 4): Scan => ({ head, files: [{ codePath: "a", layer, entries: [], authored, symbols: [], dependencies: [] }] });
+
+  it("writes each character as the rule says", () => {
+    for (const [character, written] of corners) {
+      const text = textOfScan(scanWith(`x${character}y`));
+      expect(text, JSON.stringify(character)).toContain(`["a","authored","x${written}y"]\n`);
+      expect(scanOfText(text).ok, JSON.stringify(character)).toBe(true);
+    }
+  });
+
+  it("writes a number in decimal, from 0 to 2^32 - 1, with no sign, point, exponent or leading zero", () => {
+    for (const [layer, written] of [[0, "0"], [7, "7"], [4294967295, "4294967295"]] as const) {
+      expect(textOfScan(scanWith("", layer))).toContain(`["a","file",${written},null,null]\n`);
+    }
+  });
+
+  it("refuses every other way of writing the same text", () => {
+    const text = textOfScan(scanWith("x\b/\u007f é\u{1F600}\u001f\"y"));
+    const variants = [
+      ["\\b", "\\u0008"],
+      ["/", "\\/"],
+      ["\u007f", "\\u007f"],
+      [" ", "\\u2028"],
+      ["é", "\\u00e9"],
+      ["\u{1F600}", "\\ud83d\\ude00"],
+      ["\\u001f", "\\u001F"],
+      ['\\"', "\\u0022"],
+      ['["a","file",4,', '["a","file",4e0,'],
+      ['["a","file",4,', '["a","file",4.0,'],
+      ['["a","file",4,', '[ "a","file",4,']
+    ];
+    expect(scanOfText(text).ok).toBe(true);
+    for (const [from, to] of variants) {
+      const variant = text.replace(from, to);
+      expect(variant, `${from} as ${to}`).not.toBe(text);
+      expect(scanOfText(variant).ok, `${from} as ${to}`).toBe(false);
+    }
+  });
+
+  it("is UTF-8 without a byte-order mark, ending each line with LF", () => {
+    const text = textOfScan(scanWith("é"));
+    const bytes = new TextEncoder().encode(text);
+    expect(scanOfText(bytes).ok).toBe(true);
+    expect(scanOfText(new Uint8Array([0xef, 0xbb, 0xbf, ...bytes])).ok).toBe(false);
+    expect(scanOfText(new Uint8Array([...bytes.subarray(0, 40), 0xff, ...bytes.subarray(40)])).ok).toBe(false);
+    expect(scanOfText(text.replace(/\n/gu, "\r\n")).ok).toBe(false);
   });
 });

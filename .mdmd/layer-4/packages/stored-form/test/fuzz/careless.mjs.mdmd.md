@@ -1,10 +1,10 @@
-# `packages/stored-form/src/fuzz/careless.mjs`
+# `packages/stored-form/test/fuzz/careless.mjs`
 
 ## Metadata
 - Layer: 4
-- Archetype: implementation
-- Code Path: `packages/stored-form/src/fuzz/careless.mjs`
-- Generated At: 2026-11-22T01:36:47.568Z
+- Archetype: test
+- Code Path: `packages/stored-form/test/fuzz/careless.mjs`
+- Generated At: 2026-11-22T02:13:56.280Z
 
 ## Authored
 ### Purpose
@@ -18,15 +18,15 @@ Never to be used to read anything.
 ### Public Symbols
 #### `readScan` {#symbol-readscan}
 - Type: function
-- Source: [source](../../../../../../packages/stored-form/src/fuzz/careless.mjs#L19)
+- Source: [source](../../../../../../packages/stored-form/test/fuzz/careless.mjs#L19)
 
 #### `resumeFrom` {#symbol-resumefrom}
 - Type: function
-- Source: [source](../../../../../../packages/stored-form/src/fuzz/careless.mjs#L37)
+- Source: [source](../../../../../../packages/stored-form/test/fuzz/careless.mjs#L37)
 
 #### `textOf` {#symbol-textof}
 - Type: function
-- Source: [source](../../../../../../packages/stored-form/src/fuzz/careless.mjs#L41)
+- Source: [source](../../../../../../packages/stored-form/test/fuzz/careless.mjs#L41)
 <!-- LIVE-DOC:END Public Symbols -->
 
 <!-- LIVE-DOC:BEGIN Dependencies -->

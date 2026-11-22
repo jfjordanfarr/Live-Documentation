@@ -416,14 +416,27 @@ function checkText(s: unknown, what: string): string {
 
 /** True when a string names a place outside the scanned folder: an absolute path, a drive, a share or a file URL. */
 function isAbsolute(s: string): boolean {
-  return s.startsWith("/") || s.startsWith("\\") || /^[A-Za-z]:/u.test(s) || /^file:/iu.test(s);
+  const c0 = s.charCodeAt(0);
+  if (c0 === 0x2f || c0 === 0x5c) return true;
+  if (s.charCodeAt(1) === 0x3a && ((c0 >= 0x41 && c0 <= 0x5a) || (c0 >= 0x61 && c0 <= 0x7a))) return true;
+  // `x | 0x20` folds only the ASCII capital to its small letter for these letters, and leaves `:` as it is.
+  return s.length >= 5 && (c0 | 0x20) === 0x66 && (s.charCodeAt(1) | 0x20) === 0x69 && (s.charCodeAt(2) | 0x20) === 0x6c && (s.charCodeAt(3) | 0x20) === 0x65 && s.charCodeAt(4) === 0x3a;
 }
 
 function checkPath(s: unknown, what: string): string {
   const path = checkText(s, what);
-  if (path === "" || isAbsolute(path) || path.includes("\0")) refuse(`${what} ${JSON.stringify(path)} is not a relative path`);
-  for (const segment of path.split("/")) {
-    if (segment === "" || segment === "." || segment === "..") refuse(`${what} ${JSON.stringify(path)} is not a plain relative path`);
+  if (path === "" || isAbsolute(path)) refuse(`${what} ${JSON.stringify(path)} is not a relative path`);
+  // One pass: each segment, from just after a slash to the next, must be neither empty, `.` nor `..`.
+  let start = 0;
+  for (let i = 0; i <= path.length; i += 1) {
+    const c = i < path.length ? path.charCodeAt(i) : 0x2f;
+    if (c === 0) refuse(`${what} ${JSON.stringify(path)} is not a relative path`);
+    if (c !== 0x2f) continue;
+    const n = i - start;
+    if (n === 0 || (n === 1 && path.charCodeAt(start) === 0x2e) || (n === 2 && path.charCodeAt(start) === 0x2e && path.charCodeAt(start + 1) === 0x2e)) {
+      refuse(`${what} ${JSON.stringify(path)} is not a plain relative path`);
+    }
+    start = i + 1;
   }
   return path;
 }
@@ -445,9 +458,24 @@ function checkCount(n: unknown, what: string): number {
   return n;
 }
 
-/** The order paths are kept in: by UTF-16 code units, as JavaScript compares strings. */
+/**
+ * The order paths are kept in: by their UTF-8 bytes, which is the order of their code points, and the order a reader in
+ * any language gets by comparing bytes (as git orders a tree). Computed on UTF-16 units without encoding: at the first
+ * unit that differs, a surrogate (a code point above U+FFFF) sorts after every other unit, which it does not by value
+ * alone against U+E000 to U+FFFF. Strings are well formed, so a surrogate here is always half of a pair.
+ */
 export function comparePaths(a: string, b: string): number {
-  return a < b ? -1 : a > b ? 1 : 0;
+  const n = Math.min(a.length, b.length);
+  for (let i = 0; i < n; i += 1) {
+    const x = a.charCodeAt(i);
+    const y = b.charCodeAt(i);
+    if (x === y) continue;
+    const xs = x >= 0xd800 && x <= 0xdfff;
+    const ys = y >= 0xd800 && y <= 0xdfff;
+    if (xs !== ys) return xs ? 1 : -1;
+    return x < y ? -1 : 1;
+  }
+  return a.length === b.length ? 0 : a.length < b.length ? -1 : 1;
 }
 
 // ============================================================================
@@ -460,13 +488,17 @@ export function comparePaths(a: string, b: string): number {
  */
 interface Codec {
   str(value: string | undefined, what: string): string;
+  /** A string that must be a path (section 2.4 of the specification). */
+  path(value: string | undefined, what: string): string;
+  /** A string that must be a link. */
+  link(value: string | undefined, what: string): string;
   num(value: number | undefined, what: string): number;
   bits(value: number | undefined, defined: number, what: string): number;
   list<T>(items: T[] | undefined, what: string, each: (item: T | undefined) => T): T[];
 }
 
 function walkFile(c: Codec, f: StoredFile | undefined): StoredFile {
-  const codePath = checkPath(c.str(f?.codePath, "a path"), "a path");
+  const codePath = c.path(f?.codePath, "a path");
   // A refusal says what it found and where; the file's path is put before it here, once, rather than built into every
   // field's words as the walk goes, which cost the whole read more than its decoding did.
   try {
@@ -488,7 +520,7 @@ function walkFacts(c: Codec, f: StoredFile | undefined, codePath: string): Store
   file.symbols = c.list(f?.symbols, `its symbols`, (s) => walkSymbol(c, s));
   file.dependencies = c.list(f?.dependencies, `its dependencies`, (d) => walkDependency(c, d));
   if (presence & 4) {
-    file.citedBy = c.list(f?.citedBy, `what cites it`, (x) => ({ label: c.str(x?.label, `a citing label`), link: checkLink(c.str(x?.link, `a citing link`), `a citing link`) }));
+    file.citedBy = c.list(f?.citedBy, `what cites it`, (x) => ({ label: c.str(x?.label, `a citing label`), link: c.link(x?.link, `a citing link`) }));
   }
   if (presence & 8) file.reExports = c.list(f?.reExports, `its re-exports`, (r) => walkReExport(c, r));
   return file;
@@ -502,10 +534,10 @@ function walkEntry(c: Codec, e: StoredEntry | undefined): StoredEntry {
   const entry: StoredEntry = { reason: ENTRY_REASONS[reasonIndex] };
   if (bits & 1) {
     entry.symbol = { name: c.str(e?.symbol?.name, `an entry's symbol`) };
-    if (bits & 2) entry.symbol.link = checkLink(c.str(e?.symbol?.link, `an entry's link`), `an entry's link`);
+    if (bits & 2) entry.symbol.link = c.link(e?.symbol?.link, `an entry's link`);
   }
   if (bits & 4) entry.command = c.str(e?.command, `an entry's command`);
-  if (bits & 8) entry.declarer = { label: c.str(e?.declarer?.label, `an entry's declarer`), link: checkLink(c.str(e?.declarer?.link, `an entry's declarer link`), `an entry's declarer link`) };
+  if (bits & 8) entry.declarer = { label: c.str(e?.declarer?.label, `an entry's declarer`), link: c.link(e?.declarer?.link, `an entry's declarer link`) };
   return entry;
 }
 
@@ -513,8 +545,8 @@ function walkEntry(c: Codec, e: StoredEntry | undefined): StoredEntry {
 function walkLinked(c: Codec, bits: number, v: { link?: string; target?: string; anchor?: string } | undefined, into: { link?: string; target?: string; anchor?: string }): void {
   if ((bits & 2) && !(bits & 1)) refuse(`a target without a link`);
   if ((bits & 4) && !(bits & 2)) refuse(`an anchor without a target`);
-  if (bits & 1) into.link = checkLink(c.str(v?.link, `a link`), `a link`);
-  if (bits & 2) into.target = checkPath(c.str(v?.target, `a target`), `a target`);
+  if (bits & 1) into.link = c.link(v?.link, `a link`);
+  if (bits & 2) into.target = c.path(v?.target, `a target`);
   if (bits & 4) into.anchor = c.str(v?.anchor, `an anchor`);
 }
 
@@ -538,7 +570,7 @@ function walkSymbol(c: Codec, s: StoredSymbol | undefined): StoredSymbol {
   if (bits & 1) symbol.slug = c.str(s?.slug, `a symbol's slug`);
   symbol.kind = c.str(s?.kind, `a symbol's kind`);
   symbol.flags = c.list(s?.flags, `a symbol's flags`, (x) => c.str(x, `a flag`));
-  if (bits & 2) symbol.source = { path: checkLink(c.str(s?.source?.path, `a source`), `a source`), line: c.num(s?.source?.line, `a source line`) };
+  if (bits & 2) symbol.source = { path: c.link(s?.source?.path, `a source`), line: c.num(s?.source?.line, `a source line`) };
   symbol.references = c.list(s?.references, `a symbol's references`, (r) => {
     const role = c.num(r && ROLES.indexOf(r.role), `a reference's role`);
     if (role < 0 || role >= ROLES.length) refuse(`a reference's role is not one the layout names`);
@@ -572,7 +604,7 @@ function walkReExport(c: Codec, r: StoredReExport | undefined): StoredReExport {
   const reExport = { name: c.str(r?.name, `a re-export`) } as StoredReExport;
   const bits = c.bits(r && (+(r.slug !== undefined) | (+(r.from !== undefined) << 1)), 0b11, `a re-export`);
   if (bits & 1) reExport.slug = c.str(r?.slug, `a re-export's slug`);
-  if (bits & 2) reExport.from = { label: c.str(r?.from?.label, `a re-export's origin`), link: checkLink(c.str(r?.from?.link, `a re-export's link`), `a re-export's link`) };
+  if (bits & 2) reExport.from = { label: c.str(r?.from?.label, `a re-export's origin`), link: c.link(r?.from?.link, `a re-export's link`) };
   reExport.flags = c.list(r?.flags, `a re-export's flags`, (x) => c.str(x, `a flag`));
   return reExport;
 }
@@ -600,6 +632,14 @@ class Encoding implements Codec {
     return s;
   }
 
+  path(value: string | undefined, what: string): string {
+    return checkPath(this.str(value, what), what);
+  }
+
+  link(value: string | undefined, what: string): string {
+    return checkLink(this.str(value, what), what);
+  }
+
   num(value: number | undefined, what: string): number {
     const n = checkCount(value, what);
     this.out.varint(n);
@@ -619,13 +659,32 @@ class Encoding implements Codec {
   }
 }
 
-/** Counts, through the walk, the characters of every string as often as it is named. */
+/** The length of a well-formed string's UTF-8, counted from its UTF-16 units without encoding it. */
+function utf8Length(s: string): number {
+  let n = 0;
+  for (let i = 0; i < s.length; i += 1) {
+    const u = s.charCodeAt(i);
+    // A surrogate is half of a pair, whose code point takes four bytes: two for each half.
+    n += u < 0x80 ? 1 : u < 0x800 || (u >= 0xd800 && u <= 0xdfff) ? 2 : 3;
+  }
+  return n;
+}
+
+/** Counts, through the walk, the UTF-8 bytes of every string as often as it is named. */
 class Measuring implements Codec {
   total = 0;
 
   str(value: string | undefined): string {
-    this.total += (value ?? "").length;
+    this.total += utf8Length(value ?? "");
     return value ?? "";
+  }
+
+  path(value: string | undefined): string {
+    return this.str(value);
+  }
+
+  link(value: string | undefined): string {
+    return this.str(value);
   }
 
   num(value: number | undefined): number {
@@ -649,17 +708,42 @@ class Decoding implements Codec {
   met: number;
   private readonly input: In;
   private readonly strings: string[];
+  private readonly checked: number[];
 
-  constructor(input: In, strings: string[], met: number) {
+  /** `checked` marks, by a string's number, that it was found a path (1) or a link (2): each is checked once a scan. */
+  constructor(input: In, strings: string[], met: number, checked: number[]) {
     this.input = input;
     this.strings = strings;
     this.met = met;
+    this.checked = checked;
   }
 
-  str(): string {
+  private id(): number {
     const id = this.input.varint();
     if (id > this.met || id >= this.strings.length) refuse(`a string numbered ${id} where the next new one is ${this.met}`);
     if (id === this.met) this.met += 1;
+    return id;
+  }
+
+  str(): string {
+    return this.strings[this.id()];
+  }
+
+  path(_value: string | undefined, what: string): string {
+    const id = this.id();
+    if (!((this.checked[id] ?? 0) & 1)) {
+      checkPath(this.strings[id], what);
+      this.checked[id] = (this.checked[id] ?? 0) | 1;
+    }
+    return this.strings[id];
+  }
+
+  link(_value: string | undefined, what: string): string {
+    const id = this.id();
+    if (!((this.checked[id] ?? 0) & 2)) {
+      checkLink(this.strings[id], what);
+      this.checked[id] = (this.checked[id] ?? 0) | 2;
+    }
     return this.strings[id];
   }
 
@@ -778,20 +862,27 @@ function readPaths(raw: Uint8Array, count: number, budget: number): string[] {
   const input = new In(raw, "the paths");
   if (count * 2 > raw.length) refuse(`the paths claim ${count} paths in ${raw.length} bytes`);
   const paths: string[] = [];
-  let previous: Uint8Array = new Uint8Array(0);
+  let buffer = new Uint8Array(256);
+  let previous = 0;
   let spent = 0;
   for (let i = 0; i < count; i += 1) {
     const shared = input.varint();
     const rest = input.slice(input.varint());
     spent += shared + rest.length;
     if (spent > budget) refuse("the paths are longer than the strings that hold them");
-    if (shared > previous.length) refuse("a path shares more with the one before it than that one holds");
-    if (shared < previous.length && rest.length > 0 && previous[shared] === rest[0]) refuse("a path's shared beginning is written shorter than it is");
-    const b = concat([previous.subarray(0, shared), rest]);
-    const p = checkPath(decodeText(b, "the paths"), "a path");
+    if (shared > previous) refuse("a path shares more with the one before it than that one holds");
+    if (shared < previous && rest.length > 0 && buffer[shared] === rest[0]) refuse("a path's shared beginning is written shorter than it is");
+    const length = shared + rest.length;
+    if (length > buffer.length) {
+      const grown = new Uint8Array(Math.max(length, buffer.length * 2));
+      grown.set(buffer.subarray(0, shared));
+      buffer = grown;
+    }
+    buffer.set(rest, shared);
+    const p = checkPath(decodeText(buffer.subarray(0, length), "the paths"), "a path");
     if (paths.length > 0 && comparePaths(paths[paths.length - 1], p) >= 0) refuse(`the paths are not in order at ${JSON.stringify(p)}`);
     paths.push(p);
-    previous = b;
+    previous = length;
   }
   input.end();
   return paths;
@@ -1079,13 +1170,14 @@ export async function resumeFrom(bytes: Uint8Array): Promise<Result<ResumeState 
     const seen = new Set<string>();
     const paths: string[] = [];
     const targets: (string | undefined)[][] = [];
+    const checked: number[] = [];
     let met = 0;
     for (const f of kept.slice(1)) {
       const raw = await rawOf(bytes, f, KIND_NAMES[f.kind]);
       if (f.kind === STRINGS) {
         loadStrings(raw, f.count, strings, seen);
       } else {
-        const files = decodeChunk(raw, f.count, strings, met, paths.length ? paths[paths.length - 1] : undefined);
+        const files = decodeChunk(raw, f.count, strings, met, paths.length ? paths[paths.length - 1] : undefined, checked);
         met = files.met;
         for (const file of files.files) {
           paths.push(file.codePath);
@@ -1102,22 +1194,54 @@ export async function resumeFrom(bytes: Uint8Array): Promise<Result<ResumeState 
 // The readers
 // ============================================================================
 
+/**
+ * A section of strings, decoded at once: their bytes joined and decoded strictly in one call, which costs far less
+ * than a call for each. Joined, a sequence cut at one string's end could be finished by the next string's beginning;
+ * so a string that begins with a continuation byte (0x80 to 0xBF) is refused, and then no sequence can cross from one
+ * string into the next, and the whole decoding strictly means each string does. Each string is then cut from the
+ * whole by its length in UTF-16 units, counted from its bytes: one for each byte below 0x80 or lead byte below 0xF0,
+ * two for a lead byte of four (a pair), none for a continuation byte.
+ */
 function loadStrings(raw: Uint8Array, count: number, strings: string[], seen: Set<string>): void {
   const input = new In(raw, "a section of strings");
   if (count > raw.length) refuse(`a section of strings claims ${count} strings in ${raw.length} bytes`);
+  const at = new Uint32Array(count);
+  const length = new Uint32Array(count);
+  let total = 0;
   for (let i = 0; i < count; i += 1) {
-    const s = checkText(input.text(), "a string");
+    length[i] = input.varint();
+    at[i] = input.at;
+    input.slice(length[i]);
+    if (length[i] > 0 && (raw[at[i]] & 0xc0) === 0x80) refuse("a string begins in the middle of a character");
+    total += length[i];
+  }
+  input.end();
+  const joined = new Uint8Array(total);
+  let to = 0;
+  for (let i = 0; i < count; i += 1) {
+    joined.set(raw.subarray(at[i], at[i] + length[i]), to);
+    to += length[i];
+  }
+  const whole = decodeText(joined, "a section of strings");
+  let unit = 0;
+  let byte = 0;
+  for (let i = 0; i < count; i += 1) {
+    const first = unit;
+    for (const stop = byte + length[i]; byte < stop; byte += 1) {
+      const b = joined[byte];
+      unit += b < 0x80 || (b >= 0xc0 && b < 0xf0) ? 1 : b >= 0xf0 ? 2 : 0;
+    }
+    const s = whole.slice(first, unit);
     if (seen.has(s)) refuse(`the string ${JSON.stringify(s.slice(0, 80))} is set down twice`);
     seen.add(s);
     strings.push(s);
   }
-  input.end();
 }
 
-function decodeChunk(raw: Uint8Array, count: number, strings: string[], met: number, previous: string | undefined): { files: StoredFile[]; met: number } {
+function decodeChunk(raw: Uint8Array, count: number, strings: string[], met: number, previous: string | undefined, checked: number[]): { files: StoredFile[]; met: number } {
   const input = new In(raw, "a section of records");
   if (count > raw.length) refuse(`a section of records claims ${count} files in ${raw.length} bytes`);
-  const decoding = new Decoding(input, strings, met);
+  const decoding = new Decoding(input, strings, met, checked);
   const files: StoredFile[] = [];
   for (let i = 0; i < count; i += 1) {
     const file = walkFile(decoding, undefined);
@@ -1151,24 +1275,43 @@ export interface OpenedScan {
  * section's header. What it has not read it has not checked: {@link readScan} reads and checks the whole.
  */
 export async function openScan(bytes: Uint8Array): Promise<Result<OpenedScan>> {
-  return settle(async () => {
+  return settle(async () => opening(bytes, false));
+}
+
+/**
+ * The reading both readers share. With `all`, every section is inflated and hashed at once, which the platform does on
+ * its own threads, rather than each when it is first needed: the whole read's way.
+ */
+async function opening(bytes: Uint8Array, all: boolean): Promise<OpenedScan & { chunks: number; readChunk(k: number): Promise<StoredFile[]> }> {
+  {
     const { frames, cut } = hop(bytes);
     if (cut || frames[frames.length - 1]?.kind !== END) refuse("the file stops before its end: a stopped write, which `resumeFrom` can go on from");
     checkOrder(frames, true);
-    const endRaw = await rawOf(bytes, frames[frames.length - 1], "the end");
+    const early = new Map<Frame, Promise<Uint8Array>>();
+    if (all) {
+      for (const f of frames) {
+        const pending = rawOf(bytes, f, KIND_NAMES[f.kind]);
+        // Marked as seen, so that a refusal found in one while another is read is not taken for an unhandled one.
+        pending.catch(() => undefined);
+        early.set(f, pending);
+      }
+    }
+    const rawOf_ = (f: Frame, what: string): Promise<Uint8Array> => early.get(f) ?? rawOf(bytes, f, what);
+    const endRaw = await rawOf_(frames[frames.length - 1], "the end");
     const name = await nameOfFrames(frames.slice(0, -1));
     if (!equalBytes(endRaw, name)) refuse("the end does not name the sections before it");
-    const head = readHead(await rawOf(bytes, frames[0], "the head"));
+    const head = readHead(await rawOf_(frames[0], "the head"));
     const count = frames[frames.length - 3].count;
     const stringBytes = frames.reduce((n, f) => n + (f.kind === STRINGS ? f.rawLength : 0), 0);
-    const paths = readPaths(await rawOf(bytes, frames[frames.length - 3], "the paths"), count, stringBytes);
-    const outbound = readWires(await rawOf(bytes, frames[frames.length - 2], "the wires"), count);
+    const paths = readPaths(await rawOf_(frames[frames.length - 3], "the paths"), count, stringBytes);
+    const outbound = readWires(await rawOf_(frames[frames.length - 2], "the wires"), count);
     const inboundLists: number[][] = paths.map(() => []);
     outbound.forEach((list, i) => list.forEach((j) => inboundLists[j].push(i)));
     const index = new Map(paths.map((p, i) => [p, i]));
     const chunkFrames = frames.filter((f) => f.kind === RECORDS);
     const strings: string[] = [];
     const seen = new Set<string>();
+    const checked: number[] = [];
     let stringsRead = 0;
     let met = 0;
     const chunks = new Map<number, StoredFile[]>();
@@ -1179,10 +1322,14 @@ export async function openScan(bytes: Uint8Array): Promise<Result<OpenedScan>> {
         const target = chunkFrames[chunksRead];
         for (; stringsRead < frames.length && frames[stringsRead].storedAt <= target.storedAt; stringsRead += 1) {
           const f = frames[stringsRead];
-          if (f.kind === STRINGS) loadStrings(await rawOf(bytes, f, "a section of strings"), f.count, strings, seen);
+          if (f.kind === STRINGS) {
+            loadStrings(await rawOf_(f, "a section of strings"), f.count, strings, seen);
+            early.delete(f);
+          }
         }
         const first = chunksRead * CHUNK;
-        const decoded = decodeChunk(await rawOf(bytes, target, "a section of records"), target.count, strings, met, first > 0 ? paths[first - 1] : undefined);
+        const decoded = decodeChunk(await rawOf_(target, "a section of records"), target.count, strings, met, first > 0 ? paths[first - 1] : undefined, checked);
+        early.delete(target);
         met = decoded.met;
         decoded.files.forEach((file, i) => {
           if (file.codePath !== paths[first + i]) refuse(`the paths name ${JSON.stringify(paths[first + i])} where the records hold ${JSON.stringify(file.codePath)}`);
@@ -1195,6 +1342,8 @@ export async function openScan(bytes: Uint8Array): Promise<Result<OpenedScan>> {
       return chunks.get(k)!;
     };
     return {
+      chunks: chunkFrames.length,
+      readChunk,
       head,
       name: hex(name),
       paths,
@@ -1207,7 +1356,7 @@ export async function openScan(bytes: Uint8Array): Promise<Result<OpenedScan>> {
           return (await readChunk(Math.floor(i / CHUNK)))[i % CHUNK];
         })
     };
-  });
+  }
 }
 
 function equalLists(a: readonly number[], b: readonly number[]): boolean {
@@ -1217,15 +1366,9 @@ function equalLists(a: readonly number[], b: readonly number[]): boolean {
 /** Reads and checks a whole scan: every section against its hash, every fact, and every derived section against what it derives from. */
 export async function readScan(bytes: Uint8Array): Promise<Result<Scan & { name: string }>> {
   return settle(async () => {
-    const opened = await openScan(bytes);
-    if (!opened.ok) refuse(opened.reason);
-    const scan = opened.value;
+    const scan = await opening(bytes, true);
     const files: StoredFile[] = [];
-    for (let i = 0; i < scan.paths.length; i += 1) {
-      const file = await scan.file(i);
-      if (!file.ok) refuse(file.reason);
-      files.push(file.value);
-    }
+    for (let k = 0; k < scan.chunks; k += 1) files.push(...(await scan.readChunk(k)));
     return { head: scan.head, files, name: scan.name };
   });
 }
@@ -1292,18 +1435,19 @@ export async function textOf(bytes: Uint8Array): Promise<Result<string>> {
     // so that a small file naming one long string a million times is refused rather than written.
     const measuring = new Measuring();
     for (const file of scan.value.files) walkFile(measuring, file);
-    if (measuring.total > inflationBound(bytes.length)) refuse(`the text would hold ${measuring.total} characters of names from a file of ${bytes.length} bytes, past ${inflationBound(bytes.length)}`);
+    if (measuring.total > inflationBound(bytes.length)) refuse(`the text would hold ${measuring.total} bytes of names from a file of ${bytes.length} bytes, past ${inflationBound(bytes.length)}`);
     return textOfScan(scan.value);
   });
 }
 
 /**
  * Reads the text form back into a scan. Each line must be exactly the line {@link textOfScan} writes for what it
- * says, so that one set of facts has one text, as it has one layout.
+ * says, so that one set of facts has one text, as it has one layout. Given bytes, they must be UTF-8 without a
+ * byte-order mark, decoded strictly; given a string, it is taken as those bytes decoded.
  */
-export function scanOfText(text: string): Result<Scan> {
+export function scanOfText(text: string | Uint8Array): Result<Scan> {
   try {
-    return { ok: true, value: parseText(text) };
+    return { ok: true, value: parseText(typeof text === "string" ? text : decodeText(text, "the text")) };
   } catch (error) {
     if (error instanceof Refusal) return { ok: false, reason: error.message };
     throw error;
@@ -1393,7 +1537,7 @@ function fromJson(value: unknown): unknown {
 }
 
 /** Reads the text form and writes its layout: the bytes {@link textOf} came from, when it came from bytes. */
-export async function bytesOfText(text: string): Promise<Result<Uint8Array>> {
+export async function bytesOfText(text: string | Uint8Array): Promise<Result<Uint8Array>> {
   const scan = scanOfText(text);
   return scan.ok ? writeScan(scan.value) : scan;
 }
