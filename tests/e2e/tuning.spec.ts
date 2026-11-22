@@ -38,7 +38,9 @@ test("every tuning control explains what changing it does, as its tooltip and it
   // 2026-11-21 (what the camera frames after a step, a trial beside the least pan), and Cut Counted beside it the same day.
   // Wire Answers and Direction Marks joined the 2D wires group the same day (a wire that says who uses what, and its way),
   // and Arrival Waits the 2D layout group that evening (a pull-back that waits while the subject's card is pointed at).
-  await expect(controls).toHaveCount(77);
+  // Scan Growth and Scan Pace joined the 3D layout group on 2026-11-22 (the trial of a map that fills as a scan would);
+  // this case was not run to its end that day, and stood at 77 until the suite's whole run found it.
+  await expect(controls).toHaveCount(79);
   const facts = await controls.evaluateAll(elements => elements.map(element => {
     const describedBy = element.getAttribute("aria-describedby") ?? "";
     const description = document.getElementById(describedBy);

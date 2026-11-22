@@ -4,7 +4,7 @@ import { describe, expect, it, vi } from "vitest";
 import { applyLayoutPreset } from "../layout-presets";
 import { getDefaultTuning } from "../persistence/local-storage";
 import type { ForceGraphTuning } from "../types";
-import { COLLISION_STIFFNESS, easeSpatialLayout, linkPulls, motionForce, placeNewSpheres, QUIET_TICKS, seededDirection, shellMass, SHELL_SOFTNESS, spatialFieldOf, spatialLinkDistance, spatialNodeRadius, spatialNodeValue, springStrength, symbolCountOf, type PlaceableNode, type SpatialLink, type SpatialNode } from "./forceGraphLayout";
+import { COLLISION_STIFFNESS, easeSpatialLayout, HAND_TICKS, linkPulls, motionForce, placeNewSpheres, QUIET_TICKS, seededDirection, shellMass, SHELL_SOFTNESS, spatialFieldOf, spatialLinkDistance, spatialNodeRadius, spatialNodeValue, springStrength, symbolCountOf, type PlaceableNode, type SpatialLink, type SpatialNode } from "./forceGraphLayout";
 import { diagonalOf, SpatialMotion } from "./forceGraphPhysics";
 
 const node = (id: string, symbols: number): SpatialNode => ({ id, publicSymbols: Array.from({ length: symbols }, (_, index) => `symbol${index}`) });
@@ -482,6 +482,50 @@ describe("the easing: one motion through a conservative field, until the spheres
     // The last piece is drawn first where it was placed: its first call reads the field and goes no further.
     expect(after[0].evaluated, "the last piece's first call").toBeLessThanOrEqual(after[0].count);
     expect(after.some(call => call.evaluated > call.count), "several substeps a call once it is all in").toBe(true);
+  });
+
+  it("lets a paced call reach through a tick's substeps while a hand carries a sphere, and holds it to one after a carry of the picture (2026-11-22)", () => {
+    // The owner: "the one place I would want that responsiveness back is when I'm clicking and dragging an item and
+    // swinging the graph around with me". A hand moves its sphere at every frame; held to one evaluation a call for
+    // that, a stiff picture trailed the hand a substep a frame.
+    const crowd: SpatialNode[] = Array.from({ length: 300 }, (_, index) => ({
+      ...node(`crowd-${index}`, index % 4), x: (index % 10) * 3, y: Math.floor(index / 10) % 10 * 3, z: Math.floor(index / 100) * 3
+    }));
+    const simulation = forceSimulation(crowd, 3).stop();
+    const motion = motionForce<SpatialNode>({ tuning: () => tuning, layout: () => "connections", links: () => [], strength: () => 1, budget: () => 1e9 });
+    simulation.force("motion", motion);
+    const evaluated: Array<{ evaluated: number; count: number; whole: boolean }> = [];
+    const advance = SpatialMotion.prototype.advance;
+    const spy = vi.spyOn(SpatialMotion.prototype, "advance").mockImplementation(function (this: SpatialMotion, ...args) {
+      const result = advance.apply(this, args);
+      evaluated.push({ evaluated: this.evaluated, count: this.field.count, whole: result !== null });
+      return result;
+    });
+    try {
+      // The first calls measure the rate; then a hand takes a sphere and moves it at every call.
+      for (let call = 0; call < 5; call++) simulation.tick();
+      const held = crowd[0];
+      held.fx = held.x; held.fy = held.y; held.fz = held.z;
+      evaluated.length = 0;
+      for (let call = 0; call < 40; call++) { held.fx! += 2; simulation.tick(); }
+      expect([held.x, held.y, held.z]).toEqual([held.fx, held.fy, held.fz]);
+      expect(motion.still, "a picture with a sphere in a hand is never still").toBe(false);
+      expect(evaluated.filter(call => call.evaluated > call.count).length, "calls that took several substeps while the hand moved").toBeGreaterThan(20);
+      // More than that: while a hand holds a sphere a call goes on through as many whole ticks as its budget holds, up
+      // to `HAND_TICKS`, so that the picture keeps up with the hand however long a frame takes to draw.
+      expect(evaluated.filter(call => call.whole).length, "whole ticks taken in the hand's forty calls").toBe(40 * HAND_TICKS);
+      // A sphere moved from outside that no hand holds, as a change of the picture carries one, is met as before: the
+      // call after it reads the field once and goes no further.
+      delete held.fx; delete held.fy; delete held.fz;
+      for (let call = 0; call < 5; call++) simulation.tick();
+      evaluated.length = 0;
+      crowd[1].x! += 5;
+      simulation.tick();
+      expect(evaluated[0].evaluated, "the call after a carry").toBeLessThanOrEqual(evaluated[0].count);
+      expect(evaluated.length, "and is one part of a tick, no more").toBe(1);
+    } finally {
+      spy.mockRestore();
+    }
   });
 
   it("rests a grown group sooner under a Settle Hold, and as it did without one (2026-11-19)", () => {

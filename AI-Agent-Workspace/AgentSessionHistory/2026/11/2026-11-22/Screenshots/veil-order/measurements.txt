@@ -1,0 +1,24 @@
+trial a, card: at rest after 8.8 s
+files drawn within skins: 446; spheres: 132; veiled bodies: 1
+stats: 1,298 files, 7,910 references, 1,356 dependencies outside the scan · 132 of 1,284 files shown · 47 groups, 85 alone
+turning: 66 frames, median 47 ms, 95th 54 ms, worst 69 ms
+trial a, slowed: at rest after 31.6 s
+files drawn within skins: 446; spheres: 132; veiled bodies: 1
+stats: 1,298 files, 7,910 references, 1,356 dependencies outside the scan · 132 of 1,284 files shown · 47 groups, 85 alone
+turning: 13 frames, median 305 ms, 95th 668 ms, worst 668 ms
+trial b, card: at rest after 7.4 s
+files drawn within skins: 1024; spheres: 132; veiled bodies: 32
+stats: 1,298 files, 7,910 references, 1,356 dependencies outside the scan · 132 of 1,284 files shown · 47 groups, 85 alone
+turning: 69 frames, median 45 ms, 95th 53 ms, worst 55 ms
+trial b, slowed: at rest after 37.8 s
+files drawn within skins: 1024; spheres: 132; veiled bodies: 32
+stats: 1,298 files, 7,910 references, 1,356 dependencies outside the scan · 132 of 1,284 files shown · 47 groups, 85 alone
+turning: 15 frames, median 247 ms, 95th 301 ms, worst 301 ms
+trial c, card: at rest after 5.5 s
+files drawn within skins: 1152; spheres: 132; veiled bodies: 0
+stats: 1,298 files, 7,910 references, 1,356 dependencies outside the scan · 132 of 1,284 files shown · 47 groups, 85 alone
+turning: 98 frames, median 30 ms, 95th 44 ms, worst 50 ms
+trial c, slowed: at rest after 32.2 s
+files drawn within skins: 1152; spheres: 132; veiled bodies: 0
+stats: 1,298 files, 7,910 references, 1,356 dependencies outside the scan · 132 of 1,284 files shown · 47 groups, 85 alone
+turning: 15 frames, median 246 ms, 95th 327 ms, worst 327 ms

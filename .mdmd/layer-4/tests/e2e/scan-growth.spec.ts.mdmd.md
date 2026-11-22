@@ -14,6 +14,7 @@ The browser's hold on the Scan Growth trial of the 3D map: off, nothing of it is
 - Written on November 22, 2026, after the trial had been looked at ([the day's pictures](../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-22/Screenshots/scan-growth/README.md)), for the owner's wish of [Turn 6 of the November 21 record](../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-21/2026-11-21.1.record.md#turn-6).
 - The filling is watched on the estate sample, whose 36 files a scan finishes within seconds at either pace, from inside the page at every frame, so that no step between two readings is missed; the press is made on this repository, the only bundle of the suite whose scan lasts long enough to act inside.
 - The press case also runs the design audit over the sign while the map fills with a pin's name on screen: the sign's words whole, and clear of every name.
+- A press can miss: the picture moves while it fills, and in the whole run of the 3D suite on 2026-11-22 the sphere read slid from under the pointer before the button went down, so the press landed on nothing and pinned nothing, as the design system says such a press does. The case presses again, as a person would, up to six times, and notes how many presses it took.
 - The press case names no sphere in advance: it presses the largest sphere standing over the bare canvas and asserts that the file pinned is a sphere of the picture pressed, since the picture moves between the reading and the press.
 
 ## Generated
