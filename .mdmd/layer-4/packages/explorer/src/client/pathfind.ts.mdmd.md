@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/explorer/src/client/pathfind.ts`
-- Generated At: 2026-11-19T21:10:14.104Z
+- Generated At: 2026-11-22T03:29:27.513Z
 
 ## Authored
 ### Purpose
@@ -14,6 +14,7 @@ The pathfinder of the Local Map: the engine's breadth-first walk over the links 
 ### Notes
 
 - A path is drawn only in the direction the Local Map reads, what offers on the left and what uses on the right, so `findPath` walks the start's dependents and finds a path exactly when the end depends on the start. When only the start depends on the end it returns the same files as `reversePath`, provider first, which the client offers as a link instead of a drawing. This is the owner's rule of [2025-12-18](../../../../../../AI-Agent-Workspace/AgentSessionHistory/2025/12/2025-12-18/2025-12-18.3.md): "show no results and offer the reverse (via hyperlink)" rather than draw a path against the direction. Until [Turn 10 of 2026-10-01](../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/10/2026-10-01/2026-10-01.1.record.md#turn-10) the search accepted either direction and the map laid the files out in search order, so every wire ran backward; the still-picture instrument measured it.
+- Since 2026-11-22 the page no longer offers `reversePath` as a link: it draws it, as it stands, and tells it from the start, each file using the next. The owner, asked whether a route asked page first is told page first or refused with the reverse offered, answered "Let's go with your recommendation on it" ([Turn 5 of the day's record](../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-22/2026-11-22.1.record.md#turn-5)), which was: told as asked. The rule of 2025-12-18 still governs the drawing, and this module is unchanged but for its comments: it has always found both.
 - Since 2026-10-14 ([Turn 7](../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/10/2026-10-14/2026-10-14.1.record.md#turn-7); [the decision](../../../../../../.mdmd/layer-3/architectural-decisions.mdmd.md#one-walk-under-the-cli-and-the-explorer-and-a-destination-field-that-offers-only-what-connects-recorded-2026-10-14)) the walk is the engine's, on the owner's condition that one pure implementation underlie the Explorer and the CLI: `adjacencyOf` reads the bundle's links both ways, `findPath` asks the walk forward and then in reverse with the starts left out of the targets, and `reachOf` lists every file a path reaches from a set, forward and in reverse, by the files the path would show, which is what the destination field offers. The adjacency is the links the map draws, not the graph's edges, so what the field offers is what the map can draw to.
 - `referencesAgainstPath` counts the references between a drawn path's files that run against it, an earlier file depending on a later one; the path drawer leaves them out, so the status says how many.
 - Created on 2025-12-17 as the FROM/TO pathfind toolbar, with its own fuzzy search, symbol dropdowns and the address parameters `from`, `to`, `fromSymbol` and `toSymbol`. On 2026-10-14 ([Turn 6](../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/10/2026-10-14/2026-10-14.1.record.md#turn-6); [the decision](../../../../../../.mdmd/layer-3/architectural-decisions.mdmd.md#one-search-at-the-top-and-a-path-starts-at-the-newest-pin-recorded-2026-10-14)) the toolbar went into the search bar and the parameters into the compressed snapshot's destination, and the search became one between sets: a start or an end may be a directory, standing for every file inside it, and a file in both sets is not its own path.
@@ -37,21 +38,21 @@ What a search between two sets of files found.
 
 #### `Reach` {#symbol-reach}
 - Type: interface
-- Source: [source](../../../../../../packages/explorer/src/client/pathfind.ts#L39)
+- Source: [source](../../../../../../packages/explorer/src/client/pathfind.ts#L40)
 
 ##### `Reach` — Summary
 Every file a path can reach from a set of files, by the number of files on the path, in each direction.
 
 #### `Adjacency` {#symbol-adjacency}
 - Type: interface
-- Source: [source](../../../../../../packages/explorer/src/client/pathfind.ts#L47)
+- Source: [source](../../../../../../packages/explorer/src/client/pathfind.ts#L48)
 
 ##### `Adjacency` — Summary
 The two readings of the bundle's links: a file's dependents, and the files it depends on.
 
 #### `adjacencyOf` {#symbol-adjacencyof}
 - Type: function
-- Source: [source](../../../../../../packages/explorer/src/client/pathfind.ts#L59)
+- Source: [source](../../../../../../packages/explorer/src/client/pathfind.ts#L60)
 - Returns: [`Adjacency`](#symbol-adjacency)
 
 ##### `adjacencyOf` — Summary
@@ -59,7 +60,7 @@ The links read both ways. A link runs from the file that depends to the file it 
 
 #### `findPath` {#symbol-findpath}
 - Type: function
-- Source: [source](../../../../../../packages/explorer/src/client/pathfind.ts#L93)
+- Source: [source](../../../../../../packages/explorer/src/client/pathfind.ts#L94)
 - Returns: [`PathfindResult`](#symbol-pathfindresult)
 - Parameters: `fromIds`: `Iterable`; `toIds`: `Iterable`; `links`: [`ExplorerLinkPayload`](../shared/types.ts.mdmd.md#symbol-explorerlinkpayload)[]
 
@@ -75,18 +76,18 @@ a file that is in both sets is not its own path.
 
 #### `reachOf` {#symbol-reachof}
 - Type: function
-- Source: [source](../../../../../../packages/explorer/src/client/pathfind.ts#L124)
+- Source: [source](../../../../../../packages/explorer/src/client/pathfind.ts#L125)
 - Returns: [`Reach`](#symbol-reach)
 - Parameters: `fromIds`: `Iterable`
 
 ##### `reachOf` — Summary
-Every file a path can reach from a set of files, forward along dependents, which the map draws, and in reverse
-along dependencies, which the reverse question offers, each with the number of files the path would show. The
+Every file a path can reach from a set of files, forward along dependents, as the map draws, and in reverse
+along dependencies, against the drawing, each with the number of files the path would show. The
 set's own files are not listed.
 
 #### `referencesAgainstPath` {#symbol-referencesagainstpath}
 - Type: function
-- Source: [source](../../../../../../packages/explorer/src/client/pathfind.ts#L141)
+- Source: [source](../../../../../../packages/explorer/src/client/pathfind.ts#L142)
 - Parameters: `links`: [`ExplorerLinkPayload`](../shared/types.ts.mdmd.md#symbol-explorerlinkpayload)[]
 
 ##### `referencesAgainstPath` — Summary

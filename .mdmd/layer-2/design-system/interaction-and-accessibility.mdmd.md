@@ -165,7 +165,7 @@ These are stated so a builder does not mistake them for accidents. Each is in [t
 | Act | Meanings | Recorded as |
 | --- | --- | --- |
 | A click on a file | 2D: inspect. 3D: pin. | Two decisions, 2026-10-20 and 2026-11-02. |
-| The word "pin" | Local Maps: retain a file or symbol and its connections across exploration. World Map: keep one thing's panel open. | No decision names the clash. |
+| The word "pin" | Local Maps: retain a file or symbol and its connections across exploration. World Map: keep one thing's panel open. | No decision names the clash. The Way Down trial (2026-11-22, off by default) joins the two for the length of a way down: what is pinned on the board opens as the Local Map's pins, a thing as the files that carry its calls and a wire as the files at its ends, and stays pinned on the board for the way back ([the Explorer design](../../layer-3/live-documentation-explorer.mdmd.md#independent-exploration)). |
 | The wheel | Local Maps: zoom. World Map: zoom, and past half the view, change view. | The World Map's journey into the Local Map is the open ticket T8 of [the World Map plan](../../layer-3/world-map.mdmd.md). |
 | Enter on a focused card body | 2D: opens the reader (`views/localView/card-factory.ts:278-282`), where a click on the same body does nothing (`:276`). The card is reachable only by script focus (`tabIndex = -1`, `:100`). | Not recorded. |
 
@@ -448,7 +448,7 @@ How each was judged: **code** means read from the source here, which can show a 
 | 3.2.6 Consistent Help | A | Partly | Help exists in the World Map only (`?`). |
 | 3.3.1 Error Identification | A | Meets (code) | The path report says what failed; a refusal says why. |
 | 3.3.2 Labels or Instructions | A | Meets (code) | Fields have names and placeholders. |
-| 3.3.3 Error Suggestion | AA | Partly | A failed path offers the reverse question; an empty search suggests nothing. |
+| 3.3.3 Error Suggestion | AA | Partly | A path is answered whichever way it runs (since 2026-11-22; until then one asked against the drawing failed and offered the reverse question), so the only failed path is one that runs neither way, which says so; an empty search suggests nothing. |
 | 3.3.4 Error Prevention (Legal, Financial, Data) | AA | Not applicable | |
 | 3.3.7 Redundant Entry | A | Meets (code) | |
 | 3.3.8 Accessible Authentication (Minimum) | AA | Not applicable | |

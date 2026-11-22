@@ -4,12 +4,12 @@
 - Layer: 4
 - Archetype: test
 - Code Path: `tests/e2e/local-map-path.spec.ts`
-- Generated At: 2026-11-19T21:10:22.936Z
+- Generated At: 2026-11-22T03:29:45.486Z
 
 ## Authored
 ### Purpose
 
-Exercises path questions through search and shared addresses in both Local Map representations. The estate's known dependency chain supplies independent expected order and direction: reverse queries offer real links, forward routes name ordered files, and Clear returns to retained exploration. Checks rendered feedback, keyboard recovery, hop inspection, representation changes, reload and navigation beside the 2D wire, camera and retention assertions.
+Exercises path questions through search and shared addresses in both Local Map representations. The estate's known dependency chain supplies independent expected order and direction: a path is answered whichever end it is asked from, drawn with what offers first and told from the end asked from, and Clear returns to retained exploration. Until 2026-11-22 a path asked from the file that depends was refused with the reverse question as a link; four cases held that and now hold the owner's word of that day ([Turn 5 of the day's record](../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-22/2026-11-22.1.record.md#turn-5)), each saying in a comment what it asserted before, and a fifth asks the estate's route page first, from `Portal/Pages/Default.aspx` to `Database/SqlServer/dbo.Payment.sql`, which was seen refused before the change. Checks rendered feedback, keyboard recovery, hop inspection, representation changes, reload and navigation beside the 2D wire, camera and retention assertions.
 
 ### Notes
 
@@ -37,7 +37,6 @@ _No public symbols detected_
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
 - `@playwright/test` - `Page`, `expect`, `test`
-- [`compressed-url-state.decompressSnapshot`](../../packages/explorer/src/client/persistence/compressed-url-state.ts.mdmd.md#symbol-decompresssnapshot)
 - [`retained-state.describeRetained`](../../packages/explorer/src/client/views/retained-state.ts.mdmd.md#symbol-describeretained)
 - [`retained-state.retainedItems`](../../packages/explorer/src/client/views/retained-state.ts.mdmd.md#symbol-retaineditems)
 - [`retained-state.retainedKey`](../../packages/explorer/src/client/views/retained-state.ts.mdmd.md#symbol-retainedkey)

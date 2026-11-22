@@ -74,6 +74,7 @@ import {
   type Point3,
   type Screen
 } from "./projection";
+import { wireEndsOf, wireFilesOf } from "./way-down";
 
 const SVG = "http://www.w3.org/2000/svg";
 
@@ -136,8 +137,31 @@ export interface WorldMapOptions {
   graph: LiveDocGraph;
   /** Opens a file of the graph in the Local Map, from a link in a pinned panel. */
   onOpenFile?: (file: string) => void;
-  /** Opens a thing's folder in the Local Map: the wheel past half the view, a double-click, or the link in its pinned panel. */
-  onOpenThing?: (thing: { name: string; folder: string }) => void;
+  /**
+   * Opens a thing's folder in the Local Map: the wheel past half the view, a double-click, or the link in its pinned
+   * panel. Where the way down carries the question, with the files that carry the thing's wires.
+   */
+  onOpenThing?: (thing: OpenedThing) => void;
+  /**
+   * Whether a way down carries the question asked on the board (Tuning's Way Down, a trial of 2026-11-22), read at each
+   * press and each panel drawn: a thing then opens with the files that carry its wires, a wire's pinned panel offers its
+   * own way down, and the board's pin is kept for the way back.
+   */
+  carriesQuestion?: () => boolean;
+  /** Opens a wire as the files at its two ends, pair by pair, from the link in its pinned panel. */
+  onOpenWire?: (wire: { from: string; to: string; files: string[] }) => void;
+  /** Told which thing with a folder is pinned on the board, and that none is, as the pin changes. */
+  onPinnedThing?: (thing: { name: string; folder: string } | null) => void;
+}
+
+/**
+ * A thing as its way down hands it to the page: its board name, its folder, and, where the question is carried, every
+ * file that carries its wires, in the order a picture should take them.
+ */
+export interface OpenedThing {
+  name: string;
+  folder: string;
+  wireFiles?: string[];
 }
 
 interface Door {
@@ -203,7 +227,10 @@ export class WorldMapController {
   private readonly model: WorldModel;
   private readonly graph: LiveDocGraph;
   private readonly onOpenFile?: (file: string) => void;
-  private readonly onOpenThing?: (thing: { name: string; folder: string }) => void;
+  private readonly onOpenThing?: (thing: OpenedThing) => void;
+  private readonly carriesQuestion: () => boolean;
+  private readonly onOpenWire?: WorldMapOptions["onOpenWire"];
+  private readonly onPinnedThing?: WorldMapOptions["onPinnedThing"];
 
   private readonly world: HTMLElement;
   private readonly svg: SVGSVGElement;
@@ -269,6 +296,9 @@ export class WorldMapController {
     this.graph = options.graph;
     this.onOpenFile = options.onOpenFile;
     this.onOpenThing = options.onOpenThing;
+    this.carriesQuestion = options.carriesQuestion ?? (() => false);
+    this.onOpenWire = options.onOpenWire;
+    this.onPinnedThing = options.onPinnedThing;
 
     this.root.innerHTML = "";
     this.world = element("div", "world", this.root);
@@ -1430,7 +1460,11 @@ export class WorldMapController {
       const lines = shown.map((line) => `<div class="via">${escapeHtml(line.label)}</div><div class="f">${this.fileLink(line.from)} &rarr; ${this.fileLink(line.to)}</div>`).join("");
       const more = road.lines.length > shown.length ? `<div class="src">and ${road.lines.length - shown.length} more; click to pin and see them all</div>` : "";
       const source = road.basis === "declared" ? `<div class="src">declared on the board</div>` : `<div class="src">${road.count} edge${road.count === 1 ? "" : "s"} in the docs</div>`;
-      return { head: title(`${this.pinLink("piece", road.from)} ${verb} ${this.pinLink("piece", road.to)}`, BASIS_WORDS[road.basis]), body: `${door}${over}${meaning}${lines}${more}${source}` };
+      // The wire's own way down (Tuning's Way Down, a trial of 2026-11-22): the files at its two ends, both kept. A
+      // declared wire has no file behind it and offers none.
+      const open = full && road.lines.length && this.onOpenWire && this.carriesQuestion()
+        ? `<a href="#" class="open" data-open-road="${escapeHtml(road.id)}">open ${escapeHtml(road.from)} and ${escapeHtml(road.to)}</a>` : "";
+      return { head: title(`${this.pinLink("piece", road.from)} ${verb} ${this.pinLink("piece", road.to)}`, BASIS_WORDS[road.basis]), body: `${door}${over}${meaning}${lines}${more}${open}${source}` };
     }
     if (h.kind === "piece") {
       const piece = this.model.pieces.find((candidate) => candidate.name === h.id);
@@ -1539,6 +1573,19 @@ export class WorldMapController {
     this.pinned = h;
     this.evidence.dataset.pin = "";
     this.applyHover();
+    this.sayPinnedThing();
+  }
+
+  /** Draws the pinned panel again where a setting has changed what it offers (Tuning's Way Down). */
+  redrawPanel(): void {
+    this.evidence.dataset.pin = "";
+    this.showEvidence(this.pinned ?? this.hover);
+  }
+
+  /** Tells the page which thing with a folder is pinned, so that its bar can ask a path from it; none for any other pin. */
+  private sayPinnedThing(): void {
+    const piece = this.pinned?.kind === "piece" ? this.model.pieces.find((candidate) => candidate.name === this.pinned?.id) : undefined;
+    this.onPinnedThing?.(piece?.folder ? { name: piece.name, folder: piece.folder } : null);
   }
 
   /**
@@ -1551,6 +1598,7 @@ export class WorldMapController {
     this.pinned = null;
     this.evidence.dataset.pin = "";
     this.applyHover();
+    this.sayPinnedThing();
     if (returnFocus && keyboardWasHere && from?.kind === "piece") {
       this.focusTargets.get(from.id)?.focus();
     }
@@ -1578,7 +1626,12 @@ export class WorldMapController {
       return;
     }
     this.hover = null;
-    this.unpin(false);
+    // Where the way down carries the question (a trial, 2026-11-22), what was pinned on the board stays pinned there, so
+    // that Back and the sidebar's World Map return to the question as it was left.
+    const carries = this.carriesQuestion();
+    if (!carries) {
+      this.unpin(false);
+    }
     const [p0, p1, , p3] = this.lidCorners(name);
     const span = Math.hypot(p1[0] - p0[0], p1[1] - p0[1]) + Math.hypot(p3[0] - p0[0], p3[1] - p0[1]);
     const { width } = this.viewport();
@@ -1586,7 +1639,15 @@ export class WorldMapController {
       const centre = this.lidCorners(name).reduce<Point2>((sum, p) => [sum[0] + p[0] / 4, sum[1] + p[1] / 4], [0, 0]);
       this.zoomBy((0.3 * width) / span, centre[0], centre[1]);
     }
-    this.onOpenThing({ name: piece.name, folder: piece.folder });
+    this.onOpenThing({ name: piece.name, folder: piece.folder, ...(carries ? { wireFiles: wireFilesOf(this.model, piece.name) } : null) });
+  }
+
+  /** Opens a wire as the files at its two ends, from the link in its pinned panel; the wire stays pinned on the board. */
+  private openWire(id: string): void {
+    const road = this.model.roads.find((candidate) => candidate.id === id);
+    if (road && this.onOpenWire) {
+      this.onOpenWire({ from: road.from, to: road.to, files: wireEndsOf(road) });
+    }
   }
 
   /** Opens the piece whose lid spans half the view under a screen point, if there is one. */
@@ -1845,7 +1906,7 @@ export class WorldMapController {
     });
 
     on(this.evidence, "click", (event: MouseEvent) => {
-      const anchor = (event.target as Element).closest<HTMLAnchorElement>("a[data-pin-id], a[data-file], a[data-open]");
+      const anchor = (event.target as Element).closest<HTMLAnchorElement>("a[data-pin-id], a[data-file], a[data-open], a[data-open-road]");
       if (!anchor) {
         return;
       }
@@ -1854,6 +1915,9 @@ export class WorldMapController {
       if (anchor.dataset.open !== undefined) {
         event.preventDefault();
         this.enter(anchor.dataset.open);
+      } else if (anchor.dataset.openRoad !== undefined) {
+        event.preventDefault();
+        this.openWire(anchor.dataset.openRoad);
       } else if (anchor.dataset.pinId !== undefined) {
         event.preventDefault();
         this.pin({ kind: anchor.dataset.pinKind as Hover["kind"], id: anchor.dataset.pinId });

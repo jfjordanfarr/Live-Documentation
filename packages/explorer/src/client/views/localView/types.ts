@@ -108,6 +108,8 @@ export interface LocalViewApi {
   resetZoom(): void;
   /** Frame everything the map shows, at reading scale or smaller; a person's press only (2026-11-12). */
   fitWhole(): void;
+  /** Frame what a way down from the World Map brought, an opened directory or a file's card, with the cards its lines reach (a trial, 2026-11-22). */
+  arriveWithLines(target: { card: string } | { directory: string }): void;
   /** Whether the camera follows the pins, which only Tuning's Framing at Follows Pins acts on (2026-11-19). */
   isFollowing(): boolean;
   /** What the following camera's frame leaves out: a file pin by its path, a symbol pin as `path#symbol`, a directory as `path/`. */

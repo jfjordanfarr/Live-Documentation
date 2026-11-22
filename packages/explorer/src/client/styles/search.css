@@ -460,9 +460,11 @@
     overflow-wrap: anywhere;
 }
 
-.pathfind-path-arrow {
-    font-size: 18px;
-    color: var(--state-selected);
+/* What joins one hop to the next, in words: "uses" or "is used by" (2026-11-22; a bare arrow until then). */
+.pathfind-path-relation {
+    font-size: 13px;
+    color: var(--text-normal);
     flex-shrink: 0;
-    padding: 0 2px;
+    padding: 0 4px;
+    white-space: nowrap;
 }

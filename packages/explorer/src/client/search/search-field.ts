@@ -7,7 +7,7 @@
 import { announce, withdraw } from "../announce";
 import { escapeHtml } from "../graph-helpers";
 import { DIRECTORY_ICON, FILE_ICON } from "../panels/icon-button";
-import { DIRECTORY_LIMIT, FILE_LIMIT, searchGraph, searchRows, type SearchHit, type SearchResult, type SearchRow, type SearchScope } from "./graph-search";
+import { DIRECTORY_LIMIT, FILE_LIMIT, namedMatches, searchGraph, searchRows, type SearchHit, type SearchResult, type SearchRow, type SearchScope } from "./graph-search";
 
 /** What a search field is made from: its input and its results element, the scope it searches, and what is done with the thing chosen. */
 export interface SearchFieldOptions {
@@ -173,6 +173,11 @@ export function createSearchField(options: SearchFieldOptions): SearchField {
       if (result.moreDirectories > 0) html.push(foldRow({ kind: "more-directories", count: result.moreDirectories }, isApart));
       list.push(...searchRows(result).map(each => isApart ? { ...each, apart: true } : each));
     };
+    // Directories the scope offers by a name of their own stand first: the name, and the directory it chooses beside it.
+    for (const named of namedMatches(query, scope.named ?? [])) {
+      html.push(row("directory", named.name, "", named.directory));
+      list.push({ kind: "directory", directory: named.directory });
+    }
     section(offered, hit => scope.badge?.(hit) ?? plainBadge(hit), false);
     if (scope.apart && apart && apart.files > 0) {
       html.push(row("apart", scope.apart.fold(apart.files, offered.files > 0), "", ""));

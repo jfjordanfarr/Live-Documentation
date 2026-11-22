@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/explorer/src/client/views/worldMap/controller.ts`
-- Generated At: 2026-11-19T21:10:17.553Z
+- Generated At: 2026-11-22T02:00:46.862Z
 
 ## Authored
 ### Purpose
@@ -44,28 +44,36 @@ The World Map, drawn. Everything that touches the DOM is here: the SVG the board
 ### Public Symbols
 #### `Hover` {#symbol-hover}
 - Type: interface
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/worldMap/controller.ts#L125)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/worldMap/controller.ts#L126)
 
 ##### `Hover` — Summary
 What the pointer is on.
 
 #### `WorldMapOptions` {#symbol-worldmapoptions}
 - Type: interface
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/worldMap/controller.ts#L131)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/worldMap/controller.ts#L132)
 
 ##### `WorldMapOptions` — Summary
 What the controller is given: where to draw, the board and its join, the graph, and the doors out of the view.
 
+#### `OpenedThing` {#symbol-openedthing}
+- Type: interface
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/worldMap/controller.ts#L161)
+
+##### `OpenedThing` — Summary
+A thing as its way down hands it to the page: its board name, its folder, and, where the question is carried, every
+file that carries its wires, in the order a picture should take them.
+
 #### `WorldMapController` {#symbol-worldmapcontroller}
 - Type: class
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/worldMap/controller.ts#L199)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/worldMap/controller.ts#L223)
 
 ##### `WorldMapController` — Summary
 Draws a board and answers the pointer.
 
 #### `WorldMapApi` {#symbol-worldmapapi}
 - Type: interface
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/worldMap/controller.ts#L2291)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/worldMap/controller.ts#L2355)
 
 ##### `WorldMapApi` — Summary
 The handle a test or a screenshot script drives, at `window.__worldMap`.
@@ -146,6 +154,8 @@ The handle a test or a screenshot script drives, at `window.__worldMap`.
 - [`projection.toScreen`](./projection.ts.mdmd.md#symbol-toscreen)
 - [`projection.unproject`](./projection.ts.mdmd.md#symbol-unproject)
 - [`projection.zoomAt`](./projection.ts.mdmd.md#symbol-zoomat)
+- [`way-down.wireEndsOf`](./way-down.ts.mdmd.md#symbol-wireendsof)
+- [`way-down.wireFilesOf`](./way-down.ts.mdmd.md#symbol-wirefilesof)
 <!-- LIVE-DOC:END Dependencies -->
 
 <!-- LIVE-DOC:BEGIN Cited By -->

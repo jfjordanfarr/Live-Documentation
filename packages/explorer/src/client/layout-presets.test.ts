@@ -221,6 +221,22 @@ describe("shared packing preferences", () => {
     expect(applyLayoutSettings(chosen, unsaid.layout).localMap.framing).toBe("hand");
   });
 
+  it("carries Way Down only when it carries the question, and reads its absence as the folder alone (2026-11-22)", () => {
+    const plain = getDefaultTuning();
+    expect(plain.localMap.wayDown).toBe("alone");
+    expect(layoutSettingsOf(plain).localMap).not.toHaveProperty("wayDown");
+    expect(readLayoutSettings({ localMap: { wayDown: "alone" } })).toBeUndefined();
+    expect(readLayoutSettings({ localMap: { wayDown: "everything" } })).toBeUndefined();
+    const chosen = getDefaultTuning();
+    chosen.localMap.wayDown = "question";
+    // A path asked on the board says what it is by the lever's word, so the link made there carries the lever.
+    const carried = decompressSnapshot(compressSnapshot({ ...DEFAULT_SNAPSHOT, layout: layoutSettingsOf(chosen) }));
+    expect(carried.layout?.localMap?.wayDown).toBe("question");
+    expect(applyLayoutSettings(getDefaultTuning(), carried.layout).localMap.wayDown).toBe("question");
+    const unsaid = decompressSnapshot(compressSnapshot({ ...DEFAULT_SNAPSHOT, layout: layoutSettingsOf(plain) }));
+    expect(applyLayoutSettings(chosen, unsaid.layout).localMap.wayDown).toBe("alone");
+  });
+
   it("opens a link in the three looks unless it says the ladder, which it carries only when chosen (2026-11-13)", () => {
     // The default is the three looks, and a link made with it does not write it.
     const three = getDefaultTuning();

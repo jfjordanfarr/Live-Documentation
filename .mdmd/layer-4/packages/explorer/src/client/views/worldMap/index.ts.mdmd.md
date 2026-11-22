@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/explorer/src/client/views/worldMap/index.ts`
-- Generated At: 2026-11-19T21:10:17.578Z
+- Generated At: 2026-11-22T02:00:46.878Z
 
 ## Authored
 ### Purpose
@@ -16,23 +16,31 @@ The World Map view's door: reads the bundle's board text, refuses it with a note
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
+#### `OpenedThing` {#symbol-openedthing}
+- Type: unknown
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/worldMap/index.ts#L14)
+
+#### `heldFiles` {#symbol-heldfiles}
+- Type: unknown
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/worldMap/index.ts#L15)
+
 #### `WorldMapViewOptions` {#symbol-worldmapviewoptions}
 - Type: interface
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/worldMap/index.ts#L15)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/worldMap/index.ts#L18)
 
 ##### `WorldMapViewOptions` — Summary
 What the World Map view is given: where to draw, the graph, the bundle's board when it carries one, and the doors into the other views.
 
 #### `WorldMapView` {#symbol-worldmapview}
 - Type: interface
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/worldMap/index.ts#L26)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/worldMap/index.ts#L35)
 
 ##### `WorldMapView` — Summary
 The World Map view as the client holds it: drawn, disposed, and driven by tests through its handle.
 
 #### `createWorldMapView` {#symbol-createworldmapview}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/worldMap/index.ts#L34)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/worldMap/index.ts#L47)
 - Returns: [`WorldMapView`](#symbol-worldmapview)
 - Parameters: `options`: [`WorldMapViewOptions`](#symbol-worldmapviewoptions)
 
@@ -47,9 +55,12 @@ Creates the World Map over the bundle's board, or a note saying the bundle has n
 - [`boardGraph.deriveBoardGraph`](../../../../../engine/src/live-docs/boardGraph.ts.mdmd.md#symbol-deriveboardgraph)
 - [`document.LiveDocSyntaxError`](../../../../../engine/src/live-docs/document.ts.mdmd.md#symbol-livedocsyntaxerror)
 - [`graph.LiveDocGraph`](../../../../../engine/src/live-docs/graph.ts.mdmd.md#symbol-livedocgraph) (type-only)
+- [`controller.OpenedThing`](./controller.ts.mdmd.md#symbol-openedthing)
 - [`controller.WorldMapApi`](./controller.ts.mdmd.md#symbol-worldmapapi)
 - [`controller.WorldMapController`](./controller.ts.mdmd.md#symbol-worldmapcontroller)
+- [`controller.WorldMapOptions`](./controller.ts.mdmd.md#symbol-worldmapoptions)
 - [`model.buildWorldModel`](./model.ts.mdmd.md#symbol-buildworldmodel)
+- [`way-down.heldFiles`](./way-down.ts.mdmd.md#symbol-heldfiles) (re-export)
 <!-- LIVE-DOC:END Dependencies -->
 
 <!-- LIVE-DOC:BEGIN Cited By -->

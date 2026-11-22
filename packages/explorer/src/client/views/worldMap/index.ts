@@ -8,8 +8,11 @@ import { deriveBoardGraph } from "@live-documentation/engine/live-docs/boardGrap
 import { LiveDocSyntaxError } from "@live-documentation/engine/live-docs/document";
 import type { LiveDocGraph } from "@live-documentation/engine/live-docs/graph";
 
-import { WorldMapController, type WorldMapApi } from "./controller";
+import { WorldMapController, type WorldMapApi, type WorldMapOptions } from "./controller";
 import { buildWorldModel } from "./model";
+
+export type { OpenedThing } from "./controller";
+export { heldFiles } from "./way-down";
 
 /** What the World Map view is given: where to draw, the graph, the bundle's board when it carries one, and the doors into the other views. */
 export interface WorldMapViewOptions {
@@ -19,20 +22,30 @@ export interface WorldMapViewOptions {
   /** Opens a file of the graph in the Local Map, from a link in a pinned panel. */
   onOpenFile?: (file: string) => void;
   /** Opens a thing's folder in the Local Map, by the wheel, a double-click or the link in its pinned panel. */
-  onOpenThing?: (thing: { name: string; folder: string }) => void;
+  onOpenThing?: WorldMapOptions["onOpenThing"];
+  /** Whether a way down carries the question asked on the board (Tuning's Way Down, a trial of 2026-11-22). */
+  carriesQuestion?: WorldMapOptions["carriesQuestion"];
+  /** Opens a wire as the files at its two ends, from the link in its pinned panel. */
+  onOpenWire?: WorldMapOptions["onOpenWire"];
+  /** Told which thing with a folder is pinned on the board, and that none is. */
+  onPinnedThing?: WorldMapOptions["onPinnedThing"];
 }
 
 /** The World Map view as the client holds it: drawn, disposed, and driven by tests through its handle. */
 export interface WorldMapView {
   render: () => void;
   dispose: () => void;
+  /** The board's things that have a folder, by their board names: what a path asked on the board can run between. */
+  things: ReadonlyArray<{ name: string; folder: string }>;
+  /** Draws the pinned panel again, for a setting that changes what it offers. */
+  refresh: () => void;
   /** The handle a test drives; absent when the bundle carries no board. */
   api?: WorldMapApi;
 }
 
 /** Creates the World Map over the bundle's board, or a note saying the bundle has none. */
 export function createWorldMapView(options: WorldMapViewOptions): WorldMapView {
-  const { root, graph, board, onOpenFile, onOpenThing } = options;
+  const { root, graph, board, onOpenFile, onOpenThing, carriesQuestion, onOpenWire, onPinnedThing } = options;
   if (!board) {
     return noBoard(root, "This bundle carries no board. Build it with <code>npm run live-docs:visualize -- --board &lt;board.md&gt;</code> to draw a World Map.");
   }
@@ -53,7 +66,7 @@ export function createWorldMapView(options: WorldMapViewOptions): WorldMapView {
   return {
     render: () => {
       if (!controller) {
-        controller = new WorldMapController({ root, board: parsed, boardPath: board.path, model, graph, onOpenFile, onOpenThing });
+        controller = new WorldMapController({ root, board: parsed, boardPath: board.path, model, graph, onOpenFile, onOpenThing, carriesQuestion, onOpenWire, onPinnedThing });
         (window as Window & { __worldMap?: WorldMapApi }).__worldMap = controller.api;
       }
       if (!rendered) {
@@ -66,6 +79,8 @@ export function createWorldMapView(options: WorldMapViewOptions): WorldMapView {
       controller = null;
       rendered = false;
     },
+    things: model.pieces.flatMap((piece) => (piece.folder ? [{ name: piece.name, folder: piece.folder }] : [])),
+    refresh: () => controller?.redrawPanel(),
     get api() {
       return controller?.api;
     }
@@ -74,7 +89,7 @@ export function createWorldMapView(options: WorldMapViewOptions): WorldMapView {
 
 function noBoard(root: HTMLElement, html: string): WorldMapView {
   root.innerHTML = `<div class="world"><div class="world-empty"><div>${html}</div></div></div>`;
-  return { render: () => undefined, dispose: () => { root.innerHTML = ""; } };
+  return { render: () => undefined, dispose: () => { root.innerHTML = ""; }, things: [], refresh: () => undefined };
 }
 
 function escape(text: string): string {
