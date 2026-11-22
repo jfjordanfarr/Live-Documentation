@@ -7,7 +7,7 @@ import { linkPulls } from "../../packages/explorer/src/client/views/forceGraphLa
 import { spatialScope, startHops, startOf } from "../../packages/explorer/src/client/views/forceGraphScope";
 import { explorerGraphOf } from "../../packages/explorer/src/shared/graph";
 import type { StaticExplorerData } from "../../packages/explorer/src/shared/staticExplorerData";
-import { observeGraph, renderedNodes } from "./force-graph-observation";
+import { expectActionsOf, observeGraph, renderedNodes } from "./force-graph-observation";
 import { framesDuring, recordFrames, restsOn, sweepThrough } from "./pointer-frames";
 import { currentSnapshot } from "./search-bar";
 
@@ -138,7 +138,13 @@ test("a focused URL centers its node, direct clicks pin it, and More opens its d
   expect(currentSnapshot(page).selectedNodeId).toBe(GRAPH);
   expect(currentSnapshot(page).pinSet.entries).toEqual([{ nodeId: GRAPH, symbol: "*" }]);
   expect(currentSnapshot(page).inspection).toBeNull();
-  await page.locator(".force-graph-actions").getByRole("button", { name: "More actions for graph.ts", exact: true }).click();
+  // Once any actions are offered, in the case's own time as the press of More waited before, they are held to be the
+  // file's before More is pressed by its name: the landing of 2026-11-22 found a directory shell's offered here once,
+  // and the case said only that graph.ts's More was not found in thirty seconds.
+  const actions = page.locator(".force-graph-actions");
+  await expect(actions).toBeVisible({ timeout: 0 });
+  await expectActionsOf(page, GRAPH, point);
+  await actions.getByRole("button", { name: "More actions for graph.ts", exact: true }).click();
   await page.getByRole("menuitem", { name: "Inspect graph.ts", exact: true }).click();
   await expect(page.locator("#detail-panel")).toContainText(GRAPH);
   await expect(page.locator("#detail-panel")).toHaveClass(/visible/);
@@ -147,7 +153,6 @@ test("a focused URL centers its node, direct clicks pin it, and More opens its d
   await expectFocused(page, GRAPH);
   // The file's actions, holding focus since the reader gave it back to More, came along with it and stand beside it, not
   // over it: left behind by the camera's flight, they had covered it and hidden its name (2026-11-20).
-  const actions = page.locator(".force-graph-actions");
   await expect(actions).toHaveAttribute("data-node-id", GRAPH);
   await expect(actions).toBeVisible();
   const beside = async (): Promise<{ across: number; apart: number; radius: number }> => {
