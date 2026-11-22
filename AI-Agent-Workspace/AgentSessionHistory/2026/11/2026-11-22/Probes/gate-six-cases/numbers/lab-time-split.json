@@ -1,0 +1,66 @@
+[
+ {
+  "scope": "repository, five files",
+  "stretches": {
+   "goto": 302,
+   "the page draws its picture": 5025,
+   "capture, the picture drawn": 15005,
+   "loadBundleGraph": 153,
+   "evaluate": 7317,
+   "driftOf": 1,
+   "evaluate again": 6812
+  },
+  "cards": 114,
+  "drift": 0,
+  "same": true,
+  "pageLayoutMs": "3013"
+ },
+ {
+  "scope": "repository, chain",
+  "stretches": {
+   "goto": 274,
+   "the page draws its picture": 5629,
+   "capture, the picture drawn": 20513,
+   "loadBundleGraph": 144,
+   "evaluate": 9209,
+   "driftOf": 1,
+   "evaluate again": 9058
+  },
+  "cards": 132,
+  "drift": 0,
+  "same": true,
+  "pageLayoutMs": "3305"
+ },
+ {
+  "scope": "estate, five files",
+  "stretches": {
+   "goto": 282,
+   "the page draws its picture": 945,
+   "capture, the picture drawn": 1278,
+   "loadBundleGraph": 2,
+   "evaluate": 98,
+   "driftOf": 0,
+   "evaluate again": 90
+  },
+  "cards": 20,
+  "drift": 0,
+  "same": true,
+  "pageLayoutMs": "496"
+ },
+ {
+  "scope": "estate, chain",
+  "stretches": {
+   "goto": 109,
+   "the page draws its picture": 544,
+   "capture, the picture drawn": 929,
+   "loadBundleGraph": 2,
+   "evaluate": 47,
+   "driftOf": 0,
+   "evaluate again": 44
+  },
+  "cards": 14,
+  "drift": 0,
+  "same": true,
+  "pageLayoutMs": "269"
+ }
+]

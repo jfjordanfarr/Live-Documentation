@@ -67,4 +67,16 @@ Only the estate's five files draw laces, and 15 samples of one picture lie on on
 | Estate, five files | 20 | 0.5 s | 0.4 s | 2.1 s | 2 ms | 0.1 s | 0.1 s | 0 |
 | Estate, chain | 14 | 0.3 s | 0.1 s | 1.5 s | 2 ms | 0.05 s | 0.05 s | 0 |
 
-The capture here includes the wait for the page to draw its picture. The repository's two scopes are not small pictures: the five files retained whole stand among 114 cards and the chain among 132, and the page itself takes three and a half seconds to lay each out. Their cases' work is 32 and 37 s by these stretches, which is the half minute and over it: the chain's three run-outs alone are its own work, not the machine's load. Seven tenths of it is the capture and a quarter the lab's layout in the test's process, which costs twice the page's own and is not quicker the second time. Loading and deriving the graph and the comparison cost nothing.
+The capture here includes the wait for the page to draw its picture. A second run parted the two ([the numbers](numbers/lab-time-split.json)):
+
+| Scope | The page draws its picture | The capture, the picture drawn | `evaluate` | The three together |
+| --- | --- | --- | --- | --- |
+| Repository, five files | 5.0 s | 15.0 s | 7.3 s | 27.6 s |
+| Repository, chain | 5.6 s | 20.5 s | 9.2 s | 35.6 s |
+| Estate, five files | 0.9 s | 1.3 s | 0.1 s | 2.3 s |
+| Estate, chain | 0.5 s | 0.9 s | 0.05 s | 1.5 s |
+
+The repository's two scopes are not small pictures: the five files retained whole stand among 114 cards and the chain among 132, and the page itself takes three to four seconds to lay each out. Their cases' work is 28 to 32 s and 36 to 37 s by these stretches, which is the half minute and over it: the chain's three run-outs alone are its own work, not the machine's load. Loading and deriving the graph and the comparison cost nothing. Two stretches are the time:
+
+- **The capture's reading of the drawn page, more than half.** It costs 0.065 s a card on the estate's 20 cards and 0.13 to 0.16 s a card on the repository's 114 and 132: it grows faster than the picture. `readCapture` (`scripts/layout-lab/capture.ts`) reads the page's texts in turn in one call, and where it calibrates a font's line it writes into the page and reads a box back before going on; a write followed by a read makes the browser lay the whole page out again, and this page holds some 25,000 elements. Whether that, or reads of that kind, is the one thing done again and again was not confirmed under a profiler, and nothing was mended.
+- **The lab's layout in the test's process, a quarter.** It costs two to three times the page's own layout of the same picture and is no quicker the second time, so it is not a cache missed. Not looked into.
