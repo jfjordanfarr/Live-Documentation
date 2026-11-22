@@ -387,6 +387,31 @@ The new case, "everything of a card takes the pointer before a wire's reach does
 
 So nothing of this branch's calls `focus` or `blur`: the menu takes the focus as it should, and loses it to the browser's default for a press on something that cannot hold the focus, the menu's own ground under the finger. No listener of Wire Answers or of the arrival appears in it. Why the case passed on the day's start was not found; the same press landing on an item, a few pixels away, keeps the focus in the menu, and what an item menu lists changed that day. The mend is small and in `panels/item-menu.ts`, which is not this branch's file: a press on the menu's own ground keeps the focus where it is (the default prevented where the press is on no item), or Escape heard by the window while the menu is open. It was not made.
 
+## Eleventh milestone, from 20:04 UTC: the menu's ground, the hand held by a case, a tap, the laces
+
+**The item menu.** Ruled: "a press on the menu's own ground keeps the menu's focus, since the ground of a menu is the menu." `panels/item-menu.ts` prevents the default of a mouse press that lands on the menu and on no item, so the focus stays on the item that has it. The phone's hold then gets past its Escape: the menu keeps the focus after the finger lifts and Escape closes it. The case says, at that line, what the release of a touch does. It also checks, at its end, that a press outside the menu closes it and a press on an item acts.
+
+On its first run with the mend the case failed further on, for a reason of this builder's own making: the reading-size seed added in the ninth milestone replaced the whole stored state, and with it the growing composition this file's journeys read, under which the file's name says whether its reading is open. The seed keeps that composition now.
+
+**The hand, held by a case.** `wire-answers.spec.ts`, "the hand's spot is gone when the picture moves under a resting pointer…": on `still-picture.ts` as the arrival leaves it, one press in and back teaches where a press in puts each point of the screen; a card's control is chosen whose middle will come to a point that a wire's reach now holds on the map's ground; the pointer rests there (the spot stands under it), the zoom's button is pressed by the keyboard, and the mouse's button goes down and up with no move. The control stands at the pointer and the press is its own. With the taking-away undone (a temporary observer that showed the spot again whenever the page hid it) the case failed as it should: "More actions for Internals in force-graph-exploration.spec.ts" did not stand at the pointer, the spot did.
+
+**The two cases of the spoiled hold, alone** (load 3, nothing of this builder's beside them): `local-map-packing.spec.ts` "packing changes keep the selected file in place…" passed (23.2 s), and `local-map-pins.spec.ts` "releasing the last pinned symbol…" passed begun at reading size (4.6 s).
+
+**A tap on a phone.** `local-map-learning.spec.ts`, in the phone's group, "a tap on a wire's reach brings its words, and a tap on something of a card that stands in a wire's reach is the card's own": the tap on a wire pins its words, a tap elsewhere lets go of them, and the tap on the card is heard by the card's own element and brings no words. The phone's picture does offer something of a card under a reach. It passes in the composition that ships, fixed slots (three runs: 2.9 to 3.3 s).
+
+*Not mended, and a finding:* in the growing composition, which this file's other journeys choose and which is not the default, the same tap brought no words, three runs of three; at the tapped point (62, 500) the page's own word was the map's ground (`div.local-layout`), so the tap was not a card's. A guess was tried, that the press makes the picture draw its wires again so that the band pressed is gone at the release: the release now finds the wire under it where the pressed band is gone (`wire-answers.ts`, `pointerUp`). It did not change the result, so the cause is something else and is not known; the change is kept, harmless in the seventeen cases of the wire answers and the eight of this file, and is to be taken out if it is not wanted on that footing.
+
+**The laces.** Read from the page's own word for what stands at nine points of every control of a card in view (its corners, edges and middle), in four pictures the cases draw:
+
+| Picture | Returning laces | Controls in view | Points read | Controls under a lace |
+| --- | ---: | ---: | ---: | ---: |
+| `still-picture.ts` as the arrival leaves it | 0 | 126 | 1,116 | 0 |
+| `pathfind.ts` at reading size | 0 | 90 | 750 | 0 |
+| The estate's `PaymentService.cs` at reading size | 2 | 24 | 216 | 0 |
+| The same on a phone | 2 | 23 | 204 | 0 |
+
+No lace's reach lay over a card's control in them. Two of the four pictures draw no lace at all.
+
 ## Not done
 
 - The sweep: eight holds of twenty-five ran.

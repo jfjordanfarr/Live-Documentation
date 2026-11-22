@@ -177,7 +177,8 @@ test.describe("phone reading", () => {
     // the card (no pointer rests, a tap gives no visible focus), so the arrival that ships (2026-11-22) pulls back a
     // second and a half after it lands, under the case's taps.
     await page.addInitScript(({ key, value }) => localStorage.setItem(key, value), {
-      key: PERSISTED_UI_KEY, value: JSON.stringify({ version: PERSISTED_UI_VERSION, tuning: { localMap: { ...AT_READING_SIZE, searchStarts: 0 } } })
+      // With the growing composition every journey of this file reads (the beforeEach above), which a whole stored state would otherwise replace.
+      key: PERSISTED_UI_KEY, value: JSON.stringify({ version: PERSISTED_UI_VERSION, tuning: { localMap: { ...AT_READING_SIZE, searchStarts: 0, cardText: "grow" } } })
     });
     await page.goto(entry);
     const subject = page.locator(`.node-card[data-id="${payment}"]`);
@@ -206,7 +207,15 @@ test.describe("phone reading", () => {
     await expect(page.getByRole("menu")).toBeVisible();
     await expect(page.locator("#detail-panel")).not.toHaveClass(/visible/u);
     expect(decompressSnapshot(new URL(page.url()).searchParams.get("s")!)?.pinSet.entries).toEqual([]);
+    // What the release of a touch does: the browser sends its own mouse press for the touch to the point the finger
+    // lifted from, and the menu, opened under the finger, now stands there. That press lands on the menu's own ground
+    // beside its first item. Until 2026-11-22 the browser's default for it took the focus from the menu, which hears
+    // Escape only while it has the focus: Escape then closed nothing, and the next tap landed on the menu's first
+    // item (the gate of that day; the trace is in the arrival's evidence, tenth milestone). A press on a menu's own
+    // ground keeps the menu's focus now (panels/item-menu.ts).
+    await expect.poll(() => page.evaluate(() => !!document.activeElement?.closest("[role='menu']")), { message: "the menu keeps the focus after the finger lifts" }).toBe(true);
     await page.keyboard.press("Escape");
+    await expect(page.getByRole("menu")).toBeHidden();
     // Since November 5 a tap on the card's body opens nothing: the file's name folds and opens its reading, and the
     // evidence reader lives in the More menu above.
     await subject.locator(".node-path").tap();
@@ -216,6 +225,74 @@ test.describe("phone reading", () => {
     await expect(name).toHaveAttribute("aria-expanded", "false");
     await expect(read).toHaveAttribute("aria-pressed", "false");
     await expect(page.locator("#detail-panel")).not.toHaveClass(/visible/u);
+    // The menu's other presses are what they were: one outside it closes it, and one on an item acts.
+    const more = subject.locator(".local-file-more");
+    await more.tap();
+    await expect(page.getByRole("menu")).toBeVisible();
+    await page.touchscreen.tap(8, 400);
+    await expect(page.getByRole("menu"), "a press outside the menu closes it").toBeHidden();
+    await more.tap();
+    await page.getByRole("menuitem", { name: /^Inspect /u }).tap();
+    await expect(page.getByRole("menu")).toBeHidden();
+    await expect(page.locator("#detail-panel"), "a press on an item acts").toHaveClass(/visible/u);
+  });
+
+  test("a tap on a wire's reach brings its words, and a tap on something of a card that stands in a wire's reach is the card's own", async ({ page }) => {
+    // Wire Answers on a phone (2026-11-22): a finger has no rest and no hover, so a tap is the press that pins a
+    // wire's words; and the rule of that day holds for a finger as for a pointer, that everything of a card takes
+    // the press before a wire's reach does. Read at reading size: the taps are the subject, not the arrival. Read in
+    // the composition that ships, fixed slots, and not in the growing one this file's other journeys read: there the
+    // same tap, on the map's ground in a wire's reach, brought no words on the day this was written, twice in two
+    // runs, and why was not found (the arrival's evidence, eleventh milestone).
+    await page.addInitScript(({ key, value }) => localStorage.setItem(key, value), {
+      key: PERSISTED_UI_KEY, value: JSON.stringify({ version: PERSISTED_UI_VERSION, tuning: { localMap: { ...AT_READING_SIZE, searchStarts: 0, cardText: "slots" } } })
+    });
+    await page.goto(entry);
+    await page.locator(`.node-card[data-id="${payment}"]`).waitFor();
+    await localMapSettled(page);
+    await page.waitForTimeout(600);
+    await localMapSettled(page);
+    const found = await page.evaluate(() => {
+      const view = document.querySelector("#view-map")!.getBoundingClientRect();
+      const inView = (x: number, y: number): boolean => x > view.left + 12 && x < view.right - 12 && y > view.top + 70 && y < view.bottom - 110;
+      const top = (x: number, y: number): Element | undefined => document.elementsFromPoint(x, y).find(element => !element.classList.contains("wire-band") && !element.classList.contains("wire-hand"));
+      let wire: { x: number; y: number; name: string } | null = null, card: { x: number; y: number; what: string } | null = null;
+      for (const band of document.querySelectorAll<SVGPathElement>(".wire-band")) {
+        const matrix = band.getScreenCTM(), length = band.getTotalLength();
+        if (!matrix || !(length > 0)) continue;
+        for (const at of [0.5, 0.35, 0.65, 0.2, 0.8, 0.04, 0.96, 0.015, 0.985]) {
+          const on = band.getPointAtLength(length * at).matrixTransform(matrix);
+          for (const [dx, dy] of [[0, 0], [5, 0], [-5, 0], [0, 5], [0, -5]]) {
+            const x = on.x + dx, y = on.y + dy, hit = top(x, y);
+            if (!hit || !inView(x, y) || !band.isPointInStroke(new DOMPoint(x, y).matrixTransform(matrix.inverse()))) continue;
+            const ground = (hit.id === "view-map" || !!hit.closest("#map-viewport")) && !hit.closest(".node-card, .local-directory-closed, button, a, input, select, .connection-path");
+            if (ground && !wire && dx === 0 && dy === 0) wire = { x, y, name: band.getAttribute("aria-label") ?? "" };
+            const of = hit.closest<HTMLElement>(".node-card");
+            if (of && !card) {
+              const control = hit.closest<HTMLElement>("button");
+              (control ?? of).addEventListener("click", () => { (window as unknown as { tappedUnderAWire?: boolean }).tappedUnderAWire = true; }, { once: true, capture: true });
+              card = { x, y, what: control ? `${control.getAttribute("aria-label") ?? control.className}` : `the card ${of.dataset.id}` };
+            }
+          }
+        }
+      }
+      return { wire, card, bands: document.querySelectorAll(".wire-band").length };
+    });
+    expect(found.wire, `a wire's reach on the map's ground in view (${found.bands} wires)`).not.toBeNull();
+    await page.touchscreen.tap(found.wire!.x, found.wire!.y);
+    const panel = page.locator(".wire-answer");
+    const stands = await page.evaluate(({ x, y }) => document.elementsFromPoint(x, y).slice(0, 3).map(element => `${element.tagName.toLowerCase()}.${[...element.classList].slice(0, 2).join(".")}`).join(" over "), found.wire!);
+    await expect(panel, `a tap on a wire's reach brings its words (at ${Math.round(found.wire!.x)},${Math.round(found.wire!.y)} stands ${stands})`).toBeVisible();
+    await expect(panel).toHaveClass(/pinned/u);
+    // The words are the wire's own sentence: its two files are both named in them.
+    const said = (await panel.textContent()) ?? "";
+    expect(found.wire!.name.split(" ")[0].length > 0 && said.includes(found.wire!.name.split(" ")[0]), `the words "${said}" are those of "${found.wire!.name}"`).toBe(true);
+    await page.touchscreen.tap(8, 400);
+    await expect(panel, "a tap elsewhere lets go of them").toBeHidden();
+    expect(found.card, "something of a card stands in a wire's reach in the phone's picture").not.toBeNull();
+    await page.touchscreen.tap(found.card!.x, found.card!.y);
+    expect(await page.evaluate(() => (window as unknown as { tappedUnderAWire?: boolean }).tappedUnderAWire === true), `the tap on ${found.card!.what} is its own`).toBe(true);
+    await expect(panel, "and brings no wire's words").toBeHidden();
   });
 
   test("the map ends above its controls and a lower symbol can be panned into clear space", async ({ page }) => {
