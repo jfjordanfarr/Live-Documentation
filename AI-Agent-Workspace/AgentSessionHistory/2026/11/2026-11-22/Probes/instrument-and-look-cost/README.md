@@ -1,6 +1,6 @@
 # Where the still-picture instrument's reading spends its time, and whether a change of look costs more at the day's end than at its start
 
-**Historical evidence, 2026-11-22.** Measured by a builder between 07:07 and 07:40 UTC in its own worktree at the day branch's tip, `3cd947724`, and, for the second question, against the day's start, `76cd9914c`, built into a scratch folder. Headless Chromium through the browser lane, one hold at a time. **The machine was heavily shared throughout**: its one-minute load average ran from 7 to 64 over the half hour, other builders' work, so every time below is a time at a load, and each is given with it. Where two things are compared they were measured in the same page back to back, or in turn, so that the load falls on both.
+**Historical evidence, 2026-11-22.** Measured by a builder between 07:07 and 07:49 UTC, and again at 13:45 to 13:53 UTC, in its own worktree at the day branch's tip, `3cd947724`, and, for the second question, against the day's start, `76cd9914c`, built into a scratch folder. Headless Chromium through the browser lane, one hold at a time. **The machine was heavily shared throughout**: its one-minute load average ran from 7 to 70 over the first three quarters of an hour, other builders' work, so every time below is a time at a load, and each is given with it. Where two things are compared they were measured in the same page back to back, or in turn, so that the load falls on both.
 
 ## 1. The instrument's reading
 
@@ -40,11 +40,48 @@ The copy in a small document costs the same, so the cost is the walk itself and 
 
 The reading as it stood is kept word for word as `tests/e2e/still-picture-reference.ts`, and `tests/e2e/still-picture-reference.spec.ts` holds the instrument to it, to the last digit of every number, on a retained picture and a path of the estate sample. [`reading-probe.mts`](reading-probe.mts) makes the same comparison on the lanes picture and two others, with the times.
 
-### What was not measured when this was written
+### The reading before and after, on three pictures
 
-The whole reading before and after on the three pictures, and the lanes case three times alone, were queued in the lane behind three other builders' holds when the fifty minutes ran out; the handback says what had come back. From the parts measured, a reading of the lanes picture should fall from about 57 s at a load of 7 to somewhat under 20 s at the same load: the walk to about a third of its time, the questions to a small part of theirs.
+[`reading-probe.mts`](reading-probe.mts) reads each picture in one page, back to back: the reference twice (to see that two readings of one page agree at all), then the instrument as it stands twice, and each once more without sampling along the wires. The readings are compared as their JSON. Two runs: at 07:42 UTC, each reading once ([the numbers](numbers/reading--after.json)), and at 13:45 UTC, the lane held alone, each twice ([the numbers](numbers/reading--idle.json)). The load given is the machine's one-minute average as the picture was read; on the second run it rose from idle to about 10 while the probe was the only thing in the lane.
+
+| Picture | Wires, cards, samples | Run (load) | The reading as it was | The reading now | The same to the number |
+| --- | --- | --- | --- | --- | --- |
+| The lanes case's, this repository, 1,600 by 1,000 | 516, 113, 247,314 | 07:42 (10.1) | 46.2 s | 12.2 s | yes |
+| | | 13:45 (10.0) | 56.9 s, 66.7 s | 16.3 s, 12.7 s | yes |
+| A retained picture of the estate, three files | 32, 18, 4,264 | 07:42 (9.6) | 546 ms | 225 ms | yes |
+| | | 13:45 (9.8) | 647 ms, 766 ms | 308 ms, 296 ms | yes |
+| `pathfind.ts` of this repository as a link opens it | 115, 20, 20,714 | 07:42 (9.1) | 3,117 ms | 1,281 ms | yes |
+| | | 13:45 (8.6) | 3,249 ms, 3,084 ms | 1,378 ms, 1,322 ms | yes |
+
+On every picture the reference agreed with itself, the instrument agreed with the reference, and the two agreed without sampling: no number differs in any digit, of 272,292 samples and everything else a reading holds. The large picture's reading costs between a fifth and a quarter of what it did; the smaller ones about four tenths, their wires being shorter and so their walks less wasteful to begin with. Without sampling, a reading is a little quicker too (673 to 578 ms on the large picture), the cards' boxes being read once.
+
+### The lanes case, alone, three times
+
+`npx playwright test --config tests/e2e/playwright.config.ts tests/e2e/local-map-branches.spec.ts -g "threads skipped references through lanes" --repeat-each 3`, one worker, through the lane, twice:
+
+| When | Load (1 min) | The three runs |
+| --- | --- | --- |
+| 07:49 UTC | not read; 30 to 70 in the quarter hour before | 26.0 s, 25.5 s, 25.2 s |
+| 13:51 UTC | 6 to 18, other builders' work beside it | 44.9 s, 37.9 s, 31.3 s |
+
+It passes inside its minute each time. The reading is 12 to 16 s of that; the rest is the page drawing a picture of 113 cards and settling, which the instrument does not touch and which is what the load slows. Before the mend the reading alone was 46 to 67 s.
+
+### Every spec that takes a reading, through the lane
+
+Each in a hold of its own, between 13:58 and 14:27 UTC, the load falling from 15 to 2:
+
+| Spec | Result |
+| --- | --- |
+| `still-picture-reference.spec.ts`, the comparison itself | 2 of 2 pass |
+| `local-map-path.spec.ts` | 12 of 13 pass. The one that failed, "a direct file link starts in the directory-aware layout" on this repository, takes no reading: its page had not placed its picture in the five seconds it is given, at two workers and a load of 15. Alone it passed twice, in 7.6 and 7.8 s |
+| `local-map-branches.spec.ts`, the lanes case among its eleven | 11 of 11 pass, the lanes case in 30.5 s |
+| `scenarios/still-pictures.spec.ts` | 43 pass; 7 skip themselves as scenarios that do not apply to their map |
+| `local-map-mirror.spec.ts`, whose law-keeping case reads through the scenarios' instrument | 8 of 8 pass, twice |
+| `still-picture.spec.ts`, the deck: four scopes, three views each | 12 of 12 pass. The retained Local Map of this repository, the same large picture read again after each of a tour's pans, took 1.1 minutes in each of its two scopes, of the six minutes it is given |
 
 ## 2. A change of look on the heavy subject, day's start against day's tip
+
+This half of the piece was withdrawn at 13:44 UTC, to spend the day's usage with care; the ten runs below had been taken before that, by 07:35 UTC, and are kept as they were measured. Nothing was built on them.
 
 A change of look on `packages/engine/src/config/liveDocumentationConfig.ts` had been measured that day at about three times its style cost of November 21, at a different load. [`look-probe.mjs`](look-probe.mjs) opens the subject at reading size on each build's site in turn, start, tip, start, tip, five times, presses Zoom Out until the look is connections, and reads from the browser's timeline the largest style pass and the elements it restyled; then presses Return to reading size and reads the same ([the ten runs](numbers/look-change.jsonl)).
 

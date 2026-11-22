@@ -1,0 +1,98 @@
+[
+ {
+  "picture": "lanes",
+  "viewport": {
+   "width": 1600,
+   "height": 1000
+  },
+  "load": [
+   9.98,
+   4.07,
+   1.56
+  ],
+  "wires": 516,
+  "cards": 113,
+  "samples": 247314,
+  "referenceMs": [
+   56941,
+   66730
+  ],
+  "nowMs": [
+   16297,
+   12714
+  ],
+  "withoutSamplingMs": {
+   "reference": 673,
+   "now": 578
+  },
+  "referenceAgreesWithItself": true,
+  "sameToTheNumber": true,
+  "sameWithoutSampling": true,
+  "firstDifference": null,
+  "profile": null
+ },
+ {
+  "picture": "estate-retained",
+  "viewport": {
+   "width": 1280,
+   "height": 800
+  },
+  "load": [
+   9.82,
+   4.14,
+   1.6
+  ],
+  "wires": 32,
+  "cards": 18,
+  "samples": 4264,
+  "referenceMs": [
+   647,
+   766
+  ],
+  "nowMs": [
+   308,
+   296
+  ],
+  "withoutSamplingMs": {
+   "reference": 45,
+   "now": 37
+  },
+  "referenceAgreesWithItself": true,
+  "sameToTheNumber": true,
+  "sameWithoutSampling": true,
+  "firstDifference": null,
+  "profile": null
+ },
+ {
+  "picture": "pathfind-link",
+  "viewport": {
+   "width": 1280,
+   "height": 800
+  },
+  "load": [
+   8.62,
+   4.06,
+   1.6
+  ],
+  "wires": 115,
+  "cards": 20,
+  "samples": 20714,
+  "referenceMs": [
+   3249,
+   3084
+  ],
+  "nowMs": [
+   1378,
+   1322
+  ],
+  "withoutSamplingMs": {
+   "reference": 182,
+   "now": 162
+  },
+  "referenceAgreesWithItself": true,
+  "sameToTheNumber": true,
+  "sameWithoutSampling": true,
+  "firstDifference": null,
+  "profile": null
+ }
+]

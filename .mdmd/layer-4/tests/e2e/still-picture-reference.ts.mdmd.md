@@ -8,10 +8,12 @@
 
 ## Authored
 ### Purpose
-_Pending authored purpose_
+The still-picture instrument's reading as it stood until 2026-11-22, `readPictureReference`, kept word for word as the oracle its faster successor is held to: [`readPicture`](still-picture.ts.mdmd.md) must give this reading to the last digit of every number on the same page. Only the comparison calls it.
 
 ### Notes
-_Pending notes_
+- Made on November 22, 2026, when the instrument's reading of a large retained picture had outgrown the minute its case gave it and was changed to cost about a quarter ([the probe](../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-22/Probes/instrument-and-look-cost/README.md)). A faster reading is worth nothing if it reads otherwise, and part of the change rests on how the browser walks a path, which is a fact about the browser and can change with it; so the old reading stays as the thing to compare against, and nothing grades itself.
+- It costs what the old reading cost, about a minute on the lanes case's picture, so the suite runs it on small pictures ([`still-picture-reference.spec.ts`](still-picture-reference.spec.ts.mdmd.md)) and the probe's script runs it on the large one.
+- Do not mend or tidy it: its worth is that it is the reading as it was. If the instrument's meaning is deliberately changed, change both and say so here.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
