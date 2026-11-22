@@ -210,3 +210,5 @@ The subject is said left out exactly where the box does not fit at the floor, in
 - The sweep: eight holds of twenty-five ran.
 - The pause at rest traced to its parts (above).
 - The estate's remaining stills (`1-lands`, `3-released`, the wire's `1`, `2` and `4`) were not opened one by one.
+- Fifth milestone, on the build with the names' mend, each in a hold with nothing of this builder's beside it: the names' case passed; the search bar's two passed alone; the rule's four cases passed; `camera-intent.spec.ts` passed whole in three parts (8, 5 and 13 cases). Not run on that build: the still picture's three red cases, `history-2d.spec.ts` and the still picture's estate cases, the lane being taken until the milestone's time ran out.
+- The look's own pass at three times November 21's was not attributed: the day's start was not built beside the tip and nothing was measured.
