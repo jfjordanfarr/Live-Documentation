@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/explorer/src/client/views/localView/controller.ts`
-- Generated At: 2026-11-22T04:11:05.429Z
+- Generated At: 2026-11-22T05:48:58.058Z
 
 ## Authored
 ### Purpose
@@ -74,7 +74,7 @@ Since 2026-11-15 ([Turn 1 of the November 15 record](../../../../../../../../AI-
 ### Public Symbols
 #### `LocalViewController` {#symbol-localviewcontroller}
 - Type: class
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/controller.ts#L89)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/controller.ts#L91)
 - Implements: [`LocalViewApi`](./types.ts.mdmd.md#symbol-localviewapi)
 
 ##### `LocalViewController` — Summary
@@ -153,6 +153,9 @@ Coordinates the native Local Map, independent exploration pins and explicit FROM
 - [`layout-measure.settleTransform`](./layout-measure.ts.mdmd.md#symbol-settletransform)
 - [`layout-measure.wholeTransform`](./layout-measure.ts.mdmd.md#symbol-wholetransform)
 - [`layout-measure.withTransformReset`](./layout-measure.ts.mdmd.md#symbol-withtransformreset)
+- [`mirror-motion.MirrorMotion`](./mirror-motion.ts.mdmd.md#symbol-mirrormotion)
+- [`mirror-motion.runMirrorMotion`](./mirror-motion.ts.mdmd.md#symbol-runmirrormotion)
+- [`mirror-turn.mirrorAxis`](./mirror-turn.ts.mdmd.md#symbol-mirroraxis-function)
 - [`overview-files.OVERVIEW_FILES_ATTRIBUTE`](./overview-files.ts.mdmd.md#symbol-overview_files_attribute)
 - [`overview-files.heldIndex`](./overview-files.ts.mdmd.md#symbol-heldindex)
 - [`overview-files.overviewFilesShown`](./overview-files.ts.mdmd.md#symbol-overviewfilesshown)

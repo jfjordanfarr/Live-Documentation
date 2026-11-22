@@ -8,7 +8,7 @@
 import { applyMarbles, applyPalette } from "../dom";
 import { layoutSettingsOf } from "../layout-presets";
 import { DEFAULT_PALETTE, isPaletteName } from "../palette";
-import { ARRIVAL_WAITS, ARRIVALS, CUT_COUNTED, DIRECTION_MARKS, WAY_DOWNS, WIRE_ANSWERS, FRAMINGS, STEPS, CHANGE_EMPHASES, CLOSED_CELL_COLOURS, CLOSED_DIRECTORY_LOOKS, CLOSED_DIRECTORY_SHAPES, DESCRIPTIONS_ZOOMED_OUT, DIRECTORY_LAYOUTS, GROUP_WRAPPERS, BEYOND_HOPS, SCAN_GROWTHS, SCAN_PACES, DRAGS, FRAME_CHOICES, HIDDEN_FILES_LOOKS, MARBLE_CHOICES, OVERVIEW_FILES, type ExplorerState, type FrameChoice } from "../types";
+import { ARRIVAL_WAITS, ARRIVALS, CUT_COUNTED, DIRECTION_MARKS, MIRROR_TURNS, WAY_DOWNS, WIRE_ANSWERS, FRAMINGS, STEPS, CHANGE_EMPHASES, CLOSED_CELL_COLOURS, CLOSED_DIRECTORY_LOOKS, CLOSED_DIRECTORY_SHAPES, DESCRIPTIONS_ZOOMED_OUT, DIRECTORY_LAYOUTS, GROUP_WRAPPERS, BEYOND_HOPS, SCAN_GROWTHS, SCAN_PACES, DRAGS, FRAME_CHOICES, HIDDEN_FILES_LOOKS, MARBLE_CHOICES, OVERVIEW_FILES, type ExplorerState, type FrameChoice } from "../types";
 import { TUNING_HELP, tuningHelpId } from "./tuning-levers";
 import { initTuningReset } from "./tuning-reset";
 
@@ -93,6 +93,7 @@ export function initTuningPanel(config: TuningPanelConfig): () => void {
   const wireAnswersSelect = document.getElementById("tuning-wire-answers") as HTMLSelectElement | null;
   const directionMarksSelect = document.getElementById("tuning-direction-marks") as HTMLSelectElement | null;
   const wayDownSelect = document.getElementById("tuning-way-down") as HTMLSelectElement | null;
+  const mirrorTurnSelect = document.getElementById("tuning-mirror-turn") as HTMLSelectElement | null;
   const paletteSelect = document.getElementById("tuning-palette") as HTMLSelectElement | null;
   const marblesSelect = document.getElementById("tuning-marbles") as HTMLSelectElement | null;
   const frameSelect = document.getElementById("tuning-frame") as HTMLSelectElement | null;
@@ -226,6 +227,7 @@ export function initTuningPanel(config: TuningPanelConfig): () => void {
     if (wireAnswersSelect) wireAnswersSelect.value = state.tuning.localMap.wireAnswers;
     if (directionMarksSelect) directionMarksSelect.value = state.tuning.localMap.directionMarks;
     if (wayDownSelect) wayDownSelect.value = state.tuning.localMap.wayDown;
+    if (mirrorTurnSelect) mirrorTurnSelect.value = state.tuning.localMap.mirrorTurn;
     if (paletteSelect) paletteSelect.value = state.tuning.appearance.palette;
     if (marblesSelect) marblesSelect.value = state.tuning.appearance.marbles;
     if (frameSelect) frameSelect.value = state.tuning.appearance.frame;
@@ -370,6 +372,13 @@ export function initTuningPanel(config: TuningPanelConfig): () => void {
   if (stepSelect) {
     stepSelect.addEventListener("change", () => {
       state.tuning.localMap.step = STEPS.find(choice => choice === stepSelect.value) ?? STEPS[0];
+      onTuningChange();
+    });
+  }
+  // How the mirror moves changes no picture: the next press of the toolbar's mirror button reads it.
+  if (mirrorTurnSelect) {
+    mirrorTurnSelect.addEventListener("change", () => {
+      state.tuning.localMap.mirrorTurn = MIRROR_TURNS.find(choice => choice === mirrorTurnSelect.value) ?? MIRROR_TURNS[0];
       onTuningChange();
     });
   }

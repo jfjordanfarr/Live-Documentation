@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/explorer/src/client/panels/tuning.ts`
-- Generated At: 2026-11-22T04:35:28.740Z
+- Generated At: 2026-11-22T05:48:55.836Z
 
 ## Authored
 ### Purpose
@@ -88,7 +88,7 @@ Initialize the tuning panel with all slider and checkbox controls.
 
 #### `withholdThreeDLayout` {#symbol-withholdthreedlayout}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/panels/tuning.ts#L613)
+- Source: [source](../../../../../../../packages/explorer/src/client/panels/tuning.ts#L622)
 
 ##### `withholdThreeDLayout` — Summary
 Where the browser cannot draw 3D (2026-11-21), the 3D layout's group is not offered, as the 3D control is not: its
@@ -100,7 +100,7 @@ once, when the browser is known to refuse WebGL, which may be after the page's f
 
 #### `withholdFirstCommitOrder` {#symbol-withholdfirstcommitorder}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/panels/tuning.ts#L629)
+- Source: [source](../../../../../../../packages/explorer/src/client/panels/tuning.ts#L638)
 
 ##### `withholdFirstCommitOrder` — Summary
 Where the bundle carries no history (2026-11-22), the scan trial's first-commit order is not offered, since only a
@@ -137,6 +137,7 @@ description say why, as the 3D control does where the browser refuses WebGL. A s
 - [`types.GROUP_WRAPPERS`](../types.ts.mdmd.md#symbol-group_wrappers)
 - [`types.HIDDEN_FILES_LOOKS`](../types.ts.mdmd.md#symbol-hidden_files_looks)
 - [`types.MARBLE_CHOICES`](../types.ts.mdmd.md#symbol-marble_choices)
+- [`types.MIRROR_TURNS`](../types.ts.mdmd.md#symbol-mirror_turns)
 - [`types.OVERVIEW_FILES`](../types.ts.mdmd.md#symbol-overview_files)
 - [`types.SCAN_GROWTHS`](../types.ts.mdmd.md#symbol-scan_growths)
 - [`types.SCAN_PACES`](../types.ts.mdmd.md#symbol-scan_paces)
@@ -180,6 +181,7 @@ description say why, as the 3D control does where the browser refuses WebGL. A s
 - [`template.tuning-marbles`](../../shared/template.html.mdmd.md#symbol-tuning-marbles)
 - [`template.tuning-membrane-evenness`](../../shared/template.html.mdmd.md#symbol-tuning-membrane-evenness)
 - [`template.tuning-membrane-simplicity`](../../shared/template.html.mdmd.md#symbol-tuning-membrane-simplicity)
+- [`template.tuning-mirror-turn`](../../shared/template.html.mdmd.md#symbol-tuning-mirror-turn)
 - [`template.tuning-move-ms`](../../shared/template.html.mdmd.md#symbol-tuning-move-ms)
 - [`template.tuning-move-ms-value`](../../shared/template.html.mdmd.md#symbol-tuning-move-ms-value)
 - [`template.tuning-name-growth`](../../shared/template.html.mdmd.md#symbol-tuning-name-growth)

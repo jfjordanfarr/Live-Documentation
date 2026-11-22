@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/explorer/src/shared/template.html`
-- Generated At: 2026-11-22T03:38:02.327Z
+- Generated At: 2026-11-22T05:48:59.428Z
 
 ## Authored
 ### Purpose
@@ -493,6 +493,9 @@ Since 2026-11-19 ([Turn 14 of the November 18 record](../../../../../../AI-Agent
 - Type: variable
 
 #### `tuning-membrane-simplicity-value` {#symbol-tuning-membrane-simplicity-value}
+- Type: variable
+
+#### `tuning-mirror-turn` {#symbol-tuning-mirror-turn}
 - Type: variable
 
 #### `tuning-move-ms` {#symbol-tuning-move-ms}

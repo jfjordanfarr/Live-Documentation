@@ -663,6 +663,7 @@ Their strokes are 1.5 (most), 1.6 (the view icons), 1.7 (a symbol row's Pin and 
 | 2D pan and zoom, eased out cubic | 350 ms | `views/localView/pan-zoom.ts:97` |
 | 2D re-layout | 450 ms (Tuning `moveMs`) | `persistence/local-storage.ts:67` |
 | World orbit | 520 ms | `views/worldMap/controller.ts:1131` |
+| The 2D picture mirrored: its turn or its slide (Tuning's Mirror Turn); the cut fades out and in for a third of it each | 620 ms | `views/localView/mirror-turn.ts`, `MIRROR_TURN_MS` |
 | 3D focus | 650 ms | `views/forceGraphView.ts:753` |
 | The change between 2D and 3D | 1,400 ms | `views/perspectiveTransition.ts:265` |
 
@@ -675,6 +676,17 @@ Their strokes are 1.5 (most), 1.6 (the view icons), 1.7 (a symbol row's Pin and 
   - Principle: object constancy in animated transitions (Heer and Robertson, 2007).
 - **Checked by.** The orientation specs of the interaction half; motion is judged by eye (AGENTS.md, "Look, then protect").
 - **Status.** Holds.
+
+**Rule: a mirrored picture is reached by turning the picture's plane (a trial, 2026-11-22).**
+
+- **The rule.** A mirror image is what a flat drawing looks like from behind, so the change between the 2D picture as laid out and mirrored is drawn as what it is: the picture's plane turns half way round about the upright axis through the card that holds still (the card last acted on, else the subject, else the newest pin; with none, the middle of the view), its right side going away from the viewer and its left coming toward them, the same way round in both directions. Every card and every directory's line faces the viewer the whole way, so no name is seen from behind, and the pins change sides at the instant the plane stands edge-on. At that instant every card is on one line: everything but the held card is faded, the wires with it, and the held card alone keeps its strength and its place. Tuning's Mirror Turn offers two matched alternatives: Slide, every card straight across to its mirrored place with no depth, and Cut, a fade out and in with no travel. Under reduced motion it is always the cut.
+- **Why.**
+  - Owner, 2026-11-22: "I bet invoking the third dimension to do the flip around a single node card in 2D would look sick (having the other nodes spin around the focused node)"; "rotating the right side into the forward z-direction away from the viewer and rotating the left side into the reverse z-direction toward the viewer (before continuing that rotation to the other side)"; "It's risky in terms of visual continuity but it seems like something we'll have to solve anyway."
+  - The rule above it: a transition explains a change of place. A cut between a picture and its mirror image moves every card but one with nothing to say where it went.
+  - Faded, never boosted: the legibility rule of AGENTS.md ("Fade the irrelevant rather than boosting the relevant"). Seen without the fade, the card swinging nearest the viewer covered the subject whole at the edge-on instant.
+- **Where.** `views/localView/mirror-turn.ts` (the axis, the angle, the fade), `views/localView/mirror-motion.ts` (the page's half), the rules under `data-turning` at the end of `styles/local.css`. The real cards and wires move; nothing is copied and no wire is rewritten while it runs.
+- **Checked by.** `tests/e2e/local-map-mirror.spec.ts` (the default turns the plane, the lever chooses, reduced motion takes the cut, a second press never leaves the picture between its states); `views/localView/mirror-turn.test.ts`. The motion itself is judged by eye, from [the strips](../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-22/Screenshots/mirror/README.md).
+- **Status.** A trial, the turn the default so that the owner meets their own idea first; which of the three stays is theirs to choose by eye. With a held card a person keeps their place. With none the whole picture fades at the edge-on instant and returns mirrored, which the owner foresaw ("when we have no idea what we're supposed to be focused on, flipping is gonna probably look like trash"). The wires read only in the first and last quarter. **It stutters on a heavy picture**: on 84 cards and 218 wires the turn drew 5 frames in 1.2 s with a longest frame of 500 ms at full speed, and 4 frames in 5.9 s slowed four times (measured headless, the page composited on the processor; the numbers are in the strips' record).
 
 **Rule: what enters decelerates, what leaves accelerates.**
 

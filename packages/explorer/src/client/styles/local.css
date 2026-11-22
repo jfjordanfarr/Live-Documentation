@@ -723,6 +723,27 @@ body.zoom-controls-active #view-map { height: calc(100% - 70px - var(--history-r
    each points the other way in a mirrored picture, and the pair changes order with them, as its reflection would. */
 #map-viewport[data-reads="usesFirst"] .type-refs-indicator { flex-direction: row-reverse; }
 #map-viewport[data-reads="usesFirst"] :is(.type-badge-return, .type-badge-param) { scale: -1 1; }
+/* The motion between the two pictures (Tuning's Mirror Turn, a trial of 2026-11-22, mirror-motion.ts): while it runs
+   the reflection above gives way to one angle, --mirror-turn, written on the layer each frame. The content root and the
+   wires' layer turn by it about the upright axis through what holds still (--mirror-axis across the root; the wires'
+   layer is given the same line), in one space with the view's distance from them, so that the right side goes away
+   from the viewer and the left comes toward them. Each card and each directory's line turns back by the same angle
+   about its own middle: it faces the viewer the whole way round and no name is seen from behind. At 180 degrees this
+   is the reflection above, to the pixel. Every box between the layer and a card keeps the third dimension, or the
+   card's turning back would be flattened into its directory's plane. The slide is the same with no distance. */
+#map-viewport[data-turning],
+#map-viewport[data-turning] > .dom-layer,
+#map-viewport[data-turning] .local-layout,
+#map-viewport[data-turning] .local-directory-band { transform-style: preserve-3d; }
+#map-viewport[data-turning] .local-layout { scale: none; rotate: y var(--mirror-turn, 0deg); transform-origin: var(--mirror-axis, 0px) 0; }
+#map-viewport[data-turning] > .connections-layer { scale: none; rotate: y var(--mirror-turn, 0deg); }
+#map-viewport[data-turning] .local-placed :is(.local-column, .local-directory-label) { scale: none; rotate: y calc(-1 * var(--mirror-turn, 0deg)); }
+/* Edge-on, every card stands on one line and the ones swinging toward the viewer pass in front of the one that holds
+   still: for that moment everything but the held card is faded (--mirror-fade, mirror-turn.ts's turnStrength), the
+   wires with it, which do not meet their pins while the cards face the viewer and the plane does not. Faded, never
+   the held one boosted. The fade is on the cards and the wires' layer, not on a directory, which it would flatten. */
+#map-viewport[data-turning] .local-placed :is(.local-column, .local-directory-label, .local-pass-through):not([data-mirror-held]),
+#map-viewport[data-turning] > .connections-layer { opacity: var(--mirror-fade, 1); }
 /* The key is drawn the way round the map is: its two words and the sample between them change sides with the picture. */
 #local-legend .legend-row--roles[data-mirrored] { flex-direction: row-reverse; justify-content: flex-end; }
 #local-legend .legend-row--roles[data-mirrored] .legend-roles { scale: -1 1; }
