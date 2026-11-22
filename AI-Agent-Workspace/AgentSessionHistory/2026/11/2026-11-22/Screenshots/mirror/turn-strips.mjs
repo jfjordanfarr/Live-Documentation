@@ -4,7 +4,7 @@
 // Cost: on the heavy subject the motion runs on the real clock, at full speed and with the processor slowed four times,
 // and the frames the page drew while it ran are counted, with the longest.
 // usage, from the repository root after `npm run build`, `npm run live-docs:visualize` and `npm run live-docs:visualize:estate`:
-//   node scripts/browser-lane.mjs --label mirror -- node <this file> dist/explorer <folder for the pictures> [strips|cost] [part of a name]
+//   node scripts/browser-lane.mjs --label mirror -- node <this file> dist/explorer <folder for the pictures> [strips|cost] [part of a name] [card]
 import { chromium } from "@playwright/test";
 import fs from "node:fs";
 import http from "node:http";
@@ -22,7 +22,11 @@ const server = http.createServer((req, res) => {
 });
 await new Promise(resolve => server.listen(0, "127.0.0.1", resolve));
 const base = `http://127.0.0.1:${server.address().port}`;
-const browser = await chromium.launch();
+// `card` as the last word composites the page on the graphics card, as a person's browser does, where the container
+// was given one (the suite's own launch keeps compositing on the processor; tests/e2e/browser-launch.ts says why).
+const onCard = process.argv.includes("card");
+const browser = await chromium.launch(onCard ? { args: ["--use-angle=gl-egl", "--enable-gpu-rasterization"],
+  env: { ...process.env, GALLIUM_DRIVER: "d3d12", LD_LIBRARY_PATH: ["/usr/lib/wsl/lib", process.env.LD_LIBRARY_PATH].filter(Boolean).join(":") } } : {});
 const DURATION = 620;
 const SHARES = [0.1, 0.25, 0.4, 0.5, 0.6, 0.75, 0.9];
 
@@ -94,10 +98,14 @@ if (what === "strips") {
     for (const form of ["turn", "slide", "cut"]) {
       const { context, page, errors } = await open("/?view=local&node=packages/engine/src/config/liveDocumentationConfig.ts", form);
       const session = await context.newCDPSession(page);
+      await session.send("Performance.enable");
+      // Where the page's main thread spent the motion: the browser's own counters, read before and after.
+      const counters = async () => Object.fromEntries((await session.send("Performance.getMetrics")).metrics.map(metric => [metric.name, metric.value]));
       await session.send("Emulation.setCPUThrottlingRate", { rate });
       await page.waitForTimeout(500);
       const result = { rate, form, runs: [] };
       for (const direction of ["to mirrored", "back"]) {
+        const was = await counters();
         const run = await page.evaluate(() => new Promise(resolve => {
           const layer = document.getElementById("map-viewport");
           const stamps = [];
@@ -111,9 +119,13 @@ if (what === "strips") {
           requestAnimationFrame(watch);
           document.querySelector('button[aria-label="Mirror the map"]').click();
         }));
-        result.runs.push({ direction, ...run });
+        const is = await counters();
+        const spent = name => Math.round((is[name] - was[name]) * 1000);
+        result.runs.push({ direction, ...run, mainThreadMs: { script: spent("ScriptDuration"), style: spent("RecalcStyleDuration"), layout: spent("LayoutDuration"), task: spent("TaskDuration") },
+          styleRecalcs: is.RecalcStyleCount - was.RecalcStyleCount, layouts: is.LayoutCount - was.LayoutCount });
         await page.waitForTimeout(600);
       }
+      result.gpu = onCard ? await page.evaluate(() => { const gl = document.createElement("canvas").getContext("webgl"); const info = gl?.getExtension("WEBGL_debug_renderer_info"); return info ? gl.getParameter(info.UNMASKED_RENDERER_WEBGL) : "none"; }) : "processor";
       result.cards = await page.evaluate(() => document.querySelectorAll("#map-container .node-card").length);
       result.wires = await page.evaluate(() => document.querySelectorAll("#map-connections path.connection-path").length);
       result.errors = errors;

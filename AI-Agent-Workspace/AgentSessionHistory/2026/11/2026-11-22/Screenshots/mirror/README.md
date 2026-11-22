@@ -88,3 +88,45 @@ turn. The cut's own long frame (183 to 350 ms at full speed) is the picture comi
 picture measured and 218 wires drawn again, which every form pays once. Where the rest of the turn's time goes was not
 taken apart: the suspects are each card becoming a layer of its own in the third dimension and being drawn again at
 every frame as its nearness changes its size. Not measured: a light picture, and a browser compositing on a card.
+
+## The fourth round: the cut's signs, and where the turn's time goes
+
+### The cut's signs at the edges, mirrored
+
+Taken by [`cut-signs.mjs`](cut-signs.mjs) on the product as merged that morning (reduced motion, so the change is the
+cut): from the engine's `pathfind.ts`, `live-docs/history` is opened, a directory too large for the view, with Tuning's
+Cut Counted on, and what the signs say is read beside the directory's cards that really lie past each edge.
+
+| State | The cards past each edge | What the signs say | Judgment |
+| --- | --- | --- | --- |
+| as laid out (`cut-signs-as-laid-out.png`) | right 26, top 1, bottom 4 | right 26, top 1, bottom 4 | Right. |
+| mirrored, then opened (`cut-signs-mirrored-then-opened.png`) | left 26, top 1, bottom 4 | left 26, top 1, bottom 4 | Right: the sign stands at the left edge, its arrow and its words ("past the view's left edge") the mirrored reader's. A step taken under a mirrored picture is counted truly. |
+| **opened, then mirrored** (`cut-signs-opened-then-mirrored.png`) | left 21, top 6, bottom 4 | **right 32** | **Wrong.** The signs keep the places measured before the press: one sign at the right edge counting 32, while the directory now goes on to the left. The mirror's rest does not measure the step's cards again. |
+| that state put back | right 26, top 1, bottom 4 | right 26, top 1, bottom 4 | Right again, by the old measurement. |
+
+The builder looked at the two mirrored pictures. Mirrored and then opened: the sign with 26 stands at the left edge
+with its arrow pointing left, 1 above and 4 below, and the directory's own line at its top right corner; it reads
+rightly, the left sign lying over the edge of the first card as the right one does as laid out. Opened and then
+mirrored: the directory now starts at the right edge of the view, its line at its top right corner, and goes on to the
+left and down, while one sign at the right edge says 32 lie further right, where nothing of it lies. The as-laid-out
+picture was not looked at. The fault is the mirror's and is not mended in the commit this record goes with.
+
+### Where the first turn's time went
+
+The same cost run as the third round's, with the browser's own counters of its main thread read before and after each
+motion ([`turn-cost-first-form.txt`](turn-cost-first-form.txt)); the heavy subject, 84 cards and 218 wires, headless,
+composited on the processor, the lane held alone on a machine quieter than the third round's (which is why the frames
+are a little better than that table's).
+
+| Form, full speed, to mirrored | Frames, ms, longest | Main thread: style, layout, script, all | Style recalculations |
+| --- | --- | --- | --- |
+| Turn | 7, 900, 217 | **720**, 11, 38, 931 ms | 18 |
+| Slide | 7, 1,000, 250 | **813**, 13, 39, 1,076 ms | 17 |
+| Cut | 30, 667, 133 | 99, 8, 35, 244 ms | 35 |
+
+**Three quarters of the turn is the page restyling itself**: 720 of 931 ms in 18 recalculations, about 40 ms each on
+average. The first form writes one angle as a custom property on the map's layer each frame; a custom property is
+inherited, so every element under the layer, every row of all 84 cards, is styled again at each frame so that the
+cards can turn back from it. Layout and script are nothing beside it. The cut's 99 ms of style in the same counters is
+what the picture's rest costs every form once (the pins restyled as the reading changes). Slowed four times the same
+share holds (2,052 of 2,787 ms).
