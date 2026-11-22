@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/engine/src/live-docs/adapters/rust.ts`
-- Generated At: 2026-11-22T02:29:39.906Z
+- Generated At: 2026-11-22T04:48:22.411Z
 
 ## Authored
 ### Purpose
@@ -22,7 +22,7 @@ The Rust adapter: tree-sitter symbols (public items, impl and trait methods, pub
 ### Public Symbols
 #### `rustAdapter` {#symbol-rustadapter}
 - Type: const
-- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/rust.ts#L914)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/rust.ts#L912)
 - Returns: [`LanguageAdapter`](./index.ts.mdmd.md#symbol-languageadapter)
 
 ##### `rustAdapter` — Summary
@@ -32,7 +32,6 @@ Language adapter for Rust (`.rs`): tree-sitter symbols and path resolution throu
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
 - `glob` - `glob`
-- `node:fs` - `promises`
 - `node:path` - `path`
 - [`index.rustSyntax`](../../languages/index.ts.mdmd.md#symbol-rustsyntax)
 - [`index.LanguageAdapter`](./index.ts.mdmd.md#symbol-languageadapter) (type-only)
@@ -54,6 +53,8 @@ Language adapter for Rust (`.rs`): tree-sitter symbols and path resolution throu
 - [`sourceText.SourceReads`](../../tooling/sourceText.ts.mdmd.md#symbol-sourcereads)
 - [`sourceText.readSourceText`](../../tooling/sourceText.ts.mdmd.md#symbol-readsourcetext)
 - [`sourceText.throwIfMachineFailure`](../../tooling/sourceText.ts.mdmd.md#symbol-throwifmachinefailure)
+- [`workspaceProbes.ListedFiles`](../../tooling/workspaceProbes.ts.mdmd.md#symbol-listedfiles)
+- [`workspaceProbes.pathKind`](../../tooling/workspaceProbes.ts.mdmd.md#symbol-pathkind)
 <!-- LIVE-DOC:END Dependencies -->
 
 <!-- LIVE-DOC:BEGIN Cited By -->

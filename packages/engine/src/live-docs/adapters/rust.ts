@@ -23,13 +23,13 @@
  * crate root, an example's among them.
  */
 import { glob } from "glob";
-import { promises as fs } from "node:fs";
 import path from "node:path";
 
 import { rustSyntax } from "../../languages";
 import { compareText } from "../../tooling/compareText";
 import { normalizeWorkspacePath } from "../../tooling/pathUtils";
 import { readSourceText, type SourceReads, throwIfMachineFailure } from "../../tooling/sourceText";
+import { type ListedFiles, pathKind } from "../../tooling/workspaceProbes";
 import type { DependencyEntry, PublicSymbolEntry, SourceAnalysisResult, SymbolDocumentation, TypeReference } from "../core";
 import type { ProgramEntry } from "../coreTypes";
 import type { LanguageAdapter, WorkspaceFileIndex } from "./index";
@@ -611,16 +611,14 @@ interface CrateRoot {
 const packageCache = new Map<string, string | undefined>();
 
 /** The directory of the nearest `Cargo.toml` at or above `directory`, inside the workspace. */
-async function packageDirOf(directory: string, workspaceRoot: string): Promise<string | undefined> {
+async function packageDirOf(directory: string, workspaceRoot: string, files: ListedFiles | undefined): Promise<string | undefined> {
   if (packageCache.has(directory)) return packageCache.get(directory);
   let found: string | undefined;
-  try {
-    await fs.access(path.join(directory, "Cargo.toml"));
+  if (pathKind(path.join(directory, "Cargo.toml"), files) !== undefined) {
     found = directory;
-  } catch (error) {
-    throwIfMachineFailure(error);
+  } else {
     const parent = path.dirname(directory);
-    found = directory.startsWith(workspaceRoot) && parent !== directory ? await packageDirOf(parent, workspaceRoot) : undefined;
+    found = directory.startsWith(workspaceRoot) && parent !== directory ? await packageDirOf(parent, workspaceRoot, files) : undefined;
   }
   packageCache.set(directory, found);
   return found;
@@ -646,7 +644,7 @@ async function crateRoots(workspaceRoot: string, rustFiles: string[], fileIndex:
   const roots: CrateRoot[] = [];
   const names = new Map<string, string>();
   for (const file of rustFiles) {
-    const packageDir = await packageDirOf(path.dirname(path.join(workspaceRoot, file)), workspaceRoot);
+    const packageDir = await packageDirOf(path.dirname(path.join(workspaceRoot, file)), workspaceRoot, fileIndex);
     if (!packageDir) {
       const base = path.basename(file);
       if (base === "lib.rs" || base === "main.rs") roots.push({ name: base === "lib.rs" ? path.basename(path.dirname(path.dirname(file))) : `bin:${file}`, file });
@@ -849,9 +847,9 @@ function toSymbols(facts: FileFacts): PublicSymbolEntry[] {
  * `main.rs`, as `crateRoots` reads them. A `main` in `src/lib.rs`, a test, a
  * bench or a module file, or inside a `mod` block or an `impl`, is none.
  */
-async function toProgram(facts: FileFacts, absolutePath: string, workspaceRoot: string): Promise<ProgramEntry | undefined> {
+async function toProgram(facts: FileFacts, absolutePath: string, workspaceRoot: string, files: ListedFiles | undefined): Promise<ProgramEntry | undefined> {
   if (facts.module.items.get("main") !== "function") return undefined;
-  const packageDir = await packageDirOf(path.dirname(absolutePath), workspaceRoot);
+  const packageDir = await packageDirOf(path.dirname(absolutePath), workspaceRoot, files);
   const binary = packageDir
     ? isBinaryRoot(normalizeWorkspacePath(path.relative(packageDir, absolutePath)))
     : path.basename(absolutePath) === "main.rs";
@@ -923,7 +921,7 @@ export const rustAdapter: LanguageAdapter = {
       symbols:      toSymbols(facts),
       dependencies: toDependencies(thisFile, table)
     };
-    const program = await toProgram(facts, absolutePath, workspaceRoot);
+    const program = await toProgram(facts, absolutePath, workspaceRoot, fileIndex);
     if (program) result.program = program;
     const testOnly = testOnlyFiles(thisFile, table);
     if (testOnly.length > 0) result.tests = { files: testOnly };

@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: `packages/generator/src/generator.ts`
 - Entry: module of [`packages/generator/package.json`](../package.json.mdmd.md)
-- Generated At: 2026-11-22T04:09:56.720Z
+- Generated At: 2026-11-22T04:48:28.189Z
 
 ## Authored
 ### Purpose
@@ -34,7 +34,7 @@ Coordinates Live Documentation generation: analyzes source files, carries author
 ### Public Symbols
 #### `LiveDocGeneratorResult` {#symbol-livedocgeneratorresult}
 - Type: interface
-- Source: [source](../../../../../packages/generator/src/generator.ts#L65)
+- Source: [source](../../../../../packages/generator/src/generator.ts#L66)
 
 ##### `LiveDocGeneratorResult` — Summary
 Summary returned by {@link generateLiveDocs} after processing all target files.
@@ -44,14 +44,14 @@ the `files` array gives per-file detail for dry-run previews and CI checks.
 
 #### `SourceReadings` {#symbol-sourcereadings}
 - Type: interface
-- Source: [source](../../../../../packages/generator/src/generator.ts#L86)
+- Source: [source](../../../../../packages/generator/src/generator.ts#L87)
 
 ##### `SourceReadings` — Summary
 The files the one reading step read as UTF-16 or as Windows-1252, and those it did not read as text, by source path.
 
 #### `generateLiveDocs` {#symbol-generatelivedocs}
 - Type: function
-- Source: [source](../../../../../packages/generator/src/generator.ts#L127)
+- Source: [source](../../../../../packages/generator/src/generator.ts#L128)
 - Parameters: `options`: `GenerateLiveDocsOptions`
 
 ##### `generateLiveDocs` — Summary
@@ -129,6 +129,7 @@ behind the `Entry` lines (2026-10-15).
 - [`sourceText.throwIfMachineFailure`](../../engine/src/tooling/sourceText.ts.mdmd.md#symbol-throwifmachinefailure)
 - [`workspaceFiles.FileHost`](../../engine/src/tooling/workspaceFiles.ts.mdmd.md#symbol-filehost)
 - [`workspaceFiles.workspaceReads`](../../engine/src/tooling/workspaceFiles.ts.mdmd.md#symbol-workspacereads-function)
+- [`workspaceListing`](../../engine/src/tooling/workspaceListing.ts.mdmd.md#symbol-workspacelisting-function)
 <!-- LIVE-DOC:END Dependencies -->
 
 <!-- LIVE-DOC:BEGIN Cited By -->

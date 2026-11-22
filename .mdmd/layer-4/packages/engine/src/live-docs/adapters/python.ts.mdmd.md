@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/engine/src/live-docs/adapters/python.ts`
-- Generated At: 2026-11-22T02:29:39.689Z
+- Generated At: 2026-11-22T04:54:28.700Z
 
 ## Authored
 ### Purpose
@@ -21,7 +21,7 @@ The Python adapter: tree-sitter symbols (classes, functions, assignments and pub
 ### Public Symbols
 #### `pythonAdapter` {#symbol-pythonadapter}
 - Type: const
-- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/python.ts#L669)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/python.ts#L648)
 - Returns: [`LanguageAdapter`](./index.ts.mdmd.md#symbol-languageadapter)
 
 ##### `pythonAdapter` — Summary
@@ -30,7 +30,6 @@ Language adapter for Python (`.py`): tree-sitter symbols, import resolution that
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
-- `node:fs` - `readdirSync`, `statSync`
 - `node:path` - `path`
 - [`index.pythonSyntax`](../../languages/index.ts.mdmd.md#symbol-pythonsyntax)
 - [`index.LanguageAdapter`](./index.ts.mdmd.md#symbol-languageadapter) (type-only)
@@ -47,7 +46,8 @@ Language adapter for Python (`.py`): tree-sitter symbols, import resolution that
 - [`pathUtils.normalizeWorkspacePath`](../../tooling/pathUtils.ts.mdmd.md#symbol-normalizeworkspacepath)
 - [`sourceText.SourceReads`](../../tooling/sourceText.ts.mdmd.md#symbol-sourcereads)
 - [`sourceText.readSourceText`](../../tooling/sourceText.ts.mdmd.md#symbol-readsourcetext)
-- [`sourceText.throwIfMachineFailure`](../../tooling/sourceText.ts.mdmd.md#symbol-throwifmachinefailure)
+- [`workspaceProbes.ListedFiles`](../../tooling/workspaceProbes.ts.mdmd.md#symbol-listedfiles)
+- [`workspaceProbes.folderChildren`](../../tooling/workspaceProbes.ts.mdmd.md#symbol-folderchildren)
 <!-- LIVE-DOC:END Dependencies -->
 
 <!-- LIVE-DOC:BEGIN Cited By -->

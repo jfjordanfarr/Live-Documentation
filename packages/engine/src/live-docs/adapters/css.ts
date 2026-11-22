@@ -13,12 +13,12 @@
  * @module
  */
 
-import { statSync } from "node:fs";
 import path from "node:path";
 
 import { compareText } from "../../tooling/compareText";
 import { normalizeWorkspacePath } from "../../tooling/pathUtils";
-import { readSourceText, throwIfMachineFailure } from "../../tooling/sourceText";
+import { readSourceText } from "../../tooling/sourceText";
+import { type ListedFiles, pathKind } from "../../tooling/workspaceProbes";
 import type { DependencyEntry, SourceAnalysisResult } from "../core";
 import type { LanguageAdapter } from "./index";
 import { inSpaces } from "./spaces";
@@ -131,13 +131,8 @@ function stripQueryAndFragment(url: string): string {
   return value;
 }
 
-function fileExistsSync(filePath: string): boolean {
-  try {
-    return statSync(filePath).isFile();
-  } catch (error) {
-    throwIfMachineFailure(error);
-    return false;
-  }
+function fileExistsSync(filePath: string, files: ListedFiles | undefined): boolean {
+  return pathKind(filePath, files) === "file";
 }
 
 /**
@@ -175,7 +170,8 @@ const COMMON_DOC_ROOTS = ["public", "wwwroot", "static", "dist", "assets", "web"
 function findDocumentRoot(
   sourceDir: string,
   relativePath: string,
-  workspaceRoot: string
+  workspaceRoot: string,
+  files: ListedFiles | undefined
 ): string | undefined {
   const normalizedWorkspaceRoot = path.resolve(workspaceRoot);
   let current = path.resolve(sourceDir);
@@ -184,14 +180,14 @@ function findDocumentRoot(
   while (current.length >= normalizedWorkspaceRoot.length) {
     // Check the ancestor directly
     const directCandidate = path.join(current, relativePath);
-    if (fileExistsSync(directCandidate)) {
+    if (fileExistsSync(directCandidate, files)) {
       return current;
     }
 
     // Check common document root folders within this ancestor
     for (const docRoot of COMMON_DOC_ROOTS) {
       const docRootCandidate = path.join(current, docRoot, relativePath);
-      if (fileExistsSync(docRootCandidate)) {
+      if (fileExistsSync(docRootCandidate, files)) {
         return path.join(current, docRoot);
       }
     }
@@ -224,7 +220,8 @@ function findDocumentRoot(
 function resolveResourcePath(
   rawPath: string,
   sourceDir: string,
-  workspaceRoot: string
+  workspaceRoot: string,
+  files: ListedFiles | undefined
 ): { specifier: string; resolvedPath: string | undefined } {
   const cleaned = stripQueryAndFragment(rawPath.trim());
   const normalised = cleaned.replace(/\\/g, "/");
@@ -239,8 +236,8 @@ function resolveResourcePath(
     candidate = path.join(workspaceRoot, relativePath);
 
     // If not found at workspace root, search for document root
-    if (!fileExistsSync(candidate)) {
-      const docRoot = findDocumentRoot(sourceDir, relativePath, workspaceRoot);
+    if (!fileExistsSync(candidate, files)) {
+      const docRoot = findDocumentRoot(sourceDir, relativePath, workspaceRoot, files);
       if (docRoot) {
         candidate = path.join(docRoot, relativePath);
       }
@@ -252,7 +249,7 @@ function resolveResourcePath(
   }
 
   // Check if file exists
-  const exists = fileExistsSync(candidate);
+  const exists = fileExistsSync(candidate, files);
   const resolvedPath = exists
     ? normalizeWorkspacePath(path.relative(workspaceRoot, candidate))
     : undefined;
@@ -274,8 +271,9 @@ function extractCssDependencies(params: {
   content: string;
   absolutePath: string;
   workspaceRoot: string;
+  files: ListedFiles | undefined;
 }): DependencyEntry[] {
-  const { content, absolutePath, workspaceRoot } = params;
+  const { content, absolutePath, workspaceRoot, files } = params;
   const sourceDir = path.dirname(absolutePath);
   const dependencies: DependencyEntry[] = [];
   const seen = new Set<string>();
@@ -286,7 +284,7 @@ function extractCssDependencies(params: {
       return;
     }
 
-    const { specifier, resolvedPath } = resolveResourcePath(rawPath, sourceDir, workspaceRoot);
+    const { specifier, resolvedPath } = resolveResourcePath(rawPath, sourceDir, workspaceRoot, files);
 
     // Use resolved path for deduplication if available, otherwise specifier
     const key = resolvedPath ?? specifier;
@@ -345,7 +343,8 @@ export const cssAdapter: LanguageAdapter = {
     const dependencies = extractCssDependencies({
       content: withoutCssComments(content),
       absolutePath,
-      workspaceRoot
+      workspaceRoot,
+      files: fileIndex
     });
 
     return {
