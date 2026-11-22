@@ -47,6 +47,7 @@ import {
   handleWheel as handleWheelFn,
   startDrag
 } from "./pan-zoom";
+import { isMirrored, READS_ATTRIBUTE, writeReads } from "./reading-direction";
 import {
   clearAnchorRegistry,
   createRuntime,
@@ -797,6 +798,9 @@ export class LocalViewController implements LocalViewApi {
     this.container.toggleAttribute(OVERVIEW_FILES_ATTRIBUTE, overviewFilesShown(this.options.state.tuning.localMap, this.look));
     this.reading?.updatePresentation(this.readingVisible);
     const stage = this.stage ?? (this.stage = createStage(root));
+    // A picture not yet drawn takes the stored reading with nothing to hold in place (applyReads, for a change under a shown one).
+    if (keepStage) this.applyReads();
+    else if (this.container.parentElement) writeReads(this.container.parentElement, this.options.state.tuning.localMap.reads);
     renderBranches(this, stage);
     this.applyHistoryEmphasis();
     if (path) this.fitMapToPath();
@@ -1515,6 +1519,39 @@ export class LocalViewController implements LocalViewApi {
     }
     if (this.getActivePath()) this.fitMapToPath();
     else this.fitMapToContent();
+  }
+
+  /**
+   * Writes which way the picture reads (the person's own setting, reading-direction.ts) on the map's layer, where the
+   * stylesheet draws the reflection from. When it changes under a shown picture the card last acted on, else the
+   * subject's, else the newest pin's, keeps its place and the others change sides round it; with none of them, the
+   * picture is reflected about the middle of the view, so that what was on screen stays on screen. The wires are drawn
+   * again at once, since they are laid out in the layout's own across and reflected with the cards.
+   */
+  applyReads(): void {
+    const layer = this.container.parentElement;
+    if (!layer) return;
+    const reads = this.options.state.tuning.localMap.reads, mirrored = isMirrored(reads);
+    if (layer.hasAttribute(READS_ATTRIBUTE) === mirrored) return;
+    const root = this.isShown() ? this.contentRoot : null;
+    const newest = this.pins.entries.at(-1)?.nodeId;
+    const held = !root ? null : this.actedOnElement()?.closest<HTMLElement>(".node-card")
+      ?? root.querySelector<HTMLElement>(".node-card.local-focus")
+      ?? (newest ? root.querySelector<HTMLElement>(`.node-card[data-id="${CSS.escape(newest)}"]`) : null);
+    const middle = (rect: DOMRect): number => rect.left + rect.width / 2;
+    const before = held ? middle(held.getBoundingClientRect()) : null;
+    // With no card to hold: the line the root is reflected about, as the page shows it, which the change does not move.
+    const axis = root ? (mirrored ? root.getBoundingClientRect().left : root.getBoundingClientRect().right) : 0;
+    writeReads(layer, reads);
+    if (!root) return;
+    const frame = this.frameRect();
+    const shift = held && before !== null ? before - middle(held.getBoundingClientRect()) : 2 * (frame.left + frame.width / 2 - axis);
+    this.mapTransform = { ...this.mapTransform, x: this.mapTransform.x + shift };
+    if (this.mapInitialTransform) this.mapInitialTransform = { ...this.mapInitialTransform, x: this.mapInitialTransform.x + shift };
+    if (this.runtime.mapAnimationTarget) this.runtime.mapAnimationTarget = { ...this.runtime.mapAnimationTarget, x: this.runtime.mapAnimationTarget.x + shift };
+    this.measureLayoutExtents();
+    this.updateMapTransform();
+    this.drawConnections();
   }
 
   /**

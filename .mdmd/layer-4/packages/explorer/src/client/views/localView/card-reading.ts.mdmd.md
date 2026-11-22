@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/explorer/src/client/views/localView/card-reading.ts`
-- Generated At: 2026-11-19T21:10:16.362Z
+- Generated At: 2026-11-22T04:11:05.265Z
 
 ## Authored
 ### Purpose
@@ -67,21 +67,21 @@ The file's own line follows the same choice (any value but Hidden): where the Pu
 ### Public Symbols
 #### `ReadingTarget` {#symbol-readingtarget}
 - Type: interface
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/card-reading.ts#L31)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/card-reading.ts#L32)
 
 ##### `ReadingTarget` — Summary
 A file's Purpose or one exact symbol's description, named by the card it is read on.
 
 #### `CardReadingOptions` {#symbol-cardreadingoptions}
 - Type: interface
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/card-reading.ts#L34)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/card-reading.ts#L35)
 
 ##### `CardReadingOptions` — Summary
 Canonical text, application-owned choices and the actions a card's text can lead to.
 
 #### `CardReading` {#symbol-cardreading}
 - Type: class
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/card-reading.ts#L84)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/card-reading.ts#L85)
 
 ##### `CardReading` — Summary
 Builds on-card explanations from the same bundled docs as the full reader. A description opens and folds only
@@ -96,7 +96,7 @@ while names open full descriptions in the reader.
 
 #### `markFirstPin` {#symbol-markfirstpin}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/card-reading.ts#L993)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/card-reading.ts#L995)
 
 ##### `markFirstPin` — Summary
 Write the pin depths for a card whose rows were just ordered, and its held name's lines at the overview band, whose
@@ -167,6 +167,7 @@ room they bound, from the card's last reading: no layout is read.
 - [`overview-files.filesNameScale`](./overview-files.ts.mdmd.md#symbol-filesnamescale)
 - [`overview-files.pinnedRowScales`](./overview-files.ts.mdmd.md#symbol-pinnedrowscales)
 - [`overview-files.wholeNameScale`](./overview-files.ts.mdmd.md#symbol-wholenamescale)
+- [`reading-direction.READS_ATTRIBUTE`](./reading-direction.ts.mdmd.md#symbol-reads_attribute)
 - [`types.LocalEdge`](./types.ts.mdmd.md#symbol-localedge) (type-only)
 - [`types.ReadingControl`](./types.ts.mdmd.md#symbol-readingcontrol) (type-only)
 - [`word-seams.seamsOf`](./word-seams.ts.mdmd.md#symbol-seamsof)

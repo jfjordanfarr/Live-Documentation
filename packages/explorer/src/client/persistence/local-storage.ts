@@ -8,7 +8,7 @@
 import { LAYOUT_PRESETS, readLayoutSettings } from "../layout-presets";
 import { DEFAULT_PALETTE, isPaletteName } from "../palette";
 import { readReadingChoices, type ReadingChoice } from "../reading-state";
-import { ARRIVAL_WAITS, ARRIVALS, CUT_COUNTED, DIRECTION_MARKS, WAY_DOWNS, WIRE_ANSWERS, FRAMINGS, STEPS, CHANGE_EMPHASES, HIDDEN_FILES_LOOKS, FRAME_CHOICES, HISTORY_GRANULARITIES, MARBLE_CHOICES, type ChangeEmphasis, type DiscoveryTarget, type HistoryAxis, type HistoryGranularity, type InspectionTarget, type LocalMapPerspective, type ExplorerFilters, type SpatialLayout, type SymbolOrder, type TuningConfig, type ViewName } from "../types";
+import { ARRIVAL_WAITS, ARRIVALS, CUT_COUNTED, DIRECTION_MARKS, MAP_READS, WAY_DOWNS, WIRE_ANSWERS, FRAMINGS, STEPS, CHANGE_EMPHASES, HIDDEN_FILES_LOOKS, FRAME_CHOICES, HISTORY_GRANULARITIES, MARBLE_CHOICES, type ChangeEmphasis, type DiscoveryTarget, type HistoryAxis, type HistoryGranularity, type InspectionTarget, type LocalMapPerspective, type ExplorerFilters, type SpatialLayout, type SymbolOrder, type TuningConfig, type ViewName } from "../types";
 import { DEFAULT_RETURN_COST } from "../views/localView/cycle-order";
 import { readPerspective, readSpatialLayout, readView } from "./navigation";
 
@@ -82,6 +82,7 @@ export const getDefaultTuning = (): TuningConfig => ({
     wireAnswers: WIRE_ANSWERS[0],
     directionMarks: DIRECTION_MARKS[0],
     wayDown: WAY_DOWNS[0],
+    reads: MAP_READS[0],
     overviewFiles: "files",
     descriptionsZoomedOut: "hidden",
     slotLines: 2,
@@ -238,6 +239,8 @@ export const readPersistedUi = (): PersistedUi | null => {
         const symbolOrder = readSymbolOrder(localMapRaw.symbolOrder);
         const moveMs = readFiniteNumber(localMapRaw.moveMs);
         const holdStill = readHoldStill(localMapRaw.holdStill);
+        // Which way the picture reads is the person's own and is read here only: a link's layout settings never carry it.
+        const reads = MAP_READS.find(choice => choice === localMapRaw.reads);
         const cardText = readCardText(localMapRaw.cardText);
         const slotLines = readFiniteNumber(localMapRaw.slotLines);
         const textResistance = readFiniteNumber(localMapRaw.textResistance);
@@ -276,6 +279,7 @@ export const readPersistedUi = (): PersistedUi | null => {
           ...(symbolOrder !== undefined ? { symbolOrder } : null),
           ...(moveMs !== undefined ? { moveMs } : null),
           ...(holdStill !== undefined ? { holdStill } : null),
+          ...(reads !== undefined ? { reads } : null),
           ...(cardText !== undefined ? { cardText } : null),
           ...(slotLines !== undefined ? { slotLines } : null),
           ...(textResistance !== undefined ? { textResistance } : null),

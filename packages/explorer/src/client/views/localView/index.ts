@@ -27,6 +27,7 @@ export function createLocalView(options: LocalViewOptions): LocalViewApi {
     resetZoom: () => controller.resetZoom(),
     fitWhole: () => controller.fitWhole(),
     arriveWithLines: target => controller.arriveWithLines(target),
+    applyReads: () => controller.applyReads(),
     isFollowing: () => controller.isFollowing(),
     framingLeftOut: () => controller.framingLeftOut(),
     // Multi-hop API
