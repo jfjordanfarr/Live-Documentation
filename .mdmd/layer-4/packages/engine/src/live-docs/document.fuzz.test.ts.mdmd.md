@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: `packages/engine/src/live-docs/document.fuzz.test.ts`
-- Generated At: 2026-11-19T21:47:21.647Z
+- Generated At: 2026-11-22T07:12:52.816Z
 
 ## Authored
 ### Purpose
@@ -43,7 +43,7 @@ _No public symbols detected_
 - [`coreTypes.WorkspaceSymbolIndex`](./coreTypes.ts.mdmd.md#symbol-workspacesymbolindex) (type-only)
 - [`coreUtils.createSymbolSlug`](./coreUtils.ts.mdmd.md#symbol-createsymbolslug)
 - [`document.DEFAULT_AUTHORED_BLOCK`](./document.ts.mdmd.md#symbol-default_authored_block)
-- [`document.LiveDoc`](./document.ts.mdmd.md#symbol-livedoc)
+- [`document.LiveDoc`](./document.ts.mdmd.md#symbol-livedoc) (type-only)
 - [`document.parseLiveDoc`](./document.ts.mdmd.md#symbol-parselivedoc)
 - [`document.renderLiveDoc`](./document.ts.mdmd.md#symbol-renderlivedoc)
 - [`document.symbolName`](./document.ts.mdmd.md#symbol-symbolname)

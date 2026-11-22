@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: `packages/engine/src/live-docs/history/git.test.ts`
-- Generated At: 2026-11-20T14:56:05.692Z
+- Generated At: 2026-11-22T07:12:53.061Z
 
 ## Authored
 ### Purpose
@@ -29,9 +29,9 @@ _No public symbols detected_
 - `node:path` - `path`
 - `node:url` - `pathToFileURL`
 - [`liveDocumentationConfig.normalizeLiveDocumentationConfig`](../../config/liveDocumentationConfig.ts.mdmd.md#symbol-normalizelivedocumentationconfig)
-- [`git.DiskEntry`](./git.ts.mdmd.md#symbol-diskentry)
-- [`git.FileStamp`](./git.ts.mdmd.md#symbol-filestamp)
-- [`git.TreeDisk`](./git.ts.mdmd.md#symbol-treedisk)
+- [`git.DiskEntry`](./git.ts.mdmd.md#symbol-diskentry) (type-only)
+- [`git.FileStamp`](./git.ts.mdmd.md#symbol-filestamp) (type-only)
+- [`git.TreeDisk`](./git.ts.mdmd.md#symbol-treedisk) (type-only)
 - [`git.bringTreeForward`](./git.ts.mdmd.md#symbol-bringtreeforward)
 - [`git.followLink`](./git.ts.mdmd.md#symbol-followlink)
 - [`git.openGitRepository`](./git.ts.mdmd.md#symbol-opengitrepository)

@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: `packages/engine/src/live-docs/board.test.ts`
-- Generated At: 2026-11-19T21:10:10.961Z
+- Generated At: 2026-11-22T07:12:52.554Z
 
 ## Authored
 ### Purpose
@@ -21,7 +21,7 @@ _No public symbols detected_
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
-- [`Board`](./board.ts.mdmd.md#symbol-board)
+- [`Board`](./board.ts.mdmd.md#symbol-board) (type-only)
 - [`board.DEFAULT_LEGEND`](./board.ts.mdmd.md#symbol-default_legend)
 - [`board.legendFor`](./board.ts.mdmd.md#symbol-legendfor)
 - [`board.lintBoard`](./board.ts.mdmd.md#symbol-lintboard)

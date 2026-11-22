@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: `packages/explorer/src/client/views/localView/cycle-trials.test.ts`
-- Generated At: 2026-11-19T21:10:16.602Z
+- Generated At: 2026-11-22T07:12:55.846Z
 
 ## Authored
 ### Purpose
@@ -26,13 +26,13 @@ _No public symbols detected_
 - [`branch-scene.DEFAULT_SCENE_TUNING`](./branch-scene.ts.mdmd.md#symbol-default_scene_tuning)
 - [`branch-scene.layoutScene`](./branch-scene.ts.mdmd.md#symbol-layoutscene)
 - [`branch-scene.planBranches`](./branch-scene.ts.mdmd.md#symbol-planbranches)
-- [`branches.BranchGraph`](./branches.ts.mdmd.md#symbol-branchgraph)
-- [`branches.CycleOffer`](./branches.ts.mdmd.md#symbol-cycleoffer)
+- [`branches.BranchGraph`](./branches.ts.mdmd.md#symbol-branchgraph) (type-only)
+- [`branches.CycleOffer`](./branches.ts.mdmd.md#symbol-cycleoffer) (type-only)
 - [`branches.edgeKey`](./branches.ts.mdmd.md#symbol-edgekey)
 - [`branches.exploreBranches`](./branches.ts.mdmd.md#symbol-explorebranches)
 - [`branches.orderExploration`](./branches.ts.mdmd.md#symbol-orderexploration)
 - [`branches.rankBranches`](./branches.ts.mdmd.md#symbol-rankbranches)
-- [`cycle-trials.WalkedPicture`](./cycle-trials.ts.mdmd.md#symbol-walkedpicture)
+- [`cycle-trials.WalkedPicture`](./cycle-trials.ts.mdmd.md#symbol-walkedpicture) (type-only)
 - [`cycle-trials.cycleOrdersOf`](./cycle-trials.ts.mdmd.md#symbol-cycleordersof)
 - [`cycle-trials.horizontalWire`](./cycle-trials.ts.mdmd.md#symbol-horizontalwire)
 - [`cycle-trials.nextCycleTrial`](./cycle-trials.ts.mdmd.md#symbol-nextcycletrial)

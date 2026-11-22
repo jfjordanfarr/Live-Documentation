@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `scripts/layout-lab/measurer.ts`
-- Generated At: 2026-11-19T21:10:18.692Z
+- Generated At: 2026-11-22T07:12:57.557Z
 
 ## Authored
 ### Purpose
@@ -63,7 +63,7 @@ A measurer over the capture for one exploration.
 ### Dependencies
 - [`types.SymbolOrder`](../../packages/explorer/src/client/types.ts.mdmd.md#symbol-symbolorder) (type-only)
 - [`branch-scene.SceneMeasurer`](../../packages/explorer/src/client/views/localView/branch-scene.ts.mdmd.md#symbol-scenemeasurer) (type-only)
-- [`branches.BranchGraph`](../../packages/explorer/src/client/views/localView/branches.ts.mdmd.md#symbol-branchgraph)
+- [`branches.BranchGraph`](../../packages/explorer/src/client/views/localView/branches.ts.mdmd.md#symbol-branchgraph) (type-only)
 - [`branches.compareSymbolNames`](../../packages/explorer/src/client/views/localView/branches.ts.mdmd.md#symbol-comparesymbolnames)
 - [`branches.edgeKey`](../../packages/explorer/src/client/views/localView/branches.ts.mdmd.md#symbol-edgekey)
 - [`directory-handle.HANDLE_STRIP`](../../packages/explorer/src/client/views/localView/directory-handle.ts.mdmd.md#symbol-handle_strip)
@@ -76,8 +76,8 @@ A measurer over the capture for one exploration.
 - [`Capture`](./capture.ts.mdmd.md#symbol-capture) (type-only)
 - [`capture.CardCapture`](./capture.ts.mdmd.md#symbol-cardcapture) (type-only)
 - [`capture.RowCapture`](./capture.ts.mdmd.md#symbol-rowcapture) (type-only)
-- [`card-model.CardMetrics`](./card-model.ts.mdmd.md#symbol-cardmetrics-interface)
-- [`card-model.CardView`](./card-model.ts.mdmd.md#symbol-cardview)
+- [`card-model.CardMetrics`](./card-model.ts.mdmd.md#symbol-cardmetrics-interface) (type-only)
+- [`card-model.CardView`](./card-model.ts.mdmd.md#symbol-cardview) (type-only)
 - [`card-model.cardMetrics`](./card-model.ts.mdmd.md#symbol-cardmetrics-function)
 - [`card-model.pinOffset`](./card-model.ts.mdmd.md#symbol-pinoffset)
 - [`card-model.synthesizedHeight`](./card-model.ts.mdmd.md#symbol-synthesizedheight)

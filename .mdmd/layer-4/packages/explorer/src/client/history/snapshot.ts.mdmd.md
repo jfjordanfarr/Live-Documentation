@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/explorer/src/client/history/snapshot.ts`
-- Generated At: 2026-11-19T21:10:13.307Z
+- Generated At: 2026-11-22T07:12:53.797Z
 
 ## Authored
 ### Purpose
@@ -41,7 +41,7 @@ the files cited then. The documents that cited a file at the step are not in the
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
-- [`Shape`](../../../../engine/src/live-docs/history/shape.ts.mdmd.md#symbol-shape)
+- [`Shape`](../../../../engine/src/live-docs/history/shape.ts.mdmd.md#symbol-shape) (type-only)
 - [`shape.edgeEnds`](../../../../engine/src/live-docs/history/shape.ts.mdmd.md#symbol-edgeends)
 - [`graph.documentedReferences`](../../shared/graph.ts.mdmd.md#symbol-documentedreferences)
 - [`staticExplorerData.RelatedDocLink`](../../shared/staticExplorerData.ts.mdmd.md#symbol-relateddoclink) (type-only)

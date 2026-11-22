@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: `tests/e2e/card-reading-refresh.spec.ts`
-- Generated At: 2026-11-19T21:10:20.140Z
+- Generated At: 2026-11-22T07:12:58.299Z
 
 ## Authored
 ### Purpose
@@ -29,7 +29,7 @@ _No public symbols detected_
 ### Dependencies
 - `@playwright/test` - `Locator`, `Page`, `expect`, `test`
 - [`compressed-url-state.DEFAULT_SNAPSHOT`](../../packages/explorer/src/client/persistence/compressed-url-state.ts.mdmd.md#symbol-default_snapshot)
-- [`compressed-url-state.UrlStateSnapshot`](../../packages/explorer/src/client/persistence/compressed-url-state.ts.mdmd.md#symbol-urlstatesnapshot)
+- [`compressed-url-state.UrlStateSnapshot`](../../packages/explorer/src/client/persistence/compressed-url-state.ts.mdmd.md#symbol-urlstatesnapshot) (type-only)
 - [`compressed-url-state.compressSnapshot`](../../packages/explorer/src/client/persistence/compressed-url-state.ts.mdmd.md#symbol-compresssnapshot)
 - [`compressed-url-state.decompressSnapshot`](../../packages/explorer/src/client/persistence/compressed-url-state.ts.mdmd.md#symbol-decompresssnapshot)
 - [`still-picture.localMapStill`](./still-picture.ts.mdmd.md#symbol-localmapstill)

@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: `scripts/live-docs/visualize-static.ts`
 - Entry: command `live-docs:visualize` of [`package.json`](../../package.json.mdmd.md)
-- Generated At: 2026-11-19T19:18:28.065Z
+- Generated At: 2026-11-22T07:12:57.850Z
 
 ## Authored
 ### Purpose
@@ -31,7 +31,7 @@ _No public symbols detected_
 - `node:path`
 - [`liveDocumentationConfig.DEFAULT_LIVE_DOCUMENTATION_CONFIG`](../../packages/engine/src/config/liveDocumentationConfig.ts.mdmd.md#symbol-default_live_documentation_config)
 - [`liveDocumentationConfig.normalizeLiveDocumentationConfig`](../../packages/engine/src/config/liveDocumentationConfig.ts.mdmd.md#symbol-normalizelivedocumentationconfig)
-- [`staticBuilder.ExportedHistory`](../../packages/explorer/src/shared/staticBuilder.ts.mdmd.md#symbol-exportedhistory)
+- [`staticBuilder.ExportedHistory`](../../packages/explorer/src/shared/staticBuilder.ts.mdmd.md#symbol-exportedhistory) (type-only)
 - [`staticBuilder.buildStaticExplorer`](../../packages/explorer/src/shared/staticBuilder.ts.mdmd.md#symbol-buildstaticexplorer)
 - [`cli.UsageError`](./cli.ts.mdmd.md#symbol-usageerror)
 - [`cli.invocationFolder`](./cli.ts.mdmd.md#symbol-invocationfolder)

@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/explorer/src/client/search/search-field.ts`
-- Generated At: 2026-11-22T02:00:44.080Z
+- Generated At: 2026-11-22T07:12:54.397Z
 
 ## Authored
 ### Purpose
@@ -66,10 +66,10 @@ Make a search field over an input and a results element: typing searches the sco
 - [`icon-button.FILE_ICON`](../panels/icon-button.ts.mdmd.md#symbol-file_icon)
 - [`graph-search.DIRECTORY_LIMIT`](./graph-search.ts.mdmd.md#symbol-directory_limit)
 - [`graph-search.FILE_LIMIT`](./graph-search.ts.mdmd.md#symbol-file_limit)
-- [`graph-search.SearchHit`](./graph-search.ts.mdmd.md#symbol-searchhit)
-- [`graph-search.SearchResult`](./graph-search.ts.mdmd.md#symbol-searchresult)
-- [`graph-search.SearchRow`](./graph-search.ts.mdmd.md#symbol-searchrow)
-- [`graph-search.SearchScope`](./graph-search.ts.mdmd.md#symbol-searchscope)
+- [`graph-search.SearchHit`](./graph-search.ts.mdmd.md#symbol-searchhit) (type-only)
+- [`graph-search.SearchResult`](./graph-search.ts.mdmd.md#symbol-searchresult) (type-only)
+- [`graph-search.SearchRow`](./graph-search.ts.mdmd.md#symbol-searchrow) (type-only)
+- [`graph-search.SearchScope`](./graph-search.ts.mdmd.md#symbol-searchscope) (type-only)
 - [`graph-search.namedMatches`](./graph-search.ts.mdmd.md#symbol-namedmatches)
 - [`graph-search.searchGraph`](./graph-search.ts.mdmd.md#symbol-searchgraph)
 - [`graph-search.searchRows`](./graph-search.ts.mdmd.md#symbol-searchrows)

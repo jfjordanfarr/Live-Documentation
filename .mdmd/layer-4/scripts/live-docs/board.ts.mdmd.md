@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: `scripts/live-docs/board.ts`
 - Entry: command `live-docs:board` of [`package.json`](../../package.json.mdmd.md)
-- Generated At: 2026-11-22T03:15:27.098Z
+- Generated At: 2026-11-22T07:12:57.691Z
 
 ## Authored
 ### Purpose
@@ -45,7 +45,7 @@ The lines the report prints; with `files`, each thing's files and each wire's ed
 - [`liveDocumentationConfig.normalizeLiveDocumentationConfig`](../../packages/engine/src/config/liveDocumentationConfig.ts.mdmd.md#symbol-normalizelivedocumentationconfig)
 - [`board.lintBoard`](../../packages/engine/src/live-docs/board.ts.mdmd.md#symbol-lintboard)
 - [`board.parseBoard`](../../packages/engine/src/live-docs/board.ts.mdmd.md#symbol-parseboard)
-- [`BoardGraph`](../../packages/engine/src/live-docs/boardGraph.ts.mdmd.md#symbol-boardgraph)
+- [`BoardGraph`](../../packages/engine/src/live-docs/boardGraph.ts.mdmd.md#symbol-boardgraph) (type-only)
 - [`boardGraph.deriveBoardGraph`](../../packages/engine/src/live-docs/boardGraph.ts.mdmd.md#symbol-deriveboardgraph)
 - [`document.LiveDocSyntaxError`](../../packages/engine/src/live-docs/document.ts.mdmd.md#symbol-livedocsyntaxerror)
 - [`graphFiles.readEstateGraph`](../../packages/engine/src/live-docs/graphFiles.ts.mdmd.md#symbol-readestategraph)

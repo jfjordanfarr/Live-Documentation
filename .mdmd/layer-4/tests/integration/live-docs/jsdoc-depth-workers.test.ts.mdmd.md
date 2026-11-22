@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: `tests/integration/live-docs/jsdoc-depth-workers.test.ts`
-- Generated At: 2026-11-20T16:46:35.638Z
+- Generated At: 2026-11-22T07:12:59.932Z
 
 ## Authored
 ### Purpose
@@ -28,7 +28,7 @@ _No public symbols detected_
 - `node:os`
 - `node:path`
 - `node:zlib`
-- [`scripted-repository.ScriptedCommit`](./scripted-repository.ts.mdmd.md#symbol-scriptedcommit)
+- [`scripted-repository.ScriptedCommit`](./scripted-repository.ts.mdmd.md#symbol-scriptedcommit) (type-only)
 - [`scripted-repository.buildRepository`](./scripted-repository.ts.mdmd.md#symbol-buildrepository)
 - `vitest` - `afterAll`, `describe`, `expect`, `it`
 <!-- LIVE-DOC:END Dependencies -->

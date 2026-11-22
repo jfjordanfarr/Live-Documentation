@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/explorer/src/client/persistence/compressed-url-state.ts`
-- Generated At: 2026-11-19T21:10:14.163Z
+- Generated At: 2026-11-22T07:12:54.260Z
 
 ## Authored
 ### Purpose
@@ -138,14 +138,14 @@ Preserves the `?data=` parameter if present (used for custom data sources).
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
 - `lz-string` - `compressToEncodedURIComponent`, `decompressFromEncodedURIComponent`
-- [`layout-presets.LayoutSettings`](../layout-presets.ts.mdmd.md#symbol-layoutsettings)
+- [`layout-presets.LayoutSettings`](../layout-presets.ts.mdmd.md#symbol-layoutsettings) (type-only)
 - [`layout-presets.readLayoutSettings`](../layout-presets.ts.mdmd.md#symbol-readlayoutsettings)
 - [`history.commitUrl`](./history.ts.mdmd.md#symbol-commiturl)
 - [`local-storage.getDefaultFilters`](./local-storage.ts.mdmd.md#symbol-getdefaultfilters)
 - [`navigation.readPerspective`](./navigation.ts.mdmd.md#symbol-readperspective)
 - [`navigation.readSpatialLayout`](./navigation.ts.mdmd.md#symbol-readspatiallayout)
 - [`navigation.readView`](./navigation.ts.mdmd.md#symbol-readview)
-- [`reading-state.ReadingChoice`](../reading-state.ts.mdmd.md#symbol-readingchoice)
+- [`reading-state.ReadingChoice`](../reading-state.ts.mdmd.md#symbol-readingchoice) (type-only)
 - [`reading-state.readReadingChoices`](../reading-state.ts.mdmd.md#symbol-readreadingchoices)
 - [`reading-state.scrubReadingChoices`](../reading-state.ts.mdmd.md#symbol-scrubreadingchoices)
 - [`types.DiscoveryTarget`](../types.ts.mdmd.md#symbol-discoverytarget) (type-only)
@@ -154,11 +154,11 @@ Preserves the `?data=` parameter if present (used for custom data sources).
 - [`types.PathDestination`](../types.ts.mdmd.md#symbol-pathdestination) (type-only)
 - [`types.SpatialLayout`](../types.ts.mdmd.md#symbol-spatiallayout) (type-only)
 - [`types.ViewName`](../types.ts.mdmd.md#symbol-viewname) (type-only)
-- [`pin-state.EMPTY_PIN_SET`](../views/pin-state.ts.mdmd.md#symbol-empty_pin_set) (type-only)
-- [`pin-state.INTERNAL_SYMBOL`](../views/pin-state.ts.mdmd.md#symbol-internal_symbol) (type-only)
+- [`pin-state.EMPTY_PIN_SET`](../views/pin-state.ts.mdmd.md#symbol-empty_pin_set)
+- [`pin-state.INTERNAL_SYMBOL`](../views/pin-state.ts.mdmd.md#symbol-internal_symbol)
 - [`pin-state.PinSet`](../views/pin-state.ts.mdmd.md#symbol-pinset) (type-only)
-- [`pin-state.deserializePins`](../views/pin-state.ts.mdmd.md#symbol-deserializepins) (type-only)
-- [`pin-state.serializePins`](../views/pin-state.ts.mdmd.md#symbol-serializepins) (type-only)
+- [`pin-state.deserializePins`](../views/pin-state.ts.mdmd.md#symbol-deserializepins)
+- [`pin-state.serializePins`](../views/pin-state.ts.mdmd.md#symbol-serializepins)
 - [`retained-state.reconcileRetained`](../views/retained-state.ts.mdmd.md#symbol-reconcileretained)
 <!-- LIVE-DOC:END Dependencies -->
 

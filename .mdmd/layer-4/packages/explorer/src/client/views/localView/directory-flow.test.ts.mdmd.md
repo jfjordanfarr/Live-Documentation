@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: `packages/explorer/src/client/views/localView/directory-flow.test.ts`
-- Generated At: 2026-11-19T21:10:16.674Z
+- Generated At: 2026-11-22T07:12:55.900Z
 
 ## Authored
 ### Purpose
@@ -24,13 +24,13 @@ _No public symbols detected_
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
 - [`branches.placeMembers`](./branches.ts.mdmd.md#symbol-placemembers)
-- [`directory-flow.FlowInput`](./directory-flow.ts.mdmd.md#symbol-flowinput)
-- [`directory-flow.FlowShape`](./directory-flow.ts.mdmd.md#symbol-flowshape)
+- [`directory-flow.FlowInput`](./directory-flow.ts.mdmd.md#symbol-flowinput) (type-only)
+- [`directory-flow.FlowShape`](./directory-flow.ts.mdmd.md#symbol-flowshape) (type-only)
 - [`directory-flow.NARROW_SHAPE`](./directory-flow.ts.mdmd.md#symbol-narrow_shape)
 - [`directory-flow.NOMINAL_BOX`](./directory-flow.ts.mdmd.md#symbol-nominal_box)
 - [`directory-flow.NOMINAL_CARD`](./directory-flow.ts.mdmd.md#symbol-nominal_card)
 - [`directory-flow.NOMINAL_LABEL`](./directory-flow.ts.mdmd.md#symbol-nominal_label)
-- [`directory-flow.UndrawnLink`](./directory-flow.ts.mdmd.md#symbol-undrawnlink)
+- [`directory-flow.UndrawnLink`](./directory-flow.ts.mdmd.md#symbol-undrawnlink) (type-only)
 - [`directory-flow.flowColumns`](./directory-flow.ts.mdmd.md#symbol-flowcolumns)
 - [`directory-flow.flowNeighbours`](./directory-flow.ts.mdmd.md#symbol-flowneighbours)
 - [`directory-flow.isPairLine`](./directory-flow.ts.mdmd.md#symbol-ispairline)

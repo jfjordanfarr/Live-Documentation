@@ -178,6 +178,7 @@ interface Measure {
  */
 export const DOCUMENTATION_CAUSES = {
   notRead:      "the reader keeps no documentation where the reference stands: a declaration it shows no symbol for (an enum's member, a member that is not public, an operator, an indexer)",
+  unkept:       "the reader shows the declaration the reference stands on but keeps no such reference in its documentation",
   holder:       "the reader lands on the type that holds the member the compiler names, the file showing no symbol for the member",
   unresolved:   "the reader reads the reference and resolves it to nothing",
   more:         "the reader links the declarations the compiler names and more",
@@ -236,7 +237,7 @@ export function writesUndeclaredParameter(written: string, declared: ReadonlySet
  * names no declaration, as the reader links none. `onlyThrough` tells a target whose project the file's reaches only
  * through another.
  */
-export function compareDocumentation(record: CompilerRecord, reader: readonly ReaderReference[], onlyThrough: (from: string, to: string) => boolean = () => false): DocumentationRelation {
+export function compareDocumentation(record: CompilerRecord, reader: readonly ReaderReference[], onlyThrough: (from: string, to: string) => boolean = () => false, shown: ReadonlySet<string> = new Set()): DocumentationRelation {
   const key = (from: string, on: number | null | undefined, written: string): string => `${from}\u0000${on ?? "?"}\u0000${written}`;
   const at = (declaration: Declaration): string => `${declaration.file}:${declaration.line}`;
   const read = new Map<string, { reference: ReaderReference; targets: Set<string> }>();
@@ -260,7 +261,7 @@ export function compareDocumentation(record: CompilerRecord, reader: readonly Re
     const label = `${reference.from}:${reference.line} <${reference.element}> ${reference.written}`;
     const ours = read.get(where);
     if (ours === undefined) {
-      add(DOCUMENTATION_CAUSES.notRead, label);
+      add(shown.has(`${reference.from}:${reference.on}`) ? DOCUMENTATION_CAUSES.unkept : DOCUMENTATION_CAUSES.notRead, label);
       continue;
     }
     const linked = ours.targets;
@@ -345,6 +346,8 @@ export async function compareCSharp(root: string, kept?: CompilerRecord): Promis
 
   const ours = new Set<string>();
   const references: ReaderReference[] = [];
+  // Each declaration the reader shows a symbol for, as `file:line`, which tells a reference it does not keep from one on a declaration it does not show.
+  const shown = new Set<string>();
   for (const file of csharp) {
     const analysis = await csharpAdapter.analyze({ absolutePath: path.join(root, file), workspaceRoot: root, fileIndex: index });
     for (const dependency of analysis?.dependencies ?? []) {
@@ -352,6 +355,7 @@ export async function compareCSharp(root: string, kept?: CompilerRecord): Promis
       if (to && to !== file && known.has(to)) ours.add(`${file} → ${to}`);
     }
     for (const symbol of analysis?.symbols ?? []) {
+      if (symbol.location) shown.add(`${file}:${symbol.location.line}`);
       for (const link of symbol.documentation?.links ?? []) {
         if (link.kind !== "cref") continue;
         const targets = (link.targets ?? []).filter((target) => known.has(target.path)).map((target) => ({ file: target.path, line: target.line }));
@@ -397,7 +401,7 @@ export async function compareCSharp(root: string, kept?: CompilerRecord): Promis
   };
   const documentation = documentationPairs(record);
   return {
-    documentation: { ...documentation, drawn: documentation.pairs.filter((pair) => ours.has(pair)), relation: compareDocumentation(record, references, onlyThrough) },
+    documentation: { ...documentation, drawn: documentation.pairs.filter((pair) => ours.has(pair)), relation: compareDocumentation(record, references, onlyThrough, shown) },
     folder:      root,
     tool:        record.tool,
     files:       csharp.length,

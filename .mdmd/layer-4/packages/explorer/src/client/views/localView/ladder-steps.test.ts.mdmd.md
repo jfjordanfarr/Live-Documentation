@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: `packages/explorer/src/client/views/localView/ladder-steps.test.ts`
-- Generated At: 2026-11-19T21:10:16.842Z
+- Generated At: 2026-11-22T07:12:56.031Z
 
 ## Authored
 ### Purpose
@@ -31,7 +31,7 @@ _No public symbols detected_
 - [`ladder-steps.LOOK_SCALES`](./ladder-steps.ts.mdmd.md#symbol-look_scales)
 - [`ladder-steps.STEP_HYSTERESIS`](./ladder-steps.ts.mdmd.md#symbol-step_hysteresis)
 - [`ladder-steps.STEP_RATIO`](./ladder-steps.ts.mdmd.md#symbol-step_ratio)
-- [`ladder-steps.ZoomLook`](./ladder-steps.ts.mdmd.md#symbol-zoomlook-type)
+- [`ladder-steps.ZoomLook`](./ladder-steps.ts.mdmd.md#symbol-zoomlook-type) (type-only)
 - [`ladder-steps.ladderBand`](./ladder-steps.ts.mdmd.md#symbol-ladderband-function)
 - [`ladder-steps.ladderScales`](./ladder-steps.ts.mdmd.md#symbol-ladderscales-function)
 - [`ladder-steps.ladderStep`](./ladder-steps.ts.mdmd.md#symbol-ladderstep)

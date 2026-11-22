@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: `tests/e2e/still-picture.spec.ts`
-- Generated At: 2026-11-19T21:10:24.361Z
+- Generated At: 2026-11-22T07:12:59.343Z
 
 ## Authored
 ### Purpose
@@ -37,15 +37,15 @@ _No public symbols detected_
 - `node:path` - `path`
 - [`types.ExplorerGraphPayload`](../../packages/explorer/src/shared/types.ts.mdmd.md#symbol-explorergraphpayload) (type-only)
 - [`scopes.DECK_SCOPES`](./scopes.ts.mdmd.md#symbol-deck_scopes)
-- [`scopes.DeckScope`](./scopes.ts.mdmd.md#symbol-deckscope)
-- [`still-picture.ChainJourney`](./still-picture.ts.mdmd.md#symbol-chainjourney)
-- [`still-picture.ChurnScore`](./still-picture.ts.mdmd.md#symbol-churnscore)
-- [`still-picture.Fact`](./still-picture.ts.mdmd.md#symbol-fact)
-- [`still-picture.Journey`](./still-picture.ts.mdmd.md#symbol-journey)
+- [`scopes.DeckScope`](./scopes.ts.mdmd.md#symbol-deckscope) (type-only)
+- [`still-picture.ChainJourney`](./still-picture.ts.mdmd.md#symbol-chainjourney) (type-only)
+- [`still-picture.ChurnScore`](./still-picture.ts.mdmd.md#symbol-churnscore) (type-only)
+- [`still-picture.Fact`](./still-picture.ts.mdmd.md#symbol-fact) (type-only)
+- [`still-picture.Journey`](./still-picture.ts.mdmd.md#symbol-journey) (type-only)
 - [`still-picture.LOCAL_MAP`](./still-picture.ts.mdmd.md#symbol-local_map)
-- [`still-picture.PictureReading`](./still-picture.ts.mdmd.md#symbol-picturereading)
-- [`still-picture.Scoreboard`](./still-picture.ts.mdmd.md#symbol-scoreboard)
-- [`still-picture.ViewReading`](./still-picture.ts.mdmd.md#symbol-viewreading)
+- [`still-picture.PictureReading`](./still-picture.ts.mdmd.md#symbol-picturereading) (type-only)
+- [`still-picture.Scoreboard`](./still-picture.ts.mdmd.md#symbol-scoreboard) (type-only)
+- [`still-picture.ViewReading`](./still-picture.ts.mdmd.md#symbol-viewreading) (type-only)
 - [`still-picture.backEnabled`](./still-picture.ts.mdmd.md#symbol-backenabled)
 - [`still-picture.boxOf`](./still-picture.ts.mdmd.md#symbol-boxof)
 - [`still-picture.cardBoxes`](./still-picture.ts.mdmd.md#symbol-cardboxes)

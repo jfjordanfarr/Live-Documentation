@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: `tests/integration/live-docs/history-tree-equivalence.test.ts`
-- Generated At: 2026-11-20T09:35:04.698Z
+- Generated At: 2026-11-22T07:12:59.822Z
 
 ## Authored
 ### Purpose
@@ -28,7 +28,7 @@ _No public symbols detected_
 - `node:fs`
 - `node:os`
 - `node:path`
-- [`LiveDocumentationConfig`](../../../packages/engine/src/config/liveDocumentationConfig.ts.mdmd.md#symbol-livedocumentationconfig)
+- [`LiveDocumentationConfig`](../../../packages/engine/src/config/liveDocumentationConfig.ts.mdmd.md#symbol-livedocumentationconfig) (type-only)
 - [`liveDocumentationConfig.normalizeLiveDocumentationConfig`](../../../packages/engine/src/config/liveDocumentationConfig.ts.mdmd.md#symbol-normalizelivedocumentationconfig)
 - [`git.writeStoredTree`](../../../packages/engine/src/live-docs/history/git.ts.mdmd.md#symbol-writestoredtree)
 - [`generator.generateLiveDocs`](../../../packages/generator/src/generator.ts.mdmd.md#symbol-generatelivedocs)

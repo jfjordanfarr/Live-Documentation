@@ -1,0 +1,123 @@
+[
+ {
+  "picture": "lanes",
+  "viewport": {
+   "width": 1600,
+   "height": 1000
+  },
+  "load": [
+   7.28,
+   7.37,
+   10.76
+  ],
+  "wires": 516,
+  "cards": 113,
+  "samples": 247314,
+  "referenceMs": [
+   81940,
+   56753
+  ],
+  "nowMs": [
+   72195,
+   68254
+  ],
+  "withoutSamplingMs": {
+   "reference": 1138,
+   "now": 764
+  },
+  "referenceAgreesWithItself": true,
+  "sameToTheNumber": true,
+  "sameWithoutSampling": true,
+  "firstDifference": null,
+  "profile": [
+   {
+    "fn": "getPointAtLength [browser]",
+    "ms": 56479
+   },
+   {
+    "fn": "(anonymous) [browser]",
+    "ms": 15007
+   },
+   {
+    "fn": "(idle) [browser]",
+    "ms": 4724
+   },
+   {
+    "fn": "isPointInFill [browser]",
+    "ms": 3806
+   },
+   {
+    "fn": "(program) [browser]",
+    "ms": 748
+   },
+   {
+    "fn": "evaluate [browser]",
+    "ms": 461
+   },
+   {
+    "fn": "elementFromPoint [browser]",
+    "ms": 410
+   },
+   {
+    "fn": "(garbage collector) [browser]",
+    "ms": 343
+   },
+   {
+    "fn": "getBoundingClientRect [browser]",
+    "ms": 171
+   },
+   {
+    "fn": "getTotalLength [browser]",
+    "ms": 56
+   },
+   {
+    "fn": "innerSerialize [browser]",
+    "ms": 42
+   },
+   {
+    "fn": "querySelectorAll [browser]",
+    "ms": 38
+   },
+   {
+    "fn": "serialize [browser]",
+    "ms": 29
+   },
+   {
+    "fn": "getScreenCTM [browser]",
+    "ms": 11
+   },
+   {
+    "fn": "getComputedStyle [browser]",
+    "ms": 7
+   },
+   {
+    "fn": "parseEvaluationResultValue [browser]",
+    "ms": 6
+   },
+   {
+    "fn": "isTypedArray [browser]",
+    "ms": 4
+   },
+   {
+    "fn": "querySelector [browser]",
+    "ms": 3
+   },
+   {
+    "fn": "contains [browser]",
+    "ms": 2
+   },
+   {
+    "fn": "closest [browser]",
+    "ms": 1
+   },
+   {
+    "fn": "isURL [browser]",
+    "ms": 1
+   },
+   {
+    "fn": "isRegExp [browser]",
+    "ms": 1
+   }
+  ]
+ }
+]

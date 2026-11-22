@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/engine/src/tooling/workspaceFiles.ts`
-- Generated At: 2026-11-22T04:09:54.851Z
+- Generated At: 2026-11-22T07:12:53.591Z
 
 ## Authored
 ### Purpose
@@ -51,7 +51,7 @@ moved the time beyond the machine's noise or the peak beyond its spread.
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
-- [`sourceText.SourceTextReading`](./sourceText.ts.mdmd.md#symbol-sourcetextreading)
+- [`sourceText.SourceTextReading`](./sourceText.ts.mdmd.md#symbol-sourcetextreading) (type-only)
 - [`sourceText.decodeSourceText`](./sourceText.ts.mdmd.md#symbol-decodesourcetext)
 <!-- LIVE-DOC:END Dependencies -->
 

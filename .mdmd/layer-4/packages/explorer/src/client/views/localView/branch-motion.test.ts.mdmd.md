@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: `packages/explorer/src/client/views/localView/branch-motion.test.ts`
-- Generated At: 2026-11-19T21:10:15.677Z
+- Generated At: 2026-11-22T07:12:55.149Z
 
 ## Authored
 ### Purpose
@@ -22,13 +22,13 @@ _No public symbols detected_
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
-- [`branch-motion.Pose`](./branch-motion.ts.mdmd.md#symbol-pose)
+- [`branch-motion.Pose`](./branch-motion.ts.mdmd.md#symbol-pose) (type-only)
 - [`branch-motion.boxKeyOf`](./branch-motion.ts.mdmd.md#symbol-boxkeyof)
 - [`branch-motion.easeInOutCubic`](./branch-motion.ts.mdmd.md#symbol-easeinoutcubic)
 - [`branch-motion.scenePose`](./branch-motion.ts.mdmd.md#symbol-scenepose)
 - [`branch-motion.tweenPose`](./branch-motion.ts.mdmd.md#symbol-tweenpose)
 - [`branch-scene.DEFAULT_SCENE_TUNING`](./branch-scene.ts.mdmd.md#symbol-default_scene_tuning)
-- [`branch-scene.SceneMeasurer`](./branch-scene.ts.mdmd.md#symbol-scenemeasurer)
+- [`branch-scene.SceneMeasurer`](./branch-scene.ts.mdmd.md#symbol-scenemeasurer) (type-only)
 - [`branch-scene.hostOf`](./branch-scene.ts.mdmd.md#symbol-hostof)
 - [`branch-scene.layoutScene`](./branch-scene.ts.mdmd.md#symbol-layoutscene)
 - [`branch-scene.planBranches`](./branch-scene.ts.mdmd.md#symbol-planbranches)

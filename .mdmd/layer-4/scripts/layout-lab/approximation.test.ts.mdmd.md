@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: `scripts/layout-lab/approximation.test.ts`
-- Generated At: 2026-11-19T21:10:18.347Z
+- Generated At: 2026-11-22T07:12:57.403Z
 
 ## Authored
 ### Purpose
@@ -33,7 +33,7 @@ _No public symbols detected_
 - [`StaticExplorerData`](../../packages/explorer/src/shared/staticExplorerData.ts.mdmd.md#symbol-staticexplorerdata) (type-only)
 - [`types.ExplorerGraphPayload`](../../packages/explorer/src/shared/types.ts.mdmd.md#symbol-explorergraphpayload) (type-only)
 - [`types.ExplorerNodePayload`](../../packages/explorer/src/shared/types.ts.mdmd.md#symbol-explorernodepayload) (type-only)
-- [`approximation.ApproximationReport`](./approximation.ts.mdmd.md#symbol-approximationreport)
+- [`approximation.ApproximationReport`](./approximation.ts.mdmd.md#symbol-approximationreport) (type-only)
 - [`approximation.firstTick`](./approximation.ts.mdmd.md#symbol-firsttick-function)
 - [`approximation.forceErrors`](./approximation.ts.mdmd.md#symbol-forceerrors)
 - [`approximation.renderApproximationReport`](./approximation.ts.mdmd.md#symbol-renderapproximationreport)

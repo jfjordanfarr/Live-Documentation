@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: `tests/e2e/scenarios/still-pictures.spec.ts`
-- Generated At: 2026-11-19T21:10:23.948Z
+- Generated At: 2026-11-22T07:12:59.235Z
 
 ## Authored
 ### Purpose
@@ -27,10 +27,10 @@ _No public symbols detected_
 - [`files.readOracleEdges`](../../../scripts/oracle/files.ts.mdmd.md#symbol-readoracleedges)
 - [`instrument.readSettled`](./instrument.ts.mdmd.md#symbol-readsettled)
 - [`instrument.watchPage`](./instrument.ts.mdmd.md#symbol-watchpage)
-- [`judgments.Floor`](./judgments.ts.mdmd.md#symbol-floor)
+- [`judgments.Floor`](./judgments.ts.mdmd.md#symbol-floor) (type-only)
 - [`judgments.LAWS`](./judgments.ts.mdmd.md#symbol-laws)
-- [`judgments.OracleEdge`](./judgments.ts.mdmd.md#symbol-oracleedge)
-- [`judgments.Verdict`](./judgments.ts.mdmd.md#symbol-verdict)
+- [`judgments.OracleEdge`](./judgments.ts.mdmd.md#symbol-oracleedge) (type-only)
+- [`judgments.Verdict`](./judgments.ts.mdmd.md#symbol-verdict) (type-only)
 - [`judgments.judgeFloor`](./judgments.ts.mdmd.md#symbol-judgefloor)
 - [`judgments.samePicture`](./judgments.ts.mdmd.md#symbol-samepicture)
 - [`judgments.tonesHeld`](./judgments.ts.mdmd.md#symbol-tonesheld)
@@ -38,10 +38,10 @@ _No public symbols detected_
 - [`judgments.wiresMatchOracle`](./judgments.ts.mdmd.md#symbol-wiresmatchoracle)
 - [`Reading`](./reading.ts.mdmd.md#symbol-reading) (type-only)
 - [`table.SCENARIOS`](./table.ts.mdmd.md#symbol-scenarios)
-- [`table.Scenario`](./table.ts.mdmd.md#symbol-scenario)
-- [`tokens.RosettaManifest`](./tokens.ts.mdmd.md#symbol-rosettamanifest)
+- [`table.Scenario`](./table.ts.mdmd.md#symbol-scenario) (type-only)
+- [`tokens.RosettaManifest`](./tokens.ts.mdmd.md#symbol-rosettamanifest) (type-only)
 - [`tokens.TokenError`](./tokens.ts.mdmd.md#symbol-tokenerror)
-- [`tokens.TokenTable`](./tokens.ts.mdmd.md#symbol-tokentable-interface)
+- [`tokens.TokenTable`](./tokens.ts.mdmd.md#symbol-tokentable-interface) (type-only)
 - [`tokens.resolveList`](./tokens.ts.mdmd.md#symbol-resolvelist)
 - [`tokens.resolveText`](./tokens.ts.mdmd.md#symbol-resolvetext)
 - [`tokens.tokenTable`](./tokens.ts.mdmd.md#symbol-tokentable-function)

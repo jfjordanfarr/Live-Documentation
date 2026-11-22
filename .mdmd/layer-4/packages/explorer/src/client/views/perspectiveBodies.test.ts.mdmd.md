@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: `packages/explorer/src/client/views/perspectiveBodies.test.ts`
-- Generated At: 2026-11-19T21:10:17.237Z
+- Generated At: 2026-11-22T07:12:56.437Z
 
 ## Authored
 ### Purpose
@@ -24,8 +24,8 @@ _No public symbols detected_
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
-- [`perspectiveBodies.FrozenSpatialBody`](./perspectiveBodies.ts.mdmd.md#symbol-frozenspatialbody)
-- [`perspectiveBodies.SceneBody`](./perspectiveBodies.ts.mdmd.md#symbol-scenebody)
+- [`perspectiveBodies.FrozenSpatialBody`](./perspectiveBodies.ts.mdmd.md#symbol-frozenspatialbody) (type-only)
+- [`perspectiveBodies.SceneBody`](./perspectiveBodies.ts.mdmd.md#symbol-scenebody) (type-only)
 - [`perspectiveBodies.projectSpatialBodies`](./perspectiveBodies.ts.mdmd.md#symbol-projectspatialbodies)
 - `three` - `BoxGeometry`, `Matrix4`, `Mesh`, `MeshBasicMaterial`, `PerspectiveCamera`, `Raycaster`, `SphereGeometry`, `Vector2`
 - `vitest` - `describe`, `expect`, `it`

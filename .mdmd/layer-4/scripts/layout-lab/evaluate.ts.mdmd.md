@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `scripts/layout-lab/evaluate.ts`
-- Generated At: 2026-11-19T21:10:18.625Z
+- Generated At: 2026-11-22T07:12:57.526Z
 
 ## Authored
 ### Purpose
@@ -119,25 +119,25 @@ Where the baseline evaluation differs from what the page showed at capture: noth
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
-- [`layout-presets.LayoutPreset`](../../packages/explorer/src/client/layout-presets.ts.mdmd.md#symbol-layoutpreset)
+- [`layout-presets.LayoutPreset`](../../packages/explorer/src/client/layout-presets.ts.mdmd.md#symbol-layoutpreset) (type-only)
 - [`layout-presets.applyLayoutPreset`](../../packages/explorer/src/client/layout-presets.ts.mdmd.md#symbol-applylayoutpreset)
 - [`compressed-url-state.payloadToSnapshot`](../../packages/explorer/src/client/persistence/compressed-url-state.ts.mdmd.md#symbol-payloadtosnapshot)
 - [`local-storage.getDefaultTuning`](../../packages/explorer/src/client/persistence/local-storage.ts.mdmd.md#symbol-getdefaulttuning)
 - [`types.LocalMapTuning`](../../packages/explorer/src/client/types.ts.mdmd.md#symbol-localmaptuning) (type-only)
 - [`types.SymbolOrder`](../../packages/explorer/src/client/types.ts.mdmd.md#symbol-symbolorder) (type-only)
 - [`branch-placement.BoundaryAlignment`](../../packages/explorer/src/client/views/localView/branch-placement.ts.mdmd.md#symbol-boundaryalignment) (type-only)
-- [`branch-restarts.StartSignals`](../../packages/explorer/src/client/views/localView/branch-restarts.ts.mdmd.md#symbol-startsignals)
+- [`branch-restarts.StartSignals`](../../packages/explorer/src/client/views/localView/branch-restarts.ts.mdmd.md#symbol-startsignals) (type-only)
 - [`branch-restarts.candidateStarts`](../../packages/explorer/src/client/views/localView/branch-restarts.ts.mdmd.md#symbol-candidatestarts)
 - [`branch-restarts.layoutStarts`](../../packages/explorer/src/client/views/localView/branch-restarts.ts.mdmd.md#symbol-layoutstarts)
 - [`branch-restarts.pictureScore`](../../packages/explorer/src/client/views/localView/branch-restarts.ts.mdmd.md#symbol-picturescore)
 - [`branch-restarts.signalsOf`](../../packages/explorer/src/client/views/localView/branch-restarts.ts.mdmd.md#symbol-signalsof)
 - [`branch-restarts.startName`](../../packages/explorer/src/client/views/localView/branch-restarts.ts.mdmd.md#symbol-startname)
 - [`branch-restarts.startOrder`](../../packages/explorer/src/client/views/localView/branch-restarts.ts.mdmd.md#symbol-startorder)
-- [`branch-scene.Scene`](../../packages/explorer/src/client/views/localView/branch-scene.ts.mdmd.md#symbol-scene)
+- [`branch-scene.Scene`](../../packages/explorer/src/client/views/localView/branch-scene.ts.mdmd.md#symbol-scene) (type-only)
 - [`branch-scene.layoutScene`](../../packages/explorer/src/client/views/localView/branch-scene.ts.mdmd.md#symbol-layoutscene)
 - [`branch-scene.planBranches`](../../packages/explorer/src/client/views/localView/branch-scene.ts.mdmd.md#symbol-planbranches)
-- [`branches.BranchGraph`](../../packages/explorer/src/client/views/localView/branches.ts.mdmd.md#symbol-branchgraph)
-- [`branches.Exploration`](../../packages/explorer/src/client/views/localView/branches.ts.mdmd.md#symbol-exploration)
+- [`branches.BranchGraph`](../../packages/explorer/src/client/views/localView/branches.ts.mdmd.md#symbol-branchgraph) (type-only)
+- [`branches.Exploration`](../../packages/explorer/src/client/views/localView/branches.ts.mdmd.md#symbol-exploration) (type-only)
 - [`branches.exploreBranches`](../../packages/explorer/src/client/views/localView/branches.ts.mdmd.md#symbol-explorebranches)
 - [`branches.orderExploration`](../../packages/explorer/src/client/views/localView/branches.ts.mdmd.md#symbol-orderexploration)
 - [`cycle-trials.horizontalWire`](../../packages/explorer/src/client/views/localView/cycle-trials.ts.mdmd.md#symbol-horizontalwire)
@@ -145,17 +145,17 @@ Where the baseline evaluation differs from what the page showed at capture: noth
 - [`cycle-trials.standingOrders`](../../packages/explorer/src/client/views/localView/cycle-trials.ts.mdmd.md#symbol-standingorders)
 - [`cycle-trials.walkCycleTrials`](../../packages/explorer/src/client/views/localView/cycle-trials.ts.mdmd.md#symbol-walkcycletrials)
 - [`pin-state.EMPTY_PIN_SET`](../../packages/explorer/src/client/views/pin-state.ts.mdmd.md#symbol-empty_pin_set)
-- [`pin-state.PinSet`](../../packages/explorer/src/client/views/pin-state.ts.mdmd.md#symbol-pinset)
+- [`pin-state.PinSet`](../../packages/explorer/src/client/views/pin-state.ts.mdmd.md#symbol-pinset) (type-only)
 - [`pin-state.addPin`](../../packages/explorer/src/client/views/pin-state.ts.mdmd.md#symbol-addpin)
 - [`types.ExplorerGraphPayload`](../../packages/explorer/src/shared/types.ts.mdmd.md#symbol-explorergraphpayload) (type-only)
 - [`types.ExplorerNodePayload`](../../packages/explorer/src/shared/types.ts.mdmd.md#symbol-explorernodepayload) (type-only)
 - [`Capture`](./capture.ts.mdmd.md#symbol-capture) (type-only)
 - [`card-model.CardMetrics`](./card-model.ts.mdmd.md#symbol-cardmetrics-interface) (type-only)
 - [`measurer.capturedMeasurer`](./measurer.ts.mdmd.md#symbol-capturedmeasurer)
-- [`routes.Route`](./routes.ts.mdmd.md#symbol-route)
+- [`routes.Route`](./routes.ts.mdmd.md#symbol-route) (type-only)
 - [`routes.routeScene`](./routes.ts.mdmd.md#symbol-routescene)
-- [`scopes.ScopeRun`](./scopes.ts.mdmd.md#symbol-scoperun)
+- [`scopes.ScopeRun`](./scopes.ts.mdmd.md#symbol-scoperun) (type-only)
 - [`scopes.retainedSubject`](./scopes.ts.mdmd.md#symbol-retainedsubject)
-- [`Signals`](./signals.ts.mdmd.md#symbol-signals)
+- [`Signals`](./signals.ts.mdmd.md#symbol-signals) (type-only)
 - [`signals.measureScene`](./signals.ts.mdmd.md#symbol-measurescene)
 <!-- LIVE-DOC:END Dependencies -->

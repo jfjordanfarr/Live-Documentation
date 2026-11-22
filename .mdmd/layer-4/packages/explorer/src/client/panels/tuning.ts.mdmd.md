@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/explorer/src/client/panels/tuning.ts`
-- Generated At: 2026-11-22T05:48:55.836Z
+- Generated At: 2026-11-22T07:12:54.190Z
 
 ## Authored
 ### Purpose
@@ -130,10 +130,10 @@ description say why, as the 3D control does where the browser refuses WebGL. A s
 - [`types.DIRECTION_MARKS`](../types.ts.mdmd.md#symbol-direction_marks)
 - [`types.DIRECTORY_LAYOUTS`](../types.ts.mdmd.md#symbol-directory_layouts)
 - [`types.DRAGS`](../types.ts.mdmd.md#symbol-drags)
-- [`types.ExplorerState`](../types.ts.mdmd.md#symbol-explorerstate)
+- [`types.ExplorerState`](../types.ts.mdmd.md#symbol-explorerstate) (type-only)
 - [`types.FRAME_CHOICES`](../types.ts.mdmd.md#symbol-frame_choices)
 - [`types.FRAMINGS`](../types.ts.mdmd.md#symbol-framings)
-- [`types.FrameChoice`](../types.ts.mdmd.md#symbol-framechoice)
+- [`types.FrameChoice`](../types.ts.mdmd.md#symbol-framechoice) (type-only)
 - [`types.GROUP_WRAPPERS`](../types.ts.mdmd.md#symbol-group_wrappers)
 - [`types.HIDDEN_FILES_LOOKS`](../types.ts.mdmd.md#symbol-hidden_files_looks)
 - [`types.MARBLE_CHOICES`](../types.ts.mdmd.md#symbol-marble_choices)

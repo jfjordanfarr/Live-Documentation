@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/engine/src/live-docs/history/codec.ts`
-- Generated At: 2026-11-19T21:10:11.862Z
+- Generated At: 2026-11-22T07:12:52.991Z
 
 ## Authored
 ### Purpose
@@ -139,29 +139,29 @@ The change of rows a step's delta describes, every list present.
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
-- [`format.DependencyTuple`](./format.ts.mdmd.md#symbol-dependencytuple)
-- [`format.EdgeEnds`](./format.ts.mdmd.md#symbol-edgeends)
-- [`format.EdgeTuple`](./format.ts.mdmd.md#symbol-edgetuple)
-- [`format.EntryTuple`](./format.ts.mdmd.md#symbol-entrytuple)
-- [`format.FileRowsTuple`](./format.ts.mdmd.md#symbol-filerowstuple)
-- [`format.FileTuple`](./format.ts.mdmd.md#symbol-filetuple)
+- [`format.DependencyTuple`](./format.ts.mdmd.md#symbol-dependencytuple) (type-only)
+- [`format.EdgeEnds`](./format.ts.mdmd.md#symbol-edgeends) (type-only)
+- [`format.EdgeTuple`](./format.ts.mdmd.md#symbol-edgetuple) (type-only)
+- [`format.EntryTuple`](./format.ts.mdmd.md#symbol-entrytuple) (type-only)
+- [`format.FileRowsTuple`](./format.ts.mdmd.md#symbol-filerowstuple) (type-only)
+- [`format.FileTuple`](./format.ts.mdmd.md#symbol-filetuple) (type-only)
 - [`format.NO_WORDS`](./format.ts.mdmd.md#symbol-no_words)
-- [`format.ReExportTuple`](./format.ts.mdmd.md#symbol-reexporttuple)
-- [`format.ReferenceTuple`](./format.ts.mdmd.md#symbol-referencetuple)
-- [`format.ShapeTuples`](./format.ts.mdmd.md#symbol-shapetuples)
-- [`format.StepDelta`](./format.ts.mdmd.md#symbol-stepdelta)
-- [`format.SymbolTuple`](./format.ts.mdmd.md#symbol-symboltuple)
+- [`format.ReExportTuple`](./format.ts.mdmd.md#symbol-reexporttuple) (type-only)
+- [`format.ReferenceTuple`](./format.ts.mdmd.md#symbol-referencetuple) (type-only)
+- [`format.ShapeTuples`](./format.ts.mdmd.md#symbol-shapetuples) (type-only)
+- [`format.StepDelta`](./format.ts.mdmd.md#symbol-stepdelta) (type-only)
+- [`format.SymbolTuple`](./format.ts.mdmd.md#symbol-symboltuple) (type-only)
 - [`format.UNREAD_WORDS`](./format.ts.mdmd.md#symbol-unread_words)
-- [`rows.AuthoredWords`](./rows.ts.mdmd.md#symbol-authoredwords)
-- [`rows.FileRows`](./rows.ts.mdmd.md#symbol-filerows)
-- [`rows.RowSymbol`](./rows.ts.mdmd.md#symbol-rowsymbol)
-- [`Rows`](./rows.ts.mdmd.md#symbol-rows)
-- [`rows.RowsChange`](./rows.ts.mdmd.md#symbol-rowschange)
+- [`rows.AuthoredWords`](./rows.ts.mdmd.md#symbol-authoredwords) (type-only)
+- [`rows.FileRows`](./rows.ts.mdmd.md#symbol-filerows) (type-only)
+- [`rows.RowSymbol`](./rows.ts.mdmd.md#symbol-rowsymbol) (type-only)
+- [`Rows`](./rows.ts.mdmd.md#symbol-rows) (type-only)
+- [`rows.RowsChange`](./rows.ts.mdmd.md#symbol-rowschange) (type-only)
 - [`rows.emptyFileRows`](./rows.ts.mdmd.md#symbol-emptyfilerows)
 - [`rows.emptyRowsChange`](./rows.ts.mdmd.md#symbol-emptyrowschange)
-- [`shape.FileShape`](./shape.ts.mdmd.md#symbol-fileshape)
-- [`Shape`](./shape.ts.mdmd.md#symbol-shape)
-- [`shape.ShapeChange`](./shape.ts.mdmd.md#symbol-shapechange)
+- [`shape.FileShape`](./shape.ts.mdmd.md#symbol-fileshape) (type-only)
+- [`Shape`](./shape.ts.mdmd.md#symbol-shape) (type-only)
+- [`shape.ShapeChange`](./shape.ts.mdmd.md#symbol-shapechange) (type-only)
 - [`shape.edgeEnds`](./shape.ts.mdmd.md#symbol-edgeends)
 - [`shape.edgeKey`](./shape.ts.mdmd.md#symbol-edgekey)
 - [`shape.emptyChange`](./shape.ts.mdmd.md#symbol-emptychange)

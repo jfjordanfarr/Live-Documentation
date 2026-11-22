@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/engine/src/live-docs/core.ts`
-- Generated At: 2026-11-22T02:42:17.587Z
+- Generated At: 2026-11-22T07:12:52.654Z
 
 ## Authored
 ### Purpose
@@ -22,63 +22,63 @@ The engine's analysis facade: the names that consumers import through `core` rat
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `SourceAnalysisResult` {#symbol-sourceanalysisresult}
-- Type: unknown
+- Type: type (type-only)
 - Source: [source](../../../../../../packages/engine/src/live-docs/core.ts#L18)
 
 #### `WorkspaceEntryIndex` {#symbol-workspaceentryindex}
-- Type: unknown
+- Type: type (type-only)
 - Source: [source](../../../../../../packages/engine/src/live-docs/core.ts#L19)
 
 #### `WorkspaceSymbolIndex` {#symbol-workspacesymbolindex}
-- Type: unknown
+- Type: type (type-only)
 - Source: [source](../../../../../../packages/engine/src/live-docs/core.ts#L20)
 
 #### `WorkspaceTestIndex` {#symbol-workspacetestindex}
-- Type: unknown
+- Type: type (type-only)
 - Source: [source](../../../../../../packages/engine/src/live-docs/core.ts#L21)
 
 #### `TypeReference` {#symbol-typereference}
-- Type: unknown
+- Type: type (type-only)
 - Source: [source](../../../../../../packages/engine/src/live-docs/core.ts#L22)
 
 #### `PublicSymbolEntry` {#symbol-publicsymbolentry}
-- Type: unknown
+- Type: type (type-only)
 - Source: [source](../../../../../../packages/engine/src/live-docs/core.ts#L23)
 
 #### `DependencyEntry` {#symbol-dependencyentry}
-- Type: unknown
+- Type: type (type-only)
 - Source: [source](../../../../../../packages/engine/src/live-docs/core.ts#L24)
 
 #### `SymbolDocumentationParameter` {#symbol-symboldocumentationparameter}
-- Type: unknown
+- Type: type (type-only)
 - Source: [source](../../../../../../packages/engine/src/live-docs/core.ts#L25)
 
 #### `SymbolDocumentationException` {#symbol-symboldocumentationexception}
-- Type: unknown
+- Type: type (type-only)
 - Source: [source](../../../../../../packages/engine/src/live-docs/core.ts#L26)
 
 #### `SymbolDocumentationExample` {#symbol-symboldocumentationexample}
-- Type: unknown
+- Type: type (type-only)
 - Source: [source](../../../../../../packages/engine/src/live-docs/core.ts#L27)
 
 #### `SymbolDocumentationLinkKind` {#symbol-symboldocumentationlinkkind}
-- Type: unknown
+- Type: type (type-only)
 - Source: [source](../../../../../../packages/engine/src/live-docs/core.ts#L28)
 
 #### `SymbolDocumentationLink` {#symbol-symboldocumentationlink}
-- Type: unknown
+- Type: type (type-only)
 - Source: [source](../../../../../../packages/engine/src/live-docs/core.ts#L29)
 
 #### `SymbolDocumentationTarget` {#symbol-symboldocumentationtarget}
-- Type: unknown
+- Type: type (type-only)
 - Source: [source](../../../../../../packages/engine/src/live-docs/core.ts#L30)
 
 #### `SymbolDocumentation` {#symbol-symboldocumentation}
-- Type: unknown
+- Type: type (type-only)
 - Source: [source](../../../../../../packages/engine/src/live-docs/core.ts#L31)
 
 #### `WorkspaceFileIndex` {#symbol-workspacefileindex}
-- Type: unknown
+- Type: type (type-only)
 - Source: [source](../../../../../../packages/engine/src/live-docs/core.ts#L34)
 
 #### `BINARY_SNIFF_BYTES` {#symbol-binary_sniff_bytes}

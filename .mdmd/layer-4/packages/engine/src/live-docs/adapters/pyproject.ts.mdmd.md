@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/engine/src/live-docs/adapters/pyproject.ts`
-- Generated At: 2026-11-19T21:10:10.364Z
+- Generated At: 2026-11-22T07:12:52.321Z
 
 ## Authored
 ### Purpose
@@ -54,7 +54,7 @@ Language adapter for `pyproject.toml`: the distribution as a symbol, its require
 ### Dependencies
 - `node:path` - `path`
 - [`index.LanguageAdapter`](./index.ts.mdmd.md#symbol-languageadapter) (type-only)
-- [`manifest.ManifestContext`](./manifest.ts.mdmd.md#symbol-manifestcontext-interface)
+- [`manifest.ManifestContext`](./manifest.ts.mdmd.md#symbol-manifestcontext-interface) (type-only)
 - [`manifest.ManifestDependencies`](./manifest.ts.mdmd.md#symbol-manifestdependencies)
 - [`manifest.manifestContext`](./manifest.ts.mdmd.md#symbol-manifestcontext-function)
 - [`manifest.manifestIn`](./manifest.ts.mdmd.md#symbol-manifestin)

@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: `tests/e2e/local-map-simplicity.spec.ts`
-- Generated At: 2026-11-19T21:10:23.096Z
+- Generated At: 2026-11-22T07:12:59.040Z
 
 ## Authored
 ### Purpose
@@ -40,7 +40,7 @@ _No public symbols detected_
 - [`evaluate.driftOf`](../../scripts/layout-lab/evaluate.ts.mdmd.md#symbol-driftof)
 - [`evaluate`](../../scripts/layout-lab/evaluate.ts.mdmd.md#symbol-evaluate)
 - [`refine`](../../scripts/layout-lab/refine.ts.mdmd.md#symbol-refine)
-- [`scopes.ScopeRun`](../../scripts/layout-lab/scopes.ts.mdmd.md#symbol-scoperun)
+- [`scopes.ScopeRun`](../../scripts/layout-lab/scopes.ts.mdmd.md#symbol-scoperun) (type-only)
 - [`scopes.loadBundleGraph`](../../scripts/layout-lab/scopes.ts.mdmd.md#symbol-loadbundlegraph)
 - [`scopes.DECK_SCOPES`](./scopes.ts.mdmd.md#symbol-deck_scopes)
 - [`still-picture.localMapSettled`](./still-picture.ts.mdmd.md#symbol-localmapsettled)

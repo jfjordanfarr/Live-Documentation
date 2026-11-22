@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: `packages/generator/src/history/regenerate.test.ts`
-- Generated At: 2026-11-20T16:31:01.644Z
+- Generated At: 2026-11-22T07:12:57.105Z
 
 ## Authored
 ### Purpose
@@ -33,11 +33,11 @@ _No public symbols detected_
 - [`generator.generateLiveDocs`](../generator.ts.mdmd.md#symbol-generatelivedocs)
 - [`computeHistory.poolMemory`](./computeHistory.ts.mdmd.md#symbol-poolmemory)
 - [`regenerate.Scratch`](./regenerate.ts.mdmd.md#symbol-scratch)
-- [`regenerate.Worker`](./regenerate.ts.mdmd.md#symbol-worker)
+- [`regenerate.Worker`](./regenerate.ts.mdmd.md#symbol-worker) (type-only)
 - [`regenerate`](./regenerate.ts.mdmd.md#symbol-regenerate)
 - [`regenerate.workerBound`](./regenerate.ts.mdmd.md#symbol-workerbound)
 - [`regenerate.workerTask`](./regenerate.ts.mdmd.md#symbol-workertask)
-- [`summarizeChange.WorkerReport`](./summarizeChange.ts.mdmd.md#symbol-workerreport)
+- [`summarizeChange.WorkerReport`](./summarizeChange.ts.mdmd.md#symbol-workerreport) (type-only)
 - [`summarizeChange`](./summarizeChange.ts.mdmd.md#symbol-summarizechange)
 - [`summarizeChange.treeOptions`](./summarizeChange.ts.mdmd.md#symbol-treeoptions)
 - `vitest` - `afterAll`, `beforeAll`, `describe`, `expect`, `it`

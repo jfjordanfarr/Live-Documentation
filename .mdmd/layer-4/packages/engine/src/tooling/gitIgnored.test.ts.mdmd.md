@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: `packages/engine/src/tooling/gitIgnored.test.ts`
-- Generated At: 2026-11-20T16:58:05.066Z
+- Generated At: 2026-11-22T07:12:53.446Z
 
 ## Authored
 ### Purpose
@@ -26,7 +26,7 @@ _No public symbols detected_
 - `node:fs` - `appendFileSync`, `existsSync`, `mkdirSync`, `mkdtempSync`, `nodeFs`, `realpathSync`, `renameSync`, `rmSync`, `symlinkSync`, `writeFileSync`
 - `node:os` - `tmpdir`
 - `node:path` - `path`
-- [`gitIgnored.GitIgnoreAnswer`](./gitIgnored.ts.mdmd.md#symbol-gitignoreanswer)
+- [`gitIgnored.GitIgnoreAnswer`](./gitIgnored.ts.mdmd.md#symbol-gitignoreanswer) (type-only)
 - [`gitIgnored.foldersReadAsEmpty`](./gitIgnored.ts.mdmd.md#symbol-foldersreadasempty)
 - [`gitIgnored`](./gitIgnored.ts.mdmd.md#symbol-gitignored)
 - [`gitIgnored.gitIgnores`](./gitIgnored.ts.mdmd.md#symbol-gitignores-function)

@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: `scripts/oracle/csharp-compare.ts`
 - Entry: command `oracle:csharp` of [`package.json`](../../package.json.mdmd.md)
-- Generated At: 2026-11-22T06:21:06.985Z
+- Generated At: 2026-11-22T07:11:38.685Z
 
 ## Authored
 ### Purpose
@@ -88,21 +88,21 @@ declarations each names are then set side by side, a reference within its own fi
 
 #### `DocumentationRelation` {#symbol-documentationrelation}
 - Type: interface
-- Source: [source](../../../../scripts/oracle/csharp-compare.ts#L194)
+- Source: [source](../../../../scripts/oracle/csharp-compare.ts#L195)
 
 ##### `DocumentationRelation` — Summary
 The reader's documentation references set beside the compiler's, declaration by declaration.
 
 #### `ReaderReference` {#symbol-readerreference}
 - Type: interface
-- Source: [source](../../../../scripts/oracle/csharp-compare.ts#L205)
+- Source: [source](../../../../scripts/oracle/csharp-compare.ts#L206)
 
 ##### `ReaderReference` — Summary
 One reference as the reader read it: the file, the line of the symbol whose documentation writes it, the name as the Live Doc writes it, and the declarations it links.
 
 #### `writesUndeclaredParameter` {#symbol-writesundeclaredparameter}
 - Type: function
-- Source: [source](../../../../scripts/oracle/csharp-compare.ts#L220)
+- Source: [source](../../../../scripts/oracle/csharp-compare.ts#L221)
 - Parameters: `declared`: `ReadonlySet`
 
 ##### `writesUndeclaredParameter` — Summary
@@ -112,9 +112,9 @@ The oracle's own reading of the syntax, kept apart from the reader's.
 
 #### `compareDocumentation` {#symbol-comparedocumentation}
 - Type: function
-- Source: [source](../../../../scripts/oracle/csharp-compare.ts#L239)
+- Source: [source](../../../../scripts/oracle/csharp-compare.ts#L240)
 - Returns: [`DocumentationRelation`](#symbol-documentationrelation)
-- Parameters: `record`: [`CompilerRecord`](#symbol-compilerrecord)
+- Parameters: `record`: [`CompilerRecord`](#symbol-compilerrecord); `shown`: `ReadonlySet`
 
 ##### `compareDocumentation` — Summary
 Sets the reader's documentation references beside the compiler's, reference by reference and declaration by
@@ -126,14 +126,14 @@ through another.
 
 #### `CSharpReport` {#symbol-csharpreport}
 - Type: interface
-- Source: [source](../../../../scripts/oracle/csharp-compare.ts#L307)
+- Source: [source](../../../../scripts/oracle/csharp-compare.ts#L308)
 
 ##### `CSharpReport` — Summary
 The comparison of one folder: what was read, how its projects' references were, and the edges side by side.
 
 #### `compareCSharp` {#symbol-comparecsharp}
 - Type: function
-- Source: [source](../../../../scripts/oracle/csharp-compare.ts#L339)
+- Source: [source](../../../../scripts/oracle/csharp-compare.ts#L340)
 - Parameters: `kept`: [`CompilerRecord`](#symbol-compilerrecord)
 
 ##### `compareCSharp` — Summary

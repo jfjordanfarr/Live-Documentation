@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: `scripts/contact-sheet/contact-sheet.ts`
 - Entry: command `contact:sheet` of [`package.json`](../../package.json.mdmd.md)
-- Generated At: 2026-11-19T21:10:18.211Z
+- Generated At: 2026-11-22T07:12:57.336Z
 
 ## Authored
 ### Purpose
@@ -42,7 +42,7 @@ The hook a caller passes, run on every fresh context before the view's page load
 - [`palette.PALETTES`](../../packages/explorer/src/client/palette.ts.mdmd.md#symbol-palettes)
 - [`palette.isPaletteName`](../../packages/explorer/src/client/palette.ts.mdmd.md#symbol-ispalettename)
 - [`compressed-url-state.DEFAULT_SNAPSHOT`](../../packages/explorer/src/client/persistence/compressed-url-state.ts.mdmd.md#symbol-default_snapshot)
-- [`compressed-url-state.UrlStateSnapshot`](../../packages/explorer/src/client/persistence/compressed-url-state.ts.mdmd.md#symbol-urlstatesnapshot)
+- [`compressed-url-state.UrlStateSnapshot`](../../packages/explorer/src/client/persistence/compressed-url-state.ts.mdmd.md#symbol-urlstatesnapshot) (type-only)
 - [`compressed-url-state.compressSnapshot`](../../packages/explorer/src/client/persistence/compressed-url-state.ts.mdmd.md#symbol-compresssnapshot)
 - [`local-storage.PERSISTED_UI_KEY`](../../packages/explorer/src/client/persistence/local-storage.ts.mdmd.md#symbol-persisted_ui_key)
 - [`local-storage.PERSISTED_UI_VERSION`](../../packages/explorer/src/client/persistence/local-storage.ts.mdmd.md#symbol-persisted_ui_version)

@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/explorer/src/client/views/worldMap/controller.ts`
-- Generated At: 2026-11-22T02:00:46.862Z
+- Generated At: 2026-11-22T07:12:56.771Z
 
 ## Authored
 ### Purpose
@@ -81,13 +81,13 @@ The handle a test or a screenshot script drives, at `window.__worldMap`.
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
-- [`Board`](../../../../../engine/src/live-docs/board.ts.mdmd.md#symbol-board)
+- [`Board`](../../../../../engine/src/live-docs/board.ts.mdmd.md#symbol-board) (type-only)
 - [`board.renderBoard`](../../../../../engine/src/live-docs/board.ts.mdmd.md#symbol-renderboard)
 - [`boardGraph.Ghost`](../../../../../engine/src/live-docs/boardGraph.ts.mdmd.md#symbol-ghost) (type-only)
 - [`boardGraph.ServedDoor`](../../../../../engine/src/live-docs/boardGraph.ts.mdmd.md#symbol-serveddoor) (type-only)
 - [`graph.LiveDocGraph`](../../../../../engine/src/live-docs/graph.ts.mdmd.md#symbol-livedocgraph) (type-only)
 - [`graph-helpers.escapeHtml`](../../graph-helpers.ts.mdmd.md#symbol-escapehtml)
-- [`palette.WorldForm`](../../palette.ts.mdmd.md#symbol-worldform)
+- [`palette.WorldForm`](../../palette.ts.mdmd.md#symbol-worldform) (type-only)
 - [`palette.activePalette`](../../palette.ts.mdmd.md#symbol-activepalette)
 - [`palette.mix`](../../palette.ts.mdmd.md#symbol-mix)
 - [`palette.whenPaletteChanges`](../../palette.ts.mdmd.md#symbol-whenpalettechanges)
@@ -95,19 +95,19 @@ The handle a test or a screenshot script drives, at `window.__worldMap`.
 - [`icon-button.iconButton`](../../panels/icon-button.ts.mdmd.md#symbol-iconbutton)
 - [`url-state.parseInitialState`](../../persistence/url-state.ts.mdmd.md#symbol-parseinitialstate)
 - [`pointerRest.NO_REST`](../pointerRest.ts.mdmd.md#symbol-no_rest)
-- [`PointerRest`](../pointerRest.ts.mdmd.md#symbol-pointerrest)
+- [`PointerRest`](../pointerRest.ts.mdmd.md#symbol-pointerrest) (type-only)
 - [`pointerRest.restAt`](../pointerRest.ts.mdmd.md#symbol-restat)
 - [`pointerRest.restedOn`](../pointerRest.ts.mdmd.md#symbol-restedon)
 - [`pointerRest.restsAt`](../pointerRest.ts.mdmd.md#symbol-restsat)
-- [`layout.Anchor`](./layout.ts.mdmd.md#symbol-anchor)
-- [`layout.Avoid`](./layout.ts.mdmd.md#symbol-avoid)
+- [`layout.Anchor`](./layout.ts.mdmd.md#symbol-anchor) (type-only)
+- [`layout.Avoid`](./layout.ts.mdmd.md#symbol-avoid) (type-only)
 - [`layout.FLOAT`](./layout.ts.mdmd.md#symbol-float)
 - [`layout.GRID`](./layout.ts.mdmd.md#symbol-grid)
-- [`layout.LabelMove`](./layout.ts.mdmd.md#symbol-labelmove)
-- [`layout.Placed`](./layout.ts.mdmd.md#symbol-placed)
-- [`layout.Rect`](./layout.ts.mdmd.md#symbol-rect)
-- [`layout.ScreenBox`](./layout.ts.mdmd.md#symbol-screenbox)
-- [`layout.Wall`](./layout.ts.mdmd.md#symbol-wall)
+- [`layout.LabelMove`](./layout.ts.mdmd.md#symbol-labelmove) (type-only)
+- [`layout.Placed`](./layout.ts.mdmd.md#symbol-placed) (type-only)
+- [`layout.Rect`](./layout.ts.mdmd.md#symbol-rect) (type-only)
+- [`layout.ScreenBox`](./layout.ts.mdmd.md#symbol-screenbox) (type-only)
+- [`layout.Wall`](./layout.ts.mdmd.md#symbol-wall) (type-only)
 - [`layout.autoPlace`](./layout.ts.mdmd.md#symbol-autoplace)
 - [`layout.clamp`](./layout.ts.mdmd.md#symbol-clamp)
 - [`layout.corners`](./layout.ts.mdmd.md#symbol-corners)
@@ -127,16 +127,16 @@ The handle a test or a screenshot script drives, at `window.__worldMap`.
 - [`layout.unitsToPixels`](./layout.ts.mdmd.md#symbol-unitstopixels)
 - [`layout.wallOf`](./layout.ts.mdmd.md#symbol-wallof)
 - [`layout.wallPoint`](./layout.ts.mdmd.md#symbol-wallpoint)
-- [`model.WorldModel`](./model.ts.mdmd.md#symbol-worldmodel)
-- [`model.WorldRoad`](./model.ts.mdmd.md#symbol-worldroad)
+- [`model.WorldModel`](./model.ts.mdmd.md#symbol-worldmodel) (type-only)
+- [`model.WorldRoad`](./model.ts.mdmd.md#symbol-worldroad) (type-only)
 - [`model.regionsOf`](./model.ts.mdmd.md#symbol-regionsof)
-- [`projection.Camera`](./projection.ts.mdmd.md#symbol-camera)
+- [`projection.Camera`](./projection.ts.mdmd.md#symbol-camera) (type-only)
 - [`projection.MIN_ELEVATION`](./projection.ts.mdmd.md#symbol-min_elevation)
-- [`projection.Pivot`](./projection.ts.mdmd.md#symbol-pivot)
-- [`projection.Point2`](./projection.ts.mdmd.md#symbol-point2)
-- [`projection.Point3`](./projection.ts.mdmd.md#symbol-point3)
+- [`projection.Pivot`](./projection.ts.mdmd.md#symbol-pivot) (type-only)
+- [`projection.Point2`](./projection.ts.mdmd.md#symbol-point2) (type-only)
+- [`projection.Point3`](./projection.ts.mdmd.md#symbol-point3) (type-only)
 - [`projection.REST_ELEVATION`](./projection.ts.mdmd.md#symbol-rest_elevation)
-- [`projection.Screen`](./projection.ts.mdmd.md#symbol-screen)
+- [`projection.Screen`](./projection.ts.mdmd.md#symbol-screen) (type-only)
 - [`projection.TOP_DOWN`](./projection.ts.mdmd.md#symbol-top_down)
 - [`projection.bezierAt`](./projection.ts.mdmd.md#symbol-bezierat)
 - [`projection.cuboidFaces`](./projection.ts.mdmd.md#symbol-cuboidfaces)

@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: `packages/explorer/src/client/views/webgl-support.test.ts`
-- Generated At: 2026-11-21T02:36:02.743Z
+- Generated At: 2026-11-22T07:12:56.616Z
 
 ## Authored
 ### Purpose
@@ -21,7 +21,7 @@ _No public symbols detected_
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
-- [`webgl-support.CanvasSource`](./webgl-support.ts.mdmd.md#symbol-canvassource)
+- [`webgl-support.CanvasSource`](./webgl-support.ts.mdmd.md#symbol-canvassource) (type-only)
 - [`webgl-support.drawsWebgl`](./webgl-support.ts.mdmd.md#symbol-drawswebgl)
 - [`webgl-support.perspectiveRemembered`](./webgl-support.ts.mdmd.md#symbol-perspectiveremembered)
 - [`webgl-support.perspectiveShown`](./webgl-support.ts.mdmd.md#symbol-perspectiveshown)

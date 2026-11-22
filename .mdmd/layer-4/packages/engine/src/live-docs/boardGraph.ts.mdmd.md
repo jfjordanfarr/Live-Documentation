@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/engine/src/live-docs/boardGraph.ts`
-- Generated At: 2026-11-19T21:10:11.059Z
+- Generated At: 2026-11-22T07:12:52.592Z
 
 ## Authored
 ### Purpose
@@ -119,11 +119,11 @@ The doors a file serves: its public symbols whose kind is an opening kind.
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
-- [`Board`](./board.ts.mdmd.md#symbol-board)
-- [`board.BoardIssue`](./board.ts.mdmd.md#symbol-boardissue)
+- [`Board`](./board.ts.mdmd.md#symbol-board) (type-only)
+- [`board.BoardIssue`](./board.ts.mdmd.md#symbol-boardissue) (type-only)
 - [`board.DOOR_KINDS`](./board.ts.mdmd.md#symbol-door_kinds)
-- [`board.Door`](./board.ts.mdmd.md#symbol-door)
-- [`board.Thing`](./board.ts.mdmd.md#symbol-thing)
+- [`board.Door`](./board.ts.mdmd.md#symbol-door) (type-only)
+- [`board.Thing`](./board.ts.mdmd.md#symbol-thing) (type-only)
 - [`document.symbolName`](./document.ts.mdmd.md#symbol-symbolname)
 - [`graph.EdgeBasis`](./graph.ts.mdmd.md#symbol-edgebasis) (type-only)
 - [`graph.GraphFile`](./graph.ts.mdmd.md#symbol-graphfile) (type-only)

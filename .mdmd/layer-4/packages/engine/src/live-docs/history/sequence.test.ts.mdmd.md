@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: `packages/engine/src/live-docs/history/sequence.test.ts`
-- Generated At: 2026-11-19T21:10:12.252Z
+- Generated At: 2026-11-22T07:12:53.187Z
 
 ## Authored
 ### Purpose
@@ -27,11 +27,11 @@ _No public symbols detected_
 - [`codec.decodeShape`](./codec.ts.mdmd.md#symbol-decodeshape)
 - [`codec.encodeChange`](./codec.ts.mdmd.md#symbol-encodechange)
 - [`codec.encodeShape`](./codec.ts.mdmd.md#symbol-encodeshape)
-- [`format.CommitInfo`](./format.ts.mdmd.md#symbol-commitinfo)
-- [`format.HistoryLens`](./format.ts.mdmd.md#symbol-historylens)
-- [`format.HistorySource`](./format.ts.mdmd.md#symbol-historysource)
+- [`format.CommitInfo`](./format.ts.mdmd.md#symbol-commitinfo) (type-only)
+- [`format.HistoryLens`](./format.ts.mdmd.md#symbol-historylens) (type-only)
+- [`format.HistorySource`](./format.ts.mdmd.md#symbol-historysource) (type-only)
 - [`format.KEYFRAME_INTERVAL`](./format.ts.mdmd.md#symbol-keyframe_interval)
-- [`Rows`](./rows.ts.mdmd.md#symbol-rows)
+- [`Rows`](./rows.ts.mdmd.md#symbol-rows) (type-only)
 - [`rows.rowsDifferences`](./rows.ts.mdmd.md#symbol-rowsdifferences)
 - [`sequence.SequenceBuilder`](./sequence.ts.mdmd.md#symbol-sequencebuilder)
 - [`sequence.changeAt`](./sequence.ts.mdmd.md#symbol-changeat)
@@ -40,7 +40,7 @@ _No public symbols detected_
 - [`sequence.momentAt`](./sequence.ts.mdmd.md#symbol-momentat)
 - [`sequence.rowsChangeAt`](./sequence.ts.mdmd.md#symbol-rowschangeat)
 - [`sequence.seek`](./sequence.ts.mdmd.md#symbol-seek)
-- [`Shape`](./shape.ts.mdmd.md#symbol-shape)
+- [`Shape`](./shape.ts.mdmd.md#symbol-shape) (type-only)
 - [`shape.edgeKey`](./shape.ts.mdmd.md#symbol-edgekey)
 - [`shape.shapeDifferences`](./shape.ts.mdmd.md#symbol-shapedifferences)
 - [`window.windowOf`](./window.ts.mdmd.md#symbol-windowof)

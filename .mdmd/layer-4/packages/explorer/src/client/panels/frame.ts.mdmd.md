@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/explorer/src/client/panels/frame.ts`
-- Generated At: 2026-11-19T21:10:13.740Z
+- Generated At: 2026-11-22T07:12:54.053Z
 
 ## Authored
 ### Purpose
@@ -52,8 +52,8 @@ Tuning) to the top bar and the strip's two panels, and under Sidebar puts each b
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
-- [`frame-crumbs.Crumb`](./frame-crumbs.ts.mdmd.md#symbol-crumb)
-- [`frame-crumbs.CrumbSubject`](./frame-crumbs.ts.mdmd.md#symbol-crumbsubject)
+- [`frame-crumbs.Crumb`](./frame-crumbs.ts.mdmd.md#symbol-crumb) (type-only)
+- [`frame-crumbs.CrumbSubject`](./frame-crumbs.ts.mdmd.md#symbol-crumbsubject) (type-only)
 - [`frame-crumbs.crumbsOf`](./frame-crumbs.ts.mdmd.md#symbol-crumbsof)
 - [`frame-crumbs.outwardCrumb`](./frame-crumbs.ts.mdmd.md#symbol-outwardcrumb)
 - [`icon-button.DIRECTORY_ICON`](./icon-button.ts.mdmd.md#symbol-directory_icon)

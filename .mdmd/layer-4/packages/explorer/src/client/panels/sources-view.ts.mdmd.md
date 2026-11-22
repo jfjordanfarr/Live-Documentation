@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/explorer/src/client/panels/sources-view.ts`
-- Generated At: 2026-11-19T21:10:13.848Z
+- Generated At: 2026-11-22T07:12:54.105Z
 
 ## Authored
 ### Purpose
@@ -64,10 +64,10 @@ Render the panel into its container and wire its buttons and its field.
 ### Dependencies
 - [`dom.requireElement`](../dom.ts.mdmd.md#symbol-requireelement)
 - [`graph-helpers.escapeHtml`](../graph-helpers.ts.mdmd.md#symbol-escapehtml)
-- [`sources-facts.FileByArchetype`](./sources-facts.ts.mdmd.md#symbol-filebyarchetype)
-- [`sources-facts.SourcesFacts`](./sources-facts.ts.mdmd.md#symbol-sourcesfacts-interface)
-- [`sources-facts.StartFile`](./sources-facts.ts.mdmd.md#symbol-startfile)
-- [`sources-facts.SymbolsOfFile`](./sources-facts.ts.mdmd.md#symbol-symbolsoffile)
+- [`sources-facts.FileByArchetype`](./sources-facts.ts.mdmd.md#symbol-filebyarchetype) (type-only)
+- [`sources-facts.SourcesFacts`](./sources-facts.ts.mdmd.md#symbol-sourcesfacts-interface) (type-only)
+- [`sources-facts.StartFile`](./sources-facts.ts.mdmd.md#symbol-startfile) (type-only)
+- [`sources-facts.SymbolsOfFile`](./sources-facts.ts.mdmd.md#symbol-symbolsoffile) (type-only)
 - [`sources-facts.symbolCount`](./sources-facts.ts.mdmd.md#symbol-symbolcount)
 - [`graph-search.SearchHit`](../search/graph-search.ts.mdmd.md#symbol-searchhit) (type-only)
 - [`graph-search.SearchIndex`](../search/graph-search.ts.mdmd.md#symbol-searchindex) (type-only)

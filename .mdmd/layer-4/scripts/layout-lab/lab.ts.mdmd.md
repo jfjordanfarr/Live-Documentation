@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: `scripts/layout-lab/lab.ts`
 - Entry: command `layout:lab` of [`package.json`](../../package.json.mdmd.md)
-- Generated At: 2026-11-19T21:10:18.671Z
+- Generated At: 2026-11-22T07:12:57.548Z
 
 ## Authored
 ### Purpose
@@ -46,7 +46,7 @@ _No public symbols detected_
 - [`layout-presets.readLayoutSettings`](../../packages/explorer/src/client/layout-presets.ts.mdmd.md#symbol-readlayoutsettings)
 - [`local-storage.getDefaultTuning`](../../packages/explorer/src/client/persistence/local-storage.ts.mdmd.md#symbol-getdefaulttuning)
 - [`StaticExplorerData`](../../packages/explorer/src/shared/staticExplorerData.ts.mdmd.md#symbol-staticexplorerdata) (type-only)
-- [`approximation.ApproximationReport`](./approximation.ts.mdmd.md#symbol-approximationreport)
+- [`approximation.ApproximationReport`](./approximation.ts.mdmd.md#symbol-approximationreport) (type-only)
 - [`approximation.firstTick`](./approximation.ts.mdmd.md#symbol-firsttick-function)
 - [`approximation.forceErrors`](./approximation.ts.mdmd.md#symbol-forceerrors)
 - [`approximation.renderApproximationReport`](./approximation.ts.mdmd.md#symbol-renderapproximationreport)
@@ -55,24 +55,24 @@ _No public symbols detected_
 - [`approximation.savedPicture`](./approximation.ts.mdmd.md#symbol-savedpicture-function)
 - [`approximation.seatedPrefix`](./approximation.ts.mdmd.md#symbol-seatedprefix)
 - [`approximation.timeEvaluations`](./approximation.ts.mdmd.md#symbol-timeevaluations)
-- [`Capture`](./capture.ts.mdmd.md#symbol-capture)
+- [`Capture`](./capture.ts.mdmd.md#symbol-capture) (type-only)
 - [`capture.captureScope`](./capture.ts.mdmd.md#symbol-capturescope)
 - [`capture.readCaptureFile`](./capture.ts.mdmd.md#symbol-readcapturefile)
 - [`capture.writeCapture`](./capture.ts.mdmd.md#symbol-writecapture)
-- [`drift.DriftReport`](./drift.ts.mdmd.md#symbol-driftreport)
+- [`drift.DriftReport`](./drift.ts.mdmd.md#symbol-driftreport) (type-only)
 - [`drift.measureDrift`](./drift.ts.mdmd.md#symbol-measuredrift)
 - [`drift.rangeOf`](./drift.ts.mdmd.md#symbol-rangeof)
 - [`drift.renderDriftReports`](./drift.ts.mdmd.md#symbol-renderdriftreports)
 - [`drift.toggledArchetype`](./drift.ts.mdmd.md#symbol-toggledarchetype)
-- [`evaluate.LabConfig`](./evaluate.ts.mdmd.md#symbol-labconfig)
+- [`evaluate.LabConfig`](./evaluate.ts.mdmd.md#symbol-labconfig) (type-only)
 - [`evaluate.baselineConfig`](./evaluate.ts.mdmd.md#symbol-baselineconfig)
 - [`evaluate.driftOf`](./evaluate.ts.mdmd.md#symbol-driftof)
 - [`evaluate`](./evaluate.ts.mdmd.md#symbol-evaluate)
 - [`refine`](./refine.ts.mdmd.md#symbol-refine)
 - [`refine.refinementJson`](./refine.ts.mdmd.md#symbol-refinementjson)
 - [`refine.renderRefinement`](./refine.ts.mdmd.md#symbol-renderrefinement)
-- [`report.ReportRow`](./report.ts.mdmd.md#symbol-reportrow)
-- [`report.RunReport`](./report.ts.mdmd.md#symbol-runreport)
+- [`report.ReportRow`](./report.ts.mdmd.md#symbol-reportrow) (type-only)
+- [`report.RunReport`](./report.ts.mdmd.md#symbol-runreport) (type-only)
 - [`report.differences`](./report.ts.mdmd.md#symbol-differences)
 - [`report.renderMarkdown`](./report.ts.mdmd.md#symbol-rendermarkdown)
 - [`report.toJson`](./report.ts.mdmd.md#symbol-tojson)
@@ -84,7 +84,7 @@ _No public symbols detected_
 - [`restarts.tabulateStarts`](./restarts.ts.mdmd.md#symbol-tabulatestarts)
 - [`restarts.trialCosts`](./restarts.ts.mdmd.md#symbol-trialcosts)
 - [`restarts.widenStarts`](./restarts.ts.mdmd.md#symbol-widenstarts)
-- [`scopes.ScopeRun`](./scopes.ts.mdmd.md#symbol-scoperun)
+- [`scopes.ScopeRun`](./scopes.ts.mdmd.md#symbol-scoperun) (type-only)
 - [`scopes.findScope`](./scopes.ts.mdmd.md#symbol-findscope)
 - [`scopes.loadBundleData`](./scopes.ts.mdmd.md#symbol-loadbundledata)
 - [`scopes.loadBundleGraph`](./scopes.ts.mdmd.md#symbol-loadbundlegraph)

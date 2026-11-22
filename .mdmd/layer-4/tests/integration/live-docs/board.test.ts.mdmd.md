@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: `tests/integration/live-docs/board.test.ts`
-- Generated At: 2026-11-19T21:10:25.583Z
+- Generated At: 2026-11-22T07:12:59.737Z
 
 ## Authored
 ### Purpose
@@ -24,7 +24,7 @@ _No public symbols detected_
 ### Dependencies
 - `node:fs`
 - `node:path` - `path`
-- [`liveDocumentationConfig.LiveDocumentationConfigInput`](../../../packages/engine/src/config/liveDocumentationConfig.ts.mdmd.md#symbol-livedocumentationconfiginput)
+- [`liveDocumentationConfig.LiveDocumentationConfigInput`](../../../packages/engine/src/config/liveDocumentationConfig.ts.mdmd.md#symbol-livedocumentationconfiginput) (type-only)
 - [`liveDocumentationConfig.normalizeLiveDocumentationConfig`](../../../packages/engine/src/config/liveDocumentationConfig.ts.mdmd.md#symbol-normalizelivedocumentationconfig)
 - [`board.lintBoard`](../../../packages/engine/src/live-docs/board.ts.mdmd.md#symbol-lintboard)
 - [`board.parseBoard`](../../../packages/engine/src/live-docs/board.ts.mdmd.md#symbol-parseboard)

@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: `tests/e2e/still-picture-geometry.test.ts`
-- Generated At: 2026-11-19T21:10:24.279Z
+- Generated At: 2026-11-22T07:12:59.317Z
 
 ## Authored
 ### Purpose
@@ -24,8 +24,8 @@ _No public symbols detected_
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
-- [`still-picture-geometry.Polyline`](./still-picture-geometry.ts.mdmd.md#symbol-polyline)
-- [`still-picture-geometry.TourFact`](./still-picture-geometry.ts.mdmd.md#symbol-tourfact)
+- [`still-picture-geometry.Polyline`](./still-picture-geometry.ts.mdmd.md#symbol-polyline) (type-only)
+- [`still-picture-geometry.TourFact`](./still-picture-geometry.ts.mdmd.md#symbol-tourfact) (type-only)
 - [`still-picture-geometry.angleBetween`](./still-picture-geometry.ts.mdmd.md#symbol-anglebetween)
 - [`still-picture-geometry.boxGap`](./still-picture-geometry.ts.mdmd.md#symbol-boxgap)
 - [`still-picture-geometry.crossings`](./still-picture-geometry.ts.mdmd.md#symbol-crossings)

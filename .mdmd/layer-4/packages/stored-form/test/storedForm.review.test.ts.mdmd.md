@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: `packages/stored-form/test/storedForm.review.test.ts`
-- Generated At: 2026-11-22T05:14:35.133Z
+- Generated At: 2026-11-22T07:12:57.268Z
 
 ## Authored
 ### Purpose
@@ -38,10 +38,10 @@ _No public symbols detected_
 - `node:zlib` - `deflateRawSync`, `inflateRawSync`
 - [`storedForm.MAX_SECTION`](../src/storedForm.ts.mdmd.md#symbol-max_section)
 - [`storedForm.SIGNATURE`](../src/storedForm.ts.mdmd.md#symbol-signature)
-- [`storedForm.Scan`](../src/storedForm.ts.mdmd.md#symbol-scan)
-- [`storedForm.ScanHead`](../src/storedForm.ts.mdmd.md#symbol-scanhead)
-- [`storedForm.StoredFile`](../src/storedForm.ts.mdmd.md#symbol-storedfile)
-- [`storedForm.StoredSymbol`](../src/storedForm.ts.mdmd.md#symbol-storedsymbol)
+- [`storedForm.Scan`](../src/storedForm.ts.mdmd.md#symbol-scan) (type-only)
+- [`storedForm.ScanHead`](../src/storedForm.ts.mdmd.md#symbol-scanhead) (type-only)
+- [`storedForm.StoredFile`](../src/storedForm.ts.mdmd.md#symbol-storedfile) (type-only)
+- [`storedForm.StoredSymbol`](../src/storedForm.ts.mdmd.md#symbol-storedsymbol) (type-only)
 - [`storedForm.bytesOfText`](../src/storedForm.ts.mdmd.md#symbol-bytesoftext)
 - [`storedForm.createWriter`](../src/storedForm.ts.mdmd.md#symbol-createwriter)
 - [`storedForm.graphOf`](../src/storedForm.ts.mdmd.md#symbol-graphof)

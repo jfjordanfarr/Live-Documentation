@@ -198,29 +198,29 @@ reference  = role:varint (0 Returns, 1 Extends, 2 Implements, 3 Constraints, 4 P
              role 4:  list(parameter)    where parameter = name:sid list(type)
              else:    list(type)
 type       = name:sid  typeMark  linked
-             typeMark bits 0, 1, 2 as linked; bit 3 an array of the type; bit 4 a promise of it
+             typeMark bit 0 the link; bit 3 an array of the type; bit 4 a promise of it (bits 1 and 2 are not defined)
              (the two last are marks only, and carry no bytes)
 section    = title:sid  list(line:sid)
 docReference = name:sid  docMark  [element:sid]  linked
-             docMark bits 0, 1, 2 as linked; bit 3 the element
+             docMark bit 0 the link; bit 3 the element (bits 1 and 2 are not defined)
 
 dependency = label:sid  depMark  linked  [list(symbol:sid)]  list(qualifier:sid)
-             depMark bits 0, 1, 2 as linked; bit 3 the symbols list
-linked     = [link:sid]  [target:sid]  [anchor:sid]
-             bit 0 the link; bit 1 the target, only with the link; bit 2 the anchor, only with the target
+             depMark bit 0 the link; bit 3 the symbols list (bits 1 and 2 are not defined)
+linked     = [link:sid]
+             bit 0 the link: what it names is derived by the link rule (section 4.3.1), and is stored nowhere
 citedBy    = label:sid  link:sid
 reExport   = name:sid  reMark  [slug:sid]  [fromLabel:sid fromLink:sid]  list(flag:sid)
              reMark bit 0 the slug, bit 1 the origin
 ```
 
 - The records' paths are in strict path order across all records sections. No path repeats.
-- `path` and `target` are paths. `symbolLink`, `declarerLink`, `sourcePath`, `link`, the cited-by link and `fromLink` are links (section 2.4).
+- `path` is a path. `symbolLink`, `declarerLink`, `sourcePath`, `link`, the cited-by link and `fromLink` are links (section 2.4).
 - The words of the enumerations, which the text form writes:
   - an entry's `reason`: 0 `program`, 1 `command`, 2 `module`, 3 `opening`, 4 `tooling`, 5 `declared`;
   - a reference's `role`: 0 `Returns`, 1 `Extends`, 2 `Implements`, 3 `Constraints`, 4 `Parameters`, with their capital letters.
   - These are not the graph's edge kinds (section 5), which are other words.
-- **A symbol's documentation references** (`docReference`) are the references its documentation comment makes to declarations, as the scanner read them from its documentation: the name as the author wrote it, the element that carries it where that is not a plain reference (for example `exception` or `inheritdoc`), and, where the scanner resolved it, its link and what the link names.
-  - The scanner also keeps the documentation's own lines among the symbol's sections, verbatim. The layout does not read those lines. It carries the scanner's reading of them beside them, as it carries what a link names, and does not check that the two agree.
+- **A symbol's documentation references** (`docReference`) are the references its documentation comment makes to declarations, as the scanner read them from its documentation: the name as the author wrote it, the element that carries it where that is not a plain reference (for example `exception` or `inheritdoc`), and, where the scanner resolved it, its link.
+  - The scanner also keeps the documentation's own lines among the symbol's sections, verbatim. The layout does not read those lines. It carries the scanner's reading of them beside them, and does not check that the two agree.
   - **Why the fact is held twice.** The lines are not only references. Measured on 2026-11-22 on this repository's scan, the estate sample's and DNN's:
     - Of 7,886 lines in the sections the scanner reads references from, 7,848 are exactly the line the scanner's composer writes for a reference.
     - The other 38 are other kinds of line the composer writes into the same section: 35 web links (`- [url](url)`) and 3 plain names or paths (`- CreateValidID`, `- ../../docs/registry.md — Widget architecture`).
@@ -229,7 +229,30 @@ reExport   = name:sid  reMark  [slug:sid]  [fromLabel:sid fromLink:sid]  list(fl
   - **Which a consumer uses:** a viewer shows the lines, among the symbol's sections, as the author's documentation. The graph reads only the references (section 5).
   - **If the two disagree,** it is the scanner's fault, and a reader cannot see it: a reader would have to read the lines by the scanner's own grammar to compare them, and the layout keeps no copy of that grammar. A check of agreement costs little time (DNN has 7,842 such lines) but a second implementation of the scanner's documentation grammar in every reader. That is why it is not made.
   - (**Provenance:** this repository's scanner reads them from a section titled `Links`.)
-- **What a link names.** `target` is the path of the file the link's document mirrors, and `anchor` is the fragment, as the scanner read the link. The target need not be a scanned file. A link to a file outside the scan keeps its target, and the graph (section 5) shows it landing nowhere. The layout does not resolve links itself, since that would be a second implementation of the scanner's rule. It carries the scanner's reading, and says so.
+- **What a link names** is derived from the link, the file's document path and the location, by the link rule (section 4.3.1), and is stored nowhere. So a file cannot show a person one use and wire another: a link and what it names are one fact in one place. (Until 2026-11-22 the layout stored the scanner's reading, unchecked; measured on this repository's scan, the estate sample's and DNN's, every stored reading equalled the rule's, and storing none makes the file 1.7 to 5.1 % smaller.)
+
+#### 4.3.1 The link rule
+
+The links that can name a file of the scan are a dependency's, a type's and a documentation reference's. What such a link names, if anything, is found thus, from the link as written, the path of the file whose record holds it, and the head's location:
+
+1. **The document path** `d` of the file holding the link (section 4.1).
+2. **The fragment** is the link's text after its first `#`, up to a second `#` or the end, exactly as written; there is none if the link has no `#` or nothing follows it.
+3. **The link's path** is its text before its first `#`, and of that the text before its first `?`, then **percent-decoded**:
+   - every `%` followed by two hexadecimal digits stands for the byte they give;
+   - the bytes so given, with the rest of the path's UTF-8, must be well-formed UTF-8;
+   - if any `%` is not followed by two hexadecimal digits, or the bytes are not well-formed UTF-8, the path is kept exactly as written, undecoded.
+4. **A link whose path begins with ASCII letters followed by `://`** (in any case) names nothing.
+5. **The resolved path** is `d` when the link's path is empty. Otherwise it is the folder of `d` (its text before its last `/`, or `.` when it has none), then `/`, then the link's path, **normalized**:
+   - split at `/`;
+   - drop empty segments and `.`;
+   - for each `..`, drop the segment kept before it, when there is one and it is not itself `..`; otherwise keep the `..`;
+   - join with `/`, and put back a leading `/` if the path began with one.
+6. **A resolved path beginning with `../` or `/`** names nothing.
+7. **The docs' prefix** is the normalized `root`, `/`, the normalized `baseLayer`, `/`. A resolved path not beginning with the prefix names nothing.
+8. **The rest** is the resolved path after the prefix. If the rest, mapped to lower case, does not end with the extension mapped to lower case, the link names nothing. Lower case is by Unicode's default full case mapping, not by any locale's.
+9. **The link names the path** that is the rest without its last as many characters as the extension has, and **the anchor**, the fragment, when there is one.
+
+The path a link names need not be a file of the scan. It lands on a file only when it is one (section 5). A reader caches the rule by a document's folder and the link, since links repeat within a folder. (**Provenance:** this is the rule of `linkTarget` in this repository's engine, and the module's `linkNames`; on this repository's scan, the estate sample's and DNN's, the module's graph from the rule prints byte for byte as the engine's index.)
 - Field values the layout keeps but does not judge: the `layer` number; the archetype; the kinds, flags and qualifiers, which are words a scanner chooses; and a section's lines, which may be any strings.
 
 ### 4.4 Paths
@@ -255,9 +278,9 @@ wires = n:count  [ first:varint  ( gapMinusOne:varint ){n−1} ]     the bracket
 ```
 
 - A file with no wires is the single byte `00`, and nothing follows it for that file.
-- The wires are the file numbers (indexes in path order) of the scanned files that the file's **edges** land on, other than itself: by section 5's rule, the targets of its dependencies' links and of its symbols' types' links (parameters' types included) that are paths of files of the scan.
+- The wires are the file numbers (indexes in path order) of the scanned files that the file's **edges** land on, other than itself: by section 5's rule, the paths that its dependencies' links and its symbols' types' links (parameters' types included) name by the link rule (section 4.3.1), where they are paths of files of the scan.
   - No other link makes a wire: not an entry's, a cited-by's, a re-export's, a source's, nor a documentation reference's.
-  - Only the links of dependencies, types and documentation references carry a target at all.
+  - Only the links of dependencies, types and documentation references are read by the link rule at all.
 - They are sorted, each named once, each smaller than the number of files and none the file's own. The first is written as itself, and each later one as its distance from the one before, less one.
 - They must equal what the records give (section 5), checked as each record is read.
 
@@ -280,20 +303,20 @@ The graph is what the facts say about connection. A reader that gives one gives 
   - `kind`: `re-export` for a dependency whose qualifiers hold `re-export`, otherwise `import`. For a type, its role: `returns`, `extends`, `implements`, `constraint`, or `parameter`.
   - `label`: the dependency's label or the type's name.
   - `link`, when there is one.
-  - **`to`, when the link's target is the path of a file of the scan**: that path. Then also `toSymbol`, the anchor, when the link has one.
+  - **`to`, when the path the link names by the link rule (section 4.3.1) is the path of a file of the scan**: that path. Then also `toSymbol`, the anchor it names, when it names one.
   - For a type, `from`: the symbol's slug, when it has one. For a parameter, `parameter`: its name.
   - For a dependency, `typeOnly` (true) when one of its qualifiers is exactly `type-only`. And `basis`: the first of its qualifiers, in their order, that is exactly `contract` or `configuration`, when there is one.
   - A field the rules do not give is absent.
 - **Outbound** is the set of every edge's `to` other than the file's own path, each once, in path order (section 2.3). **Inbound** is turned around from outbound, as in section 4.5, in path order.
 - **Documentation** is a relation of its own, held apart from the edges, outbound and inbound. It is the author's word that two declarations are related, which is not a use. A reader that walks what is reachable, or answers what nothing uses, follows only the edges and never this.
-  - For each symbol in order, each of its documentation references in order whose link has a target that is the path of a file of the scan gives one item:
+  - For each symbol in order, each of its documentation references in order whose link names, by the link rule, the path of a file of the scan gives one item:
     - `label`: the reference's name;
     - `link`;
-    - `to`: the target;
+    - `to`: the path its link names;
     - `element`, when the reference has one;
-    - `toSymbol`: the anchor, when it has one;
+    - `toSymbol`: the anchor its link names, when it names one;
     - `from`: the symbol's slug, when it has one.
-  - A reference with no link, or whose target is not a scanned file, gives nothing. A reference to the file's own declarations gives an item like any other.
+  - A reference with no link, or whose link names no scanned file, gives nothing. A reference to the file's own declarations gives an item like any other.
   - A file's `documentation` is present only when it has at least one item.
 - **Documented by**: for each file, the files other than itself whose documentation has an item with `to` equal to its path, each once, in path order. It is present only when there is one.
 
@@ -322,9 +345,10 @@ The first four are mended. The fifth is not a fault of a loop: the bound counts 
   - each records section's inflated bytes.
   
   It keeps no file's facts. So after the walk, its memory is what the file inflates to, bounded by section 3.5, and its time is the walk's, linear in what the file inflates to.
+  - The walk also gathers what the graph needs of every file: the files that land on each file, from the wires, and the files whose documentation names it.
+  - It inflates sections in order, and ahead of the one it checks only within a constant: at most 8 MiB of raw bytes, of sections whose headers have passed every header-only check. So a file refused by one section has cost at most that much inflation past it.
 - **A file's facts are decoded when they are asked for,** from their section's kept bytes, and are not kept. What a reader then holds is what was asked for.
-  - Asking for one file decodes its section, at most 256 files and 64 MiB of records. So one file can still cost much: a section's records may build some thirty bytes of a reader's objects for each byte.
-  - A file's own lists are not yet decoded lazily, so asking for a file of a million symbols builds its million symbols.
+  - **A file's own lists** (its entries, symbols and dependencies) **are decoded as they are read.** Asking a file for its symbols' count keeps four bytes a symbol (where each begins), not the symbols. Finding where the lists begin and end walks each item once and keeps nothing of it.
 - **The graph and the text are made from what is asked for, and are bounded by it.** A graph holds an edge for each dependency and linked type it is made from, and a text a line for each fact. Each costs a reader's objects, or bytes written, in proportion to the facts it describes.
   - A small file can describe many facts that name long strings. The graph shares such a string; it does not copy it.
   - A text, or a graph printed as text, writes the string once for every naming. The text's own bound (section 3.5) refuses past the bound.
@@ -402,9 +426,9 @@ then for each file, in path order:
 [path,"entry",{"reason","symbol":{"name","link"},"command","declarer":{"label","link"}}]        each entry
 [path,"symbol",{"name","slug","kind","flags","source":{"path","line"},"references","sections","documentation"}]   each symbol
     a reference is {"role","types"} or {"role":"Parameters","parameters":[{"name","types"}]}
-    a type is {"name","link","target","anchor","array","promise"}; a section is {"title","body"}
-    a documentation reference is {"name","element","link","target","anchor"}
-[path,"dependency",{"label","link","target","anchor","symbols","qualifiers"}]                    each dependency
+    a type is {"name","link","array","promise"}; a section is {"title","body"}
+    a documentation reference is {"name","element","link"}
+[path,"dependency",{"label","link","symbols","qualifiers"}]                    each dependency
 [path,"cited-by",[{"label","link"},…]]                present when the record's mark says so
 [path,"re-exports",[{"name","slug","from":{"label","link"},"flags"},…]]                        likewise
 [null,"end",numberOfFiles]
@@ -449,7 +473,7 @@ A line of any other kind, or a line after the end, is refused.
   - a symbol's `slug` and `source`;
   - a dependency's `symbols`, a different fact from `[]`;
   - a re-export's `slug` and `from`;
-  - `link`, `target` and `anchor` wherever `linked` stands;
+  - `link` wherever `linked` stands;
   - `element`, `array` and `promise`.
 
 **Names in the two grammars.** Section 4.3's fields are written under these names:
@@ -469,7 +493,7 @@ The enumerations are written as section 4.3's words.
 - the version;
 - every enumeration's word;
 - numbers from 0 to 2^32 − 1;
-- the marks' constraints: a target only with a link, and an anchor only with a target;
+- the marks' constraints;
 - an end count equal to the number of files;
 - every section the layout would set down for these facts within `MAX_SECTION`: the strings first met in each group of 256 files, the group's records, the paths and the wires, each sized as section 4 lays it out. Their sizes depend on the facts alone, not on any compressor.
 
@@ -520,7 +544,7 @@ Only these forms are written, and no other is accepted.
 
 (**Provenance:** these are the forms ECMAScript's `JSON.stringify` writes for well-formed strings and whole numbers, which is how the module writes them. They are stated here as rules so that a reader in another language need not know that.)
 - The text holds no derived fact: no edges, no wires, no document paths. Those are the graph's.
-- `grep '"target":"src/b.ts"'` finds every link that names `src/b.ts`, which is "what depends on it" by its links. `diff` of two texts is the change in the facts.
+- `grep` finds the links that name a file by their words (`grep 'b.ts.mdmd.md'`), and `diff` of two texts is the change in the facts.
 
 **Both ways, without loss.** Bytes → text → bytes gives the same bytes, with the same compressor. Text → bytes → text gives the same text. (**Provenance:** both are the module's tests, `storedForm.test.ts`, and are measured on real scans; section 11.)
 
@@ -555,5 +579,5 @@ The module's record measures, on this repository's graph, the estate sample and 
 
 - **The name, the extension, the signature's letters (`FPK`) and the text's first line.** All provisional.
 - **One form of compressed bytes, or one form of content.** A reader that checked the stored bytes would recompress every section and compare. That costs a write's time on every read, and it ties the format to one deflate implementation's exact output, which no standard fixes. This proposal makes the content canonical and names it by hash.
-- **The link rule.** The layout carries what each link names, as the scanner read it, and does not check it, since checking would put a second copy of the scanner's link rule in the format. A hostile file can say a link names a file it does not. Only a reader with the scanner's rule could tell.
+- **The link rule** was an open question until 2026-11-22: the layout carried what each link names as the scanner read it, unchecked. It now derives it, by the rule of section 4.3.1, and stores nothing of it.
 - **What was left out**, beyond the head's list. The head carries a list; which reasons the scanner reports is the wiring's to decide.

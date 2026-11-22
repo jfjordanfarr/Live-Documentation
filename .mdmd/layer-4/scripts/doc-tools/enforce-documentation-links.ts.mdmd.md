@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: `scripts/doc-tools/enforce-documentation-links.ts`
 - Entry: command `docs:links:enforce` of [`package.json`](../../package.json.mdmd.md)
-- Generated At: 2026-11-19T21:10:18.287Z
+- Generated At: 2026-11-22T07:12:57.372Z
 
 ## Authored
 ### Purpose
@@ -47,8 +47,8 @@ Numeric exit code: `0` on success, `3` when violations are found,
 - `node:process` - `process`
 - [`pathUtils.normalizeWorkspacePath`](../../packages/engine/src/tooling/pathUtils.ts.mdmd.md#symbol-normalizeworkspacepath)
 - [`documentationLinks.DEFAULT_RULES`](./documentationLinks.ts.mdmd.md#symbol-default_rules)
-- [`documentationLinks.DocumentationLinkEnforcementResult`](./documentationLinks.ts.mdmd.md#symbol-documentationlinkenforcementresult)
-- [`documentationLinks.DocumentationLinkViolation`](./documentationLinks.ts.mdmd.md#symbol-documentationlinkviolation)
-- [`documentationLinks.DocumentationRule`](./documentationLinks.ts.mdmd.md#symbol-documentationrule)
+- [`documentationLinks.DocumentationLinkEnforcementResult`](./documentationLinks.ts.mdmd.md#symbol-documentationlinkenforcementresult) (type-only)
+- [`documentationLinks.DocumentationLinkViolation`](./documentationLinks.ts.mdmd.md#symbol-documentationlinkviolation) (type-only)
+- [`documentationLinks.DocumentationRule`](./documentationLinks.ts.mdmd.md#symbol-documentationrule) (type-only)
 - [`documentationLinks.runDocumentationLinkEnforcement`](./documentationLinks.ts.mdmd.md#symbol-rundocumentationlinkenforcement)
 <!-- LIVE-DOC:END Dependencies -->

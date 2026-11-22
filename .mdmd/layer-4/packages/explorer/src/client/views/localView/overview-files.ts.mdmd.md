@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/explorer/src/client/views/localView/overview-files.ts`
-- Generated At: 2026-11-19T21:10:16.986Z
+- Generated At: 2026-11-22T07:12:56.177Z
 
 ## Authored
 ### Purpose
@@ -127,5 +127,5 @@ size is not on screen and is never held.
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
 - [`ladder-steps.LOOK_SCALES`](./ladder-steps.ts.mdmd.md#symbol-look_scales)
-- [`ladder-steps.ZoomLook`](./ladder-steps.ts.mdmd.md#symbol-zoomlook-type)
+- [`ladder-steps.ZoomLook`](./ladder-steps.ts.mdmd.md#symbol-zoomlook-type) (type-only)
 <!-- LIVE-DOC:END Dependencies -->

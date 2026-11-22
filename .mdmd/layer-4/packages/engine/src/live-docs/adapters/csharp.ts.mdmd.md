@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/engine/src/live-docs/adapters/csharp.ts`
-- Generated At: 2026-11-22T06:21:01.298Z
+- Generated At: 2026-11-22T07:28:48.634Z
 
 ## Authored
 ### Purpose
@@ -28,14 +28,14 @@ Harvests public symbols, XML doc comments, and dependency edges from C# sources,
 ### Public Symbols
 #### `TYPE_NAME_REASONS` {#symbol-type_name_reasons}
 - Type: const
-- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/csharp.ts#L1244)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/csharp.ts#L1268)
 
 ##### `TYPE_NAME_REASONS` — Summary
 Why a type name has no link although the workspace declares it.
 
 #### `resolveWorkspaceTypes` {#symbol-resolveworkspacetypes}
 - Type: function
-- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/csharp.ts#L1868)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/csharp.ts#L1910)
 - Parameters: `fileIndex`: [`WorkspaceFileIndex`](./index.ts.mdmd.md#symbol-workspacefileindex)
 
 ##### `resolveWorkspaceTypes` — Summary
@@ -43,7 +43,7 @@ The workspace files that declare a qualified type name, for adapters of other fi
 
 #### `csharpAdapter` {#symbol-csharpadapter}
 - Type: const
-- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/csharp.ts#L1879)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/csharp.ts#L1921)
 - Returns: [`LanguageAdapter`](./index.ts.mdmd.md#symbol-languageadapter)
 
 ##### `csharpAdapter` — Summary
@@ -54,17 +54,17 @@ Language adapter for C# (`.cs`): tree-sitter symbols and compiler-style name res
 ### Dependencies
 - `glob` - `glob`
 - `node:path` - `path`
-- [`csharp.dependencies.ConfigReference`](./csharp.dependencies.ts.mdmd.md#symbol-configreference)
-- [`csharp.dependencies.ResolvedTypeTarget`](./csharp.dependencies.ts.mdmd.md#symbol-resolvedtypetarget)
+- [`csharp.dependencies.ConfigReference`](./csharp.dependencies.ts.mdmd.md#symbol-configreference) (type-only)
+- [`csharp.dependencies.ResolvedTypeTarget`](./csharp.dependencies.ts.mdmd.md#symbol-resolvedtypetarget) (type-only)
 - [`csharp.dependencies.extractDynamicDependencies`](./csharp.dependencies.ts.mdmd.md#symbol-extractdynamicdependencies)
 - [`csharp.xmldoc.buildDocumentationFromLines`](./csharp.xmldoc.ts.mdmd.md#symbol-builddocumentationfromlines)
 - [`csharp.xmldoc.crefName`](./csharp.xmldoc.ts.mdmd.md#symbol-crefname-function)
-- [`dotnetProjects.ProjectReach`](./dotnetProjects.ts.mdmd.md#symbol-projectreach-interface)
+- [`dotnetProjects.ProjectReach`](./dotnetProjects.ts.mdmd.md#symbol-projectreach-interface) (type-only)
 - [`dotnetProjects.projectReach`](./dotnetProjects.ts.mdmd.md#symbol-projectreach-function)
 - [`index.LanguageAdapter`](./index.ts.mdmd.md#symbol-languageadapter) (type-only)
 - [`index.WorkspaceFileIndex`](./index.ts.mdmd.md#symbol-workspacefileindex) (type-only)
 - [`spaces.inSpaces`](./spaces.ts.mdmd.md#symbol-inspaces)
-- [`treeSitter.SyntaxNode`](./treeSitter.ts.mdmd.md#symbol-syntaxnode)
+- [`treeSitter.SyntaxNode`](./treeSitter.ts.mdmd.md#symbol-syntaxnode) (type-only)
 - [`treeSitter.rangesOf`](./treeSitter.ts.mdmd.md#symbol-rangesof)
 - [`treeSitter.readTree`](./treeSitter.ts.mdmd.md#symbol-readtree)
 - [`treeSitter.writtenOver`](./treeSitter.ts.mdmd.md#symbol-writtenover)
@@ -78,7 +78,7 @@ Language adapter for C# (`.cs`): tree-sitter symbols and compiler-style name res
 - [`coreTypes.SourceNotice`](../coreTypes.ts.mdmd.md#symbol-sourcenotice) (type-only)
 - [`coreTypes.WorkspaceSymbolIndex`](../coreTypes.ts.mdmd.md#symbol-workspacesymbolindex) (type-only)
 - [`openings.ROUTE_KIND`](../openings.ts.mdmd.md#symbol-route_kind)
-- [`openings.SqlObjectName`](../openings.ts.mdmd.md#symbol-sqlobjectname-interface)
+- [`openings.SqlObjectName`](../openings.ts.mdmd.md#symbol-sqlobjectname-interface) (type-only)
 - [`openings.bindSqlName`](../openings.ts.mdmd.md#symbol-bindsqlname)
 - [`openings.chooseServers`](../openings.ts.mdmd.md#symbol-chooseservers)
 - [`openings.matchRoute`](../openings.ts.mdmd.md#symbol-matchroute)
@@ -89,7 +89,7 @@ Language adapter for C# (`.cs`): tree-sitter symbols and compiler-style name res
 - [`openings.sqlReferences`](../openings.ts.mdmd.md#symbol-sqlreferences)
 - [`compareText`](../../tooling/compareText.ts.mdmd.md#symbol-comparetext)
 - [`pathUtils.normalizeWorkspacePath`](../../tooling/pathUtils.ts.mdmd.md#symbol-normalizeworkspacepath)
-- [`sourceText.SourceReads`](../../tooling/sourceText.ts.mdmd.md#symbol-sourcereads)
+- [`sourceText.SourceReads`](../../tooling/sourceText.ts.mdmd.md#symbol-sourcereads) (type-only)
 - [`sourceText.readSourceText`](../../tooling/sourceText.ts.mdmd.md#symbol-readsourcetext)
 - [`sourceText.throwIfMachineFailure`](../../tooling/sourceText.ts.mdmd.md#symbol-throwifmachinefailure)
 <!-- LIVE-DOC:END Dependencies -->

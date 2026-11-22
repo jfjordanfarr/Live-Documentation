@@ -622,7 +622,7 @@ export function composeDependencies(args: {
   const slugIndex = buildSymbolSlugIndex(args.headings);
   const grouped = new Map<
     string,
-    { entry: DependencyEntry; symbols: Set<string>; targets: Record<string, string> }
+    { entry: DependencyEntry; entries: DependencyEntry[]; symbols: Set<string>; targets: Record<string, string> }
   >();
 
   for (const dependency of args.analysis.dependencies) {
@@ -631,9 +631,11 @@ export function composeDependencies(args: {
     const bucket =
       grouped.get(key) ?? {
         entry: dependency,
+        entries: [],
         symbols: new Set<string>(),
         targets: {}
       };
+    bucket.entries.push(dependency);
     for (const symbol of dependency.symbols) {
       bucket.symbols.add(symbol);
       const targetName = dependency.symbolTargets?.[symbol];
@@ -652,16 +654,17 @@ export function composeDependencies(args: {
   for (const key of keys) {
     const bucket = grouped.get(key)!;
     const dependency = bucket.entry;
-    const qualifiers: string[] = [];
-    if (dependency.kind === "export") {
-      qualifiers.push("re-export");
-    }
-    if (dependency.isTypeOnly) {
-      qualifiers.push("type-only");
-    }
-    if (dependency.basis) {
-      qualifiers.push(dependency.basis);
-    }
+    // Type-only by a written `type`, each name's own or its statement's (2026-11-22): a line of one name is type-only
+    // when every statement of the group that brings the name types it, and a line of the whole module when every
+    // statement of the group brings only types. Before, the group's first statement's modifier stood for every line.
+    const qualifiersOf = (typeOnly: boolean): string[] => [
+      ...(dependency.kind === "export" ? ["re-export"] : []),
+      ...(typeOnly ? ["type-only"] : []),
+      ...(dependency.basis ? [dependency.basis] : [])
+    ];
+    const qualifiers = qualifiersOf(bucket.entries.every((entry) => entry.isTypeOnly));
+    const nameQualifiers = (name: string): string[] =>
+      qualifiersOf(bucket.entries.every((entry) => !entry.symbols.includes(name) || entry.isTypeOnly || Boolean(entry.typeOnlySymbols?.includes(name))));
 
     if (dependency.resolvedPath) {
       const moduleLabel = toModuleLabel(dependency.resolvedPath);
@@ -691,7 +694,7 @@ export function composeDependencies(args: {
           symbolName.toLowerCase() === moduleLabel.toLowerCase()
             ? symbolName
             : `${moduleLabel}.${symbolName}`;
-        dependencies.push({ label, link: `${docRelative}${fragment}`, qualifiers });
+        dependencies.push({ label, link: `${docRelative}${fragment}`, qualifiers: nameQualifiers(symbolName) });
       }
       continue;
     }

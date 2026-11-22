@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: `packages/explorer/src/client/views/forceGraphShells.test.ts`
-- Generated At: 2026-11-19T21:10:15.363Z
+- Generated At: 2026-11-22T07:12:54.925Z
 
 ## Authored
 ### Purpose
@@ -29,15 +29,15 @@ _No public symbols detected_
 - [`fileConnections.FileConnection`](./fileConnections.ts.mdmd.md#symbol-fileconnection) (type-only)
 - [`forceGraphData.directoryNodeId`](./forceGraphData.ts.mdmd.md#symbol-directorynodeid)
 - [`forceGraphData.spatialGraphOf`](./forceGraphData.ts.mdmd.md#symbol-spatialgraphof)
-- [`forceGraphLayout.SpatialLink`](./forceGraphLayout.ts.mdmd.md#symbol-spatiallink)
+- [`forceGraphLayout.SpatialLink`](./forceGraphLayout.ts.mdmd.md#symbol-spatiallink) (type-only)
 - [`forceGraphLayout.linkPulls`](./forceGraphLayout.ts.mdmd.md#symbol-linkpulls)
 - [`forceGraphLayout.shellRadiusOf`](./forceGraphLayout.ts.mdmd.md#symbol-shellradiusof)
 - [`forceGraphLayout.spatialNodeRadius`](./forceGraphLayout.ts.mdmd.md#symbol-spatialnoderadius)
-- [`forceGraphScope.StartableNode`](./forceGraphScope.ts.mdmd.md#symbol-startablenode)
+- [`forceGraphScope.StartableNode`](./forceGraphScope.ts.mdmd.md#symbol-startablenode) (type-only)
 - [`forceGraphScope.connectedNeighbours`](./forceGraphScope.ts.mdmd.md#symbol-connectedneighbours)
 - [`forceGraphScope.spatialScope`](./forceGraphScope.ts.mdmd.md#symbol-spatialscope-function)
 - [`forceGraphShells.DRAWN_FILES`](./forceGraphShells.ts.mdmd.md#symbol-drawn_files)
-- [`forceGraphShells.ShellPartition`](./forceGraphShells.ts.mdmd.md#symbol-shellpartition)
+- [`forceGraphShells.ShellPartition`](./forceGraphShells.ts.mdmd.md#symbol-shellpartition) (type-only)
 - [`forceGraphShells.bodyGaps`](./forceGraphShells.ts.mdmd.md#symbol-bodygaps-function)
 - [`forceGraphShells.bodyShape`](./forceGraphShells.ts.mdmd.md#symbol-bodyshape)
 - [`forceGraphShells.bodySteps`](./forceGraphShells.ts.mdmd.md#symbol-bodysteps)
@@ -54,7 +54,7 @@ _No public symbols detected_
 - [`forceGraphShells.shellPicture`](./forceGraphShells.ts.mdmd.md#symbol-shellpicture-function)
 - [`forceGraphShells.structureCells`](./forceGraphShells.ts.mdmd.md#symbol-structurecells)
 - [`forceGraphShells.structureSpokes`](./forceGraphShells.ts.mdmd.md#symbol-structurespokes)
-- [`forceGraphWrappers.WrapperHull`](./forceGraphWrappers.ts.mdmd.md#symbol-wrapperhull-interface)
+- [`forceGraphWrappers.WrapperHull`](./forceGraphWrappers.ts.mdmd.md#symbol-wrapperhull-interface) (type-only)
 - [`forceGraphWrappers.wrapperHull`](./forceGraphWrappers.ts.mdmd.md#symbol-wrapperhull-function)
 - [`types.ExplorerGraphPayload`](../../shared/types.ts.mdmd.md#symbol-explorergraphpayload) (type-only)
 - [`types.ExplorerNodePayload`](../../shared/types.ts.mdmd.md#symbol-explorernodepayload) (type-only)

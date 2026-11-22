@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: `packages/explorer/src/client/views/localView/closed-looks.test.ts`
-- Generated At: 2026-11-19T21:10:16.390Z
+- Generated At: 2026-11-22T07:12:55.659Z
 
 ## Authored
 ### Purpose
@@ -25,13 +25,13 @@ _No public symbols detected_
 ### Dependencies
 - [`closed-looks.BAND_HEIGHT`](./closed-looks.ts.mdmd.md#symbol-band_height)
 - [`closed-looks.CELLS`](./closed-looks.ts.mdmd.md#symbol-cells)
-- [`closed-looks.Cell`](./closed-looks.ts.mdmd.md#symbol-cell)
-- [`closed-looks.CellField`](./closed-looks.ts.mdmd.md#symbol-cellfield-interface)
-- [`closed-looks.CellRoom`](./closed-looks.ts.mdmd.md#symbol-cellroom)
-- [`closed-looks.ClosedFile`](./closed-looks.ts.mdmd.md#symbol-closedfile)
-- [`closed-looks.NestedContents`](./closed-looks.ts.mdmd.md#symbol-nestedcontents)
+- [`closed-looks.Cell`](./closed-looks.ts.mdmd.md#symbol-cell) (type-only)
+- [`closed-looks.CellField`](./closed-looks.ts.mdmd.md#symbol-cellfield-interface) (type-only)
+- [`closed-looks.CellRoom`](./closed-looks.ts.mdmd.md#symbol-cellroom) (type-only)
+- [`closed-looks.ClosedFile`](./closed-looks.ts.mdmd.md#symbol-closedfile) (type-only)
+- [`closed-looks.NestedContents`](./closed-looks.ts.mdmd.md#symbol-nestedcontents) (type-only)
 - [`closed-looks.SKIN_HEIGHT`](./closed-looks.ts.mdmd.md#symbol-skin_height)
-- [`closed-looks.Skin`](./closed-looks.ts.mdmd.md#symbol-skin)
+- [`closed-looks.Skin`](./closed-looks.ts.mdmd.md#symbol-skin) (type-only)
 - [`closed-looks.cellField`](./closed-looks.ts.mdmd.md#symbol-cellfield-function)
 - [`closed-looks.fieldBands`](./closed-looks.ts.mdmd.md#symbol-fieldbands)
 - [`closed-looks.lineMarks`](./closed-looks.ts.mdmd.md#symbol-linemarks)

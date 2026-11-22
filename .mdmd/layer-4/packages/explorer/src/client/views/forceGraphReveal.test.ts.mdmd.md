@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: `packages/explorer/src/client/views/forceGraphReveal.test.ts`
-- Generated At: 2026-11-19T21:10:15.250Z
+- Generated At: 2026-11-22T07:12:54.854Z
 
 ## Authored
 ### Purpose
@@ -22,8 +22,8 @@ _No public symbols detected_
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
 - [`local-storage.getDefaultTuning`](../persistence/local-storage.ts.mdmd.md#symbol-getdefaulttuning)
-- [`forceGraphLayout.SpatialLink`](./forceGraphLayout.ts.mdmd.md#symbol-spatiallink)
-- [`forceGraphLayout.SpatialNode`](./forceGraphLayout.ts.mdmd.md#symbol-spatialnode)
+- [`forceGraphLayout.SpatialLink`](./forceGraphLayout.ts.mdmd.md#symbol-spatiallink) (type-only)
+- [`forceGraphLayout.SpatialNode`](./forceGraphLayout.ts.mdmd.md#symbol-spatialnode) (type-only)
 - [`forceGraphLayout.linkPulls`](./forceGraphLayout.ts.mdmd.md#symbol-linkpulls)
 - [`forceGraphReveal.nextRevealCount`](./forceGraphReveal.ts.mdmd.md#symbol-nextrevealcount)
 - [`forceGraphReveal.revealCorresponding`](./forceGraphReveal.ts.mdmd.md#symbol-revealcorresponding)

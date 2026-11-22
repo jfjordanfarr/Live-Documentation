@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: `packages/explorer/src/client/views/forceGraphLayout.test.ts`
-- Generated At: 2026-11-22T03:00:07.847Z
+- Generated At: 2026-11-22T07:12:54.709Z
 
 ## Authored
 ### Purpose
@@ -37,11 +37,11 @@ _No public symbols detected_
 - [`types.ForceGraphTuning`](../types.ts.mdmd.md#symbol-forcegraphtuning) (type-only)
 - [`forceGraphLayout.COLLISION_STIFFNESS`](./forceGraphLayout.ts.mdmd.md#symbol-collision_stiffness)
 - [`forceGraphLayout.HAND_TICKS`](./forceGraphLayout.ts.mdmd.md#symbol-hand_ticks)
-- [`forceGraphLayout.PlaceableNode`](./forceGraphLayout.ts.mdmd.md#symbol-placeablenode)
+- [`forceGraphLayout.PlaceableNode`](./forceGraphLayout.ts.mdmd.md#symbol-placeablenode) (type-only)
 - [`forceGraphLayout.QUIET_TICKS`](./forceGraphLayout.ts.mdmd.md#symbol-quiet_ticks)
 - [`forceGraphLayout.SHELL_SOFTNESS`](./forceGraphLayout.ts.mdmd.md#symbol-shell_softness)
-- [`forceGraphLayout.SpatialLink`](./forceGraphLayout.ts.mdmd.md#symbol-spatiallink)
-- [`forceGraphLayout.SpatialNode`](./forceGraphLayout.ts.mdmd.md#symbol-spatialnode)
+- [`forceGraphLayout.SpatialLink`](./forceGraphLayout.ts.mdmd.md#symbol-spatiallink) (type-only)
+- [`forceGraphLayout.SpatialNode`](./forceGraphLayout.ts.mdmd.md#symbol-spatialnode) (type-only)
 - [`forceGraphLayout.easeSpatialLayout`](./forceGraphLayout.ts.mdmd.md#symbol-easespatiallayout)
 - [`forceGraphLayout.linkPulls`](./forceGraphLayout.ts.mdmd.md#symbol-linkpulls)
 - [`forceGraphLayout.motionForce`](./forceGraphLayout.ts.mdmd.md#symbol-motionforce-function)

@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/engine/src/live-docs/adapters/rust.ts`
-- Generated At: 2026-11-22T04:48:22.411Z
+- Generated At: 2026-11-22T07:12:52.463Z
 
 ## Authored
 ### Purpose
@@ -40,7 +40,7 @@ Language adapter for Rust (`.rs`): tree-sitter symbols and path resolution throu
 - [`manifest.stringOf`](./manifest.ts.mdmd.md#symbol-stringof)
 - [`manifest.tableOf`](./manifest.ts.mdmd.md#symbol-tableof)
 - [`rust.rustdoc.parseRustDocumentation`](./rust.rustdoc.ts.mdmd.md#symbol-parserustdocumentation)
-- [`treeSitter.SyntaxNode`](./treeSitter.ts.mdmd.md#symbol-syntaxnode)
+- [`treeSitter.SyntaxNode`](./treeSitter.ts.mdmd.md#symbol-syntaxnode) (type-only)
 - [`treeSitter.readTree`](./treeSitter.ts.mdmd.md#symbol-readtree)
 - [`core.DependencyEntry`](../core.ts.mdmd.md#symbol-dependencyentry) (type-only)
 - [`core.PublicSymbolEntry`](../core.ts.mdmd.md#symbol-publicsymbolentry) (type-only)
@@ -50,10 +50,10 @@ Language adapter for Rust (`.rs`): tree-sitter symbols and path resolution throu
 - [`coreTypes.ProgramEntry`](../coreTypes.ts.mdmd.md#symbol-programentry) (type-only)
 - [`compareText`](../../tooling/compareText.ts.mdmd.md#symbol-comparetext)
 - [`pathUtils.normalizeWorkspacePath`](../../tooling/pathUtils.ts.mdmd.md#symbol-normalizeworkspacepath)
-- [`sourceText.SourceReads`](../../tooling/sourceText.ts.mdmd.md#symbol-sourcereads)
+- [`sourceText.SourceReads`](../../tooling/sourceText.ts.mdmd.md#symbol-sourcereads) (type-only)
 - [`sourceText.readSourceText`](../../tooling/sourceText.ts.mdmd.md#symbol-readsourcetext)
 - [`sourceText.throwIfMachineFailure`](../../tooling/sourceText.ts.mdmd.md#symbol-throwifmachinefailure)
-- [`workspaceProbes.ListedFiles`](../../tooling/workspaceProbes.ts.mdmd.md#symbol-listedfiles)
+- [`workspaceProbes.ListedFiles`](../../tooling/workspaceProbes.ts.mdmd.md#symbol-listedfiles) (type-only)
 - [`workspaceProbes.pathKind`](../../tooling/workspaceProbes.ts.mdmd.md#symbol-pathkind)
 <!-- LIVE-DOC:END Dependencies -->
 

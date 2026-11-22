@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: `scripts/oracle/index-fixture.ts`
 - Entry: command `oracle:index` of [`package.json`](../../package.json.mdmd.md)
-- Generated At: 2026-11-21T07:51:38.324Z
+- Generated At: 2026-11-22T07:12:57.925Z
 
 ## Authored
 ### Purpose
@@ -35,8 +35,8 @@ _No public symbols detected_
 - [`powershell-edges.POWERSHELL_EXTENSIONS`](./powershell-edges.ts.mdmd.md#symbol-powershell_extensions)
 - [`powershell-edges.edgesFromPowerShellAst`](./powershell-edges.ts.mdmd.md#symbol-edgesfrompowershellast)
 - [`powershell-edges.parsePowerShellFixture`](./powershell-edges.ts.mdmd.md#symbol-parsepowershellfixture)
-- [`scip-edges.OracleEdges`](./scip-edges.ts.mdmd.md#symbol-oracleedges)
-- [`scip-edges.OracleProject`](./scip-edges.ts.mdmd.md#symbol-oracleproject)
+- [`scip-edges.OracleEdges`](./scip-edges.ts.mdmd.md#symbol-oracleedges) (type-only)
+- [`scip-edges.OracleProject`](./scip-edges.ts.mdmd.md#symbol-oracleproject) (type-only)
 - [`scip-edges.cargoProjects`](./scip-edges.ts.mdmd.md#symbol-cargoprojects)
 - [`scip-edges.convertScipIndex`](./scip-edges.ts.mdmd.md#symbol-convertscipindex)
 - [`scip-edges.readProjects`](./scip-edges.ts.mdmd.md#symbol-readprojects)

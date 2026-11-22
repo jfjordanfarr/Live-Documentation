@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: `packages/explorer/src/client/views/localView/branch-placement.test.ts`
-- Generated At: 2026-11-19T21:10:15.785Z
+- Generated At: 2026-11-22T07:12:55.228Z
 
 ## Authored
 ### Purpose
@@ -24,13 +24,13 @@ _No public symbols detected_
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
-- [`branch-placement.BoundaryAlignment`](./branch-placement.ts.mdmd.md#symbol-boundaryalignment)
-- [`branch-placement.PlacementBand`](./branch-placement.ts.mdmd.md#symbol-placementband)
-- [`branch-placement.PlacementInput`](./branch-placement.ts.mdmd.md#symbol-placementinput)
-- [`branch-placement.PlacementLane`](./branch-placement.ts.mdmd.md#symbol-placementlane)
-- [`branch-placement.PlacementWire`](./branch-placement.ts.mdmd.md#symbol-placementwire)
-- [`branch-placement.Segment`](./branch-placement.ts.mdmd.md#symbol-segment)
-- [`branch-placement.StackEntry`](./branch-placement.ts.mdmd.md#symbol-stackentry)
+- [`branch-placement.BoundaryAlignment`](./branch-placement.ts.mdmd.md#symbol-boundaryalignment) (type-only)
+- [`branch-placement.PlacementBand`](./branch-placement.ts.mdmd.md#symbol-placementband) (type-only)
+- [`branch-placement.PlacementInput`](./branch-placement.ts.mdmd.md#symbol-placementinput) (type-only)
+- [`branch-placement.PlacementLane`](./branch-placement.ts.mdmd.md#symbol-placementlane) (type-only)
+- [`branch-placement.PlacementWire`](./branch-placement.ts.mdmd.md#symbol-placementwire) (type-only)
+- [`branch-placement.Segment`](./branch-placement.ts.mdmd.md#symbol-segment) (type-only)
+- [`branch-placement.StackEntry`](./branch-placement.ts.mdmd.md#symbol-stackentry) (type-only)
 - [`branch-placement.placeBranches`](./branch-placement.ts.mdmd.md#symbol-placebranches)
 - [`branch-placement.placementCost`](./branch-placement.ts.mdmd.md#symbol-placementcost)
 - `vitest` - `describe`, `expect`, `it`

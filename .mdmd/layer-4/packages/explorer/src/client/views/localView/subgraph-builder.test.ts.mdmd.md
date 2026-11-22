@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: `packages/explorer/src/client/views/localView/subgraph-builder.test.ts`
-- Generated At: 2026-11-19T21:10:17.086Z
+- Generated At: 2026-11-22T07:12:56.267Z
 
 ## Authored
 ### Purpose
@@ -21,8 +21,8 @@ _No public symbols detected_
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
-- [`subgraph-builder.LinkEndpointResolver`](./subgraph-builder.ts.mdmd.md#symbol-linkendpointresolver)
-- [`subgraph-builder.NodeResolver`](./subgraph-builder.ts.mdmd.md#symbol-noderesolver)
+- [`subgraph-builder.LinkEndpointResolver`](./subgraph-builder.ts.mdmd.md#symbol-linkendpointresolver) (type-only)
+- [`subgraph-builder.NodeResolver`](./subgraph-builder.ts.mdmd.md#symbol-noderesolver) (type-only)
 - [`subgraph-builder.buildPathSubgraph`](./subgraph-builder.ts.mdmd.md#symbol-buildpathsubgraph)
 - [`subgraph-builder.buildSelfLoopEdges`](./subgraph-builder.ts.mdmd.md#symbol-buildselfloopedges)
 - [`types.ExplorerGraphPayload`](../../../shared/types.ts.mdmd.md#symbol-explorergraphpayload) (type-only)

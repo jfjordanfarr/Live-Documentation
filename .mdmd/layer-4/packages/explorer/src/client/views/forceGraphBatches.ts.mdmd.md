@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/explorer/src/client/views/forceGraphBatches.ts`
-- Generated At: 2026-11-19T21:10:14.790Z
+- Generated At: 2026-11-22T07:12:54.585Z
 
 ## Authored
 ### Purpose
@@ -137,15 +137,15 @@ Clip a unit wire's axis in homogeneous coordinates, projecting its compensated w
 - [`forceGraphAppearance.MARBLE_SHINE`](./forceGraphAppearance.ts.mdmd.md#symbol-marble_shine)
 - [`forceGraphAppearance.MARBLE_VERTEX`](./forceGraphAppearance.ts.mdmd.md#symbol-marble_vertex)
 - [`forceGraphAppearance.MARBLE_VERTEX_PARS`](./forceGraphAppearance.ts.mdmd.md#symbol-marble_vertex_pars)
-- [`forceGraphAppearance.Marble`](./forceGraphAppearance.ts.mdmd.md#symbol-marble)
+- [`forceGraphAppearance.Marble`](./forceGraphAppearance.ts.mdmd.md#symbol-marble) (type-only)
 - [`forceGraphLayout.Placed`](./forceGraphLayout.ts.mdmd.md#symbol-placed) (type-only)
 - [`forceGraphLayout.SpatialNode`](./forceGraphLayout.ts.mdmd.md#symbol-spatialnode) (type-only)
 - [`forceGraphSizing.clipSpatialWireDepth`](./forceGraphSizing.ts.mdmd.md#symbol-clipspatialwiredepth)
 - [`forceGraphSizing.pickSpatialWire`](./forceGraphSizing.ts.mdmd.md#symbol-pickspatialwire)
 - [`forceGraphSizing.spatialSizeScale`](./forceGraphSizing.ts.mdmd.md#symbol-spatialsizescale)
-- [`forceGraphWrappers.GroupWrappers`](./forceGraphWrappers.ts.mdmd.md#symbol-groupwrappers)
-- [`forceGraphWrappers.WrapperGeometry`](./forceGraphWrappers.ts.mdmd.md#symbol-wrappergeometry)
-- [`forceGraphWrappers.WrapperHull`](./forceGraphWrappers.ts.mdmd.md#symbol-wrapperhull-interface)
+- [`forceGraphWrappers.GroupWrappers`](./forceGraphWrappers.ts.mdmd.md#symbol-groupwrappers) (type-only)
+- [`forceGraphWrappers.WrapperGeometry`](./forceGraphWrappers.ts.mdmd.md#symbol-wrappergeometry) (type-only)
+- [`forceGraphWrappers.WrapperHull`](./forceGraphWrappers.ts.mdmd.md#symbol-wrapperhull-interface) (type-only)
 - [`forceGraphWrappers.mergeWrappers`](./forceGraphWrappers.ts.mdmd.md#symbol-mergewrappers)
 - [`forceGraphWrappers.wrapperAt`](./forceGraphWrappers.ts.mdmd.md#symbol-wrapperat)
 - [`perspectiveBodies.FrozenBodyMesh`](./perspectiveBodies.ts.mdmd.md#symbol-frozenbodymesh) (type-only)

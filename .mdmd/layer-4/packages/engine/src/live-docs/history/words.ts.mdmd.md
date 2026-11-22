@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/engine/src/live-docs/history/words.ts`
-- Generated At: 2026-11-19T21:10:12.460Z
+- Generated At: 2026-11-22T07:12:53.271Z
 
 ## Authored
 ### Purpose
@@ -117,9 +117,9 @@ The text of an id in a part of the store.
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
 - [`format.HistorySequence`](./format.ts.mdmd.md#symbol-historysequence) (type-only)
-- [`rows.AuthoredWords`](./rows.ts.mdmd.md#symbol-authoredwords)
-- [`rows.FileRows`](./rows.ts.mdmd.md#symbol-filerows)
-- [`Rows`](./rows.ts.mdmd.md#symbol-rows)
+- [`rows.AuthoredWords`](./rows.ts.mdmd.md#symbol-authoredwords) (type-only)
+- [`rows.FileRows`](./rows.ts.mdmd.md#symbol-filerows) (type-only)
+- [`Rows`](./rows.ts.mdmd.md#symbol-rows) (type-only)
 - [`rows.applyRowsChange`](./rows.ts.mdmd.md#symbol-applyrowschange)
 - [`sequence.changeAt`](./sequence.ts.mdmd.md#symbol-changeat)
 - [`sequence.momentAt`](./sequence.ts.mdmd.md#symbol-momentat)

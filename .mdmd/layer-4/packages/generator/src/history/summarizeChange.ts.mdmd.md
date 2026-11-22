@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/generator/src/history/summarizeChange.ts`
-- Generated At: 2026-11-22T05:46:15.839Z
+- Generated At: 2026-11-22T07:12:57.139Z
 
 ## Authored
 ### Purpose
@@ -130,21 +130,21 @@ What a worker answers for each task.
 - `node:path` - `path`
 - `node:v8` - `getHeapStatistics`
 - `node:zlib` - `gzipSync`
-- [`LiveDocumentationConfig`](../../../engine/src/config/liveDocumentationConfig.ts.mdmd.md#symbol-livedocumentationconfig)
+- [`LiveDocumentationConfig`](../../../engine/src/config/liveDocumentationConfig.ts.mdmd.md#symbol-livedocumentationconfig) (type-only)
 - [`liveDocumentationConfig.isMediaAsset`](../../../engine/src/config/liveDocumentationConfig.ts.mdmd.md#symbol-ismediaasset)
 - [`archetype.matchesPathPattern`](../../../engine/src/live-docs/archetype.ts.mdmd.md#symbol-matchespathpattern)
 - [`discovery.docsRootWithin`](../../../engine/src/live-docs/discovery.ts.mdmd.md#symbol-docsrootwithin)
 - [`gitUtils.execFileAsync`](../../../engine/src/live-docs/gitUtils.ts.mdmd.md#symbol-execfileasync)
-- [`graph.LiveDocGraph`](../../../engine/src/live-docs/graph.ts.mdmd.md#symbol-livedocgraph)
+- [`graph.LiveDocGraph`](../../../engine/src/live-docs/graph.ts.mdmd.md#symbol-livedocgraph) (type-only)
 - [`graph.graphFilesByPath`](../../../engine/src/live-docs/graph.ts.mdmd.md#symbol-graphfilesbypath)
 - [`graph.withFilesByPath`](../../../engine/src/live-docs/graph.ts.mdmd.md#symbol-withfilesbypath)
 - [`git.openGitStore`](../../../engine/src/live-docs/history/git.ts.mdmd.md#symbol-opengitstore)
-- [`summary.AuthoredReading`](../../../engine/src/live-docs/history/summary.ts.mdmd.md#symbol-authoredreading)
+- [`summary.AuthoredReading`](../../../engine/src/live-docs/history/summary.ts.mdmd.md#symbol-authoredreading) (type-only)
 - [`summary.summarizeGraph`](../../../engine/src/live-docs/history/summary.ts.mdmd.md#symbol-summarizegraph)
 - [`textStore.putTexts`](../../../engine/src/live-docs/history/textStore.ts.mdmd.md#symbol-puttexts)
 - [`versionControl.WorkingTree`](../../../engine/src/live-docs/history/versionControl.ts.mdmd.md#symbol-workingtree) (type-only)
 - [`versionControl.WorkingTreeOptions`](../../../engine/src/live-docs/history/versionControl.ts.mdmd.md#symbol-workingtreeoptions) (type-only)
-- [`ProcessMark`](../../../engine/src/live-docs/processMark.ts.mdmd.md#symbol-processmark)
+- [`ProcessMark`](../../../engine/src/live-docs/processMark.ts.mdmd.md#symbol-processmark) (type-only)
 - [`processMark.machineFailure`](../../../engine/src/live-docs/processMark.ts.mdmd.md#symbol-machinefailure)
 - [`processMark.processMarks`](../../../engine/src/live-docs/processMark.ts.mdmd.md#symbol-processmarks)
 - [`relatedDocs.relatedDocsOf`](../../../engine/src/live-docs/relatedDocs.ts.mdmd.md#symbol-relateddocsof)

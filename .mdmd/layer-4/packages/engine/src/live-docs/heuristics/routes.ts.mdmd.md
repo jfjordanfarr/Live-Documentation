@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/engine/src/live-docs/heuristics/routes.ts`
-- Generated At: 2026-11-19T21:10:11.809Z
+- Generated At: 2026-11-22T07:12:52.964Z
 
 ## Authored
 ### Purpose
@@ -47,8 +47,8 @@ Every route call in the script, in source order.
 - [`index.WorkspaceFileIndex`](../adapters/index.ts.mdmd.md#symbol-workspacefileindex) (type-only)
 - [`coreTypes.DependencyEntry`](../coreTypes.ts.mdmd.md#symbol-dependencyentry) (type-only)
 - [`coreTypes.WorkspaceSymbolIndex`](../coreTypes.ts.mdmd.md#symbol-workspacesymbolindex) (type-only)
-- [`openings.RoutePattern`](../openings.ts.mdmd.md#symbol-routepattern)
-- [`openings.ServedRoute`](../openings.ts.mdmd.md#symbol-servedroute)
+- [`openings.RoutePattern`](../openings.ts.mdmd.md#symbol-routepattern) (type-only)
+- [`openings.ServedRoute`](../openings.ts.mdmd.md#symbol-servedroute) (type-only)
 - [`openings.chooseServers`](../openings.ts.mdmd.md#symbol-chooseservers)
 - [`openings.isHttpMethod`](../openings.ts.mdmd.md#symbol-ishttpmethod)
 - [`openings.matchRoute`](../openings.ts.mdmd.md#symbol-matchroute)

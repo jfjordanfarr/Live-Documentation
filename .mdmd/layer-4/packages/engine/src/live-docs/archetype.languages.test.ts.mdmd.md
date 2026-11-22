@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: `packages/engine/src/live-docs/archetype.languages.test.ts`
-- Generated At: 2026-11-21T20:21:42.588Z
+- Generated At: 2026-11-22T07:12:52.529Z
 
 ## Authored
 ### Purpose
@@ -26,7 +26,7 @@ _No public symbols detected_
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
-- [`liveDocumentationConfig.LiveDocumentationArchetype`](../config/liveDocumentationConfig.ts.mdmd.md#symbol-livedocumentationarchetype)
+- [`liveDocumentationConfig.LiveDocumentationArchetype`](../config/liveDocumentationConfig.ts.mdmd.md#symbol-livedocumentationarchetype) (type-only)
 - [`liveDocumentationConfig.normalizeLiveDocumentationConfig`](../config/liveDocumentationConfig.ts.mdmd.md#symbol-normalizelivedocumentationconfig)
 - [`archetype.TEST_RULES`](./archetype.ts.mdmd.md#symbol-test_rules)
 - [`archetype.resolveArchetype`](./archetype.ts.mdmd.md#symbol-resolvearchetype)

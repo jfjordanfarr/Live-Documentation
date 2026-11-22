@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: `packages/explorer/src/client/panels/spatial-legend.test.ts`
-- Generated At: 2026-11-19T21:10:13.882Z
+- Generated At: 2026-11-22T07:12:54.117Z
 
 ## Authored
 ### Purpose
@@ -29,7 +29,7 @@ _No public symbols detected_
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
-- [`spatial-legend.SpatialLegendRow`](./spatial-legend.ts.mdmd.md#symbol-spatiallegendrow)
+- [`spatial-legend.SpatialLegendRow`](./spatial-legend.ts.mdmd.md#symbol-spatiallegendrow) (type-only)
 - [`spatial-legend.spatialLegendRows`](./spatial-legend.ts.mdmd.md#symbol-spatiallegendrows)
 - [`forceGraphAppearance.spatialNodeStyles`](../views/forceGraphAppearance.ts.mdmd.md#symbol-spatialnodestyles)
 - [`forceGraphData.SpatialGraphData`](../views/forceGraphData.ts.mdmd.md#symbol-spatialgraphdata) (type-only)
