@@ -25,6 +25,10 @@ export interface ParityRow {
   expect?: string[];
   /** For a gap: what its output holds while the gap stands. */
   symptom?: string;
+  /** The stream the row is read from: standard output for an equivalent, standard error for a gap, unless named. */
+  stream?: "stdout" | "stderr";
+  /** The exit the command must give: 0 for an equivalent, 1 for a gap, unless named. */
+  exit?: number;
 }
 
 /** The ledger: its rows in the table's order. */

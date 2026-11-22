@@ -244,7 +244,7 @@ async function main(): Promise<void> {
     if (direction === "both") {
       const outboundResult = searchGraph(graph, start.files, end.files, "outbound", args.maxDepth);
       const inboundResult = searchGraph(graph, start.files, end.files, "inbound", args.maxDepth);
-      emitDualDirectionResult(fromId, toId, outboundResult, inboundResult, graph, args.json, args.verbose);
+      emitDualDirectionResult(fromId, toId, outboundResult, inboundResult, graph, args.json, args.verbose, asked);
       // Exit with success if at least one path found
       if (!outboundResult.path && !inboundResult.path) {
         process.exit(1);

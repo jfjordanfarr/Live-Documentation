@@ -177,14 +177,14 @@ describe("live-docs:inspect, a directory as an end", () => {
   it("is the end of a path: the nearest file under it answers, the route told as asked", () => {
     const result = cli("inspect.ts", estate, ["--from", "Portal/Pages/Default.aspx", "--to", "PaymentService"]);
     assert.strictEqual(result.status, 0, result.stderr);
-    assert.match(result.stdout.replace(/ \[[^\]]+\]/g, ""), /^Path from Portal\/Pages\/Default\.aspx to PaymentService\/App\.config, 8 hop\(s\): each file uses the next\.\n/u);
+    assert.match(result.stdout.replace(/ \[[^\]]+\]/g, ""), /^Path from Portal\/Pages\/Default\.aspx to PaymentService\/App\.config, 8 hop\(s\): each file uses the next; asked to PaymentService\/\.\n/u);
   });
 
   it("is the start of a path, with or without its closing slash and in any case", () => {
     for (const typed of ["PaymentService", "PaymentService/", "paymentservice"]) {
       const result = cli("inspect.ts", estate, ["--from", typed, "--to", "Hub/App.config"]);
       assert.strictEqual(result.status, 0, `${typed}: ${result.stderr}`);
-      assert.match(result.stdout.replace(/ \[[^\]]+\]/g, ""), /^Path from PaymentService\/App\.config to Hub\/App\.config, 1 hop\(s\): each file is used by the next\.\n {2}1\. PaymentService\/App\.config is used by Hub\/App\.config\n$/u, typed);
+      assert.match(result.stdout.replace(/ \[[^\]]+\]/g, ""), /^Path from PaymentService\/App\.config to Hub\/App\.config, 1 hop\(s\): each file is used by the next; asked from PaymentService\/\.\n {2}1\. PaymentService\/App\.config is used by Hub\/App\.config\n$/u, typed);
     }
   });
 
@@ -228,7 +228,7 @@ describe("live-docs:inspect, two ends that share files", () => {
   it("runs from the rest of an outer directory to a file it holds, and says the outer was taken without the inner", () => {
     const result = cli("inspect.ts", nested, ["--from", "src/", "--to", "src/b.ts"]);
     assert.strictEqual(result.status, 0, result.stderr);
-    assert.strictEqual(result.stdout.replace(/ \[[^\]]+\]/g, ""), "Path from src/a.ts to src/b.ts, 1 hop(s): each file uses the next; src/ taken without src/b.ts.\n  1. src/a.ts uses src/b.ts\n");
+    assert.strictEqual(result.stdout.replace(/ \[[^\]]+\]/g, ""), "Path from src/a.ts to src/b.ts, 1 hop(s): each file uses the next; asked from src/ without src/b.ts.\n  1. src/a.ts uses src/b.ts\n");
     const json = JSON.parse(cli("inspect.ts", nested, ["--from", "src/", "--to", "src/b.ts", "--json"]).stdout) as { kind: string; asked: unknown };
     assert.deepStrictEqual([json.kind, json.asked], ["path", { from: "src/", to: "src/b.ts", narrowed: "from" }]);
   });
@@ -236,7 +236,7 @@ describe("live-docs:inspect, two ends that share files", () => {
   it("runs from an inner directory to the rest of the outer one", () => {
     const result = cli("inspect.ts", nested, ["--from", "src/Pay", "--to", "src"]);
     assert.strictEqual(result.status, 0, result.stderr);
-    assert.match(result.stdout.replace(/ \[[^\]]+\]/g, ""), /^Path from src\/Pay\/p\.ts to src\/a\.ts, 1 hop\(s\): each file uses the next; src\/ taken without src\/Pay\/\.\n/u);
+    assert.match(result.stdout.replace(/ \[[^\]]+\]/g, ""), /^Path from src\/Pay\/p\.ts to src\/a\.ts, 1 hop\(s\): each file uses the next; asked from src\/Pay\/ to src\/ without src\/Pay\/\.\n/u);
   });
 
   it("is no path when the two ends are the same, a directory or a file", () => {
@@ -260,5 +260,28 @@ describe("live-docs:inspect, two ends that share files", () => {
       assert.strictEqual(result.status, 1, to);
       assert.strictEqual(result.stdout, `No symbol path found from src/a.ts#a to ${to} (outbound).\n`);
     }
+  });
+});
+
+describe("live-docs:inspect, both ways between two directories", () => {
+  // The engine review's second pass, 2026-11-22: a way that finds nothing says what that walk tested and no more, the
+  // ends named by their paths as asked; the JSON has a path's shape: what was asked, and the files that answered.
+  it("says of the reverse walk only that no file of --to uses a file of --from, and names the directories as asked", () => {
+    const result = cli("inspect.ts", estate, ["--from", "PaymentService", "--to", "Contracts", "--direction", "both"]);
+    assert.strictEqual(result.status, 0, result.stderr);
+    const text = result.stdout.replace(/ \[[^\]]+\]/g, "");
+    assert.ok(text.startsWith("Dual-direction search from PaymentService/ to Contracts/:\n"), text);
+    assert.ok(text.includes("  REVERSE PATH (inbound): No path found.\n    No file of Contracts/ uses a file of PaymentService/, directly or through other files.\n"), text);
+    const json = JSON.parse(cli("inspect.ts", estate, ["--from", "PaymentService", "--to", "Contracts", "--direction", "both", "--json"]).stdout) as {
+      asked: unknown; forward: { found: boolean; each: string; from: { codePath: string }; to: { codePath: string } }; reverse: { found: boolean };
+    };
+    assert.deepStrictEqual(json.asked, { from: "PaymentService/", to: "Contracts/", narrowed: null });
+    assert.deepStrictEqual([json.forward.found, json.forward.each, json.forward.from.codePath.startsWith("PaymentService/"), json.forward.to.codePath.startsWith("Contracts/"), json.reverse.found], [true, "uses", true, true, false]);
+  });
+
+  it("gives a one-way path's JSON the same asked ends", () => {
+    const json = JSON.parse(cli("inspect.ts", estate, ["--from", "Portal/Pages/Default.aspx", "--to", "PaymentService", "--json"]).stdout) as { asked: unknown; to: { codePath: string } };
+    assert.deepStrictEqual(json.asked, { from: "Portal/Pages/Default.aspx", to: "PaymentService/", narrowed: null });
+    assert.strictEqual(json.to.codePath, "PaymentService/App.config");
   });
 });
