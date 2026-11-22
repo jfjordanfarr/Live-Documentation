@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `scripts/live-docs/inspect/history.ts`
-- Generated At: 2026-11-19T22:40:13.283Z
+- Generated At: 2026-11-22T02:17:41.680Z
 
 ## Authored
 ### Purpose
@@ -120,6 +120,13 @@ What the entries of a commit reach, by the pathfinder over the graph the commit'
 
 ##### `emitBetween` — Summary
 What changed from one commit to a later one, each file followed through every rename between.
+
+#### `count` {#symbol-count}
+- Type: function
+- Source: [source](../../../../../scripts/live-docs/inspect/history.ts#L345)
+
+##### `count` — Summary
+A count with its noun, the plural given where adding an s does not make it ("directories").
 <!-- LIVE-DOC:END Public Symbols -->
 
 <!-- LIVE-DOC:BEGIN Dependencies -->

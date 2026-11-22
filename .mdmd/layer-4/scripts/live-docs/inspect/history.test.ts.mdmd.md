@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: `scripts/live-docs/inspect/history.test.ts`
-- Generated At: 2026-11-19T22:40:13.271Z
+- Generated At: 2026-11-22T02:17:41.647Z
 
 ## Authored
 ### Purpose
@@ -25,6 +25,7 @@ _No public symbols detected_
 - [`sequence.Moment`](../../../packages/engine/src/live-docs/history/sequence.ts.mdmd.md#symbol-moment) (type-only)
 - [`history.HistoryRefusal`](./history.ts.mdmd.md#symbol-historyrefusal)
 - [`history.codePathOf`](./history.ts.mdmd.md#symbol-codepathof)
+- [`history.count`](./history.ts.mdmd.md#symbol-count)
 - [`history.fileNamedAt`](./history.ts.mdmd.md#symbol-filenamedat)
 - `vitest` - `describe`, `expect`, `it`
 <!-- LIVE-DOC:END Dependencies -->

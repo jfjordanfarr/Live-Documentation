@@ -310,8 +310,8 @@ export function emitBetween(sequence: HistorySequence, from: number, to: number,
     return;
   }
   console.log(`From ${where(sequence, from, changes.from)} to ${where(sequence, to, changes.to)}, ${SHAPE_ALONE}.`);
-  const list = (heading: string, lines: string[], noun: string): void => {
-    console.log(`${heading}: ${count(lines.length, noun)}`);
+  const list = (heading: string, lines: string[], noun: string, plural?: string): void => {
+    console.log(`${heading}: ${count(lines.length, noun, plural)}`);
     for (const line of lines) {
       console.log(`  ${line}`);
     }
@@ -319,7 +319,7 @@ export function emitBetween(sequence: HistorySequence, from: number, to: number,
   list("Created", changes.born, "file");
   list("Deleted", changes.dead, "file");
   list("Renamed", changes.renamed.map((rename) => `${rename.from} -> ${rename.to}`), "file");
-  list("Renamed whole", changes.directoriesRenamed.map((rename) => `${rename.from} -> ${rename.to}`), "directory");
+  list("Renamed whole", changes.directoriesRenamed.map((rename) => `${rename.from} -> ${rename.to}`), "directory", "directories");
   list("Resized", changes.resized.map((file) => `${file.codePath}  ${file.before} -> ${file.after} symbols`), "file");
   list("Wires added", changes.edgesAdded.map((edge) => `${edge.from} -> ${edge.to}`), "wire");
   list("Wires removed", changes.edgesRemoved.map((edge) => `${edge.from} -> ${edge.to}`), "wire");
@@ -341,6 +341,7 @@ function samplingWords(sequence: HistorySequence): string {
   return since ? `${words} since ${since}` : words;
 }
 
-function count(n: number, noun: string): string {
-  return `${n} ${noun}${n === 1 ? "" : "s"}`;
+/** A count with its noun, the plural given where adding an s does not make it ("directories"). */
+export function count(n: number, noun: string, plural = `${noun}s`): string {
+  return `${n} ${n === 1 ? noun : plural}`;
 }

@@ -1,6 +1,6 @@
 # Parity: the page, the command line and the pipeline
 
-_A proposal, current, authored. As of 2026-11-22. Nothing in it is decided; the form that keeps it true is a fork put to the owner below._
+_Current, authored. As of 2026-11-22. A proposal in its reading of parity; its rows are held to the commands by a test, as the last section says._
 
 ## Metadata
 
@@ -15,17 +15,19 @@ A row says "yes" only where the command was run and seen to answer, on the estat
 
 ## The page against the command line
 
+<!-- parity table: printed from tests/integration/live-docs/parity-ledger.json by scripts/doc-tools/parity-table.ts -->
+
 | In the page | For an agent or a pipeline | Equivalent? |
 | --- | --- | --- |
 | **Knowledge Sources** | | |
 | Entry points by reason, what they reach, what nothing reaches, what is not read, what only tests reach | `inspect --reachable` (`--json`) | yes |
 | The disconnected groups and the lone files | `inspect --groups` (`--json`) | yes |
 | "Reachable from" a file | `inspect --from <file> --reachable` | yes |
-| "Reachable from" a directory | none: a directory is not a `--from` or `--to` | no: lacks part |
-| The counts: files, links, references, dependencies outside the scan | `inspect --groups` counts files; `generate` counts docs; no command totals links or references | no: lacks part |
-| Most used and most using files | none; `index.json` holds each file's inbound and outbound, unranked | no: no command |
+| "Reachable from" a directory | none: a directory is not a `--from` | no: lacks part |
+| The counts: files, links, references, dependencies outside the scan | `inspect --groups` counts files; no command totals links or references | no: lacks part |
+| Most used and most using files | none; the derived `index.json` holds each file's inbound and outbound, unranked | no: no command |
 | Symbols nothing references | none | no: no command |
-| What a file's authored words cite, and what cites it | `inspect --from <file> --json`, its `documents.cites` and `documents.citedBy` (not in the text output) | yes, as JSON only |
+| What a file's authored words cite, and what cites it | `inspect --from <file> --json`, its `documents.cites` and `documents.citedBy` | yes, as JSON only |
 | Download the docs as markdown or a zip | the docs are files on disk after `generate` | yes, as files |
 | Download the panel's facts as JSON | `inspect --reachable --json`, `inspect --groups --json` | yes |
 | **World Map** | | |
@@ -35,15 +37,15 @@ A row says "yes" only where the command was run and seen to answer, on the estat
 | **Local Map, 2D and 3D** | | |
 | A file's direct users and uses | `inspect --from <file> --reachable --direction inbound` (or `outbound`) `--max-depth 1` | yes |
 | A file's neighbourhood a few hops out | the same with `--max-depth <n>` | yes |
-| Which symbols carry each reference between two files | the Live Doc's Dependencies lines; `inspect --from A --to B --verbose` names no symbols today | yes, as files; the command lacks part |
+| Which symbols carry each reference between two files | the Live Doc's Dependencies lines; `inspect --from A --to B --verbose` names no symbols | yes, as files |
 | A folder opened: its files and how they connect inside and out | none | no: no command |
 | Several pinned files with every reference among them | none | no: no command |
 | **Search and the path** | | |
 | Find a directory, file or symbol by a few words | none; `grep` over the docs | no: no command |
 | The shortest path between two files, its hops in order | `inspect --from A --to B` | yes |
 | The path between two symbols | `inspect --from A#S --to B#T` | yes |
-| A path to or from a directory | refused: `Unable to resolve --to 'PaymentService'` | no: lacks part |
-| No path this way: the reverse question offered | prints "No dependency path found … (outbound)" and a frontier; offers no reverse | no: lacks part |
+| A path to or from a directory | refused: a directory is not a `--to` | no: lacks part |
+| No path this way: the reverse question offered | says so in one line and gives the command that asks the way back | yes |
 | **The reader** | | |
 | Purpose, symbols, dependencies, Notes | the file's Live Doc | yes, as files |
 | **The history** | | |
@@ -54,17 +56,19 @@ A row says "yes" only where the command was run and seen to answer, on the estat
 | A path at a moment | `inspect --at <commit> --from A --to B` gives the links between the two, not a path | no: lacks part |
 | Who made a step (the authors toggle) | none | no: no command |
 | **Links** | | |
-| A link that opens the same view for someone else | no command prints an Explorer address; its form is written only in this repository's skill | no: no command |
+| A link that opens the same view for someone else | no command prints an Explorer address | no: no command |
 
-**Totals:** 31 rows; 17 with an equivalent (4 of them only as files or JSON), 14 gaps.
+**Totals:** 31 rows; 18 with an equivalent (4 of them only as files or JSON), 13 gaps: 7 with no command, 6 where a command lacks part.
+
+<!-- end of the parity table -->
 
 ## The gaps by cause
 
 - **No command exists** (7): most used; symbols nothing references; a folder and how its files connect; the pinned set's references; search by words; the authors of a step; an Explorer link for a view.
-- **A command exists and lacks part** (7): a directory as a start; a directory as an end; the totals of links and references; a wire's files; a thing's files; the reverse question; a path at a moment. Beside them, a row counted as having its equivalent in the docs: `inspect --from A --to B` names no symbols, which the 2D map draws.
-- **Output not of a stable or bounded shape** (2, apart from the rows): `lint` prints its warnings in a different order on each run of the same docs; `inspect --from <file> --direction inbound` without `--reachable` prints every terminal path whole (ten paths of up to eleven files for one estate file, limit 200), not the file's users.
+- **A command exists and lacks part** (6): a directory as a start; a directory as an end; the totals of links and references; a wire's files; a thing's files; a path at a moment. The reverse question was the seventh, mended on 2026-11-22: a path that runs only the other way is offered as the command that asks it. Beside them, a row counted as having its equivalent in the docs: `inspect --from A --to B` names no symbols, which the 2D map draws.
+- **Output not of a stable or bounded shape:** none now. Two were mended on 2026-11-22: `lint` printed its warnings in another order each run, and now reports in the order of the docs' paths; `inspect --from <file>` without `--to` or `--reachable` printed every terminal path whole (ten paths of up to eleven files for one estate file, limit 200), and now lists the file's direct neighbours, counted, at most 200 a way.
 - **Asks a question mid-run or needs a network:** none found. Every command finished with its input closed, opened no network connection under `strace`, and gave the same exit in a namespace with no network.
-- **Only a script of this repository** (3): every command is an npm script of this checkout, so a stranger's agent gets no command on its path and its `--help` begins `npm run live-docs:inspect --`; `live-docs:orphans` reads `.mdmd/layer-4` whatever the folder's configuration says, and fails on any other folder; the audits and link enforcement (`slopcop:*`, `docs:links:enforce`) are this repository's own checks.
+- **Only a script of this repository** (3): every command is an npm script of this checkout, so a stranger's agent gets no command on its path and its `--help` begins `npm run live-docs:inspect --`; `live-docs:orphans` read `.mdmd/layer-4` whatever the folder's configuration said (mended on 2026-11-22: it reads the configuration's); the audits and link enforcement (`slopcop:*`, `docs:links:enforce`) are this repository's own checks.
 - **The command line can do what the page cannot** (4): `generate --check`, which fails when the committed docs are stale; `lint`; `--between` any two commits, where the page steps; and `--json` of every answer.
 
 ## What is the page's by nature
@@ -88,17 +92,19 @@ Each command run twice on the same input, with its input closed (2026-11-22, est
 | `generate` | 0 | rerun over existing docs: yes; from nothing: no, every doc's `Generated At` and `index.json`'s `generatedAt` differ | no | no |
 | `generate --check` | 0 current; 1 stale | yes | no | no |
 | `generate --dry-run` | 0, stale or not | yes | no | no |
-| `lint` | 0; 1 on a doc that does not parse | no: warnings in another order each run | no | no |
+| `lint` | 0; 1 on a doc that does not parse | yes, since 2026-11-22 (before, warnings in another order each run) | no | no |
 | `inspect` (any, `--json`) | 0; 1 on an unknown file or option | yes | no | no |
 | `board <file>` | 0; 1 on a missing or malformed board, with the line | yes | no | no |
 | `history` | 0 | yes, resumed and from nothing | no | no |
 | `visualize` | 0 | yes | no | no |
 | audits, link enforcement | this repository's scripts; not run on another folder | | | |
 
-## A fork for the owner: how this table is kept true
+## How the table is kept true
 
-The record proposes a ledger a test reads, as the oracles' registers of measured misses are held. Root decides; the builder's recommendation is the ledger.
+Decided by the root on 2026-11-22: a ledger and a test, as the oracles' registers of measured misses are held. Each row of the table is an entry of [the ledger](../../tests/integration/live-docs/parity-ledger.json), and the table above is printed from it by `scripts/doc-tools/parity-table.ts --write`. [The test](../../tests/integration/live-docs/parity.test.ts) runs every entry's command over the estate sample, or over a two-commit scripted repository with its history, and fails in three cases:
 
-- **A ledger and a test.** A committed `parity.json` with one entry for each row: the page's ability, the command and its arguments over the estate sample, a fact its output must hold (`Hub/PaymentHub.cs` among the four users of `IPaymentService.cs`), or, for a gap, its cause. The integration test runs each command and fails when an equivalent stops answering, when a listed gap starts answering (so the row moves to "yes" in the same commit), and when the page's template gains a control that no entry and no line of the page's-by-nature list names. This document is then printed from the ledger. Cost: about 25 runs of the CLI at 1 to 3 s each, so 40 to 70 s of the integration suite; one entry in the same commit as each new control or command; and a rule for what counts as a control, which is the hard part.
-- **The table alone, reviewed by hand.** No cost now; it rots the first time a control is added without a row.
-- **The agents' runs as the check.** Score blind agents given only the command line on the page testers' tasks, as the record did. It measures what matters, an agent's answers, but costs minutes and money each time and cannot run in the gate.
+- **An equivalent stops answering:** its output no longer holds what its entry expects.
+- **A gap starts answering:** its output no longer shows the symptom its entry names, so the mend that closes it moves its row in the same commit. A gap with no command is probed by the option its smallest design would take, which is refused today.
+- **The table here differs** from what the ledger prints.
+
+It runs the 30 commands four at a time, about 23 s of the integration suite. **Not held:** that every control of the page has a row. Until a cheap and honest definition of "a control" is found, a control added to the page without a row goes unnoticed, and so does a gap whose option takes another name.

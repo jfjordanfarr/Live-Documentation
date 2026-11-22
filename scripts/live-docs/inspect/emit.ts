@@ -12,10 +12,8 @@ import path from "node:path";
 import { entryWords, symbolName } from "@live-documentation/engine/live-docs/document";
 import type { GraphFile, LiveDocGraph } from "@live-documentation/engine/live-docs/graph";
 import {
-  MAX_ENUMERATED_PATHS,
   type Direction,
   type FileGroups,
-  type FanoutPath,
   type OneWay,
   type PathSearchResult,
   type Reachability,
@@ -185,15 +183,11 @@ export function emitPathResult(
 }
 
 /**
- * Emits a "path not found" result with frontier information.
+ * Emits a "path not found" result: one line that says no path runs this way and, when one runs the other way, the
+ * exact command that asks for it, as the Explorer offers the reverse question as a link (the owner, 2025-12-18: "we
+ * should show no results and offer the reverse (via hyperlink)"). The JSON keeps the walk's frontier as well.
  *
- * @param from - Source node code path
- * @param to - Target node code path
- * @param direction - Traversal direction used
- * @param graph - The Live Doc graph
- * @param result - The search result with frontier information
- * @param json - If true, emit JSON format
- * @param verbose - If true, include symbol details
+ * @param reverse - The hops of the path from `to` to `from` the same way, when one runs.
  */
 export function emitNotFound(
   from: string,
@@ -202,13 +196,16 @@ export function emitNotFound(
   graph: LiveDocGraph,
   result: PathSearchResult,
   json: boolean,
-  verbose: boolean
+  verbose: boolean,
+  reverse?: { hops: number }
 ): void {
+  const command = reverseCommand(from, to, direction);
   const payload = {
     kind: "not-found" as const,
     direction,
     from: describeNode(graph, from, verbose),
     to: describeNode(graph, to, verbose),
+    reverse: reverse ? { hops: reverse.hops, command } : null,
     visited: Array.from(result.visited).map((node) => describeNode(graph, node, verbose)),
     frontier: result.frontier.map((entry) => ({
       node: describeNode(graph, entry.node, verbose),
@@ -222,73 +219,60 @@ export function emitNotFound(
     return;
   }
 
-  console.log(`No dependency path found from ${from} to ${to} (${direction}).`);
-  if (payload.frontier.length > 0) {
-    console.log("Closest reachable frontier:");
-    for (const entry of payload.frontier) {
-      const docInfo = entry.node.docPath ? ` [${entry.node.docPath}]` : "";
-      const detail = entry.missingDependency ? ` (${entry.missingDependency} is outside the scan)` : "";
-      console.log(`  - ${entry.node.codePath}${docInfo}: ${entry.reason}${detail}`);
-    }
-  }
+  console.log(reverse
+    ? `No path runs from ${from} to ${to} (${direction}); one runs the other way, ${reverse.hops} hop(s): ${command}`
+    : `No path runs from ${from} to ${to} (${direction}), nor the other way.`);
 }
 
+/** The command that asks the reverse question: from the end back to the start, the same way. */
+export function reverseCommand(from: string, to: string, direction: Direction): string {
+  const quoted = (value: string): string => (/^[\w./#:@+-]+$/u.test(value) ? value : `"${value.replace(/"/g, "\\\"")}"`);
+  return `npm run live-docs:inspect -- --from ${quoted(to)} --to ${quoted(from)}${direction === "outbound" ? "" : ` --direction ${direction}`}`;
+}
+
+/** How many of a file's neighbours one way are listed before the rest are counted. */
+export const NEIGHBOURS_LISTED = 200;
+
 /**
- * Emits fanout (terminal paths) result.
- *
- * @param from - Source node code path
- * @param direction - Traversal direction used
- * @param fanout - Array of terminal paths
- * @param graph - The Live Doc graph
- * @param maxDepth - Maximum depth used
- * @param json - If true, emit JSON format
- * @param verbose - If true, include symbol details
+ * Emits a file's direct neighbours each way asked: what it depends on (outbound) and what depends on it (inbound),
+ * each list counted, sorted by path, and cut at {@link NEIGHBOURS_LISTED} with the number cut said. Until 2026-11-22
+ * this printed every terminal path whole, up to 200 of them, each repeating the file, so that the users of a file
+ * were only the second name of each line (the parity probe of that day).
  */
-export function emitFanoutResult(
+export function emitNeighbourResult(
   from: string,
-  direction: Direction,
-  fanout: FanoutPath[],
+  ways: Array<{ direction: OneWay; files: string[] }>,
   graph: LiveDocGraph,
-  maxDepth: number,
   json: boolean,
   verbose: boolean,
   documents?: FileDocuments
 ): void {
-  const payload = {
-    kind: "fanout" as const,
+  const listed = ways.map(({ direction, files }) => ({
     direction,
-    from: describeNode(graph, from, verbose),
-    ...(documents ? { documents } : {}),
-    maxDepth,
-    terminalPaths: fanout.map((entry) => ({
-      length: entry.nodes.length - 1,
-      nodes: entry.nodes.map((node) => describeNode(graph, node, verbose))
-    }))
-  };
-
+    count: files.length,
+    files: files.slice(0, NEIGHBOURS_LISTED).map((node) => describeNode(graph, node, verbose)),
+    cut: Math.max(0, files.length - NEIGHBOURS_LISTED)
+  }));
   if (json) {
-    console.log(JSON.stringify(payload, null, 2));
+    console.log(JSON.stringify({ kind: "neighbours" as const, from: describeNode(graph, from, verbose), ...(documents ? { documents } : {}), neighbours: listed }, null, 2));
     return;
   }
-
-  console.log(
-    `Terminal ${direction} paths from ${from} (max depth ${maxDepth}, ${fanout.length} path(s) listed, limit ${MAX_ENUMERATED_PATHS}).`
-  );
+  for (const way of listed) {
+    const heading = way.direction === "inbound" ? "is used by" : "uses";
+    console.log(`${from} ${heading} ${way.count} file${way.count === 1 ? "" : "s"} directly (${way.direction}).`);
+    for (const file of way.files) {
+      console.log(`  ${file.docPath ? `${file.codePath} [${file.docPath}]` : file.codePath}`);
+    }
+    if (way.cut > 0) {
+      console.log(`  … and ${way.cut} more, not listed`);
+    }
+  }
   if (documents?.cites.length) {
     console.log(`Cites: ${documents.cites.join(", ")}`);
   }
   if (documents?.citedBy.length) {
     console.log(`Cited by: ${documents.citedBy.join(", ")}`);
   }
-  fanout.forEach((entry, index) => {
-    const descriptors = entry.nodes
-      .map((node) => {
-        const descriptor = describeNode(graph, node, verbose);
-        return descriptor.docPath ? `${descriptor.codePath} [${descriptor.docPath}]` : descriptor.codePath;
-      })
-      .join(" -> ");
-    console.log(`  ${index + 1}. ${descriptors}`);
-  });
 }
 
 /**

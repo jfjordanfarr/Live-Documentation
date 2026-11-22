@@ -163,19 +163,21 @@ async function main(): Promise<void> {
   const warnings: LintWarning[] = [];
   const docs: Array<{ docPath: string; doc: LiveDoc }> = [];
 
-  await Promise.all(
-    files.map(async (absolutePath) => {
-      const content = await fs.readFile(absolutePath, "utf8");
-      const relativePath = path.relative(workspaceRoot, absolutePath).split(path.sep).join("/");
-
-      const doc = validateStructure(relativePath, content, issues);
-      if (doc) {
-        docs.push({ docPath: relativePath, doc });
-      }
-      validateAuthoredSections(relativePath, content, warnings);
-      validateRelativeLinks(relativePath, content, issues);
-    })
-  );
+  // Read together, judged in the order of their paths, so that the same docs give the same report every run (until
+  // 2026-11-22 the warnings came in the order the reads finished, which changed from run to run).
+  const relativePaths = files.map((absolutePath) => path.relative(workspaceRoot, absolutePath).split(path.sep).join("/"));
+  const contents = await Promise.all(files.map((absolutePath) => fs.readFile(absolutePath, "utf8")));
+  const order = relativePaths.map((_, index) => index).sort((a, b) => (relativePaths[a] < relativePaths[b] ? -1 : relativePaths[a] > relativePaths[b] ? 1 : 0));
+  for (const index of order) {
+    const relativePath = relativePaths[index];
+    const content = contents[index];
+    const doc = validateStructure(relativePath, content, issues);
+    if (doc) {
+      docs.push({ docPath: relativePath, doc });
+    }
+    validateAuthoredSections(relativePath, content, warnings);
+    validateRelativeLinks(relativePath, content, issues);
+  }
 
   // The graph is derived only from docs the grammar accepted; a structural failure is reported on its own.
   if (issues.length === 0) {
