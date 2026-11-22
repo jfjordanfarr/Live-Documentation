@@ -335,7 +335,13 @@ export interface DependencyEntry {
   resolvedPath?: string;
   symbols: string[];
   kind: "import" | "export" | "require";
+  /** Every name the statement brings is a type by a written `type`, the statement's own or each name's: `import type { A }`, `import { type A, type B }`. */
   isTypeOnly?: boolean;
+  /**
+   * The names of `symbols` a written `type` marks, each name's own or its statement's: in `import { type A, b }`, `A`
+   * alone (2026-11-22; before, only a statement's modifier was read, so `A` went unmarked).
+   */
+  typeOnlySymbols?: string[];
   location?: LocationInfo;
   symbolTargets?: Record<string, string>;
   /** A bare `export * from` whose provider's names become this file's re-export anchors. */

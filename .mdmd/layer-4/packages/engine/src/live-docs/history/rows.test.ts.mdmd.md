@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: `packages/engine/src/live-docs/history/rows.test.ts`
-- Generated At: 2026-11-19T21:10:12.176Z
+- Generated At: 2026-11-22T07:12:53.147Z
 
 ## Authored
 ### Purpose
@@ -26,9 +26,9 @@ _No public symbols detected_
 - [`codec.encodeRows`](./codec.ts.mdmd.md#symbol-encoderows)
 - [`codec.encodeRowsChange`](./codec.ts.mdmd.md#symbol-encoderowschange)
 - [`codec.newInterners`](./codec.ts.mdmd.md#symbol-newinterners)
-- [`rows.FileRows`](./rows.ts.mdmd.md#symbol-filerows)
-- [`rows.RowSymbol`](./rows.ts.mdmd.md#symbol-rowsymbol)
-- [`Rows`](./rows.ts.mdmd.md#symbol-rows)
+- [`rows.FileRows`](./rows.ts.mdmd.md#symbol-filerows) (type-only)
+- [`rows.RowSymbol`](./rows.ts.mdmd.md#symbol-rowsymbol) (type-only)
+- [`Rows`](./rows.ts.mdmd.md#symbol-rows) (type-only)
 - [`rows.applyRowsChange`](./rows.ts.mdmd.md#symbol-applyrowschange)
 - [`rows.deriveRowsChange`](./rows.ts.mdmd.md#symbol-deriverowschange)
 - [`rows.emptyFileRows`](./rows.ts.mdmd.md#symbol-emptyfilerows)
@@ -36,7 +36,7 @@ _No public symbols detected_
 - [`rows.rowsAgainstShape`](./rows.ts.mdmd.md#symbol-rowsagainstshape)
 - [`rows.rowsDifferences`](./rows.ts.mdmd.md#symbol-rowsdifferences)
 - [`rows.rowsOfSummary`](./rows.ts.mdmd.md#symbol-rowsofsummary)
-- [`shape.ShapeChange`](./shape.ts.mdmd.md#symbol-shapechange)
+- [`shape.ShapeChange`](./shape.ts.mdmd.md#symbol-shapechange) (type-only)
 - [`shape.edgeKey`](./shape.ts.mdmd.md#symbol-edgekey)
 - [`shape.emptyChange`](./shape.ts.mdmd.md#symbol-emptychange)
 - [`summary.CommitSummary`](./summary.ts.mdmd.md#symbol-commitsummary) (type-only)

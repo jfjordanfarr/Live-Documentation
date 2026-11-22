@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: `packages/generator/src/generator.ts`
 - Entry: module of [`packages/generator/package.json`](../package.json.mdmd.md)
-- Generated At: 2026-11-22T04:48:28.189Z
+- Generated At: 2026-11-22T07:12:56.986Z
 
 ## Authored
 ### Purpose
@@ -82,16 +82,16 @@ behind the `Entry` lines (2026-10-15).
 - `glob` - `glob`
 - `node:fs/promises`
 - `node:path` - `path`
-- [`LiveDocumentationConfig`](../../engine/src/config/liveDocumentationConfig.ts.mdmd.md#symbol-livedocumentationconfig)
+- [`LiveDocumentationConfig`](../../engine/src/config/liveDocumentationConfig.ts.mdmd.md#symbol-livedocumentationconfig) (type-only)
 - [`liveDocumentationConfig.hasReader`](../../engine/src/config/liveDocumentationConfig.ts.mdmd.md#symbol-hasreader)
 - [`liveDocumentationConfig.noReaderHandles`](../../engine/src/config/liveDocumentationConfig.ts.mdmd.md#symbol-noreaderhandles)
 - [`liveDocumentationConfig.normalizeLiveDocumentationConfig`](../../engine/src/config/liveDocumentationConfig.ts.mdmd.md#symbol-normalizelivedocumentationconfig)
 - [`core.BINARY_SNIFF_BYTES`](../../engine/src/live-docs/core.ts.mdmd.md#symbol-binary_sniff_bytes)
-- [`core.SourceAnalysisResult`](../../engine/src/live-docs/core.ts.mdmd.md#symbol-sourceanalysisresult)
-- [`core.WorkspaceEntryIndex`](../../engine/src/live-docs/core.ts.mdmd.md#symbol-workspaceentryindex)
-- [`core.WorkspaceFileIndex`](../../engine/src/live-docs/core.ts.mdmd.md#symbol-workspacefileindex)
-- [`core.WorkspaceSymbolIndex`](../../engine/src/live-docs/core.ts.mdmd.md#symbol-workspacesymbolindex)
-- [`core.WorkspaceTestIndex`](../../engine/src/live-docs/core.ts.mdmd.md#symbol-workspacetestindex)
+- [`core.SourceAnalysisResult`](../../engine/src/live-docs/core.ts.mdmd.md#symbol-sourceanalysisresult) (type-only)
+- [`core.WorkspaceEntryIndex`](../../engine/src/live-docs/core.ts.mdmd.md#symbol-workspaceentryindex) (type-only)
+- [`core.WorkspaceFileIndex`](../../engine/src/live-docs/core.ts.mdmd.md#symbol-workspacefileindex) (type-only)
+- [`core.WorkspaceSymbolIndex`](../../engine/src/live-docs/core.ts.mdmd.md#symbol-workspacesymbolindex) (type-only)
+- [`core.WorkspaceTestIndex`](../../engine/src/live-docs/core.ts.mdmd.md#symbol-workspacetestindex) (type-only)
 - [`core.analyzeSourceFile`](../../engine/src/live-docs/core.ts.mdmd.md#symbol-analyzesourcefile)
 - [`core.buildWorkspaceIndexes`](../../engine/src/live-docs/core.ts.mdmd.md#symbol-buildworkspaceindexes)
 - [`core.composeCitedBy`](../../engine/src/live-docs/core.ts.mdmd.md#symbol-composecitedby)
@@ -107,7 +107,7 @@ behind the `Entry` lines (2026-10-15).
 - [`core.resolveArchetype`](../../engine/src/live-docs/core.ts.mdmd.md#symbol-resolvearchetype)
 - [`discovery.inWorkspaceOrder`](../../engine/src/live-docs/discovery.ts.mdmd.md#symbol-inworkspaceorder)
 - [`document.DEFAULT_AUTHORED_BLOCK`](../../engine/src/live-docs/document.ts.mdmd.md#symbol-default_authored_block)
-- [`document.LiveDoc`](../../engine/src/live-docs/document.ts.mdmd.md#symbol-livedoc)
+- [`document.LiveDoc`](../../engine/src/live-docs/document.ts.mdmd.md#symbol-livedoc) (type-only)
 - [`document.LiveDocSyntaxError`](../../engine/src/live-docs/document.ts.mdmd.md#symbol-livedocsyntaxerror)
 - [`document.UNREAD_AUTHORED_BLOCK`](../../engine/src/live-docs/document.ts.mdmd.md#symbol-unread_authored_block)
 - [`document.authoredBlockOf`](../../engine/src/live-docs/document.ts.mdmd.md#symbol-authoredblockof)
@@ -117,17 +117,17 @@ behind the `Entry` lines (2026-10-15).
 - [`graphFiles.readLiveDocGraph`](../../engine/src/live-docs/graphFiles.ts.mdmd.md#symbol-readlivedocgraph)
 - [`graphFiles.writeLiveDocGraph`](../../engine/src/live-docs/graphFiles.ts.mdmd.md#symbol-writelivedocgraph)
 - [`processMark.markProcess`](../../engine/src/live-docs/processMark.ts.mdmd.md#symbol-markprocess)
-- [`relatedDocs.DocumentText`](../../engine/src/live-docs/relatedDocs.ts.mdmd.md#symbol-documenttext)
+- [`relatedDocs.DocumentText`](../../engine/src/live-docs/relatedDocs.ts.mdmd.md#symbol-documenttext) (type-only)
 - [`relatedDocs.citingDocuments`](../../engine/src/live-docs/relatedDocs.ts.mdmd.md#symbol-citingdocuments)
 - [`relatedDocs.isMarkdownDocument`](../../engine/src/live-docs/relatedDocs.ts.mdmd.md#symbol-ismarkdowndocument)
 - [`gitIgnored`](../../engine/src/tooling/gitIgnored.ts.mdmd.md#symbol-gitignored)
 - [`nodeHost.NODE_FILE_HOST`](../../engine/src/tooling/nodeHost.ts.mdmd.md#symbol-node_file_host)
 - [`pathUtils.normalizeWorkspacePath`](../../engine/src/tooling/pathUtils.ts.mdmd.md#symbol-normalizeworkspacepath)
 - [`pathUtils.toWorkspaceRelativePath`](../../engine/src/tooling/pathUtils.ts.mdmd.md#symbol-toworkspacerelativepath)
-- [`sourceText.SourceTextReading`](../../engine/src/tooling/sourceText.ts.mdmd.md#symbol-sourcetextreading)
+- [`sourceText.SourceTextReading`](../../engine/src/tooling/sourceText.ts.mdmd.md#symbol-sourcetextreading) (type-only)
 - [`sourceText.readSourceReading`](../../engine/src/tooling/sourceText.ts.mdmd.md#symbol-readsourcereading)
 - [`sourceText.throwIfMachineFailure`](../../engine/src/tooling/sourceText.ts.mdmd.md#symbol-throwifmachinefailure)
-- [`workspaceFiles.FileHost`](../../engine/src/tooling/workspaceFiles.ts.mdmd.md#symbol-filehost)
+- [`workspaceFiles.FileHost`](../../engine/src/tooling/workspaceFiles.ts.mdmd.md#symbol-filehost) (type-only)
 - [`workspaceFiles.workspaceReads`](../../engine/src/tooling/workspaceFiles.ts.mdmd.md#symbol-workspacereads-function)
 - [`workspaceListing`](../../engine/src/tooling/workspaceListing.ts.mdmd.md#symbol-workspacelisting-function)
 <!-- LIVE-DOC:END Dependencies -->

@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: `packages/explorer/src/client/persistence/history.test.ts`
-- Generated At: 2026-11-19T21:10:14.177Z
+- Generated At: 2026-11-22T07:12:54.266Z
 
 ## Authored
 ### Purpose
@@ -21,7 +21,7 @@ _No public symbols detected_
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
-- [`history.HistoryWrite`](./history.ts.mdmd.md#symbol-historywrite)
+- [`history.HistoryWrite`](./history.ts.mdmd.md#symbol-historywrite) (type-only)
 - [`history.entryFor`](./history.ts.mdmd.md#symbol-entryfor)
 - `vitest` - `describe`, `expect`, `it`
 <!-- LIVE-DOC:END Dependencies -->

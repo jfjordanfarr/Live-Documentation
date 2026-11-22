@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: `packages/explorer/src/client/views/forceGraphEmphasis.test.ts`
-- Generated At: 2026-11-19T21:10:14.917Z
+- Generated At: 2026-11-22T07:12:54.647Z
 
 ## Authored
 ### Purpose
@@ -25,7 +25,7 @@ _No public symbols detected_
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
-- [`forceGraphEmphasis.ShownUnit`](./forceGraphEmphasis.ts.mdmd.md#symbol-shownunit)
+- [`forceGraphEmphasis.ShownUnit`](./forceGraphEmphasis.ts.mdmd.md#symbol-shownunit) (type-only)
 - [`forceGraphEmphasis.bodyChanges`](./forceGraphEmphasis.ts.mdmd.md#symbol-bodychanges-function)
 - [`forceGraphEmphasis.deletionHomes`](./forceGraphEmphasis.ts.mdmd.md#symbol-deletionhomes)
 - [`forceGraphEmphasis.dims`](./forceGraphEmphasis.ts.mdmd.md#symbol-dims)

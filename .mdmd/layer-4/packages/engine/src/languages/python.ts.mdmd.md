@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/engine/src/languages/python.ts`
-- Generated At: 2026-11-19T21:10:08.897Z
+- Generated At: 2026-11-22T07:12:51.648Z
 
 ## Authored
 ### Purpose
@@ -30,7 +30,7 @@ can appear inside string literals.
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
-- [`syntax.CommentDelimiters`](./syntax.ts.mdmd.md#symbol-commentdelimiters)
-- [`syntax.StringDelimiters`](./syntax.ts.mdmd.md#symbol-stringdelimiters)
+- [`syntax.CommentDelimiters`](./syntax.ts.mdmd.md#symbol-commentdelimiters) (type-only)
+- [`syntax.StringDelimiters`](./syntax.ts.mdmd.md#symbol-stringdelimiters) (type-only)
 - [`syntax.createLanguageSyntax`](./syntax.ts.mdmd.md#symbol-createlanguagesyntax)
 <!-- LIVE-DOC:END Dependencies -->

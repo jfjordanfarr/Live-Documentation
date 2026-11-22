@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/explorer/src/client/markdown.ts`
-- Generated At: 2026-11-19T22:40:11.151Z
+- Generated At: 2026-11-22T07:12:53.993Z
 
 ## Authored
 ### Purpose
@@ -75,8 +75,8 @@ How many tokens the renderer has walked since it was loaded, for the test that h
 ### Dependencies
 - [`GitHubSlugger`](../../../engine/src/tooling/githubSlugger.ts.mdmd.md#symbol-githubslugger)
 - [`githubSlugger.slugText`](../../../engine/src/tooling/githubSlugger.ts.mdmd.md#symbol-slugtext)
-- [`markdownLinks.InlineToken`](../../../engine/src/tooling/markdownLinks.ts.mdmd.md#symbol-inlinetoken)
-- [`markdownLinks.LinkDefinitions`](../../../engine/src/tooling/markdownLinks.ts.mdmd.md#symbol-linkdefinitions)
+- [`markdownLinks.InlineToken`](../../../engine/src/tooling/markdownLinks.ts.mdmd.md#symbol-inlinetoken) (type-only)
+- [`markdownLinks.LinkDefinitions`](../../../engine/src/tooling/markdownLinks.ts.mdmd.md#symbol-linkdefinitions) (type-only)
 - [`markdownLinks.inlineTokens`](../../../engine/src/tooling/markdownLinks.ts.mdmd.md#symbol-inlinetokens)
 - [`markdownLinks.leadingDefinitions`](../../../engine/src/tooling/markdownLinks.ts.mdmd.md#symbol-leadingdefinitions)
 - [`markdownLinks.readMarkdownLinks`](../../../engine/src/tooling/markdownLinks.ts.mdmd.md#symbol-readmarkdownlinks)

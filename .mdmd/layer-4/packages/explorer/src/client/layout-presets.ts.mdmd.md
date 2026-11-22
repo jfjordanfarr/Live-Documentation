@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/explorer/src/client/layout-presets.ts`
-- Generated At: 2026-11-22T05:48:55.475Z
+- Generated At: 2026-11-22T07:12:53.973Z
 
 ## Authored
 ### Purpose
@@ -157,16 +157,16 @@ picture). So a link made with the defaults shows them in a browser whose own tun
 - [`types.DIRECTORY_LAYOUTS`](./types.ts.mdmd.md#symbol-directory_layouts)
 - [`types.DRAGS`](./types.ts.mdmd.md#symbol-drags)
 - [`types.FRAMINGS`](./types.ts.mdmd.md#symbol-framings)
-- [`types.ForceGraphTuning`](./types.ts.mdmd.md#symbol-forcegraphtuning)
+- [`types.ForceGraphTuning`](./types.ts.mdmd.md#symbol-forcegraphtuning) (type-only)
 - [`types.GROUP_WRAPPERS`](./types.ts.mdmd.md#symbol-group_wrappers)
 - [`types.HIDDEN_FILES_LOOKS`](./types.ts.mdmd.md#symbol-hidden_files_looks)
-- [`types.LocalMapTuning`](./types.ts.mdmd.md#symbol-localmaptuning)
+- [`types.LocalMapTuning`](./types.ts.mdmd.md#symbol-localmaptuning) (type-only)
 - [`types.MIRROR_TURNS`](./types.ts.mdmd.md#symbol-mirror_turns)
 - [`types.OVERVIEW_FILES`](./types.ts.mdmd.md#symbol-overview_files)
 - [`types.SCAN_GROWTHS`](./types.ts.mdmd.md#symbol-scan_growths)
 - [`types.SCAN_PACES`](./types.ts.mdmd.md#symbol-scan_paces)
 - [`types.STEPS`](./types.ts.mdmd.md#symbol-steps)
-- [`types.TuningConfig`](./types.ts.mdmd.md#symbol-tuningconfig)
+- [`types.TuningConfig`](./types.ts.mdmd.md#symbol-tuningconfig) (type-only)
 - [`types.WAY_DOWNS`](./types.ts.mdmd.md#symbol-way_downs)
 - [`types.WIRE_ANSWERS`](./types.ts.mdmd.md#symbol-wire_answers)
 - [`types.ZOOM_LOOKS`](./types.ts.mdmd.md#symbol-zoom_looks)

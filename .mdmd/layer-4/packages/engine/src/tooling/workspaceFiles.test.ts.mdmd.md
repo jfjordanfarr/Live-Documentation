@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: `packages/engine/src/tooling/workspaceFiles.test.ts`
-- Generated At: 2026-11-22T01:51:58.141Z
+- Generated At: 2026-11-22T07:12:53.587Z
 
 ## Authored
 ### Purpose
@@ -22,7 +22,7 @@ _No public symbols detected_
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
 - [`sourceText.readSourceText`](./sourceText.ts.mdmd.md#symbol-readsourcetext)
-- [`workspaceFiles.FileHost`](./workspaceFiles.ts.mdmd.md#symbol-filehost)
+- [`workspaceFiles.FileHost`](./workspaceFiles.ts.mdmd.md#symbol-filehost) (type-only)
 - [`workspaceFiles.workspaceReads`](./workspaceFiles.ts.mdmd.md#symbol-workspacereads-function)
 - `vitest` - `describe`, `expect`, `it`
 <!-- LIVE-DOC:END Dependencies -->

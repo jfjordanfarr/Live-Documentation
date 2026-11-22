@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/explorer/src/client/views/localView/branch-motion.ts`
-- Generated At: 2026-11-19T21:10:15.690Z
+- Generated At: 2026-11-22T07:12:55.157Z
 
 ## Authored
 ### Purpose
@@ -84,8 +84,8 @@ Slow out of the old place and slow into the new, so that nothing jerks at either
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
-- [`branch-scene.Scene`](./branch-scene.ts.mdmd.md#symbol-scene)
-- [`branch-scene.SceneBox`](./branch-scene.ts.mdmd.md#symbol-scenebox)
-- [`branch-scene.SceneSegment`](./branch-scene.ts.mdmd.md#symbol-scenesegment)
+- [`branch-scene.Scene`](./branch-scene.ts.mdmd.md#symbol-scene) (type-only)
+- [`branch-scene.SceneBox`](./branch-scene.ts.mdmd.md#symbol-scenebox) (type-only)
+- [`branch-scene.SceneSegment`](./branch-scene.ts.mdmd.md#symbol-scenesegment) (type-only)
 - [`branch-scene.hostOf`](./branch-scene.ts.mdmd.md#symbol-hostof)
 <!-- LIVE-DOC:END Dependencies -->

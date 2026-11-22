@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/explorer/src/client/views/worldMap/layout.ts`
-- Generated At: 2026-11-19T21:10:17.629Z
+- Generated At: 2026-11-22T07:12:56.831Z
 
 ## Authored
 ### Purpose
@@ -325,11 +325,11 @@ The value held within the bounds.
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
-- [`projection.Box`](./projection.ts.mdmd.md#symbol-box)
-- [`projection.Camera`](./projection.ts.mdmd.md#symbol-camera)
-- [`projection.Pivot`](./projection.ts.mdmd.md#symbol-pivot)
-- [`projection.Point2`](./projection.ts.mdmd.md#symbol-point2)
-- [`projection.Point3`](./projection.ts.mdmd.md#symbol-point3)
+- [`projection.Box`](./projection.ts.mdmd.md#symbol-box) (type-only)
+- [`projection.Camera`](./projection.ts.mdmd.md#symbol-camera) (type-only)
+- [`projection.Pivot`](./projection.ts.mdmd.md#symbol-pivot) (type-only)
+- [`projection.Point2`](./projection.ts.mdmd.md#symbol-point2) (type-only)
+- [`projection.Point3`](./projection.ts.mdmd.md#symbol-point3) (type-only)
 - [`projection.depthOf`](./projection.ts.mdmd.md#symbol-depthof)
 - [`projection.facing`](./projection.ts.mdmd.md#symbol-facing)
 - [`projection.project`](./projection.ts.mdmd.md#symbol-project)

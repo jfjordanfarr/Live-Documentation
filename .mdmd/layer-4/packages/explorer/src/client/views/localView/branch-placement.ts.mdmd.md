@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/explorer/src/client/views/localView/branch-placement.ts`
-- Generated At: 2026-11-19T21:10:15.810Z
+- Generated At: 2026-11-22T07:12:55.243Z
 
 ## Authored
 ### Purpose
@@ -116,7 +116,7 @@ Places the items; see the module note.
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
-- [`network-simplex.Constraint`](./network-simplex.ts.mdmd.md#symbol-constraint)
+- [`network-simplex.Constraint`](./network-simplex.ts.mdmd.md#symbol-constraint) (type-only)
 - [`network-simplex.rankByNetworkSimplex`](./network-simplex.ts.mdmd.md#symbol-rankbynetworksimplex)
 <!-- LIVE-DOC:END Dependencies -->
 

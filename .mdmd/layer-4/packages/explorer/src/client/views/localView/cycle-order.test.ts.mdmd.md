@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: `packages/explorer/src/client/views/localView/cycle-order.test.ts`
-- Generated At: 2026-11-19T21:10:16.572Z
+- Generated At: 2026-11-22T07:12:55.824Z
 
 ## Authored
 ### Purpose
@@ -21,7 +21,7 @@ _No public symbols detected_
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
-- [`cycle-order.CycleWeights`](./cycle-order.ts.mdmd.md#symbol-cycleweights)
+- [`cycle-order.CycleWeights`](./cycle-order.ts.mdmd.md#symbol-cycleweights) (type-only)
 - [`cycle-order.EXACT_LIMIT`](./cycle-order.ts.mdmd.md#symbol-exact_limit)
 - [`cycle-order.comparePrices`](./cycle-order.ts.mdmd.md#symbol-compareprices)
 - [`cycle-order.exactOrder`](./cycle-order.ts.mdmd.md#symbol-exactorder)

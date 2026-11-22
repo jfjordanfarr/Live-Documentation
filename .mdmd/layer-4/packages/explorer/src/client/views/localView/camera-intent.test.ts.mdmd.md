@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: `packages/explorer/src/client/views/localView/camera-intent.test.ts`
-- Generated At: 2026-11-21T19:01:35.527Z
+- Generated At: 2026-11-22T07:12:55.530Z
 
 ## Authored
 ### Purpose
@@ -26,7 +26,7 @@ _No public symbols detected_
 - [`camera-intent.ARRIVAL_HOLD_MS`](./camera-intent.ts.mdmd.md#symbol-arrival_hold_ms)
 - [`camera-intent.FRAMING_EASE_MAX_MS`](./camera-intent.ts.mdmd.md#symbol-framing_ease_max_ms)
 - [`camera-intent.FRAMING_EASE_MIN_MS`](./camera-intent.ts.mdmd.md#symbol-framing_ease_min_ms)
-- [`camera-intent.FramingTarget`](./camera-intent.ts.mdmd.md#symbol-framingtarget)
+- [`camera-intent.FramingTarget`](./camera-intent.ts.mdmd.md#symbol-framingtarget) (type-only)
 - [`camera-intent.arrivalEndFrame`](./camera-intent.ts.mdmd.md#symbol-arrivalendframe)
 - [`camera-intent.arrivalLookChange`](./camera-intent.ts.mdmd.md#symbol-arrivallookchange-function)
 - [`camera-intent.arrivalPose`](./camera-intent.ts.mdmd.md#symbol-arrivalpose)
@@ -46,7 +46,7 @@ _No public symbols detected_
 - [`camera-intent.unionOf`](./camera-intent.ts.mdmd.md#symbol-unionof)
 - [`ladder-steps.STEP_RATIO`](./ladder-steps.ts.mdmd.md#symbol-step_ratio)
 - [`ladder-steps.zoomLook`](./ladder-steps.ts.mdmd.md#symbol-zoomlook-function)
-- [`layout-measure.Bounds`](./layout-measure.ts.mdmd.md#symbol-bounds)
+- [`layout-measure.Bounds`](./layout-measure.ts.mdmd.md#symbol-bounds) (type-only)
 - [`layout-measure.framePadding`](./layout-measure.ts.mdmd.md#symbol-framepadding)
 - `vitest` - `describe`, `expect`, `it`
 <!-- LIVE-DOC:END Dependencies -->

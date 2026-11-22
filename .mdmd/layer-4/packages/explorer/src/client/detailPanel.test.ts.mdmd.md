@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: `packages/explorer/src/client/detailPanel.test.ts`
-- Generated At: 2026-11-19T22:40:10.906Z
+- Generated At: 2026-11-22T07:12:53.642Z
 
 ## Authored
 ### Purpose
@@ -21,7 +21,7 @@ _No public symbols detected_
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
-- [`document.SymbolBlock`](../../../engine/src/live-docs/document.ts.mdmd.md#symbol-symbolblock)
+- [`document.SymbolBlock`](../../../engine/src/live-docs/document.ts.mdmd.md#symbol-symbolblock) (type-only)
 - [`document.renderSymbolBlocks`](../../../engine/src/live-docs/document.ts.mdmd.md#symbol-rendersymbolblocks)
 - [`detailPanel.inspectedSymbolHtml`](./detailPanel.ts.mdmd.md#symbol-inspectedsymbolhtml)
 - [`markdown.renderMarkdown`](./markdown.ts.mdmd.md#symbol-rendermarkdown)

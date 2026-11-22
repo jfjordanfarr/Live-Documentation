@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: `tests/e2e/served-build.test.ts`
-- Generated At: 2026-11-19T21:10:24.137Z
+- Generated At: 2026-11-22T07:12:59.279Z
 
 ## Authored
 ### Purpose
@@ -26,7 +26,7 @@ _No public symbols detected_
 - `node:net` - `AddressInfo` (type-only)
 - `node:os` - `os`
 - `node:path` - `path`
-- [`served-build.PortProbes`](./served-build.ts.mdmd.md#symbol-portprobes)
+- [`served-build.PortProbes`](./served-build.ts.mdmd.md#symbol-portprobes) (type-only)
 - [`served-build.decidePort`](./served-build.ts.mdmd.md#symbol-decideport)
 - [`served-build.proveServedFolder`](./served-build.ts.mdmd.md#symbol-proveservedfolder)
 - `vitest` - `afterEach`, `describe`, `expect`, `it`

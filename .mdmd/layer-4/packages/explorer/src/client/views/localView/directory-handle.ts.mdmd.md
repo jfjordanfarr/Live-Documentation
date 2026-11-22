@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/explorer/src/client/views/localView/directory-handle.ts`
-- Generated At: 2026-11-19T21:10:16.725Z
+- Generated At: 2026-11-22T07:12:55.945Z
 
 ## Authored
 ### Purpose
@@ -237,8 +237,8 @@ a directory is the thing to act on; and More could be held in a quarter of the f
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
-- [`held-lines.HeldHeader`](./held-lines.ts.mdmd.md#symbol-heldheader)
-- [`held-lines.HeldRoom`](./held-lines.ts.mdmd.md#symbol-heldroom)
+- [`held-lines.HeldHeader`](./held-lines.ts.mdmd.md#symbol-heldheader) (type-only)
+- [`held-lines.HeldRoom`](./held-lines.ts.mdmd.md#symbol-heldroom) (type-only)
 - [`held-lines.chooseHeldHeader`](./held-lines.ts.mdmd.md#symbol-chooseheldheader)
 - [`ladder-steps.LOOK_SCALES`](./ladder-steps.ts.mdmd.md#symbol-look_scales)
 <!-- LIVE-DOC:END Dependencies -->

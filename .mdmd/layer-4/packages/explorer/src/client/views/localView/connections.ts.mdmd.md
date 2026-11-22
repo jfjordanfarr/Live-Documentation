@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/explorer/src/client/views/localView/connections.ts`
-- Generated At: 2026-11-22T04:13:29.352Z
+- Generated At: 2026-11-22T07:12:55.706Z
 
 ## Authored
 ### Purpose
@@ -96,28 +96,28 @@ Takes every wire off the overlay and forgets the layer; the next drawing makes a
 - [`types.LocalMapTuning`](../../types.ts.mdmd.md#symbol-localmaptuning) (type-only)
 - [`types.MapReads`](../../types.ts.mdmd.md#symbol-mapreads) (type-only)
 - [`connection-geometry.DEFAULT_SELF_LOOP_PARAMS`](../connection-geometry.ts.mdmd.md#symbol-default_self_loop_params)
-- [`connection-geometry.LaceEdges`](../connection-geometry.ts.mdmd.md#symbol-laceedges)
-- [`connection-geometry.SelfLoopParams`](../connection-geometry.ts.mdmd.md#symbol-selfloopparams)
+- [`connection-geometry.LaceEdges`](../connection-geometry.ts.mdmd.md#symbol-laceedges) (type-only)
+- [`connection-geometry.SelfLoopParams`](../connection-geometry.ts.mdmd.md#symbol-selfloopparams) (type-only)
 - [`connection-geometry.computeSelfLoopStubs`](../connection-geometry.ts.mdmd.md#symbol-computeselfloopstubs)
-- [`branch-routing.Clearance`](./branch-routing.ts.mdmd.md#symbol-clearance)
+- [`branch-routing.Clearance`](./branch-routing.ts.mdmd.md#symbol-clearance) (type-only)
 - [`branch-routing.LANE_MARGIN`](./branch-routing.ts.mdmd.md#symbol-lane_margin)
-- [`branch-routing.Passage`](./branch-routing.ts.mdmd.md#symbol-passage)
-- [`branch-routing.RoutePiece`](./branch-routing.ts.mdmd.md#symbol-routepiece)
+- [`branch-routing.Passage`](./branch-routing.ts.mdmd.md#symbol-passage) (type-only)
+- [`branch-routing.RoutePiece`](./branch-routing.ts.mdmd.md#symbol-routepiece) (type-only)
 - [`branch-routing.curveTo`](./branch-routing.ts.mdmd.md#symbol-curveto)
 - [`branch-routing.routeBacktracks`](./branch-routing.ts.mdmd.md#symbol-routebacktracks)
 - [`branch-routing.threadedRoute`](./branch-routing.ts.mdmd.md#symbol-threadedroute)
-- [`branches.BranchGraph`](./branches.ts.mdmd.md#symbol-branchgraph)
+- [`branches.BranchGraph`](./branches.ts.mdmd.md#symbol-branchgraph) (type-only)
 - [`branches.edgeKey`](./branches.ts.mdmd.md#symbol-edgekey)
 - [`directory-flow.isPairLine`](./directory-flow.ts.mdmd.md#symbol-ispairline)
 - [`directory-flow.linksOf`](./directory-flow.ts.mdmd.md#symbol-linksof)
 - [`overview-files.OVERVIEW_FILES_ATTRIBUTE`](./overview-files.ts.mdmd.md#symbol-overview_files_attribute)
 - [`overview-files.OVERVIEW_LINES_ATTRIBUTE`](./overview-files.ts.mdmd.md#symbol-overview_lines_attribute)
-- [`reading-direction.LayoutSpan`](./reading-direction.ts.mdmd.md#symbol-layoutspan)
+- [`reading-direction.LayoutSpan`](./reading-direction.ts.mdmd.md#symbol-layoutspan) (type-only)
 - [`reading-direction.isMirrored`](./reading-direction.ts.mdmd.md#symbol-ismirrored)
 - [`reading-direction.shownSpan`](./reading-direction.ts.mdmd.md#symbol-shownspan)
 - [`reading-direction.spanInLayout`](./reading-direction.ts.mdmd.md#symbol-spaninlayout)
-- [`returning-connections.LaidBox`](./returning-connections.ts.mdmd.md#symbol-laidbox)
-- [`returning-connections.ReturningConnections`](./returning-connections.ts.mdmd.md#symbol-returningconnections-interface)
+- [`returning-connections.LaidBox`](./returning-connections.ts.mdmd.md#symbol-laidbox) (type-only)
+- [`returning-connections.ReturningConnections`](./returning-connections.ts.mdmd.md#symbol-returningconnections-interface) (type-only)
 - [`returning-connections.returnRoute`](./returning-connections.ts.mdmd.md#symbol-returnroute)
 - [`returning-connections.returningConnections`](./returning-connections.ts.mdmd.md#symbol-returningconnections-function)
 - [`runtime.LocalViewRuntime`](./runtime.ts.mdmd.md#symbol-localviewruntime) (type-only)
@@ -127,7 +127,7 @@ Takes every wire off the overlay and forgets the layer; the next drawing makes a
 - [`types.ColumnRole`](./types.ts.mdmd.md#symbol-columnrole) (type-only)
 - [`types.LayoutExtents`](./types.ts.mdmd.md#symbol-layoutextents) (type-only)
 - [`types.LocalEdge`](./types.ts.mdmd.md#symbol-localedge) (type-only)
-- [`wire-answers.WireAnswer`](./wire-answers.ts.mdmd.md#symbol-wireanswer)
+- [`wire-answers.WireAnswer`](./wire-answers.ts.mdmd.md#symbol-wireanswer) (type-only)
 - [`wire-answers.setAnswer`](./wire-answers.ts.mdmd.md#symbol-setanswer)
 - [`wire-gathering.NODE_HUB`](./wire-gathering.ts.mdmd.md#symbol-node_hub)
 - [`wire-gathering.gatherWires`](./wire-gathering.ts.mdmd.md#symbol-gatherwires)

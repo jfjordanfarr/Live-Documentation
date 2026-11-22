@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: `packages/explorer/src/client/history/rekey.test.ts`
-- Generated At: 2026-11-19T21:10:13.230Z
+- Generated At: 2026-11-22T07:12:53.766Z
 
 ## Authored
 ### Purpose
@@ -24,7 +24,7 @@ _No public symbols detected_
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
 - [`rekey.NO_RENAMES`](./rekey.ts.mdmd.md#symbol-no_renames)
-- [`rekey.Renames`](./rekey.ts.mdmd.md#symbol-renames)
+- [`rekey.Renames`](./rekey.ts.mdmd.md#symbol-renames) (type-only)
 - [`rekey.composedRenames`](./rekey.ts.mdmd.md#symbol-composedrenames)
 - [`rekey.hasRenames`](./rekey.ts.mdmd.md#symbol-hasrenames)
 - [`rekey.invertedRenames`](./rekey.ts.mdmd.md#symbol-invertedrenames)

@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: `packages/explorer/src/client/views/localView/directory-handle.test.ts`
-- Generated At: 2026-11-19T21:10:16.713Z
+- Generated At: 2026-11-22T07:12:55.934Z
 
 ## Authored
 ### Purpose
@@ -22,13 +22,13 @@ _No public symbols detected_
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
-- [`directory-handle.ClosedSibling`](./directory-handle.ts.mdmd.md#symbol-closedsibling)
+- [`directory-handle.ClosedSibling`](./directory-handle.ts.mdmd.md#symbol-closedsibling) (type-only)
 - [`directory-handle.HANDLE_AIR`](./directory-handle.ts.mdmd.md#symbol-handle_air)
 - [`directory-handle.HANDLE_FLOOR`](./directory-handle.ts.mdmd.md#symbol-handle_floor)
 - [`directory-handle.HANDLE_HOLD`](./directory-handle.ts.mdmd.md#symbol-handle_hold)
 - [`directory-handle.HANDLE_LINE`](./directory-handle.ts.mdmd.md#symbol-handle_line)
 - [`directory-handle.HANDLE_STRIP`](./directory-handle.ts.mdmd.md#symbol-handle_strip)
-- [`directory-handle.StripBox`](./directory-handle.ts.mdmd.md#symbol-stripbox)
+- [`directory-handle.StripBox`](./directory-handle.ts.mdmd.md#symbol-stripbox) (type-only)
 - [`directory-handle.closedFamily`](./directory-handle.ts.mdmd.md#symbol-closedfamily-function)
 - [`directory-handle.fitHandle`](./directory-handle.ts.mdmd.md#symbol-fithandle)
 - [`directory-handle.handleParts`](./directory-handle.ts.mdmd.md#symbol-handleparts)

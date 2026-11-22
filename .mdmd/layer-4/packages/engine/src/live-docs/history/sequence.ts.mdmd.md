@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/engine/src/live-docs/history/sequence.ts`
-- Generated At: 2026-11-20T09:32:47.784Z
+- Generated At: 2026-11-22T07:12:53.197Z
 
 ## Authored
 ### Purpose
@@ -121,8 +121,8 @@ What the sequence says of itself without its body.
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
 - [`codec.Interner`](./codec.ts.mdmd.md#symbol-interner)
-- [`codec.Interners`](./codec.ts.mdmd.md#symbol-interners)
-- [`codec.RowTables`](./codec.ts.mdmd.md#symbol-rowtables)
+- [`codec.Interners`](./codec.ts.mdmd.md#symbol-interners) (type-only)
+- [`codec.RowTables`](./codec.ts.mdmd.md#symbol-rowtables) (type-only)
 - [`codec.decodeChange`](./codec.ts.mdmd.md#symbol-decodechange)
 - [`codec.decodeRows`](./codec.ts.mdmd.md#symbol-decoderows)
 - [`codec.decodeRowsChange`](./codec.ts.mdmd.md#symbol-decoderowschange)
@@ -133,27 +133,27 @@ What the sequence says of itself without its body.
 - [`codec.encodeShape`](./codec.ts.mdmd.md#symbol-encodeshape)
 - [`codec.newInterners`](./codec.ts.mdmd.md#symbol-newinterners)
 - [`derive.deriveChange`](./derive.ts.mdmd.md#symbol-derivechange)
-- [`format.CommitInfo`](./format.ts.mdmd.md#symbol-commitinfo)
+- [`format.CommitInfo`](./format.ts.mdmd.md#symbol-commitinfo) (type-only)
 - [`format.HISTORY_FORMAT`](./format.ts.mdmd.md#symbol-history_format)
-- [`format.HistoryHead`](./format.ts.mdmd.md#symbol-historyhead)
-- [`format.HistoryLens`](./format.ts.mdmd.md#symbol-historylens)
-- [`format.HistorySequence`](./format.ts.mdmd.md#symbol-historysequence)
-- [`format.HistorySource`](./format.ts.mdmd.md#symbol-historysource)
-- [`format.HistoryStep`](./format.ts.mdmd.md#symbol-historystep)
-- [`format.HistoryWindow`](./format.ts.mdmd.md#symbol-historywindow)
+- [`format.HistoryHead`](./format.ts.mdmd.md#symbol-historyhead) (type-only)
+- [`format.HistoryLens`](./format.ts.mdmd.md#symbol-historylens) (type-only)
+- [`format.HistorySequence`](./format.ts.mdmd.md#symbol-historysequence) (type-only)
+- [`format.HistorySource`](./format.ts.mdmd.md#symbol-historysource) (type-only)
+- [`format.HistoryStep`](./format.ts.mdmd.md#symbol-historystep) (type-only)
+- [`format.HistoryWindow`](./format.ts.mdmd.md#symbol-historywindow) (type-only)
 - [`format.KEYFRAME_INTERVAL`](./format.ts.mdmd.md#symbol-keyframe_interval)
-- [`format.Keyframe`](./format.ts.mdmd.md#symbol-keyframe)
-- [`format.SnapshotTuples`](./format.ts.mdmd.md#symbol-snapshottuples)
-- [`rows.FileRows`](./rows.ts.mdmd.md#symbol-filerows)
-- [`Rows`](./rows.ts.mdmd.md#symbol-rows)
-- [`rows.RowsChange`](./rows.ts.mdmd.md#symbol-rowschange)
+- [`format.Keyframe`](./format.ts.mdmd.md#symbol-keyframe) (type-only)
+- [`format.SnapshotTuples`](./format.ts.mdmd.md#symbol-snapshottuples) (type-only)
+- [`rows.FileRows`](./rows.ts.mdmd.md#symbol-filerows) (type-only)
+- [`Rows`](./rows.ts.mdmd.md#symbol-rows) (type-only)
+- [`rows.RowsChange`](./rows.ts.mdmd.md#symbol-rowschange) (type-only)
 - [`rows.applyRowsChange`](./rows.ts.mdmd.md#symbol-applyrowschange)
 - [`rows.deriveRowsChange`](./rows.ts.mdmd.md#symbol-deriverowschange)
 - [`rows.emptyRowsChange`](./rows.ts.mdmd.md#symbol-emptyrowschange)
 - [`rows.rowsAgainstShape`](./rows.ts.mdmd.md#symbol-rowsagainstshape)
 - [`rows.rowsDifferences`](./rows.ts.mdmd.md#symbol-rowsdifferences)
-- [`Shape`](./shape.ts.mdmd.md#symbol-shape)
-- [`shape.ShapeChange`](./shape.ts.mdmd.md#symbol-shapechange)
+- [`Shape`](./shape.ts.mdmd.md#symbol-shape) (type-only)
+- [`shape.ShapeChange`](./shape.ts.mdmd.md#symbol-shapechange) (type-only)
 - [`shape.applyChange`](./shape.ts.mdmd.md#symbol-applychange)
 - [`shape.shapeDifferences`](./shape.ts.mdmd.md#symbol-shapedifferences)
 - [`versionControl.VersionChanges`](./versionControl.ts.mdmd.md#symbol-versionchanges) (type-only)

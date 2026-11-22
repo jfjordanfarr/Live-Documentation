@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/explorer/src/client/pathfind.ts`
-- Generated At: 2026-11-22T04:55:06.990Z
+- Generated At: 2026-11-22T07:12:54.210Z
 
 ## Authored
 ### Purpose
@@ -98,7 +98,7 @@ The path drawer leaves them out, so the bar counts them aloud.
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
-- [`pathfind.Neighbours`](../../../engine/src/live-docs/pathfind.ts.mdmd.md#symbol-neighbours)
+- [`pathfind.Neighbours`](../../../engine/src/live-docs/pathfind.ts.mdmd.md#symbol-neighbours) (type-only)
 - [`pathfind.pathTo`](../../../engine/src/live-docs/pathfind.ts.mdmd.md#symbol-pathto)
 - [`pathfind.reachFrom`](../../../engine/src/live-docs/pathfind.ts.mdmd.md#symbol-reachfrom)
 - [`pathfind.walkBetween`](../../../engine/src/live-docs/pathfind.ts.mdmd.md#symbol-walkbetween)

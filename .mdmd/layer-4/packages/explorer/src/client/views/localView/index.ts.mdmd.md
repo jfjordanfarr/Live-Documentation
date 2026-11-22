@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/explorer/src/client/views/localView/index.ts`
-- Generated At: 2026-11-22T04:23:18.585Z
+- Generated At: 2026-11-22T07:12:55.994Z
 
 ## Authored
 ### Purpose
@@ -34,11 +34,11 @@ The [November 8 reading feedback](../../../../../../../../AI-Agent-Workspace/Age
 Creates a Local Map view backed by a {@link LocalViewController}.
 
 #### `LocalViewApi` {#symbol-localviewapi}
-- Type: unknown
+- Type: type (type-only)
 - Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/index.ts#L42)
 
 #### `LocalViewOptions` {#symbol-localviewoptions}
-- Type: unknown
+- Type: type (type-only)
 - Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/index.ts#L42)
 <!-- LIVE-DOC:END Public Symbols -->
 

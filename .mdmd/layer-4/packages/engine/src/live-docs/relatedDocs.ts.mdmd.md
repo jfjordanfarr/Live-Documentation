@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/engine/src/live-docs/relatedDocs.ts`
-- Generated At: 2026-11-19T22:40:10.765Z
+- Generated At: 2026-11-22T07:12:53.370Z
 
 ## Authored
 ### Purpose
@@ -91,7 +91,7 @@ Whether the configuration's bundle exclusions (`bundleExclude`) name a document,
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
 - `minimatch` - `minimatch`
-- [`graph.DocLocation`](./graph.ts.mdmd.md#symbol-doclocation)
+- [`graph.DocLocation`](./graph.ts.mdmd.md#symbol-doclocation) (type-only)
 - [`graph.linkTarget`](./graph.ts.mdmd.md#symbol-linktarget-function)
 - [`graph.resolveDocLink`](./graph.ts.mdmd.md#symbol-resolvedoclink)
 - [`markdownLinks.readMarkdownLinks`](../tooling/markdownLinks.ts.mdmd.md#symbol-readmarkdownlinks)

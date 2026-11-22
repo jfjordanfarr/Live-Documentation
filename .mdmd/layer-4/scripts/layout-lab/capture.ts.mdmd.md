@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `scripts/layout-lab/capture.ts`
-- Generated At: 2026-11-19T21:10:18.472Z
+- Generated At: 2026-11-22T07:12:57.450Z
 
 ## Authored
 ### Purpose
@@ -142,16 +142,16 @@ Reads a capture written by `writeCapture`.
 - `node:fs/promises`
 - `node:path` - `path`
 - [`layout-presets.LAYOUT_PRESETS`](../../packages/explorer/src/client/layout-presets.ts.mdmd.md#symbol-layout_presets)
-- [`layout-presets.LayoutPreset`](../../packages/explorer/src/client/layout-presets.ts.mdmd.md#symbol-layoutpreset)
+- [`layout-presets.LayoutPreset`](../../packages/explorer/src/client/layout-presets.ts.mdmd.md#symbol-layoutpreset) (type-only)
 - [`local-storage.PERSISTED_UI_KEY`](../../packages/explorer/src/client/persistence/local-storage.ts.mdmd.md#symbol-persisted_ui_key)
 - [`local-storage.PERSISTED_UI_VERSION`](../../packages/explorer/src/client/persistence/local-storage.ts.mdmd.md#symbol-persisted_ui_version)
 - [`types.ExplorerFilters`](../../packages/explorer/src/client/types.ts.mdmd.md#symbol-explorerfilters) (type-only)
 - [`card-model.TEXT_TOLERANCE`](./card-model.ts.mdmd.md#symbol-text_tolerance)
-- [`card-model.TitleRoom`](./card-model.ts.mdmd.md#symbol-titleroom)
+- [`card-model.TitleRoom`](./card-model.ts.mdmd.md#symbol-titleroom) (type-only)
 - [`card-model.titleHeight`](./card-model.ts.mdmd.md#symbol-titleheight)
 - [`reading-model.ReadingFlow`](./reading-model.ts.mdmd.md#symbol-readingflow) (type-only)
 - [`scopes.ORIGIN`](./scopes.ts.mdmd.md#symbol-origin)
-- [`scopes.ScopeRun`](./scopes.ts.mdmd.md#symbol-scoperun)
+- [`scopes.ScopeRun`](./scopes.ts.mdmd.md#symbol-scoperun) (type-only)
 - [`scopes.admitCompiledFunctions`](./scopes.ts.mdmd.md#symbol-admitcompiledfunctions)
 - [`scopes.serveBundle`](./scopes.ts.mdmd.md#symbol-servebundle)
 - [`still-picture.localRetainUrl`](../../tests/e2e/still-picture.ts.mdmd.md#symbol-localretainurl)

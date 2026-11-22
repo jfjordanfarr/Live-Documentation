@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `scripts/slopcop/auditedFiles.ts`
-- Generated At: 2026-11-20T16:44:36.154Z
+- Generated At: 2026-11-22T07:12:58.118Z
 
 ## Authored
 ### Purpose
@@ -34,7 +34,7 @@ audits always matched them.
 - `glob` - `globSync`
 - `node:path` - `path`
 - [`processMark.machineFailure`](../../packages/engine/src/live-docs/processMark.ts.mdmd.md#symbol-machinefailure)
-- [`gitIgnored.GitUnanswered`](../../packages/engine/src/tooling/gitIgnored.ts.mdmd.md#symbol-gitunanswered)
+- [`gitIgnored.GitUnanswered`](../../packages/engine/src/tooling/gitIgnored.ts.mdmd.md#symbol-gitunanswered) (type-only)
 - [`gitIgnored.foldersReadAsEmpty`](../../packages/engine/src/tooling/gitIgnored.ts.mdmd.md#symbol-foldersreadasempty)
 - [`gitIgnored.gitIgnores`](../../packages/engine/src/tooling/gitIgnored.ts.mdmd.md#symbol-gitignores-function)
 <!-- LIVE-DOC:END Dependencies -->

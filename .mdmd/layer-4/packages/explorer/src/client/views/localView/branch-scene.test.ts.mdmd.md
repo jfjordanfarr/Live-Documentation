@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: `packages/explorer/src/client/views/localView/branch-scene.test.ts`
-- Generated At: 2026-11-19T21:10:16.027Z
+- Generated At: 2026-11-22T07:12:55.355Z
 
 ## Authored
 ### Purpose
@@ -28,7 +28,7 @@ _No public symbols detected_
 - [`branch-scene.BAND_BORDER`](./branch-scene.ts.mdmd.md#symbol-band_border)
 - [`branch-scene.DEFAULT_SCENE_TUNING`](./branch-scene.ts.mdmd.md#symbol-default_scene_tuning)
 - [`branch-scene.SLOT_LINE`](./branch-scene.ts.mdmd.md#symbol-slot_line)
-- [`branch-scene.SceneMeasurer`](./branch-scene.ts.mdmd.md#symbol-scenemeasurer)
+- [`branch-scene.SceneMeasurer`](./branch-scene.ts.mdmd.md#symbol-scenemeasurer) (type-only)
 - [`branch-scene.hostOf`](./branch-scene.ts.mdmd.md#symbol-hostof)
 - [`branch-scene.layoutScene`](./branch-scene.ts.mdmd.md#symbol-layoutscene)
 - [`branch-scene.planBranches`](./branch-scene.ts.mdmd.md#symbol-planbranches)

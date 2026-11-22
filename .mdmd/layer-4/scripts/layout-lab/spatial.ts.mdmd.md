@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `scripts/layout-lab/spatial.ts`
-- Generated At: 2026-11-19T21:10:18.958Z
+- Generated At: 2026-11-22T07:12:57.655Z
 
 ## Authored
 ### Purpose
@@ -53,7 +53,7 @@ Human-readable companion to the complete node, reference-count and coordinate JS
 - [`types.ExplorerGraphPayload`](../../packages/explorer/src/shared/types.ts.mdmd.md#symbol-explorergraphpayload) (type-only)
 - [`evaluate.includeNode`](./evaluate.ts.mdmd.md#symbol-includenode)
 - [`evaluate.scopePins`](./evaluate.ts.mdmd.md#symbol-scopepins)
-- [`scopes.ScopeRun`](./scopes.ts.mdmd.md#symbol-scoperun)
+- [`scopes.ScopeRun`](./scopes.ts.mdmd.md#symbol-scoperun) (type-only)
 - [`scopes.retainedSubject`](./scopes.ts.mdmd.md#symbol-retainedsubject)
 <!-- LIVE-DOC:END Dependencies -->
 

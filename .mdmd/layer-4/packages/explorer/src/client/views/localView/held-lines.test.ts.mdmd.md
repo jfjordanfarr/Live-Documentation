@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: `packages/explorer/src/client/views/localView/held-lines.test.ts`
-- Generated At: 2026-11-19T21:10:16.772Z
+- Generated At: 2026-11-22T07:12:55.975Z
 
 ## Authored
 ### Purpose
@@ -28,8 +28,8 @@ _No public symbols detected_
 - `node:fs` - `readFileSync`
 - `node:path` - `path`
 - [`held-lines.HELD_BANDS`](./held-lines.ts.mdmd.md#symbol-held_bands)
-- [`held-lines.HeldRoom`](./held-lines.ts.mdmd.md#symbol-heldroom)
-- [`held-lines.TitleRooms`](./held-lines.ts.mdmd.md#symbol-titlerooms)
+- [`held-lines.HeldRoom`](./held-lines.ts.mdmd.md#symbol-heldroom) (type-only)
+- [`held-lines.TitleRooms`](./held-lines.ts.mdmd.md#symbol-titlerooms) (type-only)
 - [`held-lines.chooseHeldHeader`](./held-lines.ts.mdmd.md#symbol-chooseheldheader)
 - [`held-lines.chooseNameHeader`](./held-lines.ts.mdmd.md#symbol-choosenameheader)
 - [`held-lines.heldLineCount`](./held-lines.ts.mdmd.md#symbol-heldlinecount)

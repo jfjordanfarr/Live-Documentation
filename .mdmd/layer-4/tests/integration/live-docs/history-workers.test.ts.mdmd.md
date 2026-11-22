@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: `tests/integration/live-docs/history-workers.test.ts`
-- Generated At: 2026-11-20T21:16:02.827Z
+- Generated At: 2026-11-22T07:12:59.857Z
 
 ## Authored
 ### Purpose
@@ -36,7 +36,7 @@ _No public symbols detected_
 - [`processMark.READING_DEPTH`](../../../packages/engine/src/live-docs/processMark.ts.mdmd.md#symbol-reading_depth)
 - [`generator.generateLiveDocs`](../../../packages/generator/src/generator.ts.mdmd.md#symbol-generatelivedocs)
 - [`regenerate.Scratch`](../../../packages/generator/src/history/regenerate.ts.mdmd.md#symbol-scratch)
-- [`regenerate.Worker`](../../../packages/generator/src/history/regenerate.ts.mdmd.md#symbol-worker)
+- [`regenerate.Worker`](../../../packages/generator/src/history/regenerate.ts.mdmd.md#symbol-worker) (type-only)
 - [`regenerate`](../../../packages/generator/src/history/regenerate.ts.mdmd.md#symbol-regenerate)
 - [`regenerate.summarizingEnvironment`](../../../packages/generator/src/history/regenerate.ts.mdmd.md#symbol-summarizingenvironment)
 - [`regenerate.summarizingFlags`](../../../packages/generator/src/history/regenerate.ts.mdmd.md#symbol-summarizingflags)

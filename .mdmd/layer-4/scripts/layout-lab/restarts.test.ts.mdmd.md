@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: `scripts/layout-lab/restarts.test.ts`
-- Generated At: 2026-11-19T21:10:18.802Z
+- Generated At: 2026-11-22T07:12:57.586Z
 
 ## Authored
 ### Purpose
@@ -27,7 +27,7 @@ _No public symbols detected_
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
 - [`evaluate.baselineConfig`](./evaluate.ts.mdmd.md#symbol-baselineconfig)
-- [`restarts.StartRow`](./restarts.ts.mdmd.md#symbol-startrow)
+- [`restarts.StartRow`](./restarts.ts.mdmd.md#symbol-startrow) (type-only)
 - [`restarts.parseCosts`](./restarts.ts.mdmd.md#symbol-parsecosts)
 - [`restarts.simulateSearch`](./restarts.ts.mdmd.md#symbol-simulatesearch)
 - [`restarts.summarizeSetting`](./restarts.ts.mdmd.md#symbol-summarizesetting)

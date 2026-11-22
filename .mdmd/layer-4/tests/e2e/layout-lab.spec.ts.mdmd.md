@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: `tests/e2e/layout-lab.spec.ts`
-- Generated At: 2026-11-19T21:10:22.195Z
+- Generated At: 2026-11-22T07:12:58.828Z
 
 ## Authored
 ### Purpose
@@ -40,12 +40,12 @@ _No public symbols detected_
 - [`local-storage.getDefaultTuning`](../../packages/explorer/src/client/persistence/local-storage.ts.mdmd.md#symbol-getdefaulttuning)
 - [`StaticExplorerData`](../../packages/explorer/src/shared/staticExplorerData.ts.mdmd.md#symbol-staticexplorerdata) (type-only)
 - [`capture.captureFromPage`](../../scripts/layout-lab/capture.ts.mdmd.md#symbol-capturefrompage)
-- [`evaluate.CycleSearch`](../../scripts/layout-lab/evaluate.ts.mdmd.md#symbol-cyclesearch)
-- [`evaluate.CycleTerms`](../../scripts/layout-lab/evaluate.ts.mdmd.md#symbol-cycleterms)
+- [`evaluate.CycleSearch`](../../scripts/layout-lab/evaluate.ts.mdmd.md#symbol-cyclesearch) (type-only)
+- [`evaluate.CycleTerms`](../../scripts/layout-lab/evaluate.ts.mdmd.md#symbol-cycleterms) (type-only)
 - [`evaluate.baselineConfig`](../../scripts/layout-lab/evaluate.ts.mdmd.md#symbol-baselineconfig)
 - [`evaluate.driftOf`](../../scripts/layout-lab/evaluate.ts.mdmd.md#symbol-driftof)
 - [`evaluate`](../../scripts/layout-lab/evaluate.ts.mdmd.md#symbol-evaluate)
-- [`scopes.ScopeRun`](../../scripts/layout-lab/scopes.ts.mdmd.md#symbol-scoperun)
+- [`scopes.ScopeRun`](../../scripts/layout-lab/scopes.ts.mdmd.md#symbol-scoperun) (type-only)
 - [`scopes.loadBundleGraph`](../../scripts/layout-lab/scopes.ts.mdmd.md#symbol-loadbundlegraph)
 - [`scopes.DECK_SCOPES`](./scopes.ts.mdmd.md#symbol-deck_scopes)
 - [`still-picture.localMapSettled`](./still-picture.ts.mdmd.md#symbol-localmapsettled)

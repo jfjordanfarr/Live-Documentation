@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: `packages/engine/src/live-docs/boardGraph.test.ts`
-- Generated At: 2026-11-19T21:10:11.027Z
+- Generated At: 2026-11-22T07:12:52.578Z
 
 ## Authored
 ### Purpose
@@ -23,7 +23,7 @@ _No public symbols detected_
 ### Dependencies
 - [`Board`](./board.ts.mdmd.md#symbol-board) (type-only)
 - [`boardGraph.deriveBoardGraph`](./boardGraph.ts.mdmd.md#symbol-deriveboardgraph)
-- [`document.LiveDoc`](./document.ts.mdmd.md#symbol-livedoc)
+- [`document.LiveDoc`](./document.ts.mdmd.md#symbol-livedoc) (type-only)
 - [`document.parseLiveDoc`](./document.ts.mdmd.md#symbol-parselivedoc)
 - [`document.renderLiveDoc`](./document.ts.mdmd.md#symbol-renderlivedoc)
 - [`graph.deriveLiveDocGraph`](./graph.ts.mdmd.md#symbol-derivelivedocgraph)

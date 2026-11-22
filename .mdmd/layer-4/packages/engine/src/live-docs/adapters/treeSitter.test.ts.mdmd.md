@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: `packages/engine/src/live-docs/adapters/treeSitter.test.ts`
-- Generated At: 2026-11-20T16:58:04.415Z
+- Generated At: 2026-11-22T07:12:52.509Z
 
 ## Authored
 ### Purpose
@@ -25,7 +25,7 @@ _No public symbols detected_
 - `node:module` - `syncBuiltinESMExports`
 - `node:os` - `os`
 - `node:path` - `path`
-- [`treeSitter.SyntaxNode`](./treeSitter.ts.mdmd.md#symbol-syntaxnode)
+- [`treeSitter.SyntaxNode`](./treeSitter.ts.mdmd.md#symbol-syntaxnode) (type-only)
 - [`treeSitter.grammarParser`](./treeSitter.ts.mdmd.md#symbol-grammarparser)
 - [`treeSitter.readTree`](./treeSitter.ts.mdmd.md#symbol-readtree)
 - `vitest` - `describe`, `expect`, `it`, `vi`

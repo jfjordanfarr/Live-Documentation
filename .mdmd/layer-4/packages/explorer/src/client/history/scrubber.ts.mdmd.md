@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/explorer/src/client/history/scrubber.ts`
-- Generated At: 2026-11-19T21:10:13.281Z
+- Generated At: 2026-11-22T07:12:53.787Z
 
 ## Authored
 ### Purpose
@@ -76,12 +76,12 @@ Make the scrubber under its parent, hidden until synced.
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
 - [`format.CommitInfo`](../../../../engine/src/live-docs/history/format.ts.mdmd.md#symbol-commitinfo) (type-only)
-- [`navigation.HistoryRange`](./navigation.ts.mdmd.md#symbol-historyrange)
+- [`navigation.HistoryRange`](./navigation.ts.mdmd.md#symbol-historyrange) (type-only)
 - [`navigation.findCommits`](./navigation.ts.mdmd.md#symbol-findcommits)
-- [`tick-model.TickModel`](./tick-model.ts.mdmd.md#symbol-tickmodel-interface)
+- [`tick-model.TickModel`](./tick-model.ts.mdmd.md#symbol-tickmodel-interface) (type-only)
 - [`tick-model.nextStop`](./tick-model.ts.mdmd.md#symbol-nextstop)
 - [`tick-model.stepAtPosition`](./tick-model.ts.mdmd.md#symbol-stepatposition)
-- [`zoom.View`](./zoom.ts.mdmd.md#symbol-view)
+- [`zoom.View`](./zoom.ts.mdmd.md#symbol-view) (type-only)
 - [`zoom.panView`](./zoom.ts.mdmd.md#symbol-panview)
 - [`zoom.rangeOfView`](./zoom.ts.mdmd.md#symbol-rangeofview)
 - [`zoom.slideToHold`](./zoom.ts.mdmd.md#symbol-slidetohold)

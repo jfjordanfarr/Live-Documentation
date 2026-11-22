@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: `tests/e2e/scenarios/tokens.test.ts`
-- Generated At: 2026-11-19T21:10:23.978Z
+- Generated At: 2026-11-22T07:12:59.243Z
 
 ## Authored
 ### Purpose
@@ -26,7 +26,7 @@ _No public symbols detected_
 - `node:child_process` - `execFileSync`
 - `node:fs`
 - `node:path`
-- [`tokens.RosettaManifest`](./tokens.ts.mdmd.md#symbol-rosettamanifest)
+- [`tokens.RosettaManifest`](./tokens.ts.mdmd.md#symbol-rosettamanifest) (type-only)
 - [`tokens.TokenError`](./tokens.ts.mdmd.md#symbol-tokenerror)
 - [`tokens.matchesPattern`](./tokens.ts.mdmd.md#symbol-matchespattern)
 - [`tokens.resolveList`](./tokens.ts.mdmd.md#symbol-resolvelist)

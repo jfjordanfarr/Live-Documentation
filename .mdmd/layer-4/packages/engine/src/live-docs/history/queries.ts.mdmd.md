@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/engine/src/live-docs/history/queries.ts`
-- Generated At: 2026-11-22T05:46:12.427Z
+- Generated At: 2026-11-22T07:12:53.134Z
 
 ## Authored
 ### Purpose
@@ -162,25 +162,25 @@ is dead whatever happened to its path after.
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
-- [`graph.DocLocation`](../graph.ts.mdmd.md#symbol-doclocation)
-- [`graph.GraphFile`](../graph.ts.mdmd.md#symbol-graphfile)
-- [`graph.LiveDocGraph`](../graph.ts.mdmd.md#symbol-livedocgraph)
+- [`graph.DocLocation`](../graph.ts.mdmd.md#symbol-doclocation) (type-only)
+- [`graph.GraphFile`](../graph.ts.mdmd.md#symbol-graphfile) (type-only)
+- [`graph.LiveDocGraph`](../graph.ts.mdmd.md#symbol-livedocgraph) (type-only)
 - [`graph.graphFilesByPath`](../graph.ts.mdmd.md#symbol-graphfilesbypath)
 - [`directories.directoryRenames`](./directories.ts.mdmd.md#symbol-directoryrenames)
 - [`format.CommitInfo`](./format.ts.mdmd.md#symbol-commitinfo) (type-only)
 - [`format.HistorySequence`](./format.ts.mdmd.md#symbol-historysequence) (type-only)
-- [`rows.FileRows`](./rows.ts.mdmd.md#symbol-filerows)
-- [`rows.RowLink`](./rows.ts.mdmd.md#symbol-rowlink)
-- [`rows.RowSymbol`](./rows.ts.mdmd.md#symbol-rowsymbol)
-- [`Rows`](./rows.ts.mdmd.md#symbol-rows)
+- [`rows.FileRows`](./rows.ts.mdmd.md#symbol-filerows) (type-only)
+- [`rows.RowLink`](./rows.ts.mdmd.md#symbol-rowlink) (type-only)
+- [`rows.RowSymbol`](./rows.ts.mdmd.md#symbol-rowsymbol) (type-only)
+- [`Rows`](./rows.ts.mdmd.md#symbol-rows) (type-only)
 - [`rows.linksOf`](./rows.ts.mdmd.md#symbol-linksof)
-- [`sequence.Moment`](./sequence.ts.mdmd.md#symbol-moment)
+- [`sequence.Moment`](./sequence.ts.mdmd.md#symbol-moment) (type-only)
 - [`sequence.changeAt`](./sequence.ts.mdmd.md#symbol-changeat)
 - [`sequence.commitAt`](./sequence.ts.mdmd.md#symbol-commitat)
 - [`sequence.seek`](./sequence.ts.mdmd.md#symbol-seek)
-- [`shape.FileShape`](./shape.ts.mdmd.md#symbol-fileshape)
-- [`Shape`](./shape.ts.mdmd.md#symbol-shape)
-- [`shape.ShapeChange`](./shape.ts.mdmd.md#symbol-shapechange)
+- [`shape.FileShape`](./shape.ts.mdmd.md#symbol-fileshape) (type-only)
+- [`Shape`](./shape.ts.mdmd.md#symbol-shape) (type-only)
+- [`shape.ShapeChange`](./shape.ts.mdmd.md#symbol-shapechange) (type-only)
 - [`shape.edgeEnds`](./shape.ts.mdmd.md#symbol-edgeends)
 - [`shape.edgeKey`](./shape.ts.mdmd.md#symbol-edgekey)
 <!-- LIVE-DOC:END Dependencies -->

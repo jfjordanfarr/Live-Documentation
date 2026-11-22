@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: `scripts/oracle/sql-compare.ts`
 - Entry: command `oracle:sql` of [`package.json`](../../package.json.mdmd.md)
-- Generated At: 2026-11-21T07:25:44.862Z
+- Generated At: 2026-11-22T07:12:58.067Z
 
 ## Authored
 ### Purpose
@@ -131,13 +131,13 @@ The files of a folder ScriptDom reads: every `.sql` file, but a fixture's build 
 - [`fixture.listFixtureFiles`](./fixture.ts.mdmd.md#symbol-listfixturefiles)
 - [`sources.sourceDigests`](./sources.ts.mdmd.md#symbol-sourcedigests)
 - [`sources.sourcesDiffer`](./sources.ts.mdmd.md#symbol-sourcesdiffer)
-- [`sql-scriptdom.ScriptDomCreate`](./sql-scriptdom.ts.mdmd.md#symbol-scriptdomcreate)
-- [`sql-scriptdom.ScriptDomDynamic`](./sql-scriptdom.ts.mdmd.md#symbol-scriptdomdynamic)
-- [`sql-scriptdom.ScriptDomHow`](./sql-scriptdom.ts.mdmd.md#symbol-scriptdomhow)
-- [`sql-scriptdom.ScriptDomModule`](./sql-scriptdom.ts.mdmd.md#symbol-scriptdommodule)
-- [`sql-scriptdom.ScriptDomName`](./sql-scriptdom.ts.mdmd.md#symbol-scriptdomname)
-- [`sql-scriptdom.ScriptDomRecord`](./sql-scriptdom.ts.mdmd.md#symbol-scriptdomrecord)
-- [`sql-scriptdom.ScriptDomReference`](./sql-scriptdom.ts.mdmd.md#symbol-scriptdomreference)
+- [`sql-scriptdom.ScriptDomCreate`](./sql-scriptdom.ts.mdmd.md#symbol-scriptdomcreate) (type-only)
+- [`sql-scriptdom.ScriptDomDynamic`](./sql-scriptdom.ts.mdmd.md#symbol-scriptdomdynamic) (type-only)
+- [`sql-scriptdom.ScriptDomHow`](./sql-scriptdom.ts.mdmd.md#symbol-scriptdomhow) (type-only)
+- [`sql-scriptdom.ScriptDomModule`](./sql-scriptdom.ts.mdmd.md#symbol-scriptdommodule) (type-only)
+- [`sql-scriptdom.ScriptDomName`](./sql-scriptdom.ts.mdmd.md#symbol-scriptdomname) (type-only)
+- [`sql-scriptdom.ScriptDomRecord`](./sql-scriptdom.ts.mdmd.md#symbol-scriptdomrecord) (type-only)
+- [`sql-scriptdom.ScriptDomReference`](./sql-scriptdom.ts.mdmd.md#symbol-scriptdomreference) (type-only)
 - [`sql-scriptdom.parseSqlFiles`](./sql-scriptdom.ts.mdmd.md#symbol-parsesqlfiles)
 - [`sql-scriptdom.readScriptDomRecord`](./sql-scriptdom.ts.mdmd.md#symbol-readscriptdomrecord)
 - [`sql-scriptdom.writeScriptDomRecord`](./sql-scriptdom.ts.mdmd.md#symbol-writescriptdomrecord)

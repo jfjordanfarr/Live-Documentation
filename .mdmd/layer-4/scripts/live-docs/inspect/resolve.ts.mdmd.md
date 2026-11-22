@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `scripts/live-docs/inspect/resolve.ts`
-- Generated At: 2026-11-19T22:40:13.295Z
+- Generated At: 2026-11-22T07:12:57.814Z
 
 ## Authored
 ### Purpose
@@ -114,7 +114,7 @@ Returns the matched symbol name or the original anchor if no match found.
 - [`LiveDocumentationConfig`](../../../packages/engine/src/config/liveDocumentationConfig.ts.mdmd.md#symbol-livedocumentationconfig) (type-only)
 - [`document.symbolName`](../../../packages/engine/src/live-docs/document.ts.mdmd.md#symbol-symbolname)
 - [`graph.LiveDocGraph`](../../../packages/engine/src/live-docs/graph.ts.mdmd.md#symbol-livedocgraph) (type-only)
-- [`pathfind.SymbolReference`](../../../packages/engine/src/live-docs/pathfind.ts.mdmd.md#symbol-symbolreference)
+- [`pathfind.SymbolReference`](../../../packages/engine/src/live-docs/pathfind.ts.mdmd.md#symbol-symbolreference) (type-only)
 - [`pathfind.symbolMatchesAnchor`](../../../packages/engine/src/live-docs/pathfind.ts.mdmd.md#symbol-symbolmatchesanchor)
 - [`pathUtils.normalizeWorkspacePath`](../../../packages/engine/src/tooling/pathUtils.ts.mdmd.md#symbol-normalizeworkspacepath)
 - [`cli.UsageError`](../cli.ts.mdmd.md#symbol-usageerror)

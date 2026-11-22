@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/explorer/src/client/views/localView/cut-signs.ts`
-- Generated At: 2026-11-21T07:10:14.660Z
+- Generated At: 2026-11-22T07:12:55.812Z
 
 ## Authored
 ### Purpose
@@ -55,7 +55,7 @@ Makes the controls inside the view, after its layers so that they paint above th
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
 - [`camera-intent.VIEW_EDGES`](./camera-intent.ts.mdmd.md#symbol-view_edges)
-- [`camera-intent.ViewEdge`](./camera-intent.ts.mdmd.md#symbol-viewedge)
+- [`camera-intent.ViewEdge`](./camera-intent.ts.mdmd.md#symbol-viewedge) (type-only)
 - [`camera-intent.cutByEdge`](./camera-intent.ts.mdmd.md#symbol-cutbyedge)
 - [`edge-signs.FramePlace`](./edge-signs.ts.mdmd.md#symbol-frameplace) (type-only)
 - [`layout-measure.Bounds`](./layout-measure.ts.mdmd.md#symbol-bounds) (type-only)

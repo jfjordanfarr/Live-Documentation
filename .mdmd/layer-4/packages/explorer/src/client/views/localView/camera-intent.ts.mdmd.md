@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/explorer/src/client/views/localView/camera-intent.ts`
-- Generated At: 2026-11-21T19:01:35.577Z
+- Generated At: 2026-11-22T07:12:55.550Z
 
 ## Authored
 ### Purpose
@@ -348,8 +348,8 @@ Every box given as one, in the same units; null for none.
 - [`types.ArrivalFraming`](../../types.ts.mdmd.md#symbol-arrivalframing) (type-only)
 - [`ladder-steps.STEP_RATIO`](./ladder-steps.ts.mdmd.md#symbol-step_ratio)
 - [`ladder-steps.farthestRatioOf`](./ladder-steps.ts.mdmd.md#symbol-farthestratioof)
-- [`layout-measure.Bounds`](./layout-measure.ts.mdmd.md#symbol-bounds)
-- [`layout-measure.Frame`](./layout-measure.ts.mdmd.md#symbol-frame)
+- [`layout-measure.Bounds`](./layout-measure.ts.mdmd.md#symbol-bounds) (type-only)
+- [`layout-measure.Frame`](./layout-measure.ts.mdmd.md#symbol-frame) (type-only)
 - [`layout-measure.clamp`](./layout-measure.ts.mdmd.md#symbol-clamp)
 - [`layout-measure.framePadding`](./layout-measure.ts.mdmd.md#symbol-framepadding)
 - [`types.MapTransform`](./types.ts.mdmd.md#symbol-maptransform) (type-only)

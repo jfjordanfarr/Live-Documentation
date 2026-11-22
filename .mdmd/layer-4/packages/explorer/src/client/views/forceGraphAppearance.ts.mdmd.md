@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/explorer/src/client/views/forceGraphAppearance.ts`
-- Generated At: 2026-11-19T21:10:14.684Z
+- Generated At: 2026-11-22T07:12:54.500Z
 
 ## Authored
 ### Purpose
@@ -206,8 +206,8 @@ The glass's highlight, added to the light the ball sends out, where the pattern 
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
-- [`palette.Colour`](../palette.ts.mdmd.md#symbol-colour)
-- [`Palette`](../palette.ts.mdmd.md#symbol-palette)
+- [`palette.Colour`](../palette.ts.mdmd.md#symbol-colour) (type-only)
+- [`Palette`](../palette.ts.mdmd.md#symbol-palette) (type-only)
 - [`palette.activePalette`](../palette.ts.mdmd.md#symbol-activepalette)
 - [`palette.channels`](../palette.ts.mdmd.md#symbol-channels)
 <!-- LIVE-DOC:END Dependencies -->

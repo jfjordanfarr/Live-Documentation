@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `scripts/layout-lab/refine.ts`
-- Generated At: 2026-11-19T21:10:18.766Z
+- Generated At: 2026-11-22T07:12:57.569Z
 
 ## Authored
 ### Purpose
@@ -76,19 +76,19 @@ A readable companion to the complete trial and geometry JSON.
 - [`types.LocalMapTuning`](../../packages/explorer/src/client/types.ts.mdmd.md#symbol-localmaptuning) (type-only)
 - [`branch-alignments.alignmentCandidates`](../../packages/explorer/src/client/views/localView/branch-alignments.ts.mdmd.md#symbol-alignmentcandidates)
 - [`branch-placement.BoundaryAlignment`](../../packages/explorer/src/client/views/localView/branch-placement.ts.mdmd.md#symbol-boundaryalignment) (type-only)
-- [`branch-restarts.StartCosts`](../../packages/explorer/src/client/views/localView/branch-restarts.ts.mdmd.md#symbol-startcosts)
-- [`branch-restarts.StartSignals`](../../packages/explorer/src/client/views/localView/branch-restarts.ts.mdmd.md#symbol-startsignals)
+- [`branch-restarts.StartCosts`](../../packages/explorer/src/client/views/localView/branch-restarts.ts.mdmd.md#symbol-startcosts) (type-only)
+- [`branch-restarts.StartSignals`](../../packages/explorer/src/client/views/localView/branch-restarts.ts.mdmd.md#symbol-startsignals) (type-only)
 - [`branch-restarts.pictureScore`](../../packages/explorer/src/client/views/localView/branch-restarts.ts.mdmd.md#symbol-picturescore)
 - [`branch-restarts.signalsOf`](../../packages/explorer/src/client/views/localView/branch-restarts.ts.mdmd.md#symbol-signalsof)
-- [`branch-search.SearchState`](../../packages/explorer/src/client/views/localView/branch-search.ts.mdmd.md#symbol-searchstate)
+- [`branch-search.SearchState`](../../packages/explorer/src/client/views/localView/branch-search.ts.mdmd.md#symbol-searchstate) (type-only)
 - [`branch-search.beginSearch`](../../packages/explorer/src/client/views/localView/branch-search.ts.mdmd.md#symbol-beginsearch)
 - [`branch-search.judgeAlignment`](../../packages/explorer/src/client/views/localView/branch-search.ts.mdmd.md#symbol-judgealignment)
 - [`branch-search.judgeStart`](../../packages/explorer/src/client/views/localView/branch-search.ts.mdmd.md#symbol-judgestart)
 - [`branch-search.nextTrialKind`](../../packages/explorer/src/client/views/localView/branch-search.ts.mdmd.md#symbol-nexttrialkind)
 - [`types.ExplorerGraphPayload`](../../packages/explorer/src/shared/types.ts.mdmd.md#symbol-explorergraphpayload) (type-only)
 - [`Capture`](./capture.ts.mdmd.md#symbol-capture) (type-only)
-- [`evaluate.Evaluation`](./evaluate.ts.mdmd.md#symbol-evaluation)
-- [`evaluate.LabConfig`](./evaluate.ts.mdmd.md#symbol-labconfig)
+- [`evaluate.Evaluation`](./evaluate.ts.mdmd.md#symbol-evaluation) (type-only)
+- [`evaluate.LabConfig`](./evaluate.ts.mdmd.md#symbol-labconfig) (type-only)
 - [`evaluate`](./evaluate.ts.mdmd.md#symbol-evaluate)
 - [`evaluate.evaluateAlignment`](./evaluate.ts.mdmd.md#symbol-evaluatealignment)
 - [`scopes.ScopeRun`](./scopes.ts.mdmd.md#symbol-scoperun) (type-only)

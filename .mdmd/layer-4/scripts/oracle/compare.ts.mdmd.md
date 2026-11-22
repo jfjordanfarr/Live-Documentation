@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: `scripts/oracle/compare.ts`
 - Entry: command `oracle:compare` of [`package.json`](../../package.json.mdmd.md)
-- Generated At: 2026-11-21T06:15:13.306Z
+- Generated At: 2026-11-22T07:12:57.870Z
 
 ## Authored
 ### Purpose
@@ -111,8 +111,8 @@ Runs the generator over a copy of the fixture and reports its disagreements with
 - [`liveDocumentationConfig.normalizeLiveDocumentationConfig`](../../packages/engine/src/config/liveDocumentationConfig.ts.mdmd.md#symbol-normalizelivedocumentationconfig)
 - [`graphFiles.readLiveDocGraph`](../../packages/engine/src/live-docs/graphFiles.ts.mdmd.md#symbol-readlivedocgraph)
 - [`generator.generateLiveDocs`](../../packages/generator/src/generator.ts.mdmd.md#symbol-generatelivedocs)
-- [`files.HandVerifiedEdge`](./files.ts.mdmd.md#symbol-handverifiededge)
-- [`files.HandVerifiedEdges`](./files.ts.mdmd.md#symbol-handverifiededges)
+- [`files.HandVerifiedEdge`](./files.ts.mdmd.md#symbol-handverifiededge) (type-only)
+- [`files.HandVerifiedEdges`](./files.ts.mdmd.md#symbol-handverifiededges) (type-only)
 - [`files.readHandVerifiedEdges`](./files.ts.mdmd.md#symbol-readhandverifiededges)
 - [`files.readOracleEdges`](./files.ts.mdmd.md#symbol-readoracleedges)
 - [`files.rebasePath`](./files.ts.mdmd.md#symbol-rebasepath)

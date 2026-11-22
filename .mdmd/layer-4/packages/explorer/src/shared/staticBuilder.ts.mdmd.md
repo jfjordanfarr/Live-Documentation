@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/explorer/src/shared/staticBuilder.ts`
-- Generated At: 2026-11-19T21:10:17.850Z
+- Generated At: 2026-11-22T07:12:56.920Z
 
 ## Authored
 ### Purpose
@@ -61,7 +61,7 @@ Build a complete static Explorer bundle.
 ### Dependencies
 - `fs/promises`
 - [`liveDocumentationConfig.DEFAULT_LIVE_DOCUMENTATION_CONFIG`](../../../engine/src/config/liveDocumentationConfig.ts.mdmd.md#symbol-default_live_documentation_config)
-- [`LiveDocumentationConfig`](../../../engine/src/config/liveDocumentationConfig.ts.mdmd.md#symbol-livedocumentationconfig)
+- [`LiveDocumentationConfig`](../../../engine/src/config/liveDocumentationConfig.ts.mdmd.md#symbol-livedocumentationconfig) (type-only)
 - [`liveDocumentationConfig.normalizeLiveDocumentationConfig`](../../../engine/src/config/liveDocumentationConfig.ts.mdmd.md#symbol-normalizelivedocumentationconfig)
 - [`board.parseBoard`](../../../engine/src/live-docs/board.ts.mdmd.md#symbol-parseboard)
 - [`document.LiveDocSyntaxError`](../../../engine/src/live-docs/document.ts.mdmd.md#symbol-livedocsyntaxerror)
@@ -71,11 +71,11 @@ Build a complete static Explorer bundle.
 - [`format.HISTORY_DIRECTORY`](../../../engine/src/live-docs/history/format.ts.mdmd.md#symbol-history_directory)
 - [`format.HISTORY_FILE`](../../../engine/src/live-docs/history/format.ts.mdmd.md#symbol-history_file)
 - [`format.HISTORY_FORMAT`](../../../engine/src/live-docs/history/format.ts.mdmd.md#symbol-history_format)
-- [`format.HistorySequence`](../../../engine/src/live-docs/history/format.ts.mdmd.md#symbol-historysequence)
+- [`format.HistorySequence`](../../../engine/src/live-docs/history/format.ts.mdmd.md#symbol-historysequence) (type-only)
 - [`sequence.headOf`](../../../engine/src/live-docs/history/sequence.ts.mdmd.md#symbol-headof)
-- [`window.HistorySelection`](../../../engine/src/live-docs/history/window.ts.mdmd.md#symbol-historyselection)
+- [`window.HistorySelection`](../../../engine/src/live-docs/history/window.ts.mdmd.md#symbol-historyselection) (type-only)
 - [`window.windowOf`](../../../engine/src/live-docs/history/window.ts.mdmd.md#symbol-windowof)
-- [`words.WordsPart`](../../../engine/src/live-docs/history/words.ts.mdmd.md#symbol-wordspart)
+- [`words.WordsPart`](../../../engine/src/live-docs/history/words.ts.mdmd.md#symbol-wordspart) (type-only)
 - [`words.wordsStore`](../../../engine/src/live-docs/history/words.ts.mdmd.md#symbol-wordsstore)
 - [`relatedDocs.relatedDocsOf`](../../../engine/src/live-docs/relatedDocs.ts.mdmd.md#symbol-relateddocsof)
 - [`buildAssets`](./buildAssets.ts.mdmd.md)

@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `scripts/layout-lab/verify.ts`
-- Generated At: 2026-11-19T21:10:19.027Z
+- Generated At: 2026-11-22T07:12:57.676Z
 
 ## Authored
 ### Purpose
@@ -50,7 +50,7 @@ The lab's and the page's numbers side by side.
 - [`types.ExplorerGraphPayload`](../../packages/explorer/src/shared/types.ts.mdmd.md#symbol-explorergraphpayload) (type-only)
 - [`evaluate.LabConfig`](./evaluate.ts.mdmd.md#symbol-labconfig) (type-only)
 - [`scopes.ORIGIN`](./scopes.ts.mdmd.md#symbol-origin)
-- [`scopes.ScopeRun`](./scopes.ts.mdmd.md#symbol-scoperun)
+- [`scopes.ScopeRun`](./scopes.ts.mdmd.md#symbol-scoperun) (type-only)
 - [`scopes.admitCompiledFunctions`](./scopes.ts.mdmd.md#symbol-admitcompiledfunctions)
 - [`scopes.serveBundle`](./scopes.ts.mdmd.md#symbol-servebundle)
 - [`Signals`](./signals.ts.mdmd.md#symbol-signals) (type-only)

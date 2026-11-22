@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `scripts/oracle/files.ts`
-- Generated At: 2026-11-19T21:10:19.346Z
+- Generated At: 2026-11-22T07:12:57.912Z
 
 ## Authored
 ### Purpose
@@ -101,7 +101,7 @@ Read hand-verified observations into fixture-relative coordinates.
 ### Dependencies
 - `node:fs`
 - `node:path` - `path`
-- [`powershell-edges.PowerShellAst`](./powershell-edges.ts.mdmd.md#symbol-powershellast)
+- [`powershell-edges.PowerShellAst`](./powershell-edges.ts.mdmd.md#symbol-powershellast) (type-only)
 - [`powershell-edges.rebasePowerShellAst`](./powershell-edges.ts.mdmd.md#symbol-rebasepowershellast)
 - [`scip-edges.OracleEdges`](./scip-edges.ts.mdmd.md#symbol-oracleedges) (type-only)
 <!-- LIVE-DOC:END Dependencies -->

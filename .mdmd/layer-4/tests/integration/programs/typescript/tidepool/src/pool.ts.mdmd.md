@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `tests/integration/programs/typescript/tidepool/src/pool.ts`
-- Generated At: 2026-11-19T21:10:28.796Z
+- Generated At: 2026-11-22T07:13:00.661Z
 
 ## Authored
 ### Purpose
@@ -48,13 +48,13 @@ A pool stocked as its level asks.
 ### Dependencies
 - [`harbour`](../levels/harbour.json.mdmd.md)
 - [`rockpool`](../levels/rockpool.json.mdmd.md)
-- [`creatures.Creature`](./creatures.ts.mdmd.md#symbol-creature)
-- [`creatures.Species`](./creatures.ts.mdmd.md#symbol-species)
+- [`creatures.Creature`](./creatures.ts.mdmd.md#symbol-creature) (type-only)
+- [`creatures.Species`](./creatures.ts.mdmd.md#symbol-species) (type-only)
 - [`creatures.feed`](./creatures.ts.mdmd.md#symbol-feed)
 - [`creatures.moveCreature`](./creatures.ts.mdmd.md#symbol-movecreature)
 - [`creatures.spawnCreature`](./creatures.ts.mdmd.md#symbol-spawncreature)
 - [`Rng`](./rng.ts.mdmd.md#symbol-rng) (type-only)
-- [`tide.TideState`](./tide.ts.mdmd.md#symbol-tidestate)
+- [`tide.TideState`](./tide.ts.mdmd.md#symbol-tidestate) (type-only)
 - [`tide.tideAt`](./tide.ts.mdmd.md#symbol-tideat)
 <!-- LIVE-DOC:END Dependencies -->
 

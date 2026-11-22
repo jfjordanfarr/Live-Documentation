@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: `tests/integration/live-docs/history.test.ts`
-- Generated At: 2026-11-20T16:31:03.903Z
+- Generated At: 2026-11-22T07:12:59.902Z
 
 ## Authored
 ### Purpose
@@ -40,19 +40,19 @@ _No public symbols detected_
 - [`format.HistorySequence`](../../../packages/engine/src/live-docs/history/format.ts.mdmd.md#symbol-historysequence) (type-only)
 - [`git.openGitRepository`](../../../packages/engine/src/live-docs/history/git.ts.mdmd.md#symbol-opengitrepository)
 - [`lens.lensOf`](../../../packages/engine/src/live-docs/history/lens.ts.mdmd.md#symbol-lensof)
-- [`rows.RowLink`](../../../packages/engine/src/live-docs/history/rows.ts.mdmd.md#symbol-rowlink)
+- [`rows.RowLink`](../../../packages/engine/src/live-docs/history/rows.ts.mdmd.md#symbol-rowlink) (type-only)
 - [`rows.linksOf`](../../../packages/engine/src/live-docs/history/rows.ts.mdmd.md#symbol-linksof)
 - [`sequence.changeAt`](../../../packages/engine/src/live-docs/history/sequence.ts.mdmd.md#symbol-changeat)
 - [`sequence.momentAt`](../../../packages/engine/src/live-docs/history/sequence.ts.mdmd.md#symbol-momentat)
 - [`sequence.seek`](../../../packages/engine/src/live-docs/history/sequence.ts.mdmd.md#symbol-seek)
-- [`Shape`](../../../packages/engine/src/live-docs/history/shape.ts.mdmd.md#symbol-shape)
+- [`Shape`](../../../packages/engine/src/live-docs/history/shape.ts.mdmd.md#symbol-shape) (type-only)
 - [`shape.edgeKey`](../../../packages/engine/src/live-docs/history/shape.ts.mdmd.md#symbol-edgekey)
-- [`summary.CommitSummary`](../../../packages/engine/src/live-docs/history/summary.ts.mdmd.md#symbol-commitsummary)
-- [`summary.SummaryFile`](../../../packages/engine/src/live-docs/history/summary.ts.mdmd.md#symbol-summaryfile)
+- [`summary.CommitSummary`](../../../packages/engine/src/live-docs/history/summary.ts.mdmd.md#symbol-commitsummary) (type-only)
+- [`summary.SummaryFile`](../../../packages/engine/src/live-docs/history/summary.ts.mdmd.md#symbol-summaryfile) (type-only)
 - [`summary.sectionsOfDescription`](../../../packages/engine/src/live-docs/history/summary.ts.mdmd.md#symbol-sectionsofdescription)
 - [`textStore.TEXT_STORE_DIRECTORY`](../../../packages/engine/src/live-docs/history/textStore.ts.mdmd.md#symbol-text_store_directory)
 - [`textStore.readText`](../../../packages/engine/src/live-docs/history/textStore.ts.mdmd.md#symbol-readtext)
-- [`words.WordsPart`](../../../packages/engine/src/live-docs/history/words.ts.mdmd.md#symbol-wordspart)
+- [`words.WordsPart`](../../../packages/engine/src/live-docs/history/words.ts.mdmd.md#symbol-wordspart) (type-only)
 - [`words.textInPart`](../../../packages/engine/src/live-docs/history/words.ts.mdmd.md#symbol-textinpart)
 - [`words.textsOfFile`](../../../packages/engine/src/live-docs/history/words.ts.mdmd.md#symbol-textsoffile)
 - [`words.wordsPartFile`](../../../packages/engine/src/live-docs/history/words.ts.mdmd.md#symbol-wordspartfile)

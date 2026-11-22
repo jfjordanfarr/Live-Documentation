@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/explorer/src/client/views/localView/branches.ts`
-- Generated At: 2026-11-19T21:10:16.192Z
+- Generated At: 2026-11-22T07:12:55.505Z
 
 ## Authored
 ### Purpose
@@ -243,38 +243,38 @@ search to judge on the page's own measurements (`cycle-trials`,
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
-- [`reading-state.ReadingChoice`](../../reading-state.ts.mdmd.md#symbol-readingchoice)
+- [`reading-state.ReadingChoice`](../../reading-state.ts.mdmd.md#symbol-readingchoice) (type-only)
 - [`reading-state.readingFiles`](../../reading-state.ts.mdmd.md#symbol-readingfiles)
 - [`types.SymbolOrder`](../../types.ts.mdmd.md#symbol-symbolorder) (type-only)
 - [`forceGraphAppearance.fileShares`](../forceGraphAppearance.ts.mdmd.md#symbol-fileshares)
 - [`forceGraphAppearance.marbleCounts`](../forceGraphAppearance.ts.mdmd.md#symbol-marblecounts-function)
-- [`branch-order.BranchOrder`](./branch-order.ts.mdmd.md#symbol-branchorder)
-- [`branch-order.ForwardReference`](./branch-order.ts.mdmd.md#symbol-forwardreference)
-- [`branch-order.OrderInput`](./branch-order.ts.mdmd.md#symbol-orderinput)
+- [`branch-order.BranchOrder`](./branch-order.ts.mdmd.md#symbol-branchorder) (type-only)
+- [`branch-order.ForwardReference`](./branch-order.ts.mdmd.md#symbol-forwardreference) (type-only)
+- [`branch-order.OrderInput`](./branch-order.ts.mdmd.md#symbol-orderinput) (type-only)
 - [`branch-order.orderBranches`](./branch-order.ts.mdmd.md#symbol-orderbranches)
 - [`closed-looks.ClosedContents`](./closed-looks.ts.mdmd.md#symbol-closedcontents) (type-only)
 - [`closed-looks.ClosedFile`](./closed-looks.ts.mdmd.md#symbol-closedfile) (type-only)
 - [`closed-looks.NestedContents`](./closed-looks.ts.mdmd.md#symbol-nestedcontents) (type-only)
 - [`cycle-order.cycleCandidates`](./cycle-order.ts.mdmd.md#symbol-cyclecandidates)
 - [`directory-bands.parentDirectory`](./directory-bands.ts.mdmd.md#symbol-parentdirectory)
-- [`directory-flow.FlowInput`](./directory-flow.ts.mdmd.md#symbol-flowinput)
-- [`directory-flow.FlowShape`](./directory-flow.ts.mdmd.md#symbol-flowshape)
-- [`directory-flow.UndrawnLink`](./directory-flow.ts.mdmd.md#symbol-undrawnlink)
+- [`directory-flow.FlowInput`](./directory-flow.ts.mdmd.md#symbol-flowinput) (type-only)
+- [`directory-flow.FlowShape`](./directory-flow.ts.mdmd.md#symbol-flowshape) (type-only)
+- [`directory-flow.UndrawnLink`](./directory-flow.ts.mdmd.md#symbol-undrawnlink) (type-only)
 - [`directory-flow.flowColumns`](./directory-flow.ts.mdmd.md#symbol-flowcolumns)
 - [`directory-flow.linksOf`](./directory-flow.ts.mdmd.md#symbol-linksof)
 - [`directory-flow.pairLines`](./directory-flow.ts.mdmd.md#symbol-pairlines)
 - [`directory-state.NO_OPEN_DIRECTORIES`](./directory-state.ts.mdmd.md#symbol-no_open_directories)
-- [`directory-state.OpenDirectories`](./directory-state.ts.mdmd.md#symbol-opendirectories)
+- [`directory-state.OpenDirectories`](./directory-state.ts.mdmd.md#symbol-opendirectories) (type-only)
 - [`directory-state.directoryState`](./directory-state.ts.mdmd.md#symbol-directorystate-function)
 - [`directory-state.under`](./directory-state.ts.mdmd.md#symbol-under)
-- [`network-simplex.Constraint`](./network-simplex.ts.mdmd.md#symbol-constraint)
+- [`network-simplex.Constraint`](./network-simplex.ts.mdmd.md#symbol-constraint) (type-only)
 - [`network-simplex.rankByNetworkSimplex`](./network-simplex.ts.mdmd.md#symbol-rankbynetworksimplex)
 - [`state.PathResult`](./state.ts.mdmd.md#symbol-pathresult) (type-only)
 - [`subgraph-builder.buildPathSubgraph`](./subgraph-builder.ts.mdmd.md#symbol-buildpathsubgraph)
 - [`subgraph-builder.buildSelfLoopEdges`](./subgraph-builder.ts.mdmd.md#symbol-buildselfloopedges)
 - [`types.LocalEdge`](./types.ts.mdmd.md#symbol-localedge) (type-only)
 - [`types.LocalSubgraph`](./types.ts.mdmd.md#symbol-localsubgraph) (type-only)
-- [`pin-state.PinSet`](../pin-state.ts.mdmd.md#symbol-pinset)
+- [`pin-state.PinSet`](../pin-state.ts.mdmd.md#symbol-pinset) (type-only)
 - [`pin-state.getVisibleConnections`](../pin-state.ts.mdmd.md#symbol-getvisibleconnections)
 - [`pin-state.retainFile`](../pin-state.ts.mdmd.md#symbol-retainfile)
 - [`symbolAnchors.normalizeSymbolIdentifier`](../symbolAnchors.ts.mdmd.md#symbol-normalizesymbolidentifier)

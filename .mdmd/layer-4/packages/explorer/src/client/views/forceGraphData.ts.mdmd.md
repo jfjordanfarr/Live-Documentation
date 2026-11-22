@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/explorer/src/client/views/forceGraphData.ts`
-- Generated At: 2026-11-19T21:10:14.892Z
+- Generated At: 2026-11-22T07:12:54.635Z
 
 ## Authored
 ### Purpose
@@ -94,7 +94,7 @@ files costs a tenth of a second where asking every file about every other cost s
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
 - [`types.SpatialLayout`](../types.ts.mdmd.md#symbol-spatiallayout) (type-only)
-- [`fileConnections.FileConnection`](./fileConnections.ts.mdmd.md#symbol-fileconnection)
+- [`fileConnections.FileConnection`](./fileConnections.ts.mdmd.md#symbol-fileconnection) (type-only)
 - [`fileConnections`](./fileConnections.ts.mdmd.md#symbol-fileconnections)
 - [`directory-bands.parentDirectory`](./localView/directory-bands.ts.mdmd.md#symbol-parentdirectory)
 - [`staticExplorerData.RelatedDocLink`](../../shared/staticExplorerData.ts.mdmd.md#symbol-relateddoclink) (type-only)

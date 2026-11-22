@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/explorer/src/client/views/localView/branch-restarts.ts`
-- Generated At: 2026-11-19T21:10:15.974Z
+- Generated At: 2026-11-22T07:12:55.327Z
 
 ## Authored
 ### Purpose
@@ -136,7 +136,7 @@ unless another start is cheaper, and the previous picture's stands before any sh
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
 - [`branch-scene.Scene`](./branch-scene.ts.mdmd.md#symbol-scene) (type-only)
-- [`branch-shape.ShapeSignals`](./branch-shape.ts.mdmd.md#symbol-shapesignals)
+- [`branch-shape.ShapeSignals`](./branch-shape.ts.mdmd.md#symbol-shapesignals) (type-only)
 - [`branch-shape.shapeSignalsOf`](./branch-shape.ts.mdmd.md#symbol-shapesignalsof)
 - [`branches.BranchGraph`](./branches.ts.mdmd.md#symbol-branchgraph) (type-only)
 - [`branches.OrderOptions`](./branches.ts.mdmd.md#symbol-orderoptions) (type-only)

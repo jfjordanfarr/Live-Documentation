@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: `tests/integration/live-docs/powershell-judged.test.ts`
-- Generated At: 2026-11-22T02:02:16.898Z
+- Generated At: 2026-11-22T07:12:59.974Z
 
 ## Authored
 ### Purpose
@@ -25,7 +25,7 @@ _No public symbols detected_
 - `node:os` - `os`
 - `node:path` - `path`
 - [`powershell.powershellAdapter`](../../../packages/engine/src/live-docs/adapters/powershell.ts.mdmd.md#symbol-powershelladapter)
-- [`powershell-judged.JudgedExtract`](../../../scripts/oracle/powershell-judged.ts.mdmd.md#symbol-judgedextract)
+- [`powershell-judged.JudgedExtract`](../../../scripts/oracle/powershell-judged.ts.mdmd.md#symbol-judgedextract) (type-only)
 - [`powershell-judged.skeletonText`](../../../scripts/oracle/powershell-judged.ts.mdmd.md#symbol-skeletontext)
 - [`powershell-judged.writeSkeleton`](../../../scripts/oracle/powershell-judged.ts.mdmd.md#symbol-writeskeleton)
 - [`powershell-verdicts.readVerdicts`](../../../scripts/oracle/powershell-verdicts.ts.mdmd.md#symbol-readverdicts)

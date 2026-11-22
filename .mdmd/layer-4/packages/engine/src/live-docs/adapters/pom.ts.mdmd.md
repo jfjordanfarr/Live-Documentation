@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/engine/src/live-docs/adapters/pom.ts`
-- Generated At: 2026-11-20T15:18:14.567Z
+- Generated At: 2026-11-22T07:12:52.181Z
 
 ## Authored
 ### Purpose
@@ -79,7 +79,7 @@ Language adapter for `pom.xml`: the artifact as a symbol, its parent and depende
 ### Dependencies
 - `node:path` - `path`
 - [`index.LanguageAdapter`](./index.ts.mdmd.md#symbol-languageadapter) (type-only)
-- [`manifest.ManifestContext`](./manifest.ts.mdmd.md#symbol-manifestcontext-interface)
+- [`manifest.ManifestContext`](./manifest.ts.mdmd.md#symbol-manifestcontext-interface) (type-only)
 - [`manifest.ManifestDependencies`](./manifest.ts.mdmd.md#symbol-manifestdependencies)
 - [`manifest.manifestContext`](./manifest.ts.mdmd.md#symbol-manifestcontext-function)
 - [`manifest.packageSymbols`](./manifest.ts.mdmd.md#symbol-packagesymbols)

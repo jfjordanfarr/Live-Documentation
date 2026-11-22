@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: `scripts/slopcop/check-markdown-links.ts`
 - Entry: command `slopcop:markdown` of [`package.json`](../../package.json.mdmd.md)
-- Generated At: 2026-11-20T06:46:52.291Z
+- Generated At: 2026-11-22T07:12:58.134Z
 
 ## Authored
 ### Purpose
@@ -34,7 +34,7 @@ _No public symbols detected_
 - [`config.loadSlopcopConfig`](./config.ts.mdmd.md#symbol-loadslopcopconfig)
 - [`config.resolveIgnoreGlobs`](./config.ts.mdmd.md#symbol-resolveignoreglobs)
 - [`config.resolveIncludeGlobs`](./config.ts.mdmd.md#symbol-resolveincludeglobs)
-- [`markdownLinks.MarkdownLinkIssue`](./markdownLinks.ts.mdmd.md#symbol-markdownlinkissue)
+- [`markdownLinks.MarkdownLinkIssue`](./markdownLinks.ts.mdmd.md#symbol-markdownlinkissue) (type-only)
 - [`markdownLinks.findBrokenMarkdownLinks`](./markdownLinks.ts.mdmd.md#symbol-findbrokenmarkdownlinks)
 <!-- LIVE-DOC:END Dependencies -->
 

@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `scripts/layout-lab/report.ts`
-- Generated At: 2026-11-19T21:10:18.784Z
+- Generated At: 2026-11-22T07:12:57.577Z
 
 ## Authored
 ### Purpose
@@ -62,10 +62,10 @@ The run as the next analysis loads it, the scope reduced to its names.
 ### Dependencies
 - [`Capture`](./capture.ts.mdmd.md#symbol-capture) (type-only)
 - [`evaluate.LEVERS`](./evaluate.ts.mdmd.md#symbol-levers)
-- [`evaluate.LabConfig`](./evaluate.ts.mdmd.md#symbol-labconfig)
+- [`evaluate.LabConfig`](./evaluate.ts.mdmd.md#symbol-labconfig) (type-only)
 - [`scopes.ScopeRun`](./scopes.ts.mdmd.md#symbol-scoperun) (type-only)
 - [`Signals`](./signals.ts.mdmd.md#symbol-signals) (type-only)
-- [`sweep.Weights`](./sweep.ts.mdmd.md#symbol-weights)
+- [`sweep.Weights`](./sweep.ts.mdmd.md#symbol-weights) (type-only)
 - [`sweep.paretoFront`](./sweep.ts.mdmd.md#symbol-paretofront)
 - [`sweep.scoreOf`](./sweep.ts.mdmd.md#symbol-scoreof)
 <!-- LIVE-DOC:END Dependencies -->

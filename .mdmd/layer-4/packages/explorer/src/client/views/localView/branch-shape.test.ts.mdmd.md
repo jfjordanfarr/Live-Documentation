@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: `packages/explorer/src/client/views/localView/branch-shape.test.ts`
-- Generated At: 2026-11-19T21:10:16.103Z
+- Generated At: 2026-11-22T07:12:55.423Z
 
 ## Authored
 ### Purpose
@@ -25,7 +25,7 @@ _No public symbols detected_
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
-- [`branch-scene.SceneBox`](./branch-scene.ts.mdmd.md#symbol-scenebox)
+- [`branch-scene.SceneBox`](./branch-scene.ts.mdmd.md#symbol-scenebox) (type-only)
 - [`branch-scene.rowItemsOf`](./branch-scene.ts.mdmd.md#symbol-rowitemsof)
 - [`branch-shape.shapeSignalsOf`](./branch-shape.ts.mdmd.md#symbol-shapesignalsof)
 - [`branches.BranchGraph`](./branches.ts.mdmd.md#symbol-branchgraph) (type-only)

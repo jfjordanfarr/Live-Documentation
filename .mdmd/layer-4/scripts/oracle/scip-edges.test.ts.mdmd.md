@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: `scripts/oracle/scip-edges.test.ts`
-- Generated At: 2026-11-21T05:21:45.469Z
+- Generated At: 2026-11-22T07:12:58.023Z
 
 ## Authored
 ### Purpose
@@ -24,8 +24,8 @@ _No public symbols detected_
 - `node:fs`
 - `node:os` - `os`
 - `node:path` - `path`
-- [`scip-edges.OracleProject`](./scip-edges.ts.mdmd.md#symbol-oracleproject)
-- [`scip-edges.ScipIndex`](./scip-edges.ts.mdmd.md#symbol-scipindex)
+- [`scip-edges.OracleProject`](./scip-edges.ts.mdmd.md#symbol-oracleproject) (type-only)
+- [`scip-edges.ScipIndex`](./scip-edges.ts.mdmd.md#symbol-scipindex) (type-only)
 - [`scip-edges.cargoProjects`](./scip-edges.ts.mdmd.md#symbol-cargoprojects)
 - [`scip-edges.edgesFromIndex`](./scip-edges.ts.mdmd.md#symbol-edgesfromindex)
 - [`scip-edges.projectReferencesFrom`](./scip-edges.ts.mdmd.md#symbol-projectreferencesfrom)

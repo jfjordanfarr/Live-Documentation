@@ -60,12 +60,14 @@ export async function collectDependencies(params: {
       const specifier = statement.moduleSpecifier.text;
       const symbols = extractImportNames(statement.importClause);
       const resolvedPath = await resolveDependency(specifier, params.absolutePath, params.workspaceRoot, params.files);
+      const typeOnlySymbols = typedImportNames(statement.importClause);
       entries.push({
         specifier,
         resolvedPath,
         symbols,
         kind: "import",
-        isTypeOnly: statement.importClause?.isTypeOnly,
+        isTypeOnly: statement.importClause ? statement.importClause.isTypeOnly || (symbols.length > 0 && typeOnlySymbols.length === symbols.length) : undefined,
+        ...(typeOnlySymbols.length > 0 ? { typeOnlySymbols } : {}),
         location: getNodeLocation(statement, params.sourceFile)
       });
       continue;
@@ -78,12 +80,14 @@ export async function collectDependencies(params: {
     ) {
       const specifier = statement.moduleSpecifier.text;
       const symbolTargets: Record<string, string> = {};
+      const typeOnlySymbols: string[] = [];
       const symbols =
         statement.exportClause && ts.isNamedExports(statement.exportClause)
           ? statement.exportClause.elements.map((element) => {
               const exportedName = element.name.text;
               const originalName = element.propertyName?.text ?? exportedName;
               symbolTargets[exportedName] = originalName;
+              if (statement.isTypeOnly || element.isTypeOnly) typeOnlySymbols.push(exportedName);
               return exportedName;
             })
           : [];
@@ -101,6 +105,7 @@ export async function collectDependencies(params: {
         symbols,
         kind: "export",
         isTypeOnly: exportIsTypeOnly,
+        ...(typeOnlySymbols.length > 0 ? { typeOnlySymbols } : {}),
         reExportAll: !statement.exportClause,
         location: getNodeLocation(statement, params.sourceFile),
         symbolTargets: Object.keys(symbolTargets).length > 0 ? symbolTargets : undefined
@@ -137,6 +142,14 @@ function dynamicImports(sourceFile: ts.SourceFile): Array<{ node: ts.CallExpress
   };
   visit(sourceFile);
   return calls;
+}
+
+/** The names of an import a written `type` marks, each name's own or its statement's, as {@link extractImportNames} names them. */
+function typedImportNames(importClause: ts.ImportClause | undefined): string[] {
+  if (!importClause) return [];
+  if (importClause.isTypeOnly) return extractImportNames(importClause);
+  if (!importClause.namedBindings || !ts.isNamedImports(importClause.namedBindings)) return [];
+  return importClause.namedBindings.elements.filter((element) => element.isTypeOnly).map((element) => element.propertyName?.text ?? element.name.text);
 }
 
 function extractImportNames(importClause: ts.ImportClause | undefined): string[] {
@@ -220,6 +233,9 @@ export function mergeDependencyEntries(
       if (entry.isTypeOnly && !existing.isTypeOnly) {
         existing.isTypeOnly = entry.isTypeOnly;
       }
+      for (const symbol of entry.typeOnlySymbols ?? []) {
+        if (!(existing.typeOnlySymbols ??= []).includes(symbol)) existing.typeOnlySymbols.push(symbol);
+      }
 
       if (!existing.location && entry.location) {
         existing.location = { ...entry.location };
@@ -242,6 +258,7 @@ function cloneDependency(entry: DependencyEntry): DependencyEntry {
     symbols: [...entry.symbols],
     kind: entry.kind,
     isTypeOnly: entry.isTypeOnly,
+    ...(entry.typeOnlySymbols ? { typeOnlySymbols: [...entry.typeOnlySymbols] } : {}),
     location: entry.location ? { ...entry.location } : undefined,
     symbolTargets: entry.symbolTargets ? { ...entry.symbolTargets } : undefined,
     reExportAll: entry.reExportAll,

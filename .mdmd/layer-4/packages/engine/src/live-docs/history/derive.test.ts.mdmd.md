@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: `packages/engine/src/live-docs/history/derive.test.ts`
-- Generated At: 2026-11-19T21:10:11.891Z
+- Generated At: 2026-11-22T07:12:53.001Z
 
 ## Authored
 ### Purpose
@@ -22,7 +22,7 @@ _No public symbols detected_
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
 - [`derive.deriveChange`](./derive.ts.mdmd.md#symbol-derivechange)
-- [`Shape`](./shape.ts.mdmd.md#symbol-shape)
+- [`Shape`](./shape.ts.mdmd.md#symbol-shape) (type-only)
 - [`shape.applyChange`](./shape.ts.mdmd.md#symbol-applychange)
 - [`shape.edgeKey`](./shape.ts.mdmd.md#symbol-edgekey)
 - [`shape.shapeDifferences`](./shape.ts.mdmd.md#symbol-shapedifferences)

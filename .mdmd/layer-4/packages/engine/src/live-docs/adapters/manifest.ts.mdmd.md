@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/engine/src/live-docs/adapters/manifest.ts`
-- Generated At: 2026-11-22T01:36:19.584Z
+- Generated At: 2026-11-22T07:12:52.159Z
 
 ## Authored
 ### Purpose
@@ -129,7 +129,7 @@ Declared entries without repeats, in path order, then by reason and name.
 - [`openings.PACKAGE_KIND`](../openings.ts.mdmd.md#symbol-package_kind)
 - [`compareText`](../../tooling/compareText.ts.mdmd.md#symbol-comparetext)
 - [`pathUtils.normalizeWorkspacePath`](../../tooling/pathUtils.ts.mdmd.md#symbol-normalizeworkspacepath)
-- [`sourceText.SourceReads`](../../tooling/sourceText.ts.mdmd.md#symbol-sourcereads)
+- [`sourceText.SourceReads`](../../tooling/sourceText.ts.mdmd.md#symbol-sourcereads) (type-only)
 - [`sourceText.readSourceText`](../../tooling/sourceText.ts.mdmd.md#symbol-readsourcetext)
 - [`sourceText.throwIfMachineFailure`](../../tooling/sourceText.ts.mdmd.md#symbol-throwifmachinefailure)
 - `smol-toml` - `parse`

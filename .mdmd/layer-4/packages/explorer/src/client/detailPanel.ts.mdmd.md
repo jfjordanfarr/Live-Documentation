@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/explorer/src/client/detailPanel.ts`
-- Generated At: 2026-11-19T22:40:10.918Z
+- Generated At: 2026-11-22T07:12:53.662Z
 
 ## Authored
 ### Purpose
@@ -77,8 +77,8 @@ own, so that an unclosed fence in one section ends with that section.
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
-- [`document.SymbolBlock`](../../../engine/src/live-docs/document.ts.mdmd.md#symbol-symbolblock)
-- [`document.TypeRef`](../../../engine/src/live-docs/document.ts.mdmd.md#symbol-typeref)
+- [`document.SymbolBlock`](../../../engine/src/live-docs/document.ts.mdmd.md#symbol-symbolblock) (type-only)
+- [`document.TypeRef`](../../../engine/src/live-docs/document.ts.mdmd.md#symbol-typeref) (type-only)
 - [`document.renderLiveDoc`](../../../engine/src/live-docs/document.ts.mdmd.md#symbol-renderlivedoc)
 - [`graph.GraphFile`](../../../engine/src/live-docs/graph.ts.mdmd.md#symbol-graphfile) (type-only)
 - [`GitHubSlugger`](../../../engine/src/tooling/githubSlugger.ts.mdmd.md#symbol-githubslugger)
@@ -87,12 +87,12 @@ own, so that an unclosed fence in one section ends with that section.
 - [`graph-helpers.escapeHtml`](./graph-helpers.ts.mdmd.md#symbol-escapehtml)
 - [`moment.HistoryMoment`](./history/moment.ts.mdmd.md#symbol-historymoment) (type-only)
 - [`markdown.renderMarkdown`](./markdown.ts.mdmd.md#symbol-rendermarkdown)
-- [`reader-links.ReaderLinkContext`](./reader-links.ts.mdmd.md#symbol-readerlinkcontext)
+- [`reader-links.ReaderLinkContext`](./reader-links.ts.mdmd.md#symbol-readerlinkcontext) (type-only)
 - [`reader-links.createReaderLinkHandler`](./reader-links.ts.mdmd.md#symbol-createreaderlinkhandler)
 - [`reader-links.fileInspection`](./reader-links.ts.mdmd.md#symbol-fileinspection)
 - [`reader-links.readerLink`](./reader-links.ts.mdmd.md#symbol-readerlink)
 - [`reader-links.resolveReaderTarget`](./reader-links.ts.mdmd.md#symbol-resolvereadertarget)
-- [`reader-sections.AuthoredSection`](./reader-sections.ts.mdmd.md#symbol-authoredsection)
+- [`reader-sections.AuthoredSection`](./reader-sections.ts.mdmd.md#symbol-authoredsection) (type-only)
 - [`reader-sections.authoredSections`](./reader-sections.ts.mdmd.md#symbol-authoredsections)
 - [`reader-sections.readerOrder`](./reader-sections.ts.mdmd.md#symbol-readerorder-function)
 - [`types.InspectionTarget`](./types.ts.mdmd.md#symbol-inspectiontarget) (type-only)

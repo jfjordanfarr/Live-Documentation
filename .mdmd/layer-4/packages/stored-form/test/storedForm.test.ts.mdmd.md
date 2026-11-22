@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: `packages/stored-form/test/storedForm.test.ts`
-- Generated At: 2026-11-22T07:10:51.848Z
+- Generated At: 2026-11-22T07:12:57.290Z
 
 ## Authored
 ### Purpose
@@ -28,8 +28,8 @@ _No public symbols detected_
 - `node:zlib` - `deflateRawSync`, `inflateRawSync`
 - [`storedForm.CHUNK`](../src/storedForm.ts.mdmd.md#symbol-chunk)
 - [`storedForm.SIGNATURE`](../src/storedForm.ts.mdmd.md#symbol-signature)
-- [`storedForm.Scan`](../src/storedForm.ts.mdmd.md#symbol-scan)
-- [`storedForm.StoredFile`](../src/storedForm.ts.mdmd.md#symbol-storedfile)
+- [`storedForm.Scan`](../src/storedForm.ts.mdmd.md#symbol-scan) (type-only)
+- [`storedForm.StoredFile`](../src/storedForm.ts.mdmd.md#symbol-storedfile) (type-only)
 - [`storedForm.bytesOfText`](../src/storedForm.ts.mdmd.md#symbol-bytesoftext)
 - [`storedForm.comparePaths`](../src/storedForm.ts.mdmd.md#symbol-comparepaths)
 - [`storedForm.createWriter`](../src/storedForm.ts.mdmd.md#symbol-createwriter)

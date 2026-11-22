@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/explorer/src/client/search/search-bar.ts`
-- Generated At: 2026-11-22T03:29:28.649Z
+- Generated At: 2026-11-22T07:12:54.385Z
 
 ## Authored
 ### Purpose
@@ -58,9 +58,9 @@ The words a field shows for a pinned thing or a destination: its name, and where
 - [`dom.requireElement`](../dom.ts.mdmd.md#symbol-requireelement)
 - [`pathfind.PathHop`](../pathfind.ts.mdmd.md#symbol-pathhop) (type-only)
 - [`pathfind.Reach`](../pathfind.ts.mdmd.md#symbol-reach) (type-only)
-- [`graph-search.SearchHit`](./graph-search.ts.mdmd.md#symbol-searchhit)
-- [`graph-search.SearchIndex`](./graph-search.ts.mdmd.md#symbol-searchindex)
-- [`graph-search.SearchScope`](./graph-search.ts.mdmd.md#symbol-searchscope)
+- [`graph-search.SearchHit`](./graph-search.ts.mdmd.md#symbol-searchhit) (type-only)
+- [`graph-search.SearchIndex`](./graph-search.ts.mdmd.md#symbol-searchindex) (type-only)
+- [`graph-search.SearchScope`](./graph-search.ts.mdmd.md#symbol-searchscope) (type-only)
 - [`graph-search.destinationScope`](./graph-search.ts.mdmd.md#symbol-destinationscope)
 - [`search-field.createSearchField`](./search-field.ts.mdmd.md#symbol-createsearchfield)
 - [`types.ExplorerNodePayload`](../../shared/types.ts.mdmd.md#symbol-explorernodepayload) (type-only)
