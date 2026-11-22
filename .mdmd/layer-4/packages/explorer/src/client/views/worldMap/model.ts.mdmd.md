@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/explorer/src/client/views/worldMap/model.ts`
-- Generated At: 2026-11-19T21:10:17.679Z
+- Generated At: 2026-11-22T06:30:52.809Z
 
 ## Authored
 ### Purpose
@@ -100,7 +100,8 @@ The region a piece is in, at every depth, nearest first.
 - [`boardGraph.WireBasis`](../../../../../engine/src/live-docs/boardGraph.ts.mdmd.md#symbol-wirebasis) (type-only)
 - [`boardGraph.WireDoor`](../../../../../engine/src/live-docs/boardGraph.ts.mdmd.md#symbol-wiredoor) (type-only)
 - [`boardGraph.WireLine`](../../../../../engine/src/live-docs/boardGraph.ts.mdmd.md#symbol-wireline) (type-only)
-- [`graph.LiveDocGraph`](../../../../../engine/src/live-docs/graph.ts.mdmd.md#symbol-livedocgraph) (type-only)
+- [`graph.LiveDocGraph`](../../../../../engine/src/live-docs/graph.ts.mdmd.md#symbol-livedocgraph)
+- [`graph.fileAt`](../../../../../engine/src/live-docs/graph.ts.mdmd.md#symbol-fileat)
 - [`layout.Shape`](./layout.ts.mdmd.md#symbol-shape) (type-only)
 - [`projection.Point2`](./projection.ts.mdmd.md#symbol-point2) (type-only)
 <!-- LIVE-DOC:END Dependencies -->

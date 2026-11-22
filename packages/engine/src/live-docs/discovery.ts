@@ -541,7 +541,7 @@ export async function buildWorkspaceIndexes(options: {
         symbols = collectExportedSymbols(sourceFile);
         // Preserve providers named by export syntax; bare star exports also publish the peer resolver's anchors.
         if (sourceFile.statements.some((statement) => ts.isExportDeclaration(statement) && statement.moduleSpecifier)) {
-          exportDependencies = (await collectDependencies({ sourceFile, absolutePath, workspaceRoot: options.workspaceRoot }))
+          exportDependencies = (await collectDependencies({ sourceFile, absolutePath, workspaceRoot: options.workspaceRoot, files: options.fileIndex }))
             .filter(dependency => dependency.kind === "export");
           if (exportDependencies.some(dependency => dependency.reExportAll)) {
             ({ reExports } = await augmentWithReExportedSymbols({

@@ -137,6 +137,12 @@ async function main(): Promise<void> {
   }
 
   const graph = await readLiveDocGraph({ workspaceRoot, config: configInput });
+  // The emitters look a typed path up in `graph.files` directly, which is safe only while the table holds no key but
+  // its files' paths, as the derived graph's does (`graphFilesByPath`, 2026-11-22): a plain object's `constructor` or
+  // `toString` would read as a file that is there.
+  if (Object.getPrototypeOf(graph.files) !== null) {
+    throw new Error("The graph's table of files holds a plain object's members, so a typed path such as constructor would read as a file: derive it with graphFilesByPath, or read it back with withFilesByPath.");
+  }
 
   if (Object.keys(graph.files).length === 0) {
     console.error("No Live Docs found. Generate Live Documentation before running inspect.");

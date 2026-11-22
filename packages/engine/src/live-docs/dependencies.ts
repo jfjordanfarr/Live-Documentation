@@ -8,13 +8,13 @@
  * @module
  */
 
-import * as fs from "node:fs/promises";
 import path from "node:path";
 import ts from "typescript";
 
 import { compareText } from "../tooling/compareText";
 import { normalizeWorkspacePath } from "../tooling/pathUtils";
 import { readSourceText, type SourceReads, throwIfMachineFailure } from "../tooling/sourceText";
+import { type ListedFiles, pathKind } from "../tooling/workspaceProbes";
 import { MODULE_RESOLUTION_EXTENSIONS, SUPPORTED_SCRIPT_EXTENSIONS } from "./coreConstants";
 import type {
   DependencyEntry,
@@ -51,6 +51,7 @@ export async function collectDependencies(params: {
   sourceFile: ts.SourceFile;
   absolutePath: string;
   workspaceRoot: string;
+  files?: ListedFiles;
 }): Promise<DependencyEntry[]> {
   const entries: DependencyEntry[] = [];
 
@@ -58,7 +59,7 @@ export async function collectDependencies(params: {
     if (ts.isImportDeclaration(statement) && ts.isStringLiteral(statement.moduleSpecifier)) {
       const specifier = statement.moduleSpecifier.text;
       const symbols = extractImportNames(statement.importClause);
-      const resolvedPath = await resolveDependency(specifier, params.absolutePath, params.workspaceRoot);
+      const resolvedPath = await resolveDependency(specifier, params.absolutePath, params.workspaceRoot, params.files);
       entries.push({
         specifier,
         resolvedPath,
@@ -86,7 +87,7 @@ export async function collectDependencies(params: {
               return exportedName;
             })
           : [];
-      const resolvedPath = await resolveDependency(specifier, params.absolutePath, params.workspaceRoot);
+      const resolvedPath = await resolveDependency(specifier, params.absolutePath, params.workspaceRoot, params.files);
       const exportIsTypeOnly = Boolean(
         statement.isTypeOnly ||
           (statement.exportClause &&
@@ -111,7 +112,7 @@ export async function collectDependencies(params: {
     const specifier = call.specifier.text;
     entries.push({
       specifier,
-      resolvedPath: await resolveDependency(specifier, params.absolutePath, params.workspaceRoot),
+      resolvedPath: await resolveDependency(specifier, params.absolutePath, params.workspaceRoot, params.files),
       symbols: [],
       kind: "import",
       location: getNodeLocation(call.node, params.sourceFile)
@@ -273,17 +274,27 @@ function mergeSymbolTargets(
  *
  * @returns The normalised relative path when resolution succeeds, otherwise `undefined`.
  */
-export async function resolveDependency(
+export function resolveDependency(
   specifier: string,
   fromFile: string,
-  workspaceRoot: string
+  workspaceRoot: string,
+  files?: ListedFiles
 ): Promise<string | undefined> {
+  // Answered at once from the run's listing (or the disk, for no run) since 2026-11-22; kept a promise for its callers.
+  return Promise.resolve(resolvedDependency(specifier, fromFile, workspaceRoot, files));
+}
+
+/**
+ * A specifier's file among those the scan keeps: what the scan leaves out is never read, so an import of one is
+ * labelled as the kept file wrote it (2026-11-22, root's ruling, measured first to move no fact of real code).
+ */
+function resolvedDependency(specifier: string, fromFile: string, workspaceRoot: string, files: ListedFiles | undefined): string | undefined {
   if (!specifier.startsWith(".")) {
-    return resolveWorkspaceAlias(specifier, workspaceRoot);
+    return resolveWorkspaceAlias(specifier, workspaceRoot, files);
   }
 
   const base = path.resolve(path.dirname(fromFile), specifier);
-  const resolved = await resolveWithExtensions(base);
+  const resolved = resolveWithExtensions(base, files);
   if (!resolved) {
     return undefined;
   }
@@ -291,20 +302,21 @@ export async function resolveDependency(
   return normalizeWorkspacePath(path.relative(workspaceRoot, resolved));
 }
 
-async function resolveWorkspaceAlias(
+function resolveWorkspaceAlias(
   specifier: string,
-  workspaceRoot: string
-): Promise<string | undefined> {
+  workspaceRoot: string,
+  files?: ListedFiles
+): string | undefined {
   const prefix = "@live-documentation/";
   if (!specifier.startsWith(prefix)) {
     if (specifier.startsWith("@/")) {
       const remainder = specifier.slice(2);
-      return resolveAliasCandidates(workspaceRoot, [path.resolve(workspaceRoot, "src", remainder)]);
+      return resolveAliasCandidates(workspaceRoot, [path.resolve(workspaceRoot, "src", remainder)], files);
     }
 
     if (specifier.startsWith("~/")) {
       const remainder = specifier.slice(2);
-      return resolveAliasCandidates(workspaceRoot, [path.resolve(workspaceRoot, "src", remainder)]);
+      return resolveAliasCandidates(workspaceRoot, [path.resolve(workspaceRoot, "src", remainder)], files);
     }
 
     const aliasMatch = specifier.match(/^@([^/]+)\/?(.*)$/);
@@ -318,14 +330,14 @@ async function resolveWorkspaceAlias(
         candidates.push(path.resolve(workspaceRoot, "src", remainder));
       }
 
-      const resolved = await resolveAliasCandidates(workspaceRoot, candidates);
+      const resolved = resolveAliasCandidates(workspaceRoot, candidates, files);
       if (resolved) {
         return resolved;
       }
     }
 
     if (specifier.startsWith("src/")) {
-      return resolveAliasCandidates(workspaceRoot, [path.resolve(workspaceRoot, specifier)]);
+      return resolveAliasCandidates(workspaceRoot, [path.resolve(workspaceRoot, specifier)], files);
     }
 
     return undefined;
@@ -343,19 +355,20 @@ async function resolveWorkspaceAlias(
   }
 
   const candidateBase = path.resolve(workspaceRoot, "packages", packageName, "src", ...segments);
-  const matched = await resolveWithExtensions(candidateBase);
+  const matched = resolveWithExtensions(candidateBase, files);
   if (!matched) {
     return undefined;
   }
   return normalizeWorkspacePath(path.relative(workspaceRoot, matched));
 }
 
-async function resolveAliasCandidates(
+function resolveAliasCandidates(
   workspaceRoot: string,
-  candidates: string[]
-): Promise<string | undefined> {
+  candidates: string[],
+  files?: ListedFiles
+): string | undefined {
   for (const candidate of candidates) {
-    const matched = await resolveWithExtensions(candidate);
+    const matched = resolveWithExtensions(candidate, files);
     if (matched) {
       return normalizeWorkspacePath(path.relative(workspaceRoot, matched));
     }
@@ -371,7 +384,7 @@ const TYPESCRIPT_SOURCES_FOR: Record<string, string[]> = {
   ".cjs": [".cts"]
 };
 
-async function resolveWithExtensions(basePath: string): Promise<string | undefined> {
+function resolveWithExtensions(basePath: string, files?: ListedFiles): string | undefined {
   const attempts: string[] = [];
   const explicitExt = path.extname(basePath);
 
@@ -390,22 +403,12 @@ async function resolveWithExtensions(basePath: string): Promise<string | undefin
   }
 
   for (const candidate of attempts) {
-    if (await fileExists(candidate)) {
+    if (pathKind(candidate, files) === "file") {
       return candidate;
     }
   }
 
   return undefined;
-}
-
-async function fileExists(candidate: string): Promise<boolean> {
-  try {
-    const stats = await fs.stat(candidate);
-    return stats.isFile();
-  } catch (error) {
-    throwIfMachineFailure(error);
-    return false;
-  }
 }
 
 // ============================================================================
@@ -445,7 +448,7 @@ export async function augmentWithReExportedSymbols(params: {
   dependencies: DependencyEntry[];
   existingSymbols: PublicSymbolEntry[];
   /** The run's reads, so that a provider behind `export *` is read through the run's one read of it. */
-  reads?: SourceReads;
+  reads?: SourceReads & ListedFiles;
 }): Promise<{ symbols: PublicSymbolEntry[]; reExports: ReExportedSymbolInfo[] }> {
   if (!params.dependencies.some((entry) => entry.reExportAll)) {
     return { symbols: params.existingSymbols, reExports: [] };
@@ -475,7 +478,7 @@ async function collectReExportStarSymbols(params: {
   workspaceRoot: string;
   dependencies: DependencyEntry[];
   existingSymbols: PublicSymbolEntry[];
-  reads?: SourceReads;
+  reads?: SourceReads & ListedFiles;
 }): Promise<ReExportedSymbolInfo[]> {
   const results: ReExportedSymbolInfo[] = [];
   const seen = new Set(params.existingSymbols.map((entry) => entry.name));
@@ -522,7 +525,7 @@ async function gatherExportedSymbolsFromFile(params: {
   workspaceRoot: string;
   cache: Map<string, PublicSymbolEntry[]>;
   stack: Set<string>;
-  reads?: SourceReads;
+  reads?: SourceReads & ListedFiles;
 }): Promise<PublicSymbolEntry[]> {
   const normalized = path.resolve(params.absolutePath);
 
@@ -570,7 +573,8 @@ async function gatherExportedSymbolsFromFile(params: {
   const dependencies = await collectDependencies({
     sourceFile,
     absolutePath: normalized,
-    workspaceRoot: params.workspaceRoot
+    workspaceRoot: params.workspaceRoot,
+    files: params.reads
   });
 
   const aggregated: PublicSymbolEntry[] = [...directSymbols];
