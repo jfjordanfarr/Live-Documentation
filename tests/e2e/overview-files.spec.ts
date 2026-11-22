@@ -317,20 +317,17 @@ test("files only is the default, a link carries the cards' size only when chosen
 });
 
 /**
- * What a picture holds, apart from where the layout stood it: each card's size, its rows' places inside it, its pins'
- * heights on it and whether it is pinned, and every wire drawn, by its kind and its two ends.
+ * What a picture holds, apart from where the layout stood it and in what order: each card's size, its rows (each by its
+ * name, its height and whether it is pinned by name), its ports (each by its side and its symbol) and whether it is
+ * pinned, and every wire drawn, by its kind and its two ends. A card's rows and ports are listed by name, not by place:
+ * the order of a card's rows is the picture's, like the cards' places (see the case below).
  */
 const heldIn = (page: Page) => page.evaluate(() => {
-  const offsetIn = (element: HTMLElement, stop: Element): number => {
-    let y = 0;
-    for (let at: HTMLElement | null = element; at && at !== stop; at = at.offsetParent as HTMLElement | null) y += at.offsetTop;
-    return y;
-  };
   const cards = Object.fromEntries([...document.querySelectorAll<HTMLElement>("#map-container .node-card")].map(card => {
-    const rows = [...card.querySelectorAll<HTMLElement>(".symbol-row")].filter(row => row.offsetParent).map(row => `${row.dataset.symbol} ${row.offsetTop} ${row.offsetHeight}${row.classList.contains("symbol-pinned-named") ? " pinned by name" : ""}`);
-    const pins = [...card.querySelectorAll<HTMLElement>(".symbol-anchor")].filter(anchor => anchor.offsetParent)
-      .map(anchor => `${anchor.classList.contains("inbound") ? "uses" : "offers"} ${anchor.dataset.symbol ?? "*"} ${offsetIn(anchor, card) + anchor.offsetHeight / 2}`);
-    return [card.dataset.id!, { size: `${card.offsetWidth}x${card.offsetHeight}`, rows, pins, pinned: card.classList.contains("file-pinned") }];
+    const rows = [...card.querySelectorAll<HTMLElement>(".symbol-row")].filter(row => row.offsetParent).map(row => `${row.dataset.symbol} ${row.offsetHeight}${row.classList.contains("symbol-pinned-named") ? " pinned by name" : ""}`).sort();
+    const ports = [...card.querySelectorAll<HTMLElement>(".symbol-anchor")].filter(anchor => anchor.offsetParent)
+      .map(anchor => `${anchor.classList.contains("inbound") ? "uses" : "offers"} ${anchor.dataset.symbol ?? "*"}`).sort();
+    return [card.dataset.id!, { size: `${card.offsetWidth}x${card.offsetHeight}`, rows, ports, pinned: card.classList.contains("file-pinned") }];
   }));
   const wires = [...document.querySelectorAll<SVGElement>("#map-connections .connection-path")].filter(path => getComputedStyle(path).display !== "none").map(path =>
     `${[...path.classList].sort().join(".")} ${path.dataset.targetId ?? ""}#${path.dataset.targetSymbol ?? ""} -> ${path.dataset.sourceId ?? ""}#${path.dataset.sourceSymbol ?? ""}`).sort();
@@ -355,6 +352,16 @@ for (const [what, pin] of [
     // file used it, the start called "previous" won under files only and "seed 1" at reading size: three cards of the
     // last column stood in another order and the column seven units lower, 192 crossings for 190. The search that
     // continues after every picture, which this spec turns off, then prices the picture shown and moves to a better one.
+    //
+    // Nor is the place of a row inside its card held, and until 2026-11-22 this case held it, by the same kind of
+    // coincidence. Symbol Order's default orders a card's rows by where their wires lead, so where the cards may stand
+    // elsewhere the rows follow: that day the subject's own 26 rows stood in another order in the second picture, 48 of
+    // 79 cards standing elsewhere, with every card's rows, ports and pins the same; and with the rows in the order of
+    // appearance, which the layout does not move, no card's rows differed (the arrival's evidence, thirteenth
+    // milestone). The root's ruling of that day: the order of a card's rows is the picture's, like the cards' places,
+    // by direction's line "A picture may rearrange once after it arrives", which sets a pin made far out standing a few
+    // cards in another order aside for the playtests. What the claim is, is held: the same cards, each of the same size,
+    // with the same rows, ports and pins, and the same wires.
     test.setTimeout(240_000);
     await page.addInitScript(({ key, value }) => localStorage.setItem(key, value), {
       key: PERSISTED_UI_KEY, value: JSON.stringify({ version: PERSISTED_UI_VERSION, tuning: { localMap: { ...AT_READING_SIZE, searchStarts: 0 } } })
