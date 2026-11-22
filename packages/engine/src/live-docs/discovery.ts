@@ -594,6 +594,7 @@ export async function buildWorkspaceIndexes(options: {
         sourcePath,
         anchor: heading.slug,
         kind: symbol.kind,
+        ...(symbol.location ? { line: symbol.location.line } : {}),
         ...(symbol.isReExport ? { isReExport: true } : {}),
         ...(provider?.resolvedPath ? { reExport: {
           sourcePath: provider.resolvedPath,

@@ -90,6 +90,9 @@ export function deriveEstateGraph(scans: EstateScan[], location: DocLocation): L
         outbound: [],
         inbound: []
       };
+      // A documentation reference lands within its own scan, as its doc's link does; only its paths move.
+      if (file.documentation) files[key].documentation = file.documentation.map((reference) => ({ ...reference, to: prefixed(reference.to) }));
+      if (file.documentedBy) files[key].documentedBy = file.documentedBy.map(prefixed);
       scanOf.set(key, index);
     }
   }

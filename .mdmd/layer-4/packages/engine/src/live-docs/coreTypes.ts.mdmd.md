@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/engine/src/live-docs/coreTypes.ts`
-- Generated At: 2026-11-21T20:21:42.682Z
+- Generated At: 2026-11-22T02:42:17.597Z
 
 ## Authored
 ### Purpose
@@ -106,7 +106,7 @@ enabling cross-Live-Doc linking when type references are rendered.
 
 #### `WorkspaceSymbolIndex` {#symbol-workspacesymbolindex}
 - Type: type
-- Source: [source](../../../../../../packages/engine/src/live-docs/coreTypes.ts#L174)
+- Source: [source](../../../../../../packages/engine/src/live-docs/coreTypes.ts#L177)
 
 ##### `WorkspaceSymbolIndex` — Summary
 A workspace-wide index mapping symbol names to their Live Doc locations.
@@ -135,7 +135,7 @@ const index: WorkspaceSymbolIndex = new Map([
 
 #### `TypeReference` {#symbol-typereference}
 - Type: interface
-- Source: [source](../../../../../../packages/engine/src/live-docs/coreTypes.ts#L191)
+- Source: [source](../../../../../../packages/engine/src/live-docs/coreTypes.ts#L194)
 
 ##### `TypeReference` — Summary
 Represents a type reference extracted from a symbol's signature.
@@ -151,7 +151,7 @@ This powers the "type-aware symbol linking" feature in the Explorer's Local Map.
 
 #### `PublicSymbolEntry` {#symbol-publicsymbolentry}
 - Type: interface
-- Source: [source](../../../../../../packages/engine/src/live-docs/coreTypes.ts#L269)
+- Source: [source](../../../../../../packages/engine/src/live-docs/coreTypes.ts#L272)
 
 ##### `PublicSymbolEntry` — Summary
 Describes a public symbol exported from a source file.
@@ -168,7 +168,7 @@ are defined in other workspace files.
 
 #### `DependencyBasis` {#symbol-dependencybasis}
 - Type: type
-- Source: [source](../../../../../../packages/engine/src/live-docs/coreTypes.ts#L325)
+- Source: [source](../../../../../../packages/engine/src/live-docs/coreTypes.ts#L328)
 
 ##### `DependencyBasis` — Summary
 How a dependency was observed, when it was not read from source.
@@ -184,42 +184,42 @@ carries no mark.
 
 #### `DependencyEntry` {#symbol-dependencyentry}
 - Type: interface
-- Source: [source](../../../../../../packages/engine/src/live-docs/coreTypes.ts#L330)
+- Source: [source](../../../../../../packages/engine/src/live-docs/coreTypes.ts#L333)
 
 ##### `DependencyEntry` — Summary
 Describes a dependency imported or exported from a source file.
 
 #### `ReExportedSymbolInfo` {#symbol-reexportedsymbolinfo}
 - Type: interface
-- Source: [source](../../../../../../packages/engine/src/live-docs/coreTypes.ts#L347)
+- Source: [source](../../../../../../packages/engine/src/live-docs/coreTypes.ts#L350)
 
 ##### `ReExportedSymbolInfo` — Summary
 Describes a re-exported symbol from another module.
 
 #### `LocationInfo` {#symbol-locationinfo}
 - Type: interface
-- Source: [source](../../../../../../packages/engine/src/live-docs/coreTypes.ts#L362)
+- Source: [source](../../../../../../packages/engine/src/live-docs/coreTypes.ts#L365)
 
 ##### `LocationInfo` — Summary
 Source location information (1-indexed line and character).
 
 #### `SymbolDocumentationField` {#symbol-symboldocumentationfield}
 - Type: type
-- Source: [source](../../../../../../packages/engine/src/live-docs/coreTypes.ts#L374)
+- Source: [source](../../../../../../packages/engine/src/live-docs/coreTypes.ts#L377)
 
 ##### `SymbolDocumentationField` — Summary
 Fields that can appear in symbol documentation.
 
 #### `SymbolDocumentationParameter` {#symbol-symboldocumentationparameter}
 - Type: interface
-- Source: [source](../../../../../../packages/engine/src/live-docs/coreTypes.ts#L389)
+- Source: [source](../../../../../../packages/engine/src/live-docs/coreTypes.ts#L392)
 
 ##### `SymbolDocumentationParameter` — Summary
 Parameter documentation from JSDoc or XML comments.
 
 #### `SymbolDocumentationException` {#symbol-symboldocumentationexception}
 - Type: interface
-- Source: [source](../../../../../../packages/engine/src/live-docs/coreTypes.ts#L397)
+- Source: [source](../../../../../../packages/engine/src/live-docs/coreTypes.ts#L400)
 
 ##### `SymbolDocumentationException` — Summary
 Exception documentation from
@@ -229,7 +229,7 @@ Exception documentation from
 
 #### `SymbolDocumentationExample` {#symbol-symboldocumentationexample}
 - Type: interface
-- Source: [source](../../../../../../packages/engine/src/live-docs/coreTypes.ts#L405)
+- Source: [source](../../../../../../packages/engine/src/live-docs/coreTypes.ts#L408)
 
 ##### `SymbolDocumentationExample` — Summary
 Example documentation from
@@ -239,7 +239,7 @@ tags.
 
 #### `SymbolDocumentationLinkKind` {#symbol-symboldocumentationlinkkind}
 - Type: type
-- Source: [source](../../../../../../packages/engine/src/live-docs/coreTypes.ts#L414)
+- Source: [source](../../../../../../packages/engine/src/live-docs/coreTypes.ts#L417)
 
 ##### `SymbolDocumentationLinkKind` — Summary
 Link kind for
@@ -249,17 +249,31 @@ Link kind for
 
 #### `SymbolDocumentationLink` {#symbol-symboldocumentationlink}
 - Type: interface
-- Source: [source](../../../../../../packages/engine/src/live-docs/coreTypes.ts#L419)
+- Source: [source](../../../../../../packages/engine/src/live-docs/coreTypes.ts#L429)
 
 ##### `SymbolDocumentationLink` — Summary
 Link documentation from
 
+##### `SymbolDocumentationLink` — Remarks
+A `cref` link is the author's word that the symbol is related to the one it names (the owner, 2026-11-21: "If an
+author made an effort to tell us in their own words that these two things are related, we should honor their
+word"). Where the reader resolves the name to declarations of the workspace, `targets` says where; the Live Doc then
+writes the line as a link to each, and the graph holds it as a relation of its own, apart from the edges, so that
+no reachability, path or dead-code answer follows it.
+
 ##### `SymbolDocumentationLink` — Links
 - `/@link tags.`
 
+#### `SymbolDocumentationTarget` {#symbol-symboldocumentationtarget}
+- Type: interface
+- Source: [source](../../../../../../packages/engine/src/live-docs/coreTypes.ts#L440)
+
+##### `SymbolDocumentationTarget` — Summary
+A declaration a documentation reference names: the file that declares it, and the symbol of that file it lands on.
+
 #### `SymbolDocumentation` {#symbol-symboldocumentation}
 - Type: interface
-- Source: [source](../../../../../../packages/engine/src/live-docs/coreTypes.ts#L432)
+- Source: [source](../../../../../../packages/engine/src/live-docs/coreTypes.ts#L456)
 
 ##### `SymbolDocumentation` — Summary
 Comprehensive documentation extracted from a symbol's comments.
@@ -270,7 +284,7 @@ The `source` field indicates which parser produced the documentation.
 
 #### `PublicSymbolHeadingInfo` {#symbol-publicsymbolheadinginfo}
 - Type: interface
-- Source: [source](../../../../../../packages/engine/src/live-docs/coreTypes.ts#L454)
+- Source: [source](../../../../../../packages/engine/src/live-docs/coreTypes.ts#L478)
 
 ##### `PublicSymbolHeadingInfo` — Summary
 Information computed for rendering a public symbol heading.

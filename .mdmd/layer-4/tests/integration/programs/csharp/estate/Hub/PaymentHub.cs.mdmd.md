@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `tests/integration/programs/csharp/estate/Hub/PaymentHub.cs`
-- Generated At: 2026-11-22T01:24:27.188Z
+- Generated At: 2026-11-22T02:42:24.579Z
 
 ## Authored
 ### Purpose
@@ -26,7 +26,7 @@ The on-prem WCF hub. It does no payment work itself: it picks the payment servic
 for the request's workload and environment and forwards the operation.
 
 ##### `PaymentHub` — Links
-- `IPaymentService.Post(PaymentRequest)`
+- [`IPaymentService.Post(PaymentRequest)`](../Contracts/IPaymentService.cs.mdmd.md#symbol-post)
 
 #### `PostPayment` {#symbol-postpayment}
 - Type: method

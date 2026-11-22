@@ -3,7 +3,7 @@ import { tmpdir } from "node:os";
 import path from "node:path";
 import { afterAll, describe, expect, it } from "vitest";
 
-import { compareCSharp, documentationPairs, type CompilerRecord } from "./csharp-compare";
+import { compareCSharp, compareDocumentation, DOCUMENTATION_CAUSES, documentationPairs, type CompilerRecord } from "./csharp-compare";
 
 const folders: string[] = [];
 afterAll(() => {
@@ -91,6 +91,48 @@ describe("the pairs a documentation reference makes", () => {
       pairs:      ["A.cs → B.cs", "A.cs → C.Part.cs", "A.cs → C.cs", "A.cs → E.cs", "A.cs → F.cs"],
       alsoCode:   ["A.cs → B.cs"],
       authorOnly: ["A.cs → C.Part.cs", "A.cs → C.cs", "A.cs → E.cs", "A.cs → F.cs"]
+    });
+  });
+
+  it("sets the reader's relation beside the compiler's pairs, and names each pair they part on by its cause", () => {
+    const at = (from: string, written: string, outcome: string, files: string[]) =>
+      ({ from, line: 1, element: "see", written, outcome, resolved: files.length > 0 ? [{ kind: "NamedType", symbol: written, files }] : [] });
+    const record: CompilerRecord = {
+      tool: "stand-in", files: 0, names: 0, bound: 0, projects: [], declared: {}, edges: [],
+      crefs: [
+        at("A.cs", "Both", "resolved", ["B.cs"]),
+        at("A.cs", "Hidden", "resolved", ["C.cs"]),
+        at("A.cs", "Unread", "resolved", ["D.cs"]),
+        at("A.cs", "Moved", "resolved", ["E.cs"]),
+        at("A.cs", "Lib.Helper{T}", "resolved", ["G.cs"]),
+        at("A.cs", "Store.Put(string)", "unresolved", []),
+        at("A.cs", "Far", "unresolved", []),
+        at("A.cs", "Gone", "unresolved", [])
+      ]
+    };
+    const reader = [
+      { from: "A.cs", written: "Both", targets: ["B.cs"] },
+      { from: "A.cs", written: "Hidden", targets: [] },
+      { from: "A.cs", written: "Moved", targets: ["F.cs"] },
+      { from: "A.cs", written: "Lib.Helper<T>", targets: ["G.cs"] },
+      { from: "A.cs", written: "Store.Put(string)", targets: ["H.cs"] },
+      { from: "A.cs", written: "Far", targets: ["I.cs"] },
+      { from: "A.cs", written: "Gone", targets: ["J.cs"] },
+      { from: "A.cs", written: "Inactive", targets: ["K.cs"] }
+    ];
+    const relation = compareDocumentation(record, documentationPairs(record).pairs, reader, (_from, to) => to === "I.cs");
+    expect(relation.pairs).toEqual(["A.cs → B.cs", "A.cs → F.cs", "A.cs → G.cs", "A.cs → H.cs", "A.cs → I.cs", "A.cs → J.cs", "A.cs → K.cs"]);
+    expect(relation.compilerOnly).toEqual({
+      [DOCUMENTATION_CAUSES.unresolved]: ["A.cs → C.cs (1 <see> Hidden)"],
+      [DOCUMENTATION_CAUSES.notRead]:    ["A.cs → D.cs (1 <see> Unread)"],
+      [DOCUMENTATION_CAUSES.elsewhere]:  ["A.cs → E.cs (1 <see> Moved)"]
+    });
+    expect(relation.readerOnly).toEqual({
+      [DOCUMENTATION_CAUSES.compilerElsewhere]: ["A.cs → F.cs (Moved)"],
+      [DOCUMENTATION_CAUSES.framework]:         ["A.cs → H.cs (Store.Put(string))"],
+      [DOCUMENTATION_CAUSES.transitive]:        ["A.cs → I.cs (Far)"],
+      [DOCUMENTATION_CAUSES.compilerNone]:      ["A.cs → J.cs (Gone)"],
+      [DOCUMENTATION_CAUSES.unwritten]:         ["A.cs → K.cs (Inactive)"]
     });
   });
 

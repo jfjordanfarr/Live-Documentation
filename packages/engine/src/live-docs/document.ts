@@ -565,6 +565,62 @@ function renderReExports(entries: ReExport[]): string[] {
 }
 
 // ============================================================================
+// Documentation references
+// ============================================================================
+
+/** The `#####` section of a symbol that lists the references its documentation makes. */
+export const LINKS_SECTION = "Links";
+
+/**
+ * One reference a symbol's documentation makes, as a line of its {@link LINKS_SECTION} section: the name as the author
+ * wrote it, linked to the declaration it names where the reader resolved it, the element that carries it when that is
+ * not a `see` or a `seealso`, and the author's text for it: the name as a code span, linked as a dependency line links
+ * its label, then ` (permission)` where an element is named, then ` — ` and the text where there is one.
+ *
+ * An unlinked name says that nothing the reader resolved declares it. A reference that names declarations in several
+ * files, the parts of a partial type or the overloads a name alone names, is a line for each.
+ */
+export interface DocumentationReference {
+  name: string;
+  /** The link to the declaration, relative to the doc, where the reader resolved the reference. */
+  link?: string;
+  /** The element that carries the reference, when it is not a `see` or a `seealso`: `exception`, `inheritdoc`, `permission`. */
+  element?: string;
+  /** The author's text for the reference; its first line, where it has several, is the line's. */
+  text?: string;
+}
+
+/** An element's name as a reference's line writes it: a word of lowercase letters. */
+const ELEMENT_WORD = /^[a-z]+$/u;
+
+/** Writes a reference as a line of the {@link LINKS_SECTION} section; its text may go on over the next lines. */
+export function documentationReferenceLine(reference: DocumentationReference): string {
+  const head = reference.link !== undefined ? linked(reference.name, reference.link) : name(reference.name);
+  const element = reference.element !== undefined && ELEMENT_WORD.test(reference.element) ? ` (${reference.element})` : "";
+  return `- ${head}${element}${reference.text ? ` — ${reference.text}` : ""}`;
+}
+
+/**
+ * Reads a line of a {@link LINKS_SECTION} section as a reference, as {@link documentationReferenceLine} writes one:
+ * undefined for a line of another form, a web link (`- [label](https://…)`) or a link of no kind.
+ */
+export function readDocumentationReference(line: string): DocumentationReference | undefined {
+  const cursor = new Cursor(line);
+  if (!cursor.skip("- ")) return undefined;
+  const link = cursor.linked();
+  const label = link ? link.name : cursor.value(NAME);
+  if (label === undefined) return undefined;
+  const reference: DocumentationReference = link ? { name: label, link: link.link } : { name: label };
+  const rest = cursor.rest();
+  const element = /^ \(([a-z]+)\)/u.exec(rest);
+  const after = element ? rest.slice(element[0].length) : rest;
+  if (element) reference.element = element[1];
+  if (after.startsWith(" — ")) reference.text = after.slice(3);
+  else if (after !== "") return undefined;
+  return reference;
+}
+
+// ============================================================================
 // Section bodies
 // ============================================================================
 

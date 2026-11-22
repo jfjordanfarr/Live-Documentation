@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/engine/src/live-docs/adapters/csharp.ts`
-- Generated At: 2026-11-22T02:29:38.574Z
+- Generated At: 2026-11-22T03:13:59.535Z
 
 ## Authored
 ### Purpose
@@ -28,14 +28,14 @@ Harvests public symbols, XML doc comments, and dependency edges from C# sources,
 ### Public Symbols
 #### `TYPE_NAME_REASONS` {#symbol-type_name_reasons}
 - Type: const
-- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/csharp.ts#L1191)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/csharp.ts#L1222)
 
 ##### `TYPE_NAME_REASONS` — Summary
 Why a type name has no link although the workspace declares it.
 
 #### `resolveWorkspaceTypes` {#symbol-resolveworkspacetypes}
 - Type: function
-- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/csharp.ts#L1636)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/csharp.ts#L1793)
 - Parameters: `fileIndex`: [`WorkspaceFileIndex`](./index.ts.mdmd.md#symbol-workspacefileindex)
 
 ##### `resolveWorkspaceTypes` — Summary
@@ -43,7 +43,7 @@ The workspace files that declare a qualified type name, for adapters of other fi
 
 #### `csharpAdapter` {#symbol-csharpadapter}
 - Type: const
-- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/csharp.ts#L1647)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/csharp.ts#L1804)
 - Returns: [`LanguageAdapter`](./index.ts.mdmd.md#symbol-languageadapter)
 
 ##### `csharpAdapter` — Summary
@@ -58,6 +58,7 @@ Language adapter for C# (`.cs`): tree-sitter symbols and compiler-style name res
 - [`csharp.dependencies.ResolvedTypeTarget`](./csharp.dependencies.ts.mdmd.md#symbol-resolvedtypetarget)
 - [`csharp.dependencies.extractDynamicDependencies`](./csharp.dependencies.ts.mdmd.md#symbol-extractdynamicdependencies)
 - [`csharp.xmldoc.buildDocumentationFromLines`](./csharp.xmldoc.ts.mdmd.md#symbol-builddocumentationfromlines)
+- [`csharp.xmldoc.crefName`](./csharp.xmldoc.ts.mdmd.md#symbol-crefname-function)
 - [`dotnetProjects.ProjectReach`](./dotnetProjects.ts.mdmd.md#symbol-projectreach-interface)
 - [`dotnetProjects.projectReach`](./dotnetProjects.ts.mdmd.md#symbol-projectreach-function)
 - [`index.LanguageAdapter`](./index.ts.mdmd.md#symbol-languageadapter) (type-only)
@@ -71,6 +72,7 @@ Language adapter for C# (`.cs`): tree-sitter symbols and compiler-style name res
 - [`core.PublicSymbolEntry`](../core.ts.mdmd.md#symbol-publicsymbolentry) (type-only)
 - [`core.SourceAnalysisResult`](../core.ts.mdmd.md#symbol-sourceanalysisresult) (type-only)
 - [`core.SymbolDocumentation`](../core.ts.mdmd.md#symbol-symboldocumentation) (type-only)
+- [`core.SymbolDocumentationTarget`](../core.ts.mdmd.md#symbol-symboldocumentationtarget) (type-only)
 - [`core.TypeReference`](../core.ts.mdmd.md#symbol-typereference) (type-only)
 - [`coreTypes.ProgramEntry`](../coreTypes.ts.mdmd.md#symbol-programentry) (type-only)
 - [`coreTypes.SourceNotice`](../coreTypes.ts.mdmd.md#symbol-sourcenotice) (type-only)

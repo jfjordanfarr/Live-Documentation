@@ -48,6 +48,7 @@ import type {
   PublicSymbolEntry,
   SourceAnalysisResult,
   SymbolDocumentation,
+  SymbolDocumentationTarget,
   TypeReference
 } from "../core";
 import type { ProgramEntry, SourceNotice, WorkspaceSymbolIndex } from "../coreTypes";
@@ -64,7 +65,7 @@ import {
   type SqlObjectName
 } from "../openings";
 import { extractDynamicDependencies, type ConfigReference, type ResolvedTypeTarget } from "./csharp.dependencies";
-import { buildDocumentationFromLines } from "./csharp.xmldoc";
+import { buildDocumentationFromLines, crefName } from "./csharp.xmldoc";
 import { projectReach, type ProjectReach } from "./dotnetProjects";
 import type { LanguageAdapter, WorkspaceFileIndex } from "./index";
 import { inSpaces } from "./spaces";
@@ -89,7 +90,12 @@ interface DeclaredMember {
   character:       number;
   documentation?:  SymbolDocumentation;
   typeReferences?: TypeReference[];
+  /** Shown among the file's symbols: a public, protected or internal member, or any of an interface. An enum's members are held, for a documentation reference to find, and not shown. */
   published:       boolean;
+  /** A method's or constructor's parameter types as written, which tell one overload a documentation reference names from another. */
+  parameterTypes?: string[];
+  /** The scope its documentation's references are resolved from: the type that declares it. */
+  docScope:        Scope;
 }
 
 /** A route an action serves, as a symbol name, at the line of the attribute that declares it. */
@@ -120,6 +126,8 @@ interface DeclaredType {
   /** The template a `RoutePrefix` or class-level `Route` attribute puts before every action's route. */
   routePrefix?:    string;
   routes:          DeclaredRoute[];
+  /** The scope its documentation's references are resolved from: inside the type, where its own members are in scope. */
+  docScope:        Scope;
 }
 
 /** A dotted name used somewhere in the file, with the scope it was used from. */
@@ -247,13 +255,23 @@ function fieldText(node: SyntaxNode, field: string): string {
   return node.childForFieldName(field)?.text.replace(/\s+/g, "") ?? "";
 }
 
-/** The `///` lines that sit directly above a declaration, with nothing but attributes between. */
+/** Directives that hold no code, which may stand between a documentation comment and its declaration. */
+const LINE_DIRECTIVES = new Set(["preproc_pragma", "preproc_region", "preproc_endregion", "preproc_nullable", "preproc_line", "preproc_warning", "preproc_error"]);
+
+/**
+ * The `///` lines that sit directly above a declaration, with nothing but attributes, other comments and directives
+ * that hold no code between: the compiler takes a documentation comment across them (`/*[Obsolete]*\/` between
+ * log4net's `MDC` and its documentation, a `#pragma warning disable` before many of DNN Platform's classes, measured
+ * against the compiler on 2026-11-22), so the reader does too.
+ */
 function leadingDocumentation(node: SyntaxNode): SymbolDocumentation | undefined {
   const lines: string[] = [];
   let expectedRow = node.startPosition.row;
   let sibling     = node.previousNamedSibling;
-  while (sibling && sibling.type === "comment" && sibling.text.startsWith("///") && sibling.endPosition.row === expectedRow - 1) {
-    lines.unshift(sibling.text);
+  // A directive's node takes its line break, so it ends at the start of the next line.
+  const lastRow = (candidate: SyntaxNode): number => (candidate.endPosition.column === 0 && candidate.endPosition.row > candidate.startPosition.row ? candidate.endPosition.row - 1 : candidate.endPosition.row);
+  while (sibling && (sibling.type === "comment" || LINE_DIRECTIVES.has(sibling.type)) && lastRow(sibling) === expectedRow - 1) {
+    if (sibling.type === "comment" && sibling.text.startsWith("///")) lines.unshift(sibling.text);
     expectedRow = sibling.startPosition.row;
     sibling     = sibling.previousNamedSibling;
   }
@@ -641,9 +659,11 @@ class FileExtractor {
       bases:          [],
       constants:      new Map(),
       isController:   /Controller$/u.test(nameNode.text),
-      routes:         []
+      routes:         [],
+      docScope:       scope
     };
     const inner: Scope = { namespace: scope.namespace, enclosingTypes: [qualifiedName, ...scope.enclosingTypes], partial: declared.partial };
+    declared.docScope = inner;
 
     for (const attribute of attributesOf(node)) {
       if (attribute.name === "RoutePrefix" || attribute.name === "Route") {
@@ -690,6 +710,13 @@ class FileExtractor {
           }
           break;
         case "enum_member_declaration_list":
+          // An enum's members are held for a documentation reference to find (`Color.Red`), and not shown as symbols.
+          for (const member of child.namedChildren) {
+            const memberName = member.type === "enum_member_declaration" ? member.childForFieldName("name") : null;
+            if (memberName) {
+              declared.members.push({ name: memberName.text, kind: "enum member", line: memberName.startPosition.row + 1, character: memberName.startPosition.column + 1, published: false, docScope: inner });
+            }
+          }
           break;
         default:
           this.visitExpression(child, inner);
@@ -709,6 +736,8 @@ class FileExtractor {
     const documentation  = leadingDocumentation(node);
     const names: SyntaxNode[]        = [];
     let typeReferences: TypeReference[] = [];
+    const parameterList  = node.type === "method_declaration" || node.type === "constructor_declaration" ? node.childForFieldName("parameters") : null;
+    const parameterTypes = parameterList?.namedChildren.filter((child) => child.type === "parameter").map((parameter) => fieldText(parameter, "type"));
 
     switch (node.type) {
       case "field_declaration":
@@ -763,7 +792,9 @@ class FileExtractor {
         character:      nameNode.startPosition.column + 1,
         documentation,
         typeReferences: typeReferences.length > 0 ? typeReferences : undefined,
-        published
+        published,
+        ...(parameterTypes ? { parameterTypes } : {}),
+        docScope:       scope
       });
     }
 
@@ -1365,6 +1396,11 @@ function resolveSegments(segments: string[], scope: Scope, facts: FileFacts, tab
 
 /** Resolves the longest prefix of a name chain that names a type the file can see. */
 function resolveChain(chain: string[], scope: Scope, facts: FileFacts, table: TypeTable, narrow: Narrow, arities?: number[], outcome?: SearchOutcome): TypeRecord[] {
+  return resolvePrefix(chain, scope, facts, table, narrow, arities, outcome)?.records ?? [];
+}
+
+/** {@link resolveChain}, and the segments after the prefix that names the type: what a member access names in it. */
+function resolvePrefix(chain: string[], scope: Scope, facts: FileFacts, table: TypeTable, narrow: Narrow, arities?: number[], outcome?: SearchOutcome): { records: TypeRecord[]; rest: string[] } | undefined {
   const alias    = facts.aliases.get(chain[0]);
   const expanded = alias ? [...alias.chain, ...chain.slice(1)] : chain;
   // An alias stands for its target as written, type arguments and all: `using H = Lib.Helper;` names the type with none.
@@ -1373,16 +1409,137 @@ function resolveChain(chain: string[], scope: Scope, facts: FileFacts, table: Ty
     : arities;
   for (let length = expanded.length; length >= 1; length -= 1) {
     const records = resolveSegments(expanded.slice(0, length), scope, facts, table, narrow, counts?.[length - 1], outcome);
-    if (records) return records;
+    if (records) return { records, rest: expanded.slice(length) };
+  }
+  return undefined;
+}
+
+// ---------------------------------------------------------------------------
+// Documentation references
+// ---------------------------------------------------------------------------
+
+/** C#'s keywords for the framework's types, as a parameter of a reference or a declaration may write them. */
+const TYPE_KEYWORDS: Readonly<Record<string, string>> = {
+  bool: "Boolean", byte: "Byte", sbyte: "SByte", char: "Char", decimal: "Decimal", double: "Double", float: "Single",
+  int: "Int32", uint: "UInt32", long: "Int64", ulong: "UInt64", short: "Int16", ushort: "UInt16", object: "Object",
+  string: "String", nint: "IntPtr", nuint: "UIntPtr"
+};
+
+/**
+ * A parameter's type as the reader can compare it: the last segment of its name, without type arguments, array or
+ * pointer marks, `?`, a modifier or `global::`, and a keyword as the framework's name (`int` is `Int32`). The reader
+ * resolves no parameter's type, so two types of one simple name in different namespaces are alike to it.
+ */
+function parameterShape(written: string): string {
+  let text = written.replace(/\s+/gu, " ").trim().replace(/^(?:(?:ref|out|in|params|this|scoped|readonly)\s+)+/u, "").replace(/^global::/u, "");
+  for (let previous = ""; previous !== text; ) {
+    previous = text;
+    text = text.replace(/<[^<>]*>|\{[^{}]*\}/gu, "");
+  }
+  text = text.replace(/[\s?*&]|\[[,\s]*\]/gu, "");
+  const last = text.slice(text.lastIndexOf(".") + 1);
+  return TYPE_KEYWORDS[last] ?? last;
+}
+
+/** A declaration a reference lands on: the member, where the file shows it as a symbol, else the type that declares it. */
+function memberTarget(record: TypeRecord, member: DeclaredMember): SymbolDocumentationTarget {
+  return member.published
+    ? { path: record.file, symbol: member.name, line: member.line }
+    : { path: record.file, symbol: record.type.name, line: record.type.line };
+}
+
+function typeTarget(record: TypeRecord): SymbolDocumentationTarget {
+  return { path: record.file, symbol: record.type.name, line: record.type.line };
+}
+
+/**
+ * The members of a type a reference names, by name, in the parts the type is declared in, else, where `inherited`, in
+ * the nearest type it inherits from that declares the name, as C#'s member lookup goes. Where the reference writes a parameter list, the
+ * overloads whose parameters match it, by number and by each type's simple name ({@link parameterShape}); where none
+ * matches so, those of its number of parameters; where none has that number, none. A constructor is named `#ctor` or
+ * by the type's own name; a name alone never finds one.
+ */
+function namedMembers(records: TypeRecord[], name: string, parameters: string[] | undefined, table: TypeTable, narrow: Narrow, constructors: boolean, inherited = true): SymbolDocumentationTarget[] {
+  const levels: TypeRecord[][] = [records, ...(inherited ? inheritedTypes(records, table).map((qualified) => narrow(table.byQualifiedName.get(qualified) ?? []) ?? []) : [])];
+  for (const level of levels) {
+    const found: Array<{ record: TypeRecord; member: DeclaredMember }> = [];
+    for (const record of level) {
+      const wanted = name === "#ctor" ? record.type.name : name;
+      for (const member of record.type.members) {
+        if (member.name !== wanted) continue;
+        if ((member.kind === "constructor") !== (constructors && (name === "#ctor" || name === record.type.name))) continue;
+        found.push({ record, member });
+      }
+    }
+    if (found.length === 0) continue;
+    let chosen = found;
+    if (parameters !== undefined) {
+      const shapes   = parameters.map(parameterShape);
+      const counted  = found.filter(({ member }) => member.parameterTypes?.length === parameters.length);
+      const matching = counted.filter(({ member }) => member.parameterTypes!.every((type, index) => parameterShape(type) === shapes[index]));
+      chosen = matching.length > 0 ? matching : counted;
+    }
+    const targets = new Map<string, SymbolDocumentationTarget>();
+    for (const { record, member } of chosen) {
+      const target = memberTarget(record, member);
+      targets.set(`${target.path}\u0000${target.line}`, target);
+    }
+    return Array.from(targets.values());
   }
   return [];
+}
+
+/**
+ * The declarations a documentation reference (`cref`) names, resolved as the reader resolves a type's name in code:
+ * the containers C# searches from the scope of the declaration the comment documents, with what its project can see
+ * ({@link resolvePrefix}). A name alone may be a member the type documented declares, or a type enclosing it, which
+ * C# finds before a type of a namespace; a member they only inherit it does not find, as the compiler's answers on DNN
+ * Platform showed (2026-11-22: `<see cref="Settings"/>` in a class `Settings` that inherits a property `Settings` is
+ * the class, `<see cref="Layout"/>` in an appender that inherits a property `Layout` the namespace `log4net.Layout`). A
+ * member named through its type (`Base.Gadget`) is found where the type inherits it too. A type's name lands on each
+ * part that declares it; a member's on the part that declares it, among overloads by their parameters
+ * ({@link namedMembers}). A namespace, a name nothing here declares, and a member the reader does not hold (an
+ * operator, an indexer, a conversion) resolve to none.
+ */
+function resolveReference(written: string, scope: Scope, facts: FileFacts, table: TypeTable, narrow: Narrow): SymbolDocumentationTarget[] {
+  const name = crefName(written);
+  if (!name) return [];
+  const chain = name.segments.map((segment) => segment.name);
+  if (chain.length === 1 && chain[0] !== "#ctor") {
+    for (const enclosing of scope.enclosingTypes) {
+      const records = narrow(table.byQualifiedName.get(enclosing) ?? []) ?? [];
+      const members = records.length > 0 ? namedMembers(records, chain[0], name.parameters, table, narrow, false, false) : [];
+      if (members.length > 0) return members;
+    }
+  }
+  const found = resolvePrefix(chain, scope, facts, table, narrow, name.segments.map((segment) => segment.arity));
+  if (!found || found.records.length === 0) return [];
+  if (found.rest.length === 0) {
+    const constructors = name.parameters !== undefined ? namedMembers(found.records, "#ctor", name.parameters, table, narrow, true) : [];
+    return constructors.length > 0 ? constructors : found.records.map(typeTarget);
+  }
+  return found.rest.length === 1 ? namedMembers(found.records, found.rest[0], name.parameters, table, narrow, true) : [];
+}
+
+/** A declaration's documentation with each of its references' targets, as {@link resolveReference} finds them. */
+function withTargets(documentation: SymbolDocumentation | undefined, scope: Scope, facts: FileFacts, table: TypeTable, narrow: Narrow): SymbolDocumentation | undefined {
+  if (!documentation?.links?.some((link) => link.kind === "cref")) return documentation;
+  return {
+    ...documentation,
+    links: documentation.links.map((link) => {
+      if (link.kind !== "cref") return link;
+      const targets = resolveReference(link.target, scope, facts, table, narrow);
+      return targets.length > 0 ? { ...link, targets } : link;
+    })
+  };
 }
 
 // ---------------------------------------------------------------------------
 // Adapter output
 // ---------------------------------------------------------------------------
 
-function toSymbols(facts: FileFacts): PublicSymbolEntry[] {
+/** The file's symbols, each documentation's references given the declarations they name (`resolve`). */
+function toSymbols(facts: FileFacts, resolve: (documentation: SymbolDocumentation | undefined, scope: Scope) => SymbolDocumentation | undefined): PublicSymbolEntry[] {
   const entries: PublicSymbolEntry[] = [];
   for (const type of facts.types) {
     entries.push({
@@ -1390,7 +1547,7 @@ function toSymbols(facts: FileFacts): PublicSymbolEntry[] {
       kind:           type.kind,
       qualifiedName:  type.qualifiedName !== type.name ? type.qualifiedName : undefined,
       location:       { line: type.line, character: type.character },
-      documentation:  type.documentation,
+      documentation:  resolve(type.documentation, type.docScope),
       typeReferences: type.typeReferences.length > 0 ? type.typeReferences : undefined
     });
     for (const member of type.members) {
@@ -1399,7 +1556,7 @@ function toSymbols(facts: FileFacts): PublicSymbolEntry[] {
         name:           member.name,
         kind:           member.kind,
         location:       { line: member.line, character: member.character },
-        documentation:  member.documentation,
+        documentation:  resolve(member.documentation, member.docScope),
         typeReferences: member.typeReferences
       });
     }
@@ -1657,8 +1814,11 @@ export const csharpAdapter: LanguageAdapter = {
     const reach    = await projectReach(workspaceRoot, fileIndex);
     // `resolved.notices` says why each type name left unlinked has no link, for the run to count at its end.
     const resolved = toDependencies(facts, thisFile, content, table, reach, fileIndex, symbolIndex);
+    // A documentation reference is resolved as a name in code is, from the file with what its project sees.
+    const seen     = withProjectUsings(facts, thisFile, table, reach);
+    const narrow   = narrowFor(thisFile, reach);
     const result: SourceAnalysisResult = {
-      symbols:      toSymbols(facts),
+      symbols:      toSymbols(facts, (documentation, scope) => withTargets(documentation, scope, seen, table, narrow)),
       dependencies: resolved.dependencies
     };
     if (facts.program) result.program = facts.program;

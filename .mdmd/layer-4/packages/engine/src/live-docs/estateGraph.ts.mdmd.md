@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/engine/src/live-docs/estateGraph.ts`
-- Generated At: 2026-11-19T21:10:11.628Z
+- Generated At: 2026-11-22T02:42:17.780Z
 
 ## Authored
 ### Purpose
@@ -44,7 +44,7 @@ Joins the scans of an estate into one graph.
 
 #### `contains` {#symbol-contains}
 - Type: function
-- Source: [source](../../../../../../packages/engine/src/live-docs/estateGraph.ts#L194)
+- Source: [source](../../../../../../packages/engine/src/live-docs/estateGraph.ts#L197)
 
 ##### `contains` — Summary
 True when `inner` is the same folder as `outer` or lies inside it; the empty folder is the root and contains everything.

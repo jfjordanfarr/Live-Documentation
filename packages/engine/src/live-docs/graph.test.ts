@@ -88,6 +88,46 @@ describe("deriveLiveDocGraph", () => {
   });
 });
 
+describe("an author's documentation reference in the graph", () => {
+  const links = (body: string[]) => [{ title: "Links", body }];
+  const words = doc("src/Words.cs", {
+    symbols: [
+      {
+        name: "Words", slug: "symbol-words", kind: "class", flags: [], references: [],
+        sections: links([
+          "- [`Store`](./Store.cs.md#symbol-store)",
+          "- [`Store.Put`](./Store.cs.md#symbol-put) (inheritdoc)",
+          "- [`Words.Own`](#symbol-own)",
+          "- [`Gone`](./Gone.cs.md#symbol-gone)",
+          "- `Missing` (exception) — the author's text",
+          "- [docs](https://example.test)"
+        ])
+      },
+      { name: "Own", slug: "symbol-own", kind: "method", flags: [], references: [], sections: links(["- [`Store`](./Store.cs.md#symbol-store) — the store"]) }
+    ]
+  });
+  const store = doc("src/Store.cs", { symbols: [{ name: "Store", slug: "symbol-store", kind: "class", flags: [], references: [], sections: [] }] });
+  const graph = deriveLiveDocGraph([words, store], location);
+
+  it("holds each linked reference that lands on a doc, from the symbol that makes it, apart from the edges", () => {
+    expect(graph.files["src/Words.cs"].documentation).toEqual([
+      { label: "Store", link: "./Store.cs.md#symbol-store", to: "src/Store.cs", toSymbol: "symbol-store", from: "symbol-words" },
+      { label: "Store.Put", element: "inheritdoc", link: "./Store.cs.md#symbol-put", to: "src/Store.cs", toSymbol: "symbol-put", from: "symbol-words" },
+      { label: "Words.Own", link: "#symbol-own", to: "src/Words.cs", toSymbol: "symbol-own", from: "symbol-words" },
+      { label: "Store", link: "./Store.cs.md#symbol-store", to: "src/Store.cs", toSymbol: "symbol-store", from: "symbol-own" }
+    ]);
+    // A word is not a use: no edge, and neither file is the other's neighbour, so no walk follows it.
+    expect(graph.files["src/Words.cs"]).toMatchObject({ edges: [], outbound: [], inbound: [] });
+    expect(graph.files["src/Store.cs"]).toMatchObject({ edges: [], outbound: [], inbound: [] });
+  });
+
+  it("gives the target the files whose documentation names it, never itself, and a file named by none no list", () => {
+    expect(graph.files["src/Store.cs"].documentedBy).toEqual(["src/Words.cs"]);
+    expect(graph.files["src/Words.cs"].documentedBy).toBeUndefined();
+    expect(graph.files["src/Store.cs"].documentation).toBeUndefined();
+  });
+});
+
 describe("linkTarget", () => {
   const from = ".live-documentation/source/src/graph/walk.ts.md";
 

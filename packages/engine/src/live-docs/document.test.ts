@@ -4,9 +4,12 @@ import {
   DEFAULT_AUTHORED_BLOCK,
   LiveDocSyntaxError,
   authoredBlockOf,
+  documentationReferenceLine,
   encodeLinkPath,
   parseLiveDoc,
+  readDocumentationReference,
   renderLiveDoc,
+  type DocumentationReference,
   type LiveDoc
 } from "./document";
 
@@ -386,5 +389,32 @@ describe("the Live Doc grammar", () => {
     expect(authoredBlockOf("no sections here")).toBe(DEFAULT_AUTHORED_BLOCK);
     expect(authoredBlockOf(undefined)).toBe(DEFAULT_AUTHORED_BLOCK);
     expect(authoredBlockOf("## Authored\n\n\n## Generated\n")).toBe(DEFAULT_AUTHORED_BLOCK);
+  });
+});
+
+describe("a documentation reference's line", () => {
+  it("writes the name, its link where the reader resolved it, its element and its text, and reads each back as itself", () => {
+    const references: DocumentationReference[] = [
+      { name: "Base.Gadget", link: "./Base.cs.mdmd.md#symbol-gadget" },
+      { name: "Derived", link: "./Derived.cs.mdmd.md#symbol-derived", element: "permission" },
+      { name: "Lib.Thing", element: "exception" },
+      { name: "Missing", text: "the author's text (with a parenthesis)" },
+      { name: "Lib.Helper<T>", link: "./HelperOfT.cs.mdmd.md#symbol-helper", element: "inheritdoc", text: "a — dash" },
+      { name: "`odd` name", link: "./a (b).cs.mdmd.md" }
+    ];
+    const lines = references.map(documentationReferenceLine);
+    expect(lines.slice(0, 4)).toEqual([
+      "- [`Base.Gadget`](./Base.cs.mdmd.md#symbol-gadget)",
+      "- [`Derived`](./Derived.cs.mdmd.md#symbol-derived) (permission)",
+      "- `Lib.Thing` (exception)",
+      "- `Missing` — the author's text (with a parenthesis)"
+    ]);
+    expect(lines.map(readDocumentationReference)).toEqual(references);
+  });
+
+  it("reads no reference from a web link, a link of no kind or a line of another form", () => {
+    for (const line of ["- [docs](https://example.test)", "- ../../docs/registry.md — Widget architecture", "- `A` (Exception)", "- `A` trailing", "not a list item"]) {
+      expect(readDocumentationReference(line), line).toBeUndefined();
+    }
   });
 });

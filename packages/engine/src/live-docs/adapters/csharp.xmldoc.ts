@@ -242,7 +242,10 @@ export function extractExampleTags(block: string): SymbolDocumentationExample[] 
 }
 
 /**
- * Extracts <see> and <seealso> link tags.
+ * Extracts the references a documentation comment makes: each `<see>` and `<seealso>`, by its `href` or its `cref`, and
+ * the `cref` of every other element that carries one (`exception`, `inheritdoc`, `permission`, `event` …), which keeps
+ * the element's name, so that every reference the compiler resolves is read. A `<see>` with neither attribute names
+ * nothing the compiler resolves, so its text is kept as a link of no kind (`unknown`), not as a `cref`.
  *
  * @param block - Raw XML doc block
  * @returns Array of deduplicated, sorted links
@@ -251,29 +254,29 @@ export function extractLinkTags(block: string): SymbolDocumentationLink[] {
   const links: SymbolDocumentationLink[] = [];
   const seen = new Set<string>();
 
-  const register = (target: string | undefined, text: string | undefined): void => {
-    if (!target) {
-      return;
-    }
-    const normalizedTarget = target.trim();
+  const register = (kind: SymbolDocumentationLinkKind, target: string | undefined, text: string | undefined, element?: string): void => {
+    const normalizedTarget = target?.trim();
     if (!normalizedTarget) {
       return;
     }
-    const kind: SymbolDocumentationLinkKind = /^https?:\/\//i.test(normalizedTarget)
-      ? "href"
-      : "cref";
-    const resolvedTarget = kind === "cref" ? normalizeCrefTarget(normalizedTarget) : normalizedTarget;
+    // A documentation ID (`M:Lib.Store.Put(System.String)`) is copied by the compiler as written, never resolved, so
+    // the list keeps it as written: its prefix is what tells it from a name the compiler resolves.
+    const resolvedTarget = kind === "cref" && !DOCUMENTATION_ID.test(normalizedTarget) ? normalizeCrefTarget(normalizedTarget) : normalizedTarget;
     const normalizedText = text?.trim();
-    const key = `${kind}|${resolvedTarget}|${normalizedText ?? ""}`;
+    const key = `${kind}|${resolvedTarget}|${normalizedText ?? ""}|${element ?? ""}`;
     if (seen.has(key)) {
       return;
     }
     seen.add(key);
-    links.push({
+    const link: SymbolDocumentationLink = {
       kind,
       target: resolvedTarget,
       text: normalizedText && normalizedText !== resolvedTarget ? normalizedText : undefined
-    });
+    };
+    if (element) {
+      link.element = element;
+    }
+    links.push(link);
   };
 
   const tagRegex = /<(see|seealso)\b([^>]*?)(?:\/>|>([\s\S]*?)<\/\1>)/gi;
@@ -281,23 +284,88 @@ export function extractLinkTags(block: string): SymbolDocumentationLink[] {
   while ((match = tagRegex.exec(block)) !== null) {
     const attrs = parseXmlAttributes(match[2] ?? "");
     const body = match[3] ? normalizeXmlText(match[3]) : "";
-    const targetCandidate = attrs.href ?? attrs.cref ?? body;
-    register(targetCandidate, body || undefined);
+    // A web address is a link. A relative `href` is relative to the source, not to the doc, and would not open from
+    // it, so it is kept as written, a link of no kind; only a `cref` is a name the compiler resolves.
+    if (attrs.href !== undefined) {
+      register(/^https?:\/\//i.test(attrs.href.trim()) ? "href" : "unknown", attrs.href, body || undefined);
+    } else if (attrs.cref !== undefined) {
+      register(/^https?:\/\//i.test(attrs.cref.trim()) ? "href" : "cref", attrs.cref, body || undefined);
+    } else {
+      register(/^https?:\/\//i.test(body) ? "href" : "unknown", body, undefined);
+    }
   }
 
-  links.sort((a, b) => {
-    const targetDiff = compareText(a.target, b.target);
-    if (targetDiff !== 0) {
-      return targetDiff;
-    }
-    const kindDiff = compareText(a.kind, b.kind);
-    if (kindDiff !== 0) {
-      return kindDiff;
-    }
-    return compareText(a.text ?? "", b.text ?? "");
-  });
+  const elementRegex = /<([A-Za-z][\w.-]*)\b([^>]*?)\/?>/g;
+  while ((match = elementRegex.exec(block)) !== null) {
+    const element = match[1].toLowerCase();
+    if (element === "see" || element === "seealso") continue;
+    const cref = parseXmlAttributes(match[2] ?? "").cref;
+    if (cref !== undefined) register("cref", cref, undefined, element);
+  }
+
+  links.sort((a, b) =>
+    compareText(a.target, b.target) ||
+    compareText(a.kind, b.kind) ||
+    compareText(a.element ?? "", b.element ?? "") ||
+    compareText(a.text ?? "", b.text ?? ""));
 
   return links;
+}
+
+/** A reference written as a documentation ID, a kind's letter and a colon before the name, which the compiler copies without resolving it. */
+const DOCUMENTATION_ID = /^[A-Za-z]:/u;
+
+/** A documentation reference's name as C# reads it: its dotted segments, and the parameter list a member's reference writes. */
+export interface CrefName {
+  /** The dotted name's segments, each with the number of type parameters it writes: `Lib.Helper{T}` is `Lib` 0 and `Helper` 1. A constructor's segment is `#ctor`. */
+  segments: Array<{ name: string; arity: number }>;
+  /** The parameters' types as written, `Run(Runner.Count)` one, `Run()` none; undefined where the reference writes no list. */
+  parameters?: string[];
+}
+
+/** Splits text at a separator that stands outside every bracket. */
+function splitOutside(text: string, separator: string): string[] {
+  const parts: string[] = [];
+  let depth = 0;
+  let start = 0;
+  for (let index = 0; index < text.length; index += 1) {
+    const character = text[index];
+    if (character === "<" || character === "(" || character === "[") depth += 1;
+    else if (character === ">" || character === ")" || character === "]") depth -= 1;
+    else if (depth === 0 && character === separator) {
+      parts.push(text.slice(start, index));
+      start = index + 1;
+    }
+  }
+  parts.push(text.slice(start));
+  return parts;
+}
+
+/**
+ * Reads a reference's name, as {@link normalizeCrefTarget} gives it, into what the C# reader resolves: `Base.Gadget`
+ * the segments `Base` and `Gadget`, `Lib.Helper<T>` (written `Lib.Helper{T}`) `Lib` and `Helper` of one type
+ * parameter, `Runner.Run(Runner.Count)` a member with one parameter, `Runner..ctor` (written `Runner.#ctor`) a
+ * constructor. An operator, a conversion, an indexer or anything else that is not a dotted name is undefined: the
+ * reader declares no such member to resolve it to.
+ */
+export function crefName(target: string): CrefName | undefined {
+  let text = target.trim().replace(/^global::/u, "").replace(/\.\.ctor(?=$|\()/u, ".#ctor");
+  if (/\boperator\b/u.test(text)) return undefined;
+  let parameters: string[] | undefined;
+  // A name holds no parenthesis, its type arguments being in braces or angle brackets: the first one opens the list.
+  const open = text.indexOf("(");
+  if (open > 0 && text.endsWith(")")) {
+    const inner = text.slice(open + 1, -1).trim();
+    parameters = inner === "" ? [] : splitOutside(inner, ",").map((parameter) => parameter.trim());
+    text = text.slice(0, open);
+  }
+  const segments: Array<{ name: string; arity: number }> = [];
+  for (const segment of splitOutside(text, ".")) {
+    const generic = /^@?([\p{L}_#][\p{L}\p{N}_]*)\s*(?:<(.*)>)?$/u.exec(segment.trim());
+    if (!generic) return undefined;
+    segments.push({ name: generic[1], arity: generic[2] === undefined ? 0 : splitOutside(generic[2], ",").length });
+  }
+  return segments.length > 0 ? { segments, parameters } : undefined;
 }
 
 /**
@@ -393,12 +461,18 @@ export function normalizeXmlText(value: string): string {
     .replace(/<term>/gi, "")
     .replace(/<\/term>/gi, "");
 
+  // A reference is rendered with its angle brackets as entities, so that the generic `Lib.Helper<T>` is not stripped
+  // below as a tag and left reading as its plain namesake `Lib.Helper`; the entities are decoded with the rest. A
+  // `seealso` written inside the text stands where it is written, as a `see` does.
+  const keptReference = (rendered: string): string => rendered.replace(/</gu, "&lt;").replace(/>/gu, "&gt;");
   working = working
-    .replace(/<see\s+cref="([^"]+)"[^>]*>([\s\S]*?)<\/see>/gi, (_match: string, cref: string, text?: string) => {
-      return renderCrefText(cref, text);
+    .replace(/<(see|seealso)\s+cref="([^"]+)"[^>]*>([\s\S]*?)<\/\1>/gi, (_match: string, _tag: string, cref: string, text?: string) => {
+      // The author's own text is markup, read on as the rest of the text is; only the reference itself is kept whole.
+      const rendered = renderCrefText(cref, text);
+      return rendered === renderCrefText(cref) ? keptReference(rendered) : rendered;
     })
-    .replace(/<see\s+cref="([^"]+)"[^>]*\/>/gi, (_match: string, cref: string) => {
-      return renderCrefText(cref);
+    .replace(/<(?:see|seealso)\s+cref="([^"]+)"[^>]*\/>/gi, (_match: string, cref: string) => {
+      return keptReference(renderCrefText(cref));
     })
     .replace(/<see\s+href="([^"]+)"[^>]*>([\s\S]*?)<\/see>/gi, (_match: string, href: string, text?: string) => {
       const inner = text?.trim();

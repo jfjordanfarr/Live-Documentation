@@ -37,6 +37,7 @@ import path from "node:path";
 import process from "node:process";
 
 import { csharpAdapter } from "@live-documentation/engine/live-docs/adapters/csharp";
+import { normalizeCrefTarget } from "@live-documentation/engine/live-docs/adapters/csharp.xmldoc";
 
 import { folderFiles } from "./powershell-compare";
 import { msbuildProjectReferences } from "./scip-edges";
@@ -156,6 +157,85 @@ interface Measure {
   adapterOnly:   { namesake: string[]; conditional: string[]; other: string[] };
 }
 
+/** Why the reader's documentation relation and the compiler's resolution of the references part on a pair. */
+export const DOCUMENTATION_CAUSES = {
+  notRead:     "the reader keeps no documentation where the reference stands: a declaration it shows no symbol for (an enum's member, a member that is not public, an operator, an indexer)",
+  unresolved:  "the reader reads the reference and resolves it to nothing",
+  elsewhere:   "the reader resolves the reference to another declaration",
+  unwritten:   "the compiler reads no reference written so in the file: one in a section its preprocessor symbols leave inactive, which the reader reads as it reads every branch",
+  transitive:  "the compiler resolves the reference to nothing: the target's project is reached by the file's only through another project, which the compiler's compilation does not reference and the reader follows",
+  framework:   "the compiler resolves the reference to nothing: it writes a parameter's type the compilation, having no framework references, cannot bind",
+  compilerNone: "the compiler resolves the reference to nothing",
+  compilerElsewhere: "the compiler resolves the reference to another declaration, or to the file itself or a namespace"
+} as const;
+
+/** The pairs the reader's documentation relation makes, set beside the pairs the compiler's resolution of the same references names. */
+export interface DocumentationRelation {
+  /** The C# file pairs the reader's resolved references make: a reference on a symbol of one file to a declaration of another. */
+  pairs:        string[];
+  /** Pairs only the compiler names, by cause, each with the references that name it. */
+  compilerOnly: Record<string, string[]>;
+  /** Pairs only the reader makes, by cause. */
+  readerOnly:   Record<string, string[]>;
+}
+
+/** One reference as the reader read it: the file, the name as the Live Doc writes it, and the files it resolves to. */
+interface ReaderReference {
+  from:    string;
+  written: string;
+  targets: string[];
+}
+
+/**
+ * Sets the reader's documentation relation beside the compiler's resolution, pair by pair. A reference is matched to
+ * the compiler's by its file and its name as the Live Doc writes it (`normalizeCrefTarget`), so that two references
+ * written alike in one file, under two scopes, are taken together.
+ */
+export function compareDocumentation(record: CompilerRecord, compilerPairs: readonly string[], reader: readonly ReaderReference[], onlyThrough: (from: string, to: string) => boolean = () => false): DocumentationRelation {
+  const key = (from: string, written: string): string => `${from}\u0000${written}`;
+  const read = new Map<string, Set<string>>();
+  for (const reference of reader) {
+    const targets = read.get(key(reference.from, reference.written)) ?? new Set<string>();
+    for (const target of reference.targets) targets.add(target);
+    read.set(key(reference.from, reference.written), targets);
+  }
+  const written = new Map<string, DocumentationReference[]>();
+  for (const reference of record.crefs ?? []) {
+    const at = key(reference.from, normalizeCrefTarget(reference.written));
+    written.set(at, [...(written.get(at) ?? []), reference]);
+  }
+  const pairs = Array.from(new Set(reader.flatMap((reference) => reference.targets.filter((to) => to !== reference.from).map((to) => `${reference.from} → ${to}`)))).sort();
+  const ours = new Set(pairs);
+  const theirs = new Set(compilerPairs);
+  const compilerOnly: Record<string, string[]> = {};
+  const readerOnly: Record<string, string[]> = {};
+  const add = (into: Record<string, string[]>, cause: string, entry: string): void => void (into[cause] = [...(into[cause] ?? []), entry]);
+
+  for (const pair of compilerPairs.filter((candidate) => !ours.has(candidate))) {
+    const [from, to] = pair.split(" → ");
+    const naming = (record.crefs ?? []).filter((reference) => reference.from === from && reference.resolved.some((symbol) => symbol.kind !== "Namespace" && symbol.files.includes(to)));
+    const causes = naming.map((reference) => {
+      const targets = read.get(key(from, normalizeCrefTarget(reference.written)));
+      return targets === undefined ? DOCUMENTATION_CAUSES.notRead : targets.size === 0 ? DOCUMENTATION_CAUSES.unresolved : DOCUMENTATION_CAUSES.elsewhere;
+    });
+    const cause = [DOCUMENTATION_CAUSES.elsewhere, DOCUMENTATION_CAUSES.unresolved, DOCUMENTATION_CAUSES.notRead].find((candidate) => causes.includes(candidate))!;
+    add(compilerOnly, cause, `${pair} (${naming.map((reference) => `${reference.line} <${reference.element}> ${reference.written}`).join("; ")})`);
+  }
+  for (const pair of pairs.filter((candidate) => !theirs.has(candidate))) {
+    const [from, to] = pair.split(" → ");
+    const names = Array.from(read.entries()).filter(([at, targets]) => at.startsWith(`${from}\u0000`) && targets.has(to)).map(([at]) => at.slice(from.length + 1));
+    const answers = names.flatMap((name) => written.get(key(from, name)) ?? []);
+    const none = answers.length > 0 && answers.every((reference) => reference.resolved.length === 0);
+    const cause = answers.length === 0 ? DOCUMENTATION_CAUSES.unwritten
+      : !none ? DOCUMENTATION_CAUSES.compilerElsewhere
+      : onlyThrough(from, to) ? DOCUMENTATION_CAUSES.transitive
+      : answers.every((reference) => reference.written.includes("(")) ? DOCUMENTATION_CAUSES.framework
+      : DOCUMENTATION_CAUSES.compilerNone;
+    add(readerOnly, cause, `${pair} (${names.join("; ")})`);
+  }
+  return { pairs, compilerOnly, readerOnly };
+}
+
 /** The comparison of one folder: what was read, how its projects' references were, and the edges side by side. */
 export interface CSharpReport {
   folder:     string;
@@ -166,8 +246,11 @@ export interface CSharpReport {
   conditional: string[];
   edges:      Measure;
   names:      { simple: number; bound: number };
-  /** The pairs the author's documentation references make, and of them those the adapter's dependency lines draw. */
-  documentation: DocumentationPairs & { drawn: string[] };
+  /**
+   * The pairs the author's documentation references make; of them, those the adapter's dependency lines draw; and the
+   * reader's documentation relation beside them, a relation of its own kind that no dependency line carries.
+   */
+  documentation: DocumentationPairs & { drawn: string[]; relation: DocumentationRelation };
 }
 
 /** The projects one reaches, itself among them, following references. */
@@ -194,11 +277,17 @@ export async function compareCSharp(root: string, kept?: CompilerRecord): Promis
   const known = new Set(csharp);
 
   const ours = new Set<string>();
+  const references: ReaderReference[] = [];
   for (const file of csharp) {
     const analysis = await csharpAdapter.analyze({ absolutePath: path.join(root, file), workspaceRoot: root, fileIndex: index });
     for (const dependency of analysis?.dependencies ?? []) {
       const to = dependency.resolvedPath;
       if (to && to !== file && known.has(to)) ours.add(`${file} → ${to}`);
+    }
+    for (const symbol of analysis?.symbols ?? []) {
+      for (const link of symbol.documentation?.links ?? []) {
+        if (link.kind === "cref") references.push({ from: file, written: link.target, targets: (link.targets ?? []).map((target) => target.path).filter((to) => known.has(to)) });
+      }
     }
   }
   const compiler = new Set(record.edges.filter((edge) => known.has(edge.from) && known.has(edge.to)).map((edge) => `${edge.from} → ${edge.to}`));
@@ -231,9 +320,15 @@ export async function compareCSharp(root: string, kept?: CompilerRecord): Promis
     (namesake ? adapterOnly.namesake : restsOnCondition ? adapterOnly.conditional : adapterOnly.other).push(key);
   }
   const compilerOnly = Array.from(compiler).filter((edge) => !ours.has(edge)).sort();
+  // A target whose project the file's project reaches, but not by a reference of its own.
+  const onlyThrough = (from: string, to: string): boolean => {
+    const source = projectOf(from);
+    const target = projectOf(to);
+    return source !== undefined && target !== undefined && source !== target && !(taken.get(source) ?? []).includes(target) && reach(source, taken).has(target);
+  };
   const documentation = documentationPairs(record);
   return {
-    documentation: { ...documentation, drawn: documentation.pairs.filter((pair) => ours.has(pair)) },
+    documentation: { ...documentation, drawn: documentation.pairs.filter((pair) => ours.has(pair)), relation: compareDocumentation(record, documentation.pairs, references, onlyThrough) },
     folder:      root,
     tool:        record.tool,
     files:       csharp.length,
@@ -258,7 +353,14 @@ function printReport(report: CSharpReport, detail: boolean): void {
   console.log(`  the compiler's only: ${report.edges.compilerOnly.length}`);
   const doc = report.documentation;
   console.log(`Documentation references (cref): ${doc.references}, resolved to nothing ${doc.unresolved} (a framework type among them, having no framework references), ambiguous ${doc.ambiguous}`);
-  console.log(`  C# file pairs they name: ${doc.pairs.length}; the compiler binds ${doc.alsoCode.length} of them through code too, the author's word alone makes ${doc.authorOnly.length}; the adapter draws ${doc.drawn.length}`);
+  console.log(`  C# file pairs they name: ${doc.pairs.length}; the compiler binds ${doc.alsoCode.length} of them through code too, the author's word alone makes ${doc.authorOnly.length}; the adapter's dependency lines draw ${doc.drawn.length}`);
+  const relation = doc.relation;
+  const count = (byCause: Record<string, string[]>): number => Object.values(byCause).reduce((sum, entries) => sum + entries.length, 0);
+  console.log(`  the reader's documentation relation: ${relation.pairs.length} pairs, ${relation.pairs.length - count(relation.readerOnly)} of them the compiler's`);
+  console.log(`  the compiler's only: ${count(relation.compilerOnly)}`);
+  for (const [cause, entries] of Object.entries(relation.compilerOnly)) console.log(`    ${entries.length}: ${cause}`);
+  console.log(`  the reader's only: ${count(relation.readerOnly)}`);
+  for (const [cause, entries] of Object.entries(relation.readerOnly)) console.log(`    ${entries.length}: ${cause}`);
   if (!detail) return;
   const list = (label: string, keys: string[]): void => {
     if (keys.length === 0) return;
@@ -273,6 +375,8 @@ function printReport(report: CSharpReport, detail: boolean): void {
   list("Other edges the adapter draws and the compiler does not", only.other);
   list("Edges the compiler binds and the adapter does not draw", report.edges.compilerOnly);
   list("Pairs only a documentation reference makes", doc.authorOnly);
+  for (const [cause, entries] of Object.entries(relation.compilerOnly)) list(`Documentation pairs only the compiler names: ${cause}`, entries);
+  for (const [cause, entries] of Object.entries(relation.readerOnly)) list(`Documentation pairs only the reader makes: ${cause}`, entries);
 }
 
 async function main(): Promise<void> {

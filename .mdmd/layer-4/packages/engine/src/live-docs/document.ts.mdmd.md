@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/engine/src/live-docs/document.ts`
-- Generated At: 2026-11-19T22:40:10.427Z
+- Generated At: 2026-11-22T02:49:33.675Z
 
 ## Authored
 ### Purpose
@@ -211,16 +211,53 @@ Writes a Live Doc as markdown. The output always ends with one newline.
 ##### `renderSymbolBlocks` — Summary
 Writes the body of the `Public Symbols` section: the lines between its markers.
 
+#### `LINKS_SECTION` {#symbol-links_section}
+- Type: const
+- Source: [source](../../../../../../packages/engine/src/live-docs/document.ts#L572)
+
+##### `LINKS_SECTION` — Summary
+The `#####` section of a symbol that lists the references its documentation makes.
+
+#### `DocumentationReference` {#symbol-documentationreference}
+- Type: interface
+- Source: [source](../../../../../../packages/engine/src/live-docs/document.ts#L583)
+
+##### `DocumentationReference` — Summary
+One reference a symbol's documentation makes, as a line of its {@link LINKS_SECTION} section: the name as the author
+wrote it, linked to the declaration it names where the reader resolved it, the element that carries it when that is
+not a `see` or a `seealso`, and the author's text for it: the name as a code span, linked as a dependency line links
+its label, then ` (permission)` where an element is named, then ` — ` and the text where there is one.
+
+An unlinked name says that nothing the reader resolved declares it. A reference that names declarations in several
+files, the parts of a partial type or the overloads a name alone names, is a line for each.
+
+#### `documentationReferenceLine` {#symbol-documentationreferenceline}
+- Type: function
+- Source: [source](../../../../../../packages/engine/src/live-docs/document.ts#L597)
+- Parameters: `reference`: [`DocumentationReference`](#symbol-documentationreference)
+
+##### `documentationReferenceLine` — Summary
+Writes a reference as a line of the {@link LINKS_SECTION} section; its text may go on over the next lines.
+
+#### `readDocumentationReference` {#symbol-readdocumentationreference}
+- Type: function
+- Source: [source](../../../../../../packages/engine/src/live-docs/document.ts#L607)
+- Returns: [`DocumentationReference`](#symbol-documentationreference)
+
+##### `readDocumentationReference` — Summary
+Reads a line of a {@link LINKS_SECTION} section as a reference, as {@link documentationReferenceLine} writes one:
+undefined for a line of another form, a web link (`- [label](https://…)`) or a link of no kind.
+
 #### `LiveDocSyntaxError` {#symbol-livedocsyntaxerror}
 - Type: class
-- Source: [source](../../../../../../packages/engine/src/live-docs/document.ts#L704)
+- Source: [source](../../../../../../packages/engine/src/live-docs/document.ts#L760)
 
 ##### `LiveDocSyntaxError` — Summary
 Thrown when text is not a Live Doc. `line` is one-based.
 
 #### `parseLiveDoc` {#symbol-parselivedoc}
 - Type: function
-- Source: [source](../../../../../../packages/engine/src/live-docs/document.ts#L712)
+- Source: [source](../../../../../../packages/engine/src/live-docs/document.ts#L768)
 - Returns: [`LiveDoc`](#symbol-livedoc)
 
 ##### `parseLiveDoc` — Summary
@@ -228,7 +265,7 @@ Reads a Live Doc back from markdown, refusing anything outside the grammar.
 
 #### `authoredBlockOf` {#symbol-authoredblockof}
 - Type: function
-- Source: [source](../../../../../../packages/engine/src/live-docs/document.ts#L1138)
+- Source: [source](../../../../../../packages/engine/src/live-docs/document.ts#L1194)
 
 ##### `authoredBlockOf` — Summary
 The authored block of any text that has one, whatever else the text holds.
@@ -240,7 +277,7 @@ is nothing to carry.
 
 #### `Reader` {#symbol-reader}
 - Type: class
-- Source: [source](../../../../../../packages/engine/src/live-docs/document.ts#L1165)
+- Source: [source](../../../../../../packages/engine/src/live-docs/document.ts#L1221)
 
 ##### `Reader` — Summary
 Reads a text line by line for the parsers, and fails with the line number when the grammar is not met. A line ends

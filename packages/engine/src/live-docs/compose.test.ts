@@ -81,6 +81,40 @@ describe("composeSymbolBlocks", () => {
     ]);
   });
 
+  it("links each documentation reference the reader resolved to the heading at its declaration's line, an overload's own, and keeps the rest as written", () => {
+    const store = (anchor: string, line: number) => ({ liveDocPath: ".live-documentation/source/packages/engine/src/store.cs.md", sourcePath: "packages/engine/src/store.cs", anchor, kind: "method", line });
+    const symbolIndex: WorkspaceSymbolIndex = new Map([["Put", [store("symbol-put-method-overload-1", 5), store("symbol-put-method-overload-2", 9)]]]);
+    const headings = computePublicSymbolHeadingInfo([
+      {
+        name: "Words",
+        kind: "class",
+        location: { line: 2, character: 1 },
+        documentation: {
+          links: [
+            { kind: "cref", target: "Store.Put(string)", targets: [{ path: "packages/engine/src/store.cs", symbol: "Put", line: 9 }] },
+            { kind: "cref", target: "Store.Put", targets: [{ path: "packages/engine/src/store.cs", symbol: "Put", line: 5 }, { path: "packages/engine/src/store.cs", symbol: "Put", line: 9 }] },
+            { kind: "cref", target: "Words", element: "inheritdoc", targets: [{ path: sourceRelativePath, symbol: "Words", line: 2 }] },
+            { kind: "cref", target: "Gone", element: "exception", text: "when gone" },
+            { kind: "cref", target: "Elsewhere", targets: [{ path: "packages/engine/src/unindexed.cs", symbol: "Elsewhere", line: 1 }] }
+          ]
+        }
+      }
+    ]);
+    const [block] = composeSymbolBlocks({ headings, docDir, sourceAbsolute, sourceRelativePath, symbolIndex, liveDocsRootAbsolute });
+
+    expect(block.sections).toEqual([{
+      title: "Links",
+      body: [
+        "- [`Store.Put(string)`](../store.cs.md#symbol-put-method-overload-2)",
+        "- [`Store.Put`](../store.cs.md#symbol-put-method-overload-1)",
+        "- [`Store.Put`](../store.cs.md#symbol-put-method-overload-2)",
+        "- [`Words`](#symbol-words) (inheritdoc)",
+        "- `Gone` (exception) — when gone",
+        "- `Elsewhere`"
+      ]
+    }]);
+  });
+
   it("links a type declared here within the doc, whatever other files declare under that name", () => {
     const symbolIndex: WorkspaceSymbolIndex = new Map([
       ["PathResult", [
