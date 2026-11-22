@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/explorer/src/client/views/localView/wire-answers.ts`
-- Generated At: 2026-11-22T14:29:55.492Z
+- Generated At: 2026-11-22T19:55:40.390Z
 
 ## Authored
 ### Purpose
@@ -21,21 +21,21 @@ The page side of Tuning → 2D Wires → Wire Answers, a trial: a 2D wire's band
 ### Public Symbols
 #### `WireAnswer` {#symbol-wireanswer}
 - Type: interface
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/wire-answers.ts#L42)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/wire-answers.ts#L51)
 
 ##### `WireAnswer` — Summary
 What a wire's band answers with: its words, and the references it carries, which a rest or a press keeps lit.
 
 #### `WIRE_LIT` {#symbol-wire_lit}
 - Type: const
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/wire-answers.ts#L48)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/wire-answers.ts#L57)
 
 ##### `WIRE_LIT` — Summary
 The class that marks a highlight as the wire answers' own; the highlight's clearing takes it off (symbol-highlight.ts).
 
 #### `setAnswer` {#symbol-setanswer}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/wire-answers.ts#L56)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/wire-answers.ts#L70)
 - Parameters: `band`: `SVGElement`; `answer`: [`WireAnswer`](#symbol-wireanswer)
 
 ##### `setAnswer` — Summary
@@ -43,7 +43,7 @@ Gives a wire's band its answer, and its spoken name the same sentence, written o
 
 #### `answerOf` {#symbol-answerof}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/wire-answers.ts#L63)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/wire-answers.ts#L77)
 - Returns: [`WireAnswer`](#symbol-wireanswer)
 
 ##### `answerOf` — Summary
@@ -51,14 +51,14 @@ The answer a band carries; undefined for anything else.
 
 #### `WireAnswersHost` {#symbol-wireanswershost}
 - Type: interface
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/wire-answers.ts#L74)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/wire-answers.ts#L88)
 
 ##### `WireAnswersHost` — Summary
 What the wire answers need of the 2D map: its view and layers, the camera's scale, and whether they are on.
 
 #### `WireAnswers` {#symbol-wireanswers}
 - Type: class
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/wire-answers.ts#L87)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/wire-answers.ts#L101)
 
 ##### `WireAnswers` — Summary
 The wires' answers on one 2D map: the panel, and the pointer, the press and the keyboard that ask for it.
@@ -74,6 +74,9 @@ The wires' answers on one 2D map: the panel, and the pointer, the press and the 
 - [`symbol-highlight.clearSymbolHighlightDOM`](./symbol-highlight.ts.mdmd.md#symbol-clearsymbolhighlightdom)
 - [`symbol-highlight.lightConnections`](./symbol-highlight.ts.mdmd.md#symbol-lightconnections)
 - [`types.LocalEdge`](./types.ts.mdmd.md#symbol-localedge) (type-only)
+- [`wire-reach.Reach`](./wire-reach.ts.mdmd.md#symbol-reach) (type-only)
+- [`wire-reach.reachOf`](./wire-reach.ts.mdmd.md#symbol-reachof)
+- [`wire-reach.wireAt`](./wire-reach.ts.mdmd.md#symbol-wireat)
 - [`wire-words.WireWords`](./wire-words.ts.mdmd.md#symbol-wirewords-interface) (type-only)
 - [`wire-words.headText`](./wire-words.ts.mdmd.md#symbol-headtext)
 - [`wire-words.listText`](./wire-words.ts.mdmd.md#symbol-listtext)

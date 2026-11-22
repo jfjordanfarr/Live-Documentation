@@ -170,6 +170,9 @@ test("closing a neighbor's symbol disclosure preserves the direct-file inspectio
 });
 
 test("releasing the last pinned symbol on a card leaves the file pinned whole, the subject in place; the tray releases it", async ({ page }) => {
+  // A row's Pin is a control of reading size, and the pins are this case's subject, not the arrival: under a load the
+  // press came after the arrival's rest, on a row already easing back to the look that draws no Pin (2026-11-22).
+  await arriveAtReadingSize(page);
   await page.goto(sharedUrl({ ...state, openDirectories: new Set() }));
   await localMapSettled(page);
   await page.getByRole("button", { name: "Unpin run in processor.ts", exact: true }).click();

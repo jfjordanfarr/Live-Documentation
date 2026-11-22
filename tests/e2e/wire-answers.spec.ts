@@ -47,14 +47,22 @@ async function still(page: Page): Promise<void> {
 
 interface BandPoint { x: number; y: number; key: string; name: string; sourceId: string; targetId: string }
 
-/** A point on a band's wire, in the view and under nothing else, and what the band says; null when none is. */
+/**
+ * A point on a band's wire as a reader would point at it, and what the band says; null when none is. The point is in
+ * the view, on the map's ground (nothing of a card, no control and no other line stands there) and in no other wire's
+ * reach. A band takes no pointer since 2026-11-22, so the page's own word for what stands at a point is never the band:
+ * the wire under the pointer is found by its route (wire-reach.ts), and a case points at a wire by a point on it.
+ */
 const bandPoint = (page: Page, selector = ".wire-band:not(.run-band)"): Promise<BandPoint | null> => page.evaluate(selector => {
   const view = document.querySelector("#view-map")!.getBoundingClientRect();
+  const bands = [...document.querySelectorAll<SVGPathElement>(".wire-band")];
   for (const band of document.querySelectorAll<SVGPathElement>(selector)) {
     for (const at of [0.5, 0.4, 0.6, 0.3, 0.7]) {
-      const point = band.getPointAtLength(band.getTotalLength() * at).matrixTransform(band.getScreenCTM()!);
+      const local = band.getPointAtLength(band.getTotalLength() * at), point = local.matrixTransform(band.getScreenCTM()!);
+      const hit = document.elementFromPoint(point.x, point.y);
+      const ground = !!hit && (hit.id === "view-map" || !!hit.closest("#map-viewport")) && !hit.closest(".node-card, .local-directory-closed, button, a, input, select, .connection-path");
       if (point.x > view.left + 40 && point.x < view.right - 340 && point.y > view.top + 60 && point.y < view.bottom - 160
-        && document.elementFromPoint(point.x, point.y) === band) {
+        && ground && !bands.some(other => other !== band && other.isPointInStroke(local))) {
         return { x: point.x, y: point.y, key: band.dataset.connectionKey!, name: band.getAttribute("aria-label") ?? "", sourceId: band.dataset.sourceId ?? "", targetId: band.dataset.targetId ?? "" };
       }
     }
@@ -255,6 +263,133 @@ test.describe("Wire Answers", () => {
     await page.mouse.down();
     await page.mouse.up();
     await expect.poll(() => answer(page)).toBeNull();
+    await context.close();
+  });
+
+  // The rule for a reader (2026-11-22): everything of a card takes the pointer before a wire's reach does; a wire's
+  // words never cost a reader a control. The wires stand above the cards and a wire's reach is twelve of the screen's
+  // pixels at any zoom, 36 of the map's units where the arrival that ships leaves the picture: the gate of that day
+  // found the More of this repository's `still-picture.ts` under the band of a wire between two other files, and a
+  // press on it pinned that wire's words. A band takes no pointer now; the wire under the pointer is found by its route.
+  test("everything of a card takes the pointer before a wire's reach does, the hand is over a wire on the map's ground, and of two wires whose reaches hold the pointer the nearer answers", async ({ browser }) => {
+    test.setTimeout(120_000);
+    const context = await browser.newContext({ viewport: { width: 1600, height: 1000 }, deviceScaleFactor: 1 });
+    await context.addInitScript(({ key, value }) => localStorage.setItem(key, value), {
+      key: PERSISTED_UI_KEY, value: JSON.stringify({ version: PERSISTED_UI_VERSION, tuning: { localMap: { searchStarts: 0 } } })
+    });
+    const page = await context.newPage();
+    await page.goto(`/?view=local&node=${encodeURIComponent("tests/e2e/still-picture.ts")}`);
+    await page.locator(".local-placed").waitFor();
+    await expect(page.locator("#map-container")).toHaveAttribute("data-look", "connections", { timeout: 20_000 });
+    await still(page);
+    // Something of a card that stands in a wire's reach, sought from the wires: points along each route and 5 px to
+    // each side of them, inside the reach's 6, where, the bands apart, a card stands; a control of the card for choice.
+    // The browser's own geometry of the band's stroke confirms the point is in that reach.
+    const find = () => page.evaluate(() => {
+      const view = document.querySelector("#view-map")!.getBoundingClientRect();
+      const bands = [...document.querySelectorAll<SVGPathElement>(".wire-band")];
+      type Found = { x: number; y: number; what: string; wire: string; control: boolean; element: Element };
+      let any: Found | null = null;
+      search: for (const band of bands) {
+        const matrix = band.getScreenCTM(), length = band.getTotalLength();
+        if (!matrix || !(length > 0)) continue;
+        for (const at of [0.015, 0.985, 0.04, 0.96, 0.1, 0.9, 0.25, 0.75, 0.5]) {
+          const on = band.getPointAtLength(length * at).matrixTransform(matrix);
+          for (const [dx, dy] of [[0, 0], [5, 0], [-5, 0], [0, 5], [0, -5]]) {
+            const x = on.x + dx, y = on.y + dy;
+            if (x < view.left + 20 || x > view.right - 20 || y < view.top + 70 || y > view.bottom - 90) continue;
+            if (!band.isPointInStroke(new DOMPoint(x, y).matrixTransform(matrix.inverse()))) continue;
+            const top = document.elementsFromPoint(x, y).find(element => !element.classList.contains("wire-band") && !element.classList.contains("wire-hand"));
+            const card = top?.closest<HTMLElement>(".node-card");
+            if (!top || !card) continue;
+            const control = top.closest<HTMLElement>("button");
+            const found = { x, y, what: control ? `${control.getAttribute("aria-label") ?? control.className} of ${card.dataset.id}` : `the card ${card.dataset.id}`, wire: band.getAttribute("aria-label") ?? "", control: !!control, element: control ?? card };
+            if (control) { any = found; break search; }
+            any ??= found;
+          }
+        }
+      }
+      if (!any) return null;
+      // The press is heard on the card's own element, before anything it does: a press a band took never reached it.
+      any.element.addEventListener("click", () => { (window as unknown as { pressedUnderAWire?: boolean }).pressedUnderAWire = true; }, { once: true, capture: true });
+      return { x: any.x, y: any.y, control: any.what, wire: any.wire, isControl: any.control };
+    });
+    // As the arrival leaves the picture, or a press or two farther out, where a reach is wider still in the map's units.
+    let under = await find();
+    for (let press = 0; !under && press < 2; press += 1) {
+      await page.getByRole("button", { name: "Zoom Out", exact: true }).click();
+      await still(page);
+      under = await find();
+    }
+    expect(under, "in this picture something of a card stands under some wire's reach").not.toBeNull();
+    test.info().annotations.push({ type: "under a wire's reach", description: `${under!.control}, under "${under!.wire.slice(0, 80)}"` });
+    await page.mouse.move(under!.x - 40, under!.y + 30);
+    await page.mouse.move(under!.x, under!.y, { steps: 4 });
+    await page.waitForTimeout(REST_DWELL + 150);
+    expect(await answer(page), `no wire's words while the pointer rests on "${under!.control}", under the reach of "${under!.wire.slice(0, 60)}"`).toBeNull();
+    await page.mouse.click(under!.x, under!.y);
+    expect(await page.evaluate(() => (window as unknown as { pressedUnderAWire?: boolean }).pressedUnderAWire === true), `the press on "${under!.control}" is the control's own`).toBe(true);
+    expect((await answer(page))?.pinned ?? false, "and pins no wire's words").toBe(false);
+    await page.keyboard.press("Escape");
+    await page.mouse.move(under!.x - 60, under!.y + 60);
+
+    // The hand: over a wire's reach on the map's ground, and not on ground no wire reaches.
+    const cursorAt = (x: number, y: number) => page.evaluate(({ x, y }) => getComputedStyle(document.elementFromPoint(x, y)!).cursor, { x, y });
+    // A point on some wire's route, on the map's ground; other wires' reaches may hold it too in a picture this dense.
+    const wire = await page.evaluate(() => {
+      const view = document.querySelector("#view-map")!.getBoundingClientRect();
+      for (const band of document.querySelectorAll<SVGPathElement>(".wire-band")) for (const at of [0.5, 0.35, 0.65, 0.2, 0.8]) {
+        const point = band.getPointAtLength(band.getTotalLength() * at).matrixTransform(band.getScreenCTM()!);
+        const hit = document.elementsFromPoint(point.x, point.y).find(element => !element.classList.contains("wire-hand"));
+        const ground = !!hit && (hit.id === "view-map" || !!hit.closest("#map-viewport")) && !hit.closest(".node-card, .local-directory-closed, button, a, input, select, .connection-path");
+        if (ground && point.x > view.left + 40 && point.x < view.right - 40 && point.y > view.top + 70 && point.y < view.bottom - 100) return { x: point.x, y: point.y };
+      }
+      return null;
+    });
+    expect(wire, "a wire in view on the map's ground").not.toBeNull();
+    await page.mouse.move(wire!.x - 30, wire!.y - 30);
+    await page.mouse.move(wire!.x, wire!.y, { steps: 3 });
+    expect(await cursorAt(wire!.x, wire!.y), "the hand over a wire's reach").toBe("pointer");
+    const bare = await page.evaluate(() => {
+      const view = document.querySelector("#view-map")!.getBoundingClientRect();
+      const bands = [...document.querySelectorAll<SVGPathElement>(".wire-band")], inverse = bands[0].getScreenCTM()!.inverse();
+      for (let y = view.top + 80; y < view.bottom - 100; y += 24) for (let x = view.left + 30; x < view.right - 30; x += 24) {
+        const hit = document.elementFromPoint(x, y), local = new DOMPoint(x, y).matrixTransform(inverse);
+        const ground = !!hit && (hit.id === "view-map" || !!hit.closest("#map-viewport")) && !hit.closest(".node-card, .local-directory-closed, button, a, input, select, .connection-path");
+        // Clear of every wire by more than twice its reach, so that a move to it leaves every reach behind.
+        if (ground && !bands.some(band => band.isPointInStroke(local))
+          && [[-14, 0], [14, 0], [0, -14], [0, 14]].every(([dx, dy]) => !bands.some(band => band.isPointInStroke(new DOMPoint(x + dx, y + dy).matrixTransform(inverse))))) return { x, y };
+      }
+      return null;
+    });
+    expect(bare, "ground that no wire reaches").not.toBeNull();
+    await page.mouse.move(bare!.x, bare!.y, { steps: 3 });
+    expect(await cursorAt(bare!.x, bare!.y), "no hand where no wire reaches").not.toBe("pointer");
+
+    // Two wires whose reaches both hold a point that lies on the earlier of them in the document: the nearer answers.
+    // Until 2026-11-22 the browser gave the point to the later band, however near the earlier wire ran.
+    const both = await page.evaluate(() => {
+      const view = document.querySelector("#view-map")!.getBoundingClientRect();
+      const bands = [...document.querySelectorAll<SVGPathElement>(".wire-band:not(.run-band)")];
+      for (const [index, band] of bands.entries()) for (const at of [0.5, 0.35, 0.65, 0.2, 0.8]) {
+        const local = band.getPointAtLength(band.getTotalLength() * at), point = local.matrixTransform(band.getScreenCTM()!);
+        const hit = document.elementFromPoint(point.x, point.y);
+        const ground = !!hit && (hit.id === "view-map" || !!hit.closest("#map-viewport")) && !hit.closest(".node-card, .local-directory-closed, button, a, input, select, .connection-path");
+        if (!ground || point.x < view.left + 40 || point.x > view.right - 340 || point.y < view.top + 60 || point.y > view.bottom - 160) continue;
+        const holders = bands.filter(other => other !== band && other.isPointInStroke(local));
+        // A later band's reach holds the point too, though its own wire does not run through it (its wire, as wide as it
+        // is drawn, does not hold the point).
+        const later = holders.filter(other => bands.indexOf(other) > index);
+        const through = (other: SVGPathElement): boolean => { const wide = other.style.strokeWidth; other.style.strokeWidth = "3px"; const held = other.isPointInStroke(local); other.style.strokeWidth = wide; return held; };
+        if (later.length && !holders.some(through)) return { x: point.x, y: point.y, key: band.dataset.connectionKey!, later: later.length };
+      }
+      return null;
+    });
+    expect(both, "a point on one wire inside a later wire's reach").not.toBeNull();
+    await page.mouse.move(both!.x - 30, both!.y - 30);
+    await page.mouse.move(both!.x, both!.y, { steps: 3 });
+    await page.waitForTimeout(REST_DWELL + 150);
+    expect(await page.evaluate(() => document.querySelector<SVGElement>(".wire-band.wire-shown")?.dataset.connectionKey ?? null), "the wire the pointer is on answers, not the later one whose reach also holds it").toBe(both!.key);
     await context.close();
   });
 

@@ -596,19 +596,25 @@ body:has(#map-container[data-lod="overview"]) #local-legend .legend-row--gathere
 .connections-lit.symbol-hover-active .local-directory-closed { opacity: var(--hover-dim-symbols, 0.5); }
 #map-connections .connection-path.returning:focus { outline: none; }
 #map-connections .connection-path.returning:focus-visible { outline: 2px solid var(--state-selected); outline-offset: 2px; }
-/* The Wire Answers trial (2026-11-21): a wire's band, an undrawn stroke along its route, twelve of the screen's pixels
-   wide or the wire's own width and a little, takes the pointer and the keyboard's focus for the wire (wire-answers.ts).
-   It draws nothing: its stroke is transparent, and the wire itself shows that it is asked about only by the others'
-   fading. The hand says it can be pressed; a drag from it still pans the map. */
+/* Wire Answers (2026-11-21): a wire's band, an undrawn stroke along its route, twelve of the screen's pixels wide or
+   the wire's own width and a little, is the wire's reach and takes the keyboard's focus for it (wire-answers.ts). It
+   draws nothing: its stroke is transparent, and the wire itself shows that it is asked about only by the others'
+   fading. It takes no pointer (2026-11-22): the wires stand above the cards, and a band that took the pointer took it
+   from a card's control that lay under it. The wire under the pointer is found by its route, on the map's ground only
+   (wire-reach.ts), and this width is that reach as the script reckons it. */
 #map-connections .wire-band {
     fill: none;
     stroke: transparent;
     stroke-width: max(var(--wire-band, 12px), calc(var(--wire-width, 2.2px) + 6px));
     stroke-linecap: butt;
-    pointer-events: stroke;
-    cursor: pointer;
+    pointer-events: none;
 }
 #map-connections .wire-band:focus { outline: none; }
+/* The hand that says a wire can be pressed: a spot under the pointer while it is in a wire's reach on the map's
+   ground, and nowhere else. Its cursor is the one thing written; a cursor written on the view would be inherited by
+   the whole map. A drag or a press from it is the map's own, as from the ground it stands on. */
+.wire-hand { position: absolute; z-index: 29; width: 9px; height: 9px; margin: -4.5px 0 0 -4.5px; cursor: pointer; }
+.wire-hand[hidden] { display: none; }
 /* A wire's words, in the World Map wire panel's form (world.css, .world-evidence) and the 2D map's own floating ground:
    its head names the two files, then what is used and how many references. It takes the pointer, peeked at or pinned,
    so that the pointer can go onto it and its words be selected and copied (2026-11-22; WCAG 2.1, 1.4.13, *hoverable*);

@@ -6,8 +6,8 @@
  * is raised above rest. Its words (wire-words.ts) stand beside it in the World Map wire panel's form, so that one thing
  * is learned at both scales: a rested pointer shows them and they go when it leaves; a press pins them, with a close
  * control, until a press elsewhere or Escape. A pointer that only passes over draws nothing (`pointerRest.ts`, the
- * product's one rule of hover intent). A drag begun on a wire still pans the map: the wire's band takes the pointer
- * only to be found, and passes every press on to the map's own pan.
+ * product's one rule of hover intent). A drag begun on a wire still pans the map: the answers only listen, and every
+ * press goes on to the map's own pan.
  *
  * The words can be entered (2026-11-22, the owner: "the ability to mouse into those popovers so I can copy some text
  * out"; WCAG 2.1, 1.4.13 Content on Hover or Focus). *Hoverable*: the panel takes the pointer, and the words stay while
@@ -17,9 +17,17 @@
  * the pointer has been elsewhere. *Persistent*: nothing but the pointer's leaving, Escape or the wire's own going takes
  * them away; no clock does.
  *
- * The wire's band is drawn by connections.ts, an undrawn stroke as wide as twelve of the screen's pixels or the wire,
- * whichever is wider, over the wire, which takes the pointer, the focus (not a stop of Tab: `tabindex="-1"`) and the
- * wire's spoken name, the same sentence as its words.
+ * The wire's band is made by connections.ts, an undrawn stroke over the wire, which takes the focus (not a stop of Tab:
+ * `tabindex="-1"`) and the wire's spoken name, the same sentence as its words. It takes no pointer (2026-11-22). The
+ * wires stand above the cards, and a band that took the pointer took it from whatever it lay over: a card's More under
+ * the band of a wire between two other files. The rule for a reader is that everything of a card takes the pointer
+ * before a wire's reach does, and a wire's words never cost a reader a control. So the wire under the pointer is found
+ * by its route (wire-reach.ts): within half its reach, twelve of the screen's pixels or the wire's own width and a
+ * little, whichever is wider; the nearer of two; and only where the pointer's target is the map's ground, nothing of a
+ * card, no control, no returning lace and not the words' own panel. The hand that says a wire can be pressed is a spot
+ * a few pixels across that stands under the pointer while it is in a wire's reach (`.wire-hand`): a cursor written on
+ * the view would be inherited by everything in it, and the style of the whole map brought up to date at every wire
+ * (25 ms on a picture of 87 cards, measured that day).
  *
  * The keyboard: from a focused card, the right arrow goes to the first wire leaving it on the right (to what uses it),
  * the left arrow to the first entering it on the left (what it uses); on a wire, up and down go to the card's next and
@@ -36,6 +44,7 @@ import { panelBeside, type Avoid } from "../worldMap/layout";
 import { layoutEndAt, READS_ATTRIBUTE, type LayoutEnd } from "./reading-direction";
 import { clearSymbolHighlightDOM, lightConnections } from "./symbol-highlight";
 import type { LocalEdge } from "./types";
+import { reachOf, wireAt, type Reach } from "./wire-reach";
 import { headText, listText, referencesText, sentence, type WireWords } from "./wire-words";
 
 /** What a wire's band answers with: its words, and the references it carries, which a rest or a press keeps lit. */
@@ -49,6 +58,11 @@ export const WIRE_LIT = "wire-lit";
 
 /** How far a press may travel and still be a press (the 2D map's slop, controller.ts). */
 const PRESS_SLOP = 6;
+
+/** What takes the pointer before a wire's reach does: everything of a card, any control, and a returning lace. */
+const BEFORE_A_WIRE = ".node-card, .local-directory-closed, button, a[href], input, select, textarea, summary, [role='button'], .connection-path.returning";
+/** A wire's reach on the screen, in pixels (local.css, `.wire-band`), and what a wire's own width adds where it is wider. */
+const REACH_PX = 12, REACH_OVER_WIRE = 6;
 
 const answers = new WeakMap<Element, WireAnswer>();
 
@@ -103,17 +117,25 @@ export class WireAnswers {
   /** The band whose words Escape took away under a resting pointer: they stay away until the pointer has been elsewhere. */
   private dismissed: SVGElement | null = null;
 
+  /** The hand over a wire's reach: a spot under the pointer, the one thing whose cursor is written. */
+  private readonly hand: HTMLDivElement;
+  /** Each band's route as last walked, kept until the route changes. */
+  private readonly reaches = new WeakMap<SVGElement, { d: string; reach: Reach | null }>();
+
   constructor(private readonly host: WireAnswersHost) {
     this.panel = document.createElement("div");
     this.panel.className = "wire-answer";
     this.panel.hidden = true;
-    host.view.append(this.panel);
+    this.hand = document.createElement("div");
+    this.hand.className = "wire-hand";
+    this.hand.hidden = true;
+    host.view.append(this.hand, this.panel);
     const view = host.view;
     view.addEventListener("pointermove", this.pointerMove, { passive: true });
     view.addEventListener("pointerleave", this.pointerLeave);
-    // A press on a wire gives it no focus, which would hold its words after the pointer left; the pan, on pointer
+    // A press on a wire gives nothing the focus, which would hold its words after the pointer left; the pan, on pointer
     // events, goes on.
-    view.addEventListener("mousedown", event => { if (this.bandAt(event.target)) event.preventDefault(); });
+    view.addEventListener("mousedown", event => { if (this.bandUnder(event.target, event.clientX, event.clientY)) event.preventDefault(); });
     // A press in the panel is the panel's own, to select its words: the map's pan, which listens below it, never hears it.
     this.panel.addEventListener("pointerdown", event => event.stopPropagation());
     window.addEventListener("pointerdown", this.pointerDown, { capture: true, passive: true });
@@ -134,6 +156,8 @@ export class WireAnswers {
 
   /** Puts the words where their wire now stands, after the camera moved; a band the drawing took away takes them with it. */
   follow(): void {
+    // The picture moved under a pointer that did not: the hand's spot stands only where the pointer last found a wire.
+    this.point(null, null);
     const shown = this.shown;
     if (!shown) return;
     if (!shown.band.isConnected || !this.host.enabled()) { this.close(); return; }
@@ -142,6 +166,7 @@ export class WireAnswers {
 
   /** After a drawing of the wires: a band the drawing kept is lit again, a band it took away takes its words with it. */
   redrawn(): void {
+    this.point(null, null);
     const shown = this.shown;
     if (!shown) return;
     const fresh = shown.band.isConnected ? shown.band : this.bandByKey(shown.band.dataset.connectionKey);
@@ -288,20 +313,61 @@ export class WireAnswers {
     this.panel.style.top = `${clamp(y + shown.offset.y, 12, view.height - size.height - 12)}px`;
   }
 
+  /** The band the keyboard's focus or a key is on: the band itself, which is the wire's focusable element. */
   private bandAt(target: EventTarget | null): SVGElement | null {
     return target instanceof Element ? target.closest<SVGElement>(".wire-band") : null;
   }
 
+  /**
+   * The wire whose reach holds the pointer, where the pointer's target is the map's ground: the view itself or something
+   * of the camera's layer that is nothing of a card, no control and no returning lace ({@link BEFORE_A_WIRE}). The hand's
+   * own spot is looked through. The wire is found by its route in the picture's units (wire-reach.ts): each band's route
+   * is walked once and kept until it changes, and a move measures only to the wires whose boxes hold the pointer.
+   * Nothing is written to any wire.
+   */
+  private bandUnder(target: EventTarget | null, clientX: number, clientY: number): SVGElement | null {
+    const layer = this.host.layer();
+    let ground = target instanceof Element ? target : null;
+    if (ground === this.hand) ground = document.elementsFromPoint(clientX, clientY).find(element => element !== this.hand) ?? null;
+    if (!ground || !layer || !(ground === this.host.view || layer.contains(ground)) || ground.closest(BEFORE_A_WIRE)) return null;
+    const svg = this.host.overlay.querySelector<SVGSVGElement>("svg");
+    const matrix = svg?.getScreenCTM();
+    if (!svg || !matrix) return null;
+    const at = new DOMPoint(clientX, clientY).matrixTransform(matrix.inverse());
+    const least = REACH_PX / (this.host.scale() || 1);
+    const wires = [...svg.querySelectorAll<SVGElement>(".wire-band")].map(band => {
+      const d = band.getAttribute("d") ?? "";
+      let kept = this.reaches.get(band);
+      if (!kept || kept.d !== d) { kept = { d, reach: reachOf(d) }; this.reaches.set(band, kept); }
+      return { wire: band, reach: kept.reach };
+    });
+    const half = (band: SVGElement): number => Math.max(least, (parseFloat(band.style.getPropertyValue("--wire-width")) || 2.2) + REACH_OVER_WIRE) / 2;
+    return wireAt(wires, at.x, at.y, half, Math.max(least, 48) / 2);
+  }
+
+  /** Stands the hand's spot under the pointer while it is in a wire's reach, and takes it away elsewhere. */
+  private point(band: SVGElement | null, at: { x: number; y: number } | null): void {
+    if (!band || !at) { if (!this.hand.hidden) this.hand.hidden = true; return; }
+    const view = this.host.view.getBoundingClientRect();
+    this.hand.style.left = `${at.x - view.left}px`;
+    this.hand.style.top = `${at.y - view.top}px`;
+    if (this.hand.hidden) this.hand.hidden = false;
+  }
+
   /** A rest begins, goes on or ends as the pointer moves; a drag is no rest, and takes a peek away. */
   private readonly pointerMove = (event: PointerEvent): void => {
-    if (!this.host.enabled()) return;
+    if (!this.host.enabled()) { this.point(null, null); return; }
     if (this.host.dragging()) {
       window.clearTimeout(this.restTimer);
       this.rest = NO_REST;
+      this.point(null, null);
       if (this.shown && !this.shown.pinned) this.close();
       return;
     }
-    this.lookAtRest(this.bandAt(event.target), { x: event.clientX, y: event.clientY });
+    const at = { x: event.clientX, y: event.clientY };
+    const band = this.bandUnder(event.target, at.x, at.y);
+    this.point(band, at);
+    this.lookAtRest(band, at);
   };
 
   /**
@@ -320,6 +386,7 @@ export class WireAnswers {
   }
 
   private readonly pointerLeave = (): void => {
+    this.point(null, null);
     if (!this.host.enabled()) return;
     this.lookAtRest(null, null);
   };
@@ -349,7 +416,7 @@ export class WireAnswers {
   private readonly pointerDown = (event: PointerEvent): void => {
     if (!this.host.enabled() || !event.isPrimary) return;
     if (event.target instanceof Node && this.panel.contains(event.target)) { this.press = null; this.pressInPanel = true; return; }
-    this.press = { pointerId: event.pointerId, x: event.clientX, y: event.clientY, band: this.bandAt(event.target) };
+    this.press = { pointerId: event.pointerId, x: event.clientX, y: event.clientY, band: this.bandUnder(event.target, event.clientX, event.clientY) };
   };
 
   /** A press ends: one that did not travel pins a band's words, or lets go of a pin when it was made elsewhere. */

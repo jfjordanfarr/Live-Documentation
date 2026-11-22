@@ -1,0 +1,56 @@
+{
+ "picture": {
+  "lod": "far",
+  "k": "0.3349",
+  "wires": 229,
+  "bands": 221,
+  "cards": 87
+ },
+ "fromEventToHandled": {
+  "n": 906,
+  "median": 0.7,
+  "p95": 134.3,
+  "max": 695.8,
+  "mean": 24.353
+ },
+ "findingTheWire": null,
+ "hearing": {
+  "ground": {
+   "n": 281,
+   "median": 0,
+   "p95": 0.1,
+   "max": 0.2,
+   "mean": 0.051
+  },
+  "card": {
+   "n": 122,
+   "median": 0,
+   "p95": 0.1,
+   "max": 0.2,
+   "mean": 0.051
+  },
+  "band": {
+   "n": 50,
+   "median": 0,
+   "p95": 0.1,
+   "max": 0.1,
+   "mean": 0.03
+  },
+  "other": null
+ },
+ "handOnTheView": {
+  "n": 20,
+  "median": 20.1,
+  "p95": 27.7,
+  "max": 27.7,
+  "mean": 20.675
+ },
+ "targets": {
+  "div.view-container": 398,
+  "div.dom-layer": 6,
+  "div.local-layout": 158,
+  "card": 244,
+  "band": 100
+ },
+ "shown": false
+}

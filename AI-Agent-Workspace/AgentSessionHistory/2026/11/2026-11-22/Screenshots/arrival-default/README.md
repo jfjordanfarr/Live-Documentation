@@ -339,6 +339,54 @@ The gate ran the whole browser suite on the merged day branch (`2d2f18f2b`) and 
 - *The phone's hold* (`local-map-learning.spec.ts`, "touch taps retain command activation…"). It fails alone and fails the same way begun at reading size, so it is not the arrival's pull-back: after the hold the menu shows, Escape does not close it, and the next tap lands on its first item. The menu hears Escape only while the focus is inside it; a probe found the focus on the page's body after the hold. Why the focus is not in the menu was not found. The case keeps the reading-size seed, which it needs on a phone, where nothing attends a card and the arrival pulls back a second and a half after it lands.
 - *The hidden map's search* (`local-map-hidden.spec.ts`, alone pass). It fails alone: the search does not end within its 45 s after the return. The case begins at reading size already and its own comment gives the search 41 to 42 s on November 18's repository; nothing was changed and nothing was established beyond that.
 
+## Tenth milestone, from 19:06 UTC: a band takes no pointer
+
+**The ruling.** The root took the first of the two designs: "A band takes no pointer; the wire under the pointer is found by geometry, and only where the pointer's target is the map's ground and nothing of a card, a control or the panel." The rule for a reader: everything of a card takes the pointer before a wire's reach does; a wire's words never cost a reader a control.
+
+**As built.**
+
+- `styles/local.css`: `.wire-band` takes no pointer. It stays the wire's focusable, named element, and its stroke's width stays the reach as the stylesheet says it.
+- `views/localView/wire-reach.ts`, pure and unit-tested: a route walked as a line of points (by `pathPoints` of `wire-marks.ts`, the walk the direction marks already make), the distance from a point to it, and the wire at a point: within half its reach, the nearest, and of two as near the later.
+- `views/localView/wire-answers.ts`, `bandUnder`: the pointer's target must be the view or something of the camera's layer that is nothing of a card, no control and no returning lace; then the wire at the pointer by `wire-reach.ts`. Each band's route is walked once and kept until its `d` changes; a move measures only to the wires whose boxes, grown by the widest reach, hold the pointer. Nothing is written to any wire on a move.
+- *By arithmetic and not by the browser's `isPointInStroke`*, because the rule needs the nearer of two wires, which is a distance and not a yes or no, and because the walk was already in the product and needs no element.
+- *The nearer wire answers.* That differs from what the page did: the browser gave a point to the later band in the document, however near an earlier wire ran. Of two exactly as near, the later still answers.
+- *The hand.* A cursor written on the view is inherited by everything in it: putting it there and bringing the style up to date took 20 to 25 ms at the median on a picture of 87 cards (measured, twenty times each way). So the hand is a spot nine pixels across (`.wire-hand`) that stands under the pointer while it is in a wire's reach on the map's ground, and is taken away when the picture moves or is drawn again. It is looked through when the wire is sought. A press from it is the map's own, as a press from the band was.
+
+**The price of a pointer move**, on `liveDocumentationConfig.ts` as the arrival leaves it (the connections look at 0.335; 229 wires and 221 bands today, 87 cards; the 1,293 wires of the morning's measure are not this picture's count now), three passes of 151 moves across the map's room:
+
+| | Before | After |
+| --- | --- | --- |
+| The page's own hearing of one move on the map's ground, timed about a dispatched event (281 and 329 moves) | median 0.0 ms, 95th 0.1, most 0.2 | median 0.2 ms, 95th 0.5, most 1.1 |
+| The same on a card (122 and 124 moves) | median 0.0 ms, 95th 0.1, most 0.2 | median 0.0 ms, 95th 0.1, most 0.2 |
+| From the event's own time to the last listener, 453 real moves | median 13.1 ms, 95th 481, most 1,111 | median 14.7 ms, 95th 324, most 583 |
+
+So finding the wire by its route costs two tenths of a millisecond a move on the ground of this picture, a millisecond at the most, and nothing on a card. Of the real moves' targets before, 25 of 453 were bands; after, none. The numbers are in [`numbers/pointer-move--before.json`](numbers/pointer-move--before.json) (its real moves' row is mixed with the dispatched ones in that file's run; the figures above for real moves before are the run before it, which printed them alone) and [`numbers/pointer-move--after.json`](numbers/pointer-move--after.json).
+
+**The new case, whole.** On its next run it passed in all three parts (21.4 s): the card's own press under a wire's reach, the hand over a wire and none on bare ground, and the nearer of two wires answering where a later wire's reach also holds the point.
+
+**One hold spoiled by this builder.** That run was a hold of the new case with `local-map-tone`, `local-map-pins`, `local-map-overview` and `local-map-packing` whole: 21 of 23 passed. Lint, the unit cases and the Live Docs' generation were running beside it, started when the hold stood sixth in the queue and overtaken by it; that is this builder's fault and the two failures are not parted from it. `local-map-packing` "packing changes keep the selected file in place…" counted three moving frames where more than three are asked, which it had passed twice that evening with nothing beside it. `local-map-pins` "releasing the last pinned symbol…" pressed a row's Pin after the arrival's rest, on a row easing back to the look that draws no Pin: a case that never began at reading size and had passed by being quick. It begins at reading size now, as the other cases of its file that press a row's control do. Neither was seen again: the lane's queue stood at six.
+
+**Other runs on that build, each in a hold of its own:** `camera-intent.spec.ts` whole with `tuning-reset.spec.ts`, 32 of 32 (5.3 minutes). The other spec files the ruling named (`local-map-learning`, `card-reading`, `force-graph-focus`, `overview-files` whole, `card-ladder-boxes` whole) were not run: three builders shared the lane, each turn of this one's came after ten to twenty minutes, and the hour ran out.
+
+The second row holds the browser's finding of the target and everything the page does when a wire's words show; it is loose, on a machine three builders share, and is given for what it is.
+
+**The cases.** The three the gate found red pass unchanged on the build with the change, alone in one hold: `card-ladder-boxes.spec.ts` at 444 (1.8 minutes) and at 469 (1.9), and `overview-files.spec.ts` at 348, both of its pins (27 and 26 s). `wire-answers.spec.ts`'s fifteen cases that stood before pass on it unchanged but for how they find a point on a wire: a reader's signs are kept (the words after the rest, the wire lit, the way to the panel, Escape, a press that pins, a drag that pans, the keyboard's walk, the arrow keys in both readings, a gathered wire's sentence, the two audits, the marks). The page's own word for what stands at a point is never a band now, so `bandPoint` looks for the map's ground under a point on a wire's route, and for no other wire's reach there.
+
+The new case, "everything of a card takes the pointer before a wire's reach does…", on `still-picture.ts` as the arrival leaves it: it seeks from the wires something of a card that stands in a wire's reach (points along each route and 5 px to each side, confirmed by the browser's own geometry of the band's stroke), rests the pointer there and presses. With the fault put back by a temporary rule that made the bands take the pointer again, it failed as it should: the pointer resting on the card `tests/e2e/still-picture.ts`, under the reach of the wire from `card-reading-refresh.spec.ts`, brought up a wire's words. Without it, that part passes: no words, the press heard by the card's own element, nothing pinned. Its two later parts (the hand over a wire's reach, and the nearer of two wires) failed on their first run for the case's own reason, a finder that asked for a point in no other wire's reach where every wire is in another's; they are rewritten and were queued again.
+
+**The phone's hold: who takes the focus.** The case's steps were run once with `HTMLElement.prototype.focus` and `blur` wrapped to record their callers and with listeners on `focusin`, `focusout` and the press's events, from the hold to the Escape (begun at reading size, as the case now is):
+
+| At (ms) | What happened |
+| ---: | --- |
+| 2431 | `pointerdown` and `touchstart` on the card (`div.local-card-actions`) |
+| 2984 | the hold's 550 ms are up: `focus` is called on the menu's first item, by the item menu's `show`, from `showNodeActions`; the focus goes from the card's Read to that item |
+| 3130 | `pointerup`, `touchend` on the card |
+| 3133 | the browser's own `mousedown` for the touch, at the finger's point, where the menu now stands: on the menu's own ground (`div.item-menu`), not on an item. `focusout` of the item follows at once, to nothing |
+| 3134 | `mouseup`, `click` on the menu's ground |
+| 3553 | Escape: its target is the page's body; the menu, which hears Escape on itself, does not hear it and stays |
+
+So nothing of this branch's calls `focus` or `blur`: the menu takes the focus as it should, and loses it to the browser's default for a press on something that cannot hold the focus, the menu's own ground under the finger. No listener of Wire Answers or of the arrival appears in it. Why the case passed on the day's start was not found; the same press landing on an item, a few pixels away, keeps the focus in the menu, and what an item menu lists changed that day. The mend is small and in `panels/item-menu.ts`, which is not this branch's file: a press on the menu's own ground keeps the focus where it is (the default prevented where the press is on no item), or Escape heard by the window while the menu is open. It was not made.
+
 ## Not done
 
 - The sweep: eight holds of twenty-five ran.
