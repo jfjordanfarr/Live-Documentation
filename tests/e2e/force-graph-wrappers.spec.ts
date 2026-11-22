@@ -147,23 +147,25 @@ test("the skin shows within each wrapped group every file it holds about its see
     return found;
   });
   // The picture draws at most DRAWN_FILES files within its skins, as one body does (2026-11-07): past it the bodies
-  // farthest from what was asked are veiled, each shown as one veiled bubble while its name says its count. With nothing
-  // asked every seed stands at the same hop. This repository's archipelago came within 8 files of the budget on
-  // 2026-11-19 (1,016 files beside their seeds) and passed it on 2026-11-21, when the readers of SQL, PowerShell and
-  // .NET brought 1,137; until 2026-11-22 the largest was veiled first, so its largest group, 696 files, the
-  // repository's main body, stood as a blank ball. The owner, shown it: "Oh man I know that annoys the heck out of me."
-  // Since then whole groups are veiled the smallest first, and the main body's files stay in sight.
-  // The rule written out here rather than asked of the page's own function: the smallest groups veiled, one by one,
-  // while the files the skins would draw pass the budget.
+  // farthest from what was asked are veiled, the largest first, each shown as one veiled bubble while its name says its
+  // count. With nothing asked every seed stands at the same hop, so until 2026-11-22 this repository's largest group,
+  // 696 files beside its seed, the repository's main body, stood as a blank ball once the archipelago passed the
+  // budget of 1,024 (1,137 files beside their seeds on 2026-11-21). The owner, shown it: "Oh man I know that annoys the
+  // heck out of me." Since then the start's largest group is veiled last, and the budget is 2,048, at which this
+  // repository's archipelago veils nothing at all. The order past the budget is held by the unit tests of
+  // `pictureVeils`; this case holds that every group here shows its files, and would hold the order again if the
+  // repository grew past the budget.
+  // The rule written out here rather than asked of the page's own function: the largest groups veiled, one by one,
+  // the largest of all last, while the files the skins would draw pass the budget.
+  const [largest] = [...wrapped].sort((a, b) => sizes.get(b)! - sizes.get(a)! || (a < b ? -1 : 1));
   const veiled = new Set<string>();
   let drawing = wrapped.reduce((sum, seed) => sum + sizes.get(seed)! - 1, 0);
-  for (const seed of [...wrapped].sort((a, b) => sizes.get(a)! - sizes.get(b)! || (a < b ? -1 : 1))) {
+  for (const seed of [...wrapped].sort((a, b) => Number(a === largest) - Number(b === largest) || sizes.get(b)! - sizes.get(a)! || (a < b ? -1 : 1))) {
     if (drawing <= DRAWN_FILES) break;
     veiled.add(seed);
     drawing -= sizes.get(seed)! - 1;
   }
-  const [largest] = [...wrapped].sort((a, b) => sizes.get(b)! - sizes.get(a)! || (a < b ? -1 : 1));
-  expect(veiled.size, "this repository's archipelago passes the budget, so some group is veiled").toBeGreaterThan(0);
+  if (drawing <= DRAWN_FILES) expect(veiled.size, "within the budget nothing is veiled").toBe(0);
   expect(veiled.has(largest), "the main body is not among the veiled").toBe(false);
   expect(units.filter(unit => unit.seed === largest).length + 1, "every file of the main body is drawn").toBe(sizes.get(largest));
   const balloons = await page.evaluate(() => {
@@ -189,6 +191,7 @@ test("the skin shows within each wrapped group every file it holds about its see
   // A veil is an honest sign: the veiled group's name, shown when the pointer rests on it, says how many files it
   // hides. A nearer wrapper may stand in front of a seed from this camera, so the veiled seeds are tried in turn until
   // the page names the one aimed at.
+  if (!veiled.size) return;
   await expect(page.locator("#graph-svg")).toHaveAttribute("aria-busy", "false", { timeout: 25_000 });
   const seeds = await renderedNodes(page);
   let said: { seed: string; text: string } | null = null;

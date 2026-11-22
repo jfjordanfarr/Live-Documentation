@@ -42,7 +42,8 @@ test("every tuning control explains what changing it does, as its tooltip and it
   // this case was not run to its end that day, and stood at 77 until the suite's whole run found it. Way Down joined
   // the 2D layout group the same day (what a way down from the World Map brings to the Local Map, a trial); its
   // builder did not run this case, and root found the count at the merge.
-  await expect(controls).toHaveCount(80);
+  // Drag joined the 3D forces the same day (the trial of what is tied to a dragged sphere swinging after it).
+  await expect(controls).toHaveCount(81);
   const facts = await controls.evaluateAll(elements => elements.map(element => {
     const describedBy = element.getAttribute("aria-describedby") ?? "";
     const description = document.getElementById(describedBy);

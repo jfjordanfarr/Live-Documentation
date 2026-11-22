@@ -1,0 +1,6 @@
+pin as-it-was: at rest; files drawn within skins: 1015; bubbles within skins: 26, veiled 1
+veiled bodies as the wrappers draw them: 1 of 61 bodies (0 shells, 1 groups)
+pin default: at rest; files drawn within skins: 1116; bubbles within skins: 25, veiled 0
+veiled bodies as the wrappers draw them: 0 of 61 bodies (0 shells, 0 groups)
+pin merged: at rest; files drawn within skins: 1021; bubbles within skins: 52, veiled 28
+veiled bodies as the wrappers draw them: 28 of 61 bodies (2 shells, 26 groups)

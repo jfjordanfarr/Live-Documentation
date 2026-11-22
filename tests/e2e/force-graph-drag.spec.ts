@@ -1,6 +1,7 @@
 import { expect, test, type Page } from "@playwright/test";
 
 import { compressSnapshot, DEFAULT_SNAPSHOT } from "../../packages/explorer/src/client/persistence/compressed-url-state";
+import type { DragChoice } from "../../packages/explorer/src/client/types";
 import { observeGraph, renderedNodes } from "./force-graph-observation";
 import { loadGraph } from "./still-picture";
 
@@ -16,7 +17,9 @@ import { loadGraph } from "./still-picture";
 test.use({ viewport: { width: 1440, height: 900 } });
 
 const PIN = "packages/engine/src/live-docs/graph.ts";
-const entry = `/?s=${compressSnapshot({ ...DEFAULT_SNAPSHOT, perspective: "3d", spatialLayout: "connections", pinSet: { entries: [{ nodeId: PIN, symbol: "*" }] } })}`;
+/** The pinned picture, with Tuning's Drag as the address carries it: nothing for the default, which holds its ground. */
+const entry = (drag: DragChoice): string => `/?s=${compressSnapshot({ ...DEFAULT_SNAPSHOT, perspective: "3d", spatialLayout: "connections", pinSet: { entries: [{ nodeId: PIN, symbol: "*" }] },
+  ...(drag === "swings" ? { layout: { forceGraph: { drag } } } : {}) })}`;
 const map = (page: Page) => page.locator("#graph-svg");
 /**
  * The share of its own way a tied file has come, at the median, when the hand arrives. Measured on 2026-11-22 with an
@@ -31,10 +34,15 @@ const moved = (from: Places, to: Places, id: string): number => {
   return Math.hypot(b.x - a.x, b.y - a.y, b.z - a.z);
 };
 
-test("files tied to a dragged sphere follow it while the hand still moves, and the map rests again once it is let go", async ({ page }) => {
+// Both values of Tuning's Drag (a trial of 2026-11-22): holding its ground, the default, where every sphere is held
+// toward where it stood, and Swings, where what is tied to the held sphere lets go of where it stood. What tells the two
+// apart, how far the shells come, differed by a tenth of the hand's way in one run each, too little to assert here; the
+// unit test of the motion holds the difference on a chain.
+for (const drag of ["holds", "swings"] as const) test(`files tied to a dragged sphere follow it while the hand still moves, and the map rests again once it is let go (Drag: ${drag})`, async ({ page }) => {
   test.setTimeout(240_000);
   await observeGraph(page);
-  await page.goto(entry);
+  await page.goto(entry(drag));
+  await expect(page.locator("#tuning-force-drag")).toHaveValue(drag);
   await expect(map(page)).toHaveAttribute("aria-busy", "false", { timeout: 120_000 });
   const graph = await loadGraph(page, "/");
   const id = (end: string | { id: string }): string => typeof end === "string" ? end : end.id;
