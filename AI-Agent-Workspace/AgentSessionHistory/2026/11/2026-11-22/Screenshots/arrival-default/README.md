@@ -412,6 +412,29 @@ On its first run with the mend the case failed further on, for a reason of this 
 
 No lace's reach lay over a card's control in them. Two of the four pictures draw no lace at all.
 
+## Twelfth milestone, from 20:29 UTC: the release's line out, and the tap's cause
+
+(Corrects the paragraph above that begins "Not mended, and a finding": the change it says was kept is out, and the cause it says is not known is below.)
+
+**The line at the release.** Taken back to what it was. On that build `local-map-learning.spec.ts` and `wire-answers.spec.ts` ran whole in one hold: 25 of 26, the one being the growing twin of the tap, for the reason below; the seventeen of the wire answers and the phone's tap in fixed slots pass without the line. It stays out.
+
+**The tap in the growing composition: recorded, not read.** One tap and then one mouse's click at the same point, in each composition, on a phone, with listeners for the press's events ahead of the page's own, the setter of `hidden` wrapped for the words' panel and the hand's spot, and observers on the wires and the camera:
+
+| | Growing, the tap at 62, 500 | Growing, a mouse's click there | Fixed slots, the tap at 242, 595 |
+| --- | --- | --- | --- |
+| The page's word for what stands at the point, just before | the map's ground (`div.local-layout`) | the same | the map's ground |
+| Bands whose strokes hold the point | one, PaymentService.cs uses IPaymentService.cs | the same one | three |
+| The press's target (`pointerdown`, `pointerup`) | `div.node-card.selected`, the subject's card | the hand's spot, over the ground | `div.local-layout` |
+| What turned the wire away | the target is of a card | nothing | nothing |
+| `show` called | no | yes, from `pointerUp` | yes, from `pointerUp` |
+| `close`, or anything else taking the words away | never called | never | never |
+| The wires drawn again, or the camera moved, between press and release | no | no | no |
+| Words | none | pinned | pinned |
+
+So it is neither the composition's fault nor touch's hearing in the page, and nothing draws the wires again: the browser gives a touch that lands beside something pressable to that thing. The point the case first chose in the growing picture lay at the subject's edge; the tap's events came with the card as their target though the ground stood at the point itself; and by the day's rule a card takes the pointer before a wire's reach does. A mouse's click at the same point, whose target is what stands there, brings the words. Whether a tap there brought words before the band's change was not measured: the band then took the pointer, and what a browser's targeting does between a band and a card beside it is not known from this record.
+
+Nothing in the product is changed for it. The case now taps a wire at a point clear of every card by sixteen pixels and says why. Its growing twin is not kept: with that clearance the growing picture on a phone has no such point in view (the run that asked for one found none among 42 wires), so the twin could not be made to say anything the fixed-slots case does not.
+
 ## Not done
 
 - The sweep: eight holds of twenty-five ran.

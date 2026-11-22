@@ -240,10 +240,16 @@ test.describe("phone reading", () => {
   test("a tap on a wire's reach brings its words, and a tap on something of a card that stands in a wire's reach is the card's own", async ({ page }) => {
     // Wire Answers on a phone (2026-11-22): a finger has no rest and no hover, so a tap is the press that pins a
     // wire's words; and the rule of that day holds for a finger as for a pointer, that everything of a card takes
-    // the press before a wire's reach does. Read at reading size: the taps are the subject, not the arrival. Read in
-    // the composition that ships, fixed slots, and not in the growing one this file's other journeys read: there the
-    // same tap, on the map's ground in a wire's reach, brought no words on the day this was written, twice in two
-    // runs, and why was not found (the arrival's evidence, eleventh milestone).
+    // the press before a wire's reach does. Read at reading size: the taps are the subject, not the arrival.
+    //
+    // The wire is tapped at a point clear of every card by sixteen pixels. A browser gives a touch that lands beside
+    // something pressable to that thing, though the map's ground stands at the touch's own point: in the growing
+    // composition the first point this case chose lay at the subject's edge, the tap's events came with the card as
+    // their target, and by the rule the card took it and no words came (recorded that day, with a mouse's click at
+    // the same point bringing the words; the arrival's evidence, twelfth milestone). That is the browser's and the
+    // rule's doing, not a fault of the composition or of touch: a reader taps a wire where it runs clear. The case
+    // reads the composition that ships, fixed slots; the growing one's picture on a phone has no point of a wire's
+    // reach in view that is clear of every card by that much.
     await page.addInitScript(({ key, value }) => localStorage.setItem(key, value), {
       key: PERSISTED_UI_KEY, value: JSON.stringify({ version: PERSISTED_UI_VERSION, tuning: { localMap: { ...AT_READING_SIZE, searchStarts: 0, cardText: "slots" } } })
     });
@@ -266,7 +272,8 @@ test.describe("phone reading", () => {
             const x = on.x + dx, y = on.y + dy, hit = top(x, y);
             if (!hit || !inView(x, y) || !band.isPointInStroke(new DOMPoint(x, y).matrixTransform(matrix.inverse()))) continue;
             const ground = (hit.id === "view-map" || !!hit.closest("#map-viewport")) && !hit.closest(".node-card, .local-directory-closed, button, a, input, select, .connection-path");
-            if (ground && !wire && dx === 0 && dy === 0) wire = { x, y, name: band.getAttribute("aria-label") ?? "" };
+            const clear = [[-16, 0], [16, 0], [0, -16], [0, 16], [-11, -11], [11, -11], [-11, 11], [11, 11]].every(([ex, ey]) => !top(x + ex, y + ey)?.closest(".node-card, .local-directory-closed, button, a, input, select"));
+            if (ground && clear && !wire && dx === 0 && dy === 0) wire = { x, y, name: band.getAttribute("aria-label") ?? "" };
             const of = hit.closest<HTMLElement>(".node-card");
             if (of && !card) {
               const control = hit.closest<HTMLElement>("button");
