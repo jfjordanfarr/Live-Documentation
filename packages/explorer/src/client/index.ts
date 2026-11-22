@@ -7,7 +7,7 @@ import { announce } from "./announce";
 import { inferDefaultEntryNodeId } from "./bootstrap";
 import { landingOf } from "./bootstrap/landing";
 import { createDetailPanel, type DetailPanelAction } from "./detailPanel";
-import { applyMarbles, applyPalette, requireElement, setActiveView } from "./dom";
+import { applyMarbles, applyPalette, giveFocus, requireElement, setActiveView, settleViews } from "./dom";
 import { downloadDocs, downloadFactsJson, type DownloadBundleType, type DownloadFormat } from "./download";
 import { attachGlobalErrorHandler, ExplorerRefusal, OPENED_AS_FILE, reportFatalExplorerError } from "./errors";
 import { buildTestCoverageMap, resolveLinkEndpoint, getInputById } from "./graph-helpers";
@@ -1348,6 +1348,7 @@ function startExplorer(bundle: StaticExplorerData, initialSnapshot: UrlStateSnap
     const destination = perspective === "2d" ? "map" : "graph";
     const sourceSurface = previous === "2d" ? "map" : "graph";
     const pressed = performance.now();
+    const began = document.activeElement instanceof HTMLElement && document.activeElement !== document.body ? document.activeElement : null;
     // The transition draws inside the destination's frame, so the cards it copies are those whose boxes meet that frame.
     const sourceCapture = previous === "2d" ? captureLocalScene(requireElement("view-map"), requireElement(`view-${destination}`).getBoundingClientRect()) : null;
     if (sourceCapture) cancelPerspectiveCapture = sourceCapture.cancel;
@@ -1370,6 +1371,12 @@ function startExplorer(bundle: StaticExplorerData, initialSnapshot: UrlStateSnap
     const rendering = performance.now();
     setActiveView(state.view, perspective);
     renderCurrentView(subjectChanged ? "change" : "show");
+    // The control that began the change is disabled through it and cannot hold the focus (the browser drops it to the
+    // page), so the focus is lent to the sidebar's control of the view; the control takes it back when the change is
+    // done, unless the reader has moved it meanwhile.
+    if (began && document.activeElement === document.body) giveFocus(began, document.querySelector(".nav-item.active"));
+    const lent = document.activeElement;
+    const returnFocus = (): void => { if (began && began !== lent && document.activeElement === lent) giveFocus(began); };
     if (perspective === "3d" && sourceCapture) forceGraphView.revealForTransition(sourceCapture.scene.cards.map(card => card.file.id));
     performance.measure("live-docs:switch-render", { start: rendering });
     persistExploration();
@@ -1406,6 +1413,7 @@ function startExplorer(bundle: StaticExplorerData, initialSnapshot: UrlStateSnap
         transitionDestination = null;
         changingPerspective = false;
         syncPerspectiveControls();
+        returnFocus();
         releaseCover();
         return;
       }
@@ -1431,6 +1439,7 @@ function startExplorer(bundle: StaticExplorerData, initialSnapshot: UrlStateSnap
           transitionDestination = null;
           changingPerspective = false;
           syncPerspectiveControls();
+          returnFocus();
           forceGraphView.setActive(state.view === "map" && state.perspective === "3d");
           // Back in 2D, the subject was held where its sphere stood through the motion; the picture now slides into
           // the frame where it fits, one motion the eye can follow (the owner's choice, 2026-10-30).
@@ -1960,10 +1969,10 @@ function startExplorer(bundle: StaticExplorerData, initialSnapshot: UrlStateSnap
       ...requireElement("views").children
     ];
     for (const element of background) {
-      if (element instanceof HTMLElement && element.id !== "views" && element !== panel) {
-        element.inert = modal || (element.classList.contains("view-container") && !element.classList.contains("active"));
-      }
+      if (element instanceof HTMLElement && element.id !== "views" && element !== panel && !element.classList.contains("view-container")) element.inert = modal;
     }
+    // The views by the one way a view is made inert: all of them behind a modal reader, otherwise those put away.
+    settleViews(modal);
     if (modal && !panel.contains(document.activeElement)) requireElement("detail-close").focus({ preventScroll: true });
   }
 

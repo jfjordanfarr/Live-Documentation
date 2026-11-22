@@ -685,7 +685,7 @@ body.zoom-controls-active #view-map { height: calc(100% - 70px - var(--history-r
 /* The source of a change of perspective, held as it stands over the destination while that draws its first frame
    (perspectiveTransition.ts, holdPerspective): shown at once and stacked where its copy's cover stood, the transition's
    layer, appended to the page after it, above it. */
-.view-container.perspective-held { opacity: 1; transition: none; z-index: 104; }
+.view-container.perspective-held { opacity: 1; content-visibility: visible; transition: none; z-index: 104; }
 /* A transparent cover over the held source that takes the pointer while it is held. */
 .perspective-hold-cover { position: fixed; z-index: 104; pointer-events: auto; }
 .perspective-file-name { position: absolute; transform: translateX(-50%); color: var(--text-normal); font-size: 13px; font-weight: 600; white-space: nowrap; padding: 4px 7px; border-radius: 4px; background: rgba(var(--scene-travelling-name-rgb), 0.909804); }

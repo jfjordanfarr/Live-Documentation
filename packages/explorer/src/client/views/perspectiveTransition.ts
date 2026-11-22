@@ -1,3 +1,4 @@
+import { settleViews } from "../dom";
 import { activePalette, mix } from "../palette";
 import { directoryNodeId } from "./forceGraphData";
 import type { SceneBody } from "./perspectiveBodies";
@@ -371,13 +372,16 @@ export function animatePerspective(
 
 /**
  * Hold the source picture while the destination renderer produces its first frame: the source surface itself stays
- * drawn, as it stands, over the destination until released (`perspective-held` in local.css). An inactive view is laid
- * out and drawn, only transparent, so nothing need be copied; until 2026-11-07 the hold was a copy of the whole surface
- * with every computed property of every element, several seconds of the page's main thread on this repository's
- * pictures, and on the way to 2D a copy never seen, since the 2D map is ready at once and the cover went in the same
- * task. The surface is inert and hidden from assistive technology while inactive, as the copy was, and a transparent
- * cover over the views' room takes the pointer while it is held, so that a click meant for the held picture reaches
- * neither it nor the destination drawing beneath it.
+ * drawn, as it stands, over the destination until released (`perspective-held` in local.css). A held view is laid out
+ * and drawn, so nothing need be copied; until 2026-11-07 the hold was a copy of the whole surface with every computed
+ * property of every element, several seconds of the page's main thread on this repository's pictures, and on the way to
+ * 2D a copy never seen, since the 2D map is ready at once and the cover went in the same task. A view put away is kept
+ * and not drawn (`content-visibility` in shell.css), and the held one is put away when its hold lets go: until then it
+ * is hidden from assistive technology, a transparent cover over the views' room takes the pointer, so that a click
+ * meant for the held picture reaches neither it nor the destination drawing beneath it, and focus offered to it is
+ * given back (`dom.ts`). It is not inert while held: making a drawn view inert has the browser work out the style of
+ * every element in it again, 180 ms of each press of 3D on a map of 14,810 elements; made inert once it is not drawn,
+ * it costs 3 ms (measured 2026-11-22; `settleViews`).
  *
  * The surface keeps the size and border it was drawn with while held, since leaving the 2D map takes away the room its
  * zoom controls kept below it, which would otherwise grow the held map into that room.
@@ -415,6 +419,8 @@ export function holdPerspective(root: HTMLElement): () => void {
     root.style.transition = transition;
     root.style.height = held.height;
     root.style.borderBottom = held.borderBottom;
+    // No longer drawn, the view is now made inert with the others put away.
+    settleViews();
   };
 }
 

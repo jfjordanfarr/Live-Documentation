@@ -13,7 +13,8 @@ Provides required element lookups and coordinates the Explorer's active view, na
 ### Notes
 - Created 2025-11-21 during the explorer modularisation.
 - `requireElement` throws if the element is missing, failing fast on template mismatches. Its generic return type records the caller's expected element type; it does not validate that subtype at runtime.
-- `setActiveView` marks the active navigation item with `aria-current`, maps the Local Map's chosen perspective to its 2D or 3D container, and updates the view classes, `inert` and `aria-hidden` together. Hidden cards and projected 3D action buttons must not remain in the Tab sequence merely because their DOM is retained.
+- `setActiveView` marks the active navigation item with `aria-current`, maps the Local Map's chosen perspective to its 2D or 3D container, and updates the view classes. Hidden cards and projected 3D action buttons must not remain in the Tab sequence merely because their DOM is retained.
+- Since 2026-11-22 a view is put away in two steps, by `settleViews`, the one place a view is made inert: `aria-hidden` at once, `inert` only once the stylesheet has taken the view out of drawing (its fade over, no change of perspective holding it). Making a drawn view inert had the browser work out the style of every element in it again, about 180 ms of each press of 3D on a map of 14,810 elements; the measures and the ruling are in that day's `Screenshots/arrival-default` record, fourteenth and fifteenth milestones. While a view is drawn and not shown, focus offered to it is given back, and focus that stood in it goes to the sidebar's control of the view shown.
 - The one pathfinding toolbar moves into the chosen Local Map surface. Body classes expose the active World Map, Local Map legend, 3D controls and 2D zoom controls to the styles; this function changes presentation rather than inspection, pins, subject or camera.
 
 ## Generated
