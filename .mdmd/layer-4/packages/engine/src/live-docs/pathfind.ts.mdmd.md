@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/engine/src/live-docs/pathfind.ts`
-- Generated At: 2026-11-22T04:55:06.296Z
+- Generated At: 2026-11-22T05:46:12.606Z
 
 ## Authored
 ### Purpose
@@ -301,8 +301,9 @@ once the `symbol-` prefix is removed and case ignored.
 ### Dependencies
 - [`liveDocumentationConfig.noReaderHandles`](../config/liveDocumentationConfig.ts.mdmd.md#symbol-noreaderhandles)
 - [`document.Entry`](./document.ts.mdmd.md#symbol-entry) (type-only)
-- [`graph.GraphFile`](./graph.ts.mdmd.md#symbol-graphfile) (type-only)
-- [`graph.LiveDocGraph`](./graph.ts.mdmd.md#symbol-livedocgraph) (type-only)
+- [`graph.GraphFile`](./graph.ts.mdmd.md#symbol-graphfile)
+- [`graph.LiveDocGraph`](./graph.ts.mdmd.md#symbol-livedocgraph)
+- [`graph.fileAt`](./graph.ts.mdmd.md#symbol-fileat)
 <!-- LIVE-DOC:END Dependencies -->
 
 <!-- LIVE-DOC:BEGIN Cited By -->

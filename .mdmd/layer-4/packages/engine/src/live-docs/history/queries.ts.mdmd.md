@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/engine/src/live-docs/history/queries.ts`
-- Generated At: 2026-11-19T21:10:12.150Z
+- Generated At: 2026-11-22T05:46:12.427Z
 
 ## Authored
 ### Purpose
@@ -162,9 +162,10 @@ is dead whatever happened to its path after.
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
-- [`graph.DocLocation`](../graph.ts.mdmd.md#symbol-doclocation) (type-only)
-- [`graph.GraphFile`](../graph.ts.mdmd.md#symbol-graphfile) (type-only)
-- [`graph.LiveDocGraph`](../graph.ts.mdmd.md#symbol-livedocgraph) (type-only)
+- [`graph.DocLocation`](../graph.ts.mdmd.md#symbol-doclocation)
+- [`graph.GraphFile`](../graph.ts.mdmd.md#symbol-graphfile)
+- [`graph.LiveDocGraph`](../graph.ts.mdmd.md#symbol-livedocgraph)
+- [`graph.graphFilesByPath`](../graph.ts.mdmd.md#symbol-graphfilesbypath)
 - [`directories.directoryRenames`](./directories.ts.mdmd.md#symbol-directoryrenames)
 - [`format.CommitInfo`](./format.ts.mdmd.md#symbol-commitinfo) (type-only)
 - [`format.HistorySequence`](./format.ts.mdmd.md#symbol-historysequence) (type-only)

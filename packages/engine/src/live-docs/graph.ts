@@ -109,16 +109,41 @@ export const GRAPH_INDEX_FILE = "index.json";
 // ============================================================================
 
 /**
+ * An empty table of a graph's files by path, holding no key but those set: a path is a stranger's word, and a plain
+ * object's inherited members (`__proto__`, `constructor`, `toString`) would read as files that are there, or, set, be
+ * lost. Since 2026-11-22; before, a folder holding a file named `__proto__` could not be mapped at all.
+ */
+export function graphFilesByPath(): Record<string, GraphFile> {
+  return Object.create(null) as Record<string, GraphFile>;
+}
+
+/**
+ * The graph's file at a path, or nothing when the graph holds none there, whatever the table's own members: the one
+ * way to ask a graph whether a path is a file of it, whether the table was derived here or read back from an index.
+ */
+export function fileAt(files: Readonly<Record<string, GraphFile>>, codePath: string): GraphFile | undefined {
+  return Object.hasOwn(files, codePath) ? files[codePath] : undefined;
+}
+
+/**
+ * The same graph with its files in a table that holds no key but its files' paths ({@link graphFilesByPath}), for a
+ * graph parsed from an index, whose table JSON gave a plain object's members.
+ */
+export function withFilesByPath(graph: LiveDocGraph): LiveDocGraph {
+  return { ...graph, files: Object.assign(graphFilesByPath(), graph.files) };
+}
+
+/**
  * Derives the graph from parsed docs.
  *
  * @param docs - Every doc of the workspace, each with its workspace-relative path.
  * @param location - Where the docs are, so that links between them resolve.
  */
 export function deriveLiveDocGraph(docs: Iterable<{ docPath: string; doc: LiveDoc }>, location: DocLocation): LiveDocGraph {
-  const files: Record<string, GraphFile> = {};
+  const files = graphFilesByPath();
   const sorted = [...docs].sort((a, b) => compare(a.doc.codePath, b.doc.codePath));
   for (const { docPath, doc } of sorted) {
-    const existing = files[doc.codePath];
+    const existing = fileAt(files, doc.codePath);
     if (existing) {
       throw new Error(`two docs describe ${doc.codePath}: ${existing.docPath} and ${docPath}`);
     }
@@ -141,7 +166,7 @@ export function deriveLiveDocGraph(docs: Iterable<{ docPath: string; doc: LiveDo
   }
   const resolve = (file: GraphFile, link: string): Pick<GraphEdge, "link" | "to" | "toSymbol"> => {
     const target = linkTarget(file.docPath, link, location);
-    if (target && files[target.codePath]) {
+    if (target && fileAt(files, target.codePath)) {
       return { link, to: target.codePath, toSymbol: target.anchor };
     }
     return { link };

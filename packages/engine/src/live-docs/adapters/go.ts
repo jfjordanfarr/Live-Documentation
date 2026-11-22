@@ -28,6 +28,7 @@ import { goSyntax } from "../../languages";
 import { compareText } from "../../tooling/compareText";
 import { normalizeWorkspacePath } from "../../tooling/pathUtils";
 import { readSourceText, type SourceReads, throwIfMachineFailure } from "../../tooling/sourceText";
+import { type ListedFiles, pathKind } from "../../tooling/workspaceProbes";
 import type { DependencyEntry, PublicSymbolEntry, SourceAnalysisResult, SymbolDocumentation, TypeReference } from "../core";
 import type { ProgramEntry } from "../coreTypes";
 import type { LanguageAdapter, WorkspaceFileIndex } from "./index";
@@ -496,16 +497,19 @@ interface GoModule {
 }
 
 /** The module the file belongs to: the nearest `go.mod` above it, inside the workspace. */
-async function moduleOf(absolutePath: string, workspaceRoot: string, reads: SourceReads | undefined): Promise<GoModule | undefined> {
+async function moduleOf(absolutePath: string, workspaceRoot: string, reads: (SourceReads & ListedFiles) | undefined): Promise<GoModule | undefined> {
   let directory = path.dirname(absolutePath);
   while (directory.startsWith(workspaceRoot)) {
-    try {
-      const content = await readSourceText(path.join(directory, "go.mod"), reads);
+    // Asked of the listing before it is read, so that a folder with no `go.mod` asks the host nothing (2026-11-22; before,
+    // each Go file read its way up, and a failed read is kept by no one, so the host was asked again for every file).
+    const goMod = path.join(directory, "go.mod");
+    if (pathKind(goMod, reads) === "file") try {
+      const content = await readSourceText(goMod, reads);
       const match   = /^module\s+(\S+)/mu.exec(content);
       if (match) return { path: match[1], root: normalizeWorkspacePath(path.relative(workspaceRoot, directory)) || "." };
     } catch (error) {
       throwIfMachineFailure(error);
-      // no go.mod here; look one level up
+      // no go.mod here after all; look one level up
     }
     const parent = path.dirname(directory);
     if (parent === directory) break;
@@ -565,7 +569,7 @@ function isStandardLibrary(importPath: string): boolean {
   return !importPath.split("/")[0].includes(".");
 }
 
-async function toDependencies(facts: FileFacts, thisFile: string, absolutePath: string, workspaceRoot: string, table: PackageTable, reads: SourceReads | undefined): Promise<DependencyEntry[]> {
+async function toDependencies(facts: FileFacts, thisFile: string, absolutePath: string, workspaceRoot: string, table: PackageTable, reads: (SourceReads & ListedFiles) | undefined): Promise<DependencyEntry[]> {
   const byTarget = new Map<string, Set<string>>();
   const link = (file: string, symbol?: string): void => {
     if (file === thisFile) return;

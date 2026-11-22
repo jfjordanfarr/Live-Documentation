@@ -92,13 +92,21 @@ function entriesOf(path, options) {
   return options?.withFileTypes ? names.map((name) => new Dirent(name, at, found.get(name))) : names;
 }
 
-function bytesOf(path, syscall) {
+/** A file's bytes, or the failure Node would give; nothing counted. */
+function foundBytes(path, syscall) {
   const at = absolute(path);
   const kind = lookUp(at);
   if (kind === "folder") throw failure("EISDIR", "read", String(path));
   if (kind !== "file") throw failure(kind, syscall, String(path));
-  reads.set(at, (reads.get(at) ?? 0) + 1);
   return files.get(at).bytes;
+}
+
+/** A file's bytes, counted as a read of the scan's once found. */
+function bytesOf(path, syscall) {
+  const bytes = foundBytes(path, syscall);
+  const at = absolute(path);
+  reads.set(at, (reads.get(at) ?? 0) + 1);
+  return bytes;
 }
 
 const encodingOf = (options) => (typeof options === "string" ? options : options?.encoding);
@@ -232,9 +240,15 @@ export const tree = {
   bytes: (path) => files.get(absolute(path))?.bytes,
   /**
    * A file's bytes for the page's own host of the scan (`page-entry.mjs`), counted as a read of the scan's but not as a
-   * call of `fs`: failing as `fs.promises.readFile` fails, so that the engine reads an absence or a folder as it does on a disk.
+   * call of `fs`: failing as `fs.promises.readFile` fails, so that the engine reads an absence or a folder as it does on a
+   * disk. Every ask of the host is counted, found or not, since a failed ask waits on a page as long as one that finds
+   * its file, and "read once" holds for both (2026-11-22; before, an ask for an absent `go.mod` was not counted).
    */
-  read: (path) => bytesOf(path, "open"),
+  read: (path) => {
+    const at = absolute(path);
+    reads.set(at, (reads.get(at) ?? 0) + 1);
+    return foundBytes(path, "open");
+  },
   /** Each file the scan read, with the number of times it read it. */
   reads: () => Object.fromEntries([...reads].sort(([a], [b]) => (a < b ? -1 : a > b ? 1 : 0))),
   /** Each folder's entries, uncounted, for the stand-in for `glob`, whose walk is its own and not the scan's call of `fs`. */

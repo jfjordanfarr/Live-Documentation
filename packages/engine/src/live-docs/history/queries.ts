@@ -16,7 +16,7 @@
  * @module
  */
 
-import type { DocLocation, GraphFile, LiveDocGraph } from "../graph";
+import { type DocLocation, type GraphFile, graphFilesByPath, type LiveDocGraph } from "../graph";
 import { directoryRenames } from "./directories";
 import type { CommitInfo, HistorySequence } from "./format";
 import { linksOf, type FileRows, type RowLink, type Rows, type RowSymbol } from "./rows";
@@ -46,7 +46,7 @@ export function stepsMatching(sequence: HistorySequence, reference: string): num
  * and a file's entry mark is read with {@link entryMarked}.
  */
 export function graphOfShape(shape: Shape, location: DocLocation): LiveDocGraph {
-  const files: Record<string, GraphFile> = {};
+  const files = graphFilesByPath();
   const docsFolder = [location.root, location.baseLayer].map((segment) => segment.replace(/^(?:\.\/)+|\/+$/gu, "")).join("/");
   for (const path of [...shape.files.keys()].sort(compare)) {
     files[path] = {
