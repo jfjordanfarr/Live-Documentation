@@ -1,0 +1,1336 @@
+[
+ {
+  "subject": "heavy",
+  "run": 1,
+  "condition": "full",
+  "arrival": "then-neighbours-after",
+  "extra": {},
+  "elements": {
+   "map": 12555,
+   "cards": 84,
+   "bands": 22,
+   "wires": 226
+  },
+  "restBeforeEase": 5067,
+  "ease": {
+   "ms": 1950,
+   "frames": 20,
+   "fromK": 1,
+   "toK": 0.335,
+   "median": 33.4,
+   "p90": 83.3,
+   "worst": 1250,
+   "whole": {
+    "script": 477.1,
+    "style": 781.8,
+    "layout": 39.7,
+    "paint": 519,
+    "other": 103.8,
+    "styles": [
+     {
+      "ms": 710.3,
+      "elements": 6870,
+      "script": "FunctionCall s@index.js:5177:79274",
+      "stack": [
+       "xr:293:16444",
+       "E2:293:16540",
+       "measureLayoutExtents:5177:67169",
+       "measureLayoutExtents:5177:48630",
+       "$$:5176:38540"
+      ]
+     },
+     {
+      "ms": 9,
+      "elements": 436,
+      "script": null,
+      "stack": []
+     },
+     {
+      "ms": 49.1,
+      "elements": 1210,
+      "script": null,
+      "stack": []
+     }
+    ]
+   }
+  },
+  "worstFrame": {
+   "at": 1950,
+   "ms": 1250,
+   "k": 0.335,
+   "state": "connections|far||true|",
+   "script": 273,
+   "style": 769.9,
+   "layout": 39.7,
+   "paint": 111.1,
+   "other": 49.2,
+   "styles": [
+    {
+     "ms": 710.3,
+     "elements": 6870,
+     "script": "FunctionCall s@index.js:5177:79274",
+     "stack": [
+      "xr:293:16444",
+      "E2:293:16540",
+      "measureLayoutExtents:5177:67169",
+      "measureLayoutExtents:5177:48630",
+      "$$:5176:38540"
+     ]
+    },
+    {
+     "ms": 9,
+     "elements": 436,
+     "script": null,
+     "stack": []
+    },
+    {
+     "ms": 49.1,
+     "elements": 1210,
+     "script": null,
+     "stack": []
+    }
+   ],
+   "invalidations": [
+    [
+     "ScheduleStyle:  MAIN id='main'",
+     1114
+    ],
+    [
+     "ScheduleStyle:  BODY class='local-map-active zoom-controls-active'",
+     1114
+    ],
+    [
+     "ScheduleStyle: hidden BUTTON class='local-directory-cell local-directory-cell--file'",
+     948
+    ],
+    [
+     "StyleInvalidator: Invalidation set invalidates self BUTTON class='local-directory-cell local-directory-cell--file'",
+     901
+    ],
+    [
+     "StyleRecalc: Related style rule BUTTON class='local-directory-cell local-directory-cell--file'",
+     488
+    ],
+    [
+     "StyleRecalc: Inline CSS style declaration was mutated BUTTON class='local-directory-cell local-directory-cell--file'",
+     427
+    ],
+    [
+     "ScheduleStyle: style BUTTON class='local-directory-cell local-directory-cell--file'",
+     427
+    ],
+    [
+     "StyleRecalc: Attribute BUTTON class='local-directory-cell local-directory-cell--file'",
+     413
+    ],
+    [
+     "StyleRecalc: Attribute path class='connection-path outbound'",
+     174
+    ],
+    [
+     "StyleRecalc: Attribute path class='wire-band'",
+     174
+    ],
+    [
+     "StyleInvalidator: Invalidation set matched class DIV class='symbol-row local-row-readable branch-symbol-hidden branch-sy",
+     166
+    ],
+    [
+     "StyleRecalc: Related style rule DIV class='symbol-row local-row-readable branch-symbol-hidden branch-symbol-muted'",
+     166
+    ]
+   ]
+  },
+  "longFrames": [
+   {
+    "at": 283,
+    "ms": 83.3,
+    "k": 0.878,
+    "state": "reading|reading|0|false|moving",
+    "script": 15.9,
+    "style": 0.8,
+    "layout": 0,
+    "paint": 60.3,
+    "other": 6.4,
+    "styles": [],
+    "invalidations": [
+     [
+      "StyleRecalc: Attribute BUTTON class='map-cut-sign'",
+      8
+     ],
+     [
+      "StyleRecalc: Inline CSS style declaration was mutated DIV id='map-viewport' class='viewport-layer camera-moving'",
+      6
+     ],
+     [
+      "ScheduleStyle: style DIV id='map-viewport' class='viewport-layer camera-moving'",
+      6
+     ],
+     [
+      "StyleInvalidator: Invalidation set invalidates self DIV id='map-viewport' class='viewport-layer camera-moving'",
+      6
+     ],
+     [
+      "StyleRecalc: Related style rule DIV id='map-viewport' class='viewport-layer camera-moving'",
+      6
+     ]
+    ]
+   },
+   {
+    "at": 1950,
+    "ms": 1250,
+    "k": 0.335,
+    "state": "connections|far||true|",
+    "script": 273,
+    "style": 769.9,
+    "layout": 39.7,
+    "paint": 111.1,
+    "other": 49.2,
+    "styles": [
+     {
+      "ms": 710.3,
+      "elements": 6870,
+      "script": "FunctionCall s@index.js:5177:79274",
+      "stack": [
+       "xr:293:16444",
+       "E2:293:16540",
+       "measureLayoutExtents:5177:67169",
+       "measureLayoutExtents:5177:48630",
+       "$$:5176:38540"
+      ]
+     },
+     {
+      "ms": 9,
+      "elements": 436,
+      "script": null,
+      "stack": []
+     },
+     {
+      "ms": 49.1,
+      "elements": 1210,
+      "script": null,
+      "stack": []
+     }
+    ],
+    "invalidations": [
+     [
+      "ScheduleStyle:  MAIN id='main'",
+      1114
+     ],
+     [
+      "ScheduleStyle:  BODY class='local-map-active zoom-controls-active'",
+      1114
+     ],
+     [
+      "ScheduleStyle: hidden BUTTON class='local-directory-cell local-directory-cell--file'",
+      948
+     ],
+     [
+      "StyleInvalidator: Invalidation set invalidates self BUTTON class='local-directory-cell local-directory-cell--file'",
+      901
+     ],
+     [
+      "StyleRecalc: Related style rule BUTTON class='local-directory-cell local-directory-cell--file'",
+      488
+     ],
+     [
+      "StyleRecalc: Inline CSS style declaration was mutated BUTTON class='local-directory-cell local-directory-cell--file'",
+      427
+     ],
+     [
+      "ScheduleStyle: style BUTTON class='local-directory-cell local-directory-cell--file'",
+      427
+     ],
+     [
+      "StyleRecalc: Attribute BUTTON class='local-directory-cell local-directory-cell--file'",
+      413
+     ],
+     [
+      "StyleRecalc: Attribute path class='connection-path outbound'",
+      174
+     ],
+     [
+      "StyleRecalc: Attribute path class='wire-band'",
+      174
+     ],
+     [
+      "StyleInvalidator: Invalidation set matched class DIV class='symbol-row local-row-readable branch-symbol-hidden branch-sy",
+      166
+     ],
+     [
+      "StyleRecalc: Related style rule DIV class='symbol-row local-row-readable branch-symbol-hidden branch-symbol-muted'",
+      166
+     ]
+    ]
+   }
+  ],
+  "everyFrame": [
+   {
+    "at": 17,
+    "ms": 16.6,
+    "k": 1,
+    "look": "reading",
+    "style": 0.6,
+    "paint": 8,
+    "restyled": 0
+   },
+   {
+    "at": 33,
+    "ms": 16.7,
+    "k": 1,
+    "look": "reading",
+    "style": 0.4,
+    "paint": 7.2,
+    "restyled": 0
+   },
+   {
+    "at": 50,
+    "ms": 16.7,
+    "k": 0.998,
+    "look": "reading",
+    "style": 0.6,
+    "paint": 5.8,
+    "restyled": 0
+   },
+   {
+    "at": 67,
+    "ms": 16.6,
+    "k": 0.996,
+    "look": "reading",
+    "style": 0.4,
+    "paint": 9.5,
+    "restyled": 0
+   },
+   {
+    "at": 100,
+    "ms": 33.3,
+    "k": 0.993,
+    "look": "reading",
+    "style": 0.6,
+    "paint": 18,
+    "restyled": 0
+   },
+   {
+    "at": 133,
+    "ms": 33.4,
+    "k": 0.98,
+    "look": "reading",
+    "style": 0.8,
+    "paint": 14.7,
+    "restyled": 0
+   },
+   {
+    "at": 167,
+    "ms": 33.3,
+    "k": 0.958,
+    "look": "reading",
+    "style": 0.8,
+    "paint": 15.8,
+    "restyled": 0
+   },
+   {
+    "at": 200,
+    "ms": 33.4,
+    "k": 0.924,
+    "look": "reading",
+    "style": 0.7,
+    "paint": 18.3,
+    "restyled": 0
+   },
+   {
+    "at": 283,
+    "ms": 83.3,
+    "k": 0.878,
+    "look": "reading",
+    "style": 0.8,
+    "paint": 60.3,
+    "restyled": 0
+   },
+   {
+    "at": 333,
+    "ms": 50,
+    "k": 0.709,
+    "look": "reading",
+    "style": 0.5,
+    "paint": 35.4,
+    "restyled": 0
+   },
+   {
+    "at": 383,
+    "ms": 50,
+    "k": 0.579,
+    "look": "reading",
+    "style": 0.8,
+    "paint": 30.8,
+    "restyled": 0
+   },
+   {
+    "at": 433,
+    "ms": 50,
+    "k": 0.473,
+    "look": "reading",
+    "style": 0.5,
+    "paint": 31.9,
+    "restyled": 0
+   },
+   {
+    "at": 483,
+    "ms": 50,
+    "k": 0.409,
+    "look": "reading",
+    "style": 0.7,
+    "paint": 34.5,
+    "restyled": 0
+   },
+   {
+    "at": 533,
+    "ms": 50,
+    "k": 0.371,
+    "look": "reading",
+    "style": 0.5,
+    "paint": 23.8,
+    "restyled": 0
+   },
+   {
+    "at": 583,
+    "ms": 50,
+    "k": 0.35,
+    "look": "reading",
+    "style": 0.7,
+    "paint": 34.4,
+    "restyled": 0
+   },
+   {
+    "at": 600,
+    "ms": 16.6,
+    "k": 0.339,
+    "look": "reading",
+    "style": 0.6,
+    "paint": 2.7,
+    "restyled": 0
+   },
+   {
+    "at": 633,
+    "ms": 33.4,
+    "k": 0.337,
+    "look": "reading",
+    "style": 0.6,
+    "paint": 16.7,
+    "restyled": 0
+   },
+   {
+    "at": 667,
+    "ms": 33.3,
+    "k": 0.335,
+    "look": "reading",
+    "style": 0.5,
+    "paint": 20.4,
+    "restyled": 0
+   },
+   {
+    "at": 700,
+    "ms": 33.3,
+    "k": 0.335,
+    "look": "reading",
+    "style": 0.6,
+    "paint": 19.7,
+    "restyled": 0
+   },
+   {
+    "at": 1950,
+    "ms": 1250,
+    "k": 0.335,
+    "look": "connections",
+    "style": 769.9,
+    "paint": 111.1,
+    "restyled": 8516
+   }
+  ],
+  "changes": [
+   {
+    "at": -5067,
+    "k": null,
+    "state": "reading|reading|0|false|moving"
+   },
+   {
+    "at": 1950,
+    "k": 0.335,
+    "state": "connections|far||true|"
+   },
+   {
+    "at": 2050,
+    "k": 0.335,
+    "state": "connections|far||false|"
+   }
+  ],
+  "lookFrames": [
+   {
+    "at": -5067,
+    "ms": 383.3,
+    "k": null,
+    "look": "reading",
+    "script": 0,
+    "style": 0,
+    "layout": 0,
+    "paint": 0,
+    "other": 0,
+    "styles": []
+   },
+   {
+    "at": -1633,
+    "ms": 3433.2,
+    "k": 1,
+    "look": "reading",
+    "script": 0,
+    "style": 0,
+    "layout": 0,
+    "paint": 0,
+    "other": 0,
+    "styles": []
+   },
+   {
+    "at": 1950,
+    "ms": 1250,
+    "k": 0.335,
+    "look": "connections",
+    "script": 273,
+    "style": 769.9,
+    "layout": 39.7,
+    "paint": 111.1,
+    "other": 49.2,
+    "styles": [
+     {
+      "ms": 710.3,
+      "elements": 6870,
+      "script": "FunctionCall s@index.js:5177:79274",
+      "stack": [
+       "xr:293:16444",
+       "E2:293:16540",
+       "measureLayoutExtents:5177:67169",
+       "measureLayoutExtents:5177:48630",
+       "$$:5176:38540"
+      ]
+     },
+     {
+      "ms": 9,
+      "elements": 436,
+      "script": null,
+      "stack": []
+     },
+     {
+      "ms": 49.1,
+      "elements": 1210,
+      "script": null,
+      "stack": []
+     }
+    ]
+   },
+   {
+    "at": 2050,
+    "ms": 100,
+    "k": 0.335,
+    "look": "connections",
+    "script": 62.6,
+    "style": 11.6,
+    "layout": 2.6,
+    "paint": 8.5,
+    "other": 18.5,
+    "styles": [
+     {
+      "ms": 11,
+      "elements": 332,
+      "script": "FunctionCall r@index.js:293:2824",
+      "stack": [
+       "r:293:2987"
+      ]
+     }
+    ]
+   }
+  ],
+  "longestAround": {
+   "at": 1950,
+   "ms": 1250,
+   "k": 0.335,
+   "state": "connections|far||true|",
+   "script": 273,
+   "style": 769.9,
+   "layout": 39.7,
+   "paint": 111.1,
+   "other": 49.2,
+   "styles": [
+    {
+     "ms": 710.3,
+     "elements": 6870,
+     "script": "FunctionCall s@index.js:5177:79274",
+     "stack": [
+      "xr:293:16444",
+      "E2:293:16540",
+      "measureLayoutExtents:5177:67169",
+      "measureLayoutExtents:5177:48630",
+      "$$:5176:38540"
+     ]
+    },
+    {
+     "ms": 9,
+     "elements": 436,
+     "script": null,
+     "stack": []
+    },
+    {
+     "ms": 49.1,
+     "elements": 1210,
+     "script": null,
+     "stack": []
+    }
+   ]
+  },
+  "errors": [],
+  "screencast": {
+   "inside": 19,
+   "gaps": [
+    21,
+    22,
+    21,
+    31,
+    33,
+    35,
+    36,
+    80,
+    45,
+    61,
+    47,
+    57,
+    42,
+    49,
+    24,
+    23,
+    51,
+    22
+   ]
+  }
+ },
+ {
+  "subject": "heavy",
+  "run": 2,
+  "condition": "full",
+  "arrival": "then-neighbours-after",
+  "extra": {},
+  "elements": {
+   "map": 12555,
+   "cards": 84,
+   "bands": 22,
+   "wires": 226
+  },
+  "restBeforeEase": 5050,
+  "ease": {
+   "ms": 2250,
+   "frames": 22,
+   "fromK": 1,
+   "toK": 0.335,
+   "median": 33.3,
+   "p90": 50.1,
+   "worst": 1549.9,
+   "whole": {
+    "script": 529.8,
+    "style": 928.8,
+    "layout": 69.1,
+    "paint": 569.3,
+    "other": 127.2,
+    "styles": [
+     {
+      "ms": 837.5,
+      "elements": 6870,
+      "script": "FunctionCall s@index.js:5177:79274",
+      "stack": [
+       "xr:293:16444",
+       "E2:293:16540",
+       "measureLayoutExtents:5177:67169",
+       "measureLayoutExtents:5177:48630",
+       "$$:5176:38540"
+      ]
+     },
+     {
+      "ms": 0.5,
+      "elements": 1,
+      "script": "FunctionCall s@index.js:5177:79274",
+      "stack": [
+       "O$:5176:34065",
+       "$$:5176:38692",
+       "NP:5176:32382",
+       "drawConnections:5177:48474",
+       "s:5177:81177"
+      ]
+     },
+     {
+      "ms": 13.5,
+      "elements": 436,
+      "script": null,
+      "stack": []
+     },
+     {
+      "ms": 63.4,
+      "elements": 1210,
+      "script": null,
+      "stack": []
+     }
+    ]
+   }
+  },
+  "worstFrame": {
+   "at": 2250,
+   "ms": 1549.9,
+   "k": 0.335,
+   "state": "connections|far||true|",
+   "script": 323,
+   "style": 916.1,
+   "layout": 69.1,
+   "paint": 169.2,
+   "other": 69.5,
+   "styles": [
+    {
+     "ms": 837.5,
+     "elements": 6870,
+     "script": "FunctionCall s@index.js:5177:79274",
+     "stack": [
+      "xr:293:16444",
+      "E2:293:16540",
+      "measureLayoutExtents:5177:67169",
+      "measureLayoutExtents:5177:48630",
+      "$$:5176:38540"
+     ]
+    },
+    {
+     "ms": 0.5,
+     "elements": 1,
+     "script": "FunctionCall s@index.js:5177:79274",
+     "stack": [
+      "O$:5176:34065",
+      "$$:5176:38692",
+      "NP:5176:32382",
+      "drawConnections:5177:48474",
+      "s:5177:81177"
+     ]
+    },
+    {
+     "ms": 13.5,
+     "elements": 436,
+     "script": null,
+     "stack": []
+    },
+    {
+     "ms": 63.4,
+     "elements": 1210,
+     "script": null,
+     "stack": []
+    }
+   ],
+   "invalidations": [
+    [
+     "ScheduleStyle:  MAIN id='main'",
+     1114
+    ],
+    [
+     "ScheduleStyle:  BODY class='local-map-active zoom-controls-active'",
+     1114
+    ],
+    [
+     "ScheduleStyle: hidden BUTTON class='local-directory-cell local-directory-cell--file'",
+     948
+    ],
+    [
+     "StyleInvalidator: Invalidation set invalidates self BUTTON class='local-directory-cell local-directory-cell--file'",
+     901
+    ],
+    [
+     "StyleRecalc: Related style rule BUTTON class='local-directory-cell local-directory-cell--file'",
+     488
+    ],
+    [
+     "StyleRecalc: Inline CSS style declaration was mutated BUTTON class='local-directory-cell local-directory-cell--file'",
+     427
+    ],
+    [
+     "ScheduleStyle: style BUTTON class='local-directory-cell local-directory-cell--file'",
+     427
+    ],
+    [
+     "StyleRecalc: Attribute BUTTON class='local-directory-cell local-directory-cell--file'",
+     413
+    ],
+    [
+     "StyleRecalc: Attribute path class='connection-path outbound'",
+     174
+    ],
+    [
+     "StyleRecalc: Attribute path class='wire-band'",
+     174
+    ],
+    [
+     "StyleInvalidator: Invalidation set matched class DIV class='symbol-row local-row-readable branch-symbol-hidden branch-sy",
+     166
+    ],
+    [
+     "StyleRecalc: Related style rule DIV class='symbol-row local-row-readable branch-symbol-hidden branch-symbol-muted'",
+     166
+    ]
+   ]
+  },
+  "longFrames": [
+   {
+    "at": 467,
+    "ms": 66.6,
+    "k": 0.448,
+    "state": "reading|reading|0|false|moving",
+    "script": 10.8,
+    "style": 0.6,
+    "layout": 0,
+    "paint": 42.3,
+    "other": 13.6,
+    "styles": [],
+    "invalidations": [
+     [
+      "StyleRecalc: Attribute BUTTON class='map-cut-sign'",
+      8
+     ],
+     [
+      "StyleRecalc: Inline CSS style declaration was mutated DIV id='map-viewport' class='viewport-layer camera-moving'",
+      6
+     ],
+     [
+      "ScheduleStyle: style DIV id='map-viewport' class='viewport-layer camera-moving'",
+      6
+     ],
+     [
+      "StyleInvalidator: Invalidation set invalidates self DIV id='map-viewport' class='viewport-layer camera-moving'",
+      6
+     ],
+     [
+      "StyleRecalc: Related style rule DIV id='map-viewport' class='viewport-layer camera-moving'",
+      6
+     ]
+    ]
+   },
+   {
+    "at": 633,
+    "ms": 50.1,
+    "k": 0.339,
+    "state": "reading|reading|0|false|moving",
+    "script": 12.7,
+    "style": 0.8,
+    "layout": 0,
+    "paint": 31.5,
+    "other": 3.9,
+    "styles": [],
+    "invalidations": [
+     [
+      "StyleRecalc: Attribute BUTTON class='map-cut-sign'",
+      8
+     ],
+     [
+      "StyleRecalc: Inline CSS style declaration was mutated DIV id='map-viewport' class='viewport-layer camera-moving'",
+      6
+     ],
+     [
+      "ScheduleStyle: style DIV id='map-viewport' class='viewport-layer camera-moving'",
+      6
+     ],
+     [
+      "StyleInvalidator: Invalidation set invalidates self DIV id='map-viewport' class='viewport-layer camera-moving'",
+      6
+     ],
+     [
+      "StyleRecalc: Related style rule DIV id='map-viewport' class='viewport-layer camera-moving'",
+      6
+     ]
+    ]
+   },
+   {
+    "at": 2250,
+    "ms": 1549.9,
+    "k": 0.335,
+    "state": "connections|far||true|",
+    "script": 323,
+    "style": 916.1,
+    "layout": 69.1,
+    "paint": 169.2,
+    "other": 69.5,
+    "styles": [
+     {
+      "ms": 837.5,
+      "elements": 6870,
+      "script": "FunctionCall s@index.js:5177:79274",
+      "stack": [
+       "xr:293:16444",
+       "E2:293:16540",
+       "measureLayoutExtents:5177:67169",
+       "measureLayoutExtents:5177:48630",
+       "$$:5176:38540"
+      ]
+     },
+     {
+      "ms": 0.5,
+      "elements": 1,
+      "script": "FunctionCall s@index.js:5177:79274",
+      "stack": [
+       "O$:5176:34065",
+       "$$:5176:38692",
+       "NP:5176:32382",
+       "drawConnections:5177:48474",
+       "s:5177:81177"
+      ]
+     },
+     {
+      "ms": 13.5,
+      "elements": 436,
+      "script": null,
+      "stack": []
+     },
+     {
+      "ms": 63.4,
+      "elements": 1210,
+      "script": null,
+      "stack": []
+     }
+    ],
+    "invalidations": [
+     [
+      "ScheduleStyle:  MAIN id='main'",
+      1114
+     ],
+     [
+      "ScheduleStyle:  BODY class='local-map-active zoom-controls-active'",
+      1114
+     ],
+     [
+      "ScheduleStyle: hidden BUTTON class='local-directory-cell local-directory-cell--file'",
+      948
+     ],
+     [
+      "StyleInvalidator: Invalidation set invalidates self BUTTON class='local-directory-cell local-directory-cell--file'",
+      901
+     ],
+     [
+      "StyleRecalc: Related style rule BUTTON class='local-directory-cell local-directory-cell--file'",
+      488
+     ],
+     [
+      "StyleRecalc: Inline CSS style declaration was mutated BUTTON class='local-directory-cell local-directory-cell--file'",
+      427
+     ],
+     [
+      "ScheduleStyle: style BUTTON class='local-directory-cell local-directory-cell--file'",
+      427
+     ],
+     [
+      "StyleRecalc: Attribute BUTTON class='local-directory-cell local-directory-cell--file'",
+      413
+     ],
+     [
+      "StyleRecalc: Attribute path class='connection-path outbound'",
+      174
+     ],
+     [
+      "StyleRecalc: Attribute path class='wire-band'",
+      174
+     ],
+     [
+      "StyleInvalidator: Invalidation set matched class DIV class='symbol-row local-row-readable branch-symbol-hidden branch-sy",
+      166
+     ],
+     [
+      "StyleRecalc: Related style rule DIV class='symbol-row local-row-readable branch-symbol-hidden branch-symbol-muted'",
+      166
+     ]
+    ]
+   }
+  ],
+  "everyFrame": [
+   {
+    "at": 17,
+    "ms": 16.6,
+    "k": 1,
+    "look": "reading",
+    "style": 0.8,
+    "paint": 3.5,
+    "restyled": 0
+   },
+   {
+    "at": 33,
+    "ms": 16.7,
+    "k": 1,
+    "look": "reading",
+    "style": 0.5,
+    "paint": 7.4,
+    "restyled": 0
+   },
+   {
+    "at": 50,
+    "ms": 16.6,
+    "k": 0.998,
+    "look": "reading",
+    "style": 0.6,
+    "paint": 9.6,
+    "restyled": 0
+   },
+   {
+    "at": 83,
+    "ms": 33.4,
+    "k": 0.996,
+    "look": "reading",
+    "style": 0.6,
+    "paint": 18.1,
+    "restyled": 0
+   },
+   {
+    "at": 117,
+    "ms": 33.3,
+    "k": 0.987,
+    "look": "reading",
+    "style": 0.8,
+    "paint": 17.7,
+    "restyled": 0
+   },
+   {
+    "at": 133,
+    "ms": 16.7,
+    "k": 0.97,
+    "look": "reading",
+    "style": 0.6,
+    "paint": 5.8,
+    "restyled": 0
+   },
+   {
+    "at": 167,
+    "ms": 33.3,
+    "k": 0.958,
+    "look": "reading",
+    "style": 0.7,
+    "paint": 17.8,
+    "restyled": 0
+   },
+   {
+    "at": 183,
+    "ms": 16.7,
+    "k": 0.924,
+    "look": "reading",
+    "style": 0.4,
+    "paint": 2.4,
+    "restyled": 0
+   },
+   {
+    "at": 217,
+    "ms": 33.3,
+    "k": 0.903,
+    "look": "reading",
+    "style": 0.7,
+    "paint": 20.3,
+    "restyled": 0
+   },
+   {
+    "at": 250,
+    "ms": 33.3,
+    "k": 0.85,
+    "look": "reading",
+    "style": 0.5,
+    "paint": 19.9,
+    "restyled": 0
+   },
+   {
+    "at": 283,
+    "ms": 33.4,
+    "k": 0.785,
+    "look": "reading",
+    "style": 0.5,
+    "paint": 22.2,
+    "restyled": 0
+   },
+   {
+    "at": 317,
+    "ms": 33.3,
+    "k": 0.709,
+    "look": "reading",
+    "style": 0.6,
+    "paint": 19.1,
+    "restyled": 0
+   },
+   {
+    "at": 367,
+    "ms": 50,
+    "k": 0.624,
+    "look": "reading",
+    "style": 0.5,
+    "paint": 35.5,
+    "restyled": 0
+   },
+   {
+    "at": 400,
+    "ms": 33.4,
+    "k": 0.502,
+    "look": "reading",
+    "style": 0.6,
+    "paint": 20.6,
+    "restyled": 0
+   },
+   {
+    "at": 467,
+    "ms": 66.6,
+    "k": 0.448,
+    "look": "reading",
+    "style": 0.6,
+    "paint": 42.3,
+    "restyled": 0
+   },
+   {
+    "at": 517,
+    "ms": 50,
+    "k": 0.381,
+    "look": "reading",
+    "style": 0.5,
+    "paint": 35.9,
+    "restyled": 0
+   },
+   {
+    "at": 567,
+    "ms": 50,
+    "k": 0.355,
+    "look": "reading",
+    "style": 0.7,
+    "paint": 26.2,
+    "restyled": 0
+   },
+   {
+    "at": 583,
+    "ms": 16.6,
+    "k": 0.342,
+    "look": "reading",
+    "style": 0.4,
+    "paint": 8.9,
+    "restyled": 0
+   },
+   {
+    "at": 633,
+    "ms": 50.1,
+    "k": 0.339,
+    "look": "reading",
+    "style": 0.8,
+    "paint": 31.5,
+    "restyled": 0
+   },
+   {
+    "at": 667,
+    "ms": 33.3,
+    "k": 0.335,
+    "look": "reading",
+    "style": 0.5,
+    "paint": 21.6,
+    "restyled": 0
+   },
+   {
+    "at": 700,
+    "ms": 33.4,
+    "k": 0.335,
+    "look": "reading",
+    "style": 0.8,
+    "paint": 13.7,
+    "restyled": 0
+   },
+   {
+    "at": 2250,
+    "ms": 1549.9,
+    "k": 0.335,
+    "look": "connections",
+    "style": 916.1,
+    "paint": 169.2,
+    "restyled": 8517
+   }
+  ],
+  "changes": [
+   {
+    "at": -5050,
+    "k": null,
+    "state": "reading|reading|0|false|moving"
+   },
+   {
+    "at": 2250,
+    "k": 0.335,
+    "state": "connections|far||true|"
+   },
+   {
+    "at": 2450,
+    "k": 0.335,
+    "state": "connections|far||false|"
+   }
+  ],
+  "lookFrames": [
+   {
+    "at": -5050,
+    "ms": 183.2,
+    "k": null,
+    "look": "reading",
+    "script": 0,
+    "style": 0,
+    "layout": 0,
+    "paint": 0,
+    "other": 0,
+    "styles": []
+   },
+   {
+    "at": -1633,
+    "ms": 3416.6,
+    "k": 1,
+    "look": "reading",
+    "script": 0,
+    "style": 0,
+    "layout": 0,
+    "paint": 0,
+    "other": 0,
+    "styles": []
+   },
+   {
+    "at": 2250,
+    "ms": 1549.9,
+    "k": 0.335,
+    "look": "connections",
+    "script": 323,
+    "style": 916.1,
+    "layout": 69.1,
+    "paint": 169.2,
+    "other": 69.5,
+    "styles": [
+     {
+      "ms": 837.5,
+      "elements": 6870,
+      "script": "FunctionCall s@index.js:5177:79274",
+      "stack": [
+       "xr:293:16444",
+       "E2:293:16540",
+       "measureLayoutExtents:5177:67169",
+       "measureLayoutExtents:5177:48630",
+       "$$:5176:38540"
+      ]
+     },
+     {
+      "ms": 0.5,
+      "elements": 1,
+      "script": "FunctionCall s@index.js:5177:79274",
+      "stack": [
+       "O$:5176:34065",
+       "$$:5176:38692",
+       "NP:5176:32382",
+       "drawConnections:5177:48474",
+       "s:5177:81177"
+      ]
+     },
+     {
+      "ms": 13.5,
+      "elements": 436,
+      "script": null,
+      "stack": []
+     },
+     {
+      "ms": 63.4,
+      "elements": 1210,
+      "script": null,
+      "stack": []
+     }
+    ]
+   },
+   {
+    "at": 2450,
+    "ms": 199.9,
+    "k": 0.335,
+    "look": "connections",
+    "script": 107.1,
+    "style": 19.4,
+    "layout": 3.9,
+    "paint": 35.5,
+    "other": 35,
+    "styles": [
+     {
+      "ms": 18.5,
+      "elements": 332,
+      "script": "FunctionCall r@index.js:293:2824",
+      "stack": [
+       "r:293:2987"
+      ]
+     }
+    ]
+   }
+  ],
+  "longestAround": {
+   "at": 2250,
+   "ms": 1549.9,
+   "k": 0.335,
+   "state": "connections|far||true|",
+   "script": 323,
+   "style": 916.1,
+   "layout": 69.1,
+   "paint": 169.2,
+   "other": 69.5,
+   "styles": [
+    {
+     "ms": 837.5,
+     "elements": 6870,
+     "script": "FunctionCall s@index.js:5177:79274",
+     "stack": [
+      "xr:293:16444",
+      "E2:293:16540",
+      "measureLayoutExtents:5177:67169",
+      "measureLayoutExtents:5177:48630",
+      "$$:5176:38540"
+     ]
+    },
+    {
+     "ms": 0.5,
+     "elements": 1,
+     "script": "FunctionCall s@index.js:5177:79274",
+     "stack": [
+      "O$:5176:34065",
+      "$$:5176:38692",
+      "NP:5176:32382",
+      "drawConnections:5177:48474",
+      "s:5177:81177"
+     ]
+    },
+    {
+     "ms": 13.5,
+     "elements": 436,
+     "script": null,
+     "stack": []
+    },
+    {
+     "ms": 63.4,
+     "elements": 1210,
+     "script": null,
+     "stack": []
+    }
+   ]
+  },
+  "errors": [],
+  "screencast": {
+   "inside": 21,
+   "gaps": [
+    20,
+    21,
+    24,
+    35,
+    33,
+    19,
+    21,
+    22,
+    49,
+    32,
+    44,
+    32,
+    50,
+    61,
+    50,
+    45,
+    22,
+    48,
+    33,
+    21
+   ]
+  }
+ }
+]

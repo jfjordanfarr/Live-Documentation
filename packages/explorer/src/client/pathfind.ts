@@ -4,7 +4,7 @@
  * a set, and for the count of what a drawn path leaves out. The bar that asks is `search/search-bar.ts`.
  */
 
-import { pathTo, reachFrom, walk, type Neighbours } from "@live-documentation/engine/live-docs/pathfind";
+import { pathTo, reachFrom, walkBetween, type Neighbours } from "@live-documentation/engine/live-docs/pathfind";
 
 import type { ExplorerLinkPayload, ExplorerNodePayload } from "../shared/types";
 
@@ -167,8 +167,7 @@ function search(
   nodesById: Map<string, ExplorerNodePayload>,
   maxHops: number
 ): Search {
-  const goals = new Set([...targets].filter(id => !starts.has(id)));
-  const found = walk(starts, neighbours, maxHops, goals);
+  const found = walkBetween(starts, targets, neighbours, maxHops);
   if (found.reached !== undefined) {
     const path = pathTo(found, found.reached).flatMap(nodeId => {
       const node = nodesById.get(nodeId);

@@ -410,3 +410,92 @@ All of these passed:
 ### Commands the harness refused in the third milestone
 
 One: a heredoc that appended a test case and ran an inline Python edit, refused as too complex to verify that it stays in the worktree. It did not name git. The same edits were made with the file tools.
+
+## Fourth milestone, 2026-11-22: one fact held twice, measured; the blind cases seen failing; the graph built as asked; the tab
+
+The third milestone's merge, `6da0f7817`, was merged in first. Every corpus was regenerated at that state.
+
+### 1. A symbol's documentation references, held twice: measured, and kept
+
+The root's hypothesis was this: if every line of the sections the scanner reads references from is exactly the composer's line for some reading (name, element, link), the reading alone could stand for them. [`links-lines.ts`](links-lines.ts) measured it. For each line, it asks whether `documentationReferenceLine(readDocumentationReference(line))` is that line, using the engine's own reader and composer:
+
+| Corpus | Sections | Lines | The composer's line for a reading | Not | Reference lines with the author's words |
+| --- | ---: | ---: | ---: | --- | ---: |
+| This repository | 24 | 43 | 42 (17 linked, 25 unlinked) | 1, a plain path: `- ../../docs/registry.md — Widget architecture` | 6 |
+| Estate | 1 | 1 | 1 | 0 | 0 |
+| DNN | 5,305 | 7,842 | 7,805 (5,637 linked, 2,168 unlinked) | 37: 35 web links (`- [url](url)`), 2 plain names (`- CreateValidID`) | 40 |
+
+**The hypothesis is wrong, on two counts:**
+- 38 lines are other kinds the composer writes into the same section (its `href` and plain cases), which no reference reading holds.
+- 46 reference lines carry the author's words after ` — `. The (name, element, link) reading lacks them, and the stored `documentation` does not keep them.
+
+No line of any corpus ran on over a second line, though the composer can write one.
+
+So both are kept, as the brief rules for this case. The specification (section 4.3) now says:
+- why, with these counts;
+- that a viewer shows the lines and the graph reads the references;
+- that a disagreement between them is the scanner's fault, which a reader cannot see.
+
+**What a check of agreement would cost:** little time (7,842 lines on DNN), but a second implementation of the scanner's documentation grammar in every reader. That is why it is not made.
+
+**A fork left to the root:** the reading could be grown to hold every kind of line the composer writes there: a reference with its words, a web link, a plain name. The lines would then be held once, the way type references are, with the composer writing them on the engine's side. On these corpora the three kinds cover every line. It means the format carrying the whole shape of that section, multi-line words included. I did not build it, since it changes the format, and the blind readers go out next.
+
+### 2. The blind cases, each seen failing
+
+[`check-removal.mjs`](check-removal.mjs) takes each check out of the module once, runs the blind cases, and restores the module. Its results are in [`check-removal.json`](check-removal.json).
+
+**The first run found six checks whose cases did not fail when the check was out**, because a second check caught the same file:
+
+| Check taken out | What still refused its case |
+| --- | --- |
+| A wire is never the file's own (`wires-self`) | The records-against-wires comparison |
+| A frame's kind is defined (`kind-7`) | The frames' order |
+| A strings frame holds a string (`strings-count-0`) | The frames' order |
+| The paths are in strict order (`paths-repeat`) | The records-against-paths comparison |
+| The authored line is required, and at most one cited-by line (`no-authored`, `entry-before-authored`, `two-cited-by`) | The text written again and compared |
+| The deflate stream's end, on the writing side | The inflater's own reading side |
+
+As written, those cases proved only the pair of checks.
+
+**The rewrite.** Every case now asks for the words of the refusal its own check gives, and two bundled tests were split into one per file. `paths-differ-from-records` was added for the one check no blind case reached. The text order cases were also tied to "a file's lines begin with its file line", which the first list had not taken out.
+
+**The second run:** with its check out, each of the 26 binary and text cases fails. "An inflater's error is a refusal", taken out on both sides, fails `zlib-wrapped` and `after-deflate-end`.
+
+**One check still has no case:** the writing side of the deflate stream's end. Node's inflater reports a stream with bytes after its end on the reading side too, so no file can show that check alone. It is kept for an inflater that reports on one side only.
+
+### 3. The graph built only when asked
+
+`graphViewOf` gathers in one pass what every file's part needs of the others: its inbound and its documented-by, both from the targets alone. It builds each file's part only when asked for it. `graphOf` is now that view asked for every file, so there is still one implementation.
+
+| DNN, interleaved runs at a load of 3.6 | First answer | Facts read and checked | The graph as asked (index, and the hub's Local Map) | The whole graph | Peak |
+| --- | ---: | ---: | ---: | ---: | ---: |
+| Stored form | 76 to 83 ms | 553 to 595 ms | **620 to 645 ms** | 732 to 753 ms | 249 to 291 MB |
+| `index.json.gz`: inflate and parse, the graph already in it | (all of it first) | | **600 to 664 ms** | | 393 to 394 MB |
+
+**Built as asked, the stored form now reads DNN in JSON's time**, every check made. It gives its first answer eight times sooner, in about 70 % of the memory. A consumer that asks for every file pays about 0.1 s more, building what JSON had already spelled out.
+
+On all three corpora the graph still prints byte for byte as each `index.json`, and both round trips are exact. They were measured again after the change.
+
+### 4. The tab
+
+[`tab.mjs`](tab.mjs) builds a page holding DNN's stored form (2.24 MB) as base64 in a block the browser does not run, and the module's built script inline and unchanged. The page is 3.05 MB. It is opened from disk under a policy of one hashed script and no network, and is read by headless Chromium through the lane: two holds, of 1.3 s and 4.8 s.
+
+| DNN in a tab | First answer | Facts read and checked | The graph as asked | The whole graph | JS heap |
+| --- | ---: | ---: | ---: | ---: | ---: |
+| Full speed | 55 ms | 394 ms | 434 ms | 559 ms | 60 MB |
+| Slowed four times | 224 ms | 2.27 s | 2.53 s | 3.25 s | 58 MB |
+
+The research's slowed tab took 3.2 s for JSON on DNN, but it also held the browser to two cores (`taskset -c 0,1`), and this run did not. So the two are not quite one condition, and a JSON page was not run beside this one.
+
+### What held in the fourth milestone
+
+All of these passed:
+- `npm run lint` and `npm run build`;
+- the three audits and `docs:links:enforce`;
+- `live-docs:generate` and its `--check`;
+- the package's 48 cases, its fuzzer among them;
+- the whole unit project, run once: 3,679 of 3,679 cases in 242 files.
+
+### Commands the harness refused in the fourth milestone
+
+None.

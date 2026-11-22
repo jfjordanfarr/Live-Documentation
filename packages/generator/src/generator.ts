@@ -48,21 +48,7 @@ interface GenerateLiveDocsOptions {
    * that the engine runs in a page hands one over the folder a person picked (2026-11-22).
    */
   host?: FileHost;
-  /**
-   * How many bytes of the workspace's files the run keeps between its two passes, so that a file is read once; past it,
-   * a file is read once in each pass ({@link READ_BUDGET} unless told; `workspaceReads` in `workspaceFiles.ts`).
-   */
-  readBudget?: number;
 }
-
-/**
- * The bytes of files a run keeps between its passes unless told otherwise: every file, for now. Measured on 2026-11-22
- * on the whole of DNN (10,755 files kept) under Node, with every read already in the disk's cache and the machine shared:
- * keeping everything, 16 MiB and nothing took 197, 156 and 110 s, following the machine's load and not the budget, at
- * peaks of 1,381, 1,203 and 1,399 MB, within one another's noise. Where reading is free the budget costs nothing and
- * spares little, so the measure that can choose it is where reading costs, in a page on a slowed machine, not yet taken.
- */
-export const READ_BUDGET = Number.POSITIVE_INFINITY;
 
 interface LiveDocGeneratorLogger {
   info(message: string): void;
@@ -184,7 +170,7 @@ export async function generateLiveDocs(
   // the binary test and the count of how each file was decoded take a file's bytes from one read of the run, through
   // the host (2026-11-22; before, each file was read three to five times).
   const gathered: { tests?: WorkspaceTestIndex } = {};
-  const reads = workspaceReads(options.host ?? NODE_FILE_HOST, BINARY_SNIFF_BYTES, options.readBudget ?? READ_BUDGET);
+  const reads = workspaceReads(options.host ?? NODE_FILE_HOST, BINARY_SNIFF_BYTES);
   const fileIndex: WorkspaceFileIndex = Object.assign(
     new Set(allTargetFiles.map((absPath) => normalizeWorkspacePath(path.relative(workspaceRoot, absPath)))),
     { archetypeOf: (file: string) => resolveArchetype(file, normalizedConfig, false, gathered.tests) },
@@ -257,7 +243,7 @@ export async function generateLiveDocs(
       // A file whose reading threw in the index pass is one this run could not map, though it reads here.
       if (unindexed.has(absoluteSourcePath)) throw unindexed.get(absoluteSourcePath);
       // Which rule of the one reading step reads the file's text, counted for the run's last lines, where a reader reads it;
-      // read before its first bytes, so that a file the run's budget did not keep is read once for its turn, not twice.
+      // read before its first bytes, so that the binary test takes its bytes from that read and asks the host nothing more.
       if (hasReader(normalizedSourcePath)) {
         noteReading(readings, normalizedSourcePath, await readSourceReading(absoluteSourcePath, fileIndex));
       }

@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/explorer/src/client/views/localView/camera-intent.ts`
-- Generated At: 2026-11-22T02:10:38.100Z
+- Generated At: 2026-11-22T05:54:21.210Z
 
 ## Authored
 ### Purpose
@@ -122,7 +122,7 @@ every target is a whole-file pin, since past the connections look a pinned symbo
 
 #### `arrivalEndFrame` {#symbol-arrivalendframe}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/camera-intent.ts#L99)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/camera-intent.ts#L105)
 - Returns: [`MapTransform`](./types.ts.mdmd.md#symbol-maptransform)
 - Parameters: `content`: [`Bounds`](./layout-measure.ts.mdmd.md#symbol-bounds); `subject`: [`Bounds`](./layout-measure.ts.mdmd.md#symbol-bounds); `frame`: [`Frame`](./layout-measure.ts.mdmd.md#symbol-frame)
 
@@ -133,16 +133,34 @@ that floor stops it short of the whole picture, the subject is centred at the fl
 Content and subject are in the picture's own units, the frame in the screen's; the result depends on nothing else, so
 that two screens of one size land on one frame.
 
+The frame holds what was asked ({@link holdAsked}; the root's rule of 2026-11-22, after a sweep of the browser suite on
+the pull-back as the default found a tall file's name above the view and a symbol chosen in the search outside it):
+`asked` is the subject's name, always, and the row asked for where one was, least particular first. Where the
+neighbourhood cannot be shown with what was asked still in the frame, what was asked wins, and the neighbourhood is
+what fits round it: a subject taller than the frame is entered at its top, as a step enters a tall card.
+
+#### `holdAsked` {#symbol-holdasked}
+- Type: function
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/camera-intent.ts#L120)
+- Returns: [`MapTransform`](./types.ts.mdmd.md#symbol-maptransform)
+- Parameters: `camera`: [`MapTransform`](./types.ts.mdmd.md#symbol-maptransform); `frame`: [`Frame`](./layout-measure.ts.mdmd.md#symbol-frame)
+
+##### `holdAsked` — Summary
+The camera moved by the least pan, its scale kept, that brings what was asked inside the frame's padding: all of it
+where it fits together, and where it does not, the more particular of it, the things asked dropped from the first (a
+row asked for is kept before the name of the file it is in). What is already inside moves nothing. In the picture's
+units.
+
 #### `ArrivalPhase` {#symbol-arrivalphase}
 - Type: type
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/camera-intent.ts#L109)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/camera-intent.ts#L130)
 
 ##### `ArrivalPhase` — Summary
 The arrival's moment: resting at reading size, easing back, or done.
 
 #### `arrivalPose` {#symbol-arrivalpose}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/camera-intent.ts#L117)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/camera-intent.ts#L138)
 - Parameters: `start`: [`MapTransform`](./types.ts.mdmd.md#symbol-maptransform); `end`: [`MapTransform`](./types.ts.mdmd.md#symbol-maptransform); `frame`: [`Frame`](./layout-measure.ts.mdmd.md#symbol-frame)
 
 ##### `arrivalPose` — Summary
@@ -153,7 +171,7 @@ frame's middle travels in a straight line between the two frames' middles.
 
 #### `poseBetween` {#symbol-posebetween}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/camera-intent.ts#L128)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/camera-intent.ts#L149)
 - Returns: [`MapTransform`](./types.ts.mdmd.md#symbol-maptransform)
 - Parameters: `start`: [`MapTransform`](./types.ts.mdmd.md#symbol-maptransform); `end`: [`MapTransform`](./types.ts.mdmd.md#symbol-maptransform); `frame`: [`Frame`](./layout-measure.ts.mdmd.md#symbol-frame)
 
@@ -163,7 +181,7 @@ even, and the picture's point under the frame's middle along a straight line bet
 
 #### `FramingTarget` {#symbol-framingtarget}
 - Type: interface
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/camera-intent.ts#L143)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/camera-intent.ts#L164)
 
 ##### `FramingTarget` — Summary
 One thing the camera frames when it follows the pins (Tuning → 2D Layout → Framing, Follows Pins; 2026-11-19): a
@@ -173,14 +191,14 @@ arrival reads it, at reading scale and entered at its top where it is taller tha
 
 #### `PinsFraming` {#symbol-pinsframing}
 - Type: interface
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/camera-intent.ts#L156)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/camera-intent.ts#L177)
 
 ##### `PinsFraming` — Summary
 Where following the pins puts the camera, and which targets that frame holds and which it leaves out, oldest first.
 
 #### `pinsFrame` {#symbol-pinsframe}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/camera-intent.ts#L171)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/camera-intent.ts#L192)
 - Returns: [`PinsFraming`](#symbol-pinsframing)
 - Parameters: `frame`: [`Frame`](./layout-measure.ts.mdmd.md#symbol-frame)
 
@@ -195,7 +213,7 @@ at its start where even the floor cannot. Null for no targets. Depends on its in
 
 #### `keepFrame` {#symbol-keepframe}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/camera-intent.ts#L194)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/camera-intent.ts#L215)
 - Returns: [`PinsFraming`](#symbol-pinsframing)
 - Parameters: `camera`: [`MapTransform`](./types.ts.mdmd.md#symbol-maptransform); `frame`: [`Frame`](./layout-measure.ts.mdmd.md#symbol-frame)
 
@@ -208,21 +226,21 @@ left out. `held` is what the last frame held, oldest first.
 
 #### `FRAMING_EASE_MIN_MS` {#symbol-framing_ease_min_ms}
 - Type: const
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/camera-intent.ts#L244)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/camera-intent.ts#L265)
 
 ##### `FRAMING_EASE_MIN_MS` — Summary
 The shortest a re-frame of the following camera eases.
 
 #### `FRAMING_EASE_MAX_MS` {#symbol-framing_ease_max_ms}
 - Type: const
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/camera-intent.ts#L246)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/camera-intent.ts#L267)
 
 ##### `FRAMING_EASE_MAX_MS` — Summary
 The longest a re-frame of the following camera eases.
 
 #### `framingEaseMs` {#symbol-framingeasems}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/camera-intent.ts#L254)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/camera-intent.ts#L275)
 - Parameters: `start`: [`MapTransform`](./types.ts.mdmd.md#symbol-maptransform); `end`: [`MapTransform`](./types.ts.mdmd.md#symbol-maptransform); `frame`: [`Frame`](./layout-measure.ts.mdmd.md#symbol-frame)
 
 ##### `framingEaseMs` — Summary
@@ -233,7 +251,7 @@ made longer than the eye will follow.
 
 #### `framingTravel` {#symbol-framingtravel}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/camera-intent.ts#L267)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/camera-intent.ts#L288)
 - Parameters: `start`: [`MapTransform`](./types.ts.mdmd.md#symbol-maptransform); `end`: [`MapTransform`](./types.ts.mdmd.md#symbol-maptransform); `frame`: [`Frame`](./layout-measure.ts.mdmd.md#symbol-frame)
 
 ##### `framingTravel` — Summary
@@ -242,7 +260,7 @@ crosses a view of empty map, and the following camera takes the smooth zoom's pa
 
 #### `smoothZoom` {#symbol-smoothzoom}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/camera-intent.ts#L280)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/camera-intent.ts#L301)
 - Returns: [`MapTransform`](./types.ts.mdmd.md#symbol-maptransform)
 - Parameters: `start`: [`MapTransform`](./types.ts.mdmd.md#symbol-maptransform); `end`: [`MapTransform`](./types.ts.mdmd.md#symbol-maptransform); `frame`: [`Frame`](./layout-measure.ts.mdmd.md#symbol-frame)
 
@@ -254,7 +272,7 @@ as a short one from farther away. Never farther than `floor`; the returned `dura
 
 #### `sameCamera` {#symbol-samecamera}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/camera-intent.ts#L310)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/camera-intent.ts#L331)
 - Parameters: `a`: [`MapTransform`](./types.ts.mdmd.md#symbol-maptransform); `b`: [`MapTransform`](./types.ts.mdmd.md#symbol-maptransform)
 
 ##### `sameCamera` — Summary
@@ -262,14 +280,14 @@ Whether two cameras differ by less than the eye sees: half a pixel of pan and a 
 
 #### `easeInOutCubic` {#symbol-easeinoutcubic}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/camera-intent.ts#L315)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/camera-intent.ts#L336)
 
 ##### `easeInOutCubic` — Summary
 Ease in and out, cubic.
 
 #### `ARRIVAL_ENDING_INPUTS` {#symbol-arrival_ending_inputs}
 - Type: const
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/camera-intent.ts#L323)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/camera-intent.ts#L344)
 
 ##### `ARRIVAL_ENDING_INPUTS` — Summary
 The input of a person's on the map that ends an arrival where it stands: their hand outranks the camera. A pointer
@@ -277,7 +295,7 @@ pressed, a wheel turned, a key pressed or a touch begun; a pointer that only pas
 
 #### `arrivalEndedBy` {#symbol-arrivalendedby}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/camera-intent.ts#L335)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/camera-intent.ts#L356)
 - Parameters: `waits`: [`ArrivalWait`](../../types.ts.mdmd.md#symbol-arrivalwait)
 
 ##### `arrivalEndedBy` — Summary
@@ -289,7 +307,7 @@ Escape and every other key act, and end it.
 
 #### `revealPan` {#symbol-revealpan}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/camera-intent.ts#L346)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/camera-intent.ts#L367)
 - Parameters: `newcomer`: [`Bounds`](./layout-measure.ts.mdmd.md#symbol-bounds); `camera`: [`MapTransform`](./types.ts.mdmd.md#symbol-maptransform); `frame`: [`Frame`](./layout-measure.ts.mdmd.md#symbol-frame)
 
 ##### `revealPan` — Summary
@@ -301,7 +319,7 @@ newcomer is in the picture's own units.
 
 #### `STEP_FLOOR_RATIO` {#symbol-step_floor_ratio}
 - Type: const
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/camera-intent.ts#L364)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/camera-intent.ts#L385)
 
 ##### `STEP_FLOOR_RATIO` — Summary
 The farthest a step's ease goes, as a ratio of reading scale (Tuning's Step, 2026-11-21): for now the arrival's floor,
@@ -310,7 +328,7 @@ the connections look's farthest press. Whether a step, which the person did not 
 
 #### `stepWholeFrame` {#symbol-stepwholeframe}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/camera-intent.ts#L376)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/camera-intent.ts#L397)
 - Returns: [`MapTransform`](./types.ts.mdmd.md#symbol-maptransform)
 - Parameters: `newcomer`: [`Bounds`](./layout-measure.ts.mdmd.md#symbol-bounds); `camera`: [`MapTransform`](./types.ts.mdmd.md#symbol-maptransform); `frame`: [`Frame`](./layout-measure.ts.mdmd.md#symbol-frame)
 
@@ -326,7 +344,7 @@ camera's re-frame is. In the picture's units.
 
 #### `stepLinesFrame` {#symbol-steplinesframe}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/camera-intent.ts#L392)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/camera-intent.ts#L413)
 - Returns: [`MapTransform`](./types.ts.mdmd.md#symbol-maptransform)
 - Parameters: `reach`: [`Bounds`](./layout-measure.ts.mdmd.md#symbol-bounds); `newcomer`: [`Bounds`](./layout-measure.ts.mdmd.md#symbol-bounds); `camera`: [`MapTransform`](./types.ts.mdmd.md#symbol-maptransform); `frame`: [`Frame`](./layout-measure.ts.mdmd.md#symbol-frame)
 
@@ -338,21 +356,21 @@ alone; else null, and the step does what Least Pan does.
 
 #### `ViewEdge` {#symbol-viewedge}
 - Type: type
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/camera-intent.ts#L399)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/camera-intent.ts#L420)
 
 ##### `ViewEdge` — Summary
 An edge of the view.
 
 #### `VIEW_EDGES` {#symbol-view_edges}
 - Type: const
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/camera-intent.ts#L402)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/camera-intent.ts#L423)
 
 ##### `VIEW_EDGES` — Summary
 Every edge, in the order the signs are drawn and read: left, right, top, bottom.
 
 #### `cutByEdge` {#symbol-cutbyedge}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/camera-intent.ts#L410)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/camera-intent.ts#L431)
 - Parameters: `camera`: [`MapTransform`](./types.ts.mdmd.md#symbol-maptransform); `frame`: [`Frame`](./layout-measure.ts.mdmd.md#symbol-frame)
 
 ##### `cutByEdge` — Summary
@@ -363,7 +381,7 @@ said 31, 27 and 4 for 32 cards, and a person adds the numbers). An edge past whi
 
 #### `cutPan` {#symbol-cutpan}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/camera-intent.ts#L434)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/camera-intent.ts#L455)
 - Returns: [`MapTransform`](./types.ts.mdmd.md#symbol-maptransform)
 - Parameters: `edge`: [`ViewEdge`](#symbol-viewedge); `camera`: [`MapTransform`](./types.ts.mdmd.md#symbol-maptransform); `frame`: [`Frame`](./layout-measure.ts.mdmd.md#symbol-frame)
 
@@ -377,7 +395,7 @@ the view, landed on other cards with none of them whole.
 
 #### `unionOf` {#symbol-unionof}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/camera-intent.ts#L452)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/camera-intent.ts#L473)
 - Returns: [`Bounds`](./layout-measure.ts.mdmd.md#symbol-bounds)
 
 ##### `unionOf` — Summary

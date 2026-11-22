@@ -3,7 +3,7 @@ import { describe, expect, it } from "vitest";
 import { LAYOUT_RANGES } from "../../layout-presets";
 import { getDefaultTuning } from "../../persistence/local-storage";
 import { ARRIVAL_WAITS } from "../../types";
-import { ARRIVAL_EASE_MS, ARRIVAL_ENDING_INPUTS, ARRIVAL_FLOOR_RATIO, ARRIVAL_REST_S, arrivalEndedBy, arrivalEndFrame, arrivalLookChange, arrivalPose, arrivalReleased, arrivalRestStartsAgain, cutByEdge, cutPan, easeInOutCubic, FRAMING_EASE_MAX_MS, FRAMING_EASE_MIN_MS, framingEaseMs, framingTravel, keepFrame, smoothZoom, pinsFrame, poseBetween, revealPan, sameCamera, stepLinesFrame, stepWholeFrame, unionOf, type FramingTarget } from "./camera-intent";
+import { ARRIVAL_EASE_MS, ARRIVAL_ENDING_INPUTS, ARRIVAL_FLOOR_RATIO, ARRIVAL_REST_S, arrivalEndedBy, arrivalEndFrame, arrivalLookChange, arrivalPose, arrivalReleased, arrivalRestStartsAgain, cutByEdge, cutPan, easeInOutCubic, FRAMING_EASE_MAX_MS, FRAMING_EASE_MIN_MS, framingEaseMs, framingTravel, holdAsked, keepFrame, smoothZoom, pinsFrame, poseBetween, revealPan, sameCamera, stepLinesFrame, stepWholeFrame, unionOf, type FramingTarget } from "./camera-intent";
 import { STEP_RATIO, zoomLook } from "./ladder-steps";
 import { framePadding, type Bounds } from "./layout-measure";
 
@@ -40,6 +40,60 @@ describe("an arrival's end frame", () => {
     const drawn = onScreen(subject, end);
     expect((drawn.left + drawn.right) / 2).toBeCloseTo(600, 6);
     expect((drawn.top + drawn.bottom) / 2).toBeCloseTo(400, 6);
+  });
+
+  describe("holds what was asked (2026-11-22: where the neighbourhood cannot be shown with what was asked in the frame, what was asked wins)", () => {
+    // A picture the floor cuts, and a subject taller than the frame at the floor: 3,000 units against 800 px at 0.335.
+    const content = box(0, 0, 20_000, 9_000), subject = box(9_000, 2_000, 400, 3_000);
+    const name = box(9_000, 2_000, 400, 40), row = (top: number): Bounds => box(9_010, top, 380, 66);
+    const { horizontal, vertical } = framePadding(frame);
+    const within = (bounds: Bounds, camera: { x: number; y: number; k: number }): boolean => {
+      const drawn = onScreen(bounds, camera);
+      return drawn.left >= horizontal - 1e-6 && drawn.right <= frame.width - horizontal + 1e-6 && drawn.top >= vertical - 1e-6 && drawn.bottom <= frame.height - vertical + 1e-6;
+    };
+
+    it("with nothing asked, centres the subject as before, and a tall subject's name then stands above the frame", () => {
+      const end = arrivalEndFrame(content, subject, frame, 1);
+      expect((onScreen(subject, end).top + onScreen(subject, end).bottom) / 2).toBeCloseTo(frame.height / 2, 6);
+      expect(within(name, end), "the fault the rule mends").toBe(false);
+    });
+
+    it("enters a subject taller than the frame at its top, its name inside the padding, and keeps the scale and the place across", () => {
+      const plain = arrivalEndFrame(content, subject, frame, 1), end = arrivalEndFrame(content, subject, frame, 1, [name]);
+      expect(end.k).toBe(plain.k);
+      expect(end.x).toBe(plain.x);
+      expect(within(name, end)).toBe(true);
+      expect(onScreen(name, end).top, "the least pan: the name at the padding's edge, as a step enters a tall card").toBeCloseTo(vertical, 6);
+    });
+
+    it("moves nothing where what was asked is already in the frame: a subject that fits, or a picture framed whole", () => {
+      const short = box(9_000, 2_000, 400, 600), shortName = box(9_000, 2_000, 400, 40);
+      expect(arrivalEndFrame(content, short, frame, 1, [shortName])).toEqual(arrivalEndFrame(content, short, frame, 1));
+      const small = box(0, 0, 2000, 1000), inSmall = box(900, 400, 300, 200);
+      expect(arrivalEndFrame(small, inSmall, frame, 1.2, [box(900, 400, 300, 40)])).toEqual(arrivalEndFrame(small, inSmall, frame, 1.2));
+    });
+
+    it("holds the row asked for with the name where both fit the frame", () => {
+      const asked = [name, row(3_200)];
+      const end = arrivalEndFrame(content, subject, frame, 1, asked);
+      expect(asked.every(bounds => within(bounds, end))).toBe(true);
+    });
+
+    it("where the name and the row cannot both be in the frame, holds the row, the more particular thing asked", () => {
+      const far = row(4_800);
+      const end = arrivalEndFrame(content, subject, frame, 1, [name, far]);
+      expect(within(far, end)).toBe(true);
+      expect(within(name, end)).toBe(false);
+    });
+
+    it("the least pan that holds what was asked, alone: nothing asked or already inside moves nothing", () => {
+      const camera = { x: -100, y: -50, k: 0.5 };
+      expect(holdAsked(camera, [], frame)).toEqual(camera);
+      expect(holdAsked(camera, [box(400, 300, 200, 100)], frame)).toEqual(camera);
+      const moved = holdAsked(camera, [box(400, -400, 200, 100)], frame);
+      expect(moved.k).toBe(0.5);
+      expect(within(box(400, -400, 200, 100), moved)).toBe(true);
+    });
   });
 
   it("depends on the picture and the frame alone: the same inputs land on the same frame", () => {

@@ -1,0 +1,8 @@
+budget 1024, card: NOT at rest 81.0 s after the address was asked
+files drawn within skins: 1001; bubbles within skins: 48, veiled 48; spheres: 3313
+stats: 10,776 files, 38,594 references, 6,560 dependencies outside the scan · 3,313 of 8,712 files shown · 58 groups, 3,255 alone
+turning: 33 frames, median 91 ms, 95th 143 ms, worst 150 ms
+budget 2048, card: at rest 80.2 s after the address was asked
+files drawn within skins: 1446; bubbles within skins: 1, veiled 1; spheres: 3313
+stats: 10,776 files, 38,594 references, 6,560 dependencies outside the scan · 3,313 of 8,712 files shown · 58 groups, 3,255 alone
+turning: 50 frames, median 63 ms, 95th 91 ms, worst 99 ms

@@ -186,11 +186,6 @@ export interface LocalMapTuning {
    */
   wayDown: WayDown;
   /**
-   * Which way the 2D picture reads (2026-11-22, the toolbar's mirror button): the person's own, kept with their other
-   * settings and carried by no link, as a palette is not (reading-direction.ts).
-   */
-  reads: MapReads;
-  /**
    * With the three looks, what the overview look draws (a trial for the owner's eye, 2026-11-13): "keep", the default,
    * every card at the size its rows give it, as at the closer looks; "files", every file card in the compact form an
    * opened directory's member has in Flow, one line for each pair of cards where one uses the other, laid out again for
@@ -309,6 +304,12 @@ export interface AppearanceTuning {
   palette: PaletteName;
   marbles: MarbleChoice;
   frame: FrameChoice;
+  /**
+   * Which way the 2D picture reads (2026-11-22, the toolbar's mirror button, reading-direction.ts): how a person looks
+   * at the map, not a tuned lever, so it is kept as the frame is, in the browser and in no link, neither counted by
+   * Tuning nor taken by its Reset.
+   */
+  reads: MapReads;
 }
 
 /**
@@ -401,6 +402,19 @@ export type ScanGrowth = "off" | "path" | "first-commit";
 
 /** Every choice of the scan trial, the default first, in the order the control offers them. */
 export const SCAN_GROWTHS: readonly ScanGrowth[] = ["off", "path", "first-commit"];
+
+/**
+ * What is tied to a sphere does while a hand drags that sphere in the 3D Local Map (a trial for the owner's hand,
+ * 2026-11-22: "the one place I would want that responsiveness back is when I'm clicking and dragging an item and
+ * swinging the graph around with me"): it holds its ground, the default and the picture as it was, every sphere held
+ * toward where it stood when the drag began, so that tied files come about half the hand's way; or it swings, the files
+ * and shells tied to the held sphere let go of where they stood for as long as it is held, following by their ties, and
+ * resting where they lie when it is let go.
+ */
+export type DragChoice = "holds" | "swings";
+
+/** Every choice of the drag trial, the default first, in the order the control offers them. */
+export const DRAGS: readonly DragChoice[] = ["holds", "swings"];
 
 /** The rhythm the scan trial plays at: the one measured on this repository, or four times slower, as on a weak machine. */
 export type ScanPace = "measured" | "slower";
@@ -684,6 +698,8 @@ export interface ForceGraphTuning {
   scanGrowth: ScanGrowth;
   /** The rhythm the scan trial plays at (`ScanPace`). */
   scanPace: ScanPace;
+  /** What is tied to a dragged sphere does while it is held (a trial, 2026-11-22; `DragChoice`). */
+  drag: DragChoice;
 }
 
 /** The end of a path a person asked for: a file, perhaps one symbol of it, or a directory. The path starts at the newest pin (2026-10-14). */

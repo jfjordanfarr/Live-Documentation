@@ -154,11 +154,12 @@ export const AT_READING_SIZE = { arrival: "reading" } as const;
 /**
  * Before the page starts, the suite's stored tuning with the arrival held at reading size ({@link AT_READING_SIZE}), for
  * one case among others that run on the arrival that ships: a case whose subject is not the arrival and which reads or
- * presses what only the picture at reading size holds. The caller says in a line what that is.
+ * presses what only the picture at reading size holds. The caller says in a line what that is. `shippedSearch` leaves the
+ * continuing search as the product ships it, for a spec that runs without the suite's stored state.
  */
-export async function arriveAtReadingSize(page: Page): Promise<void> {
+export async function arriveAtReadingSize(page: Page, shippedSearch = false): Promise<void> {
   await page.addInitScript(({ key, value }) => localStorage.setItem(key, value), {
-    key: PERSISTED_UI_KEY, value: JSON.stringify({ version: PERSISTED_UI_VERSION, tuning: { localMap: { searchStarts: 0, ...AT_READING_SIZE } } })
+    key: PERSISTED_UI_KEY, value: JSON.stringify({ version: PERSISTED_UI_VERSION, tuning: { localMap: { ...(shippedSearch ? {} : { searchStarts: 0 }), ...AT_READING_SIZE } } })
   });
 }
 

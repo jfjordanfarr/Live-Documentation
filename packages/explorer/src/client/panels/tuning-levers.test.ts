@@ -26,8 +26,9 @@ describe("tuning help", () => {
     // Arrival Waits the same evening, beside Arrival, the trial of a pull-back that waits while the subject is pointed at;
     // Arrival Rest on 2026-11-22, the least time an arrival stays at reading size (the owner's "minimum of N seconds");
     // Way Down the same day, before Arrival, the trial of a way down from the World Map that carries its question;
-    // Scan Growth and Scan Pace the same day, the 3D map's trial of a picture that fills as a scan would.
-    expect(ids.length).toBe(81);
+    // Scan Growth and Scan Pace the same day, the 3D map's trial of a picture that fills as a scan would, and Drag
+    // the same day in its forces, the trial of what is tied to a dragged sphere swinging after it.
+    expect(ids.length).toBe(82);
     expect(Object.keys(TUNING_HELP).sort()).toEqual([...ids].sort());
   });
 
@@ -83,7 +84,7 @@ describe("the template's initial tuning values", () => {
   it("equal the defaults in getDefaultTuning for every control", () => {
     const defaults = getDefaultTuning();
     const ids = templateControlIds();
-    expect(ids.length).toBe(81);
+    expect(ids.length).toBe(82);
     for (const id of ids) {
       const { group, key } = settingOf(id, defaults);
       const expected = (defaults[group] as unknown as Record<string, unknown>)[key];

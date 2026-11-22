@@ -168,6 +168,36 @@ describe("laws, each against a picture that breaks it", () => {
     ]);
   });
 
+  /** The good picture as the mirror button draws it: every place reflected about the frame's middle, and said to be. */
+  const mirroredGood = (): Reading => {
+    const reading = good(), flip = (x: number): number => 1000 - x;
+    reading.mirrored = true;
+    reading.cards = reading.cards.map(card => ({ ...card, box: { ...card.box, x: flip(card.box.x + card.box.width) } }));
+    reading.anchors = reading.anchors.map(anchor => ({ ...anchor, x: flip(anchor.x) }));
+    reading.wires = reading.wires.map(each => ({ ...each, points: each.points.map(([x, y]) => [flip(x), y] as [number, number]) }));
+    return reading;
+  };
+
+  it("keeps a mirrored picture, whose uses enter on the right and offerings leave on the left", () => {
+    expect(usesLeftOfferingsRight(mirroredGood()).findings).toEqual([]);
+    expect(routesForward(mirroredGood()).findings).toEqual([]);
+  });
+
+  it("a picture that mixes the two: drawn one way and said to read the other, either way round", () => {
+    const drawnMirrored = { ...mirroredGood(), mirrored: false }, saidMirrored = { ...good(), mirrored: true };
+    expect(usesLeftOfferingsRight(drawnMirrored).findings).not.toEqual([]);
+    expect(routesForward(drawnMirrored).findings).toEqual(["helpers.ts to processor.ts runs backward", "processor.ts to main.ts runs backward"]);
+    expect(usesLeftOfferingsRight(saidMirrored).findings).toContain("helpers.ts offers processor.ts from outside its left half");
+    expect(usesLeftOfferingsRight(saidMirrored).findings).toContain("the using dot of main on main.ts stands in the left half");
+    expect(routesForward(saidMirrored).findings).toEqual(["helpers.ts to processor.ts runs backward", "processor.ts to main.ts runs backward"]);
+  });
+
+  it("one wire of a mirrored picture still reaching the way the unmirrored one reads", () => {
+    const reading = mirroredGood();
+    reading.wires[0] = wire("src/helpers.ts", "src/processor.ts", [840, 340], [580, 340]);
+    expect(usesLeftOfferingsRight(reading).findings).toEqual(["helpers.ts offers processor.ts from outside its left half"]);
+  });
+
   it("a route that runs backward", () => {
     const reading = good();
     reading.wires[1] = wire("src/processor.ts", "src/main.ts", [580, 340], [680, 340], { providerEnd: 1 });

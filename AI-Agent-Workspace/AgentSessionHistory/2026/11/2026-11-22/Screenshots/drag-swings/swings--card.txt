@@ -1,0 +1,6 @@
+drag swings, card: at rest before the drag
+the forty moves took 3862 ms; frames during them: 121 frames, median 30 ms, 95th 41 ms, worst 133 ms
+when the hand arrived: hand 410; tied files: 49, median way 440; shells: 12, median way 355; the rest: 144, median way 86
+held two seconds more: hand 425; tied files: 49, median way 456; shells: 12, median way 373; the rest: 144, median way 89
+after release: at rest in 5.2 s; hand 372; tied files: 49, median way 411; shells: 12, median way 324; the rest: 144, median way 133
+tied files' share of their own final way when the hand arrived: median 1.10

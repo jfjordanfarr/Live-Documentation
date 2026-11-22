@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 
 import type { GraphEdge, GraphFile, LiveDocGraph } from "./graph";
-import { components, fileGroups, getNeighbors, isEntry, pathTo, reachFrom, reachability, searchGraph, walk } from "./pathfind";
+import { components, fileGroups, getNeighbors, isEntry, pathTo, reachFrom, reachability, searchGraph, under, walk, walkBetween } from "./pathfind";
 
 /** A graph from the files each file depends on, and the dependencies of each that resolved to no file. */
 function graphOf(dependencies: Record<string, string[]>, unresolved: Record<string, string[]> = {}): LiveDocGraph {
@@ -178,7 +178,8 @@ describe("searchGraph", () => {
     expect(result.path).toEqual(["a", "b", "c"]);
     expect([...result.visited]).toEqual(["a", "b", "c"]);
     expect(result.frontier).toEqual([]);
-    expect(searchGraph(graph, "a", "a", "outbound", 10).path).toEqual(["a"]);
+    // A file is not its own path, as on the page (since 2026-11-22, when the two surfaces came to walk through walkBetween).
+    expect(searchGraph(graph, "a", "a", "outbound", 10).path).toBeUndefined();
   });
 
   it("reports the frontier when there is no path: the stops, then an outbound search's unresolved dependencies", () => {
@@ -195,5 +196,24 @@ describe("searchGraph", () => {
     const result = searchGraph(graph, "a", "c", "outbound", 1);
     expect(result.path).toBeUndefined();
     expect(result.frontier).toEqual([{ node: "b", docPath: "b.md", reason: "max-depth" }]);
+  });
+});
+
+describe("under", () => {
+  it("tells a path under a directory from one beside it, and puts everything under the scan root", () => {
+    expect(under("a/b/c.ts", "a/b")).toBe(true);
+    expect(under("a/b", "a/b")).toBe(true);
+    expect(under("a/bc/d.ts", "a/b")).toBe(false);
+    expect(under("x.ts", "")).toBe(true);
+  });
+});
+
+describe("walkBetween", () => {
+  const next: Record<string, string[]> = { a: ["b"], b: ["c"], d: [] };
+  const neighbours = (id: string): string[] => next[id] ?? [];
+  it("walks from any start to the nearest target, and a file in both sets is not its own path", () => {
+    expect(pathTo(walkBetween(["a", "d"], ["c"], neighbours), "c")).toEqual(["a", "b", "c"]);
+    expect(walkBetween(["a"], ["a", "c"], neighbours).reached).toBe("c");
+    expect(walkBetween(["a"], ["a"], neighbours).reached).toBeUndefined();
   });
 });

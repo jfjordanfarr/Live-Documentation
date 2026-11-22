@@ -315,6 +315,9 @@ Since 2026-11-19 ([Turn 14 of the November 18 record](../../../../../../AI-Agent
 #### `tuning-force-coupling-value` {#symbol-tuning-force-coupling-value}
 - Type: variable
 
+#### `tuning-force-drag` {#symbol-tuning-force-drag}
+- Type: variable
+
 #### `tuning-force-gravity` {#symbol-tuning-force-gravity}
 - Type: variable
 

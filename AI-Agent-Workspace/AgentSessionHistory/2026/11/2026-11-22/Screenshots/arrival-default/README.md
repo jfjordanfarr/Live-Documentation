@@ -118,6 +118,45 @@ The motion itself is clean at full speed: every frame of the ease on time on the
 
 Two more failures are not understood and may not be the arrival's: `local-map-path`'s direct link to `client/index.ts` did not draw within its five seconds, three times, and `local-map-branches`'s reading of every lane ran past its minute, also with the arrival held at reading size. Wire Answers being on, which gives every wire a second path, and the day's merged tip are the two things that differ from the last time they passed; neither was tried apart.
 
+## Fourth milestone, from 05:27 UTC: the frame holds what was asked; the cut names measured; the pause parted
+
+**The frame an arrival ends on holds what was asked** (the root's rule): the subject's name always, the row asked for where there was one. Built as the least pan from the old end frame (`holdAsked` in `camera-intent.ts`). Its case, "the frame the default arrival ends on holds what was asked", failed on the build before it: `branches.ts`'s name stood from 42 to 50 px in a frame that begins at 50.
+
+**The names cut in the connections look: the facts.** A probe went out a press at a time from reading size on the five-file picture, at 1,600 by 1,000 ([`numbers/`](numbers/) holds no file for it; the lines are here).
+
+| Press | Scale | Look | Names cut | By, on screen |
+| ---: | ---: | --- | ---: | --- |
+| 0 to 2 | 1 to 0.694 | reading | 0 | |
+| 3 | 0.579 | connections | 6 | 13, 10, 3, 5, 7, 16 px |
+| 4 | 0.482 | connections | 6 | 11, 8, 2, 4, 6, 13 px |
+| 5 | 0.402 | connections | 6 | 9, 7, 2, 3, 5, 11 px |
+| 6 | 0.335 | connections | 6 | 7, 6, 1, 3, 4, 9 px |
+
+- *What sets the floor.* A constant: `ARRIVAL_FLOOR_RATIO` is `farthestRatioOf("connections")`, the zoom ladder's sixth press, 1.2 to the power of minus six (`ladder-steps.ts`). It measures nothing of the picture.
+- *The cut is the look's, not the floor's.* The same six names are cut at every press of the connections look, by the same amount in the map's own units (about 22, 17, 5, 9, 12 and 27); on screen the amount shrinks with the scale. The floor is where it is smallest.
+- *Why.* In the connections look a row's name is one line (`display: block; width: max-content`) drawn at the look's held scale, 2.2 (`LOOK_SCALES`), by a transform. `committedLiveDocGraph` is 121 px wide at its 11 px font and so 266 wide drawn, in a label 244 wide; the text clips across (`overflow-x: clip`) with no ellipsis, no second line and no title. The stylesheet's own formula for the name's scale knows it: the room it is given (0.9 of 323 less the More at its held size) allows 2.06, and the scale is held at 2.2 because a name is never drawn smaller. What should then give the name a second line, or a cut at a seam with its ellipsis and title, is the card reading's pass (`card-reading.ts`, the block that writes `local-name-lines-connections` and `local-name-cut`); it did neither for these rows. It reckons the room across as 323, 334 and 360 less the More's 46, that is 277, 288 and 314, where the label as drawn is 244, 234 and 266. Names between the two widths are the ones clipped. I read that from the numbers and the code and did not step through the pass.
+- *What the design system says.* Its fifth principle of the visual foundations: "Nothing shrinks to make room; held sizes stay held. ... Where room runs out, the name is cut with an ellipsis or leaves the picture; it is never drawn smaller." So a row's name may be cut in the connections look, with an ellipsis. These six are clipped without one, which that rule does not allow either. On these names the two instruments do not disagree: both refuse them. They differ only on a name cut with its ellipsis, which the rule and the zoom looks' cases accept and the still picture's count of truncations refuses.
+- *The mend I propose, not built:* the look gives the name its room. The card reading's room across for the connections look is made the label's width as that look draws it, so that a name too wide for one line takes the second line its slot already has (the description is not drawn there), and a name too long for two is cut at a seam with its ellipsis and title, as the pass already does for a row that keeps its description. The picture of it today is [`repo--pointer--3-released.png`](repo--pointer--3-released.png): `symbolMatchesAnchor` on two lines is the mended form, `MAX_ENUMERATED_…` the cut one; the six are neither. Moving the floor instead would not help: every press of the look cuts the same names, so a floor "by measure" would be the reading look's last press and the arrival would hardly pull back.
+- The three still-picture cases stay red.
+
+**The pause at rest, parted.** On the heavy subject, back to back in one hold (load 8 to 11; `numbers/band-*.json`):
+
+| Condition | The band's width in the frame the camera stops | Two frames after |
+| --- | --- | --- |
+| full, two runs | 1,483 and 1,717 ms (style 935 and 1,072 ms; 9,840 elements) | 1,250 and 1,550 ms (style 770 and 916 ms; 8,516 elements) |
+| two slowed cores | 8,833 ms (style 5,852 ms) | 6,266 ms (style 3,924 ms) |
+
+The band's part was mine, a tenth to a seventh of the frame at full speed and three tenths slowed; it is mended (the width is written two frames after the camera stops). The larger part, the look's own pass over 6,870 elements, is not mine and is not explained by this: on November 21 the same pass over 6,420 elements took 271 to 275 ms of style at a load of 1 to 5.
+
+**The five cases the sweep left unclassed**, each run in a hold of its own kind with nothing of mine beside it (load 12 to 13):
+
+| Case | Alone | What parts the causes | Class |
+| --- | --- | --- | --- |
+| `card-reading-refresh`, two cases | failed: the card's Read control has no box | with the arrival held at reading size, both pass | needs the picture at reading size; seeded, with the reason |
+| `explorer-history`, "an opened folder is a step back" | failed at 34.5 s of its 30 | with the arrival at reading size it passes, in 30.2 s | its own work nearly fills its limit on the heaviest neighbourhood, and the pull-back's waits take it over; seeded, with the reason |
+| `local-map-path`, the direct link to `client/index.ts` | passed once, failed once | failed with Wire Answers off too | a time limit at its edge: the map is to be drawn within 5 s and takes about that; not the arrival (the map is not drawn yet when it fails) and not the wires' bands |
+| `local-map-branches`, the lanes case | failed, past its minute reading every wire | failed with Wire Answers off (a wire 856 px above the top), and in the third milestone with the arrival at reading size | not the arrival and not the wires' bands; not found. It should be run on the day's tip without this branch before anything is concluded |
+
 ## Not done
 
 - The sweep: eight holds of twenty-five ran.

@@ -643,7 +643,9 @@ describe("JSON Adapter on package.json scripts, read as a shell reads them", () 
     const manifestPath = path.join(tempDir, "package.json");
     fs.writeFileSync(manifestPath, JSON.stringify({ name: "root", scripts: { run: script } }));
     const result = await jsonAdapter.analyze({ absolutePath: manifestPath, workspaceRoot: tempDir, fileIndex: new Set(files) });
-    return (result?.declares ?? []).map((entry) => entry.file);
+    // What the script runs, not the module its manifest loads: with no `main`, a workspace's `index.js` is that module, as
+    // Node takes it (since 2026-11-22), and is no file the script runs.
+    return (result?.declares ?? []).filter((entry) => entry.reason === "command").map((entry) => entry.file);
   }
 
   // [what the case shows, the script, the workspace's files, the files the script declares]

@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: `tests/e2e/scenarios/instrument.ts`
-- Generated At: 2026-11-19T21:10:23.814Z
+- Generated At: 2026-11-22T04:50:14.772Z
 
 ## Authored
 ### Purpose
@@ -34,7 +34,7 @@ Starts watching a page before it opens the scenario's address.
 
 #### `readSettled` {#symbol-readsettled}
 - Type: function
-- Source: [source](../../../../../tests/e2e/scenarios/instrument.ts#L194)
+- Source: [source](../../../../../tests/e2e/scenarios/instrument.ts#L199)
 - Parameters: `page`: `Page`
 
 ##### `readSettled` — Summary

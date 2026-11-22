@@ -154,8 +154,61 @@ test("Reading, Then Neighbours on pathfind.ts stops where names still read and c
   expect(end.k).toBeCloseTo(readingK * ARRIVAL_FLOOR_RATIO, 6);
   const frame = await frameOf(page), subject = (await boxOf(page, card(SUBJECT)))!;
   expect((subject.left + subject.right) / 2).toBeCloseTo((frame.left + frame.right) / 2, 0);
-  expect((subject.top + subject.bottom) / 2).toBeCloseTo((frame.top + frame.bottom) / 2, 0);
+  // Across, the subject is centred. Down, a card that fits the frame is centred and one taller than it is entered at its
+  // top, its name in the frame (2026-11-22: the frame an arrival ends on holds what was asked; until then a tall
+  // subject was centred down too, and its name stood above the view).
+  if (subject.bottom - subject.top <= frame.bottom - frame.top) expect((subject.top + subject.bottom) / 2).toBeCloseTo((frame.top + frame.bottom) / 2, 0);
+  else expect(inside(await boxOf(page, `${card(SUBJECT)} .node-title`), frame), "a tall subject's name is inside the frame").toBe(true);
   await context.close();
+});
+
+test("a symbol chosen in the search still pulls back, and the frame it ends on holds its row", async ({ browser }) => {
+  test.setTimeout(120_000);
+  // The search bar's case at 952 px found it (2026-11-22): `Neighbours` chosen in `pathfind.ts` beside the heaviest
+  // neighbourhood, and after the pull-back the row stood outside the view. Where a row was asked for, the frame holds it.
+  const context = await browser.newContext({ viewport: { width: 952, height: 800 }, deviceScaleFactor: 1 });
+  await context.addInitScript(({ key, value }) => localStorage.setItem(key, value), {
+    key: PERSISTED_UI_KEY, value: JSON.stringify({ version: PERSISTED_UI_VERSION, tuning: { localMap: { searchStarts: 0 } } })
+  });
+  const page = await context.newPage();
+  await page.goto(`/?view=local&mode=2d&node=${encodeURIComponent("packages/engine/src/config/liveDocumentationConfig.ts")}`);
+  await page.waitForSelector("#map-container .node-card.local-focus", { timeout: 20_000 });
+  await still(page);
+  await choose(page, "subject", "Neighbours", { file: SUBJECT, symbol: "Neighbours" });
+  // The pointer stands on the search's list, off the map: nothing holds the arrival, and it pulls back.
+  await expect.poll(async () => (await cameraOf(page)).look, { timeout: 20_000, intervals: [50] }).toBe("connections");
+  await still(page);
+  expect(await arrivalOf(page), "the arrival is over").toBeNull();
+  const frame = await frameOf(page);
+  const row = await boxOf(page, `${card(SUBJECT)} .symbol-row[data-symbol="Neighbours"] .symbol-label-wrapper`);
+  expect(inside(row, frame), `the row asked for ${JSON.stringify(row)} inside the frame ${JSON.stringify(frame)}`).toBe(true);
+  await context.close();
+});
+
+test("the frame the default arrival ends on holds what was asked: the subject's name, on files taller than the view", async ({ browser }) => {
+  test.setTimeout(120_000);
+  // The root's rule of 2026-11-22, after the sweep found `branches.ts` and `pathfind.ts` pulled back with their names
+  // above the view: where the neighbourhood cannot be shown with what was asked still in the frame, what was asked wins.
+  // Each at a window its card outgrows once pulled back: `branches.ts` at the suite's own 1,280 by 720, where the sweep's
+  // case pressed it, `pathfind.ts` at 1,280 by 800.
+  for (const [file, height] of [["packages/explorer/src/client/views/localView/branches.ts", 720], [SUBJECT, 800]] as const) {
+    const context = await browser.newContext({ viewport: { width: 1280, height }, deviceScaleFactor: 1 });
+    await context.addInitScript(({ key, value }) => localStorage.setItem(key, value), {
+      key: PERSISTED_UI_KEY, value: JSON.stringify({ version: PERSISTED_UI_VERSION, tuning: { localMap: { searchStarts: 0 } } })
+    });
+    const page = await context.newPage();
+    await page.goto(`/?view=local&node=${encodeURIComponent(file)}`);
+    await page.waitForSelector("#map-container .node-card.local-focus", { timeout: 20_000 });
+    await expect.poll(() => arrivalOf(page), { timeout: 10_000, intervals: [20] }).not.toBeNull();
+    await still(page);
+    expect(await arrivalOf(page), `${file}: the arrival is over`).toBeNull();
+    expect((await cameraOf(page)).look, `${file}: pulled back to the connections look`).toBe("connections");
+    const frame = await frameOf(page), drawn = (await boxOf(page, card(file)))!;
+    expect(drawn.bottom - drawn.top, `${file}: its card is taller than the frame, the case this rule is for`).toBeGreaterThan(frame.bottom - frame.top);
+    const name = await boxOf(page, `${card(file)} .node-title`);
+    expect(inside(name, frame), `${file}: its name ${JSON.stringify(name)} inside the frame ${JSON.stringify(frame)}`).toBe(true);
+    await context.close();
+  }
 });
 
 /**

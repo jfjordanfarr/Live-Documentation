@@ -605,6 +605,35 @@ describe("the easing: one motion through a conservative field, until the spheres
     expect(run(40)).toEqual(run(null));
   });
 
+  it("lets what is tied to a held sphere come further after it under Drag's Swings than while it holds its ground (2026-11-22)", () => {
+    // The owner: "swinging the graph around with me". A chain of eight files, each tied to the next; a hand carries the
+    // chain's first file far to the side. Holding its ground, every file is held toward where it stood as well as by
+    // the picture's gravity; swinging, the tied files let go of where they stood and only gravity holds them back.
+    const WAY = 600;
+    const carried = (drag: "holds" | "swings"): number[] => {
+      const chain: SpatialNode[] = Array.from({ length: 8 }, (_, i) => ({ ...node(`chain/f${i}`, 1), x: 0, y: i * 70, z: 0 }));
+      const ties: SpatialLink[] = chain.slice(1).map((file, i) => ({ source: chain[i].id, target: file.id, count: 1 }));
+      const simulation = forceSimulation(chain, 3).stop();
+      const motion = motionForce<SpatialNode>({ tuning: () => ({ ...tuning, drag }), layout: () => "connections", links: () => ties, strength: () => 1 });
+      motion.wake("hold");
+      simulation.force("motion", motion);
+      // The picture comes to rest held where it stands, as a picture a person drags in has.
+      for (let tick = 0; tick < 3000 && !motion.still; tick++) simulation.tick();
+      const from = chain.map(file => file.x!);
+      motion.wake("hold");
+      chain[0].fx = chain[0].x! + WAY; chain[0].fy = chain[0].y; chain[0].fz = chain[0].z;
+      for (let tick = 0; tick < 3000; tick++) simulation.tick();
+      return chain.map((file, i) => file.x! - from[i]);
+    };
+    const holds = carried("holds"), swings = carried("swings");
+    expect(holds[0]).toBeCloseTo(WAY, 6);
+    expect(swings[0]).toBeCloseTo(WAY, 6);
+    // The four files next along the chain each come at least a twentieth of the hand's way further once let go.
+    for (const link of [1, 2, 3, 4]) expect(swings[link] - holds[link], `the file ${link} links from the hand`).toBeGreaterThan(WAY / 20);
+    // Neither carries the chain whole: gravity holds the far end near where it was under both.
+    expect(Math.abs(swings[7])).toBeLessThan(WAY / 10);
+  });
+
   it("holds a sphere a hand has fixed, falls still once and wakes again", () => {
     const nodes = easeSpatialLayout(files, links, tuning, "connections", whole).nodes.map(file => ({ ...file }));
     const held = nodes[0], partner = nodes[1];

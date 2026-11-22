@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/engine/src/live-docs/pathfind.ts`
-- Generated At: 2026-11-22T03:27:55.464Z
+- Generated At: 2026-11-22T04:55:06.296Z
 
 ## Authored
 ### Purpose
@@ -73,9 +73,29 @@ taken from the queue, a start among the targets at once, and the walk ends
 at the first. A file at the depth limit is not expanded and is a `max-depth`
 stop; a file with nothing new beyond it is a `terminal` stop.
 
+#### `walkBetween` {#symbol-walkbetween}
+- Type: function
+- Source: [source](../../../../../../packages/engine/src/live-docs/pathfind.ts#L104)
+- Returns: [`Walk`](#symbol-walk-interface)
+- Parameters: `starts`: `Iterable`; `targets`: `Iterable`; `neighbours`: [`Neighbours`](#symbol-neighbours)
+
+##### `walkBetween` — Summary
+The walk from one set of files to another, as a path between two ends is asked on either surface: an end is one
+file or every file under a directory (see {@link under}), and a file in both sets is not its own path, so the starts
+are never targets. The Explorer's path and the command line's both walk through here (2026-11-22).
+
+#### `under` {#symbol-under}
+- Type: const
+- Source: [source](../../../../../../packages/engine/src/live-docs/pathfind.ts#L114)
+
+##### `under` — Summary
+Whether a path is the directory or stands under it; the scan root, "", holds everything. The files a directory
+stands for as the end of a path, on the page and at the command line (moved here from the Explorer on 2026-11-22,
+so that both read one rule).
+
 #### `pathTo` {#symbol-pathto}
 - Type: function
-- Source: [source](../../../../../../packages/engine/src/live-docs/pathfind.ts#L100)
+- Source: [source](../../../../../../packages/engine/src/live-docs/pathfind.ts#L118)
 - Parameters: `found`: [`Walk`](#symbol-walk-interface)
 
 ##### `pathTo` — Summary
@@ -83,7 +103,7 @@ The files from a start of the walk to a file it reached, the start first.
 
 #### `reachFrom` {#symbol-reachfrom}
 - Type: function
-- Source: [source](../../../../../../packages/engine/src/live-docs/pathfind.ts#L109)
+- Source: [source](../../../../../../packages/engine/src/live-docs/pathfind.ts#L127)
 - Parameters: `starts`: `Iterable`; `neighbours`: [`Neighbours`](#symbol-neighbours)
 
 ##### `reachFrom` — Summary
@@ -91,7 +111,7 @@ Every file a path reaches from the starts, with the fewest hops to it; the start
 
 #### `isEntry` {#symbol-isentry}
 - Type: function
-- Source: [source](../../../../../../packages/engine/src/live-docs/pathfind.ts#L123)
+- Source: [source](../../../../../../packages/engine/src/live-docs/pathfind.ts#L141)
 - Parameters: `file`: [`GraphFile`](./graph.ts.mdmd.md#symbol-graphfile)
 
 ##### `isEntry` — Summary
@@ -99,21 +119,21 @@ True when something outside the code starts the file: its doc carries an Entry l
 
 #### `Start` {#symbol-start}
 - Type: interface
-- Source: [source](../../../../../../packages/engine/src/live-docs/pathfind.ts#L128)
+- Source: [source](../../../../../../packages/engine/src/live-docs/pathfind.ts#L146)
 
 ##### `Start` — Summary
 A file a reachability walk starts from: an entry of the docs with its lines, or a file asked for.
 
 #### `Reachability (interface)` {#symbol-reachability-interface}
 - Type: interface
-- Source: [source](../../../../../../packages/engine/src/live-docs/pathfind.ts#L136)
+- Source: [source](../../../../../../packages/engine/src/live-docs/pathfind.ts#L154)
 
 ##### `Reachability (interface)` — Summary
 What is reachable along dependencies from the graph's entry points, or from the files asked for.
 
 #### `reachability (function)` {#symbol-reachability-function}
 - Type: function
-- Source: [source](../../../../../../packages/engine/src/live-docs/pathfind.ts#L169)
+- Source: [source](../../../../../../packages/engine/src/live-docs/pathfind.ts#L187)
 - Returns: [`Reachability`](#symbol-reachability-interface)
 - Parameters: `graph`: [`LiveDocGraph`](./graph.ts.mdmd.md#symbol-livedocgraph); `file`: [`GraphFile`](./graph.ts.mdmd.md#symbol-graphfile)
 
@@ -134,14 +154,14 @@ nothing yet reads its wires.
 
 #### `Component` {#symbol-component}
 - Type: interface
-- Source: [source](../../../../../../packages/engine/src/live-docs/pathfind.ts#L202)
+- Source: [source](../../../../../../packages/engine/src/live-docs/pathfind.ts#L220)
 
 ##### `Component` — Summary
 One connected component: files each joined to every other by some chain of links, whichever way each link runs.
 
 #### `components` {#symbol-components}
 - Type: function
-- Source: [source](../../../../../../packages/engine/src/live-docs/pathfind.ts#L218)
+- Source: [source](../../../../../../packages/engine/src/live-docs/pathfind.ts#L236)
 - Returns: [`Component`](#symbol-component)[]
 - Parameters: `ids`: `Iterable`; `neighbours`: [`Neighbours`](#symbol-neighbours)
 
@@ -156,14 +176,14 @@ The components come largest first, then by seed; the seed is chosen by
 
 #### `FileGroups (interface)` {#symbol-filegroups-interface}
 - Type: interface
-- Source: [source](../../../../../../packages/engine/src/live-docs/pathfind.ts#L249)
+- Source: [source](../../../../../../packages/engine/src/live-docs/pathfind.ts#L267)
 
 ##### `FileGroups (interface)` — Summary
 A graph's files as its disconnected groups: the groups of two or more, and the files joined to none.
 
 #### `fileGroups (function)` {#symbol-filegroups-function}
 - Type: function
-- Source: [source](../../../../../../packages/engine/src/live-docs/pathfind.ts#L261)
+- Source: [source](../../../../../../packages/engine/src/live-docs/pathfind.ts#L279)
 - Returns: [`FileGroups`](#symbol-filegroups-interface)
 - Parameters: `graph`: [`LiveDocGraph`](./graph.ts.mdmd.md#symbol-livedocgraph)
 
@@ -174,42 +194,42 @@ so that the two give one answer.
 
 #### `FrontierEntry` {#symbol-frontierentry}
 - Type: interface
-- Source: [source](../../../../../../packages/engine/src/live-docs/pathfind.ts#L270)
+- Source: [source](../../../../../../packages/engine/src/live-docs/pathfind.ts#L288)
 
 ##### `FrontierEntry` — Summary
 Entry in the search frontier, representing a node that couldn't be explored further.
 
 #### `PathSearchResult` {#symbol-pathsearchresult}
 - Type: interface
-- Source: [source](../../../../../../packages/engine/src/live-docs/pathfind.ts#L278)
+- Source: [source](../../../../../../packages/engine/src/live-docs/pathfind.ts#L296)
 
 ##### `PathSearchResult` — Summary
 Result of a file-level path search.
 
 #### `SymbolReference` {#symbol-symbolreference}
 - Type: interface
-- Source: [source](../../../../../../packages/engine/src/live-docs/pathfind.ts#L285)
+- Source: [source](../../../../../../packages/engine/src/live-docs/pathfind.ts#L303)
 
 ##### `SymbolReference` — Summary
 A reference that may include a symbol (e.g., "file.ts#SymbolName").
 
 #### `SymbolHop` {#symbol-symbolhop}
 - Type: interface
-- Source: [source](../../../../../../packages/engine/src/live-docs/pathfind.ts#L291)
+- Source: [source](../../../../../../packages/engine/src/live-docs/pathfind.ts#L309)
 
 ##### `SymbolHop` — Summary
 A node in a symbol-aware path, tracking both file and symbol at each hop.
 
 #### `SymbolPathSearchResult` {#symbol-symbolpathsearchresult}
 - Type: interface
-- Source: [source](../../../../../../packages/engine/src/live-docs/pathfind.ts#L297)
+- Source: [source](../../../../../../packages/engine/src/live-docs/pathfind.ts#L315)
 
 ##### `SymbolPathSearchResult` — Summary
 Result of a symbol-aware path search.
 
 #### `searchGraph` {#symbol-searchgraph}
 - Type: function
-- Source: [source](../../../../../../packages/engine/src/live-docs/pathfind.ts#L318)
+- Source: [source](../../../../../../packages/engine/src/live-docs/pathfind.ts#L336)
 - Returns: [`PathSearchResult`](#symbol-pathsearchresult)
 - Parameters: `graph`: [`LiveDocGraph`](./graph.ts.mdmd.md#symbol-livedocgraph); `direction`: [`OneWay`](#symbol-oneway)
 
@@ -220,17 +240,17 @@ an outbound search, the dependencies that resolved to no file.
 
 ##### `searchGraph` — Parameters
 - `direction`: "outbound" follows dependencies, "inbound" follows dependents
-- `from`: Source node code path
+- `from`: Source node code path, or the files of a directory
 - `graph`: The Live Doc graph
 - `maxDepth`: Maximum traversal depth
-- `to`: Target node code path
+- `to`: Target node code path, or the files of a directory
 
 ##### `searchGraph` — Returns
 Search result with path (if found), visited nodes, and frontier
 
 #### `getNeighbors` {#symbol-getneighbors}
 - Type: function
-- Source: [source](../../../../../../packages/engine/src/live-docs/pathfind.ts#L370)
+- Source: [source](../../../../../../packages/engine/src/live-docs/pathfind.ts#L388)
 - Parameters: `graph`: [`LiveDocGraph`](./graph.ts.mdmd.md#symbol-livedocgraph); `direction`: [`OneWay`](#symbol-oneway)
 
 ##### `getNeighbors` — Summary
@@ -246,7 +266,7 @@ The neighbouring code paths
 
 #### `searchSymbolPath` {#symbol-searchsymbolpath}
 - Type: function
-- Source: [source](../../../../../../packages/engine/src/live-docs/pathfind.ts#L397)
+- Source: [source](../../../../../../packages/engine/src/live-docs/pathfind.ts#L415)
 - Returns: [`SymbolPathSearchResult`](#symbol-symbolpathsearchresult)
 - Parameters: `graph`: [`LiveDocGraph`](./graph.ts.mdmd.md#symbol-livedocgraph); `from`: [`SymbolReference`](#symbol-symbolreference); `to`: [`SymbolReference`](#symbol-symbolreference); `direction`: [`OneWay`](#symbol-oneway)
 
@@ -270,7 +290,7 @@ Search result with path and found status
 
 #### `symbolMatchesAnchor` {#symbol-symbolmatchesanchor}
 - Type: function
-- Source: [source](../../../../../../packages/engine/src/live-docs/pathfind.ts#L495)
+- Source: [source](../../../../../../packages/engine/src/live-docs/pathfind.ts#L513)
 
 ##### `symbolMatchesAnchor` — Summary
 Whether a symbol name or anchor matches an anchor slug: exactly, or by name

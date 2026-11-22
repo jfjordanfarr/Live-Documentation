@@ -30,3 +30,19 @@ Not yet right, seen in these pictures:
 The pairs and their numbers come from [`stills.mjs`](stills.mjs), kept here; its head says how to run it. It was last
 run whole before the directory line's mend, and for the opened directory alone after it; a third whole run was given up
 while the browser was held by another job.
+
+## The second round: away from reading size, the wire's answer, the type badges
+
+Taken by [`looks.mjs`](looks.mjs) on the pathfinder, once as laid out and once after the button's press, with Wire
+Answers on. The page reported no error in either run. The builder looked at the mirrored picture of each pair and at
+both badge close-ups; the as-laid-out far looks and Fit were taken and not looked at.
+
+| Pictures | What the eye judges of the mirrored one |
+| --- | --- |
+| `look-connections-as-laid-out.png`, `look-connections-mirrored.png` (three presses of Zoom Out) | A true mirror at the connections look: blue pins on each card's left, green on its right, every wire from blue to green. Each directory's line, held at its size, stands at its membrane's top right corner in its own reading order; no name is reversed or newly cut. |
+| `look-overview-as-laid-out.png`, `look-overview-mirrored.png` (seven presses) | The overview's compact files: users to the left of the subject, what it uses to the right, the pair lines between them. Directory lines at the top right of their membranes. Nothing cut at an edge. |
+| `fit-whole-as-laid-out.png`, `fit-whole-mirrored.png` | Fit frames the whole mirrored picture inside the view with its margins, nothing cut and no edge fade: the users at the left, what the subject uses at the right, every directory line at its top right corner. |
+| `wire-answer-as-laid-out.png`, `wire-answer-mirrored.png` | A pointer resting on a wire of `Reach`: the wire lights from the blue pin, now on the subject's left, and the panel stands under the pointer inside the view, upright, saying "pathfind.ts is used by index.ts, search-bar.ts · Reach · 2 references", the same words as laid out (panel at x 273 mirrored, 967 as laid out, the same height). |
+| `type-badges-as-laid-out.png`, `type-badges-mirrored.png` | One row's badge close up: the blue arrow points right as laid out and left mirrored. In the full mirrored pictures a row with both shows the green arrow first, pointing right, then the blue pointing left. |
+
+Not looked at mirrored: the cut's signs at the edges (Tuning's Cut Counted), which need a step to show.

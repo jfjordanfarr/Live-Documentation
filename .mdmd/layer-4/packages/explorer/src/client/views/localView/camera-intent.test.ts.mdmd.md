@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: `packages/explorer/src/client/views/localView/camera-intent.test.ts`
-- Generated At: 2026-11-22T02:10:38.059Z
+- Generated At: 2026-11-22T05:54:21.161Z
 
 ## Authored
 ### Purpose
@@ -42,6 +42,7 @@ _No public symbols detected_
 - [`camera-intent.easeInOutCubic`](./camera-intent.ts.mdmd.md#symbol-easeinoutcubic)
 - [`camera-intent.framingEaseMs`](./camera-intent.ts.mdmd.md#symbol-framingeasems)
 - [`camera-intent.framingTravel`](./camera-intent.ts.mdmd.md#symbol-framingtravel)
+- [`camera-intent.holdAsked`](./camera-intent.ts.mdmd.md#symbol-holdasked)
 - [`camera-intent.keepFrame`](./camera-intent.ts.mdmd.md#symbol-keepframe)
 - [`camera-intent.pinsFrame`](./camera-intent.ts.mdmd.md#symbol-pinsframe)
 - [`camera-intent.poseBetween`](./camera-intent.ts.mdmd.md#symbol-posebetween)

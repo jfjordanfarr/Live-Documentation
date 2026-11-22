@@ -95,14 +95,35 @@ export const FILES_FLOOR_RATIO = STEP_RATIO ** -10;
  * that floor stops it short of the whole picture, the subject is centred at the floor and the far neighbours are cut.
  * Content and subject are in the picture's own units, the frame in the screen's; the result depends on nothing else, so
  * that two screens of one size land on one frame.
+ *
+ * The frame holds what was asked ({@link holdAsked}; the root's rule of 2026-11-22, after a sweep of the browser suite on
+ * the pull-back as the default found a tall file's name above the view and a symbol chosen in the search outside it):
+ * `asked` is the subject's name, always, and the row asked for where one was, least particular first. Where the
+ * neighbourhood cannot be shown with what was asked still in the frame, what was asked wins, and the neighbourhood is
+ * what fits round it: a subject taller than the frame is entered at its top, as a step enters a tall card.
  */
-export function arrivalEndFrame(content: Bounds, subject: Bounds, frame: Frame, readingScale: number): MapTransform {
+export function arrivalEndFrame(content: Bounds, subject: Bounds, frame: Frame, readingScale: number, asked: readonly Bounds[] = []): MapTransform {
   const { horizontal, vertical } = framePadding(frame);
   const whole = Math.min((frame.width - 2 * horizontal) / Math.max(1, content.width), (frame.height - 2 * vertical) / Math.max(1, content.height));
   const floor = readingScale * ARRIVAL_FLOOR_RATIO;
   const k = clamp(whole, floor, readingScale);
   const centre = whole >= floor ? content : subject;
-  return { x: frame.width / 2 - (centre.left + centre.width / 2) * k, y: frame.height / 2 - (centre.top + centre.height / 2) * k, k };
+  return holdAsked({ x: frame.width / 2 - (centre.left + centre.width / 2) * k, y: frame.height / 2 - (centre.top + centre.height / 2) * k, k }, asked, frame);
+}
+
+/**
+ * The camera moved by the least pan, its scale kept, that brings what was asked inside the frame's padding: all of it
+ * where it fits together, and where it does not, the more particular of it, the things asked dropped from the first (a
+ * row asked for is kept before the name of the file it is in). What is already inside moves nothing. In the picture's
+ * units.
+ */
+export function holdAsked(camera: MapTransform, asked: readonly Bounds[], frame: Frame): MapTransform {
+  if (!asked.length) return camera;
+  const room = roomOf(frame);
+  let held = asked;
+  while (held.length > 1 && fitIn(unionOf(held)!, room) < camera.k * (1 - 1e-9)) held = held.slice(1);
+  const pan = revealPan(unionOf(held)!, camera, frame);
+  return pan.x === 0 && pan.y === 0 ? camera : { x: camera.x + pan.x, y: camera.y + pan.y, k: camera.k };
 }
 
 /** The arrival's moment: resting at reading size, easing back, or done. */

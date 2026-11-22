@@ -4,7 +4,7 @@ import { describe, expect, it } from "vitest";
 
 import { changedFromDefaults, getDefaultFilters, getDefaultTuning } from "../persistence/local-storage";
 import type { TuningConfig } from "../types";
-import { changedSettings, changedSettingsWords, tuningControlId, type ChangedSetting } from "./tuning-changes";
+import { changedSettings, changedSettingsWords, takeTuning, tuningControlId, type ChangedSetting } from "./tuning-changes";
 
 const template = readFileSync(path.resolve(__dirname, "../../shared/template.html"), "utf8");
 
@@ -39,6 +39,23 @@ describe("the Tuning settings that differ from the defaults", () => {
     const tuning = getDefaultTuning();
     tuning.appearance.frame = "bare";
     expect(changedSettings(tuning, getDefaultTuning())).toEqual([]);
+  });
+
+  it("leave out which way the 2D picture reads, which is how a person looks at the map and no lever", () => {
+    const tuning = getDefaultTuning();
+    tuning.appearance.reads = "usesFirst";
+    expect(changedSettings(tuning, getDefaultTuning())).toEqual([]);
+  });
+
+  it("are not taken by a reset where they are the viewer's own: the frame and the reading stay, every lever goes", () => {
+    const tuning = getDefaultTuning();
+    tuning.appearance.frame = "bare";
+    tuning.appearance.reads = "usesFirst";
+    tuning.appearance.palette = "proposed";
+    tuning.localMap.columnGap = 140;
+    takeTuning(tuning, getDefaultTuning());
+    expect(tuning.appearance).toEqual({ ...getDefaultTuning().appearance, frame: "bare", reads: "usesFirst" });
+    expect(tuning.localMap.columnGap).toBe(getDefaultTuning().localMap.columnGap);
   });
 
   it("forget a setting moved and moved back, and read a dial set to none as a change from a number", () => {

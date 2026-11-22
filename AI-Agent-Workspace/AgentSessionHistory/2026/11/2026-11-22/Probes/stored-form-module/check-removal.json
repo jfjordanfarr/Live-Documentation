@@ -1,0 +1,158 @@
+[
+ {
+  "check": "no byte after a section's last item",
+  "failed": [
+   "refuses head-trailing-byte",
+   "refuses strings-trailing-byte",
+   "refuses paths-trailing",
+   "refuses wires-trailing",
+   "refuses wires-n0-with-first"
+  ],
+  "passed": 24
+ },
+ {
+  "check": "the end counts the frames before it",
+  "failed": [
+   "refuses end-count-wrong"
+  ],
+  "passed": 28
+ },
+ {
+  "check": "a section inflates to exactly its raw length",
+  "failed": [
+   "refuses inflates-fewer: a raw length one more than the stream gives"
+  ],
+  "passed": 28
+ },
+ {
+  "check": "a text's file lines are written again and compared",
+  "failed": [
+   "refuses the text member-twice"
+  ],
+  "passed": 28
+ },
+ {
+  "check": "a file's authored line is required next",
+  "failed": [
+   "refuses the text no-authored",
+   "refuses the text entry-before-authored"
+  ],
+  "passed": 27
+ },
+ {
+  "check": "a file's lines begin with its file line",
+  "failed": [
+   "refuses the text symbol-before-entry",
+   "refuses the text unknown-line"
+  ],
+  "passed": 27
+ },
+ {
+  "check": "at most one cited-by line",
+  "failed": [
+   "refuses the text two-cited-by"
+  ],
+  "passed": 28
+ },
+ {
+  "check": "a wire is never the file's own",
+  "failed": [
+   "refuses wires-self"
+  ],
+  "passed": 28
+ },
+ {
+  "check": "the head's version",
+  "failed": [
+   "refuses head-version-2"
+  ],
+  "passed": 28
+ },
+ {
+  "check": "the head's count is 0",
+  "failed": [
+   "refuses head-count-1"
+  ],
+  "passed": 28
+ },
+ {
+  "check": "a frame's kind is one the layout defines",
+  "failed": [
+   "refuses kind-7"
+  ],
+  "passed": 28
+ },
+ {
+  "check": "a strings frame holds at least one string",
+  "failed": [
+   "refuses strings-count-0"
+  ],
+  "passed": 28
+ },
+ {
+  "check": "a mark's undefined bits are zero",
+  "failed": [
+   "refuses records-file-mark-bit-4"
+  ],
+  "passed": 28
+ },
+ {
+  "check": "a path's shared beginning is the longest",
+  "failed": [
+   "refuses paths-not-longest-shared"
+  ],
+  "passed": 28
+ },
+ {
+  "check": "the paths are in strict order",
+  "failed": [
+   "refuses paths-repeat"
+  ],
+  "passed": 28
+ },
+ {
+  "check": "the records' paths are the paths section's",
+  "failed": [
+   "refuses paths-differ-from-records"
+  ],
+  "passed": 28
+ },
+ {
+  "check": "a folder is empty or a path",
+  "failed": [
+   "refuses root-absolute",
+   "refuses root-trailing-slash"
+  ],
+  "passed": 27
+ },
+ {
+  "check": "the extension holds no slash, backslash or NUL",
+  "failed": [
+   "refuses extension-slash",
+   "holds no slash, backslash or NUL: a writer refuses them, and so does a reader"
+  ],
+  "passed": 27
+ },
+ {
+  "check": "the deflate stream ends where the stored bytes end, on the writing side",
+  "failed": [],
+  "passed": 29
+ },
+ {
+  "check": "an inflater's error is a refusal, on both sides",
+  "failed": [
+   "refuses zlib-wrapped",
+   "refuses after-deflate-end"
+  ],
+  "passed": 27
+ },
+ {
+  "check": "a text's file lines are written again and compared, and the authored line is required next",
+  "failed": [
+   "refuses the text no-authored",
+   "refuses the text entry-before-authored",
+   "refuses the text member-twice"
+  ],
+  "passed": 26
+ }
+]
