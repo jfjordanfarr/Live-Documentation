@@ -62,6 +62,7 @@
     { "section": "The history", "page": "Who made a step (the authors toggle)", "agent": "none", "status": "no: no command",
       "run": ["history", "inspect", "--at", "{last}", "--authors"], "symptom": "--authors is not an option" },
     { "section": "Links", "page": "A link that opens the same view for someone else", "agent": "no command prints an Explorer address", "status": "no: no command",
-      "run": ["estate", "inspect", "--from", "Hub/PaymentHub.cs", "--link"], "symptom": "--link is not an option" }
+      "run": ["estate", "inspect", "--from", "Hub/PaymentHub.cs", "--link"], "symptom": "--link is not an option" },
+    {"section":"Only the command line, for now","page":"(not drawn yet) The declarations a file's documentation names, and the files whose documentation names it: the author's word, never counted as a use","agent":"`inspect --from <file>`, after the neighbours, under headings of their own (`--json`: `documentation.names`, `documentation.namedBy`)","status":"the command line's own","run":["names","inspect","--from","App/Documented.cs"],"expect":["App/Documented.cs's documentation names 11 declarations in 6 files (the author's word, not a use).","  Derived (permission) in App/Derived.cs"]}
   ]
 }

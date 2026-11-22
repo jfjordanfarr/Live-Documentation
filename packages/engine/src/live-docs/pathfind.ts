@@ -281,11 +281,6 @@ export interface PathSearchResult {
   frontier: FrontierEntry[];
 }
 
-/** A terminal path in fanout enumeration. */
-export interface FanoutPath {
-  nodes: string[];
-}
-
 /** A reference that may include a symbol (e.g., "file.ts#SymbolName"). */
 export interface SymbolReference {
   codePath: string;
@@ -303,9 +298,6 @@ export interface SymbolPathSearchResult {
   path?: SymbolHop[];
   found: boolean;
 }
-
-/** Maximum number of paths to enumerate to avoid combinatorial explosion. */
-export const MAX_ENUMERATED_PATHS = 200;
 
 // ============================================================================
 // File-level search
@@ -383,46 +375,6 @@ export function getNeighbors(graph: LiveDocGraph, node: string, direction: OneWa
   return direction === "outbound" ? file.outbound : file.inbound;
 }
 
-/**
- * Enumerates all paths from a source node to terminal nodes.
- *
- * A terminal node is one that has no neighbors in the specified direction,
- * or the path has reached the maximum depth.
- *
- * @param graph - The Live Doc graph
- * @param start - Starting node code path
- * @param direction - Traversal direction
- * @param maxDepth - Maximum traversal depth
- * @returns Array of terminal paths (limited to MAX_ENUMERATED_PATHS)
- */
-export function enumerateTerminalPaths(
-  graph: LiveDocGraph,
-  start: string,
-  direction: OneWay,
-  maxDepth: number
-): FanoutPath[] {
-  const results: FanoutPath[] = [];
-  const stack: Array<{ path: string[] }> = [{ path: [start] }];
-
-  while (stack.length > 0 && results.length < MAX_ENUMERATED_PATHS) {
-    const current = stack.pop()!;
-    const node = current.path[current.path.length - 1];
-    const available = getNeighbors(graph, node, direction).filter((neighbor) => !current.path.includes(neighbor));
-
-    if (available.length === 0 || current.path.length - 1 >= maxDepth) {
-      results.push({ nodes: current.path });
-      continue;
-    }
-
-    for (const neighbor of available) {
-      stack.push({ path: [...current.path, neighbor] });
-    }
-  }
-
-  return results;
-}
-
-// ============================================================================
 // ============================================================================
 // Symbol-level search
 // ============================================================================

@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/engine/src/live-docs/pathfind.ts`
-- Generated At: 2026-11-19T21:10:12.604Z
+- Generated At: 2026-11-22T03:27:55.464Z
 
 ## Authored
 ### Purpose
@@ -186,44 +186,30 @@ Entry in the search frontier, representing a node that couldn't be explored furt
 ##### `PathSearchResult` — Summary
 Result of a file-level path search.
 
-#### `FanoutPath` {#symbol-fanoutpath}
-- Type: interface
-- Source: [source](../../../../../../packages/engine/src/live-docs/pathfind.ts#L285)
-
-##### `FanoutPath` — Summary
-A terminal path in fanout enumeration.
-
 #### `SymbolReference` {#symbol-symbolreference}
 - Type: interface
-- Source: [source](../../../../../../packages/engine/src/live-docs/pathfind.ts#L290)
+- Source: [source](../../../../../../packages/engine/src/live-docs/pathfind.ts#L285)
 
 ##### `SymbolReference` — Summary
 A reference that may include a symbol (e.g., "file.ts#SymbolName").
 
 #### `SymbolHop` {#symbol-symbolhop}
 - Type: interface
-- Source: [source](../../../../../../packages/engine/src/live-docs/pathfind.ts#L296)
+- Source: [source](../../../../../../packages/engine/src/live-docs/pathfind.ts#L291)
 
 ##### `SymbolHop` — Summary
 A node in a symbol-aware path, tracking both file and symbol at each hop.
 
 #### `SymbolPathSearchResult` {#symbol-symbolpathsearchresult}
 - Type: interface
-- Source: [source](../../../../../../packages/engine/src/live-docs/pathfind.ts#L302)
+- Source: [source](../../../../../../packages/engine/src/live-docs/pathfind.ts#L297)
 
 ##### `SymbolPathSearchResult` — Summary
 Result of a symbol-aware path search.
 
-#### `MAX_ENUMERATED_PATHS` {#symbol-max_enumerated_paths}
-- Type: const
-- Source: [source](../../../../../../packages/engine/src/live-docs/pathfind.ts#L308)
-
-##### `MAX_ENUMERATED_PATHS` — Summary
-Maximum number of paths to enumerate to avoid combinatorial explosion.
-
 #### `searchGraph` {#symbol-searchgraph}
 - Type: function
-- Source: [source](../../../../../../packages/engine/src/live-docs/pathfind.ts#L326)
+- Source: [source](../../../../../../packages/engine/src/live-docs/pathfind.ts#L318)
 - Returns: [`PathSearchResult`](#symbol-pathsearchresult)
 - Parameters: `graph`: [`LiveDocGraph`](./graph.ts.mdmd.md#symbol-livedocgraph); `direction`: [`OneWay`](#symbol-oneway)
 
@@ -244,7 +230,7 @@ Search result with path (if found), visited nodes, and frontier
 
 #### `getNeighbors` {#symbol-getneighbors}
 - Type: function
-- Source: [source](../../../../../../packages/engine/src/live-docs/pathfind.ts#L378)
+- Source: [source](../../../../../../packages/engine/src/live-docs/pathfind.ts#L370)
 - Parameters: `graph`: [`LiveDocGraph`](./graph.ts.mdmd.md#symbol-livedocgraph); `direction`: [`OneWay`](#symbol-oneway)
 
 ##### `getNeighbors` — Summary
@@ -258,30 +244,9 @@ Gets the neighbors of a node based on traversal direction.
 ##### `getNeighbors` — Returns
 The neighbouring code paths
 
-#### `enumerateTerminalPaths` {#symbol-enumerateterminalpaths}
-- Type: function
-- Source: [source](../../../../../../packages/engine/src/live-docs/pathfind.ts#L398)
-- Returns: [`FanoutPath`](#symbol-fanoutpath)[]
-- Parameters: `graph`: [`LiveDocGraph`](./graph.ts.mdmd.md#symbol-livedocgraph); `direction`: [`OneWay`](#symbol-oneway)
-
-##### `enumerateTerminalPaths` — Summary
-Enumerates all paths from a source node to terminal nodes.
-
-A terminal node is one that has no neighbors in the specified direction,
-or the path has reached the maximum depth.
-
-##### `enumerateTerminalPaths` — Parameters
-- `direction`: Traversal direction
-- `graph`: The Live Doc graph
-- `maxDepth`: Maximum traversal depth
-- `start`: Starting node code path
-
-##### `enumerateTerminalPaths` — Returns
-Array of terminal paths (limited to MAX_ENUMERATED_PATHS)
-
 #### `searchSymbolPath` {#symbol-searchsymbolpath}
 - Type: function
-- Source: [source](../../../../../../packages/engine/src/live-docs/pathfind.ts#L445)
+- Source: [source](../../../../../../packages/engine/src/live-docs/pathfind.ts#L397)
 - Returns: [`SymbolPathSearchResult`](#symbol-symbolpathsearchresult)
 - Parameters: `graph`: [`LiveDocGraph`](./graph.ts.mdmd.md#symbol-livedocgraph); `from`: [`SymbolReference`](#symbol-symbolreference); `to`: [`SymbolReference`](#symbol-symbolreference); `direction`: [`OneWay`](#symbol-oneway)
 
@@ -305,7 +270,7 @@ Search result with path and found status
 
 #### `symbolMatchesAnchor` {#symbol-symbolmatchesanchor}
 - Type: function
-- Source: [source](../../../../../../packages/engine/src/live-docs/pathfind.ts#L543)
+- Source: [source](../../../../../../packages/engine/src/live-docs/pathfind.ts#L495)
 
 ##### `symbolMatchesAnchor` — Summary
 Whether a symbol name or anchor matches an anchor slug: exactly, or by name

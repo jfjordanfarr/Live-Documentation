@@ -258,8 +258,18 @@ export function emitNeighbourResult(
     files: files.slice(0, NEIGHBOURS_LISTED).map((node) => describeNode(graph, node, verbose)),
     cut: Math.max(0, files.length - NEIGHBOURS_LISTED)
   }));
+  // The author's word, apart from the neighbours and never counted as a use (the owner, 2026-11-21: "we should honor
+  // their word"; root's ruling of 2026-11-22): the declarations this file's documentation names, and the files whose
+  // documentation names it. Reach, paths and the unreachable list do not read it.
+  const file = graph.files[from];
+  const named = (file?.documentation ?? []).map((reference) => ({ label: reference.label, ...(reference.element ? { element: reference.element } : {}), to: reference.to }));
+  const namedBy = file?.documentedBy ?? [];
+  const word = {
+    names: { count: named.length, references: named.slice(0, NEIGHBOURS_LISTED), cut: Math.max(0, named.length - NEIGHBOURS_LISTED) },
+    namedBy: { count: namedBy.length, files: namedBy.slice(0, NEIGHBOURS_LISTED), cut: Math.max(0, namedBy.length - NEIGHBOURS_LISTED) }
+  };
   if (json) {
-    console.log(JSON.stringify({ kind: "neighbours" as const, from: describeNode(graph, from, verbose), ...(documents ? { documents } : {}), neighbours: listed }, null, 2));
+    console.log(JSON.stringify({ kind: "neighbours" as const, from: describeNode(graph, from, verbose), ...(documents ? { documents } : {}), neighbours: listed, documentation: word }, null, 2));
     return;
   }
   for (const way of listed) {
@@ -270,6 +280,25 @@ export function emitNeighbourResult(
     }
     if (way.cut > 0) {
       console.log(`  … and ${way.cut} more, not listed`);
+    }
+  }
+  if (word.names.count > 0) {
+    const files = new Set(named.map((reference) => reference.to)).size;
+    console.log(`${from}'s documentation names ${word.names.count} declaration${word.names.count === 1 ? "" : "s"} in ${files} file${files === 1 ? "" : "s"} (the author's word, not a use).`);
+    for (const reference of word.names.references) {
+      console.log(`  ${reference.label}${reference.element ? ` (${reference.element})` : ""} in ${reference.to}`);
+    }
+    if (word.names.cut > 0) {
+      console.log(`  … and ${word.names.cut} more, not listed`);
+    }
+  }
+  if (word.namedBy.count > 0) {
+    console.log(`${from} is named by the documentation of ${word.namedBy.count} file${word.namedBy.count === 1 ? "" : "s"} (the author's word, not a use).`);
+    for (const by of word.namedBy.files) {
+      console.log(`  ${by}`);
+    }
+    if (word.namedBy.cut > 0) {
+      console.log(`  … and ${word.namedBy.cut} more, not listed`);
     }
   }
   if (documents?.cites.length) {

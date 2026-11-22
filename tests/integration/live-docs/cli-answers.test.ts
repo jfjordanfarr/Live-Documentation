@@ -23,6 +23,7 @@ const estateSource = path.join(repoRoot, "tests", "integration", "programs", "cs
 const folders: string[] = [];
 let estate = "";
 let elsewhere = "";
+let names = "";
 
 function cli(script: string, workspace: string, args: string[]): { status: number; stdout: string; stderr: string } {
   const result = spawnSync(process.execPath, [tsxCli, "--tsconfig", path.join(repoRoot, "tsconfig.base.json"), path.join(repoRoot, "scripts", "live-docs", script), "--workspace", workspace, ...args],
@@ -30,12 +31,12 @@ function cli(script: string, workspace: string, args: string[]): { status: numbe
   return { status: result.status ?? 0, stdout: result.stdout, stderr: result.stderr };
 }
 
-async function estateCopy(config: Record<string, string>): Promise<string> {
+async function estateCopy(config: Record<string, string>, source = estateSource): Promise<string> {
   const folder = fs.mkdtempSync(path.join(os.tmpdir(), "cli-answers-"));
   folders.push(folder);
   // A fixture is copied without what a compiler or an indexer left in it (`obj`, `bin`): a checkout that has run the
   // C# oracles holds such folders, ignored by git, and a copy that took them scanned thirty files more.
-  fs.cpSync(estateSource, folder, { recursive: true, filter: (from) => !NOT_FIXTURE.has(path.basename(from)) });
+  fs.cpSync(source, folder, { recursive: true, filter: (from) => !NOT_FIXTURE.has(path.basename(from)) });
   if (Object.keys(config).length) {
     fs.writeFileSync(path.join(folder, ".live-docs.config.json"), JSON.stringify(config), "utf8");
   }
@@ -48,6 +49,8 @@ beforeAll(async () => {
   estate = await estateCopy({});
   // A configuration that puts the docs neither where the defaults do nor where this repository does.
   elsewhere = await estateCopy({ root: "notes", baseLayer: "mirror", extension: ".live.md" });
+  // The names sample: App/Documented.cs names six files of the program only in its documentation.
+  names = await estateCopy({}, path.join(repoRoot, "tests", "integration", "programs", "csharp", "names"));
 });
 
 afterAll(() => {
@@ -82,7 +85,9 @@ describe("live-docs:inspect, a file alone", () => {
     const result = cli("inspect.ts", estate, ["--from", "Contracts/IPaymentService.cs", "--direction", "inbound"]);
     assert.strictEqual(result.status, 0, result.stderr);
     assert.strictEqual(result.stdout.replace(/ \[[^\]]+\]/g, ""),
-      "Contracts/IPaymentService.cs is used by 4 files directly (inbound).\n  Hub/App.config\n  Hub/PaymentHub.cs\n  PaymentService/App.config\n  PaymentService/PaymentService.cs\n");
+      "Contracts/IPaymentService.cs is used by 4 files directly (inbound).\n  Hub/App.config\n  Hub/PaymentHub.cs\n  PaymentService/App.config\n  PaymentService/PaymentService.cs\n" +
+      // Hub/PaymentHub.cs's documentation names the contract too: the author's word, printed apart and not counted.
+      "Contracts/IPaymentService.cs is named by the documentation of 1 file (the author's word, not a use).\n  Hub/PaymentHub.cs\n");
   });
 });
 
@@ -130,5 +135,39 @@ describe("live-docs:board --files", () => {
     assert.match(result.stdout, /\n {2}portal \(web\) {2}from Portal: 11 files\n[\s\S]*?\n {4}files \(11\):\n {6}Portal\/App_Code\/Globals\.cs\n/u);
     assert.match(result.stdout, /\n {2}gateway -> contracts {2}\[source\] {2}x13\n(?: {6}\S.*\n){13}/u);
     assert.ok(result.stdout.includes("\n      Gateway/Wcf/HubProxy.cs uses Contracts/IPaymentHub.cs (IPaymentHub)\n"), result.stdout);
+  });
+});
+
+describe("live-docs:inspect, an author's documentation reference", () => {
+  // The owner, 2026-11-21: "If an author made an effort to tell us in their own words that these two things are
+  // related, we should honor their word." Root's ruling, 2026-11-22: it is shown, and never counted as a use.
+  const namedFiles = ["App/Base.cs", "App/Derived.cs", "App/Helper.cs", "App/HelperOfT.cs", "App/Runner.Text.cs", "App/Runner.cs"];
+
+  it("is printed for a file both ways, after its neighbours, with the element's word", () => {
+    const result = cli("inspect.ts", names, ["--from", "App/Documented.cs", "--direction", "both"]);
+    assert.strictEqual(result.status, 0, result.stderr);
+    const text = result.stdout.replace(/ \[[^\]]+\]/g, "");
+    assert.ok(text.startsWith("App/Documented.cs uses 0 files directly (outbound).\nApp/Documented.cs is used by 0 files directly (inbound).\nApp/Documented.cs's documentation names 11 declarations in 6 files (the author's word, not a use).\n"), text);
+    assert.ok(text.includes("\n  Derived (permission) in App/Derived.cs\n"), text);
+    assert.ok(text.includes("\n  Base.Gadget (inheritdoc) in App/Base.cs\n"), text);
+    const named = cli("inspect.ts", names, ["--from", "App/HelperOfT.cs", "--direction", "inbound"]);
+    assert.ok(named.stdout.replace(/ \[[^\]]+\]/g, "").includes("App/HelperOfT.cs is named by the documentation of 1 file (the author's word, not a use).\n  App/Documented.cs\n"), named.stdout);
+    const json = JSON.parse(cli("inspect.ts", names, ["--from", "App/Documented.cs", "--json"]).stdout) as {
+      neighbours: Array<{ count: number }>; documentation: { names: { count: number; references: Array<{ to: string }> }; namedBy: { count: number } };
+    };
+    assert.deepStrictEqual(json.neighbours.map((way) => way.count), [0]);
+    assert.strictEqual(json.documentation.names.count, 11);
+    assert.deepStrictEqual([...new Set(json.documentation.names.references.map((reference) => reference.to))].sort(), namedFiles);
+  });
+
+  it("is no neighbour, and nothing it names is reached or pathed through it", () => {
+    const neighbours = JSON.parse(cli("inspect.ts", names, ["--from", "App/Documented.cs", "--direction", "both", "--json"]).stdout) as { neighbours: Array<{ count: number }> };
+    assert.deepStrictEqual(neighbours.neighbours.map((way) => way.count), [0, 0]);
+    const reached = JSON.parse(cli("inspect.ts", names, ["--from", "App/Documented.cs", "--reachable", "--direction", "both", "--json"]).stdout) as { reached: Array<{ files: unknown[] }> };
+    assert.deepStrictEqual(reached.reached.map((way) => way.files.length), [0, 0]);
+    for (const to of namedFiles) {
+      const route = cli("inspect.ts", names, ["--from", "App/Documented.cs", "--to", to]);
+      assert.strictEqual(route.stdout, `No path runs between App/Documented.cs and ${to}, either way.\n`, to);
+    }
   });
 });

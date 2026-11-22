@@ -15,7 +15,8 @@ export interface ParityRow {
   section: string;
   page: string;
   agent: string;
-  status: "yes" | "yes, as files" | "yes, as JSON only" | "no: lacks part" | "no: no command";
+  /** `the command line's own`: what the command line gives that the page does not draw yet. */
+  status: "yes" | "yes, as files" | "yes, as JSON only" | "no: lacks part" | "no: no command" | "the command line's own";
   /** The workspace (`estate` or `history`), the command and its arguments. */
   run?: string[];
   /** The workspace and a file in it whose text the row rests on. */
@@ -48,10 +49,11 @@ export function renderParityTable(ledger: ParityLedger): string {
     lines.push(`| ${row.page} | ${row.agent} | ${row.status} |`);
   }
   const yes = ledger.rows.filter((row) => row.status.startsWith("yes"));
+  const own = ledger.rows.filter((row) => row.status === "the command line's own").length;
   const onlyAs = yes.filter((row) => row.status !== "yes").length;
   const lacks = ledger.rows.filter((row) => row.status === "no: lacks part").length;
   const none = ledger.rows.filter((row) => row.status === "no: no command").length;
-  lines.push("", `**Totals:** ${ledger.rows.length} rows; ${yes.length} with an equivalent (${onlyAs} of them only as files or JSON), ${lacks + none} gaps: ${none} with no command, ${lacks} where a command lacks part.`);
+  lines.push("", `**Totals:** ${ledger.rows.length} rows; ${yes.length} with an equivalent (${onlyAs} of them only as files or JSON), ${lacks + none} gaps: ${none} with no command, ${lacks} where a command lacks part${own ? `; and ${own} the command line's own, which the page does not draw yet` : ""}.`);
   return lines.join("\n");
 }
 
