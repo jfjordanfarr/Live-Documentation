@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/explorer/src/client/views/localView/connections.ts`
-- Generated At: 2026-11-21T09:00:46.116Z
+- Generated At: 2026-11-22T04:13:29.352Z
 
 ## Authored
 ### Purpose
@@ -44,7 +44,7 @@ Since 2026-11-19 ([Turn 23 of the November 18 record](../../../../../../../../AI
 ### Public Symbols
 #### `ConnectionsContext` {#symbol-connectionscontext}
 - Type: interface
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/connections.ts#L21)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/connections.ts#L22)
 
 ##### `ConnectionsContext` — Summary
 Ambient context required by {@link drawConnections} to measure DOM
@@ -52,7 +52,7 @@ anchors, read explorer state, and emit SVG paths.
 
 #### `drawConnections` {#symbol-drawconnections}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/connections.ts#L84)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/connections.ts#L85)
 - Parameters: `context`: [`ConnectionsContext`](#symbol-connectionscontext)
 
 ##### `drawConnections` — Summary
@@ -71,7 +71,7 @@ counted, and the cycles' returns, the ordinary case, never lit it).
 
 #### `drawsReference` {#symbol-drawsreference}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/connections.ts#L108)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/connections.ts#L109)
 - Parameters: `_unnamed_`: [`ConnectionsContext`](#symbol-connectionscontext); `edge`: [`LocalEdge`](./types.ts.mdmd.md#symbol-localedge)
 
 ##### `drawsReference` — Summary
@@ -81,7 +81,7 @@ and with files only (2026-11-15). The card's foot asks it before the picture is 
 
 #### `clearConnections` {#symbol-clearconnections}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/connections.ts#L149)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/connections.ts#L150)
 - Parameters: `runtime`: [`LocalViewRuntime`](./runtime.ts.mdmd.md#symbol-localviewruntime)
 
 ##### `clearConnections` — Summary
@@ -94,6 +94,7 @@ Takes every wire off the overlay and forgets the layer; the next drawing makes a
 - [`types.DirectionMarks`](../../types.ts.mdmd.md#symbol-directionmarks) (type-only)
 - [`types.ExplorerState`](../../types.ts.mdmd.md#symbol-explorerstate) (type-only)
 - [`types.LocalMapTuning`](../../types.ts.mdmd.md#symbol-localmaptuning) (type-only)
+- [`types.MapReads`](../../types.ts.mdmd.md#symbol-mapreads) (type-only)
 - [`connection-geometry.DEFAULT_SELF_LOOP_PARAMS`](../connection-geometry.ts.mdmd.md#symbol-default_self_loop_params)
 - [`connection-geometry.LaceEdges`](../connection-geometry.ts.mdmd.md#symbol-laceedges)
 - [`connection-geometry.SelfLoopParams`](../connection-geometry.ts.mdmd.md#symbol-selfloopparams)
@@ -111,6 +112,10 @@ Takes every wire off the overlay and forgets the layer; the next drawing makes a
 - [`directory-flow.linksOf`](./directory-flow.ts.mdmd.md#symbol-linksof)
 - [`overview-files.OVERVIEW_FILES_ATTRIBUTE`](./overview-files.ts.mdmd.md#symbol-overview_files_attribute)
 - [`overview-files.OVERVIEW_LINES_ATTRIBUTE`](./overview-files.ts.mdmd.md#symbol-overview_lines_attribute)
+- [`reading-direction.LayoutSpan`](./reading-direction.ts.mdmd.md#symbol-layoutspan)
+- [`reading-direction.isMirrored`](./reading-direction.ts.mdmd.md#symbol-ismirrored)
+- [`reading-direction.shownSpan`](./reading-direction.ts.mdmd.md#symbol-shownspan)
+- [`reading-direction.spanInLayout`](./reading-direction.ts.mdmd.md#symbol-spaninlayout)
 - [`returning-connections.LaidBox`](./returning-connections.ts.mdmd.md#symbol-laidbox)
 - [`returning-connections.ReturningConnections`](./returning-connections.ts.mdmd.md#symbol-returningconnections-interface)
 - [`returning-connections.returnRoute`](./returning-connections.ts.mdmd.md#symbol-returnroute)

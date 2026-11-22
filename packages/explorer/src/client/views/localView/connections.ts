@@ -1,10 +1,11 @@
-import type { BezierTuning, DirectionMarks, ExplorerState, LocalMapTuning } from "../../types";
+import type { BezierTuning, DirectionMarks, ExplorerState, LocalMapTuning, MapReads } from "../../types";
 import { computeSelfLoopStubs, DEFAULT_SELF_LOOP_PARAMS, type LaceEdges, type SelfLoopParams } from "../connection-geometry";
 import { normalizeSymbolIdentifier } from "../symbolAnchors";
 import { curveTo, LANE_MARGIN, routeBacktracks, threadedRoute, type Clearance, type Passage, type RoutePiece } from "./branch-routing";
 import { edgeKey, type BranchGraph } from "./branches";
 import { isPairLine, linksOf } from "./directory-flow";
 import { OVERVIEW_FILES_ATTRIBUTE, OVERVIEW_LINES_ATTRIBUTE } from "./overview-files";
+import { isMirrored, shownSpan, spanInLayout, type LayoutSpan } from "./reading-direction";
 import { returningConnections, returnRoute, type LaidBox, type ReturningConnections } from "./returning-connections";
 import type { LocalViewRuntime, WireLayer } from "./runtime";
 import { attendConnections, releaseConnections } from "./symbol-highlight";
@@ -176,8 +177,9 @@ function elementFor<T extends SVGElement>(layer: WireLayer, seen: Set<string>, k
  * or collapsed) return zero-sized rects and are treated as unmeasurable so
  * edges skip them instead of drawing garbage paths.
  */
-function createAnchorMeasurer(container: HTMLElement, scale: number): (anchor: HTMLElement | null) => AnchorMeasurement | null {
+function createAnchorMeasurer(container: HTMLElement, scale: number, reading: PictureReading): (anchor: HTMLElement | null) => AnchorMeasurement | null {
   const rootRect = container.getBoundingClientRect();
+  const across = (rect: DOMRect): LayoutSpan => spanInLayout(rect, rootRect.left, reading.axis, scale, reading.mirrored);
   const positionCache = new Map<HTMLElement, AnchorMeasurement | null>();
   return (anchor: HTMLElement | null): AnchorMeasurement | null => {
     if (!anchor) {
@@ -200,16 +202,19 @@ function createAnchorMeasurer(container: HTMLElement, scale: number): (anchor: H
       columnPosition = position;
     }
     const presence = presenceOf(anchor, container);
+    // Across is the layout's own, from its start to its end, whichever way the picture is drawn (reading-direction.ts):
+    // "left" and "right" below are the layout's, which a mirrored picture shows the other way round.
+    const own = across(rect), ofCard = cardRect ? across(cardRect) : own;
     const measurement: AnchorMeasurement = {
-      centerX: (rect.left - rootRect.left + rect.width / 2) / scale,
+      centerX: (own.start + own.end) / 2,
       centerY: (rect.top - rootRect.top + rect.height / 2) / scale,
-      leftX: (rect.left - rootRect.left) / scale,
-      rightX: (rect.right - rootRect.left) / scale,
+      leftX: own.start,
+      rightX: own.end,
       topY: (rect.top - rootRect.top) / scale,
       bottomY: (rect.bottom - rootRect.top) / scale,
       isSymbol: anchor.classList.contains("symbol-anchor"),
-      cardLeft: cardRect ? (cardRect.left - rootRect.left) / scale : (rect.left - rootRect.left) / scale,
-      cardRight: cardRect ? (cardRect.right - rootRect.left) / scale : (rect.right - rootRect.left) / scale,
+      cardLeft: ofCard.start,
+      cardRight: ofCard.end,
       columnPosition,
       presence
     };
@@ -228,6 +233,20 @@ function offsetToEdge(anchor: AnchorMeasurement, pinDirection: "inbound" | "outb
     ? anchor.centerX + PIN_RADIUS
     : anchor.centerX - PIN_RADIUS;
   return { x: offsetX, y: anchor.centerY };
+}
+
+/** Which way the picture reads, and the upright line a mirrored one is reflected about: on the page, and in the layer's own units. */
+interface PictureReading { mirrored: boolean; axis: number; axisInLayer: number }
+
+/**
+ * Reads the reflection's axis from the page: the content root's own edge, which the stylesheet reflects it about. The
+ * root's box lies to the right of that edge unmirrored and to its left mirrored.
+ */
+function pictureReading(runtime: LocalViewRuntime, reads: MapReads): PictureReading {
+  const mirrored = isMirrored(reads), root = runtime.contentRoot;
+  if (!mirrored || !root) return { mirrored: false, axis: 0, axisInLayer: 0 };
+  const axis = root.getBoundingClientRect().right;
+  return { mirrored, axis, axisInLayer: (axis - runtime.container.getBoundingClientRect().left) / (runtime.mapTransform.k || 1) };
 }
 
 /** Sizes and places the layer's SVG over the content bounds. */
@@ -462,8 +481,12 @@ function drawBranchConnections(context: ConnectionsContext, layer: WireLayer, se
   const extents = context.measureLayoutExtents();
   if (!extents) return { drawn: 0, doubling: 0 };
   const columnOf = new Map(branches.columns.flatMap((nodes, column) => nodes.map(node => [node.id, column] as const)));
-  const measure = createAnchorMeasurer(runtime.container, runtime.mapTransform.k || 1);
-  const bounds = extents.content;
+  const reading = pictureReading(runtime, state.tuning.localMap.reads);
+  const measure = createAnchorMeasurer(runtime.container, runtime.mapTransform.k || 1, reading);
+  // The extents are the page's; the overlay is drawn in the layout's own across and reflected with the cards.
+  const shown = shownSpan({ start: extents.content.left, end: extents.content.right }, reading.axisInLayer, reading.mirrored);
+  const bounds = { ...extents.content, left: shown.left, right: shown.right };
+  runtime.overlay.style.transformOrigin = reading.mirrored ? `${reading.axisInLayer}px 0` : "";
   placeOverlay(layer, bounds);
   // Each column's horizontal extent, from the wrappers of its items as the renderer placed them: a card's and a
   // closed directory's box alike, which has no pin to measure (2026-10-08).

@@ -662,6 +662,28 @@ function startExplorer(bundle: StaticExplorerData, initialSnapshot: UrlStateSnap
     if (state.perspective === "3d") forceGraphView.fit();
     else localView.fitWhole();
   });
+  // The mirror (2026-11-22): the 2D picture read the other way round, what uses first from the left. A choice inside 2D,
+  // shown only there, since no left-to-right rule holds in 3D or on the World Map; the person's own, kept with their
+  // settings and carried by no link. The glyph is the drafting sign for a reflection: two shapes facing across an axis.
+  const mirrorButton = iconButton("Mirror the map", '<path d="M12 3v18" stroke-dasharray="2 3"/><path d="M8.5 7.5 3.5 16.5h5z"/><path d="M15.5 7.5l5 9h-5z" fill="currentColor"/>');
+  mirrorButton.addEventListener("click", () => {
+    state.tuning.localMap.reads = state.tuning.localMap.reads === "usesFirst" ? "offersFirst" : "usesFirst";
+    syncTuningControls();
+    schedulePersistUi();
+    syncPerspectiveControls();
+  });
+  // The key says the sides of the picture shown: side is the second sign beside colour, so once a picture can be
+  // mirrored the key's row is drawn the same way round as the map, and its words name the sides as they now are.
+  const rolesRow = document.querySelector<HTMLElement>("#local-legend .legend-row--roles");
+  const syncLegendSides = (mirrored: boolean): void => {
+    if (!rolesRow) return;
+    const [enters, leaves] = mirrored ? ["right", "left"] : ["left", "right"];
+    const words = `A wire runs from what one file offers, in blue, to the file that uses it, in green. On a card, what the file uses enters on the ${enters} and what it offers leaves on the ${leaves}.`;
+    if (rolesRow.title === words) return;
+    rolesRow.title = words;
+    rolesRow.setAttribute("aria-description", words);
+    rolesRow.toggleAttribute("data-mirrored", mirrored);
+  };
   // One group per choice, parted by rules: the fit, the whole or local picture and the tuning, 2D or 3D, the 3D layout, the history.
   const group = (...buttons: HTMLElement[]): HTMLElement => {
     const element = document.createElement("span");
@@ -669,7 +691,7 @@ function startExplorer(bundle: StaticExplorerData, initialSnapshot: UrlStateSnap
     element.append(...buttons);
     return element;
   };
-  perspectiveControls.append(group(fitButton), group(wholeButton, keyButton, tuningButton), group(mapButton, graphButton),
+  perspectiveControls.append(group(fitButton, mirrorButton), group(wholeButton, keyButton, tuningButton), group(mapButton, graphButton),
     group(connectionsButton, structureButton, hopsSelect), group(historyButton));
   requireElement("main").append(perspectiveControls);
   frame = createFrame({
@@ -1151,7 +1173,15 @@ function startExplorer(bundle: StaticExplorerData, initialSnapshot: UrlStateSnap
     frame?.sync();
     for (const button of [fitButton, wholeButton, keyButton, tuningButton, mapButton, graphButton, connectionsButton, structureButton, historyButton]) button.disabled = changingPerspective;
     connectionsButton.hidden = structureButton.hidden = state.perspective !== "3d";
-    fitButton.title = state.perspective === "3d" ? "Fit the current path or retained scope" : "Fit everything the map shows";
+    const mirrored = state.tuning.localMap.reads === "usesFirst";
+    mirrorButton.hidden = state.perspective !== "2d";
+    mirrorButton.disabled = changingPerspective;
+    mirrorButton.setAttribute("aria-pressed", String(mirrored));
+    mirrorButton.title = mirrored ? "Mirrored: what uses stands on the left, what it uses on the right. Press to put what offers on the left again"
+      : "Mirror the map: put what uses on the left and what offers on the right";
+    syncLegendSides(mirrored);
+    if (state.view === "map" && state.perspective === "2d") localView.applyReads();
+    fitButton.title =state.perspective === "3d" ? "Fit the current path or retained scope" : "Fit everything the map shows";
     // Under Tuning's Framing at Follows Pins (2026-11-19), Fit in 2D frames the pins and is pressed while the camera
     // follows them; the person's own pan or zoom lifts it, and a press gives the following back.
     if (state.perspective === "2d" && state.tuning.localMap.framing !== "hand") {
