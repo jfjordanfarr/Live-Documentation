@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/engine/src/live-docs/graph.ts`
-- Generated At: 2026-11-22T02:42:17.811Z
+- Generated At: 2026-11-22T05:46:12.268Z
 
 ## Authored
 ### Purpose
@@ -78,9 +78,37 @@ One reference a doc makes, resolved against the corpus.
 ##### `GRAPH_INDEX_FILE` — Summary
 The name of the file the generator writes the graph to, under the docs root.
 
+#### `graphFilesByPath` {#symbol-graphfilesbypath}
+- Type: function
+- Source: [source](../../../../../../packages/engine/src/live-docs/graph.ts#L116)
+
+##### `graphFilesByPath` — Summary
+An empty table of a graph's files by path, holding no key but those set: a path is a stranger's word, and a plain
+object's inherited members (`__proto__`, `constructor`, `toString`) would read as files that are there, or, set, be
+lost. Since 2026-11-22; before, a folder holding a file named `__proto__` could not be mapped at all.
+
+#### `fileAt` {#symbol-fileat}
+- Type: function
+- Source: [source](../../../../../../packages/engine/src/live-docs/graph.ts#L124)
+- Returns: [`GraphFile`](#symbol-graphfile)
+
+##### `fileAt` — Summary
+The graph's file at a path, or nothing when the graph holds none there, whatever the table's own members: the one
+way to ask a graph whether a path is a file of it, whether the table was derived here or read back from an index.
+
+#### `withFilesByPath` {#symbol-withfilesbypath}
+- Type: function
+- Source: [source](../../../../../../packages/engine/src/live-docs/graph.ts#L132)
+- Returns: [`LiveDocGraph`](#symbol-livedocgraph)
+- Parameters: `graph`: [`LiveDocGraph`](#symbol-livedocgraph)
+
+##### `withFilesByPath` — Summary
+The same graph with its files in a table that holds no key but its files' paths ({@link graphFilesByPath}), for a
+graph parsed from an index, whose table JSON gave a plain object's members.
+
 #### `deriveLiveDocGraph` {#symbol-derivelivedocgraph}
 - Type: function
-- Source: [source](../../../../../../packages/engine/src/live-docs/graph.ts#L117)
+- Source: [source](../../../../../../packages/engine/src/live-docs/graph.ts#L142)
 - Returns: [`LiveDocGraph`](#symbol-livedocgraph)
 - Parameters: `docs`: `Iterable`; `location`: [`DocLocation`](#symbol-doclocation)
 
@@ -93,14 +121,14 @@ Derives the graph from parsed docs.
 
 #### `LinkTarget (interface)` {#symbol-linktarget-interface}
 - Type: interface
-- Source: [source](../../../../../../packages/engine/src/live-docs/graph.ts#L257)
+- Source: [source](../../../../../../packages/engine/src/live-docs/graph.ts#L282)
 
 ##### `LinkTarget (interface)` — Summary
 The Live Doc a link in a doc points at, and the source file that doc mirrors.
 
 #### `linkTarget (function)` {#symbol-linktarget-function}
 - Type: function
-- Source: [source](../../../../../../packages/engine/src/live-docs/graph.ts#L274)
+- Source: [source](../../../../../../packages/engine/src/live-docs/graph.ts#L299)
 - Returns: [`LinkTarget`](#symbol-linktarget-interface)
 - Parameters: `location`: [`DocLocation`](#symbol-doclocation)
 
@@ -117,7 +145,7 @@ The target, or undefined when the link leaves the docs or does not name a Live D
 
 #### `resolveDocLink` {#symbol-resolvedoclink}
 - Type: function
-- Source: [source](../../../../../../packages/engine/src/live-docs/graph.ts#L298)
+- Source: [source](../../../../../../packages/engine/src/live-docs/graph.ts#L323)
 
 ##### `resolveDocLink` — Summary
 Resolves a doc-relative link to the workspace-relative path it names, without its fragment: undefined for an

@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/engine/src/live-docs/dependencies.ts`
-- Generated At: 2026-11-22T01:36:20.131Z
+- Generated At: 2026-11-22T06:30:47.866Z
 
 ## Authored
 ### Purpose
@@ -49,7 +49,7 @@ A sorted list of dependency entries describing specifiers and imported symbols.
 
 #### `mergeDependencyEntries` {#symbol-mergedependencyentries}
 - Type: function
-- Source: [source](../../../../../../packages/engine/src/live-docs/dependencies.ts#L183)
+- Source: [source](../../../../../../packages/engine/src/live-docs/dependencies.ts#L184)
 - Returns: [`DependencyEntry`](./coreTypes.ts.mdmd.md#symbol-dependencyentry)[]
 - Parameters: `base`: [`DependencyEntry`](./coreTypes.ts.mdmd.md#symbol-dependencyentry)[]; `extras`: [`DependencyEntry`](./coreTypes.ts.mdmd.md#symbol-dependencyentry)[]
 
@@ -65,7 +65,8 @@ A merged, sorted dependency list
 
 #### `resolveDependency` {#symbol-resolvedependency}
 - Type: function
-- Source: [source](../../../../../../packages/engine/src/live-docs/dependencies.ts#L276)
+- Source: [source](../../../../../../packages/engine/src/live-docs/dependencies.ts#L277)
+- Parameters: `files`: [`ListedFiles`](../tooling/workspaceProbes.ts.mdmd.md#symbol-listedfiles)
 
 ##### `resolveDependency` — Summary
 Resolves a relative module specifier to a workspace-relative file path.
@@ -83,14 +84,14 @@ The normalised relative path when resolution succeeds, otherwise `undefined`.
 
 #### `shouldInferDomDependencies` {#symbol-shouldinferdomdependencies}
 - Type: function
-- Source: [source](../../../../../../packages/engine/src/live-docs/dependencies.ts#L418)
+- Source: [source](../../../../../../packages/engine/src/live-docs/dependencies.ts#L421)
 
 ##### `shouldInferDomDependencies` — Summary
 Checks if DOM dependency inference should run for a file type.
 
 #### `augmentWithReExportedSymbols` {#symbol-augmentwithreexportedsymbols}
 - Type: function
-- Source: [source](../../../../../../packages/engine/src/live-docs/dependencies.ts#L442)
+- Source: [source](../../../../../../packages/engine/src/live-docs/dependencies.ts#L445)
 
 ##### `augmentWithReExportedSymbols` — Summary
 Augments symbol list with re-exported symbols from star exports.
@@ -110,7 +111,6 @@ Object containing augmented symbols and re-export info
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
-- `node:fs/promises`
 - `node:path` - `path`
 - [`coreConstants.MODULE_RESOLUTION_EXTENSIONS`](./coreConstants.ts.mdmd.md#symbol-module_resolution_extensions)
 - [`coreConstants.SUPPORTED_SCRIPT_EXTENSIONS`](./coreConstants.ts.mdmd.md#symbol-supported_script_extensions)
@@ -127,5 +127,7 @@ Object containing augmented symbols and re-export info
 - [`sourceText.SourceReads`](../tooling/sourceText.ts.mdmd.md#symbol-sourcereads)
 - [`sourceText.readSourceText`](../tooling/sourceText.ts.mdmd.md#symbol-readsourcetext)
 - [`sourceText.throwIfMachineFailure`](../tooling/sourceText.ts.mdmd.md#symbol-throwifmachinefailure)
+- [`workspaceProbes.ListedFiles`](../tooling/workspaceProbes.ts.mdmd.md#symbol-listedfiles)
+- [`workspaceProbes.pathKind`](../tooling/workspaceProbes.ts.mdmd.md#symbol-pathkind)
 - `typescript` - `ts`
 <!-- LIVE-DOC:END Dependencies -->

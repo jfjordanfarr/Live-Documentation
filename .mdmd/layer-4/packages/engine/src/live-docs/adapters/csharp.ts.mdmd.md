@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/engine/src/live-docs/adapters/csharp.ts`
-- Generated At: 2026-11-22T03:13:59.535Z
+- Generated At: 2026-11-22T06:21:01.298Z
 
 ## Authored
 ### Purpose
@@ -28,14 +28,14 @@ Harvests public symbols, XML doc comments, and dependency edges from C# sources,
 ### Public Symbols
 #### `TYPE_NAME_REASONS` {#symbol-type_name_reasons}
 - Type: const
-- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/csharp.ts#L1222)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/csharp.ts#L1244)
 
 ##### `TYPE_NAME_REASONS` — Summary
 Why a type name has no link although the workspace declares it.
 
 #### `resolveWorkspaceTypes` {#symbol-resolveworkspacetypes}
 - Type: function
-- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/csharp.ts#L1793)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/csharp.ts#L1868)
 - Parameters: `fileIndex`: [`WorkspaceFileIndex`](./index.ts.mdmd.md#symbol-workspacefileindex)
 
 ##### `resolveWorkspaceTypes` — Summary
@@ -43,7 +43,7 @@ The workspace files that declare a qualified type name, for adapters of other fi
 
 #### `csharpAdapter` {#symbol-csharpadapter}
 - Type: const
-- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/csharp.ts#L1804)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/csharp.ts#L1879)
 - Returns: [`LanguageAdapter`](./index.ts.mdmd.md#symbol-languageadapter)
 
 ##### `csharpAdapter` — Summary

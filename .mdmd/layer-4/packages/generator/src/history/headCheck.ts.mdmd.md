@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/generator/src/history/headCheck.ts`
-- Generated At: 2026-11-20T15:42:27.266Z
+- Generated At: 2026-11-22T05:46:15.794Z
 
 ## Authored
 ### Purpose
@@ -104,6 +104,7 @@ Where a replayed moment differs from a graph derived from committed Live Docs, i
 - [`graph.GraphFile`](../../../engine/src/live-docs/graph.ts.mdmd.md#symbol-graphfile)
 - [`graph.LiveDocGraph`](../../../engine/src/live-docs/graph.ts.mdmd.md#symbol-livedocgraph)
 - [`graph.deriveLiveDocGraph`](../../../engine/src/live-docs/graph.ts.mdmd.md#symbol-derivelivedocgraph)
+- [`graph.fileAt`](../../../engine/src/live-docs/graph.ts.mdmd.md#symbol-fileat)
 - [`graph.linkTarget`](../../../engine/src/live-docs/graph.ts.mdmd.md#symbol-linktarget-function)
 - [`git.followLink`](../../../engine/src/live-docs/history/git.ts.mdmd.md#symbol-followlink)
 - [`git.historyGit`](../../../engine/src/live-docs/history/git.ts.mdmd.md#symbol-historygit)

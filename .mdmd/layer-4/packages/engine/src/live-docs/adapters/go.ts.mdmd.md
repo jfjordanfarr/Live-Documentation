@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/engine/src/live-docs/adapters/go.ts`
-- Generated At: 2026-11-22T02:29:38.855Z
+- Generated At: 2026-11-22T05:55:57.498Z
 
 ## Authored
 ### Purpose
@@ -13,7 +13,8 @@ The Go adapter: tree-sitter symbols (exported declarations, methods, fields and 
 ### Notes
 - Measured against `scip-go` on `go/depot` and `go/rosetta`; the misses it keeps are scip-go's package-symbol artifact and one promoted method that needs type inference, both recorded in the decisions log.
 - Locals are tracked per function (parameters, results, `:=`, `var`, `range`, type switches, labels) so a local that shadows a package-level name of a sibling file does not link; block-level scoping inside a function is not modelled.
-- The package table is keyed by directory and package clause, built once per generation run on the file index; per-file facts are cached by modification time.
+- The package table is keyed by directory and package clause, built once per generation run on the file index; per-file facts are kept for the run (since 2026-11-22; before, by modification time).
+- A file's module is found by walking up to the nearest `go.mod`, asking the run's listing whether each folder holds one before reading it (since 2026-11-22). Before, the walk read its way up, and since a failed read is kept by no one, the host was asked again for every Go file: 32 asks for eight absent `go.mod` files on `go/depot`, found by the independent review of that day (`go.module-probe.test.ts`).
 - The program's entry point is reported on the analysis result since 2026-10-15 ([the decision](../../../../../../../.mdmd/layer-3/architectural-decisions.mdmd.md#entry-points-are-written-on-the-entry-and-what-they-reach-is-one-walk-recorded-2026-10-15)), from which the doc carries `- Entry: program`: a top-level `func main` in `package main`, with its line; a `main` of another package, or a method named `main`, is none.
 
 ## Generated
@@ -21,7 +22,7 @@ The Go adapter: tree-sitter symbols (exported declarations, methods, fields and 
 ### Public Symbols
 #### `goAdapter` {#symbol-goadapter}
 - Type: const
-- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/go.ts#L633)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/go.ts#L637)
 - Returns: [`LanguageAdapter`](./index.ts.mdmd.md#symbol-languageadapter)
 
 ##### `goAdapter` — Summary
@@ -48,6 +49,8 @@ Language adapter for Go (`.go`): tree-sitter symbols and package-aware name reso
 - [`sourceText.SourceReads`](../../tooling/sourceText.ts.mdmd.md#symbol-sourcereads)
 - [`sourceText.readSourceText`](../../tooling/sourceText.ts.mdmd.md#symbol-readsourcetext)
 - [`sourceText.throwIfMachineFailure`](../../tooling/sourceText.ts.mdmd.md#symbol-throwifmachinefailure)
+- [`workspaceProbes.ListedFiles`](../../tooling/workspaceProbes.ts.mdmd.md#symbol-listedfiles)
+- [`workspaceProbes.pathKind`](../../tooling/workspaceProbes.ts.mdmd.md#symbol-pathkind)
 <!-- LIVE-DOC:END Dependencies -->
 
 <!-- LIVE-DOC:BEGIN Cited By -->

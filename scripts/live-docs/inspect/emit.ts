@@ -148,7 +148,8 @@ export function emitPathResult(
   direction: Direction,
   graph: LiveDocGraph,
   json: boolean,
-  verbose: boolean
+  verbose: boolean,
+  asked?: AskedEnds
 ): void {
   const hops: HopDescriptor[] = [];
   for (let index = 0; index < pathNodes.length - 1; index += 1) {
@@ -166,6 +167,7 @@ export function emitPathResult(
       kind: "path" as const,
       direction,
       each,
+      ...(asked ? { asked: askedOf(asked) } : {}),
       length: pathNodes.length - 1,
       from: describeNode(graph, pathNodes[0], verbose),
       to: describeNode(graph, pathNodes[pathNodes.length - 1], verbose),
@@ -176,7 +178,7 @@ export function emitPathResult(
     return;
   }
 
-  console.log(`Path from ${pathNodes[0]} to ${pathNodes[pathNodes.length - 1]}, ${pathNodes.length - 1} hop(s): each file ${each} the next.`);
+  console.log(`Path from ${pathNodes[0]} to ${pathNodes[pathNodes.length - 1]}, ${pathNodes.length - 1} hop(s): each file ${each} the next${askedClause(asked, pathNodes[0], pathNodes[pathNodes.length - 1])}.`);
   hops.forEach((hop, index) => {
     const fromDoc = hop.from.docPath ? ` [${hop.from.docPath}]` : "";
     const toDoc = hop.to.docPath ? ` [${hop.to.docPath}]` : "";
@@ -200,7 +202,8 @@ export function emitNotFound(
   json: boolean,
   verbose: boolean,
   reverse?: { hops: number },
-  eitherWay = false
+  eitherWay = false,
+  asked?: AskedEnds
 ): void {
   const command = reverseCommand(from, to, direction);
   const payload = {
@@ -209,6 +212,7 @@ export function emitNotFound(
     from: describeNode(graph, from, verbose),
     to: describeNode(graph, to, verbose),
     reverse: reverse ? { hops: reverse.hops, command } : null,
+    ...(asked ? { asked: askedOf(asked) } : {}),
     visited: Array.from(result.visited).map((node) => describeNode(graph, node, verbose)),
     frontier: result.frontier.map((entry) => ({
       node: describeNode(graph, entry.node, verbose),
@@ -222,11 +226,44 @@ export function emitNotFound(
     return;
   }
 
-  console.log(eitherWay
-    ? `No path runs between ${from} and ${to}, either way.`
+  console.log(asked?.narrowed === "same"
+    ? `No path runs between ${from} and ${to}: the two ends are the same.`
+    : eitherWay
+    ? `No path runs between ${from} and ${to}, either way${narrowedClause(asked)}.`
     : reverse
     ? `No path runs from ${from} to ${to} (${direction}); one runs the other way, ${reverse.hops} hop(s): ${command}`
     : `No path runs from ${from} to ${to} (${direction}), nor the other way.`);
+}
+
+/** The two ends of a path as asked, and which gave way when one held the other (see the engine's `endsApart`). */
+export interface AskedEnds {
+  from: string;
+  to: string;
+  narrowed?: "from" | "to" | "same";
+}
+
+/** The ends as asked, for the JSON: each as typed and resolved, and the end taken without the other, or null. */
+function askedOf(asked: AskedEnds): { from: string; to: string; narrowed: "from" | "to" | "same" | null } {
+  return { from: asked.from, to: asked.to, narrowed: asked.narrowed ?? null };
+}
+
+/**
+ * The clause that names the ends as asked where they are not the files that answered (a directory), and an outer end
+ * taken without the inner: "; asked from src/ without src/b.ts", "; asked to PaymentService/". Empty for two files.
+ */
+function askedClause(asked: AskedEnds | undefined, first: string, last: string): string {
+  if (!asked) return "";
+  const parts: string[] = [];
+  if (asked.from !== first) parts.push(`from ${asked.from}${asked.narrowed === "from" ? ` without ${asked.to}` : ""}`);
+  if (asked.to !== last) parts.push(`to ${asked.to}${asked.narrowed === "to" ? ` without ${asked.from}` : ""}`);
+  return parts.length ? `; asked ${parts.join(" ")}` : "";
+}
+
+/** The clause that says an outer end was taken without the inner one; empty when the ends were apart. */
+function narrowedClause(asked: AskedEnds | undefined): string {
+  if (asked?.narrowed === "from") return `; ${asked.from} taken without ${asked.to}`;
+  if (asked?.narrowed === "to") return `; ${asked.to} taken without ${asked.from}`;
+  return "";
 }
 
 /** The command that asks the reverse question: from the end back to the start, the same way. */
@@ -476,73 +513,62 @@ export function emitDualDirectionResult(
   inboundResult: PathSearchResult,
   graph: LiveDocGraph,
   json: boolean,
-  verbose: boolean
+  verbose: boolean,
+  asked?: AskedEnds
 ): void {
+  // One answer shape with a path's: what was asked, and for each way the files that answered (the engine review's
+  // second pass, 2026-11-22). A way that finds nothing says what that walk tested, and no more.
+  const ends = asked ?? { from, to };
+  const way = (result: PathSearchResult, direction: OneWay) => result.path
+    ? { found: true, direction, each: direction === "inbound" ? "is used by" : "uses", length: result.path.length - 1,
+        from: describeNode(graph, result.path[0], verbose), to: describeNode(graph, result.path[result.path.length - 1], verbose),
+        nodes: result.path.map((node) => describeNode(graph, node, verbose)) }
+    : { found: false, direction };
   if (json) {
-    const payload = {
-      kind: "dual-direction" as const,
-      from: describeNode(graph, from, verbose),
-      to: describeNode(graph, to, verbose),
-      forward: outboundResult.path
-        ? {
-            found: true,
-            direction: "outbound" as const,
-            length: outboundResult.path.length - 1,
-            nodes: outboundResult.path.map((node) => describeNode(graph, node, verbose))
-          }
-        : { found: false, direction: "outbound" as const },
-      reverse: inboundResult.path
-        ? {
-            found: true,
-            direction: "inbound" as const,
-            length: inboundResult.path.length - 1,
-            nodes: inboundResult.path.map((node) => describeNode(graph, node, verbose))
-          }
-        : { found: false, direction: "inbound" as const }
-    };
-    console.log(JSON.stringify(payload, null, 2));
+    console.log(JSON.stringify({ kind: "dual-direction" as const, asked: askedOf(ends), forward: way(outboundResult, "outbound"), reverse: way(inboundResult, "inbound") }, null, 2));
     return;
   }
 
-  console.log(`Dual-direction search from ${from} to ${to}:\n`);
+  console.log(`Dual-direction search from ${from} to ${to}${narrowedClause(asked)}:\n`);
 
   const docOf = (node: string): string => {
     const docPath = graph.files[node]?.docPath ?? "";
     return docPath ? ` [${docPath}]` : "";
   };
+  // An end named for the sentence: a file as itself, a directory as "a file of" it.
+  const filesOf = (end: string): string => (end.endsWith("/") ? `a file of ${end}` : end);
+  const noneOf = (end: string): string => (end.endsWith("/") ? `No file of ${end}` : end);
 
-  // Forward path (outbound): "FROM depends on something that eventually reaches TO"
   if (outboundResult.path) {
     const pathNodes = outboundResult.path;
-    console.log(`  FORWARD PATH (outbound, ${pathNodes.length - 1} hop(s)):`);
-    console.log(`    Interpretation: "${path.basename(from)}" depends on → ... → "${path.basename(to)}"`);
+    console.log(`  FORWARD PATH (outbound, ${pathNodes.length - 1} hop(s)): each file uses the next.`);
     for (let i = 0; i < pathNodes.length - 1; i++) {
-      console.log(`    ${i + 1}. ${pathNodes[i]}${docOf(pathNodes[i])} → ${pathNodes[i + 1]}${docOf(pathNodes[i + 1])}`);
+      console.log(`    ${i + 1}. ${pathNodes[i]}${docOf(pathNodes[i])} uses ${pathNodes[i + 1]}${docOf(pathNodes[i + 1])}`);
     }
     console.log();
   } else {
+    // The walk ran from --from along what it uses, and did not meet --to.
     console.log(`  FORWARD PATH (outbound): No path found.`);
-    console.log(`    "${path.basename(from)}" does not depend (directly or transitively) on "${path.basename(to)}".`);
+    console.log(`    ${noneOf(from) === from ? `${from} does not use` : `${noneOf(from)} uses`} ${filesOf(to)}, directly or through other files.`);
     console.log();
   }
 
-  // Reverse path (inbound): "TO depends on something that eventually reaches FROM"
   if (inboundResult.path) {
     const pathNodes = inboundResult.path;
-    console.log(`  REVERSE PATH (inbound, ${pathNodes.length - 1} hop(s)):`);
-    console.log(`    Interpretation: "${path.basename(from)}" is depended on by ← ... ← "${path.basename(to)}"`);
+    console.log(`  REVERSE PATH (inbound, ${pathNodes.length - 1} hop(s)): each file is used by the next.`);
     for (let i = 0; i < pathNodes.length - 1; i++) {
-      console.log(`    ${i + 1}. ${pathNodes[i]}${docOf(pathNodes[i])} ← ${pathNodes[i + 1]}${docOf(pathNodes[i + 1])}`);
+      console.log(`    ${i + 1}. ${pathNodes[i]}${docOf(pathNodes[i])} is used by ${pathNodes[i + 1]}${docOf(pathNodes[i + 1])}`);
     }
     console.log();
   } else {
+    // The walk ran from --from along what uses it, and did not meet --to: so --to does not use --from.
     console.log(`  REVERSE PATH (inbound): No path found.`);
-    console.log(`    Nothing that depends on "${path.basename(from)}" also depends on "${path.basename(to)}".`);
+    console.log(`    ${noneOf(to) === to ? `${to} does not use` : `${noneOf(to)} uses`} ${filesOf(from)}, directly or through other files.`);
     console.log();
   }
 
   if (!outboundResult.path && !inboundResult.path) {
-    console.log(`  No relationship found in either direction.`);
+    console.log(`  No path runs either way.`);
   }
 }
 

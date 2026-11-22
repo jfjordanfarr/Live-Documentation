@@ -111,6 +111,8 @@ Most of what the indexed lines cost in the second leg was their simplest reader'
 
 The Explorer and the engine in one file under a policy that admits one hashed script; a folder picked; progress shown while it scans; the facts kept in the page; a blank copy and a filled copy saved. The same file is what the command line writes, filled, so there is one page and two ways to fill it.
 
+**A question this task must answer before its design, found on 2026-11-22** by the stored form's builder while measuring a worker ([its record](../AgentSessionHistory/2026/11/2026-11-22/Probes/stored-form-module/README.md), fifth milestone, third leg, on its branch until merged): under today's policy, one hashed script, a page cannot start a worker at all, the browser refusing a worker made from a blob; and with `worker-src blob:` added, a module worker in a page opened from disk failed without a message. So whether the one page can scan, or read a stranger's map, off its main thread is not known. Scanning ten thousand files on the main thread holds the page still for as long as it takes, so the probe comes first: what kind of worker a page opened from disk can start, under what policy, and what that policy then admits that today's does not.
+
 ### The page says its guarantees where a person decides to trust, and its progress plainly
 - state: open
 - holds: not begun; set down on 2026-11-22 at the owner's word that these not be lost

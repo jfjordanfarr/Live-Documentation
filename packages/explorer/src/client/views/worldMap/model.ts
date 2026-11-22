@@ -13,7 +13,7 @@
 
 import { legendFor, SHAPES, TINTS, type Board } from "@live-documentation/engine/live-docs/board";
 import type { BoardGraph, Ghost, ServedDoor, StandsOn, WireBasis, WireDoor, WireLine } from "@live-documentation/engine/live-docs/boardGraph";
-import type { LiveDocGraph } from "@live-documentation/engine/live-docs/graph";
+import { fileAt, type LiveDocGraph } from "@live-documentation/engine/live-docs/graph";
 
 import type { Shape } from "./layout";
 import type { Point2 } from "./projection";
@@ -145,7 +145,7 @@ export function buildWorldModel(board: Board, joined: BoardGraph, graph: LiveDoc
         region: holderOf.get(entry.thing.name),
         folder: entry.folder,
         files: entry.files,
-        symbols: entry.files.reduce((count, file) => count + (graph.files[file]?.symbols.length ?? 0), 0),
+        symbols: entry.files.reduce((count, file) => count + (fileAt(graph.files, file)?.symbols.length ?? 0), 0),
         doors: entry.doors,
         standsOn: entry.standsOn,
         ghosts: entry.ghosts,

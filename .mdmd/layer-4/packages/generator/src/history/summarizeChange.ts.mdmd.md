@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/generator/src/history/summarizeChange.ts`
-- Generated At: 2026-11-20T19:52:27.054Z
+- Generated At: 2026-11-22T05:46:15.839Z
 
 ## Authored
 ### Purpose
@@ -60,7 +60,7 @@ committed on another day was removed by the generator, so that it never stands i
 
 #### `withoutTree` {#symbol-withouttree}
 - Type: function
-- Source: [source](../../../../../../packages/generator/src/history/summarizeChange.ts#L151)
+- Source: [source](../../../../../../packages/generator/src/history/summarizeChange.ts#L153)
 
 ##### `withoutTree` — Summary
 A reason with every mention of the tree's folder taken out, so that it reads the same whichever worker and folder made
@@ -71,7 +71,7 @@ an overflow's wording, is the runtime's and its platform's, not ours.
 
 #### `treeOptions` {#symbol-treeoptions}
 - Type: function
-- Source: [source](../../../../../../packages/generator/src/history/summarizeChange.ts#L173)
+- Source: [source](../../../../../../packages/generator/src/history/summarizeChange.ts#L175)
 - Returns: [`WorkingTreeOptions`](../../../engine/src/live-docs/history/versionControl.ts.mdmd.md#symbol-workingtreeoptions)
 - Parameters: `configuration`: [`LiveDocumentationConfig`](../../../engine/src/config/liveDocumentationConfig.ts.mdmd.md#symbol-livedocumentationconfig)
 
@@ -93,7 +93,7 @@ lay in `regenerate.ts`, whose process wrote every tree.
 
 #### `standingFiles` {#symbol-standingfiles}
 - Type: function
-- Source: [source](../../../../../../packages/generator/src/history/summarizeChange.ts#L214)
+- Source: [source](../../../../../../packages/generator/src/history/summarizeChange.ts#L216)
 - Parameters: `unwritten`: `ReadonlyArray`
 
 ##### `standingFiles` — Summary
@@ -110,14 +110,14 @@ the disk was asked here (`stat`, then `isFile`).
 
 #### `WorkerTask` {#symbol-workertask}
 - Type: type
-- Source: [source](../../../../../../packages/generator/src/history/summarizeChange.ts#L249)
+- Source: [source](../../../../../../packages/generator/src/history/summarizeChange.ts#L251)
 
 ##### `WorkerTask` — Summary
 What the history command asks of a worker: one change summarized, its tree written or brought forward by the worker.
 
 #### `WorkerReport` {#symbol-workerreport}
 - Type: interface
-- Source: [source](../../../../../../packages/generator/src/history/summarizeChange.ts#L252)
+- Source: [source](../../../../../../packages/generator/src/history/summarizeChange.ts#L254)
 
 ##### `WorkerReport` — Summary
 What a worker answers for each task.
@@ -135,7 +135,9 @@ What a worker answers for each task.
 - [`archetype.matchesPathPattern`](../../../engine/src/live-docs/archetype.ts.mdmd.md#symbol-matchespathpattern)
 - [`discovery.docsRootWithin`](../../../engine/src/live-docs/discovery.ts.mdmd.md#symbol-docsrootwithin)
 - [`gitUtils.execFileAsync`](../../../engine/src/live-docs/gitUtils.ts.mdmd.md#symbol-execfileasync)
-- [`graph.LiveDocGraph`](../../../engine/src/live-docs/graph.ts.mdmd.md#symbol-livedocgraph) (type-only)
+- [`graph.LiveDocGraph`](../../../engine/src/live-docs/graph.ts.mdmd.md#symbol-livedocgraph)
+- [`graph.graphFilesByPath`](../../../engine/src/live-docs/graph.ts.mdmd.md#symbol-graphfilesbypath)
+- [`graph.withFilesByPath`](../../../engine/src/live-docs/graph.ts.mdmd.md#symbol-withfilesbypath)
 - [`git.openGitStore`](../../../engine/src/live-docs/history/git.ts.mdmd.md#symbol-opengitstore)
 - [`summary.AuthoredReading`](../../../engine/src/live-docs/history/summary.ts.mdmd.md#symbol-authoredreading)
 - [`summary.summarizeGraph`](../../../engine/src/live-docs/history/summary.ts.mdmd.md#symbol-summarizegraph)

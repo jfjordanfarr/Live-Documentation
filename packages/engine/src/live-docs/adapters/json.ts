@@ -120,52 +120,80 @@ const MAIN_ENDINGS = ["", ".js", ".json", ".node"] as const;
 
 /**
  * The files a package's own name loads, as Node resolves it, each as the paths Node tries in its order, the first that
- * is a file being the one: from `exports` when the manifest has it, for the subpath `.` (a string, a list of
- * fall-backs, or conditions, written under `.` or as the whole of `exports`), one path, and then `main` is not read, as
- * Node does not read it; otherwise by Node's legacy resolution of `main`: the path it names, then with `.js`, `.json`
- * or `.node` after it, then its `index` with each of those, and last the package's own `index.js`, `index.json` or
- * `index.node`, which is all there is to try without `main`. One list for a program that imports the package and one
- * for a program that requires it, when the two differ. A manifest whose `exports` names no `.`, only patterns such as
- * `./*`, has no file its name loads.
+ * is a file being the one. One list for a program that imports the package and one for a program that requires it,
+ * when the two differ.
  *
- * Until 2026-11-22 only `main` was read, as written, so a package that names its entry in `exports` alone, as
- * `packages/stored-form` does, had none, nor did one whose `main` leaves off its extension or names a folder, nor one
- * with no `main`. Held to Node's own resolver over every package of this repository's `node_modules`
- * (`tests/integration/live-docs/package-modules.oracle.test.ts`).
+ * Node's resolution as its documentation writes it ("Resolution algorithm specification", `PACKAGE_EXPORTS_RESOLVE` and
+ * `PACKAGE_TARGET_RESOLVE`), step for step, so that a shape nobody thought of is answered as Node answers it:
+ * - `exports` is read when it is neither `null` nor `undefined`, and then `main` is not read; otherwise Node's legacy
+ *   resolution of `main`: the path it names, then with `.js`, `.json` or `.node` after it, then its `index` with each,
+ *   and last the package's own `index.js`, `index.json` or `index.node`, which is all there is to try without `main`.
+ * - `exports` that mixes keys beginning with `.` and keys that do not is refused, as Node refuses the manifest
+ *   (`ERR_INVALID_PACKAGE_CONFIG`); so is one with a key that is an array index.
+ * - The subpath `.` is `exports` itself when it is a string, a list, or conditions with no key beginning with `.`;
+ *   else its `.` key. A manifest whose `exports` names no `.`, only patterns such as `./*`, has no file its name loads.
+ * - A target is resolved by `exportTarget`; one that resolves to nothing, or that Node refuses, loads nothing.
+ *
+ * Until 2026-11-22 only `main` was read, as written. Held to Node's own resolver over every package of this
+ * repository's `node_modules` (`tests/integration/live-docs/package-modules.oracle.test.ts`) and over made shapes no
+ * installed package holds (`json.exports.test.ts`, the independent review's shapes among them).
  */
 export function packageModules(manifest: Record<string, unknown>): string[][] {
   const exported = manifest.exports;
-  if (exported === undefined) {
+  if (exported === undefined || exported === null) {
     const main = typeof manifest.main === "string" && manifest.main !== "" ? manifest.main.replace(/\/+$/u, "") : undefined;
     const fromMain = main === undefined ? [] : [...MAIN_ENDINGS.map((ending) => `${main}${ending}`), ...MAIN_ENDINGS.slice(1).map((ending) => `${main}/index${ending}`)];
     return [[...fromMain, ...MAIN_ENDINGS.slice(1).map((ending) => `./index${ending}`)]];
   }
-  const keys = exported && typeof exported === "object" && !Array.isArray(exported) ? Object.keys(exported) : [];
-  const dot = keys.length > 0 && keys.every((key) => key.startsWith(".")) ? (exported as Record<string, unknown>)["."] : exported;
-  const targets = NODE_CONDITIONS.map((conditions) => exportTarget(dot, conditions)).filter((target): target is string => target !== undefined);
+  let dot: unknown = exported;
+  if (typeof exported === "object" && !Array.isArray(exported)) {
+    const keys = Object.keys(exported);
+    const subpaths = keys.filter((key) => key.startsWith("."));
+    if (subpaths.length > 0 && subpaths.length < keys.length) return [];
+    if (keys.some((key) => /^\d+$/u.test(key))) return [];
+    if (subpaths.length > 0) dot = (exported as Record<string, unknown>)["."];
+  }
+  if (dot === undefined) return [];
+  const targets = NODE_CONDITIONS.map((conditions) => exportTarget(dot, conditions)).filter((target): target is string => typeof target === "string");
   return Array.from(new Set(targets), (target) => [target]);
 }
 
+/** A target Node refuses (`ERR_INVALID_PACKAGE_TARGET`), as distinct from one that is not exported (`null`). */
+const REFUSED = Symbol("refused");
+
 /**
- * The target Node resolves an export to under a set of conditions (its `PACKAGE_TARGET_RESOLVE`): a string that is a
- * path within the package; the first of a list that resolves; or, of conditions in the order written, the first that
- * matches and resolves. A `null` is a subpath the package does not export.
+ * The target Node resolves an export to under a set of conditions, as its `PACKAGE_TARGET_RESOLVE` writes it: a string
+ * that is `./` followed by segments none of which is empty, `.`, `..` or `node_modules` (in any case), else refused; a
+ * list, `null` when empty, else the first of its items that resolves, an item Node refuses passed over, and the last
+ * item's answer when none does; conditions, in the order written, the first that matches and does not resolve to
+ * nothing, so that a `null` under a matching condition ends the search with nothing exported; `null`, nothing exported.
+ * Anything else is refused. A string is the export; `null`, `undefined` or a refusal is nothing the name loads.
  */
-function exportTarget(value: unknown, conditions: ReadonlySet<string>): string | undefined {
-  if (typeof value === "string") return value.startsWith("./") ? value : undefined;
-  if (Array.isArray(value)) {
-    for (const each of value) {
-      const target = exportTarget(each, conditions);
-      if (target !== undefined) return target;
-    }
-    return undefined;
+function exportTarget(value: unknown, conditions: ReadonlySet<string>): string | null | undefined | typeof REFUSED {
+  if (typeof value === "string") {
+    if (!value.startsWith("./")) return REFUSED;
+    const segments = value.slice(2).split(/[/\\]/u);
+    return segments.some((segment) => segment === "" || segment === "." || segment === ".." || segment.toLowerCase() === "node_modules") ? REFUSED : value;
   }
-  if (!value || typeof value !== "object") return undefined;
+  if (Array.isArray(value)) {
+    if (value.length === 0) return null;
+    let last: string | null | undefined | typeof REFUSED;
+    for (const each of value) {
+      last = exportTarget(each, conditions);
+      if (last === REFUSED || last === undefined) continue;
+      return last;
+    }
+    return last;
+  }
+  if (value === null) return null;
+  if (typeof value !== "object") return REFUSED;
+  // Conditions with a key that is an array index Node refuses as a manifest it cannot read.
+  if (Object.keys(value).some((key) => /^\d+$/u.test(key))) return REFUSED;
   for (const [condition, inner] of Object.entries(value as Record<string, unknown>)) {
     if (!conditions.has(condition)) continue;
-    if (inner === null) return undefined;
-    const target = exportTarget(inner, conditions);
-    if (target !== undefined) return target;
+    const resolved = exportTarget(inner, conditions);
+    if (resolved === undefined) continue;
+    return resolved;
   }
   return undefined;
 }
@@ -452,6 +480,11 @@ async function compilerPaths(directory: string, reads: (SourceReads & ListedFile
       return { outDir: path.resolve(directory, options.outDir), rootDirs: rootDirs.map((root) => path.resolve(directory, root)) };
     }
     for (const file of wanted) {
+      // A file the listing does not hold is no file TypeScript may read, and the host is not asked for it (2026-11-22).
+      if (pathKind(file, reads) !== "file") {
+        given.set(file, undefined);
+        continue;
+      }
       try {
         const reading = await readSourceReading(file, reads);
         given.set(file, reading.encoding === "unread" ? undefined : reading.text);

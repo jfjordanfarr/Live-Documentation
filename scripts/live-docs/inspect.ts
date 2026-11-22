@@ -31,6 +31,7 @@ import {
   searchGraph,
   searchSymbolPath,
   under,
+  endsApart,
   type Direction,
   type OneWay
 } from "@live-documentation/engine/live-docs/pathfind";
@@ -137,6 +138,12 @@ async function main(): Promise<void> {
   }
 
   const graph = await readLiveDocGraph({ workspaceRoot, config: configInput });
+  // The emitters look a typed path up in `graph.files` directly, which is safe only while the table holds no key but
+  // its files' paths, as the derived graph's does (`graphFilesByPath`, 2026-11-22): a plain object's `constructor` or
+  // `toString` would read as a file that is there.
+  if (Object.getPrototypeOf(graph.files) !== null) {
+    throw new Error("The graph's table of files holds a plain object's members, so a typed path such as constructor would read as a file: derive it with graphFilesByPath, or read it back with withFilesByPath.");
+  }
 
   if (Object.keys(graph.files).length === 0) {
     console.error("No Live Docs found. Generate Live Documentation before running inspect.");
@@ -236,12 +243,14 @@ async function main(): Promise<void> {
       return;
     }
     const toId = end.label;
+    // Two ends that share files: the outer is taken without the inner, and one end asked twice is no path.
+    const asked = { from: fromId, to: toId, narrowed: endsApart(start.files, end.files).narrowed };
 
     // Handle dual-direction search
     if (direction === "both") {
       const outboundResult = searchGraph(graph, start.files, end.files, "outbound", args.maxDepth);
       const inboundResult = searchGraph(graph, start.files, end.files, "inbound", args.maxDepth);
-      emitDualDirectionResult(fromId, toId, outboundResult, inboundResult, graph, args.json, args.verbose);
+      emitDualDirectionResult(fromId, toId, outboundResult, inboundResult, graph, args.json, args.verbose, asked);
       // Exit with success if at least one path found
       if (!outboundResult.path && !inboundResult.path) {
         process.exit(1);
@@ -253,22 +262,22 @@ async function main(): Promise<void> {
     // uses first, else along what uses it (2026-11-22). --direction keeps the search to one way.
     const searchResult = searchGraph(graph, start.files, end.files, direction, args.maxDepth);
     if (searchResult.path) {
-      emitPathResult(searchResult.path, direction, graph, args.json, args.verbose);
+      emitPathResult(searchResult.path, direction, graph, args.json, args.verbose, asked);
       return;
     }
     if (!args.directionGiven) {
       const against = searchGraph(graph, start.files, end.files, "inbound", args.maxDepth);
       if (against.path) {
-        emitPathResult(against.path, "inbound", graph, args.json, args.verbose);
+        emitPathResult(against.path, "inbound", graph, args.json, args.verbose, asked);
         return;
       }
-      emitNotFound(fromId, toId, direction, graph, searchResult, args.json, args.verbose, undefined, true);
+      emitNotFound(fromId, toId, direction, graph, searchResult, args.json, args.verbose, undefined, true, asked);
       process.exit(1);
       return;
     }
 
     const back = searchGraph(graph, end.files, start.files, direction, args.maxDepth).path;
-    emitNotFound(fromId, toId, direction, graph, searchResult, args.json, args.verbose, back ? { hops: back.length - 1 } : undefined);
+    emitNotFound(fromId, toId, direction, graph, searchResult, args.json, args.verbose, back ? { hops: back.length - 1 } : undefined, asked.narrowed === "same", asked);
     process.exit(1);
     return;
   }
@@ -317,11 +326,21 @@ function resolveEnd(typed: string, workspaceRoot: string, config: LiveDocumentat
   }
   const ids = Object.keys(graph.files).sort();
   let files = ids.filter((id) => under(id, directory));
+  let spelled = directory;
   if (files.length === 0) {
+    // In another case: one directory answering to the name is that directory, named back as it is spelled; two or
+    // more are named back to the person, as two files that differ by case are (the engine review of 2026-11-22).
     const folded = directory.toLowerCase();
-    files = ids.filter((id) => under(id.toLowerCase(), folded));
+    const spellings = [...new Set(ids.filter((id) => under(id.toLowerCase(), folded)).map((id) => id.slice(0, directory.length)))].sort();
+    if (spellings.length > 1) {
+      throw new UsageError(`${typed} names ${spellings.length} directories that differ only in case: ${spellings.join(", ")}; give one as it is spelled.`);
+    }
+    if (spellings.length === 1) {
+      spelled = spellings[0];
+      files = ids.filter((id) => under(id, spelled));
+    }
   }
-  return files.length > 0 ? { label: `${directory}/`, files, directory } : undefined;
+  return files.length > 0 ? { label: `${spelled}/`, files, directory: spelled } : undefined;
 }
 
 /** A file's related documents, both ways: what its authored words cite, and what cites it by its doc's `Cited By` section. */

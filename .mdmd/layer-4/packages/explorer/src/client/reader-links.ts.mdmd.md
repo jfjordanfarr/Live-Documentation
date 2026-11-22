@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/explorer/src/client/reader-links.ts`
-- Generated At: 2026-11-19T22:40:11.379Z
+- Generated At: 2026-11-22T06:30:49.964Z
 
 ## Authored
 ### Purpose
@@ -62,7 +62,8 @@ Authored Live Doc prose and bundled Markdown use exactly the same navigation rul
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
 - [`document.symbolName`](../../../engine/src/live-docs/document.ts.mdmd.md#symbol-symbolname)
-- [`graph.GraphFile`](../../../engine/src/live-docs/graph.ts.mdmd.md#symbol-graphfile) (type-only)
+- [`graph.GraphFile`](../../../engine/src/live-docs/graph.ts.mdmd.md#symbol-graphfile)
+- [`graph.fileAt`](../../../engine/src/live-docs/graph.ts.mdmd.md#symbol-fileat)
 - [`markdownLinks.linkPath`](../../../engine/src/tooling/markdownLinks.ts.mdmd.md#symbol-linkpath)
 - [`graph-helpers.escapeHtml`](./graph-helpers.ts.mdmd.md#symbol-escapehtml)
 - [`types.InspectionTarget`](./types.ts.mdmd.md#symbol-inspectiontarget) (type-only)

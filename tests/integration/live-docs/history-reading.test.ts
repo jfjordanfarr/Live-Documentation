@@ -125,12 +125,15 @@ describe("the history over excluded code, documents the bundle excludes and symb
     expect(run.stderr).not.toContain("were not written into their trees");
   }, 300_000);
 
-  it("reads excluded code an included file imports and re-exports, as a checkout does", () => {
+  it("never reads excluded code an included file imports and re-exports, as a checkout does not", () => {
     const index = summary().files.find((file) => file.path === "src/index.ts")!;
-    // Resolved against the excluded files on disk, as a checkout's generator resolves them: a raw specifier would mean
-    // the tree lacked them (the review's first finding).
-    expect(index.dependencies.map((line) => line.label).sort()).toEqual(["../assets/logo.png", "api", "types.thing"]);
-    expect((index.reExports ?? []).map((entry) => entry.name).sort()).toEqual(["Api", "api"]);
+    // Until 2026-11-22 a checkout's generator read the excluded files on disk to resolve them, and this case held the
+    // history to that (the review of 2026-11-19, its first finding). Since then what a scan leaves out is never read, by
+    // a checkout or by the history (the root's ruling, measured first to move no fact of real code across 5,969 kept
+    // script files): each import of one is labelled as the included file wrote it, and a re-export of all it offers
+    // names nothing, its names unknown. The case is the same, the history still equal to a checkout.
+    expect(index.dependencies.map((line) => line.label).sort()).toEqual(["../assets/logo.png", "../generated/api", "../generated/types"]);
+    expect(index.reExports ?? []).toEqual([]);
   });
 
   it("documents a link to code, and counts a link to a document as the document it leads to", () => {

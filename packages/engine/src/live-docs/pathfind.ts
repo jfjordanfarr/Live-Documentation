@@ -14,7 +14,7 @@
 
 import { noReaderHandles } from "../config/liveDocumentationConfig";
 import type { Entry } from "./document";
-import type { GraphFile, LiveDocGraph } from "./graph";
+import { fileAt, type GraphFile, type LiveDocGraph } from "./graph";
 
 /** Traversal direction for graph searches. */
 export type Direction = "outbound" | "inbound" | "both";
@@ -96,14 +96,49 @@ export function walk(
   return { hops, parents, stops };
 }
 
+/** Two ends of a path made apart, and which end gave way: the outer of two nested ends, or both when they are one. */
+export interface EndsApart {
+  from: Set<string>;
+  to: Set<string>;
+  /** `from` or `to` when that end held the other and was taken without it; `same` when the two are one end. */
+  narrowed?: "from" | "to" | "same";
+}
+
+/**
+ * The files each end of a path stands for, made apart. An end is a file or a directory, so two ends are apart or one
+ * holds the other (root's rule, 2026-11-22, after the engine review found a path between nested ends lost): when one
+ * holds the other, the path runs between the inner end and the rest of the outer; when the two are the same, there is
+ * no path, as one file is never a path to itself. Ends that overlap otherwise keep the starts and lose the shared files
+ * from the targets.
+ */
+export function endsApart(starts: Iterable<string>, targets: Iterable<string>): EndsApart {
+  const from = new Set(starts);
+  const to = new Set(targets);
+  if (from.size === 0 || to.size === 0) {
+    return { from, to };
+  }
+  const toInFrom = [...to].every((id) => from.has(id));
+  const fromInTo = [...from].every((id) => to.has(id));
+  if (toInFrom && fromInTo) {
+    return { from: new Set(), to: new Set(), narrowed: "same" };
+  }
+  if (toInFrom) {
+    return { from: new Set([...from].filter((id) => !to.has(id))), to, narrowed: "from" };
+  }
+  if (fromInTo) {
+    return { from, to: new Set([...to].filter((id) => !from.has(id))), narrowed: "to" };
+  }
+  return { from, to: new Set([...to].filter((id) => !from.has(id))) };
+}
+
 /**
  * The walk from one set of files to another, as a path between two ends is asked on either surface: an end is one
- * file or every file under a directory (see {@link under}), and a file in both sets is not its own path, so the starts
- * are never targets. The Explorer's path and the command line's both walk through here (2026-11-22).
+ * file or every file under a directory (see {@link under}), made apart by {@link endsApart}. The Explorer's path and
+ * the command line's both walk through here (2026-11-22).
  */
 export function walkBetween(starts: Iterable<string>, targets: Iterable<string>, neighbours: Neighbours, maxDepth: number = Infinity): Walk {
-  const from = new Set(starts);
-  return walk(from, neighbours, maxDepth, new Set([...targets].filter((id) => !from.has(id))));
+  const { from, to } = endsApart(starts, targets);
+  return walk(from, neighbours, maxDepth, to);
 }
 
 /**
@@ -191,7 +226,7 @@ export function reachability(
   entry: (file: GraphFile) => boolean = isEntry
 ): Reachability {
   const files = Object.keys(graph.files).sort(compare);
-  const startPaths = asked ? [...new Set(asked)].filter((id) => graph.files[id]).sort(compare) : files.filter((id) => entry(graph.files[id]));
+  const startPaths = asked ? [...new Set(asked)].filter((id) => fileAt(graph.files, id)).sort(compare) : files.filter((id) => entry(graph.files[id]));
   const starts: Start[] = startPaths.map((codePath) => ({ codePath, entries: graph.files[codePath].entries, test: graph.files[codePath].archetype === "test" }));
   const neighbours = (id: string): readonly string[] => getNeighbors(graph, id, "outbound");
   const fromAll = reachFrom(startPaths, neighbours, maxDepth);
@@ -431,7 +466,8 @@ export function searchSymbolPath(
   while (queue.length > 0) {
     const current = queue.shift()!;
 
-    if (current.hop.codePath === to.codePath) {
+    // A hop is needed: a symbol, or a file, is never a path to itself (as a file's path, since 2026-11-22).
+    if (current.hop.codePath === to.codePath && current.path.length > 1) {
       if (!to.symbol) {
         return { path: current.path, found: true };
       }

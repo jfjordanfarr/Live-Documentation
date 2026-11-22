@@ -1,0 +1,33 @@
+The C# reader against Microsoft.CodeAnalysis.CSharp 4.12.0.0's binding, without framework references
+Folder: <copy of the corpus>/mojoportal
+Files: 1900 C# files in 25 projects; references read by MSBuild's evaluation for 21, by their XML elements for 4, which MSBuild could not evaluate here
+Names: 567301 simple names, 300985 bound
+References under a condition the default configuration does not meet: 15
+
+Documentation references (cref): 38, resolved to nothing 6 (a framework type among them, having no framework references), ambiguous 1, not taken by its grammar 3
+  C# file pairs they name: 4; the compiler binds 4 of them through code too, the author's word alone makes 0; the adapter's dependency lines draw 4
+  the reader's documentation relation: 4 pairs, 4 of them the compiler's
+  references compared declaration by declaration: 35, agreeing 18, parting 17
+    2: the reader keeps no documentation where the reference stands: a declaration it shows no symbol for (an enum's member, a member that is not public, an operator, an indexer)
+    15: the reader lands on the type that holds the member the compiler names, the file showing no symbol for the member
+
+Documentation references they part on: the reader lands on the type that holds the member the compiler names, the file showing no symbol for the member (15):
+  Web/Components/FileSystem/IFileSystem.cs:62 <see> OpResult.Succeed: the compiler Web/Components/FileSystem/OpResult.cs:10; the reader Web/Components/FileSystem/OpResult.cs:8
+  Web/Components/FileSystem/IFileSystem.cs:63 <see> OpResult.FolderNotFound: the compiler Web/Components/FileSystem/OpResult.cs:18; the reader Web/Components/FileSystem/OpResult.cs:8
+  Web/Components/FileSystem/IFileSystem.cs:64 <see> OpResult.AlreadyExist: the compiler Web/Components/FileSystem/OpResult.cs:16; the reader Web/Components/FileSystem/OpResult.cs:8
+  Web/Components/FileSystem/IFileSystem.cs:99 <see> OpResult.Succeed: the compiler Web/Components/FileSystem/OpResult.cs:10; the reader Web/Components/FileSystem/OpResult.cs:8
+  Web/Components/FileSystem/IFileSystem.cs:100 <see> OpResult.NotFound: the compiler Web/Components/FileSystem/OpResult.cs:14; the reader Web/Components/FileSystem/OpResult.cs:8
+  Web/Components/FileSystem/IFileSystem.cs:101 <see> OpResult.FolderNotFound: the compiler Web/Components/FileSystem/OpResult.cs:18; the reader Web/Components/FileSystem/OpResult.cs:8
+  Web/Components/FileSystem/IFileSystem.cs:102 <see> OpResult.AlreadyExist: the compiler Web/Components/FileSystem/OpResult.cs:16; the reader Web/Components/FileSystem/OpResult.cs:8
+  Web/Components/FileSystem/IFileSystem.cs:128 <see> OpResult.Succeed: the compiler Web/Components/FileSystem/OpResult.cs:10; the reader Web/Components/FileSystem/OpResult.cs:8
+  Web/Components/FileSystem/IFileSystem.cs:129 <see> OpResult.AlreadyExist: the compiler Web/Components/FileSystem/OpResult.cs:16; the reader Web/Components/FileSystem/OpResult.cs:8
+  Web/Components/FileSystem/IFileSystem.cs:146 <see> OpResult.Succeed: the compiler Web/Components/FileSystem/OpResult.cs:10; the reader Web/Components/FileSystem/OpResult.cs:8
+  Web/Components/FileSystem/IFileSystem.cs:147 <see> OpResult.NotFound: the compiler Web/Components/FileSystem/OpResult.cs:14; the reader Web/Components/FileSystem/OpResult.cs:8
+  Web/Components/FileSystem/IFileSystem.cs:148 <see> OpResult.FolderNotFound: the compiler Web/Components/FileSystem/OpResult.cs:18; the reader Web/Components/FileSystem/OpResult.cs:8
+  Web/Components/FileSystem/IFileSystem.cs:149 <see> OpResult.AlreadyExist: the compiler Web/Components/FileSystem/OpResult.cs:16; the reader Web/Components/FileSystem/OpResult.cs:8
+  Web/Components/FileSystem/IFileSystem.cs:166 <see> OpResult.Succeed: the compiler Web/Components/FileSystem/OpResult.cs:10; the reader Web/Components/FileSystem/OpResult.cs:8
+  Web/Components/FileSystem/IFileSystem.cs:167 <see> OpResult.NotFound: the compiler Web/Components/FileSystem/OpResult.cs:14; the reader Web/Components/FileSystem/OpResult.cs:8
+
+Documentation references they part on: the reader keeps no documentation where the reference stands: a declaration it shows no symbol for (an enum's member, a member that is not public, an operator, an indexer) (2):
+  Web/Components/FileSystem/IFileSystem.cs:168 <see> OpResult.FolderNotFound
+  Web/Components/FileSystem/IFileSystem.cs:169 <see> OpResult.AlreadyExist
