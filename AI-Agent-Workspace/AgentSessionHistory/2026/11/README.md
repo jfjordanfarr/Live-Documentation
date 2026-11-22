@@ -62,7 +62,8 @@ Source inventory, maintained by the root agent. The October 31 session that ende
 - [Maintained root record](2026-11-22/2026-11-22.1.record.md): opened by the owner at 00:46 UTC on November 22 (7:46 PM on November 21 by their clock), eight minutes after the November 21 chat's closing message, as "the 11/22/26 dev day". Begins with the startup read and the close of the November 21 chat (its closing message from its log, its summary, the narrative, this inventory, Memory and the work items brought level, its finished worktrees and scratch removed). On the branch `day/2026-11-22`. In progress; no summary yet.
 - Probes of the day, each with a README:
   - [a probe page the owner opens from disk on Edge](2026-11-22/Probes/local-app/README.md), to learn whether a local copy can be launched like an app and be given its folders back, with the page itself, its check and two pictures;
-  - [the author's word](2026-11-22/Probes/authors-word/README.md): the C# compiler's resolution of every documentation reference as an oracle, counted on DNN and mojoPortal, with three ways the facts could carry the relation and how each other language's own tool would be asked.
+  - [the author's word](2026-11-22/Probes/authors-word/README.md): the C# compiler's resolution of every documentation reference as an oracle, counted on DNN and mojoPortal, with three ways the facts could carry the relation and how each other language's own tool would be asked;
+  - [a blind reading of the owner's values](2026-11-22/Probes/design-philosophy-reading/README.md): every message the owner typed in the archive read by headless readers who had not seen the five values, 1,715 statements quoted word for word and linked, three groupings by a judge, and the comparison with the design philosophy.
 
 ## November 21, session 1 — Claude Code, Fable 5.2
 

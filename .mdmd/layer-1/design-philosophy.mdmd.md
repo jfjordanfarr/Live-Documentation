@@ -1,6 +1,6 @@
 # Design philosophy
 
-_Current. First minted on 2026-11-22 by the root at the owner's request ([Turn 13 of the November 21 record](../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-21/2026-11-21.1.record.md#turn-13)), from the owner's own words as [owner.md](../../AI-Agent-Workspace/Memory/owner.md) keeps them, from [the vision](vision.mdmd.md) and from WCAG's four principles. Its wording is on trial: the owner has not yet corrected it, and a name here stays loose until it has earned itself. [The guide](../../AGENTS.md#design-philosophy) carries the short form; this document carries the reasons._
+_Current. First minted on 2026-11-22 by the root at the owner's request ([Turn 13 of the November 21 record](../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-21/2026-11-21.1.record.md#turn-13)), from the owner's own words as [owner.md](../../AI-Agent-Workspace/Memory/owner.md) keeps them, from [the vision](vision.mdmd.md) and from WCAG's four principles. Its wording is on trial: the owner called the five "just great" on 2026-11-22 ([Turn 1 of that day's record](../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-22/2026-11-22.1.record.md#turn-1)) and has not corrected a word, and [a blind reading of their own statements](../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-22/Probes/design-philosophy-reading/README.md) the same day found one thing they value that the five do not hold, [said below](#one-instinct-has-no-row). A name here stays loose until it has earned itself. [The guide](../../AGENTS.md#design-philosophy) carries the short form; this document carries the reasons._
 
 [The vision](vision.mdmd.md) says what the product is. This says what we value when we have to choose.
 
@@ -108,6 +108,16 @@ How agents work in this workspace is not design philosophy, and the guide keeps 
 | It meets you where you are | Any machine, code or audience | Vendor-neutral; a new chat resumes from the record |
 | As simple as possible, and no simpler | One of each thing | A clean workspace; a guide that holds only what is always true |
 
+### One instinct has no row
+
+Found by [the blind reading of 2026-11-22](../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-22/Probes/design-philosophy-reading/README.md#the-comparison-the-builders-reading-not-the-judges). The owner, from December 2025 on: "It is only us in this repo. Every mess is our mess and every shortcut is a shot in our own foot." "Do it _the right way!_ Solve problems and solve them completely!" And on 2026-11-18: "You have enough good judgment to build the right thing, fully. Not in a night, but in honest common-sense increments." Readers who had never seen the five made this a thing the owner values in its own right in three groupings of three, under the owner's words "Do it the right way", with about a tenth of every statement of value they have made.
+
+None of the five yields it. "And no simpler" limits how far simplicity may go; it asks nothing of completeness, of owning a mess that began before us, or of refusing the shortcut that ships sooner. The guide holds it as working rules ("Every problem in this repository is ours", "Fix causes"), and the table above claimed those rules come from the five. For this one that claim was wrong.
+
+It was already at work in this document, unnamed: in the table of trades, where "speed of delivery" paid, this is what it was paid to.
+
+**The owner's to say:** whether it stands as a sixth value, or as the standard the five are all held to. Root recommends the second. In the record it has never once been the one to pay, and what is never traded is a standard and not a weight; and no body of work would be its child, since every issue is held to it. Until they say, the five titles stand as they praised them, and this section is the correction.
+
 ## The values and the work items
 
 The owner's hypothesis (2026-11-22): every issue is "_potentially_ a true child of one of these values", so the values could head the work as epics. Tested on the nine issues of that day:
@@ -131,5 +141,11 @@ The hypothesis holds for product work: seven of nine have a clear first value. T
 ## What this rests on, and what would correct it
 
 - **Read for it:** every entry's lead in owner.md (249) and in full its sections on what the tool has to serve and what the owner holds about the product, with twelve further entries read for their words; the vision's opening; the guide. Not read again for it: the day records behind those entries, which earlier roots mined.
-- **Not yet done:** an independent reader, who has not seen these five, listing every statement of value in the owner's own turns, to find one that fits none of them. That is the test this document owes, by the workspace's own rule that nothing grades itself.
+- **Tested on 2026-11-22 by readers who had not seen the five** ([the reading](../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-22/Probes/design-philosophy-reading/README.md)). Every message the owner typed in the archive, 3,548 after exact repeats, was read by headless readers started from an empty folder; they quoted 1,715 statements of value word for word, and a judge grouped them three times from fresh starts, into 12 to 14 values. What it found, most important first:
+  - **One the five do not hold:** "Do it the right way", [above](#one-instinct-has-no-row).
+  - **"The map does not lie" was a value of its own in no grouping.** Its plainest statements sat inside a wider one the judge named in the owner's words, "publication-grade rigor": how anything is known to be right, measured and held to ground truth. The title names that value's face on the product; "nothing grades itself" is the whole of it.
+  - **"It is yours" joins two things every grouping kept apart:** local, open and beholden to nobody, which was one value each time; and the person's word honoured, nothing in silence, everything able to be taken back, whose statements went elsewhere each time.
+  - **"A person can see it" and "as simple as possible, and no simpler" were values in every grouping,** the first the largest of all; "it meets you where you are" in one of three.
+  - **With no home among the five, and mostly said before September 2026:** leaning on problems others have solved; working docs first and letting a design be found; the committed record as a web of truth; and the product's promise, "what will happen if I make this change?", which the vision holds. By the guide's rule old certainty is evidence of what was said, so each is the owner's to reaffirm or leave.
+  - **What weakens it:** the reader that read everything quotes about half of what a stronger one finds where both read; every reader and the judge are one maker's models; the judge saw no dates.
 - **The owner corrects it.** These are their values in the root's arrangement. Where a title, a gloss or a trade is wrong, it is changed here and in the guide in the same commit.
