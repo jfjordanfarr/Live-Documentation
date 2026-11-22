@@ -245,9 +245,21 @@ async function main(): Promise<void> {
       return;
     }
 
+    // Without --direction the route is found whichever way the dependency runs and told as asked: along what --from
+    // uses first, else along what uses it (2026-11-22). --direction keeps the search to one way.
     const searchResult = searchGraph(graph, fromId, toId, direction, args.maxDepth);
     if (searchResult.path) {
       emitPathResult(searchResult.path, direction, graph, args.json, args.verbose);
+      return;
+    }
+    if (!args.directionGiven) {
+      const against = searchGraph(graph, fromId, toId, "inbound", args.maxDepth);
+      if (against.path) {
+        emitPathResult(against.path, "inbound", graph, args.json, args.verbose);
+        return;
+      }
+      emitNotFound(fromId, toId, direction, graph, searchResult, args.json, args.verbose, undefined, true);
+      process.exit(1);
       return;
     }
 
