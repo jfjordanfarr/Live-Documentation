@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: `tests/e2e/spatial-legend.spec.ts`
-- Generated At: 2026-11-19T21:10:24.263Z
+- Generated At: 2026-11-22T02:10:46.720Z
 
 ## Authored
 ### Purpose
@@ -49,6 +49,7 @@ _No public symbols detected_
 - [`force-graph-observation.observeGraph`](./force-graph-observation.ts.mdmd.md#symbol-observegraph)
 - [`force-graph-observation.renderedLinks`](./force-graph-observation.ts.mdmd.md#symbol-renderedlinks)
 - [`force-graph-observation.renderedNodes`](./force-graph-observation.ts.mdmd.md#symbol-renderednodes)
+- [`still-picture.AT_READING_SIZE`](./still-picture.ts.mdmd.md#symbol-at_reading_size)
 - [`still-picture.localMapSettled`](./still-picture.ts.mdmd.md#symbol-localmapsettled)
 - `three` - `InstancedMesh`, `MeshLambertMaterial`, `Scene` (type-only)
 <!-- LIVE-DOC:END Dependencies -->

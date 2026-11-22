@@ -1,0 +1,1307 @@
+{
+ "press-0": {
+  "before": {
+   "lod": "reading",
+   "k": "1.0000",
+   "count": 52,
+   "reach": 0
+  },
+  "lodRightAfterRender": "reading",
+  "after": {
+   "lod": "reading",
+   "k": "1.0000",
+   "count": 52,
+   "reach": 0
+  },
+  "cardsBefore": {
+   "scripts/live-docs/inspect/resolve.ts": [
+    434,
+    446
+   ],
+   "scripts/live-docs/inspect/emit.ts": [
+    371,
+    976
+   ],
+   "scripts/live-docs/inspect/resolve.test.ts": [
+    371,
+    195
+   ],
+   "scripts/live-docs/lint.ts": [
+    460,
+    195
+   ],
+   "scripts/live-docs/inspect.ts": [
+    365,
+    195
+   ],
+   "scripts/layout-lab/approximation.test.ts": [
+    460,
+    195
+   ],
+   "tests/e2e/search-bar.spec.ts": [
+    546,
+    195
+   ],
+   "tests/integration/live-docs/adapter-fact-caches.test.ts": [
+    546,
+    195
+   ],
+   "tests/integration/live-docs/history-workers.test.ts": [
+    397,
+    195
+   ],
+   "tests/integration/live-docs/generation.test.ts": [
+    397,
+    195
+   ],
+   "tests/integration/live-docs/include-dirs.test.ts": [
+    397,
+    195
+   ],
+   "tests/integration/live-docs/manifests.test.ts": [
+    397,
+    195
+   ],
+   "tests/integration/live-docs/entries.test.ts": [
+    397,
+    195
+   ],
+   "packages/generator/src/history/summarizeChange.ts": [
+    460,
+    230
+   ],
+   "packages/generator/src/history/headCheck.ts": [
+    397,
+    446
+   ],
+   "packages/generator/src/history/computeHistory.ts": [
+    365,
+    230
+   ],
+   "packages/generator/src/history/computeHistory.test.ts": [
+    274,
+    195
+   ],
+   "packages/engine/src/tooling/markdownLinks.ts": [
+    502,
+    277
+   ],
+   "packages/engine/src/live-docs/history/summary.ts": [
+    494,
+    302
+   ],
+   "packages/engine/src/live-docs/history/rows.ts": [
+    408,
+    230
+   ],
+   "packages/engine/src/live-docs/history/summary.test.ts": [
+    408,
+    195
+   ],
+   "packages/engine/src/live-docs/history/queries.ts": [
+    345,
+    374
+   ],
+   "packages/engine/src/live-docs/document.ts": [
+    502,
+    565
+   ],
+   "packages/engine/src/live-docs/graph.ts": [
+    433,
+    1271
+   ],
+   "packages/engine/src/live-docs/relatedDocs.ts": [
+    520,
+    374
+   ],
+   "packages/engine/src/live-docs/pathfind.ts": [
+    520,
+    662
+   ],
+   "packages/engine/src/live-docs/graph.test.ts": [
+    520,
+    195
+   ],
+   "packages/engine/src/live-docs/document.fuzz.test.ts": [
+    520,
+    195
+   ],
+   "packages/engine/src/live-docs/estateGraph.ts": [
+    520,
+    302
+   ],
+   "packages/engine/src/live-docs/boardGraph.ts": [
+    520,
+    374
+   ],
+   "packages/engine/src/live-docs/pathfind.overlapping-ends.test.ts": [
+    434,
+    175
+   ],
+   "packages/engine/src/live-docs/pathfind.test.ts": [
+    434,
+    175
+   ],
+   "packages/engine/src/live-docs/graphFiles.ts": [
+    434,
+    302
+   ],
+   "packages/engine/src/live-docs/boardGraph.test.ts": [
+    434,
+    195
+   ],
+   "packages/engine/src/live-docs/estateGraph.test.ts": [
+    434,
+    175
+   ],
+   "packages/explorer/src/shared/staticExplorerData.ts": [
+    520,
+    230
+   ],
+   "packages/explorer/src/shared/graph.ts": [
+    520,
+    302
+   ],
+   "packages/explorer/src/shared/graph.test.ts": [
+    434,
+    175
+   ],
+   "packages/explorer/src/shared/staticBuilder.ts": [
+    371,
+    230
+   ],
+   "packages/explorer/src/client/panels/sources-facts.ts": [
+    408,
+    302
+   ],
+   "packages/explorer/src/client/bootstrap/landing.ts": [
+    494,
+    302
+   ],
+   "packages/explorer/src/client/bootstrap/landing.test.ts": [
+    408,
+    175
+   ],
+   "packages/explorer/src/client/views/localView/branches.test.ts": [
+    382,
+    195
+   ],
+   "packages/explorer/src/client/views/localView/card-reading.ts": [
+    382,
+    204
+   ],
+   "packages/explorer/src/client/views/worldMap/model.ts": [
+    382,
+    302
+   ],
+   "packages/explorer/src/client/views/worldMap/controller.ts": [
+    319,
+    230
+   ],
+   "packages/explorer/src/client/views/worldMap/model.test.ts": [
+    319,
+    195
+   ],
+   "packages/explorer/src/client/views/worldMap/index.ts": [
+    287,
+    204
+   ],
+   "packages/explorer/src/client/reader-links.ts": [
+    520,
+    230
+   ],
+   "packages/explorer/src/client/detailPanel.ts": [
+    434,
+    230
+   ],
+   "packages/explorer/src/client/download.ts": [
+    371,
+    204
+   ],
+   "packages/explorer/src/client/prototype-names.test.ts": [
+    371,
+    195
+   ]
+  },
+  "cardsAfter": {
+   "packages/generator/src/history/summarizeChange.ts": [
+    460,
+    230
+   ],
+   "packages/generator/src/history/headCheck.ts": [
+    397,
+    446
+   ],
+   "packages/generator/src/history/computeHistory.ts": [
+    365,
+    230
+   ],
+   "packages/generator/src/history/computeHistory.test.ts": [
+    274,
+    195
+   ],
+   "packages/engine/src/tooling/markdownLinks.ts": [
+    502,
+    277
+   ],
+   "packages/engine/src/live-docs/history/summary.ts": [
+    494,
+    302
+   ],
+   "packages/engine/src/live-docs/history/rows.ts": [
+    408,
+    230
+   ],
+   "packages/engine/src/live-docs/history/summary.test.ts": [
+    408,
+    195
+   ],
+   "packages/engine/src/live-docs/history/queries.ts": [
+    345,
+    374
+   ],
+   "packages/engine/src/live-docs/document.ts": [
+    502,
+    565
+   ],
+   "packages/engine/src/live-docs/graph.ts": [
+    433,
+    1271
+   ],
+   "packages/engine/src/live-docs/relatedDocs.ts": [
+    520,
+    374
+   ],
+   "packages/engine/src/live-docs/pathfind.ts": [
+    520,
+    662
+   ],
+   "packages/engine/src/live-docs/graph.test.ts": [
+    520,
+    195
+   ],
+   "packages/engine/src/live-docs/document.fuzz.test.ts": [
+    520,
+    195
+   ],
+   "packages/engine/src/live-docs/estateGraph.ts": [
+    520,
+    302
+   ],
+   "packages/engine/src/live-docs/boardGraph.ts": [
+    520,
+    374
+   ],
+   "packages/engine/src/live-docs/pathfind.overlapping-ends.test.ts": [
+    434,
+    175
+   ],
+   "packages/engine/src/live-docs/pathfind.test.ts": [
+    434,
+    175
+   ],
+   "packages/engine/src/live-docs/graphFiles.ts": [
+    434,
+    302
+   ],
+   "packages/engine/src/live-docs/boardGraph.test.ts": [
+    434,
+    195
+   ],
+   "packages/engine/src/live-docs/estateGraph.test.ts": [
+    434,
+    175
+   ],
+   "packages/explorer/src/shared/staticExplorerData.ts": [
+    520,
+    230
+   ],
+   "packages/explorer/src/shared/graph.ts": [
+    520,
+    302
+   ],
+   "packages/explorer/src/shared/graph.test.ts": [
+    434,
+    175
+   ],
+   "packages/explorer/src/shared/staticBuilder.ts": [
+    371,
+    230
+   ],
+   "packages/explorer/src/client/panels/sources-facts.ts": [
+    408,
+    302
+   ],
+   "packages/explorer/src/client/bootstrap/landing.ts": [
+    494,
+    302
+   ],
+   "packages/explorer/src/client/bootstrap/landing.test.ts": [
+    408,
+    175
+   ],
+   "packages/explorer/src/client/views/localView/branches.test.ts": [
+    382,
+    195
+   ],
+   "packages/explorer/src/client/views/localView/card-reading.ts": [
+    382,
+    204
+   ],
+   "packages/explorer/src/client/views/worldMap/model.ts": [
+    382,
+    302
+   ],
+   "packages/explorer/src/client/views/worldMap/controller.ts": [
+    319,
+    230
+   ],
+   "packages/explorer/src/client/views/worldMap/model.test.ts": [
+    319,
+    195
+   ],
+   "packages/explorer/src/client/views/worldMap/index.ts": [
+    287,
+    204
+   ],
+   "packages/explorer/src/client/reader-links.ts": [
+    520,
+    230
+   ],
+   "packages/explorer/src/client/detailPanel.ts": [
+    434,
+    230
+   ],
+   "packages/explorer/src/client/download.ts": [
+    371,
+    204
+   ],
+   "packages/explorer/src/client/prototype-names.test.ts": [
+    371,
+    195
+   ],
+   "scripts/live-docs/inspect/resolve.ts": [
+    434,
+    446
+   ],
+   "scripts/live-docs/inspect/emit.ts": [
+    371,
+    976
+   ],
+   "scripts/live-docs/inspect/resolve.test.ts": [
+    371,
+    195
+   ],
+   "scripts/live-docs/lint.ts": [
+    460,
+    195
+   ],
+   "scripts/live-docs/inspect.ts": [
+    365,
+    195
+   ],
+   "scripts/layout-lab/approximation.test.ts": [
+    460,
+    195
+   ],
+   "tests/e2e/search-bar.spec.ts": [
+    546,
+    195
+   ],
+   "tests/integration/live-docs/adapter-fact-caches.test.ts": [
+    546,
+    195
+   ],
+   "tests/integration/live-docs/history-workers.test.ts": [
+    397,
+    195
+   ],
+   "tests/integration/live-docs/generation.test.ts": [
+    397,
+    195
+   ],
+   "tests/integration/live-docs/include-dirs.test.ts": [
+    397,
+    195
+   ],
+   "tests/integration/live-docs/manifests.test.ts": [
+    397,
+    195
+   ],
+   "tests/integration/live-docs/entries.test.ts": [
+    397,
+    195
+   ]
+  }
+ },
+ "press-3": {
+  "before": {
+   "lod": "far",
+   "k": "0.5787",
+   "count": 52,
+   "reach": 0
+  },
+  "lodRightAfterRender": "far",
+  "after": {
+   "lod": "far",
+   "k": "0.5787",
+   "count": 52,
+   "reach": 0
+  },
+  "cardsBefore": {
+   "packages/generator/src/history/summarizeChange.ts": [
+    460,
+    230
+   ],
+   "packages/generator/src/history/headCheck.ts": [
+    397,
+    446
+   ],
+   "packages/generator/src/history/computeHistory.ts": [
+    365,
+    230
+   ],
+   "packages/generator/src/history/computeHistory.test.ts": [
+    274,
+    195
+   ],
+   "packages/engine/src/tooling/markdownLinks.ts": [
+    502,
+    277
+   ],
+   "packages/engine/src/live-docs/history/summary.ts": [
+    494,
+    302
+   ],
+   "packages/engine/src/live-docs/history/rows.ts": [
+    408,
+    230
+   ],
+   "packages/engine/src/live-docs/history/summary.test.ts": [
+    408,
+    195
+   ],
+   "packages/engine/src/live-docs/history/queries.ts": [
+    345,
+    374
+   ],
+   "packages/engine/src/live-docs/document.ts": [
+    502,
+    565
+   ],
+   "packages/engine/src/live-docs/graph.ts": [
+    433,
+    1271
+   ],
+   "packages/engine/src/live-docs/relatedDocs.ts": [
+    520,
+    374
+   ],
+   "packages/engine/src/live-docs/pathfind.ts": [
+    520,
+    662
+   ],
+   "packages/engine/src/live-docs/graph.test.ts": [
+    520,
+    195
+   ],
+   "packages/engine/src/live-docs/document.fuzz.test.ts": [
+    520,
+    195
+   ],
+   "packages/engine/src/live-docs/estateGraph.ts": [
+    520,
+    302
+   ],
+   "packages/engine/src/live-docs/boardGraph.ts": [
+    520,
+    374
+   ],
+   "packages/engine/src/live-docs/pathfind.overlapping-ends.test.ts": [
+    434,
+    175
+   ],
+   "packages/engine/src/live-docs/pathfind.test.ts": [
+    434,
+    175
+   ],
+   "packages/engine/src/live-docs/graphFiles.ts": [
+    434,
+    302
+   ],
+   "packages/engine/src/live-docs/boardGraph.test.ts": [
+    434,
+    195
+   ],
+   "packages/engine/src/live-docs/estateGraph.test.ts": [
+    434,
+    175
+   ],
+   "packages/explorer/src/shared/staticExplorerData.ts": [
+    520,
+    230
+   ],
+   "packages/explorer/src/shared/graph.ts": [
+    520,
+    302
+   ],
+   "packages/explorer/src/shared/graph.test.ts": [
+    434,
+    175
+   ],
+   "packages/explorer/src/shared/staticBuilder.ts": [
+    371,
+    230
+   ],
+   "packages/explorer/src/client/panels/sources-facts.ts": [
+    408,
+    302
+   ],
+   "packages/explorer/src/client/bootstrap/landing.ts": [
+    494,
+    302
+   ],
+   "packages/explorer/src/client/bootstrap/landing.test.ts": [
+    408,
+    175
+   ],
+   "packages/explorer/src/client/views/localView/branches.test.ts": [
+    382,
+    195
+   ],
+   "packages/explorer/src/client/views/localView/card-reading.ts": [
+    382,
+    204
+   ],
+   "packages/explorer/src/client/views/worldMap/model.ts": [
+    382,
+    302
+   ],
+   "packages/explorer/src/client/views/worldMap/controller.ts": [
+    319,
+    230
+   ],
+   "packages/explorer/src/client/views/worldMap/model.test.ts": [
+    319,
+    195
+   ],
+   "packages/explorer/src/client/views/worldMap/index.ts": [
+    287,
+    204
+   ],
+   "packages/explorer/src/client/reader-links.ts": [
+    520,
+    230
+   ],
+   "packages/explorer/src/client/detailPanel.ts": [
+    434,
+    230
+   ],
+   "packages/explorer/src/client/download.ts": [
+    371,
+    204
+   ],
+   "packages/explorer/src/client/prototype-names.test.ts": [
+    371,
+    195
+   ],
+   "scripts/live-docs/inspect/resolve.ts": [
+    434,
+    446
+   ],
+   "scripts/live-docs/inspect/emit.ts": [
+    371,
+    976
+   ],
+   "scripts/live-docs/inspect/resolve.test.ts": [
+    371,
+    195
+   ],
+   "scripts/live-docs/lint.ts": [
+    460,
+    195
+   ],
+   "scripts/live-docs/inspect.ts": [
+    365,
+    195
+   ],
+   "scripts/layout-lab/approximation.test.ts": [
+    460,
+    195
+   ],
+   "tests/e2e/search-bar.spec.ts": [
+    546,
+    195
+   ],
+   "tests/integration/live-docs/adapter-fact-caches.test.ts": [
+    546,
+    195
+   ],
+   "tests/integration/live-docs/history-workers.test.ts": [
+    397,
+    195
+   ],
+   "tests/integration/live-docs/generation.test.ts": [
+    397,
+    195
+   ],
+   "tests/integration/live-docs/include-dirs.test.ts": [
+    397,
+    195
+   ],
+   "tests/integration/live-docs/manifests.test.ts": [
+    397,
+    195
+   ],
+   "tests/integration/live-docs/entries.test.ts": [
+    397,
+    195
+   ]
+  },
+  "cardsAfter": {
+   "packages/generator/src/history/summarizeChange.ts": [
+    460,
+    230
+   ],
+   "packages/generator/src/history/headCheck.ts": [
+    397,
+    446
+   ],
+   "packages/generator/src/history/computeHistory.ts": [
+    365,
+    230
+   ],
+   "packages/generator/src/history/computeHistory.test.ts": [
+    274,
+    195
+   ],
+   "packages/engine/src/tooling/markdownLinks.ts": [
+    502,
+    277
+   ],
+   "packages/engine/src/live-docs/history/summary.ts": [
+    494,
+    302
+   ],
+   "packages/engine/src/live-docs/history/rows.ts": [
+    408,
+    230
+   ],
+   "packages/engine/src/live-docs/history/summary.test.ts": [
+    408,
+    195
+   ],
+   "packages/engine/src/live-docs/history/queries.ts": [
+    345,
+    374
+   ],
+   "packages/engine/src/live-docs/document.ts": [
+    502,
+    565
+   ],
+   "packages/engine/src/live-docs/graph.ts": [
+    433,
+    1271
+   ],
+   "packages/engine/src/live-docs/relatedDocs.ts": [
+    520,
+    374
+   ],
+   "packages/engine/src/live-docs/pathfind.ts": [
+    520,
+    662
+   ],
+   "packages/engine/src/live-docs/graph.test.ts": [
+    520,
+    195
+   ],
+   "packages/engine/src/live-docs/document.fuzz.test.ts": [
+    520,
+    195
+   ],
+   "packages/engine/src/live-docs/estateGraph.ts": [
+    520,
+    302
+   ],
+   "packages/engine/src/live-docs/boardGraph.ts": [
+    520,
+    374
+   ],
+   "packages/engine/src/live-docs/pathfind.overlapping-ends.test.ts": [
+    434,
+    175
+   ],
+   "packages/engine/src/live-docs/pathfind.test.ts": [
+    434,
+    175
+   ],
+   "packages/engine/src/live-docs/graphFiles.ts": [
+    434,
+    302
+   ],
+   "packages/engine/src/live-docs/boardGraph.test.ts": [
+    434,
+    195
+   ],
+   "packages/engine/src/live-docs/estateGraph.test.ts": [
+    434,
+    175
+   ],
+   "packages/explorer/src/shared/staticExplorerData.ts": [
+    520,
+    230
+   ],
+   "packages/explorer/src/shared/graph.ts": [
+    520,
+    302
+   ],
+   "packages/explorer/src/shared/graph.test.ts": [
+    434,
+    175
+   ],
+   "packages/explorer/src/shared/staticBuilder.ts": [
+    371,
+    230
+   ],
+   "packages/explorer/src/client/panels/sources-facts.ts": [
+    408,
+    302
+   ],
+   "packages/explorer/src/client/bootstrap/landing.ts": [
+    494,
+    302
+   ],
+   "packages/explorer/src/client/bootstrap/landing.test.ts": [
+    408,
+    175
+   ],
+   "packages/explorer/src/client/views/localView/branches.test.ts": [
+    382,
+    195
+   ],
+   "packages/explorer/src/client/views/localView/card-reading.ts": [
+    382,
+    204
+   ],
+   "packages/explorer/src/client/views/worldMap/model.ts": [
+    382,
+    302
+   ],
+   "packages/explorer/src/client/views/worldMap/controller.ts": [
+    319,
+    230
+   ],
+   "packages/explorer/src/client/views/worldMap/model.test.ts": [
+    319,
+    195
+   ],
+   "packages/explorer/src/client/views/worldMap/index.ts": [
+    287,
+    204
+   ],
+   "packages/explorer/src/client/reader-links.ts": [
+    520,
+    230
+   ],
+   "packages/explorer/src/client/detailPanel.ts": [
+    434,
+    230
+   ],
+   "packages/explorer/src/client/download.ts": [
+    371,
+    204
+   ],
+   "packages/explorer/src/client/prototype-names.test.ts": [
+    371,
+    195
+   ],
+   "scripts/live-docs/inspect/resolve.ts": [
+    434,
+    446
+   ],
+   "scripts/live-docs/inspect/emit.ts": [
+    371,
+    976
+   ],
+   "scripts/live-docs/inspect/resolve.test.ts": [
+    371,
+    195
+   ],
+   "scripts/live-docs/lint.ts": [
+    460,
+    195
+   ],
+   "scripts/live-docs/inspect.ts": [
+    365,
+    195
+   ],
+   "scripts/layout-lab/approximation.test.ts": [
+    460,
+    195
+   ],
+   "tests/e2e/search-bar.spec.ts": [
+    546,
+    195
+   ],
+   "tests/integration/live-docs/adapter-fact-caches.test.ts": [
+    546,
+    195
+   ],
+   "tests/integration/live-docs/history-workers.test.ts": [
+    397,
+    195
+   ],
+   "tests/integration/live-docs/generation.test.ts": [
+    397,
+    195
+   ],
+   "tests/integration/live-docs/include-dirs.test.ts": [
+    397,
+    195
+   ],
+   "tests/integration/live-docs/manifests.test.ts": [
+    397,
+    195
+   ],
+   "tests/integration/live-docs/entries.test.ts": [
+    397,
+    195
+   ]
+  }
+ },
+ "press-7": {
+  "before": {
+   "lod": "overview",
+   "k": "0.2791",
+   "count": 52,
+   "reach": 0
+  },
+  "lodRightAfterRender": "overview",
+  "after": {
+   "lod": "overview",
+   "k": "0.2791",
+   "count": 52,
+   "reach": 0
+  },
+  "cardsBefore": {
+   "packages/generator/src/history/summarizeChange.ts": [
+    460,
+    230
+   ],
+   "packages/generator/src/history/headCheck.ts": [
+    397,
+    446
+   ],
+   "packages/generator/src/history/computeHistory.ts": [
+    365,
+    230
+   ],
+   "packages/generator/src/history/computeHistory.test.ts": [
+    274,
+    195
+   ],
+   "packages/engine/src/tooling/markdownLinks.ts": [
+    502,
+    277
+   ],
+   "packages/engine/src/live-docs/history/summary.ts": [
+    494,
+    302
+   ],
+   "packages/engine/src/live-docs/history/rows.ts": [
+    408,
+    230
+   ],
+   "packages/engine/src/live-docs/history/summary.test.ts": [
+    408,
+    195
+   ],
+   "packages/engine/src/live-docs/history/queries.ts": [
+    345,
+    374
+   ],
+   "packages/engine/src/live-docs/document.ts": [
+    502,
+    565
+   ],
+   "packages/engine/src/live-docs/graph.ts": [
+    433,
+    1271
+   ],
+   "packages/engine/src/live-docs/relatedDocs.ts": [
+    520,
+    374
+   ],
+   "packages/engine/src/live-docs/pathfind.ts": [
+    520,
+    662
+   ],
+   "packages/engine/src/live-docs/graph.test.ts": [
+    520,
+    195
+   ],
+   "packages/engine/src/live-docs/document.fuzz.test.ts": [
+    520,
+    195
+   ],
+   "packages/engine/src/live-docs/estateGraph.ts": [
+    520,
+    302
+   ],
+   "packages/engine/src/live-docs/boardGraph.ts": [
+    520,
+    374
+   ],
+   "packages/engine/src/live-docs/pathfind.overlapping-ends.test.ts": [
+    434,
+    175
+   ],
+   "packages/engine/src/live-docs/pathfind.test.ts": [
+    434,
+    175
+   ],
+   "packages/engine/src/live-docs/graphFiles.ts": [
+    434,
+    302
+   ],
+   "packages/engine/src/live-docs/boardGraph.test.ts": [
+    434,
+    195
+   ],
+   "packages/engine/src/live-docs/estateGraph.test.ts": [
+    434,
+    175
+   ],
+   "packages/explorer/src/shared/staticExplorerData.ts": [
+    520,
+    230
+   ],
+   "packages/explorer/src/shared/graph.ts": [
+    520,
+    302
+   ],
+   "packages/explorer/src/shared/graph.test.ts": [
+    434,
+    175
+   ],
+   "packages/explorer/src/shared/staticBuilder.ts": [
+    371,
+    230
+   ],
+   "packages/explorer/src/client/panels/sources-facts.ts": [
+    408,
+    302
+   ],
+   "packages/explorer/src/client/bootstrap/landing.ts": [
+    494,
+    302
+   ],
+   "packages/explorer/src/client/bootstrap/landing.test.ts": [
+    408,
+    175
+   ],
+   "packages/explorer/src/client/views/localView/branches.test.ts": [
+    382,
+    195
+   ],
+   "packages/explorer/src/client/views/localView/card-reading.ts": [
+    382,
+    204
+   ],
+   "packages/explorer/src/client/views/worldMap/model.ts": [
+    382,
+    302
+   ],
+   "packages/explorer/src/client/views/worldMap/controller.ts": [
+    319,
+    230
+   ],
+   "packages/explorer/src/client/views/worldMap/model.test.ts": [
+    319,
+    195
+   ],
+   "packages/explorer/src/client/views/worldMap/index.ts": [
+    287,
+    204
+   ],
+   "packages/explorer/src/client/reader-links.ts": [
+    520,
+    230
+   ],
+   "packages/explorer/src/client/detailPanel.ts": [
+    434,
+    230
+   ],
+   "packages/explorer/src/client/download.ts": [
+    371,
+    204
+   ],
+   "packages/explorer/src/client/prototype-names.test.ts": [
+    371,
+    195
+   ],
+   "scripts/live-docs/inspect/resolve.ts": [
+    434,
+    446
+   ],
+   "scripts/live-docs/inspect/emit.ts": [
+    371,
+    976
+   ],
+   "scripts/live-docs/inspect/resolve.test.ts": [
+    371,
+    195
+   ],
+   "scripts/live-docs/lint.ts": [
+    460,
+    195
+   ],
+   "scripts/live-docs/inspect.ts": [
+    365,
+    195
+   ],
+   "scripts/layout-lab/approximation.test.ts": [
+    460,
+    195
+   ],
+   "tests/e2e/search-bar.spec.ts": [
+    546,
+    195
+   ],
+   "tests/integration/live-docs/adapter-fact-caches.test.ts": [
+    546,
+    195
+   ],
+   "tests/integration/live-docs/history-workers.test.ts": [
+    397,
+    195
+   ],
+   "tests/integration/live-docs/generation.test.ts": [
+    397,
+    195
+   ],
+   "tests/integration/live-docs/include-dirs.test.ts": [
+    397,
+    195
+   ],
+   "tests/integration/live-docs/manifests.test.ts": [
+    397,
+    195
+   ],
+   "tests/integration/live-docs/entries.test.ts": [
+    397,
+    195
+   ]
+  },
+  "cardsAfter": {
+   "packages/generator/src/history/summarizeChange.ts": [
+    460,
+    230
+   ],
+   "packages/generator/src/history/headCheck.ts": [
+    397,
+    446
+   ],
+   "packages/generator/src/history/computeHistory.ts": [
+    365,
+    230
+   ],
+   "packages/generator/src/history/computeHistory.test.ts": [
+    274,
+    195
+   ],
+   "packages/engine/src/tooling/markdownLinks.ts": [
+    502,
+    277
+   ],
+   "packages/engine/src/live-docs/history/summary.ts": [
+    494,
+    302
+   ],
+   "packages/engine/src/live-docs/history/rows.ts": [
+    408,
+    230
+   ],
+   "packages/engine/src/live-docs/history/summary.test.ts": [
+    408,
+    195
+   ],
+   "packages/engine/src/live-docs/history/queries.ts": [
+    345,
+    374
+   ],
+   "packages/engine/src/live-docs/document.ts": [
+    502,
+    565
+   ],
+   "packages/engine/src/live-docs/graph.ts": [
+    433,
+    1271
+   ],
+   "packages/engine/src/live-docs/relatedDocs.ts": [
+    520,
+    374
+   ],
+   "packages/engine/src/live-docs/pathfind.ts": [
+    520,
+    662
+   ],
+   "packages/engine/src/live-docs/graph.test.ts": [
+    520,
+    195
+   ],
+   "packages/engine/src/live-docs/document.fuzz.test.ts": [
+    520,
+    195
+   ],
+   "packages/engine/src/live-docs/estateGraph.ts": [
+    520,
+    302
+   ],
+   "packages/engine/src/live-docs/boardGraph.ts": [
+    520,
+    374
+   ],
+   "packages/engine/src/live-docs/pathfind.overlapping-ends.test.ts": [
+    434,
+    175
+   ],
+   "packages/engine/src/live-docs/pathfind.test.ts": [
+    434,
+    175
+   ],
+   "packages/engine/src/live-docs/graphFiles.ts": [
+    434,
+    302
+   ],
+   "packages/engine/src/live-docs/boardGraph.test.ts": [
+    434,
+    195
+   ],
+   "packages/engine/src/live-docs/estateGraph.test.ts": [
+    434,
+    175
+   ],
+   "packages/explorer/src/shared/staticExplorerData.ts": [
+    520,
+    230
+   ],
+   "packages/explorer/src/shared/graph.ts": [
+    520,
+    302
+   ],
+   "packages/explorer/src/shared/graph.test.ts": [
+    434,
+    175
+   ],
+   "packages/explorer/src/shared/staticBuilder.ts": [
+    371,
+    230
+   ],
+   "packages/explorer/src/client/panels/sources-facts.ts": [
+    408,
+    302
+   ],
+   "packages/explorer/src/client/bootstrap/landing.ts": [
+    494,
+    302
+   ],
+   "packages/explorer/src/client/bootstrap/landing.test.ts": [
+    408,
+    175
+   ],
+   "packages/explorer/src/client/views/localView/branches.test.ts": [
+    382,
+    195
+   ],
+   "packages/explorer/src/client/views/localView/card-reading.ts": [
+    382,
+    204
+   ],
+   "packages/explorer/src/client/views/worldMap/model.ts": [
+    382,
+    302
+   ],
+   "packages/explorer/src/client/views/worldMap/controller.ts": [
+    319,
+    230
+   ],
+   "packages/explorer/src/client/views/worldMap/model.test.ts": [
+    319,
+    195
+   ],
+   "packages/explorer/src/client/views/worldMap/index.ts": [
+    287,
+    204
+   ],
+   "packages/explorer/src/client/reader-links.ts": [
+    520,
+    230
+   ],
+   "packages/explorer/src/client/detailPanel.ts": [
+    434,
+    230
+   ],
+   "packages/explorer/src/client/download.ts": [
+    371,
+    204
+   ],
+   "packages/explorer/src/client/prototype-names.test.ts": [
+    371,
+    195
+   ],
+   "scripts/live-docs/inspect/resolve.ts": [
+    434,
+    446
+   ],
+   "scripts/live-docs/inspect/emit.ts": [
+    371,
+    976
+   ],
+   "scripts/live-docs/inspect/resolve.test.ts": [
+    371,
+    195
+   ],
+   "scripts/live-docs/lint.ts": [
+    460,
+    195
+   ],
+   "scripts/live-docs/inspect.ts": [
+    365,
+    195
+   ],
+   "scripts/layout-lab/approximation.test.ts": [
+    460,
+    195
+   ],
+   "tests/e2e/search-bar.spec.ts": [
+    546,
+    195
+   ],
+   "tests/integration/live-docs/adapter-fact-caches.test.ts": [
+    546,
+    195
+   ],
+   "tests/integration/live-docs/history-workers.test.ts": [
+    397,
+    195
+   ],
+   "tests/integration/live-docs/generation.test.ts": [
+    397,
+    195
+   ],
+   "tests/integration/live-docs/include-dirs.test.ts": [
+    397,
+    195
+   ],
+   "tests/integration/live-docs/manifests.test.ts": [
+    397,
+    195
+   ],
+   "tests/integration/live-docs/entries.test.ts": [
+    397,
+    195
+   ]
+  }
+ }
+}

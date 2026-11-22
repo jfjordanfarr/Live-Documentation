@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: `tests/e2e/labels-and-controls.spec.ts`
-- Generated At: 2026-11-19T21:10:22.145Z
+- Generated At: 2026-11-22T02:10:45.115Z
 
 ## Authored
 ### Purpose
@@ -38,4 +38,5 @@ _No public symbols detected_
 - [`force-graph-observation.referenceWire`](./force-graph-observation.ts.mdmd.md#symbol-referencewire)
 - [`force-graph-observation.renderedLinks`](./force-graph-observation.ts.mdmd.md#symbol-renderedlinks)
 - [`force-graph-observation.renderedNodes`](./force-graph-observation.ts.mdmd.md#symbol-renderednodes)
+- [`still-picture.AT_READING_SIZE`](./still-picture.ts.mdmd.md#symbol-at_reading_size)
 <!-- LIVE-DOC:END Dependencies -->

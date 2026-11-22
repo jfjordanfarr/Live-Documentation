@@ -44,5 +44,6 @@ _No public symbols detected_
 - [`ladder-steps.LAST_STEP`](../../packages/explorer/src/client/views/localView/ladder-steps.ts.mdmd.md#symbol-last_step)
 - [`ladder-steps.STEP_HYSTERESIS`](../../packages/explorer/src/client/views/localView/ladder-steps.ts.mdmd.md#symbol-step_hysteresis)
 - [`ladder-steps.STEP_RATIO`](../../packages/explorer/src/client/views/localView/ladder-steps.ts.mdmd.md#symbol-step_ratio)
+- [`still-picture.AT_READING_SIZE`](./still-picture.ts.mdmd.md#symbol-at_reading_size)
 - [`still-picture.localMapStill`](./still-picture.ts.mdmd.md#symbol-localmapstill)
 <!-- LIVE-DOC:END Dependencies -->

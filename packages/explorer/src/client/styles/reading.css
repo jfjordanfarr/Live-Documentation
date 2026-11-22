@@ -190,7 +190,19 @@
     --name-room: calc(var(--row-room-w, 0) - var(--row-badges-w, 0) - var(--row-controls-w, 0) * var(--row-control-scale));
     --name-scale: max(1, min(var(--row-fill-h, 1), var(--text-scale, 1)));
 }
+/* In the far looks the name has the room More leaves, and its button spans that room (2026-11-22). As laid out the
+   button ends where the Read, the Pin and the type marks begin, which those looks do not draw, so a name given the room
+   up to More ran past its own button, outside what a pointer on the name presses. The button reaches over their room
+   by a padding and takes it back by a margin of the same size: its box grows and what the row contributes to its card's
+   width does not, so a card rendered in a far look is as wide as one rendered at reading size (measured to the pixel
+   on two pictures, each look; narrowing the name to its button instead, tried the same day, cut names beside blank
+   room). The card reading measures the button without that reach (--row-label-w). */
 :is([data-lod="far"], [data-lod="overview"]) .local-slot-card .symbol-row { --name-room: calc(var(--row-room-w, 0) - var(--row-more-w, 0) * var(--row-control-scale)); }
+:is([data-lod="far"], [data-lod="overview"]) .local-slot-card .symbol-row .symbol-label {
+    --label-reach: max(0px, calc((var(--name-room) - var(--row-label-w, 100000)) * 1px));
+    padding-right: var(--label-reach);
+    margin-right: calc(-1 * var(--label-reach));
+}
 :is([data-lod="middle"], [data-lod="far"], [data-lod="overview"]) .local-slot-card .symbol-row { --name-scale: max(1, min(var(--row-held-fill, var(--row-fill-h, 1)), max(var(--text-scale, 1), min(0.9 * var(--name-room) / var(--row-name-w, 1), var(--text-scale, 1) * var(--name-growth, 1))))); }
 /* The ladder scales a name's text, never its button, whose box fills the row and would cover the row's buttons scaled
    (2026-11-06), about the row's top edge, so that the name, its buttons and its dots keep their reading alignment. */

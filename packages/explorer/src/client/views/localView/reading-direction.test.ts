@@ -1,8 +1,13 @@
 import { describe, expect, it } from "vitest";
 
-import { isMirrored, shownSpan, spanInLayout } from "./reading-direction";
+import { isMirrored, layoutEndAt, shownSpan, spanInLayout } from "./reading-direction";
 
 describe("which way a 2D picture reads", () => {
+  it("finds the layout's end toward a side of the page: its start at the left as laid out, at the right mirrored", () => {
+    expect([layoutEndAt("left", false), layoutEndAt("right", false)]).toEqual(["start", "end"]);
+    expect([layoutEndAt("left", true), layoutEndAt("right", true)]).toEqual(["end", "start"]);
+  });
+
   it("is mirrored only when what uses stands first", () => {
     expect(isMirrored("offersFirst")).toBe(false);
     expect(isMirrored("usesFirst")).toBe(true);

@@ -43,6 +43,7 @@ _No public symbols detected_
 - [`scopes.ScopeRun`](../../scripts/layout-lab/scopes.ts.mdmd.md#symbol-scoperun) (type-only)
 - [`scopes.loadBundleGraph`](../../scripts/layout-lab/scopes.ts.mdmd.md#symbol-loadbundlegraph)
 - [`scopes.DECK_SCOPES`](./scopes.ts.mdmd.md#symbol-deck_scopes)
+- [`still-picture.AT_READING_SIZE`](./still-picture.ts.mdmd.md#symbol-at_reading_size)
 - [`still-picture.localMapSettled`](./still-picture.ts.mdmd.md#symbol-localmapsettled)
 - [`still-picture.localRetainUrl`](./still-picture.ts.mdmd.md#symbol-localretainurl)
 <!-- LIVE-DOC:END Dependencies -->

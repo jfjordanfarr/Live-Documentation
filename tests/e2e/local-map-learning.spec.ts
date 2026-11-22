@@ -2,7 +2,7 @@ import { expect, test, type Page } from "@playwright/test";
 
 import { decompressSnapshot } from "../../packages/explorer/src/client/persistence/compressed-url-state";
 import { PERSISTED_UI_KEY, PERSISTED_UI_VERSION } from "../../packages/explorer/src/client/persistence/local-storage";
-import { dragBy, keepGrowingComposition, LOCAL_MAP, localMapSettled, panIntoView } from "./still-picture";
+import { AT_READING_SIZE, dragBy, keepGrowingComposition, LOCAL_MAP, localMapSettled, panIntoView } from "./still-picture";
 
 const payment = "tests/integration/programs/csharp/estate/PaymentService/PaymentService.cs";
 const config = "tests/integration/programs/csharp/estate/PaymentService/App.config";
@@ -56,7 +56,7 @@ test("header growth does not pull a deliberately offscreen title back into view"
 test("a growing pin header keeps a previously visible acted-on title below its new edge", async ({ page }) => {
   await page.addInitScript(({ key, value }) => localStorage.setItem(key, value), {
     key: PERSISTED_UI_KEY,
-    value: JSON.stringify({ version: PERSISTED_UI_VERSION, tuning: { localMap: { moveMs: 1200, searchStarts: 0, cardText: "grow" } } })
+    value: JSON.stringify({ version: PERSISTED_UI_VERSION, tuning: { localMap: { ...AT_READING_SIZE, moveMs: 1200, searchStarts: 0, cardText: "grow" } } })
   });
   await page.setViewportSize({ width: 900, height: 700 });
   await page.goto(entry);

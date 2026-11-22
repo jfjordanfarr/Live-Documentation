@@ -26,6 +26,22 @@ export function writeReads(layer: Element, reads: MapReads | undefined): void {
   else layer.removeAttribute(READS_ATTRIBUTE);
 }
 
+/** A side of the page, as an arrow key or a pointer names it. */
+export type PageSide = "left" | "right";
+
+/** An end of the layout's across: its start, where what offers stands, or its end, where what uses stands. */
+export type LayoutEnd = "start" | "end";
+
+/**
+ * The end of the layout's across that lies toward a side of the page: as laid out the layout starts at the left, and
+ * mirrored at the right. An arrow key names a side of the page; what it reaches is found in the layout's terms through
+ * this (the keyboard's walk along wires, wire-answers.ts, 2026-11-22: before it, Right in a mirrored picture took the
+ * wires on a card's left).
+ */
+export function layoutEndAt(side: PageSide, mirrored: boolean): LayoutEnd {
+  return (side === "left") !== mirrored ? "start" : "end";
+}
+
 /** A span across the page, in the page's pixels. */
 export interface PageSpan { left: number; right: number }
 

@@ -4,6 +4,7 @@ import type { InstancedMesh, Vector3, Scene, Camera, PerspectiveCamera, WebGLRen
 import { PERSISTED_UI_KEY, PERSISTED_UI_VERSION } from "../../packages/explorer/src/client/persistence/local-storage";
 import { clearStroke, engineActivity, observeGraph, referenceWire, renderedLinks, renderedNodes } from "./force-graph-observation";
 import { pathAddress } from "./search-bar";
+import { AT_READING_SIZE } from "./still-picture";
 
 type WireIsolation = { wire: InstancedMesh; setEnds(start: Vector3, end: Vector3): void; restore(): void };
 
@@ -12,7 +13,7 @@ async function seedSizing(page: Page): Promise<void> {
   await page.addInitScript(({ key, value }) => localStorage.setItem(key, value), {
     key: PERSISTED_UI_KEY,
     value: JSON.stringify({ version: PERSISTED_UI_VERSION, tuning: {
-      localMap: { searchStarts: 0 }, forceGraph: { groupWrappers: "off", nodeZoomResistance: 0, wireZoomResistance: 1, linkWidth: 1 }
+      localMap: { ...AT_READING_SIZE, searchStarts: 0 }, forceGraph: { groupWrappers: "off", nodeZoomResistance: 0, wireZoomResistance: 1, linkWidth: 1 }
     } })
   });
 }

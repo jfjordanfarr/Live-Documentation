@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: `packages/explorer/src/client/views/localView/reading-direction.test.ts`
-- Generated At: 2026-11-22T04:13:30.168Z
+- Generated At: 2026-11-22T05:00:50.651Z
 
 ## Authored
 ### Purpose
@@ -22,6 +22,7 @@ _No public symbols detected_
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
 - [`reading-direction.isMirrored`](./reading-direction.ts.mdmd.md#symbol-ismirrored)
+- [`reading-direction.layoutEndAt`](./reading-direction.ts.mdmd.md#symbol-layoutendat)
 - [`reading-direction.shownSpan`](./reading-direction.ts.mdmd.md#symbol-shownspan)
 - [`reading-direction.spanInLayout`](./reading-direction.ts.mdmd.md#symbol-spaninlayout)
 - `vitest` - `describe`, `expect`, `it`

@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: `tests/e2e/camera-intent.spec.ts`
-- Generated At: 2026-11-21T07:10:17.225Z
+- Generated At: 2026-11-22T14:25:17.072Z
 
 ## Authored
 ### Purpose
@@ -31,7 +31,10 @@ _No public symbols detected_
 - [`types.CutCounted`](../../packages/explorer/src/client/types.ts.mdmd.md#symbol-cutcounted) (type-only)
 - [`types.StepFraming`](../../packages/explorer/src/client/types.ts.mdmd.md#symbol-stepframing) (type-only)
 - [`camera-intent.ARRIVAL_FLOOR_RATIO`](../../packages/explorer/src/client/views/localView/camera-intent.ts.mdmd.md#symbol-arrival_floor_ratio)
+- [`camera-intent.ARRIVAL_REST_S`](../../packages/explorer/src/client/views/localView/camera-intent.ts.mdmd.md#symbol-arrival_rest_s)
+- [`layout-measure.framePadding`](../../packages/explorer/src/client/views/localView/layout-measure.ts.mdmd.md#symbol-framepadding)
 - [`search-bar.choose`](./search-bar.ts.mdmd.md#symbol-choose)
+- [`still-picture.AT_READING_SIZE`](./still-picture.ts.mdmd.md#symbol-at_reading_size)
 - [`still-picture.loadGraph`](./still-picture.ts.mdmd.md#symbol-loadgraph)
 - [`still-picture.localMapSettled`](./still-picture.ts.mdmd.md#symbol-localmapsettled)
 <!-- LIVE-DOC:END Dependencies -->

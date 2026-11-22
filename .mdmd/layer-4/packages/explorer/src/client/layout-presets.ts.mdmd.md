@@ -75,14 +75,14 @@ Public control minimum, maximum and step, also used when reading saved or shared
 
 #### `LAYOUT_PRESETS` {#symbol-layout_presets}
 - Type: const
-- Source: [source](../../../../../../packages/explorer/src/client/layout-presets.ts#L30)
+- Source: [source](../../../../../../packages/explorer/src/client/layout-presets.ts#L31)
 
 ##### `LAYOUT_PRESETS` — Summary
 Packing defaults only: selecting a preset preserves coupling, symbol scaling and unrelated controls.
 
 #### `applyLayoutPreset` {#symbol-applylayoutpreset}
 - Type: function
-- Source: [source](../../../../../../packages/explorer/src/client/layout-presets.ts#L42)
+- Source: [source](../../../../../../packages/explorer/src/client/layout-presets.ts#L43)
 - Returns: [`TuningConfig`](./types.ts.mdmd.md#symbol-tuningconfig)
 - Parameters: `tuning`: [`TuningConfig`](./types.ts.mdmd.md#symbol-tuningconfig); `preset`: [`LayoutPreset`](#symbol-layoutpreset)
 
@@ -91,7 +91,7 @@ Return a fresh tuning record with both representations' packing set together.
 
 #### `readLayoutSettings` {#symbol-readlayoutsettings}
 - Type: function
-- Source: [source](../../../../../../packages/explorer/src/client/layout-presets.ts#L69)
+- Source: [source](../../../../../../packages/explorer/src/client/layout-presets.ts#L74)
 - Returns: [`LayoutSettings`](#symbol-layoutsettings)
 
 ##### `readLayoutSettings` — Summary
@@ -111,14 +111,18 @@ Files (2026-11-17): only a choice other than the default is carried, and its abs
 the count until 2026-11-18 and is Cells under name since; so a link of November 17 or 18 that carries Local Map
 settings and says nothing of Hidden Files, made with the count, now opens with the cells under the name. Beyond the Hops (2026-11-18, a
 trial of the 3D map): only the next step is carried, and its absence reads as everything. Arrival (2026-11-19) likewise:
-only a choice other than reading size is carried, and its absence reads as reading size; and Framing (2026-11-19), only
-Follows Pins, its absence reading as By Hand. Scan Growth and Scan Pace (2026-11-22, a trial of the 3D map): only an
-order of arrival and the slower pace are carried, their absence reading as off and as measured; and Drag (the same day),
-only Swings, its absence reading as holding its ground.
+only a choice other than the default is carried, and its absence reads as the default, which was reading size until
+2026-11-22 and is the pull-back with its look changed after it since; so a link made before then that carries Local
+Map settings and says nothing of Arrival, made at reading size, now opens with the pull-back, and one that says
+"reading" exists only from now on. Arrival Waits and Wire Answers changed their defaults the same day, to waiting while
+attended and to on, and read the same way. And Framing (2026-11-19), only Follows Pins, its absence reading as By Hand.
+Scan Growth and Scan Pace (2026-11-22, a trial of the 3D map): only an order of arrival and the slower pace are
+carried, their absence reading as off and as measured; and Drag (the same day), only Swings, its absence reading as
+holding its ground.
 
 #### `layoutSettingsOf` {#symbol-layoutsettingsof}
 - Type: function
-- Source: [source](../../../../../../packages/explorer/src/client/layout-presets.ts#L125)
+- Source: [source](../../../../../../packages/explorer/src/client/layout-presets.ts#L130)
 - Returns: [`LayoutSettings`](#symbol-layoutsettings)
 - Parameters: `tuning`: [`TuningConfig`](./types.ts.mdmd.md#symbol-tuningconfig)
 
@@ -127,7 +131,7 @@ Snapshot the controls that affect packing and spatial encodings, independent of 
 
 #### `applyLayoutSettings` {#symbol-applylayoutsettings}
 - Type: function
-- Source: [source](../../../../../../packages/explorer/src/client/layout-presets.ts#L140)
+- Source: [source](../../../../../../packages/explorer/src/client/layout-presets.ts#L145)
 - Returns: [`TuningConfig`](./types.ts.mdmd.md#symbol-tuningconfig)
 - Parameters: `tuning`: [`TuningConfig`](./types.ts.mdmd.md#symbol-tuningconfig); `settings`: [`LayoutSettings`](#symbol-layoutsettings)
 

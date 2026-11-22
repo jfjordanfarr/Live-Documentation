@@ -5,7 +5,7 @@ import { PERSISTED_UI_KEY, PERSISTED_UI_VERSION } from "../../packages/explorer/
 import type { HiddenFilesLook } from "../../packages/explorer/src/client/types";
 import { NOMINAL_CARD } from "../../packages/explorer/src/client/views/localView/directory-flow";
 import { describeFaults, overlapsAmong, textBoxes, truncations } from "./design-audit";
-import { LOCAL_MAP, localMapSettled, localRetainUrl } from "./still-picture";
+import { AT_READING_SIZE, LOCAL_MAP, localMapSettled, localRetainUrl } from "./still-picture";
 
 /**
  * Directories open and close inside the Local Map (the owner's grammar,
@@ -45,7 +45,7 @@ async function settled(page: Page): Promise<void> {
 /** Chooses how an opened directory stands for every page this test opens, beside the suite's own saved tuning. */
 async function chooseLayout(page: Page, layout: "flow" | "grid", hiddenFiles?: HiddenFilesLook): Promise<void> {
   await page.addInitScript(({ key, value }) => localStorage.setItem(key, value), {
-    key: PERSISTED_UI_KEY, value: JSON.stringify({ version: PERSISTED_UI_VERSION, tuning: { localMap: { searchStarts: 0, directoryLayout: layout, ...(hiddenFiles ? { hiddenFiles } : null) } } })
+    key: PERSISTED_UI_KEY, value: JSON.stringify({ version: PERSISTED_UI_VERSION, tuning: { localMap: { ...AT_READING_SIZE, searchStarts: 0, directoryLayout: layout, ...(hiddenFiles ? { hiddenFiles } : null) } } })
   });
 }
 

@@ -5,7 +5,7 @@ import { retainedKey } from "../../packages/explorer/src/client/views/retained-s
 import { AA_SMALL_TEXT, backdrop, contrastRatio, parseColour } from "./contrast";
 import { describeFaults, overlapsAmong, textBoxes, truncations } from "./design-audit";
 import { choose, currentSnapshot, newestKey } from "./search-bar";
-import { loadGraph, localMapSettled } from "./still-picture";
+import { arriveAtReadingSize, loadGraph, localMapSettled } from "./still-picture";
 
 /**
  * One search at the top of the Explorer, in every view, in place of the Ctrl+P dialog and the FROM/TO toolbar
@@ -30,6 +30,11 @@ async function inspectFromMore(page: Page, scope: Locator, name: string): Promis
 for (const width of [952, 1280]) {
   test(`symbol search frames the requested row and its actions after retained layout movement at ${width}px`, async ({ page }) => {
     await page.setViewportSize({ width, height: 800 });
+    // The row's Pin, pressed in trial below, is drawn in the reading look only, and the default arrival ends in the
+    // connections look: this case reads the search's own framing of the row and its actions at reading size. That the
+    // pull-back's frame still holds the row is the arrival's case in camera-intent.spec.ts ("a symbol chosen in the
+    // search…"); before 2026-11-22 the pull-back left the row outside the view here at 952 px.
+    await arriveAtReadingSize(page);
     const config = "packages/engine/src/config/liveDocumentationConfig.ts";
     const pathfind = "packages/engine/src/live-docs/pathfind.ts";
     await page.goto(`/?view=local&mode=2d&node=${config}`);
@@ -48,7 +53,7 @@ for (const width of [952, 1280]) {
     await row.locator(".symbol-label").hover();
     const highlighted=page.locator(`.node-card[data-id="${pathfind}"] .symbol-highlighted`);
     expect(await highlighted.evaluateAll(rows=>rows.map(row=>row.getAttribute("data-symbol"))).then(names=>names.sort()))
-      .toEqual(["Neighbours","components","reachFrom","walk (function)"].sort());
+      .toEqual(["Neighbours","components","reachFrom","walk (function)","walkBetween"].sort()); // walkBetween takes a Neighbours since 2026-11-22 (the path between two directories)
   });
 }
 

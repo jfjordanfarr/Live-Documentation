@@ -24,11 +24,12 @@ describe("tuning help", () => {
     // 2D camera frames after a step (a trial beside the least pan), and Cut Counted beside it the same day; Wire Answers and
     // Direction Marks the same day in the 2D wires group, the trials of a wire that says who uses what, and of its way;
     // Arrival Waits the same evening, beside Arrival, the trial of a pull-back that waits while the subject is pointed at;
-    // Way Down on 2026-11-22, before Arrival, the trial of a way down from the World Map that carries its question;
-    // Scan Growth and Scan Pace on 2026-11-22, the 3D map's trial of a picture that fills as a scan would, and Drag
+    // Arrival Rest on 2026-11-22, the least time an arrival stays at reading size (the owner's "minimum of N seconds");
+    // Way Down the same day, before Arrival, the trial of a way down from the World Map that carries its question;
+    // Scan Growth and Scan Pace the same day, the 3D map's trial of a picture that fills as a scan would, and Drag
     // the same day in its forces, the trial of what is tied to a dragged sphere swinging after it.
     // Mirror Turn the same day in the 2D layout group, the trial of how the picture moves when the mirror button is pressed.
-    expect(ids.length).toBe(82);
+    expect(ids.length).toBe(83);
     expect(Object.keys(TUNING_HELP).sort()).toEqual([...ids].sort());
   });
 
@@ -84,7 +85,7 @@ describe("the template's initial tuning values", () => {
   it("equal the defaults in getDefaultTuning for every control", () => {
     const defaults = getDefaultTuning();
     const ids = templateControlIds();
-    expect(ids.length).toBe(82);
+    expect(ids.length).toBe(83);
     for (const id of ids) {
       const { group, key } = settingOf(id, defaults);
       const expected = (defaults[group] as unknown as Record<string, unknown>)[key];

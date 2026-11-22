@@ -48,6 +48,7 @@ _No public symbols detected_
 - [`design-audit.textBoxes`](./design-audit.ts.mdmd.md#symbol-textboxes)
 - [`design-audit.truncations`](./design-audit.ts.mdmd.md#symbol-truncations)
 - [`search-bar.choose`](./search-bar.ts.mdmd.md#symbol-choose)
+- [`still-picture.AT_READING_SIZE`](./still-picture.ts.mdmd.md#symbol-at_reading_size)
 - [`still-picture.keepGrowingComposition`](./still-picture.ts.mdmd.md#symbol-keepgrowingcomposition)
 - [`still-picture.localMapStill`](./still-picture.ts.mdmd.md#symbol-localmapstill)
 - [`still-picture.panIntoView`](./still-picture.ts.mdmd.md#symbol-panintoview)

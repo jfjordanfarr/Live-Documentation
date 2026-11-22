@@ -63,7 +63,10 @@ export const configFor = (pass: string | undefined, { port, reuse }: ServerPort 
     // test's trace held 57 MB of them. The action log, console, network and screencast remain.
     trace: { mode: "retain-on-failure", snapshots: false },
     // The Local Map's continuing search is off for the suite, so that a picture read after it is drawn is the picture
-    // it first drew; the search has its own spec, and a spec that seeds the tuning itself chooses (2026-10-07).
+    // it first drew; the search has its own spec, and a spec that seeds the tuning itself chooses (2026-10-07). Nothing
+    // else is seeded: the suite runs on the arrival that ships, at reading size and then eased back to the neighbours
+    // (2026-11-22), and a case whose subject is the picture at reading size says so in its own seed (AT_READING_SIZE,
+    // still-picture.ts). A suite seeded away from the default would test a product nobody has.
     storageState: {
       cookies: [],
       origins: [{ origin: `http://localhost:${port}`, localStorage: [{ name: PERSISTED_UI_KEY, value: JSON.stringify({ version: PERSISTED_UI_VERSION, tuning: { localMap: { searchStarts: 0 } } }) }] }]

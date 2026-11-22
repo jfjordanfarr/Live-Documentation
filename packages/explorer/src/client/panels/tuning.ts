@@ -87,6 +87,7 @@ export function initTuningPanel(config: TuningPanelConfig): () => void {
   const hiddenFilesSelect = document.getElementById("tuning-hidden-files") as HTMLSelectElement | null;
   const arrivalSelect = document.getElementById("tuning-arrival") as HTMLSelectElement | null;
   const arrivalWaitsSelect = document.getElementById("tuning-arrival-waits") as HTMLSelectElement | null;
+  const arrivalRestInput = document.getElementById("tuning-arrival-rest") as HTMLInputElement | null;
   const framingSelect = document.getElementById("tuning-framing") as HTMLSelectElement | null;
   const stepSelect = document.getElementById("tuning-step") as HTMLSelectElement | null;
   const cutCountedSelect = document.getElementById("tuning-cut-counted") as HTMLSelectElement | null;
@@ -221,6 +222,7 @@ export function initTuningPanel(config: TuningPanelConfig): () => void {
     if (hiddenFilesSelect) hiddenFilesSelect.value = state.tuning.localMap.hiddenFiles;
     if (arrivalSelect) arrivalSelect.value = state.tuning.localMap.arrival;
     if (arrivalWaitsSelect) arrivalWaitsSelect.value = state.tuning.localMap.arrivalWaits;
+    state.tuning.localMap.arrivalRest = setSlider(arrivalRestInput, "tuning-arrival-rest-value", state.tuning.localMap.arrivalRest, v => String(v));
     if (framingSelect) framingSelect.value = state.tuning.localMap.framing;
     if (stepSelect) stepSelect.value = state.tuning.localMap.step;
     if (cutCountedSelect) cutCountedSelect.value = state.tuning.localMap.cutCounted;
@@ -358,6 +360,14 @@ export function initTuningPanel(config: TuningPanelConfig): () => void {
   if (arrivalWaitsSelect) {
     arrivalWaitsSelect.addEventListener("change", () => {
       state.tuning.localMap.arrivalWaits = ARRIVAL_WAITS.find(choice => choice === arrivalWaitsSelect.value) ?? ARRIVAL_WAITS[0];
+      onTuningChange();
+    });
+  }
+  if (arrivalRestInput) {
+    const output = document.getElementById("tuning-arrival-rest-value") as HTMLOutputElement | null;
+    arrivalRestInput.addEventListener("input", () => {
+      state.tuning.localMap.arrivalRest = parseFloat(arrivalRestInput.value);
+      if (output) output.textContent = arrivalRestInput.value;
       onTuningChange();
     });
   }

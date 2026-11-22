@@ -1,0 +1,235 @@
+{
+ "estate--pointer": {
+  "landedToWaiting": 948,
+  "held": {
+   "arrival": "waiting",
+   "camera": null,
+   "k": 1.32649,
+   "look": "reading"
+  },
+  "releasedAfterLeaving": 48,
+  "motion": {
+   "beganAfter": 52,
+   "ms": 717,
+   "frames": 21,
+   "worst": 66.7,
+   "fromK": 1.326,
+   "toK": 0.514,
+   "looksInMotion": [
+    "reading"
+   ],
+   "lookChange": {
+    "afterEaseEnd": 167,
+    "frame": 166.7,
+    "to": "connections"
+   }
+  },
+  "cast": {
+   "frames": 25,
+   "gaps": [
+    37,
+    43,
+    37,
+    39,
+    43,
+    38,
+    34,
+    31,
+    36,
+    39,
+    30,
+    27,
+    28,
+    33,
+    38,
+    29,
+    30,
+    32,
+    32,
+    34,
+    32,
+    39,
+    66,
+    389
+   ]
+  },
+  "errors": []
+ },
+ "estate--focus": {
+  "landedToWaiting": 1114,
+  "held": {
+   "arrival": "waiting",
+   "camera": null,
+   "k": 1.32649,
+   "look": "reading"
+  },
+  "releasedAfterLeaving": 61,
+  "motion": {
+   "beganAfter": 66,
+   "ms": 833,
+   "frames": 20,
+   "worst": 150,
+   "fromK": 1.326,
+   "toK": 0.514,
+   "looksInMotion": [
+    "reading"
+   ],
+   "lookChange": {
+    "afterEaseEnd": 0,
+    "frame": 150,
+    "to": "connections"
+   }
+  },
+  "cast": {
+   "frames": 31,
+   "gaps": [
+    42,
+    39,
+    38,
+    39,
+    39,
+    34,
+    35,
+    43,
+    39,
+    38,
+    34,
+    34,
+    36,
+    35,
+    29,
+    37,
+    35,
+    37,
+    36,
+    34,
+    37,
+    38,
+    34,
+    90,
+    37,
+    35,
+    38,
+    33,
+    31,
+    30
+   ]
+  },
+  "errors": []
+ },
+ "estate--wire": {
+  "wire": {
+   "x": 676.5891723632812,
+   "y": 527.4047241210938,
+   "name": "PaymentsContext.cs uses dbo.usp_PostPayment.sql: dbo.usp_PostPayment, 1 reference"
+  },
+  "gap": 20,
+  "onTheWay": true,
+  "selected": "PaymentsContext.cs uses dbo.usp_PostPayment.sql",
+  "dismissed": true,
+  "errors": []
+ },
+ "repo--pointer": {
+  "landedToWaiting": 422,
+  "held": {
+   "arrival": "waiting",
+   "camera": null,
+   "k": 1,
+   "look": "reading"
+  },
+  "releasedAfterLeaving": 328,
+  "motion": {
+   "beganAfter": 332,
+   "ms": 1667,
+   "frames": 4,
+   "worst": 649.9,
+   "fromK": 1,
+   "toK": 0.335,
+   "looksInMotion": [
+    "reading"
+   ],
+   "lookChange": {
+    "afterEaseEnd": 0,
+    "frame": 649.9,
+    "to": "connections"
+   }
+  },
+  "cast": {
+   "frames": 7,
+   "gaps": [
+    287,
+    1111,
+    53,
+    59,
+    844,
+    79
+   ]
+  },
+  "errors": []
+ },
+ "repo--focus": {
+  "landedToWaiting": 705,
+  "held": {
+   "arrival": "waiting",
+   "camera": null,
+   "k": 1,
+   "look": "reading"
+  },
+  "releasedAfterLeaving": 66,
+  "motion": {
+   "beganAfter": 70,
+   "ms": 1317,
+   "frames": 17,
+   "worst": 649.9,
+   "fromK": 1,
+   "toK": 0.335,
+   "looksInMotion": [
+    "reading"
+   ],
+   "lookChange": {
+    "afterEaseEnd": 0,
+    "frame": 649.9,
+    "to": "connections"
+   }
+  },
+  "cast": {
+   "frames": 22,
+   "gaps": [
+    37,
+    32,
+    43,
+    39,
+    42,
+    41,
+    51,
+    44,
+    47,
+    42,
+    38,
+    47,
+    46,
+    45,
+    45,
+    45,
+    57,
+    48,
+    55,
+    66,
+    44
+   ]
+  },
+  "errors": []
+ },
+ "repo--wire": {
+  "wire": {
+   "x": 866.2896118164062,
+   "y": 188.27072143554688,
+   "name": "queries.test.ts uses pathfind.ts: reachability (function), 1 reference"
+  },
+  "gap": 20,
+  "onTheWay": true,
+  "selected": "queries.test.ts uses pathfind.ts",
+  "dismissed": true,
+  "errors": []
+ }
+}

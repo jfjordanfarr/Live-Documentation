@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: `tests/e2e/wire-answers.spec.ts`
-- Generated At: 2026-11-21T09:00:59.497Z
+- Generated At: 2026-11-22T05:01:00.240Z
 
 ## Authored
 ### Purpose
@@ -25,6 +25,7 @@ _No public symbols detected_
 - [`local-storage.PERSISTED_UI_KEY`](../../packages/explorer/src/client/persistence/local-storage.ts.mdmd.md#symbol-persisted_ui_key)
 - [`local-storage.PERSISTED_UI_VERSION`](../../packages/explorer/src/client/persistence/local-storage.ts.mdmd.md#symbol-persisted_ui_version)
 - [`types.DirectionMarks`](../../packages/explorer/src/client/types.ts.mdmd.md#symbol-directionmarks) (type-only)
+- [`types.MapReads`](../../packages/explorer/src/client/types.ts.mdmd.md#symbol-mapreads) (type-only)
 - [`types.WireAnswersChoice`](../../packages/explorer/src/client/types.ts.mdmd.md#symbol-wireanswerschoice) (type-only)
 - [`pointerRest.REST_DWELL`](../../packages/explorer/src/client/views/pointerRest.ts.mdmd.md#symbol-rest_dwell)
 - [`design-audit.describeFaults`](./design-audit.ts.mdmd.md#symbol-describefaults)
@@ -32,6 +33,7 @@ _No public symbols detected_
 - [`design-audit.textBoxes`](./design-audit.ts.mdmd.md#symbol-textboxes)
 - [`design-audit.truncations`](./design-audit.ts.mdmd.md#symbol-truncations)
 - [`search-bar.choose`](./search-bar.ts.mdmd.md#symbol-choose)
+- [`still-picture.AT_READING_SIZE`](./still-picture.ts.mdmd.md#symbol-at_reading_size)
 - [`still-picture.LOCAL_MAP`](./still-picture.ts.mdmd.md#symbol-local_map)
 - [`still-picture.localMapSettled`](./still-picture.ts.mdmd.md#symbol-localmapsettled)
 <!-- LIVE-DOC:END Dependencies -->

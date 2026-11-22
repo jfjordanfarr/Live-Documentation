@@ -24,7 +24,7 @@ import { normalizeSymbolIdentifier } from "../../packages/explorer/src/client/vi
 import { explorerGraphOf } from "../../packages/explorer/src/shared/graph";
 import type { StaticExplorerData } from "../../packages/explorer/src/shared/staticExplorerData";
 import type { ExplorerGraphPayload } from "../../packages/explorer/src/shared/types";
-import { describeFaults, overlapsAmong, textBoxes, truncations } from "./design-audit";
+import { describeFaults, farLookNames, overlapsAmong, textBoxes, truncations, type Truncation, type TruncationCheck } from "./design-audit";
 import {
   crossings,
   flowOf,
@@ -139,6 +139,28 @@ export function symbolCounts(graph: ExplorerGraphPayload): Record<string, number
   const counts: Record<string, number> = {};
   for (const node of graph.nodes) counts[node.id] = node.publicSymbols.length;
   return counts;
+}
+
+/**
+ * The Local Map tuning of a case whose subject is not the arrival: the subject framed at reading size and left there
+ * (Tuning → 2D Layout → Arrival, Reading Size). Since 2026-11-22 the product's default arrival rests at reading size and
+ * then eases back to the neighbours, so a picture read at rest would be the neighbours' frame, in another look on a
+ * large neighbourhood. A case whose subject is the picture at reading size says so by spreading this into the tuning it
+ * seeds. The suite's stored state does not carry it: every other case runs on the arrival that ships. The arrival
+ * itself is read in `camera-intent.spec.ts`.
+ */
+export const AT_READING_SIZE = { arrival: "reading" } as const;
+
+/**
+ * Before the page starts, the suite's stored tuning with the arrival held at reading size ({@link AT_READING_SIZE}), for
+ * one case among others that run on the arrival that ships: a case whose subject is not the arrival and which reads or
+ * presses what only the picture at reading size holds. The caller says in a line what that is. `shippedSearch` leaves the
+ * continuing search as the product ships it, for a spec that runs without the suite's stored state.
+ */
+export async function arriveAtReadingSize(page: Page, shippedSearch = false): Promise<void> {
+  await page.addInitScript(({ key, value }) => localStorage.setItem(key, value), {
+    key: PERSISTED_UI_KEY, value: JSON.stringify({ version: PERSISTED_UI_VERSION, tuning: { localMap: { ...(shippedSearch ? {} : { searchStarts: 0 }), ...AT_READING_SIZE } } })
+  });
 }
 
 export const localMapUrl = (base: string, file: string): string => `${base}?view=local&node=${encodeURIComponent(file)}`;
@@ -907,15 +929,40 @@ export interface TextScore {
   labels: number;
   collisions: number;
   cutOffs: number;
+  /** Row names a far look shortens as its standard allows; absent on rows measured before it was counted. */
+  shortened?: number;
   faults: string;
 }
 
-/** Test 3: the design audit over the view's text. */
+/**
+ * Test 3: the design audit over the view's text. Since 2026-11-22 the default arrival rests in the connections look,
+ * so the picture measured is a far look, and a far look has a standard of its own for a row's name (`farLookNames` in
+ * `design-audit.ts`): shortened by its own ellipsis under a title that says it whole is right there. Those names are
+ * counted apart and named, so the report says how many names the resting picture shortens; every other cut is still a
+ * cut-off, and at reading size every cut is.
+ *
+ * What is set aside, and only this (the root's ruling of 2026-11-22). The audit's own-width check stands in for "this
+ * text belongs inside this box"; for a far look's name the one standard asks the stricter and exact thing, that what
+ * is drawn of the name stands inside its own button and is whole or shortened under its title. That button draws no
+ * box, so its padding is the name's room and not air a text crowds: an own-width finding on a name the standard calls
+ * right is not a cut-off, and neither is the hiding of a shortened name's end by its own text's clip, which is its
+ * ellipsis. A clip by the button or an ancestor, and a sibling's text on the same line, are faults on those names as on
+ * any text; a name the standard calls a fault is counted whatever found it.
+ */
 export async function scoreText(page: Page, view: ViewReading): Promise<TextScore> {
   const boxes = await textBoxes(page, view.text);
   const overlaps = overlapsAmong(boxes);
-  const cut = await truncations(page, view.text);
-  return { labels: boxes.length, collisions: overlaps.length, cutOffs: cut.length, faults: describeFaults(overlaps, cut) };
+  const all = await truncations(page, view.text);
+  const names = new Map((await farLookNames(page)).filter(name => name.far).map(name => [name.row, name.verdict]));
+  const only = (item: Truncation, ...checks: TruncationCheck[]): boolean => item.by.every(check => checks.includes(check));
+  const verdictOf = (item: Truncation) => (item.row === undefined ? undefined : names.get(item.row));
+  const shortened = all.filter(item => verdictOf(item) === "shortened" && only(item, "own-width", "inner-clip"));
+  const cut = all.filter(item => !shortened.includes(item) && !(verdictOf(item) === "whole" && only(item, "own-width")));
+  const faults = [
+    ...(overlaps.length + cut.length > 0 || shortened.length === 0 ? [describeFaults(overlaps, cut)] : []),
+    ...(shortened.length ? [`shortened with an ellipsis: ${shortened.length}: ${shortened.map(item => item.text).join(", ")}`] : [])
+  ].join("\n");
+  return { labels: boxes.length, collisions: overlaps.length, cutOffs: cut.length, shortened: shortened.length, faults };
 }
 
 /** The shape of every wire with its translation removed, keyed by its edge and its order among wires of that edge. */
@@ -1252,8 +1299,8 @@ const cell = (value: number | string | null | undefined): string => (value === n
 /** The scoreboard of one bundle as a markdown table, one row per view, one column per number the deck defines. */
 export function scoreboardTable(rows: readonly Scoreboard[]): string {
   const header = [
-    "| View | State | Facts in scope | Legible | In frame | Drawn | Not drawn | Off frame | Covered | Small | Scale | Smallest label px | Cards (in frame / partly / all) | Wires | Occluded wires | Occluded samples / samples | Collisions | Cut-offs | Routes changed / compared | Gestures | Smallest target px | Subject moved px | Answer legible / answer | History entry | Return error px |",
-    "| --- | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | --- | ---: | ---: | --- | ---: | ---: | --- | ---: | ---: | ---: | --- | --- | ---: |"
+    "| View | State | Facts in scope | Legible | In frame | Drawn | Not drawn | Off frame | Covered | Small | Scale | Smallest label px | Cards (in frame / partly / all) | Wires | Occluded wires | Occluded samples / samples | Collisions | Cut-offs | Shortened names | Routes changed / compared | Gestures | Smallest target px | Subject moved px | Answer legible / answer | History entry | Return error px |",
+    "| --- | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | --- | ---: | ---: | --- | ---: | ---: | ---: | --- | ---: | ---: | ---: | --- | --- | ---: |"
   ];
   const lines = rows.map(row => {
     const l = row.legibility;
@@ -1280,6 +1327,7 @@ export function scoreboardTable(rows: readonly Scoreboard[]): string {
       o ? `${o.occludedSamples} / ${o.samples}` : "n/a",
       row.text.collisions,
       row.text.cutOffs,
+      cell(row.text.shortened),
       r ? `${r.changed} / ${r.compared}` : "n/a",
       j ? j.gestures : "n/a",
       j ? cell(j.smallestTargetPx) : "n/a",

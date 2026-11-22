@@ -27,10 +27,10 @@ const ESTATE_PIN = "PaymentService/PaymentService.cs";
 const entry = (base: string, pin: string): string => `${base}?s=${compressSnapshot({ ...DEFAULT_SNAPSHOT, perspective: "3d", spatialLayout: "connections",
   filters: { showTests: true, showAssets: false }, pinSet: { entries: [{ nodeId: pin, symbol: "*" }] } })}`;
 
-/** Choose the wrappers and the shells' depth before the page starts, as saved Tuning choices, keeping the suite's still Local Map search. */
+/** Choose the wrappers and the shells' depth before the page starts, as saved Tuning choices, keeping the suite's still Local Map search and its arrival at reading size (still-picture.ts, AT_READING_SIZE, written out here because the page runs this). */
 async function choose(page: Page, look: GroupWrappers, shellDepth = getDefaultTuning().forceGraph.shellDepth): Promise<void> {
   await page.addInitScript(([key, version, wrappers, depth]) => {
-    localStorage.setItem(key, JSON.stringify({ version, tuning: { localMap: { searchStarts: 0 }, forceGraph: { groupWrappers: wrappers, shellDepth: depth } } }));
+    localStorage.setItem(key, JSON.stringify({ version, tuning: { localMap: { searchStarts: 0, arrival: "reading" }, forceGraph: { groupWrappers: wrappers, shellDepth: depth } } }));
   }, [PERSISTED_UI_KEY, PERSISTED_UI_VERSION, look, shellDepth] as const);
 }
 
@@ -293,7 +293,7 @@ test("Beyond the Hops at the next step holds only what is one step past the pict
   test.setTimeout(150_000);
   await observeGraph(page);
   await page.addInitScript(([key, version]) => {
-    localStorage.setItem(key, JSON.stringify({ version, tuning: { localMap: { searchStarts: 0 }, forceGraph: { groupWrappers: "skin", beyondHops: "next-step" } } }));
+    localStorage.setItem(key, JSON.stringify({ version, tuning: { localMap: { searchStarts: 0, arrival: "reading" }, forceGraph: { groupWrappers: "skin", beyondHops: "next-step" } } }));
   }, [PERSISTED_UI_KEY, PERSISTED_UI_VERSION] as const);
   await page.goto(entry("/", REPO_PIN));
   const graph = await loadGraph(page, "/");
@@ -417,7 +417,7 @@ test("a shell over a chain shows every file it holds, and its pop leaves more th
   const pin = "tests/integration/programs/rosetta-manifest.json", java = "tests/integration/programs/java/rosetta";
   await observeGraph(page);
   await page.addInitScript(([key, version]) => {
-    localStorage.setItem(key, JSON.stringify({ version, tuning: { localMap: { searchStarts: 0 }, forceGraph: { groupWrappers: "skin", shellDepth: 4, hops: 1 } } }));
+    localStorage.setItem(key, JSON.stringify({ version, tuning: { localMap: { searchStarts: 0, arrival: "reading" }, forceGraph: { groupWrappers: "skin", shellDepth: 4, hops: 1 } } }));
   }, [PERSISTED_UI_KEY, PERSISTED_UI_VERSION] as const);
   await page.clock.install();
   await page.goto(entry("/", pin));

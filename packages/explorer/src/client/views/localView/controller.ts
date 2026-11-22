@@ -12,7 +12,7 @@ import {
 } from "../symbolAnchors";
 import { createStage, dropStage, refreshReadingGeometry, refreshReadingPresentation, renderBranches, type BranchStage } from "./branch-renderer";
 import type { BranchGraph } from "./branches";
-import { ARRIVAL_ENDING_INPUTS, ARRIVAL_FLOOR_RATIO, ARRIVAL_LOOK_LEAD_MS, arrivalLookChange, FILES_FLOOR_RATIO, framingTravel, keepFrame, smoothZoom, ARRIVAL_HOLD_MS, arrivalEndFrame, arrivalPose, easeInOutCubic, framingEaseMs, pinsFrame, poseBetween, revealPan, sameCamera, STEP_FLOOR_RATIO, cutPan, stepLinesFrame, stepWholeFrame, STEP_MARK_MS, unionOf, type FramingTarget, type PinsFraming } from "./camera-intent";
+import { ARRIVAL_ENDING_INPUTS, ARRIVAL_FLOOR_RATIO, ARRIVAL_LOOK_LEAD_MS, arrivalLookChange, FILES_FLOOR_RATIO, framingTravel, keepFrame, smoothZoom, arrivalEndedBy, arrivalEndFrame, arrivalPose, arrivalReleased, arrivalRestStartsAgain, easeInOutCubic, framingEaseMs, pinsFrame, poseBetween, revealPan, sameCamera, STEP_FLOOR_RATIO, cutPan, stepLinesFrame, stepWholeFrame, STEP_MARK_MS, unionOf, type FramingTarget, type PinsFraming } from "./camera-intent";
 import type { CardContext } from "./card-factory";
 import { CardReading, type ReadingTarget } from "./card-reading";
 import { clearConnections, drawConnections } from "./connections";
@@ -214,9 +214,11 @@ export class LocalViewController implements LocalViewApi {
   /**
    * An arrival that rests on the subject at reading size and then eases back to the neighbours (Tuning's Arrival,
    * "Reading, Then Neighbours"): its subject, the frame it rests on and when it came to rest (0 until the picture has
-   * settled), the end it eases to, measured when the ease begins, and its animation frame.
+   * settled), when its rest was over and the ease began (0 while it rests; Tuning's Arrival Rest and Arrival Waits),
+   * whether it has rested its time and now only waits for the person's pointer or focus to leave the card, the end it
+   * eases to, measured when the ease begins, and its animation frame.
    */
-  private arrival: { subject: string; start: MapTransform | null; restAt: number; end: MapTransform | null; frame: number; lead: number; faded: number; cleared: number } | null = null;
+  private arrival: { subject: string; start: MapTransform | null; restAt: number; releasedAt: number; waiting: boolean; end: MapTransform | null; frame: number; lead: number; faded: number; cleared: number } | null = null;
   /**
    * The cards' look held whatever the zoom, while an arrival's pull-back changes it at rest rather than where the zoom
    * crosses its edge (Tuning's Arrival, Look After and Look Before, trials of 2026-11-21); null otherwise.
@@ -262,6 +264,15 @@ export class LocalViewController implements LocalViewApi {
     this.arrivalFocus = false;
     this.cancelArrival();
     this.cancelFollowEase();
+  };
+  /**
+   * An input on the map ends an arrival where it stands, but for a key that only moves the focus while the arrival
+   * waits on attention (camera-intent.ts, arrivalEndedBy); the following camera's ease ends on any of them, as before.
+   */
+  private readonly endArrivalByInput = (event: Event): void => {
+    const key = event instanceof KeyboardEvent ? event.key : undefined;
+    if (arrivalEndedBy(event.type, key, this.options.state.tuning.localMap.arrivalWaits)) this.endArrivalByHand();
+    else this.cancelFollowEase();
   };
   /** The requested identity is measured after its layout move, never from a transient pose. */
   private focusRequest: string | null = null;
@@ -400,6 +411,8 @@ export class LocalViewController implements LocalViewApi {
   private readonly wireAnswers: WireAnswers;
   /** The width of a wire's band last written, in the map's units: twelve of the screen's pixels at the camera's scale. */
   private wireBand = 0;
+  /** The band's width is owed but held back two frames after the camera stopped, clear of the frame a look changes in. */
+  private bandWaits = false;
 
   /** Watches the map layer so the picture stays put on screen when the toolbar above it grows or shrinks. */
   private layerObserver: ResizeObserver | null = null;
@@ -536,7 +549,7 @@ export class LocalViewController implements LocalViewApi {
     this.bindPointerEvents();
     this.bindWheelEvents();
     this.viewport.addEventListener("pointerleave", this.handlePointerLeave);
-    for (const type of ARRIVAL_ENDING_INPUTS) this.viewport.addEventListener(type, this.endArrivalByHand, { capture: true, passive: true });
+    for (const type of ARRIVAL_ENDING_INPUTS) this.viewport.addEventListener(type, this.endArrivalByInput, { capture: true, passive: true });
     this.container.addEventListener("pointerover", this.handleCardAttention);
     this.container.addEventListener("pointerleave", this.handleCardAttention);
     this.container.addEventListener("focusin", this.handleCardAttention);
@@ -653,7 +666,7 @@ export class LocalViewController implements LocalViewApi {
     this.reading?.dispose();
     cancelAnimationFrame(this.pendingRender);
     this.viewport.removeEventListener("pointerleave", this.handlePointerLeave);
-    for (const type of ARRIVAL_ENDING_INPUTS) this.viewport.removeEventListener(type, this.endArrivalByHand, { capture: true });
+    for (const type of ARRIVAL_ENDING_INPUTS) this.viewport.removeEventListener(type, this.endArrivalByInput, { capture: true });
     this.cancelArrival();
     this.container.removeEventListener("pointerover", this.handleCardAttention);
     this.container.removeEventListener("pointerleave", this.handleCardAttention);
@@ -1860,13 +1873,18 @@ export class LocalViewController implements LocalViewApi {
   }
 
   /**
-   * Under Wire Answers, a wire's band stays twelve of the screen's pixels wide at every zoom (written only when the scale
-   * has moved by more than a hundredth), and a wire's words move with it.
+   * Under Wire Answers, a wire's band stays twelve of the screen's pixels wide at every zoom, and a wire's words move
+   * with it. The width is written only when the scale has moved by more than a hundredth, and only while the camera is
+   * at rest: it is a property the overlay hands down to every wire, so writing it restyles them all, and written in
+   * every frame of a zoom it restyled 1,293 elements a frame through the default arrival's ease on
+   * `liveDocumentationConfig.ts` (measured 2026-11-22, the day the answers became the default). A pointer cannot rest
+   * on a wire that is moving, so the band is brought to its width once the camera has stopped, two frames after
+   * (watchCamera).
    */
   private answerWires(): void {
     if (this.options.state.tuning.localMap.wireAnswers !== "on") return;
     const band = 12 / (this.mapTransform.k || 1);
-    if (Math.abs(band - this.wireBand) > band * 0.01) {
+    if (!this.cameraMoving && !this.bandWaits && Math.abs(band - this.wireBand) > band * 0.01) {
       this.wireBand = band;
       this.overlay.style.setProperty("--wire-band", `${band.toFixed(2)}px`);
     }
@@ -1925,13 +1943,23 @@ export class LocalViewController implements LocalViewApi {
    */
   private watchCamera(): void {
     const runtime = this.runtime;
-    // An arrival's hold and ease say the camera moves, so that whoever waits for the map's rest sees where it ends.
-    const moving = runtime.isDragging || this.pinch !== null || runtime.mapInertiaFrame !== 0 || runtime.mapAnimationTarget !== null || this.arrival !== null;
+    // An arrival's rest and ease say the camera moves, so that whoever waits for the map's rest sees where it ends; an
+    // arrival that has rested its time and waits only on the person's attention does not (sayArrival).
+    const moving = runtime.isDragging || this.pinch !== null || runtime.mapInertiaFrame !== 0 || runtime.mapAnimationTarget !== null || (this.arrival !== null && !this.arrival.waiting);
     if (moving !== this.cameraMoving) {
       this.cameraMoving = moving;
       if (moving) this.container.dataset.camera = "moving";
       else delete this.container.dataset.camera;
       this.container.parentElement?.classList.toggle("camera-moving", moving);
+      // At rest again: the wires' bands take the width the new scale asks (answerWires).
+      if (!moving) {
+        // Two frames on, not now: the frame the camera stops in is the frame an arrival changes its look in, and the
+        // wires' restyle beside the look's lengthened that frame (measured 2026-11-22 on `liveDocumentationConfig.ts`:
+        // 1,322 wires in a pass of 9,800 elements; apart, the look's frame was a tenth to a seventh shorter at full
+        // speed and three tenths shorter on two slowed cores).
+        this.bandWaits = true;
+        requestAnimationFrame(() => requestAnimationFrame(() => { this.bandWaits = false; if (!this.cameraMoving) this.answerWires(); }));
+      }
     }
     if (moving && !this.cameraFrame) this.cameraFrame = requestAnimationFrame(() => {
       this.cameraFrame = 0;
@@ -2315,17 +2343,37 @@ export class LocalViewController implements LocalViewApi {
       this.arrivedSubject = subject;
       // The neighbours' frame is not the subject's reading frame: a resize keeps the camera's own frame.
       this.readingFrameTarget = null;
-      return arrivalEndFrame(content, card, frame, reading.k);
+      return arrivalEndFrame(content, card, frame, reading.k, this.askedOf(subject));
     }
     if (fresh || this.arrival?.subject === subject) this.beginArrival(subject);
     return reading;
   }
 
+  /**
+   * What an arrival was asked for, in the picture's units, least particular first: the subject's name, always, and the
+   * row asked for where one was, a symbol chosen in the search or pinned (the last thing acted on when it is the
+   * subject's own, else the newest pinned symbol of the subject). The frame the arrival ends on holds them
+   * (camera-intent.ts, arrivalEndFrame; the root's rule of 2026-11-22).
+   */
+  private askedOf(subject: string): Bounds[] {
+    const card = this.container.querySelector<HTMLElement>(`.node-card[data-id="${CSS.escape(subject)}"]`);
+    if (!card) return [];
+    const symbol = (this.lastInteracted === subject ? this.lastInteractedSymbol : null)
+      ?? [...this.pins.entries].reverse().find(entry => entry.nodeId === subject && entry.symbol !== "*")?.symbol ?? null;
+    const parts = [card.querySelector<HTMLElement>(".node-title"), symbol ? card.querySelector<HTMLElement>(`.symbol-row[data-symbol="${CSS.escape(symbol)}"]`) : null];
+    return withTransformReset(this.container, origin => parts.flatMap(part => {
+      const rect = part?.getBoundingClientRect();
+      return rect && rect.width > 0 && rect.height > 0
+        ? [{ left: rect.left - origin.left, top: rect.top - origin.top, right: rect.right - origin.left, bottom: rect.bottom - origin.top, width: rect.width, height: rect.height }] : [];
+    }));
+  }
+
   /** Rest on the subject at reading size until the picture has settled and the hold has passed, then ease to the neighbours. */
   private beginArrival(subject: string): void {
     this.cancelArrival();
-    const arrival = { subject, start: null as MapTransform | null, restAt: 0, end: null as MapTransform | null, frame: 0, lead: 0, faded: 0, cleared: 0 };
-    // Where the pointer stood when the arrival began: only a pointer moved since may hold the rest (Arrival Waits).
+    const arrival = { subject, start: null as MapTransform | null, restAt: 0, releasedAt: 0, waiting: false, end: null as MapTransform | null, frame: 0, lead: 0, faded: 0, cleared: 0 };
+    // Where the pointer stood when the arrival began: only a pointer moved since attends to the card (Arrival Waits). A
+    // pointer left where a press put it says nothing of reading what then arrived under it.
     const pointerAtStart = this.pointerAt;
     const change = arrivalLookChange(this.options.state.tuning.localMap.arrival);
     this.arrival = arrival;
@@ -2341,23 +2389,40 @@ export class LocalViewController implements LocalViewApi {
         }
         arrival.restAt = now;
         arrival.start = { ...this.mapTransform };
+        this.sayArrival();
       }
-      const frame = this.frameRect();
-      if (!arrival.end && this.options.state.tuning.localMap.arrivalWaits === "pointed" && this.pointerAt !== pointerAtStart
-        && this.container.querySelector(`.node-card[data-id="${CSS.escape(subject)}"]`)?.matches(":hover")) {
-        // A pointer brought to the subject's card and resting there holds the rest: the hold starts again.
-        arrival.restAt = now;
-      }
-      if (!arrival.end && now - arrival.restAt >= ARRIVAL_HOLD_MS) {
-        // The end is measured when the ease begins, on the picture as it has settled.
+      if (!arrival.releasedAt) {
+        // The rest at reading size (camera-intent.ts, arrivalReleased): at least Tuning's Arrival Rest, and under Arrival
+        // Waits for as long as the pointer, brought to the subject's card, or the keyboard's focus stays on that card.
+        const { arrivalWaits, arrivalRest } = this.options.state.tuning.localMap;
         const card = this.container.querySelector<HTMLElement>(`.node-card[data-id="${CSS.escape(subject)}"]`);
+        const pointed = this.pointerAt !== pointerAtStart && !!card?.matches(":hover");
+        const focus = document.activeElement;
+        const focused = !!card && !!focus && card.contains(focus) && focus.matches(":focus-visible");
+        if (arrivalRestStartsAgain(arrivalWaits, pointed)) arrival.restAt = now;
+        const restMs = arrivalRest * 1000;
+        const rested = now - arrival.restAt >= restMs;
+        if (!arrivalReleased(arrivalWaits, now - arrival.restAt, restMs, pointed || focused)) {
+          // Past its rest and held only by the person's attention, the picture is at rest and says so: nothing will move
+          // until they do, and whoever waits for the map's rest must not wait on a reader.
+          if (arrival.waiting !== rested) { arrival.waiting = rested; this.sayArrival(); }
+          arrival.frame = requestAnimationFrame(tick);
+          return;
+        }
+        arrival.waiting = false;
+        // The end is measured when the ease begins, on the picture as it has settled.
         const content = this.measureLayoutExtents()?.content;
         if (!card || !content) { this.cancelArrival(); return; }
         const bounds = withTransformReset(this.container, origin => {
           const rect = card.getBoundingClientRect();
           return { left: rect.left - origin.left, top: rect.top - origin.top, right: rect.right - origin.left, bottom: rect.bottom - origin.top, width: rect.width, height: rect.height };
         });
-        arrival.end = arrivalEndFrame(content, bounds, frame, this.readingReferenceScale);
+        arrival.end = arrivalEndFrame(content, bounds, this.frameRect(), this.readingReferenceScale, this.askedOf(subject));
+        // The ease begins where the camera stands now: while it waited, the focus moving inside the card or a status
+        // line above the map may have shifted the picture, and an ease from where it first rested would jump.
+        arrival.start = { ...this.mapTransform };
+        arrival.releasedAt = now;
+        this.sayArrival();
         if (change === "after") this.heldLook = this.look;
         if (change === "before") {
           // The look the ease ends in, taken now at rest; the camera waits for its cross-fade before it moves.
@@ -2378,17 +2443,19 @@ export class LocalViewController implements LocalViewApi {
         else if (arrival.faded && !arrival.cleared) arrival.cleared = now;
         const quiet = arrival.faded ? arrival.cleared > 0 && now > arrival.cleared : true;
         if (now - arrival.lead < ARRIVAL_LOOK_LEAD_MS || !quiet) { arrival.frame = requestAnimationFrame(tick); return; }
-        // The ease begins now: the hold's clock is moved on by the lead.
-        arrival.restAt += now - arrival.lead;
+        // The ease begins now, the lead over.
+        arrival.start = { ...this.mapTransform };
+        arrival.releasedAt = now;
         arrival.lead = -1;
       }
-      const pose = arrivalPose(arrival.start!, arrival.end ?? arrival.start!, now - arrival.restAt, frame);
+      const pose = arrivalPose(arrival.start!, arrival.end ?? arrival.start!, now - arrival.releasedAt, this.frameRect());
       if (pose.phase !== "hold") {
         this.mapTransform = pose.transform;
         this.updateMapTransform();
       }
       if (pose.phase === "done") {
         this.arrival = null;
+        this.sayArrival();
         this.releaseLook();
         this.arrivedSubject = subject;
         this.readingFrameTarget = null;
@@ -2400,6 +2467,20 @@ export class LocalViewController implements LocalViewApi {
       arrival.frame = requestAnimationFrame(tick);
     };
     arrival.frame = requestAnimationFrame(tick);
+    this.sayArrival();
+  }
+
+  /**
+   * The map says where an arrival that pulls back stands (`data-arrival`): "settling" while the picture still comes to
+   * reading size, "resting" there for its rest, whose clock starts when the picture has settled, "waiting" past it while
+   * the person's pointer or focus is on the card, "easing" back to the neighbours; nothing when none runs. Settling,
+   * resting and easing, its camera moves; waiting, it does not.
+   */
+  private sayArrival(): void {
+    const arrival = this.arrival;
+    const says = !arrival ? null : arrival.releasedAt ? "easing" : arrival.waiting ? "waiting" : arrival.restAt ? "resting" : "settling";
+    if (says) this.container.dataset.arrival = says;
+    else delete this.container.dataset.arrival;
     this.watchCamera();
   }
 
@@ -2410,7 +2491,7 @@ export class LocalViewController implements LocalViewApi {
     cancelAnimationFrame(arrival.frame);
     this.arrival = null;
     this.releaseLook();
-    this.watchCamera();
+    this.sayArrival();
   }
 
   /** Let a look held through an arrival's pull-back follow the zoom again: at rest, or where any input ended the arrival. */

@@ -1,7 +1,7 @@
 import { expect, test, type Locator, type Page } from "@playwright/test";
 
 import { compressSnapshot, decompressSnapshot, DEFAULT_SNAPSHOT, type UrlStateSnapshot } from "../../packages/explorer/src/client/persistence/compressed-url-state";
-import { localMapStill, panIntoView } from "./still-picture";
+import { arriveAtReadingSize, localMapStill, panIntoView } from "./still-picture";
 
 const readingState = "packages/explorer/src/client/reading-state.ts";
 const payment = "PaymentService/PaymentService.cs";
@@ -42,6 +42,9 @@ async function press(page: Page, button: Locator): Promise<void> {
  */
 test("normal-default text choices preserve the completed search, DOM, row order and keyboard focus, and fold rows short with the acted-on control held still", async ({ page }) => {
   const pinSet = { entries: [{ nodeId: readingState, symbol: "*" }] };
+  // The card's Read control and its descriptions are the reading look's; the default arrival ends in the connections
+  // look, where neither is drawn. The text choices are the subject, so the picture stays at reading size.
+  await arriveAtReadingSize(page, true);
   await page.goto(url({ selectedNodeId: readingState, pinSet }));
   const subject = card(page, readingState), book = subject.locator(".local-file-read");
   const row = subject.locator('.symbol-row[data-symbol="descriptionIsOpen"]');
@@ -124,6 +127,8 @@ test("a reading-only card updates its row emphasis in place as one description f
 
 test("a compact neighbor folds short in place, while reading still renders new retention controls and disclosed rows", async ({ page }) => {
   const pinSet = { entries: [{ nodeId: payment, symbol: "*" }] };
+  // As above: the Read control pressed here is drawn at reading size only.
+  await arriveAtReadingSize(page, true);
   await page.goto(url({ selectedNodeId: payment, pinSet }, true));
   const subject = card(page, context), book = subject.locator(".local-file-read");
   const shownRows = () => subject.locator(".symbol-row:not(.branch-symbol-hidden):not(.symbol-collapsed)");

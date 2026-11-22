@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: `tests/e2e/backward-cue.spec.ts`
-- Generated At: 2026-11-19T21:10:19.810Z
+- Generated At: 2026-11-22T02:10:42.804Z
 
 ## Authored
 ### Purpose
@@ -31,5 +31,6 @@ _No public symbols detected_
 - [`contrast.backdrop`](./contrast.ts.mdmd.md#symbol-backdrop)
 - [`contrast.contrastRatio`](./contrast.ts.mdmd.md#symbol-contrastratio)
 - [`contrast.parseColour`](./contrast.ts.mdmd.md#symbol-parsecolour)
+- [`still-picture.AT_READING_SIZE`](./still-picture.ts.mdmd.md#symbol-at_reading_size)
 - [`still-picture.localMapStill`](./still-picture.ts.mdmd.md#symbol-localmapstill)
 <!-- LIVE-DOC:END Dependencies -->

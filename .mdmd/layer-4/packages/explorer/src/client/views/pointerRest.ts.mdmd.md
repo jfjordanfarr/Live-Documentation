@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/explorer/src/client/views/pointerRest.ts`
-- Generated At: 2026-11-19T21:10:17.362Z
+- Generated At: 2026-11-22T02:10:39.515Z
 
 ## Authored
 ### Purpose
@@ -78,9 +78,37 @@ from a pointer event or from a frame that redrew the picture under a pointer tha
 ##### `restedOn` — Summary
 The thing the pointer has rested on at `now`, if any.
 
+#### `RestBox` {#symbol-restbox}
+- Type: interface
+- Source: [source](../../../../../../../packages/explorer/src/client/views/pointerRest.ts#L71)
+
+##### `RestBox` — Summary
+A box on the screen, in the page's pixels.
+
+#### `WAY_SLACK` {#symbol-way_slack}
+- Type: const
+- Source: [source](../../../../../../../packages/explorer/src/client/views/pointerRest.ts#L79)
+
+##### `WAY_SLACK` — Summary
+Pixels of slack about the way from a thing to the panel of its words: a hand does not travel a ruled line.
+
+#### `onTheWay` {#symbol-ontheway}
+- Type: function
+- Source: [source](../../../../../../../packages/explorer/src/client/views/pointerRest.ts#L90)
+- Parameters: `at`: [`RestPoint`](#symbol-restpoint); `from`: [`RestPoint`](#symbol-restpoint); `panel`: [`RestBox`](#symbol-restbox)
+
+##### `onTheWay` — Summary
+Whether a pointer at `at` is on its way from the point where a thing's words were asked for (`from`) to the panel
+that shows them, or on the panel: inside the smallest convex shape that holds the panel and the point, each widened
+by `slack`. Words shown for a rested pointer must be *hoverable* (WCAG 2.1, 1.4.13 Content on Hover or Focus): the
+pointer can be moved onto them without their going, so the gap between the thing and its panel may not drop them
+(the owner, 2026-11-22, of a wire's words: "the ability to mouse into those popovers so I can copy some text out").
+It is the one grace in the rule that words go at once when the pointer is on something else, and it is a place, not
+a delay: a pointer that leaves this shape is on something else.
+
 #### `restsAt` {#symbol-restsat}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/views/pointerRest.ts#L71)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/pointerRest.ts#L112)
 - Parameters: `rest`: [`PointerRest`](#symbol-pointerrest)
 
 ##### `restsAt` — Summary

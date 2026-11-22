@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: `tests/integration/live-docs/expected/repository-entries.json`
-- Generated At: 2026-11-22T04:35:33.482Z
+- Generated At: 2026-11-22T05:01:01.386Z
 
 ## Authored
 ### Purpose

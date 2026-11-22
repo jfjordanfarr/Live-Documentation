@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/explorer/src/client/views/localView/reading-direction.ts`
-- Generated At: 2026-11-22T04:13:30.175Z
+- Generated At: 2026-11-22T05:00:50.659Z
 
 ## Authored
 ### Purpose
@@ -42,23 +42,49 @@ Whether the picture is the layout reflected: what uses stands first from the lef
 ##### `writeReads` — Summary
 Says on the map's layer which way its picture reads: the attribute while mirrored, none for the picture as laid out.
 
+#### `PageSide` {#symbol-pageside}
+- Type: type
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/reading-direction.ts#L30)
+
+##### `PageSide` — Summary
+A side of the page, as an arrow key or a pointer names it.
+
+#### `LayoutEnd` {#symbol-layoutend}
+- Type: type
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/reading-direction.ts#L33)
+
+##### `LayoutEnd` — Summary
+An end of the layout's across: its start, where what offers stands, or its end, where what uses stands.
+
+#### `layoutEndAt` {#symbol-layoutendat}
+- Type: function
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/reading-direction.ts#L41)
+- Returns: [`LayoutEnd`](#symbol-layoutend)
+- Parameters: `side`: [`PageSide`](#symbol-pageside)
+
+##### `layoutEndAt` — Summary
+The end of the layout's across that lies toward a side of the page: as laid out the layout starts at the left, and
+mirrored at the right. An arrow key names a side of the page; what it reaches is found in the layout's terms through
+this (the keyboard's walk along wires, wire-answers.ts, 2026-11-22: before it, Right in a mirrored picture took the
+wires on a card's left).
+
 #### `PageSpan` {#symbol-pagespan}
 - Type: interface
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/reading-direction.ts#L30)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/reading-direction.ts#L46)
 
 ##### `PageSpan` — Summary
 A span across the page, in the page's pixels.
 
 #### `LayoutSpan` {#symbol-layoutspan}
 - Type: interface
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/reading-direction.ts#L33)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/reading-direction.ts#L49)
 
 ##### `LayoutSpan` — Summary
 A span across the layout, in the layout's own units from its origin: start before end, whichever way it is drawn.
 
 #### `spanInLayout` {#symbol-spaninlayout}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/reading-direction.ts#L41)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/reading-direction.ts#L57)
 - Returns: [`LayoutSpan`](#symbol-layoutspan)
 - Parameters: `box`: [`PageSpan`](#symbol-pagespan)
 
@@ -70,7 +96,7 @@ layout is the reflection of where it was measured.
 
 #### `shownSpan` {#symbol-shownspan}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/reading-direction.ts#L48)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/reading-direction.ts#L64)
 - Parameters: `span`: [`LayoutSpan`](#symbol-layoutspan)
 
 ##### `shownSpan` — Summary

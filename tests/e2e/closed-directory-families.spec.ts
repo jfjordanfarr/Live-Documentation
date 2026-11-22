@@ -4,7 +4,7 @@ import { PERSISTED_UI_KEY, PERSISTED_UI_VERSION } from "../../packages/explorer/
 import { handleParts } from "../../packages/explorer/src/client/views/localView/directory-handle";
 import { LOOK_SCALES } from "../../packages/explorer/src/client/views/localView/ladder-steps";
 import { describeFaults, overlapsAmong, textBoxes, truncations } from "./design-audit";
-import { LOCAL_MAP, localMapSettled } from "./still-picture";
+import { AT_READING_SIZE, LOCAL_MAP, localMapSettled } from "./still-picture";
 
 /**
  * Closed directories at the two far looks, and an opened directory's handle (2026-11-16). A difference of form that
@@ -36,7 +36,7 @@ async function still(page: Page): Promise<void> {
 /** A fresh visitor with the defaults, under this machine's lines or Segoe UI's. */
 async function visit(browser: Browser, url: string, lines: "fallback" | "segoe") {
   const context = await browser.newContext({ viewport: { width: 1440, height: 900 }, deviceScaleFactor: 1 });
-  await context.addInitScript(({ key, value }) => localStorage.setItem(key, value), { key: PERSISTED_UI_KEY, value: JSON.stringify({ version: PERSISTED_UI_VERSION, tuning: { localMap: { searchStarts: 0 } } }) });
+  await context.addInitScript(({ key, value }) => localStorage.setItem(key, value), { key: PERSISTED_UI_KEY, value: JSON.stringify({ version: PERSISTED_UI_VERSION, tuning: { localMap: { ...AT_READING_SIZE, searchStarts: 0 } } }) });
   if (lines === "segoe") await context.addInitScript(css => {
     const add = (): void => { const style = document.createElement("style"); style.textContent = css; document.documentElement.appendChild(style); };
     if (document.documentElement) add(); else document.addEventListener("readystatechange", add, { once: true });

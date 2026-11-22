@@ -1,6 +1,6 @@
 /**
- * Wire Answers, a trial behind Tuning's 2D Wires (2026-11-21, default off), on strangers' top-ranked stumble: which way
- * a line runs, and what it carries. With it on, every 2D wire, ordinary and gathered, and a bundle's shared run, answers
+ * Wire Answers (Tuning's 2D Wires; a trial of 2026-11-21, on by default since 2026-11-22), on strangers' top-ranked
+ * stumble: which way a line runs, and what it carries. With it on, every 2D wire, ordinary and gathered, and a bundle's shared run, answers
  * a pointer that rests on it, a press and the keyboard's focus. It stands out only by the others fading, as a returning
  * connection's lace makes it stand out (`lightConnections`): its own rows and its two cards keep their look, and nothing
  * is raised above rest. Its words (wire-words.ts) stand beside it in the World Map wire panel's form, so that one thing
@@ -9,6 +9,14 @@
  * product's one rule of hover intent). A drag begun on a wire still pans the map: the wire's band takes the pointer
  * only to be found, and passes every press on to the map's own pan.
  *
+ * The words can be entered (2026-11-22, the owner: "the ability to mouse into those popovers so I can copy some text
+ * out"; WCAG 2.1, 1.4.13 Content on Hover or Focus). *Hoverable*: the panel takes the pointer, and the words stay while
+ * the pointer is on the panel or on its way there from the point they were asked at (`onTheWay`), so no gap drops them;
+ * their text can be selected and copied, and a press in the panel neither pans the map nor lets go of anything.
+ * *Dismissible*: Escape takes a rested pointer's words away without the pointer moving, and they do not come back until
+ * the pointer has been elsewhere. *Persistent*: nothing but the pointer's leaving, Escape or the wire's own going takes
+ * them away; no clock does.
+ *
  * The wire's band is drawn by connections.ts, an undrawn stroke as wide as twelve of the screen's pixels or the wire,
  * whichever is wider, over the wire, which takes the pointer, the focus (not a stop of Tab: `tabindex="-1"`) and the
  * wire's spoken name, the same sentence as its words.
@@ -16,14 +24,16 @@
  * The keyboard: from a focused card, the right arrow goes to the first wire leaving it on the right (to what uses it),
  * the left arrow to the first entering it on the left (what it uses); on a wire, up and down go to the card's next and
  * previous wire on that side, right and left go on to the card at that end, Enter or Space pins its words, and Escape
- * lets go of a pin, then goes back to the card the walk came from.
+ * lets go of a pin, then goes back to the card the walk came from. Right and left are the page's: in a mirrored picture
+ * (reading-direction.ts) what uses the card stands at its left, and the left arrow goes there.
  *
  * @module wire-answers
  */
 
 import { CLOSE_ICON, iconButton } from "../../panels/icon-button";
-import { NO_REST, restAt, restedOn, restsAt, type PointerRest } from "../pointerRest";
+import { NO_REST, onTheWay, restAt, restedOn, restsAt, type PointerRest } from "../pointerRest";
 import { panelBeside, type Avoid } from "../worldMap/layout";
+import { layoutEndAt, READS_ATTRIBUTE, type LayoutEnd } from "./reading-direction";
 import { clearSymbolHighlightDOM, lightConnections } from "./symbol-highlight";
 import type { LocalEdge } from "./types";
 import { headText, listText, referencesText, sentence, type WireWords } from "./wire-words";
@@ -88,6 +98,10 @@ export class WireAnswers {
   private press: { pointerId: number; x: number; y: number; band: SVGElement | null } | null = null;
   /** The card a keyboard's walk along wires began from, to which Escape returns. */
   private walkFrom: HTMLElement | null = null;
+  /** A press that began in the panel and is still held: a selection of its text, dragged wherever, keeps the words. */
+  private pressInPanel = false;
+  /** The band whose words Escape took away under a resting pointer: they stay away until the pointer has been elsewhere. */
+  private dismissed: SVGElement | null = null;
 
   constructor(private readonly host: WireAnswersHost) {
     this.panel = document.createElement("div");
@@ -100,6 +114,8 @@ export class WireAnswers {
     // A press on a wire gives it no focus, which would hold its words after the pointer left; the pan, on pointer
     // events, goes on.
     view.addEventListener("mousedown", event => { if (this.bandAt(event.target)) event.preventDefault(); });
+    // A press in the panel is the panel's own, to select its words: the map's pan, which listens below it, never hears it.
+    this.panel.addEventListener("pointerdown", event => event.stopPropagation());
     window.addEventListener("pointerdown", this.pointerDown, { capture: true, passive: true });
     window.addEventListener("pointerup", this.pointerUp, { capture: true, passive: true });
     window.addEventListener("pointercancel", this.pointerCancel, { capture: true, passive: true });
@@ -107,6 +123,8 @@ export class WireAnswers {
     view.addEventListener("focusout", this.focusOut);
     view.addEventListener("keydown", this.keyDown);
     window.addEventListener("keydown", this.escape);
+    // Before any other surface's Escape: a rested pointer's words are the surface on top.
+    window.addEventListener("keydown", this.dismiss, { capture: true });
   }
 
   /** Whose words stand: the band, and whether a press pinned them. */
@@ -134,10 +152,10 @@ export class WireAnswers {
     this.place(shown.anchor);
   }
 
-  /** Lights a pinned answer's wire again, after another hover put its light out. */
+  /** Lights a shown answer's wire again, after another hover, of a card crossed on the way to the panel, put its light out. */
   relight(): void {
     const shown = this.shown;
-    if (!shown?.pinned || this.host.container.classList.contains("symbol-hover-active")) return;
+    if (!shown || this.host.container.classList.contains("symbol-hover-active")) return;
     const answer = answerOf(shown.band);
     if (answer) this.light(answer);
   }
@@ -286,6 +304,21 @@ export class WireAnswers {
     this.lookAtRest(this.bandAt(event.target), { x: event.clientX, y: event.clientY });
   };
 
+  /**
+   * Whether a rested pointer's words stay though the pointer is off their wire: it is on the panel, a press begun in the
+   * panel is still held, or it is on its way to the panel from the point the words were asked at (pointerRest.ts).
+   */
+  private keepsWords(at: { x: number; y: number } | null): boolean {
+    const shown = this.shown;
+    if (!shown || shown.pinned || !at) return false;
+    if (this.pressInPanel) return true;
+    const panel = this.panel.getBoundingClientRect();
+    const rect = this.host.layer()?.getBoundingClientRect();
+    if (!rect) return false;
+    const k = this.host.scale() || 1;
+    return onTheWay(at, { x: rect.left + shown.anchor.x * k, y: rect.top + shown.anchor.y * k }, panel);
+  }
+
   private readonly pointerLeave = (): void => {
     if (!this.host.enabled()) return;
     this.lookAtRest(null, null);
@@ -295,6 +328,7 @@ export class WireAnswers {
     const now = performance.now();
     this.touched = band;
     if (at) this.touchedAt = at;
+    if (band !== this.dismissed) this.dismissed = null;
     this.rest = at ? restAt(this.rest, band?.dataset.connectionKey ?? null, at, now) : NO_REST;
     window.clearTimeout(this.restTimer);
     const due = restsAt(this.rest);
@@ -306,20 +340,22 @@ export class WireAnswers {
       this.relight();
       if (!rested || rested === shown.band) return;
     }
-    if (rested && rested !== shown?.band && this.touchedAt) this.show(rested, this.anchorAt(this.touchedAt.x, this.touchedAt.y), false);
-    else if (!rested && shown && !shown.pinned && shown.band !== document.activeElement) this.close();
+    if (rested && rested !== shown?.band && rested !== this.dismissed && this.touchedAt) this.show(rested, this.anchorAt(this.touchedAt.x, this.touchedAt.y), false);
+    else if (!rested && shown && !shown.pinned && shown.band !== document.activeElement && !this.keepsWords(at)) this.close();
+    else if (!rested && shown && !shown.pinned) this.relight();
   }
 
   /** A press begins: on a band, or elsewhere; either way the map's own pan goes on as before. */
   private readonly pointerDown = (event: PointerEvent): void => {
     if (!this.host.enabled() || !event.isPrimary) return;
-    if (event.target instanceof Node && this.panel.contains(event.target)) { this.press = null; return; }
+    if (event.target instanceof Node && this.panel.contains(event.target)) { this.press = null; this.pressInPanel = true; return; }
     this.press = { pointerId: event.pointerId, x: event.clientX, y: event.clientY, band: this.bandAt(event.target) };
   };
 
   /** A press ends: one that did not travel pins a band's words, or lets go of a pin when it was made elsewhere. */
   private readonly pointerUp = (event: PointerEvent): void => {
     const press = this.press;
+    this.pressInPanel = false;
     if (!press || press.pointerId !== event.pointerId) return;
     this.press = null;
     if (!this.host.enabled() || Math.hypot(event.clientX - press.x, event.clientY - press.y) > PRESS_SLOP) return;
@@ -327,7 +363,7 @@ export class WireAnswers {
     else if (this.shown?.pinned) this.close();
   };
 
-  private readonly pointerCancel = (): void => { this.press = null; };
+  private readonly pointerCancel = (): void => { this.press = null; this.pressInPanel = false; };
 
   /** The keyboard's focus on a band shows its words at once, at the middle of its wire. */
   private readonly focusIn = (event: FocusEvent): void => {
@@ -344,10 +380,21 @@ export class WireAnswers {
     this.close();
   };
 
-  /** The bands at one side of a card, top to bottom by where they meet it. */
-  private bandsOf(cardId: string, side: "right" | "left"): SVGElement[] {
-    const end = side === "right" ? "targetId" : "sourceId";
-    const y = side === "right" ? "fromY" : "toY";
+  /**
+   * The end of the layout an arrow key points toward: the page's side it names, read through the picture's one mapping
+   * (reading-direction.ts), so that Right is the page's right in a picture as laid out and in one mirrored.
+   */
+  private toward(key: string): LayoutEnd {
+    return layoutEndAt(key === "ArrowRight" ? "right" : "left", !!this.host.layer()?.hasAttribute(READS_ATTRIBUTE));
+  }
+
+  /**
+   * The bands of a card toward one end of the layout, top to bottom by where they meet it: toward its end, the wires
+   * to what uses the card; toward its start, the wires from what it uses.
+   */
+  private bandsOf(cardId: string, side: LayoutEnd): SVGElement[] {
+    const end = side === "end" ? "targetId" : "sourceId";
+    const y = side === "end" ? "fromY" : "toY";
     return [...this.host.overlay.querySelectorAll<SVGElement>(".wire-band:not(.run-band)")]
       .filter(band => band.dataset[end] === cardId)
       .sort((a, b) => Number(a.dataset[y]) - Number(b.dataset[y]));
@@ -363,7 +410,7 @@ export class WireAnswers {
     if (!target) return;
     const band = this.bandAt(target);
     if (!band && target.matches(".node-card") && (event.key === "ArrowRight" || event.key === "ArrowLeft")) {
-      const side = event.key === "ArrowRight" ? "right" : "left";
+      const side = this.toward(event.key);
       const first = this.bandsOf((target as HTMLElement).dataset.id ?? "", side)[0];
       if (!first) return;
       event.preventDefault();
@@ -373,8 +420,8 @@ export class WireAnswers {
       return;
     }
     if (!band) return;
-    const side = band.dataset.walk === "left" ? "left" : "right";
-    const cardId = side === "right" ? band.dataset.targetId : band.dataset.sourceId;
+    const side: LayoutEnd = band.dataset.walk === "start" ? "start" : "end";
+    const cardId = side === "end" ? band.dataset.targetId : band.dataset.sourceId;
     if (event.key === "Enter" || event.key === " ") {
       event.preventDefault();
       this.show(band, this.anchorOfBand(band), true);
@@ -385,8 +432,9 @@ export class WireAnswers {
       const next = bands[Math.max(0, Math.min(bands.length - 1, at + (event.key === "ArrowDown" ? 1 : -1)))];
       if (next && next !== band) { next.dataset.walk = side; (next as unknown as HTMLElement).focus({ preventScroll: true }); }
     } else if (event.key === "ArrowRight" || event.key === "ArrowLeft") {
-      // On to the card at that end: right to the file that uses, left to the file that offers.
-      const card = this.cardOf(event.key === "ArrowRight" ? band.dataset.sourceId : band.dataset.targetId);
+      // On to the card on that side of the page: toward the layout's end the file that uses, toward its start the file
+      // that offers.
+      const card = this.cardOf(this.toward(event.key) === "end" ? band.dataset.sourceId : band.dataset.targetId);
       if (!card) return;
       event.preventDefault();
       this.close();
@@ -399,6 +447,20 @@ export class WireAnswers {
       this.close();
       card.focus();
     }
+  };
+
+  /**
+   * Escape takes a rested pointer's words away where the pointer stands (*dismissible*), and nothing else with them:
+   * the reader, a pin or a menu below stays for the next Escape. Words shown for the keyboard's focus are the walk's
+   * own Escape's, above.
+   */
+  private readonly dismiss = (event: KeyboardEvent): void => {
+    const shown = this.shown;
+    if (event.key !== "Escape" || !shown || shown.pinned || shown.band === document.activeElement) return;
+    event.preventDefault();
+    event.stopPropagation();
+    this.dismissed = shown.band;
+    this.close();
   };
 
   /** Escape lets go of a pinned answer, unless a surface above took it. */

@@ -36,7 +36,7 @@ Playwright configuration for the Explorer's browser suite: one Chromium worker o
 
 #### `default` {#symbol-default}
 - Type: default (default)
-- Source: [source](../../../../tests/e2e/playwright.config.ts#L88)
+- Source: [source](../../../../tests/e2e/playwright.config.ts#L91)
 <!-- LIVE-DOC:END Public Symbols -->
 
 <!-- LIVE-DOC:BEGIN Dependencies -->

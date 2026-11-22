@@ -2,7 +2,7 @@ import { expect, test, type Locator, type Page } from "@playwright/test";
 
 import { compressSnapshot, decompressSnapshot, DEFAULT_SNAPSHOT, type UrlStateSnapshot } from "../../packages/explorer/src/client/persistence/compressed-url-state";
 import { PERSISTED_UI_KEY, PERSISTED_UI_VERSION } from "../../packages/explorer/src/client/persistence/local-storage";
-import { localMapSettled, panIntoView } from "./still-picture";
+import { AT_READING_SIZE, localMapSettled, panIntoView } from "./still-picture";
 
 /**
  * The fixed-slot card composition of the November 5 comparison, behind the Card Text tuning switch: a card's box
@@ -80,7 +80,7 @@ test.use({ viewport: { width: 1440, height: 960 } });
 test.beforeEach(async ({ page }) => {
   await page.addInitScript(({ key, value }) => localStorage.setItem(key, value), {
     key: PERSISTED_UI_KEY,
-    value: JSON.stringify({ version: PERSISTED_UI_VERSION, tuning: { localMap: { searchStarts: 0, cardText: "slot" } } })
+    value: JSON.stringify({ version: PERSISTED_UI_VERSION, tuning: { localMap: { ...AT_READING_SIZE, searchStarts: 0, cardText: "slot" } } })
   });
 });
 

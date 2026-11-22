@@ -4,7 +4,7 @@ import { compressSnapshot, decompressSnapshot, DEFAULT_SNAPSHOT, type UrlStateSn
 import { PERSISTED_UI_KEY, PERSISTED_UI_VERSION } from "../../packages/explorer/src/client/persistence/local-storage";
 import { overlapsAmong, textBoxes, truncations } from "./design-audit";
 import { choose } from "./search-bar";
-import { keepGrowingComposition, localMapStill, panIntoView } from "./still-picture";
+import { AT_READING_SIZE, keepGrowingComposition, localMapStill, panIntoView } from "./still-picture";
 
 const payment = "tests/integration/programs/csharp/estate/PaymentService/PaymentService.cs";
 const pathfind = "packages/engine/src/live-docs/pathfind.ts";
@@ -61,7 +61,7 @@ for (const holdStill of ["click", "hover"] as const) for (const fixture of [
     test.setTimeout(60_000);
     await page.addInitScript(({ key, value }) => localStorage.setItem(key, value), {
       key: PERSISTED_UI_KEY,
-      value: JSON.stringify({ version: PERSISTED_UI_VERSION, tuning: { localMap: { searchStarts: 0, holdStill, cardText: "grow" } } })
+      value: JSON.stringify({ version: PERSISTED_UI_VERSION, tuning: { localMap: { ...AT_READING_SIZE, searchStarts: 0, holdStill, cardText: "grow" } } })
     });
     const pins = { entries: fixture.selected ? [] : fixture.names.map(symbol => ({ nodeId: fixture.id, symbol })) };
     await page.goto(url({ ...(fixture.selected ? { selectedNodeId: fixture.id } : {}), pinSet: pins, reading: [{ nodeId: fixture.id, open: false }] }));
@@ -109,7 +109,7 @@ for (const viewport of [{ width: 900, height: 700 }, { width: 1440, height: 960 
     // The idle search is off so that each picture below is the solve's own; the search's motion is tested elsewhere.
     await page.addInitScript(({ key, value }) => localStorage.setItem(key, value), {
       key: PERSISTED_UI_KEY,
-      value: JSON.stringify({ version: PERSISTED_UI_VERSION, tuning: { localMap: { searchStarts: 0, cardText: "grow" } } })
+      value: JSON.stringify({ version: PERSISTED_UI_VERSION, tuning: { localMap: { ...AT_READING_SIZE, searchStarts: 0, cardText: "grow" } } })
     });
     await page.setViewportSize(viewport);
     await page.goto(url({ selectedNodeId: payment }));

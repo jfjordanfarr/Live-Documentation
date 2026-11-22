@@ -3,7 +3,7 @@ import { expect, test, type Page } from "@playwright/test";
 import { compressSnapshot, decompressSnapshot, DEFAULT_SNAPSHOT, type UrlStateSnapshot } from "../../packages/explorer/src/client/persistence/compressed-url-state";
 import { retainedKey } from "../../packages/explorer/src/client/views/retained-state";
 import { describeFaults, overlapsAmong, textBoxes, truncations } from "./design-audit";
-import { localMapSettled, panIntoView } from "./still-picture";
+import { arriveAtReadingSize, localMapSettled, panIntoView } from "./still-picture";
 
 const ROOT = "tests/integration/programs/typescript/rosetta";
 const SRC = `${ROOT}/src`;
@@ -149,6 +149,9 @@ test("releasing a directory preserves the direct-file neighborhood that was alre
 });
 
 test("closing a neighbor's symbol disclosure preserves the direct-file inspection", async ({ page }) => {
+  // A card's Close is drawn in the reading look only; the default arrival ends in the connections look, where it is in
+  // the card's menu. The disclosure is the subject here, so the picture stays at reading size.
+  await arriveAtReadingSize(page);
   await page.goto(`/?view=local&node=${MAIN}`);
   await localMapSettled(page);
   const neighbor = page.locator(`.node-card[data-id="${SRC}/models.ts"]`);

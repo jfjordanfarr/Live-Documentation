@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: `tests/e2e/zoom-looks.spec.ts`
-- Generated At: 2026-11-19T21:10:24.770Z
+- Generated At: 2026-11-22T15:54:53.166Z
 
 ## Authored
 ### Purpose
@@ -37,5 +37,11 @@ _No public symbols detected_
 - [`compressed-url-state.decompressSnapshot`](../../packages/explorer/src/client/persistence/compressed-url-state.ts.mdmd.md#symbol-decompresssnapshot)
 - [`local-storage.PERSISTED_UI_KEY`](../../packages/explorer/src/client/persistence/local-storage.ts.mdmd.md#symbol-persisted_ui_key)
 - [`local-storage.PERSISTED_UI_VERSION`](../../packages/explorer/src/client/persistence/local-storage.ts.mdmd.md#symbol-persisted_ui_version)
+- [`design-audit.farLookNames`](./design-audit.ts.mdmd.md#symbol-farlooknames)
+- [`design-audit.truncations`](./design-audit.ts.mdmd.md#symbol-truncations)
+- [`scopes.CHAIN_REPOSITORY`](./scopes.ts.mdmd.md#symbol-chain_repository)
+- [`still-picture.AT_READING_SIZE`](./still-picture.ts.mdmd.md#symbol-at_reading_size)
+- [`still-picture.LOCAL_MAP`](./still-picture.ts.mdmd.md#symbol-local_map)
 - [`still-picture.localMapStill`](./still-picture.ts.mdmd.md#symbol-localmapstill)
+- [`still-picture.scoreText`](./still-picture.ts.mdmd.md#symbol-scoretext)
 <!-- LIVE-DOC:END Dependencies -->

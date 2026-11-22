@@ -4,7 +4,7 @@ import { compressSnapshot, DEFAULT_SNAPSHOT } from "../../packages/explorer/src/
 import { PERSISTED_UI_KEY, PERSISTED_UI_VERSION } from "../../packages/explorer/src/client/persistence/local-storage";
 import { LAST_STEP, STEP_RATIO } from "../../packages/explorer/src/client/views/localView/ladder-steps";
 import { GATHERED_WIDTH } from "../../packages/explorer/src/client/views/localView/wire-gathering";
-import { localMapStill } from "./still-picture";
+import { AT_READING_SIZE, localMapStill } from "./still-picture";
 
 /**
  * The overview band's wires and the farthest zoom (2026-11-06, the far bands' second milestone, after the owner's
@@ -27,7 +27,7 @@ test.beforeEach(async ({ page }) => {
   // so it chooses that value rather than rely on the default.
   await page.addInitScript(({ key, value }) => localStorage.setItem(key, value), {
     key: PERSISTED_UI_KEY,
-    value: JSON.stringify({ version: PERSISTED_UI_VERSION, tuning: { localMap: { searchStarts: 0, overviewFiles: "keep" } } })
+    value: JSON.stringify({ version: PERSISTED_UI_VERSION, tuning: { localMap: { ...AT_READING_SIZE, searchStarts: 0, overviewFiles: "keep" } } })
   });
 });
 
@@ -217,7 +217,7 @@ test("zooming out a small map stops at the ladder's last step, where its drawing
   test.setTimeout(120_000);
   // The stepped ladder, whose last step the map reports; the three looks have a case of their own below.
   await page.addInitScript(({ key, value }) => localStorage.setItem(key, value), {
-    key: PERSISTED_UI_KEY, value: JSON.stringify({ version: PERSISTED_UI_VERSION, tuning: { localMap: { searchStarts: 0, zoomLooks: "stepped" } } })
+    key: PERSISTED_UI_KEY, value: JSON.stringify({ version: PERSISTED_UI_VERSION, tuning: { localMap: { ...AT_READING_SIZE, searchStarts: 0, zoomLooks: "stepped" } } })
   });
   await open(page, payment);
   const scales = await walkToFarthest(page);
@@ -233,7 +233,7 @@ test("in the three looks too, zooming out a small map stops at the ladder's last
   // The default since 2026-11-13: the far limit is the same, and the look there is the overview, whose drawing a further
   // press could not change.
   await page.addInitScript(({ key, value }) => localStorage.setItem(key, value), {
-    key: PERSISTED_UI_KEY, value: JSON.stringify({ version: PERSISTED_UI_VERSION, tuning: { localMap: { searchStarts: 0, zoomLooks: "three", overviewFiles: "keep" } } })
+    key: PERSISTED_UI_KEY, value: JSON.stringify({ version: PERSISTED_UI_VERSION, tuning: { localMap: { ...AT_READING_SIZE, searchStarts: 0, zoomLooks: "three", overviewFiles: "keep" } } })
   });
   await open(page, payment);
   const scales = await walkToFarthest(page);

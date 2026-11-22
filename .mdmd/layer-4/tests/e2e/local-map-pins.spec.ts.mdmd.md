@@ -41,6 +41,7 @@ _No public symbols detected_
 - [`design-audit.overlapsAmong`](./design-audit.ts.mdmd.md#symbol-overlapsamong)
 - [`design-audit.textBoxes`](./design-audit.ts.mdmd.md#symbol-textboxes)
 - [`design-audit.truncations`](./design-audit.ts.mdmd.md#symbol-truncations)
+- [`still-picture.arriveAtReadingSize`](./still-picture.ts.mdmd.md#symbol-arriveatreadingsize)
 - [`still-picture.localMapSettled`](./still-picture.ts.mdmd.md#symbol-localmapsettled)
 - [`still-picture.panIntoView`](./still-picture.ts.mdmd.md#symbol-panintoview)
 <!-- LIVE-DOC:END Dependencies -->

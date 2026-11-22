@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: `tests/e2e/search-bar.spec.ts`
-- Generated At: 2026-11-19T21:10:24.078Z
+- Generated At: 2026-11-22T05:54:30.104Z
 
 ## Authored
 ### Purpose
@@ -39,6 +39,7 @@ _No public symbols detected_
 - [`search-bar.choose`](./search-bar.ts.mdmd.md#symbol-choose)
 - [`search-bar.currentSnapshot`](./search-bar.ts.mdmd.md#symbol-currentsnapshot)
 - [`search-bar.newestKey`](./search-bar.ts.mdmd.md#symbol-newestkey)
+- [`still-picture.arriveAtReadingSize`](./still-picture.ts.mdmd.md#symbol-arriveatreadingsize)
 - [`still-picture.loadGraph`](./still-picture.ts.mdmd.md#symbol-loadgraph)
 - [`still-picture.localMapSettled`](./still-picture.ts.mdmd.md#symbol-localmapsettled)
 <!-- LIVE-DOC:END Dependencies -->

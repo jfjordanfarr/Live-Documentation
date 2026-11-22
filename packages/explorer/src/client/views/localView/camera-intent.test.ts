@@ -1,6 +1,9 @@
 import { describe, expect, it } from "vitest";
 
-import { ARRIVAL_EASE_MS, ARRIVAL_FLOOR_RATIO, ARRIVAL_HOLD_MS, arrivalEndFrame, arrivalLookChange, arrivalPose, cutByEdge, cutPan, easeInOutCubic, FRAMING_EASE_MAX_MS, FRAMING_EASE_MIN_MS, framingEaseMs, framingTravel, keepFrame, smoothZoom, pinsFrame, poseBetween, revealPan, sameCamera, stepLinesFrame, stepWholeFrame, unionOf, type FramingTarget } from "./camera-intent";
+import { LAYOUT_RANGES } from "../../layout-presets";
+import { getDefaultTuning } from "../../persistence/local-storage";
+import { ARRIVAL_WAITS } from "../../types";
+import { ARRIVAL_EASE_MS, ARRIVAL_ENDING_INPUTS, ARRIVAL_FLOOR_RATIO, ARRIVAL_REST_S, arrivalEndedBy, arrivalEndFrame, arrivalLookChange, arrivalPose, arrivalReleased, arrivalRestStartsAgain, cutByEdge, cutPan, easeInOutCubic, FRAMING_EASE_MAX_MS, FRAMING_EASE_MIN_MS, framingEaseMs, framingTravel, holdAsked, keepFrame, smoothZoom, pinsFrame, poseBetween, revealPan, sameCamera, stepLinesFrame, stepWholeFrame, unionOf, type FramingTarget } from "./camera-intent";
 import { STEP_RATIO, zoomLook } from "./ladder-steps";
 import { framePadding, type Bounds } from "./layout-measure";
 
@@ -39,29 +42,144 @@ describe("an arrival's end frame", () => {
     expect((drawn.top + drawn.bottom) / 2).toBeCloseTo(400, 6);
   });
 
+  describe("holds what was asked (2026-11-22: where the neighbourhood cannot be shown with what was asked in the frame, what was asked wins)", () => {
+    // A picture the floor cuts, and a subject taller than the frame at the floor: 3,000 units against 800 px at 0.335.
+    const content = box(0, 0, 20_000, 9_000), subject = box(9_000, 2_000, 400, 3_000);
+    const name = box(9_000, 2_000, 400, 40), row = (top: number): Bounds => box(9_010, top, 380, 66);
+    const { horizontal, vertical } = framePadding(frame);
+    const within = (bounds: Bounds, camera: { x: number; y: number; k: number }): boolean => {
+      const drawn = onScreen(bounds, camera);
+      return drawn.left >= horizontal - 1e-6 && drawn.right <= frame.width - horizontal + 1e-6 && drawn.top >= vertical - 1e-6 && drawn.bottom <= frame.height - vertical + 1e-6;
+    };
+
+    it("with nothing asked, centres the subject as before, and a tall subject's name then stands above the frame", () => {
+      const end = arrivalEndFrame(content, subject, frame, 1);
+      expect((onScreen(subject, end).top + onScreen(subject, end).bottom) / 2).toBeCloseTo(frame.height / 2, 6);
+      expect(within(name, end), "the fault the rule mends").toBe(false);
+    });
+
+    it("enters a subject taller than the frame at its top, its name inside the padding, and keeps the scale and the place across", () => {
+      const plain = arrivalEndFrame(content, subject, frame, 1), end = arrivalEndFrame(content, subject, frame, 1, [name]);
+      expect(end.k).toBe(plain.k);
+      expect(end.x).toBe(plain.x);
+      expect(within(name, end)).toBe(true);
+      expect(onScreen(name, end).top, "the least pan: the name at the padding's edge, as a step enters a tall card").toBeCloseTo(vertical, 6);
+    });
+
+    it("moves nothing where what was asked is already in the frame: a subject that fits, or a picture framed whole", () => {
+      const short = box(9_000, 2_000, 400, 600), shortName = box(9_000, 2_000, 400, 40);
+      expect(arrivalEndFrame(content, short, frame, 1, [shortName])).toEqual(arrivalEndFrame(content, short, frame, 1));
+      const small = box(0, 0, 2000, 1000), inSmall = box(900, 400, 300, 200);
+      expect(arrivalEndFrame(small, inSmall, frame, 1.2, [box(900, 400, 300, 40)])).toEqual(arrivalEndFrame(small, inSmall, frame, 1.2));
+    });
+
+    it("holds the row asked for with the name where both fit the frame", () => {
+      const asked = [name, row(3_200)];
+      const end = arrivalEndFrame(content, subject, frame, 1, asked);
+      expect(asked.every(bounds => within(bounds, end))).toBe(true);
+    });
+
+    it("where the name and the row cannot both be in the frame, holds the row, the more particular thing asked", () => {
+      const far = row(4_800);
+      const end = arrivalEndFrame(content, subject, frame, 1, [name, far]);
+      expect(within(far, end)).toBe(true);
+      expect(within(name, end)).toBe(false);
+    });
+
+    it("the least pan that holds what was asked, alone: nothing asked or already inside moves nothing", () => {
+      const camera = { x: -100, y: -50, k: 0.5 };
+      expect(holdAsked(camera, [], frame)).toEqual(camera);
+      expect(holdAsked(camera, [box(400, 300, 200, 100)], frame)).toEqual(camera);
+      const moved = holdAsked(camera, [box(400, -400, 200, 100)], frame);
+      expect(moved.k).toBe(0.5);
+      expect(within(box(400, -400, 200, 100), moved)).toBe(true);
+    });
+  });
+
   it("depends on the picture and the frame alone: the same inputs land on the same frame", () => {
     const content = box(-40, 12, 3100, 1700), subject = box(1000, 300, 320, 240);
     expect(arrivalEndFrame(content, subject, frame, 1)).toEqual(arrivalEndFrame({ ...content }, { ...subject }, { ...frame }, 1));
   });
 });
 
-describe("an arrival's hold and ease", () => {
+describe("when an arrival's rest at reading size is over", () => {
+  const rest = ARRIVAL_REST_S * 1000;
+
+  it("never before the rest has passed, whoever attends or does not", () => {
+    for (const waits of ARRIVAL_WAITS) {
+      for (const attended of [false, true]) expect(arrivalReleased(waits, rest - 1, rest, attended), `${waits}, attended ${attended}`).toBe(false);
+    }
+  });
+
+  it("at the rest's end where the pointer and the focus were never on the card", () => {
+    for (const waits of ARRIVAL_WAITS) expect(arrivalReleased(waits, rest, rest, false), waits).toBe(true);
+  });
+
+  it("waiting on attention: not while the card is attended, however long, and at once when it no longer is", () => {
+    expect(arrivalReleased("attended", rest, rest, true)).toBe(false);
+    expect(arrivalReleased("attended", rest * 40, rest, true)).toBe(false);
+    // The frame after the pointer or the focus left a card it stayed on past the rest: no second rest is owed.
+    expect(arrivalReleased("attended", rest * 40 + 16, rest, false)).toBe(true);
+  });
+
+  it("never waiting: at the rest's end, attended or not", () => {
+    expect(arrivalReleased("never", rest, rest, true)).toBe(true);
+  });
+
+  it("the trial of 2026-11-21 starts the rest again while pointed at, so its ease begins a whole rest after the pointer left", () => {
+    expect(arrivalRestStartsAgain("pointed", true)).toBe(true);
+    expect(arrivalRestStartsAgain("pointed", false)).toBe(false);
+    for (const waits of ["attended", "never"] as const) expect(arrivalRestStartsAgain(waits, true), waits).toBe(false);
+  });
+
+  it("the default rest is the one the template and the defaults carry, inside the lever's range", () => {
+    const [min, max] = LAYOUT_RANGES.localMap.arrivalRest;
+    expect(ARRIVAL_REST_S).toBeGreaterThanOrEqual(min);
+    expect(ARRIVAL_REST_S).toBeLessThanOrEqual(max);
+    expect(getDefaultTuning().localMap.arrivalRest).toBe(ARRIVAL_REST_S);
+  });
+});
+
+describe("which input ends an arrival where it stands", () => {
+  it("a press, the wheel and a touch always do", () => {
+    for (const waits of ARRIVAL_WAITS) {
+      for (const type of ["pointerdown", "wheel", "touchstart"]) expect(arrivalEndedBy(type, undefined, waits), `${type} under ${waits}`).toBe(true);
+    }
+  });
+
+  it("waiting on attention, a key that only moves the focus does not: the focus holds the picture and lets it go", () => {
+    for (const key of ["Tab", "Shift", "ArrowRight", "ArrowLeft", "ArrowUp", "ArrowDown", "Home", "End"]) {
+      expect(arrivalEndedBy("keydown", key, "attended"), key).toBe(false);
+    }
+  });
+
+  it("a key that acts does, and under the other choices every key does, as before", () => {
+    for (const key of ["Enter", " ", "Escape", "ContextMenu", "a", "+"]) expect(arrivalEndedBy("keydown", key, "attended"), key).toBe(true);
+    for (const waits of ["never", "pointed"] as const) expect(arrivalEndedBy("keydown", "Tab", waits), waits).toBe(true);
+  });
+
+  it("every ending input is one the rule knows", () => {
+    expect([...ARRIVAL_ENDING_INPUTS].sort()).toEqual(["keydown", "pointerdown", "touchstart", "wheel"]);
+  });
+});
+
+describe("an arrival's ease", () => {
   const start = { x: -500, y: -200, k: 1.2 }, end = { x: 100, y: 50, k: 0.4 };
 
-  it("rests at reading size for the hold, then eases, then ends exactly on the end frame", () => {
-    expect(arrivalPose(start, end, 0, frame)).toEqual({ phase: "hold", transform: start });
-    expect(arrivalPose(start, end, ARRIVAL_HOLD_MS - 1, frame).phase).toBe("hold");
-    const middle = arrivalPose(start, end, ARRIVAL_HOLD_MS + ARRIVAL_EASE_MS / 2, frame);
+  it("rests at reading size until its rest is over, then eases, then ends exactly on the end frame", () => {
+    expect(arrivalPose(start, end, -1, frame)).toEqual({ phase: "hold", transform: start });
+    expect(arrivalPose(start, end, 0, frame)).toEqual({ phase: "ease", transform: start });
+    const middle = arrivalPose(start, end, ARRIVAL_EASE_MS / 2, frame);
     expect(middle.phase).toBe("ease");
     expect(middle.transform.k).toBeLessThan(start.k);
     expect(middle.transform.k).toBeGreaterThan(end.k);
-    expect(arrivalPose(start, end, ARRIVAL_HOLD_MS + ARRIVAL_EASE_MS, frame)).toEqual({ phase: "done", transform: end });
+    expect(arrivalPose(start, end, ARRIVAL_EASE_MS, frame)).toEqual({ phase: "done", transform: end });
   });
 
   it("zooms out without ever passing the end scale, and moves the frame's middle along a straight line", () => {
     let previous = start.k;
     const middles: Array<{ x: number; y: number }> = [];
-    for (let elapsed = ARRIVAL_HOLD_MS; elapsed <= ARRIVAL_HOLD_MS + ARRIVAL_EASE_MS; elapsed += 35) {
+    for (let elapsed = 0; elapsed <= ARRIVAL_EASE_MS; elapsed += 35) {
       const { transform } = arrivalPose(start, end, elapsed, frame);
       expect(transform.k).toBeLessThanOrEqual(previous + 1e-12);
       expect(transform.k).toBeGreaterThanOrEqual(end.k - 1e-12);

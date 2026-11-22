@@ -3,7 +3,7 @@ import { expect, test, type Browser, type Page } from "@playwright/test";
 import { compressSnapshot, DEFAULT_SNAPSHOT } from "../../packages/explorer/src/client/persistence/compressed-url-state";
 import { PERSISTED_UI_KEY, PERSISTED_UI_VERSION } from "../../packages/explorer/src/client/persistence/local-storage";
 import { overlapsAmong, textBoxes } from "./design-audit";
-import { LOCAL_MAP, localMapSettled } from "./still-picture";
+import { AT_READING_SIZE, LOCAL_MAP, localMapSettled } from "./still-picture";
 
 /**
  * The Descriptions Zoomed Out trial (2026-11-13): with "First line, where the name leaves room", the connections look
@@ -38,14 +38,16 @@ type Choice = "hidden" | "first-line" | "line-end" | "line-middle";
  */
 const withReading = (reading: { nodeId: string; symbol?: string; open: boolean }[], choice: Choice): string =>
   `/?s=${compressSnapshot({ ...DEFAULT_SNAPSHOT, view: "map", perspective: "2d", selectedNodeId: SUBJECT, reading,
-    ...(choice === "hidden" ? {} : { layout: { localMap: { descriptionsZoomedOut: choice } } }) })}`;
+    // The arrival is among those defaults since 2026-11-22: a link that carries the choice says too that the case begins
+    // at reading size, as the stored state says it for the link that carries nothing.
+    ...(choice === "hidden" ? {} : { layout: { localMap: { descriptionsZoomedOut: choice, arrival: "reading" as const } } }) })}`;
 
 async function visit(browser: Browser, choice: Choice, lines: "fallback" | "segoe", presses: number, address = `/?view=local&node=${SUBJECT}`) {
   const context = await browser.newContext({ viewport: { width: 1440, height: 900 }, deviceScaleFactor: 1 });
   await context.addInitScript(({ key, value }) => localStorage.setItem(key, value), {
     // Zoomed Out Fully is chosen as "Cards keep their size", so that the case of the overview look reads rows: files only,
     // its default since 2026-11-15, lays none out there.
-    key: PERSISTED_UI_KEY, value: JSON.stringify({ version: PERSISTED_UI_VERSION, tuning: { localMap: { searchStarts: 0, descriptionsZoomedOut: choice, overviewFiles: "keep" } } })
+    key: PERSISTED_UI_KEY, value: JSON.stringify({ version: PERSISTED_UI_VERSION, tuning: { localMap: { ...AT_READING_SIZE, searchStarts: 0, descriptionsZoomedOut: choice, overviewFiles: "keep" } } })
   });
   if (lines === "segoe") await context.addInitScript(css => {
     const add = (): void => { const style = document.createElement("style"); style.textContent = css; document.documentElement.appendChild(style); };

@@ -85,8 +85,16 @@ const LOOK_EDGES = edgesAfter(LOOK_LAST_PRESSES);
 /**
  * The zoom ratio of a look's last press out, the farthest the camera may stand and still draw that look: the reading
  * look's second press, the connections look's sixth, beyond which the overview strips a card to its file's name. An
- * arrival that frames the neighbours stops here, at the connections look, so that every name on the map still reads
- * (camera-intent.ts, 2026-11-19).
+ * arrival that frames the neighbours stops here, at the connections look (camera-intent.ts, 2026-11-19).
+ *
+ * It is a constant of the ladder and measures nothing of the picture, and it stays one (the root's ruling of
+ * 2026-11-22). It was described as the farthest zoom "at which every card's names still read". That was not true of
+ * every name: on one picture six names ran up to 28 units past their own buttons, and at every press of the connections
+ * look, not at this one alone, since the look holds a name at one scale in the map's own units throughout. The fault was
+ * the name's button, which ended short of the room the look gives a name; mended that day (reading.css: in the far looks
+ * the button reaches as far as the name's room does). What is true here now: every row's name in the frame is drawn at the
+ * look's held size inside its own button, whole, or cut with an ellipsis and its whole name in the button's title where
+ * its lines cannot hold it.
  */
 export function farthestRatioOf(look: Exclude<ZoomLook, "overview">): number {
   return STEP_RATIO ** -LOOK_LAST_PRESSES[look === "connections" ? 0 : 1];

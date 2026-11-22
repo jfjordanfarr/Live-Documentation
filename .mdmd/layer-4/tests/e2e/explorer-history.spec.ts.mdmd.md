@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: `tests/e2e/explorer-history.spec.ts`
-- Generated At: 2026-11-19T21:10:20.690Z
+- Generated At: 2026-11-22T06:05:27.293Z
 
 ## Authored
 ### Purpose

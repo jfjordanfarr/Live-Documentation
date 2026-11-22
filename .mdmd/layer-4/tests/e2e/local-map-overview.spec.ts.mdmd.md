@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: `tests/e2e/local-map-overview.spec.ts`
-- Generated At: 2026-11-19T21:10:22.819Z
+- Generated At: 2026-11-22T02:10:45.624Z
 
 ## Authored
 ### Purpose
@@ -37,6 +37,7 @@ _No public symbols detected_
 - [`ladder-steps.LAST_STEP`](../../packages/explorer/src/client/views/localView/ladder-steps.ts.mdmd.md#symbol-last_step)
 - [`ladder-steps.STEP_RATIO`](../../packages/explorer/src/client/views/localView/ladder-steps.ts.mdmd.md#symbol-step_ratio)
 - [`wire-gathering.GATHERED_WIDTH`](../../packages/explorer/src/client/views/localView/wire-gathering.ts.mdmd.md#symbol-gathered_width)
+- [`still-picture.AT_READING_SIZE`](./still-picture.ts.mdmd.md#symbol-at_reading_size)
 - [`still-picture.localMapStill`](./still-picture.ts.mdmd.md#symbol-localmapstill)
 <!-- LIVE-DOC:END Dependencies -->
 

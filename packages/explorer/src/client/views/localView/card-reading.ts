@@ -508,6 +508,12 @@ function measureRooms(card: HTMLElement, resistances: LadderResistances, looks: 
     const rowHeight = looks && row.classList.contains("internals-row") && !row.nextElementSibling
       ? Math.max(row.clientHeight, Math.floor((contentBottom - rowRect.top) / k)) : row.clientHeight;
     const nameTop = (labelRect.top - rowRect.top) / k, nameHeight = label.offsetHeight;
+    // The button's own width, without the reach the far looks give it: a reading made in a far look must measure what
+    // one made at reading size does, or a card rendered there would be read differently from the same card rendered
+    // here. The reach is a fraction of a unit as often as not, and the button's whole width is rounded with it inside,
+    // so the width is taken from the box as drawn, the reach taken off, and rounded as the layout rounds it.
+    const reach = parseFloat(getComputedStyle(label).paddingRight) || 0;
+    const labelWidth = reach ? Math.round(labelRect.width / k - reach) : label.clientWidth;
     heights.set(row, row.clientHeight);
     const gap = parseFloat(wrapperStyle.columnGap) || 0;
     const pin = row.querySelector<HTMLElement>(".local-symbol-pin")?.offsetWidth ?? 0;
@@ -536,13 +542,18 @@ function measureRooms(card: HTMLElement, resistances: LadderResistances, looks: 
     if (looks) {
       const inner = row.querySelector<HTMLElement>(".symbol-label-text") ?? label;
       const measureName = textMeasure(getComputedStyle(inner));
-      const segments = rowSegments(row.dataset.symbol === "__internals__" ? "Internals" : row.dataset.symbol ?? "");
+      // The name as the row draws it, which is also what its button's title says where a far look shortens it: the
+      // Internals row's is its word, not the key it is stored under (the title said "__internals__", 2026-11-22).
+      const name = row.dataset.symbol === "__internals__" ? "Internals" : row.dataset.symbol ?? "";
+      const segments = rowSegments(name);
       // One line of the name as the layout draws it, its box over its lines, with its own scale undone.
       const line = inner.getBoundingClientRect().height / (k * (new DOMMatrix(getComputedStyle(inner).transform).d || 1)) / Math.max(1, text.lines);
-      writes.push([row, "--row-line", line.toFixed(3)], [row, "--row-label-x", ((labelRect.left - wrapperRect.left) / k).toFixed(2)]);
+      // The button's width as laid out. In the far looks the stylesheet lets the button reach from there over the room
+      // of the Read, the Pin and the type marks those looks do not draw, as far as the name's room goes (2026-11-22).
+      writes.push([row, "--row-line", line.toFixed(3)], [row, "--row-label-x", ((labelRect.left - wrapperRect.left) / k).toFixed(2)], [row, "--row-label-w", String(labelWidth)]);
       // A description shown at reading size, written and not folded, whose first line the connections look may keep.
       const described = !row.classList.contains("local-row-short") && !!row.querySelector(".local-row-kept")?.textContent;
-      heads.push({ row, label, text: inner, name: row.dataset.symbol ?? "", top: (rowRect.top - cardRect.top) / k, height: row.clientHeight, room: rowHeight, internals: row.classList.contains("internals-row"), described,
+      heads.push({ row, label, text: inner, name, top: (rowRect.top - cardRect.top) / k, height: row.clientHeight, room: rowHeight, internals: row.classList.contains("internals-row"), described,
         nameTop, nameHeight, line, moreTop, moreHeight: moreButton?.offsetHeight || 17, segments, measure: measureName,
         across: (control: number) => roomWidth - (more ? gap + more : 0) * control });
     }
@@ -563,7 +574,7 @@ function measureRooms(card: HTMLElement, resistances: LadderResistances, looks: 
       [row, "--row-dot-mid", dotMiddle.toFixed(2)],
       [row, "--row-dot-h", String(dotHeight)],
       [row, "--row-dot-room", (Number.isFinite(dotScale) ? dotScale : 1).toFixed(3)],
-      [row, "local-name-wraps", nameWraps(text.lines, text.width, label.clientWidth)]
+      [row, "local-name-wraps", nameWraps(text.lines, text.width, labelWidth)]
     );
   }
   if (looks) writes.push(...lookHeadWrites(heads, parseFloat(cardStyle.getPropertyValue("--slot-lines")) || 2, rowsGap, keep));
@@ -753,7 +764,10 @@ function lookHeadWrites(heads: readonly LookHead[], slotLines: number, gap: numb
       if (look === "connections") {
         const shown = always && kept?.kept ? oneLineName(head.name, head.segments, across(wantedScale) / scale, head.measure, keep === "line-middle" ? "middle" : "end") : head.name;
         const cut = shown !== head.name;
-        writes.push([head.row, "local-name-cut", cut], [head.text, "data-name-cut", cut ? shown : ""], [head.label, "title", cut ? head.name : ""]);
+        // A name its lines cannot hold whole is cut by the stylesheet, with an ellipsis at the end of its last line; its
+        // button says it whole then too.
+        const short = heldLineCount(head.segments, across(wantedScale) / scale, Number.MAX_SAFE_INTEGER, head.measure) > count;
+        writes.push([head.row, "local-name-cut", cut], [head.text, "data-name-cut", cut ? shown : ""], [head.label, "title", cut || short ? head.name : ""]);
       }
     }
   });

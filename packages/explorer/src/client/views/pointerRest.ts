@@ -67,6 +67,47 @@ export function restedOn(rest: PointerRest, now: number): string | null {
   return rest.on !== null && rest.since !== null && now - rest.since >= REST_DWELL ? rest.on : null;
 }
 
+/** A box on the screen, in the page's pixels. */
+export interface RestBox {
+  readonly left: number;
+  readonly top: number;
+  readonly right: number;
+  readonly bottom: number;
+}
+
+/** Pixels of slack about the way from a thing to the panel of its words: a hand does not travel a ruled line. */
+export const WAY_SLACK = 10;
+
+/**
+ * Whether a pointer at `at` is on its way from the point where a thing's words were asked for (`from`) to the panel
+ * that shows them, or on the panel: inside the smallest convex shape that holds the panel and the point, each widened
+ * by `slack`. Words shown for a rested pointer must be *hoverable* (WCAG 2.1, 1.4.13 Content on Hover or Focus): the
+ * pointer can be moved onto them without their going, so the gap between the thing and its panel may not drop them
+ * (the owner, 2026-11-22, of a wire's words: "the ability to mouse into those popovers so I can copy some text out").
+ * It is the one grace in the rule that words go at once when the pointer is on something else, and it is a place, not
+ * a delay: a pointer that leaves this shape is on something else.
+ */
+export function onTheWay(at: RestPoint, from: RestPoint, panel: RestBox, slack = WAY_SLACK): boolean {
+  const corners = (box: RestBox): RestPoint[] => [{ x: box.left, y: box.top }, { x: box.right, y: box.top }, { x: box.right, y: box.bottom }, { x: box.left, y: box.bottom }];
+  const points = [
+    ...corners({ left: from.x - slack, top: from.y - slack, right: from.x + slack, bottom: from.y + slack }),
+    ...corners({ left: panel.left - slack, top: panel.top - slack, right: panel.right + slack, bottom: panel.bottom + slack })
+  ].sort((a, b) => a.x - b.x || a.y - b.y);
+  const cross = (o: RestPoint, a: RestPoint, b: RestPoint): number => (a.x - o.x) * (b.y - o.y) - (a.y - o.y) * (b.x - o.x);
+  // The convex hull, by Andrew's monotone chain: the lower chain left to right, then the upper chain back.
+  const hull: RestPoint[] = [];
+  for (const pass of [points, [...points].reverse()]) {
+    const start = hull.length;
+    for (const point of pass) {
+      while (hull.length - start >= 2 && cross(hull[hull.length - 2], hull[hull.length - 1], point) <= 0) hull.pop();
+      hull.push(point);
+    }
+    hull.pop();
+  }
+  // Inside when the pointer lies on one side of every edge, the hull's corners taken in one turning.
+  return hull.every((corner, index) => cross(corner, hull[(index + 1) % hull.length], at) >= 0);
+}
+
 /** When the pointer will have rested on what it is on, if it keeps still; null when it is on nothing. */
 export function restsAt(rest: PointerRest): number | null {
   return rest.on !== null && rest.since !== null ? rest.since + REST_DWELL : null;

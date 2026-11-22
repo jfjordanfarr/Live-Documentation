@@ -2,7 +2,9 @@ import { expect, test, type Browser, type Page } from "@playwright/test";
 
 import { compressSnapshot, decompressSnapshot, DEFAULT_SNAPSHOT } from "../../packages/explorer/src/client/persistence/compressed-url-state";
 import { PERSISTED_UI_KEY, PERSISTED_UI_VERSION } from "../../packages/explorer/src/client/persistence/local-storage";
-import { localMapStill } from "./still-picture";
+import { farLookNames, truncations } from "./design-audit";
+import { CHAIN_REPOSITORY } from "./scopes";
+import { AT_READING_SIZE, LOCAL_MAP, localMapStill, scoreText } from "./still-picture";
 
 /**
  * The zoom looks (Tuning → 2D Layout → Zoom Looks; the owner's hypothesis of 2026-11-08, "very very FEW breakpoints (2-3)
@@ -21,7 +23,10 @@ const estate = (zoomLooks?: "stepped" | "three"): string => `/samples/estate/?s=
   pinSet: { entries: [{ nodeId: payment, symbol: "*" }] },
   // The probe links' reading choices (2026-11-10): the file's Purpose folded, PaymentService's description kept open.
   reading: [{ nodeId: payment, open: false }, { nodeId: payment, symbol: "PaymentService", open: true }],
-  ...(zoomLooks ? { layout: { localMap: { zoomLooks } } } : {})
+  // A link that carries a setting resets every lever it does not name, the arrival among them, over what the browser
+  // stored. The three looks are the default and are not carried; the ladder is, so its link says that the case begins
+  // at reading size, as the stored state says it for the others (2026-11-22).
+  ...(zoomLooks ? { layout: { localMap: zoomLooks === "stepped" ? { zoomLooks, arrival: "reading" as const } : { zoomLooks } } } : {})
 })}`;
 
 /** The smallest size on screen, in pixels at 1440×960 and DPR 1, of any text or control a slot card draws past reading. */
@@ -35,7 +40,7 @@ test.beforeEach(async ({ page }) => {
   // this spec holds the composition of a card whose box no zoom changes, the overview look's included.
   await page.addInitScript(({ key, value }) => localStorage.setItem(key, value), {
     key: PERSISTED_UI_KEY,
-    value: JSON.stringify({ version: PERSISTED_UI_VERSION, tuning: { localMap: { searchStarts: 0, overviewFiles: "keep" } } })
+    value: JSON.stringify({ version: PERSISTED_UI_VERSION, tuning: { localMap: { ...AT_READING_SIZE, searchStarts: 0, overviewFiles: "keep" } } })
   });
 });
 
@@ -340,6 +345,116 @@ const cutBesideRoom = (page: Page) => page.evaluate(() => {
   return { look: map.dataset.look ?? null, cut, whole, wrapped };
 });
 
+test("in the connections look every row's name stands inside its own button: whole, on one line or two, or cut with its ellipsis and its whole name in the title", async ({ page }) => {
+  test.setTimeout(120_000);
+  // The five-file picture of this repository, where the still picture's instrument found six names running past their
+  // buttons once the default arrival had pulled back (2026-11-22): the look gave a name the room up to More, and its
+  // button, still narrowed by the Read, the Pin and the type marks that look does not draw, was 22 units short of it.
+  const six = ["committedLiveDocGraph", "sourcesFacts (function)", "resolveSymbolReference", "emitNeighbourResult", "emitReachableResult", "emitSymbolPathResult"];
+  await page.setViewportSize({ width: 1600, height: 1000 });
+  await page.addInitScript(({ key, value }) => localStorage.setItem(key, value), {
+    key: PERSISTED_UI_KEY, value: JSON.stringify({ version: PERSISTED_UI_VERSION, tuning: { localMap: { ...AT_READING_SIZE, searchStarts: 0 } } })
+  });
+  await page.goto(`/?view=local&node=${encodeURIComponent("packages/engine/src/live-docs/graph.ts")}`);
+  await page.locator(".local-placed").waitFor();
+  await still(page);
+  // The connections look's first press out and its last: the same rooms in the map's own units at both.
+  let pressed = 0;
+  for (const press of [3, 6]) {
+    for (; pressed < press; pressed += 1) {
+      const before = await page.evaluate(() => document.querySelector<HTMLElement>("#map-viewport")!.style.transform);
+      await page.getByRole("button", { name: "Zoom Out", exact: true }).click();
+      await expect.poll(() => page.evaluate(() => document.querySelector<HTMLElement>("#map-viewport")!.style.transform)).not.toBe(before);
+      await still(page);
+    }
+    expect(await page.evaluate(() => document.querySelector<HTMLElement>("#map-container")!.dataset.look), `press ${press}`).toBe("connections");
+    // The one standard for a name in the far looks (design-audit.ts): inside its own button, and whole or shortened by
+    // its own ellipsis under a title that says it whole.
+    const names = await farLookNames(page);
+    expect(names.length, "names drawn").toBeGreaterThan(20);
+    for (const wanted of six) expect(names.some(row => row.name === wanted), `${wanted} is drawn`).toBe(true);
+    expect(names.filter(row => row.verdict === "fault").map(row => `${row.name} ${row.fault}`), `press ${press}: every name is whole, or shortened by its own ellipsis and titled, inside its own button`).toEqual([]);
+  }
+});
+
+test("the far looks' standard for a name counts a shortened name apart, and still counts one clipped with no ellipsis, one under no title or a wrong one, one past its button, and any cut at reading size", async ({ page }) => {
+  test.setTimeout(120_000);
+  // The chain's picture of this repository, where the still picture found `inferDefaultEntryNodeId` cut on the one line
+  // its row holds (2026-11-22): More at its held size leaves that name less room than it is wide, in any window.
+  await page.setViewportSize({ width: 1600, height: 1000 });
+  await page.addInitScript(({ key, value }) => localStorage.setItem(key, value), {
+    key: PERSISTED_UI_KEY, value: JSON.stringify({ version: PERSISTED_UI_VERSION, tuning: { localMap: { ...AT_READING_SIZE, searchStarts: 0 } } })
+  });
+  await page.goto(`/?view=local&node=${encodeURIComponent(CHAIN_REPOSITORY[0])}`);
+  await page.locator(".local-placed").waitFor();
+  await still(page);
+  /** Changes one row's name on the page as a fault would, and gives back the standard's word on that row. */
+  const judged = async (row: string, change: { title?: string | null; style?: string }) => {
+    const at = row.lastIndexOf(":");
+    await page.evaluate(({ card, symbol, change }) => {
+      const found = document.querySelector<HTMLElement>(`.node-card[data-id="${CSS.escape(card)}"] .symbol-row[data-symbol="${CSS.escape(symbol)}"]`)!;
+      const label = found.querySelector<HTMLElement>(".symbol-label")!, text = found.querySelector<HTMLElement>(".symbol-label-text")!;
+      if (change.title === null) label.removeAttribute("title"); else if (change.title !== undefined) label.setAttribute("title", change.title);
+      if (change.style !== undefined) text.style.cssText = change.style;
+    }, { card: row.slice(0, at), symbol: row.slice(at + 1), change });
+    return (await farLookNames(page)).find(name => name.row === row)!;
+  };
+  // At reading size nothing is shortened, and a name cut there is a fault whatever cuts it and whatever its title says.
+  const reading = await farLookNames(page);
+  expect(reading.length, "names drawn at reading size").toBeGreaterThan(5);
+  expect(reading.filter(name => name.verdict !== "whole").map(name => `${name.name} ${name.fault ?? name.verdict}`)).toEqual([]);
+  const read = reading[0];
+  const cutAtReading = await judged(read.row, { title: read.name, style: "display: block; max-width: 24px; overflow: clip; white-space: nowrap; text-overflow: ellipsis;" });
+  expect([cutAtReading.verdict, cutAtReading.fault]).toEqual(["fault", "is cut at reading size"]);
+  await judged(read.row, { title: null, style: "" });
+  // Three presses out, the connections look.
+  for (let press = 0; press < 3; press += 1) {
+    const before = await page.evaluate(() => document.querySelector<HTMLElement>("#map-viewport")!.style.transform);
+    await page.getByRole("button", { name: "Zoom Out", exact: true }).click();
+    await expect.poll(() => page.evaluate(() => document.querySelector<HTMLElement>("#map-viewport")!.style.transform)).not.toBe(before);
+    await still(page);
+  }
+  expect(await page.evaluate(() => document.querySelector<HTMLElement>("#map-container")!.dataset.look)).toBe("connections");
+  const names = await farLookNames(page);
+  expect(names.filter(name => name.verdict === "fault").map(name => `${name.name} ${name.fault}`), "as the product draws it, no name is a fault").toEqual([]);
+  const one = names.find(name => name.verdict === "shortened" && name.name === "inferDefaultEntryNodeId");
+  expect(one, "the picture shortens inferDefaultEntryNodeId").toBeDefined();
+  // The audit's cut-off check does report the shortened name: counting it apart is what the standard is for.
+  const seen = (await truncations(page, LOCAL_MAP.text)).find(item => item.row === one!.row);
+  expect(seen, "the audit sees the name's hidden end").toBeDefined();
+  // By its own-width check and by the clip of the name's own text, whose ellipsis it is; by nothing else.
+  expect([...seen!.by].sort(), "the checks that found it").toEqual(["inner-clip", "own-width"]);
+  // The still picture's scoring counts it apart, by name, and not among its cut-offs.
+  const drawn = await scoreText(page, LOCAL_MAP);
+  expect(drawn.shortened, drawn.faults).toBeGreaterThan(0);
+  expect(drawn.faults).toMatch(/shortened with an ellipsis: \d+: .*inferDefaultEntryNodeId/u);
+  expect(drawn.faults).not.toContain("\"inferDefaultEntryNodeId\" (button.symbol-label) is cut off");
+  // No title, and a wrong one. The scoring counts a name the standard faults as a cut-off again.
+  const untitled = await judged(one!.row, { title: null });
+  expect([untitled.verdict, untitled.fault]).toEqual(["fault", "is shortened and its button's title is absent"]);
+  const untitledScore = await scoreText(page, LOCAL_MAP);
+  expect([untitledScore.cutOffs, untitledScore.shortened], untitledScore.faults).toEqual([drawn.cutOffs + 1, drawn.shortened! - 1]);
+  const mistitled = await judged(one!.row, { title: "inferDefault" });
+  expect([mistitled.verdict, mistitled.fault]).toEqual(["fault", "is shortened and its button's title is \"inferDefault\""]);
+  expect((await judged(one!.row, { title: one!.name })).verdict, "its title put back").toBe("shortened");
+  // Clipped with no ellipsis.
+  const clipped = await judged(one!.row, { style: "text-overflow: clip;" });
+  expect([clipped.verdict, clipped.fault]).toEqual(["fault", "is clipped with no ellipsis"]);
+  expect((await judged(one!.row, { style: "" })).verdict, "its ellipsis put back").toBe("shortened");
+  // Past its own button: drawn with no limit across, as a name stood past its button before the button spanned its room.
+  const past = await judged(one!.row, { style: "max-width: none; overflow: visible;" });
+  expect(past.verdict, "a name drawn past its own button").toBe("fault");
+  expect(past.fault).toMatch(/^runs [\d.]+ px past its button$/u);
+  // The scoring sets aside an own-width finding only on a name the standard calls right: this one is a cut-off.
+  const pastScore = await scoreText(page, LOCAL_MAP);
+  expect(pastScore.cutOffs, pastScore.faults).toBe(drawn.cutOffs + 1);
+  expect(pastScore.faults).toContain("\"inferDefaultEntryNodeId\" (button.symbol-label) is cut off");
+  // Put back as it was drawn, the scoring is as it was: the set-aside is the standard's, not a name's.
+  await judged(one!.row, { style: "" });
+  const again = await scoreText(page, LOCAL_MAP);
+  expect([again.cutOffs, again.shortened]).toEqual([drawn.cutOffs, drawn.shortened]);
+});
+
 test("in the connections and overview looks a symbol's name is cut only where its row holds no further line of it", async ({ page }) => {
   test.setTimeout(120_000);
   await page.goto(estate("three"));
@@ -379,7 +494,7 @@ const SEGOE_LINES = ["400", "700"].map(weight => `@font-face { font-family: "Seg
 async function openUnder(browser: Browser, path: string, subject: string, lines: "fallback" | "segoe", presses: number) {
   const context = await browser.newContext({ viewport: { width: 1440, height: 960 }, deviceScaleFactor: 1 });
   await context.addInitScript(({ key, value }) => localStorage.setItem(key, value), {
-    key: PERSISTED_UI_KEY, value: JSON.stringify({ version: PERSISTED_UI_VERSION, tuning: { localMap: { searchStarts: 0, zoomLooks: "three", overviewFiles: "keep" } } })
+    key: PERSISTED_UI_KEY, value: JSON.stringify({ version: PERSISTED_UI_VERSION, tuning: { localMap: { ...AT_READING_SIZE, searchStarts: 0, zoomLooks: "three", overviewFiles: "keep" } } })
   });
   if (lines === "segoe") await context.addInitScript(css => {
     const add = (): void => { const style = document.createElement("style"); style.textContent = css; document.documentElement.appendChild(style); };
@@ -534,7 +649,7 @@ test("in the far looks a closed directory's name is held after its chevron, fitt
 test("in the connections look a card's counts stand at the look's held size or not at all, and +N connections still reveals", async ({ page }) => {
   test.setTimeout(120_000);
   await page.addInitScript(({ key, value }) => localStorage.setItem(key, value), {
-    key: PERSISTED_UI_KEY, value: JSON.stringify({ version: PERSISTED_UI_VERSION, tuning: { localMap: { searchStarts: 0, zoomLooks: "three", overviewFiles: "keep" } } })
+    key: PERSISTED_UI_KEY, value: JSON.stringify({ version: PERSISTED_UI_VERSION, tuning: { localMap: { ...AT_READING_SIZE, searchStarts: 0, zoomLooks: "three", overviewFiles: "keep" } } })
   });
   const links = "scripts/doc-tools/documentationLinks.ts";
   await page.goto("/?view=local&dir=scripts/doc-tools");
@@ -637,7 +752,7 @@ test("a change of look moves the held parts where motion is welcome, and nothing
   for (const reducedMotion of ["no-preference", "reduce"] as const) {
     const context = await browser.newContext({ viewport: { width: 1440, height: 960 }, deviceScaleFactor: 1, reducedMotion });
     await context.addInitScript(({ key, value }) => localStorage.setItem(key, value), {
-      key: PERSISTED_UI_KEY, value: JSON.stringify({ version: PERSISTED_UI_VERSION, tuning: { localMap: { searchStarts: 0, overviewFiles: "keep" } } })
+      key: PERSISTED_UI_KEY, value: JSON.stringify({ version: PERSISTED_UI_VERSION, tuning: { localMap: { ...AT_READING_SIZE, searchStarts: 0, overviewFiles: "keep" } } })
     });
     const page = await context.newPage();
     await page.goto(estate("three"));

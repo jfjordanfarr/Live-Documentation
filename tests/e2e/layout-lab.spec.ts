@@ -6,7 +6,7 @@ import { captureFromPage } from "../../scripts/layout-lab/capture";
 import { baselineConfig, driftOf, evaluate, type CycleSearch, type CycleTerms } from "../../scripts/layout-lab/evaluate";
 import { loadBundleGraph, type ScopeRun } from "../../scripts/layout-lab/scopes";
 import { DECK_SCOPES } from "./scopes";
-import { localMapSettled, localRetainUrl } from "./still-picture";
+import { AT_READING_SIZE, localMapSettled, localRetainUrl } from "./still-picture";
 
 /**
  * The layout lab's model of the page, held to the page: a capture of each deck
@@ -42,7 +42,7 @@ for (const run of DECK_SCOPES) {
     expect(chosen.starts, "the ranking's order and every seeded start were tried").toBeGreaterThanOrEqual(1 + seeds);
     expect(["ranked", "previous", ...Array.from({ length: seeds }, (_, i) => `seed ${i + 1}`)]).toContain(chosen.start);
     // The ranking's order alone, with no restarts, for comparison.
-    await page.addInitScript(({ key, value }) => { window.localStorage.setItem(key, value); }, { key: PERSISTED_UI_KEY, value: JSON.stringify({ version: PERSISTED_UI_VERSION, tuning: { localMap: { orderStarts: 0, searchStarts: 0 } } }) });
+    await page.addInitScript(({ key, value }) => { window.localStorage.setItem(key, value); }, { key: PERSISTED_UI_KEY, value: JSON.stringify({ version: PERSISTED_UI_VERSION, tuning: { localMap: { ...AT_READING_SIZE, orderStarts: 0, searchStarts: 0 } } }) });
     await page.goto(localRetainUrl(run.base, run.scope));
     await page.waitForSelector("#map-connections .connection-path:not(.bundle-run)", { state: "attached", timeout: 15_000 });
     const ranked = await readRoot();
@@ -59,7 +59,7 @@ for (const run of [DECK_SCOPES[0], DECK_SCOPES[3]]) {
     await page.setViewportSize({ width: 1600, height: 1000 });
     // Both loads of this case are the growing composition, whose reading text it studies; Card Text defaults to fixed slots since 2026-11-05.
     await page.addInitScript(({ key, value }) => window.localStorage.setItem(key, value), {
-      key: PERSISTED_UI_KEY, value: JSON.stringify({ version: PERSISTED_UI_VERSION, tuning: { localMap: { searchStarts: 0, cardText: "grow" } } })
+      key: PERSISTED_UI_KEY, value: JSON.stringify({ version: PERSISTED_UI_VERSION, tuning: { localMap: { ...AT_READING_SIZE, searchStarts: 0, cardText: "grow" } } })
     });
     await page.goto(localRetainUrl(run.base, run.scope));
     const capture = await captureFromPage(page, run);
@@ -68,7 +68,7 @@ for (const run of [DECK_SCOPES[0], DECK_SCOPES[3]]) {
     const predicted = evaluate(capture, graph, run, config);
     await page.addInitScript(({ key, value }) => window.localStorage.setItem(key, value), {
       key: PERSISTED_UI_KEY,
-      value: JSON.stringify({ version: PERSISTED_UI_VERSION, tuning: { localMap: { searchStarts: 0, cardMaxWidth: 400, cardText: "grow" } } })
+      value: JSON.stringify({ version: PERSISTED_UI_VERSION, tuning: { localMap: { ...AT_READING_SIZE, searchStarts: 0, cardMaxWidth: 400, cardText: "grow" } } })
     });
     await page.goto(localRetainUrl(run.base, run.scope));
     const narrower = await captureFromPage(page, run);
@@ -89,7 +89,7 @@ async function cycleTrials(page: Page, file: string): Promise<{ walked: CycleSea
   const capture = await captureFromPage(page, run);
   const lab = evaluate(capture, await loadBundleGraph(run), run, baselineConfig());
   expect(driftOf(capture, lab), "the lab's first draw is the page's").toEqual([]);
-  await page.addInitScript(({ key, value }) => { window.localStorage.setItem(key, value); }, { key: PERSISTED_UI_KEY, value: JSON.stringify({ version: PERSISTED_UI_VERSION, tuning: { localMap: { searchStarts: 1, searchPatience: 1 } } }) });
+  await page.addInitScript(({ key, value }) => { window.localStorage.setItem(key, value); }, { key: PERSISTED_UI_KEY, value: JSON.stringify({ version: PERSISTED_UI_VERSION, tuning: { localMap: { ...AT_READING_SIZE, searchStarts: 1, searchPatience: 1 } } }) });
   await page.goto(localRetainUrl(run.base, run.scope));
   await localMapSettled(page, 120_000);
   const trials = await page.evaluate(() => JSON.parse(document.querySelector<HTMLElement>("#map-container .local-placed")!.dataset.searchCycleTrials ?? "[]") as Array<{ predicted: CycleTerms; adopted: boolean }>);
@@ -137,7 +137,7 @@ test.describe("phone coarse-pointer reading geometry", () => {
     const run = DECK_SCOPES[0];
     // Both loads are the growing composition, whose reading geometry this studies (Card Text defaults to fixed slots since 2026-11-05).
     await page.addInitScript(({ key, value }) => window.localStorage.setItem(key, value), {
-      key: PERSISTED_UI_KEY, value: JSON.stringify({ version: PERSISTED_UI_VERSION, tuning: { localMap: { searchStarts: 0, cardText: "grow" } } })
+      key: PERSISTED_UI_KEY, value: JSON.stringify({ version: PERSISTED_UI_VERSION, tuning: { localMap: { ...AT_READING_SIZE, searchStarts: 0, cardText: "grow" } } })
     });
     await page.goto(localRetainUrl(run.base, run.scope));
     const capture = await captureFromPage(page, run);
@@ -154,7 +154,7 @@ test.describe("phone coarse-pointer reading geometry", () => {
     const predicted = evaluate(capture, graph, run, config);
     await page.addInitScript(({ key, value }) => window.localStorage.setItem(key, value), {
       key: PERSISTED_UI_KEY,
-      value: JSON.stringify({ version: PERSISTED_UI_VERSION, tuning: { localMap: { searchStarts: 0, cardMaxWidth: 225, cardText: "grow" } } })
+      value: JSON.stringify({ version: PERSISTED_UI_VERSION, tuning: { localMap: { ...AT_READING_SIZE, searchStarts: 0, cardMaxWidth: 225, cardText: "grow" } } })
     });
     await page.goto(localRetainUrl(run.base, run.scope));
     const narrower = await captureFromPage(page, run);
@@ -180,7 +180,7 @@ test("indented code in a reading block preserves whitespace in the capture and n
   });
   // Both loads are the growing composition, whose reading block this studies (Card Text defaults to fixed slots since 2026-11-05).
   await page.addInitScript(({ key, value }) => window.localStorage.setItem(key, value), {
-    key: PERSISTED_UI_KEY, value: JSON.stringify({ version: PERSISTED_UI_VERSION, tuning: { localMap: { searchStarts: 0, cardText: "grow" } } })
+    key: PERSISTED_UI_KEY, value: JSON.stringify({ version: PERSISTED_UI_VERSION, tuning: { localMap: { ...AT_READING_SIZE, searchStarts: 0, cardText: "grow" } } })
   });
   await page.goto(localRetainUrl(run.base, run.scope));
   const capture = await captureFromPage(page, run), graph = await loadBundleGraph(run);
@@ -189,7 +189,7 @@ test("indented code in a reading block preserves whitespace in the capture and n
   const config = { ...baselineConfig(), cardMaxWidth: 400 };
   const predicted = evaluate(capture, graph, run, config);
   await page.addInitScript(({ key, value }) => window.localStorage.setItem(key, value), {
-    key: PERSISTED_UI_KEY, value: JSON.stringify({ version: PERSISTED_UI_VERSION, tuning: { localMap: { searchStarts: 0, cardMaxWidth: 400, cardText: "grow" } } })
+    key: PERSISTED_UI_KEY, value: JSON.stringify({ version: PERSISTED_UI_VERSION, tuning: { localMap: { ...AT_READING_SIZE, searchStarts: 0, cardMaxWidth: 400, cardText: "grow" } } })
   });
   await page.goto(localRetainUrl(run.base, run.scope));
   expect(driftOf(await captureFromPage(page, run), predicted)).toEqual([]);

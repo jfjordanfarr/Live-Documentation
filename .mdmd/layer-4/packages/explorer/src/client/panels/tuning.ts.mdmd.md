@@ -88,7 +88,7 @@ Initialize the tuning panel with all slider and checkbox controls.
 
 #### `withholdThreeDLayout` {#symbol-withholdthreedlayout}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/panels/tuning.ts#L622)
+- Source: [source](../../../../../../../packages/explorer/src/client/panels/tuning.ts#L632)
 
 ##### `withholdThreeDLayout` — Summary
 Where the browser cannot draw 3D (2026-11-21), the 3D layout's group is not offered, as the 3D control is not: its
@@ -100,7 +100,7 @@ once, when the browser is known to refuse WebGL, which may be after the page's f
 
 #### `withholdFirstCommitOrder` {#symbol-withholdfirstcommitorder}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/panels/tuning.ts#L638)
+- Source: [source](../../../../../../../packages/explorer/src/client/panels/tuning.ts#L648)
 
 ##### `withholdFirstCommitOrder` — Summary
 Where the bundle carries no history (2026-11-22), the scan trial's first-commit order is not offered, since only a
@@ -146,6 +146,8 @@ description say why, as the 3D control does where the browser refuses WebGL. A s
 - [`types.WIRE_ANSWERS`](../types.ts.mdmd.md#symbol-wire_answers)
 - [`template.export-layout-settings`](../../shared/template.html.mdmd.md#symbol-export-layout-settings)
 - [`template.tuning-arrival`](../../shared/template.html.mdmd.md#symbol-tuning-arrival)
+- [`template.tuning-arrival-rest`](../../shared/template.html.mdmd.md#symbol-tuning-arrival-rest)
+- [`template.tuning-arrival-rest-value`](../../shared/template.html.mdmd.md#symbol-tuning-arrival-rest-value)
 - [`template.tuning-arrival-waits`](../../shared/template.html.mdmd.md#symbol-tuning-arrival-waits)
 - [`template.tuning-card-text`](../../shared/template.html.mdmd.md#symbol-tuning-card-text)
 - [`template.tuning-churn-cost`](../../shared/template.html.mdmd.md#symbol-tuning-churn-cost)

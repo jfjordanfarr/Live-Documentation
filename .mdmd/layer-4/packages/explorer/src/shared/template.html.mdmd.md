@@ -204,6 +204,12 @@ Since 2026-11-19 ([Turn 14 of the November 18 record](../../../../../../AI-Agent
 #### `tuning-arrival` {#symbol-tuning-arrival}
 - Type: variable
 
+#### `tuning-arrival-rest` {#symbol-tuning-arrival-rest}
+- Type: variable
+
+#### `tuning-arrival-rest-value` {#symbol-tuning-arrival-rest-value}
+- Type: variable
+
 #### `tuning-arrival-waits` {#symbol-tuning-arrival-waits}
 - Type: variable
 
