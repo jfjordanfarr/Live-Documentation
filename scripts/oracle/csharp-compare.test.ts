@@ -3,7 +3,7 @@ import { tmpdir } from "node:os";
 import path from "node:path";
 import { afterAll, describe, expect, it } from "vitest";
 
-import { compareCSharp, compareDocumentation, DOCUMENTATION_CAUSES, documentationPairs, type CompilerRecord } from "./csharp-compare";
+import { compareCSharp, compareDocumentation, DOCUMENTATION_CAUSES, documentationPairs, writesUndeclaredParameter, type CompilerRecord } from "./csharp-compare";
 
 const folders: string[] = [];
 afterAll(() => {
@@ -88,56 +88,88 @@ describe("the pairs a documentation reference makes", () => {
       references: 6,
       unresolved: 1,
       ambiguous:  1,
+      unparsed:   0,
       pairs:      ["A.cs → B.cs", "A.cs → C.Part.cs", "A.cs → C.cs", "A.cs → E.cs", "A.cs → F.cs"],
       alsoCode:   ["A.cs → B.cs"],
       authorOnly: ["A.cs → C.Part.cs", "A.cs → C.cs", "A.cs → E.cs", "A.cs → F.cs"]
     });
   });
 
-  it("sets the reader's relation beside the compiler's pairs, and names each pair they part on by its cause", () => {
-    const at = (from: string, written: string, outcome: string, files: string[]) =>
-      ({ from, line: 1, element: "see", written, outcome, resolved: files.length > 0 ? [{ kind: "NamedType", symbol: written, files }] : [] });
+  it("sets each reference the reader links beside the compiler's, declaration by declaration, and names each they part on by its cause", () => {
+    type Symbol = { kind: string; declarations: Array<{ file: string; line: number }>; holder?: Array<{ file: string; line: number }> };
+    const at = (written: string, outcome: string, symbols: Symbol[], on = 2) =>
+      ({ from: "A.cs", line: 1, on, element: "see", written, outcome, resolved: symbols.map((symbol) => ({ ...symbol, symbol: written, files: symbol.declarations.map((declaration) => declaration.file) })) });
+    const named = (file: string, line: number, holder?: number): Symbol => ({ kind: holder === undefined ? "NamedType" : "Method", declarations: [{ file, line }], holder: holder === undefined ? [] : [{ file, line: holder }] });
     const record: CompilerRecord = {
-      tool: "stand-in", files: 0, names: 0, bound: 0, projects: [], declared: {}, edges: [],
+      tool: "stand-in", files: 0, names: 0, bound: 0, projects: [], edges: [], declared: { "B.cs": ["Calc", "Pair"] },
       crefs: [
-        at("A.cs", "Both", "resolved", ["B.cs"]),
-        at("A.cs", "Hidden", "resolved", ["C.cs"]),
-        at("A.cs", "Unread", "resolved", ["D.cs"]),
-        at("A.cs", "Moved", "resolved", ["E.cs"]),
-        at("A.cs", "Lib.Helper{T}", "resolved", ["G.cs"]),
-        at("A.cs", "Store.Put(string)", "unresolved", []),
-        at("A.cs", "Far", "unresolved", []),
-        at("A.cs", "Gone", "unresolved", [])
+        at("Both", "resolved", [named("B.cs", 3)]),
+        at("Here", "resolved", [named("A.cs", 9)]),
+        at("Here", "resolved", [named("A.cs", 12)], 5),
+        at("Calc.Mix(Calc[])", "resolved", [named("B.cs", 5, 3)]),
+        at("Calc.Hid", "resolved", [named("B.cs", 7, 3)]),
+        at("Calc.Lost", "resolved", [named("B.cs", 8, 3)]),
+        at("Calc.Run", "Ambiguous", [named("B.cs", 9, 3), named("B.cs", 10, 3)]),
+        at("Calc.Two", "Ambiguous", [named("B.cs", 11, 3), named("B.cs", 12, 3)]),
+        at("Moved", "resolved", [named("B.cs", 13)]),
+        at("Space", "resolved", [{ kind: "Namespace", declarations: [{ file: "B.cs", line: 1 }] }]),
+        at("Calc.Mix(Pair{Calc})", "unresolved", []),
+        at("Calc.Put(string)", "unresolved", []),
+        at("Far", "unresolved", []),
+        at("L::Calc", "unparsed", []),
+        at("M::Calc", "unparsed", []),
+        at("Unread", "resolved", [named("D.cs", 1)], 40)
       ]
     };
     const reader = [
-      { from: "A.cs", written: "Both", targets: ["B.cs"] },
-      { from: "A.cs", written: "Hidden", targets: [] },
-      { from: "A.cs", written: "Moved", targets: ["F.cs"] },
-      { from: "A.cs", written: "Lib.Helper<T>", targets: ["G.cs"] },
-      { from: "A.cs", written: "Store.Put(string)", targets: ["H.cs"] },
-      { from: "A.cs", written: "Far", targets: ["I.cs"] },
-      { from: "A.cs", written: "Gone", targets: ["J.cs"] },
-      { from: "A.cs", written: "Inactive", targets: ["K.cs"] }
+      { from: "A.cs", on: 2, written: "Both", targets: [{ file: "B.cs", line: 3 }] },
+      { from: "A.cs", on: 2, written: "Here", targets: [{ file: "A.cs", line: 9 }] },
+      { from: "A.cs", on: 5, written: "Here", targets: [{ file: "A.cs", line: 9 }] },
+      { from: "A.cs", on: 2, written: "Calc.Mix(Calc[])", targets: [{ file: "B.cs", line: 5 }, { file: "B.cs", line: 6 }] },
+      { from: "A.cs", on: 2, written: "Calc.Hid", targets: [{ file: "B.cs", line: 3 }] },
+      { from: "A.cs", on: 2, written: "Calc.Lost", targets: [] },
+      { from: "A.cs", on: 2, written: "Calc.Run", targets: [{ file: "B.cs", line: 9 }, { file: "B.cs", line: 10 }] },
+      { from: "A.cs", on: 2, written: "Calc.Two", targets: [{ file: "B.cs", line: 11 }] },
+      { from: "A.cs", on: 2, written: "Moved", targets: [{ file: "F.cs", line: 1 }] },
+      { from: "A.cs", on: 2, written: "Space", targets: [] },
+      { from: "A.cs", on: 2, written: "Calc.Mix(Pair<Calc>)", targets: [{ file: "B.cs", line: 5 }] },
+      { from: "A.cs", on: 2, written: "Calc.Put(string)", targets: [{ file: "H.cs", line: 1 }] },
+      { from: "A.cs", on: 2, written: "Far", targets: [{ file: "I.cs", line: 1 }] },
+      { from: "A.cs", on: 2, written: "L::Calc", targets: [{ file: "B.cs", line: 3 }] },
+      { from: "A.cs", on: 2, written: "M::Calc", targets: [] },
+      { from: "A.cs", on: 2, written: "Inactive", targets: [{ file: "K.cs", line: 1 }] }
     ];
-    const relation = compareDocumentation(record, documentationPairs(record).pairs, reader, (_from, to) => to === "I.cs");
-    expect(relation.pairs).toEqual(["A.cs → B.cs", "A.cs → F.cs", "A.cs → G.cs", "A.cs → H.cs", "A.cs → I.cs", "A.cs → J.cs", "A.cs → K.cs"]);
-    expect(relation.compilerOnly).toEqual({
-      [DOCUMENTATION_CAUSES.unresolved]: ["A.cs → C.cs (1 <see> Hidden)"],
-      [DOCUMENTATION_CAUSES.notRead]:    ["A.cs → D.cs (1 <see> Unread)"],
-      [DOCUMENTATION_CAUSES.elsewhere]:  ["A.cs → E.cs (1 <see> Moved)"]
+    const relation = compareDocumentation(record, reader, (_from, to) => to === "I.cs");
+    expect(relation.pairs).toEqual(["A.cs → B.cs", "A.cs → F.cs", "A.cs → H.cs", "A.cs → I.cs", "A.cs → K.cs"]);
+    // Both, Here on line 2, Calc.Run (every candidate of an ambiguous one), Space (a namespace, linked to none) and M::Calc.
+    expect(relation.agree).toBe(5);
+    expect(relation.compared).toBe(17);
+    expect(relation.byCause).toEqual({
+      [DOCUMENTATION_CAUSES.elsewhere]:    ["A.cs:1 <see> Here: the compiler A.cs:12; the reader A.cs:9", "A.cs:1 <see> Moved: the compiler B.cs:13; the reader F.cs:1"],
+      [DOCUMENTATION_CAUSES.more]:         ["A.cs:1 <see> Calc.Mix(Calc[]): the compiler B.cs:5; the reader B.cs:5, B.cs:6"],
+      [DOCUMENTATION_CAUSES.holder]:       ["A.cs:1 <see> Calc.Hid: the compiler B.cs:7; the reader B.cs:3"],
+      [DOCUMENTATION_CAUSES.unresolved]:   ["A.cs:1 <see> Calc.Lost: the compiler B.cs:8; the reader nothing"],
+      [DOCUMENTATION_CAUSES.fewer]:        ["A.cs:1 <see> Calc.Two: the compiler B.cs:11, B.cs:12; the reader B.cs:11"],
+      [DOCUMENTATION_CAUSES.compilerNone]: ["A.cs:1 <see> Calc.Mix(Pair{Calc}): the compiler nothing; the reader B.cs:5"],
+      [DOCUMENTATION_CAUSES.framework]:    ["A.cs:1 <see> Calc.Put(string): the compiler nothing; the reader H.cs:1"],
+      [DOCUMENTATION_CAUSES.transitive]:   ["A.cs:1 <see> Far: the compiler nothing; the reader I.cs:1"],
+      [DOCUMENTATION_CAUSES.unparsed]:     ["A.cs:1 <see> L::Calc: the compiler cannot parse it; the reader B.cs:3"],
+      [DOCUMENTATION_CAUSES.notRead]:      ["A.cs:1 <see> Unread"],
+      [DOCUMENTATION_CAUSES.unwritten]:    ["A.cs:2 Inactive: the reader K.cs:1"]
     });
-    expect(relation.readerOnly).toEqual({
-      [DOCUMENTATION_CAUSES.compilerElsewhere]: ["A.cs → F.cs (Moved)"],
-      [DOCUMENTATION_CAUSES.framework]:         ["A.cs → H.cs (Store.Put(string))"],
-      [DOCUMENTATION_CAUSES.transitive]:        ["A.cs → I.cs (Far)"],
-      [DOCUMENTATION_CAUSES.compilerNone]:      ["A.cs → J.cs (Gone)"],
-      [DOCUMENTATION_CAUSES.unwritten]:         ["A.cs → K.cs (Inactive)"]
-    });
+  });
+
+  it("tells a parameter's type the compilation cannot bind without framework references from one the folder declares", () => {
+    const declared = new Set(["Calc", "Pair"]);
+    expect(writesUndeclaredParameter("Calc.Put(string)", declared)).toBe(true);
+    expect(writesUndeclaredParameter("Calc.Put(System.IO.Stream, Calc)", declared)).toBe(true);
+    expect(writesUndeclaredParameter("Calc.Mix(ref Lib.Pair{Lib.Calc}, Calc[])", declared)).toBe(false);
+    expect(writesUndeclaredParameter("Calc.Mix(Calc,)", declared)).toBe(false);
+    expect(writesUndeclaredParameter("Calc", declared)).toBe(false);
   });
 
   it("reads a record written before documentation references were kept as holding none", () => {
     const record: CompilerRecord = { tool: "stand-in", files: 0, names: 0, bound: 0, projects: [], declared: {}, edges: [] };
-    expect(documentationPairs(record)).toEqual({ references: 0, unresolved: 0, ambiguous: 0, pairs: [], alsoCode: [], authorOnly: [] });
+    expect(documentationPairs(record)).toEqual({ references: 0, unresolved: 0, ambiguous: 0, unparsed: 0, pairs: [], alsoCode: [], authorOnly: [] });
   });
 });

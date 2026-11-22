@@ -464,6 +464,7 @@
     {
       "from": "Hub/PaymentHub.cs",
       "line": 12,
+      "on": 14,
       "element": "seealso",
       "written": "IPaymentService.Post(PaymentRequest)",
       "outcome": "resolved",
@@ -473,6 +474,18 @@
           "symbol": "Estate.Contracts.IPaymentService.Post(Estate.Contracts.PaymentRequest)",
           "files": [
             "Contracts/IPaymentService.cs"
+          ],
+          "declarations": [
+            {
+              "file": "Contracts/IPaymentService.cs",
+              "line": 10
+            }
+          ],
+          "holder": [
+            {
+              "file": "Contracts/IPaymentService.cs",
+              "line": 7
+            }
           ]
         }
       ]

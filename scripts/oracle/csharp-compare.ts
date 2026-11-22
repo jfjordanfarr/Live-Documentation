@@ -20,7 +20,9 @@
  *   references  every reference a project's XML holds under a condition MSBuild's default configuration does not
  *               meet, counted as a class of its own, since the reader reads every condition's reference as real;
  *   documentation  the C# file pairs a documentation comment's `cref` names, as the compiler resolves it, split into
- *               those the code binds as well and those only the author's word makes, and those the adapter draws.
+ *               those the code binds as well and those only the author's word makes, and those the adapter draws; and
+ *               each reference the reader links set beside the compiler's, declaration by declaration, a reference
+ *               within its own file as any other, every one they part on classed by its cause.
  *
  * Without framework references a name reached only through a framework type does not bind, so the compiler's column
  * undercounts, as the November 19 probe measured. It prints figures, and every disagreement with `--detail`, and exits
@@ -37,7 +39,7 @@ import path from "node:path";
 import process from "node:process";
 
 import { csharpAdapter } from "@live-documentation/engine/live-docs/adapters/csharp";
-import { normalizeCrefTarget } from "@live-documentation/engine/live-docs/adapters/csharp.xmldoc";
+import { crefLinkTarget } from "@live-documentation/engine/live-docs/adapters/csharp.xmldoc";
 
 import { folderFiles } from "./powershell-compare";
 import { msbuildProjectReferences } from "./scip-edges";
@@ -71,10 +73,19 @@ export interface CompilerRecord {
 export interface DocumentationReference {
   from:     string;
   line:     number;
+  /** The line of the name of the declaration the comment documents; absent from a record written before declarations were compared. */
+  on?:      number | null;
   element:  string;
   written:  string;
+  /** `resolved`, the compiler's reason among candidates (`Ambiguous`), `unresolved`, or `unparsed`: a `cref` its grammar does not take (`L::Calc`). */
   outcome:  string;
-  resolved: Array<{ kind: string; symbol: string; files: string[] }>;
+  resolved: Array<{ kind: string; symbol: string; files: string[]; declarations?: Declaration[]; holder?: Declaration[] }>;
+}
+
+/** A declaration: the file and the line of the name it declares. */
+export interface Declaration {
+  file: string;
+  line: number;
 }
 
 /** The file pairs documentation references make, set beside the pairs the code binds. */
@@ -83,6 +94,8 @@ export interface DocumentationPairs {
   references: number;
   unresolved: number;
   ambiguous:  number;
+  /** References the compiler's grammar does not take (`unparsed`): a documentation ID such as `M:Lib.Store.Put(System.String)`, or `L::Calc`. */
+  unparsed:   number;
   /** C# file pairs a `cref` names a declaration across: a type or a member, never a namespace, never the file itself. */
   pairs:      string[];
   /** Of those, the pairs the compiler also binds through code, and the pairs only the author's word makes. */
@@ -109,7 +122,8 @@ export function documentationPairs(record: CompilerRecord): DocumentationPairs {
   return {
     references: crefs.length,
     unresolved: crefs.filter((reference) => reference.outcome === "unresolved").length,
-    ambiguous:  crefs.filter((reference) => reference.outcome !== "unresolved" && reference.outcome !== "resolved").length,
+    ambiguous:  crefs.filter((reference) => !["unresolved", "resolved", "unparsed"].includes(reference.outcome)).length,
+    unparsed:   crefs.filter((reference) => reference.outcome === "unparsed").length,
     pairs:      sorted,
     alsoCode:   sorted.filter((pair) => code.has(pair)),
     authorOnly: sorted.filter((pair) => !code.has(pair))
@@ -157,83 +171,136 @@ interface Measure {
   adapterOnly:   { namesake: string[]; conditional: string[]; other: string[] };
 }
 
-/** Why the reader's documentation relation and the compiler's resolution of the references part on a pair. */
+/**
+ * Why the reader and the compiler part on a documentation reference, declaration by declaration. Each reference the
+ * compiler records is matched with the reader's of the same file, on the same declaration, written alike; the
+ * declarations each names are then set side by side, a reference within its own file as any other.
+ */
 export const DOCUMENTATION_CAUSES = {
-  notRead:     "the reader keeps no documentation where the reference stands: a declaration it shows no symbol for (an enum's member, a member that is not public, an operator, an indexer)",
-  unresolved:  "the reader reads the reference and resolves it to nothing",
-  elsewhere:   "the reader resolves the reference to another declaration",
-  unwritten:   "the compiler reads no reference written so in the file: one in a section its preprocessor symbols leave inactive, which the reader reads as it reads every branch",
-  transitive:  "the compiler resolves the reference to nothing: the target's project is reached by the file's only through another project, which the compiler's compilation does not reference and the reader follows",
-  framework:   "the compiler resolves the reference to nothing: it writes a parameter's type the compilation, having no framework references, cannot bind",
-  compilerNone: "the compiler resolves the reference to nothing",
-  compilerElsewhere: "the compiler resolves the reference to another declaration, or to the file itself or a namespace"
+  notRead:      "the reader keeps no documentation where the reference stands: a declaration it shows no symbol for (an enum's member, a member that is not public, an operator, an indexer)",
+  holder:       "the reader lands on the type that holds the member the compiler names, the file showing no symbol for the member",
+  unresolved:   "the reader reads the reference and resolves it to nothing",
+  more:         "the reader links the declarations the compiler names and more",
+  fewer:        "the reader links some of the declarations the compiler names, and no other",
+  elsewhere:    "the reader links another declaration than the compiler names",
+  unparsed:     "the compiler's grammar does not take the reference as written, and the reader links it",
+  unwritten:    "the compiler reads no reference written so on that declaration: one in a section its preprocessor symbols leave inactive, which the reader reads as it reads every branch",
+  transitive:   "the compiler resolves the reference to nothing: the target's project is reached by the file's only through another project, which the compiler's compilation does not reference and the reader follows",
+  framework:    "the compiler resolves the reference to nothing: it writes a parameter's type the compilation, having no framework references, cannot bind",
+  compilerNone: "the compiler resolves the reference to nothing, and the reader links it"
 } as const;
 
-/** The pairs the reader's documentation relation makes, set beside the pairs the compiler's resolution of the same references names. */
+/** The reader's documentation references set beside the compiler's, declaration by declaration. */
 export interface DocumentationRelation {
   /** The C# file pairs the reader's resolved references make: a reference on a symbol of one file to a declaration of another. */
-  pairs:        string[];
-  /** Pairs only the compiler names, by cause, each with the references that name it. */
-  compilerOnly: Record<string, string[]>;
-  /** Pairs only the reader makes, by cause. */
-  readerOnly:   Record<string, string[]>;
+  pairs:      string[];
+  /** The references compared (the compiler's and the reader's, each set of alike ones taken once), and how many agree. */
+  compared:   number;
+  agree:      number;
+  /** Every reference they part on, by cause: where it stands, as written, and the declarations each names. */
+  byCause:    Record<string, string[]>;
 }
 
-/** One reference as the reader read it: the file, the name as the Live Doc writes it, and the files it resolves to. */
-interface ReaderReference {
+/** One reference as the reader read it: the file, the line of the symbol whose documentation writes it, the name as the Live Doc writes it, and the declarations it links. */
+export interface ReaderReference {
   from:    string;
+  on:      number;
   written: string;
-  targets: string[];
+  targets: Declaration[];
+}
+
+/** C#'s keywords for the framework's types, which a compilation without framework references cannot bind. */
+const FRAMEWORK_KEYWORDS = new Set(["bool", "byte", "sbyte", "char", "decimal", "double", "float", "int", "uint", "long", "ulong", "short", "ushort", "object", "string", "nint", "nuint", "dynamic"]);
+
+/**
+ * Whether a reference's parameter list writes a type the compilation, having no framework references, cannot bind: a
+ * keyword of the framework's types, or a name no file of the folder declares, its type arguments read the same way.
+ * The oracle's own reading of the syntax, kept apart from the reader's.
+ */
+export function writesUndeclaredParameter(written: string, declared: ReadonlySet<string>): boolean {
+  const open = written.indexOf("(");
+  if (open < 0) return false;
+  const names = written.slice(open + 1, written.lastIndexOf(")")).match(/[\p{L}_][\p{L}\p{N}_]*(?:\s*\.\s*[\p{L}_][\p{L}\p{N}_]*)*/gu) ?? [];
+  return names.some((name) => {
+    if (/^(?:ref|out|in|params|this|readonly|scoped|global)$/u.test(name)) return false;
+    const last = name.slice(name.lastIndexOf(".") + 1).trim();
+    return FRAMEWORK_KEYWORDS.has(last) || !declared.has(last);
+  });
 }
 
 /**
- * Sets the reader's documentation relation beside the compiler's resolution, pair by pair. A reference is matched to
- * the compiler's by its file and its name as the Live Doc writes it (`normalizeCrefTarget`), so that two references
- * written alike in one file, under two scopes, are taken together.
+ * Sets the reader's documentation references beside the compiler's, reference by reference and declaration by
+ * declaration. A reference is matched by its file, the line of the declaration its comment documents and its name as
+ * the Live Doc writes it (`crefLinkTarget`); alike references on one declaration are taken once, since they
+ * resolve alike. An ambiguous reference names every candidate, and a reader that links them all agrees. A namespace
+ * names no declaration, as the reader links none. `onlyThrough` tells a target whose project the file's reaches only
+ * through another.
  */
-export function compareDocumentation(record: CompilerRecord, compilerPairs: readonly string[], reader: readonly ReaderReference[], onlyThrough: (from: string, to: string) => boolean = () => false): DocumentationRelation {
-  const key = (from: string, written: string): string => `${from}\u0000${written}`;
-  const read = new Map<string, Set<string>>();
+export function compareDocumentation(record: CompilerRecord, reader: readonly ReaderReference[], onlyThrough: (from: string, to: string) => boolean = () => false): DocumentationRelation {
+  const key = (from: string, on: number | null | undefined, written: string): string => `${from}\u0000${on ?? "?"}\u0000${written}`;
+  const at = (declaration: Declaration): string => `${declaration.file}:${declaration.line}`;
+  const read = new Map<string, { reference: ReaderReference; targets: Set<string> }>();
   for (const reference of reader) {
-    const targets = read.get(key(reference.from, reference.written)) ?? new Set<string>();
-    for (const target of reference.targets) targets.add(target);
-    read.set(key(reference.from, reference.written), targets);
+    const entry = read.get(key(reference.from, reference.on, reference.written)) ?? { reference, targets: new Set<string>() };
+    for (const target of reference.targets) entry.targets.add(at(target));
+    read.set(key(reference.from, reference.on, reference.written), entry);
   }
-  const written = new Map<string, DocumentationReference[]>();
+  const written = new Map<string, DocumentationReference>();
   for (const reference of record.crefs ?? []) {
-    const at = key(reference.from, normalizeCrefTarget(reference.written));
-    written.set(at, [...(written.get(at) ?? []), reference]);
+    const where = key(reference.from, reference.on, crefLinkTarget(reference.written));
+    if (!written.has(where)) written.set(where, reference);
   }
-  const pairs = Array.from(new Set(reader.flatMap((reference) => reference.targets.filter((to) => to !== reference.from).map((to) => `${reference.from} → ${to}`)))).sort();
-  const ours = new Set(pairs);
-  const theirs = new Set(compilerPairs);
-  const compilerOnly: Record<string, string[]> = {};
-  const readerOnly: Record<string, string[]> = {};
-  const add = (into: Record<string, string[]>, cause: string, entry: string): void => void (into[cause] = [...(into[cause] ?? []), entry]);
+  const declaredTypes = new Set(Object.values(record.declared).flat());
+  const byCause: Record<string, string[]> = {};
+  let agree = 0;
+  const add = (cause: string, entry: string): void => void (byCause[cause] = [...(byCause[cause] ?? []), entry]);
+  const list = (declarations: Iterable<string>): string => Array.from(declarations).sort().join(", ") || "nothing";
 
-  for (const pair of compilerPairs.filter((candidate) => !ours.has(candidate))) {
-    const [from, to] = pair.split(" → ");
-    const naming = (record.crefs ?? []).filter((reference) => reference.from === from && reference.resolved.some((symbol) => symbol.kind !== "Namespace" && symbol.files.includes(to)));
-    const causes = naming.map((reference) => {
-      const targets = read.get(key(from, normalizeCrefTarget(reference.written)));
-      return targets === undefined ? DOCUMENTATION_CAUSES.notRead : targets.size === 0 ? DOCUMENTATION_CAUSES.unresolved : DOCUMENTATION_CAUSES.elsewhere;
-    });
-    const cause = [DOCUMENTATION_CAUSES.elsewhere, DOCUMENTATION_CAUSES.unresolved, DOCUMENTATION_CAUSES.notRead].find((candidate) => causes.includes(candidate))!;
-    add(compilerOnly, cause, `${pair} (${naming.map((reference) => `${reference.line} <${reference.element}> ${reference.written}`).join("; ")})`);
+  for (const [where, reference] of written) {
+    const label = `${reference.from}:${reference.line} <${reference.element}> ${reference.written}`;
+    const ours = read.get(where);
+    if (ours === undefined) {
+      add(DOCUMENTATION_CAUSES.notRead, label);
+      continue;
+    }
+    const linked = ours.targets;
+    const named = new Set<string>();
+    const holders = new Map<string, string>();
+    for (const symbol of reference.resolved) {
+      if (symbol.kind === "Namespace") continue;
+      for (const declaration of symbol.declarations ?? []) {
+        named.add(at(declaration));
+        const holder = (symbol.holder ?? []).find((candidate) => candidate.file === declaration.file);
+        if (holder) holders.set(at(declaration), at(holder));
+      }
+    }
+    const entry = `${label}: the compiler ${reference.outcome === "unparsed" ? "cannot parse it" : list(named)}; the reader ${list(linked)}`;
+    if (reference.outcome === "unparsed") {
+      if (linked.size === 0) agree += 1;
+      else add(DOCUMENTATION_CAUSES.unparsed, entry);
+      continue;
+    }
+    // A member the file shows no symbol for is linked at the type that holds it, as the reader's rule says.
+    const asHeld = new Set(Array.from(named).map((declaration) => (!linked.has(declaration) && holders.has(declaration) && linked.has(holders.get(declaration)!) ? holders.get(declaration)! : declaration)));
+    const same = (left: Set<string>, right: Set<string>): boolean => left.size === right.size && Array.from(left).every((item) => right.has(item));
+    if (same(named, linked)) agree += 1;
+    else if (same(asHeld, linked)) add(DOCUMENTATION_CAUSES.holder, entry);
+    else if (linked.size === 0) add(DOCUMENTATION_CAUSES.unresolved, entry);
+    else if (named.size === 0) {
+      const files = Array.from(new Set(Array.from(linked).map((declaration) => declaration.slice(0, declaration.lastIndexOf(":")))));
+      add(files.every((to) => onlyThrough(reference.from, to)) ? DOCUMENTATION_CAUSES.transitive
+        : writesUndeclaredParameter(reference.written, declaredTypes) ? DOCUMENTATION_CAUSES.framework
+        : DOCUMENTATION_CAUSES.compilerNone, entry);
+    } else if (Array.from(asHeld).every((declaration) => linked.has(declaration))) add(DOCUMENTATION_CAUSES.more, entry);
+    else if (Array.from(linked).every((declaration) => asHeld.has(declaration))) add(DOCUMENTATION_CAUSES.fewer, entry);
+    else add(DOCUMENTATION_CAUSES.elsewhere, entry);
   }
-  for (const pair of pairs.filter((candidate) => !theirs.has(candidate))) {
-    const [from, to] = pair.split(" → ");
-    const names = Array.from(read.entries()).filter(([at, targets]) => at.startsWith(`${from}\u0000`) && targets.has(to)).map(([at]) => at.slice(from.length + 1));
-    const answers = names.flatMap((name) => written.get(key(from, name)) ?? []);
-    const none = answers.length > 0 && answers.every((reference) => reference.resolved.length === 0);
-    const cause = answers.length === 0 ? DOCUMENTATION_CAUSES.unwritten
-      : !none ? DOCUMENTATION_CAUSES.compilerElsewhere
-      : onlyThrough(from, to) ? DOCUMENTATION_CAUSES.transitive
-      : answers.every((reference) => reference.written.includes("(")) ? DOCUMENTATION_CAUSES.framework
-      : DOCUMENTATION_CAUSES.compilerNone;
-    add(readerOnly, cause, `${pair} (${names.join("; ")})`);
+  for (const [where, { reference, targets }] of read) {
+    if (written.has(where)) continue;
+    if (targets.size > 0) add(DOCUMENTATION_CAUSES.unwritten, `${reference.from}:${reference.on} ${reference.written}: the reader ${list(targets)}`);
   }
-  return { pairs, compilerOnly, readerOnly };
+  const pairs = Array.from(new Set(reader.flatMap((reference) => reference.targets.filter((to) => to.file !== reference.from).map((to) => `${reference.from} → ${to.file}`)))).sort();
+  return { pairs, compared: written.size + Array.from(read.keys()).filter((where) => !written.has(where) && read.get(where)!.targets.size > 0).length, agree, byCause };
 }
 
 /** The comparison of one folder: what was read, how its projects' references were, and the edges side by side. */
@@ -286,7 +353,9 @@ export async function compareCSharp(root: string, kept?: CompilerRecord): Promis
     }
     for (const symbol of analysis?.symbols ?? []) {
       for (const link of symbol.documentation?.links ?? []) {
-        if (link.kind === "cref") references.push({ from: file, written: link.target, targets: (link.targets ?? []).map((target) => target.path).filter((to) => known.has(to)) });
+        if (link.kind !== "cref") continue;
+        const targets = (link.targets ?? []).filter((target) => known.has(target.path)).map((target) => ({ file: target.path, line: target.line }));
+        references.push({ from: file, on: symbol.location?.line ?? 0, written: link.target, targets });
       }
     }
   }
@@ -328,7 +397,7 @@ export async function compareCSharp(root: string, kept?: CompilerRecord): Promis
   };
   const documentation = documentationPairs(record);
   return {
-    documentation: { ...documentation, drawn: documentation.pairs.filter((pair) => ours.has(pair)), relation: compareDocumentation(record, documentation.pairs, references, onlyThrough) },
+    documentation: { ...documentation, drawn: documentation.pairs.filter((pair) => ours.has(pair)), relation: compareDocumentation(record, references, onlyThrough) },
     folder:      root,
     tool:        record.tool,
     files:       csharp.length,
@@ -352,15 +421,13 @@ function printReport(report: CSharpReport, detail: boolean): void {
   console.log(`  the adapter's only: ${only.namesake.length + only.conditional.length + only.other.length}: a namesake ${only.namesake.length}, resting on a reference under a condition the default configuration does not meet ${only.conditional.length}, other ${only.other.length}`);
   console.log(`  the compiler's only: ${report.edges.compilerOnly.length}`);
   const doc = report.documentation;
-  console.log(`Documentation references (cref): ${doc.references}, resolved to nothing ${doc.unresolved} (a framework type among them, having no framework references), ambiguous ${doc.ambiguous}`);
+  console.log(`Documentation references (cref): ${doc.references}, resolved to nothing ${doc.unresolved} (a framework type among them, having no framework references), ambiguous ${doc.ambiguous}, not taken by its grammar ${doc.unparsed}`);
   console.log(`  C# file pairs they name: ${doc.pairs.length}; the compiler binds ${doc.alsoCode.length} of them through code too, the author's word alone makes ${doc.authorOnly.length}; the adapter's dependency lines draw ${doc.drawn.length}`);
   const relation = doc.relation;
-  const count = (byCause: Record<string, string[]>): number => Object.values(byCause).reduce((sum, entries) => sum + entries.length, 0);
-  console.log(`  the reader's documentation relation: ${relation.pairs.length} pairs, ${relation.pairs.length - count(relation.readerOnly)} of them the compiler's`);
-  console.log(`  the compiler's only: ${count(relation.compilerOnly)}`);
-  for (const [cause, entries] of Object.entries(relation.compilerOnly)) console.log(`    ${entries.length}: ${cause}`);
-  console.log(`  the reader's only: ${count(relation.readerOnly)}`);
-  for (const [cause, entries] of Object.entries(relation.readerOnly)) console.log(`    ${entries.length}: ${cause}`);
+  const pairs = new Set(doc.pairs);
+  console.log(`  the reader's documentation relation: ${relation.pairs.length} pairs, ${relation.pairs.filter((pair) => pairs.has(pair)).length} of them the compiler's`);
+  console.log(`  references compared declaration by declaration: ${relation.compared}, agreeing ${relation.agree}, parting ${relation.compared - relation.agree}`);
+  for (const [cause, entries] of Object.entries(relation.byCause).sort(([left], [right]) => left.localeCompare(right))) console.log(`    ${entries.length}: ${cause}`);
   if (!detail) return;
   const list = (label: string, keys: string[]): void => {
     if (keys.length === 0) return;
@@ -375,8 +442,7 @@ function printReport(report: CSharpReport, detail: boolean): void {
   list("Other edges the adapter draws and the compiler does not", only.other);
   list("Edges the compiler binds and the adapter does not draw", report.edges.compilerOnly);
   list("Pairs only a documentation reference makes", doc.authorOnly);
-  for (const [cause, entries] of Object.entries(relation.compilerOnly)) list(`Documentation pairs only the compiler names: ${cause}`, entries);
-  for (const [cause, entries] of Object.entries(relation.readerOnly)) list(`Documentation pairs only the reader makes: ${cause}`, entries);
+  for (const [cause, entries] of Object.entries(relation.byCause)) list(`Documentation references they part on: ${cause}`, entries);
 }
 
 async function main(): Promise<void> {

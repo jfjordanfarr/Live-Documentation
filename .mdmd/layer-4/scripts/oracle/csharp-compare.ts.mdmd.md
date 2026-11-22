@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: `scripts/oracle/csharp-compare.ts`
 - Entry: command `oracle:csharp` of [`package.json`](../../package.json.mdmd.md)
-- Generated At: 2026-11-22T02:42:21.664Z
+- Generated At: 2026-11-22T06:21:06.985Z
 
 ## Authored
 ### Purpose
@@ -22,14 +22,14 @@ Grades the C# reader on a whole folder against the C# compiler's own binding: `n
 ### Public Symbols
 #### `CompilerRecord` {#symbol-compilerrecord}
 - Type: interface
-- Source: [source](../../../../scripts/oracle/csharp-compare.ts#L51)
+- Source: [source](../../../../scripts/oracle/csharp-compare.ts#L53)
 
 ##### `CompilerRecord` — Summary
 What the compiler program printed of a folder.
 
 #### `DocumentationReference` {#symbol-documentationreference}
 - Type: interface
-- Source: [source](../../../../scripts/oracle/csharp-compare.ts#L71)
+- Source: [source](../../../../scripts/oracle/csharp-compare.ts#L73)
 
 ##### `DocumentationReference` — Summary
 One `cref` of a documentation comment: the file and line it stands on, the element that carries it (`see`, `seealso`,
@@ -37,16 +37,23 @@ One `cref` of a documentation comment: the file and line it stands on, the eleme
 symbol, a reason it could not choose among several candidates (`Ambiguous`, for a method's name with overloads), or
 `unresolved`, which without framework references also says of a framework type such as `ArgumentException`.
 
+#### `Declaration` {#symbol-declaration}
+- Type: interface
+- Source: [source](../../../../scripts/oracle/csharp-compare.ts#L86)
+
+##### `Declaration` — Summary
+A declaration: the file and the line of the name it declares.
+
 #### `DocumentationPairs (interface)` {#symbol-documentationpairs-interface}
 - Type: interface
-- Source: [source](../../../../scripts/oracle/csharp-compare.ts#L81)
+- Source: [source](../../../../scripts/oracle/csharp-compare.ts#L92)
 
 ##### `DocumentationPairs (interface)` — Summary
 The file pairs documentation references make, set beside the pairs the code binds.
 
 #### `documentationPairs (function)` {#symbol-documentationpairs-function}
 - Type: function
-- Source: [source](../../../../scripts/oracle/csharp-compare.ts#L98)
+- Source: [source](../../../../scripts/oracle/csharp-compare.ts#L111)
 - Returns: [`DocumentationPairs`](#symbol-documentationpairs-interface)
 - Parameters: `record`: [`CompilerRecord`](#symbol-compilerrecord)
 
@@ -57,14 +64,14 @@ opens one declares it.
 
 #### `compiledSources` {#symbol-compiledsources}
 - Type: function
-- Source: [source](../../../../scripts/oracle/csharp-compare.ts#L120)
+- Source: [source](../../../../scripts/oracle/csharp-compare.ts#L134)
 
 ##### `compiledSources` — Summary
 The files a compilation of the folder is made from: its C# files, and its project files, from which its references are read.
 
 #### `compileFolder` {#symbol-compilefolder}
 - Type: function
-- Source: [source](../../../../scripts/oracle/csharp-compare.ts#L139)
+- Source: [source](../../../../scripts/oracle/csharp-compare.ts#L153)
 - Returns: [`CompilerRecord`](#symbol-compilerrecord)
 
 ##### `compileFolder` — Summary
@@ -72,39 +79,61 @@ Runs the compiler program over the folder; `dotnet` must be on the path.
 
 #### `DOCUMENTATION_CAUSES` {#symbol-documentation_causes}
 - Type: const
-- Source: [source](../../../../scripts/oracle/csharp-compare.ts#L161)
+- Source: [source](../../../../scripts/oracle/csharp-compare.ts#L179)
 
 ##### `DOCUMENTATION_CAUSES` — Summary
-Why the reader's documentation relation and the compiler's resolution of the references part on a pair.
+Why the reader and the compiler part on a documentation reference, declaration by declaration. Each reference the
+compiler records is matched with the reader's of the same file, on the same declaration, written alike; the
+declarations each names are then set side by side, a reference within its own file as any other.
 
 #### `DocumentationRelation` {#symbol-documentationrelation}
 - Type: interface
-- Source: [source](../../../../scripts/oracle/csharp-compare.ts#L173)
+- Source: [source](../../../../scripts/oracle/csharp-compare.ts#L194)
 
 ##### `DocumentationRelation` — Summary
-The pairs the reader's documentation relation makes, set beside the pairs the compiler's resolution of the same references names.
+The reader's documentation references set beside the compiler's, declaration by declaration.
+
+#### `ReaderReference` {#symbol-readerreference}
+- Type: interface
+- Source: [source](../../../../scripts/oracle/csharp-compare.ts#L205)
+
+##### `ReaderReference` — Summary
+One reference as the reader read it: the file, the line of the symbol whose documentation writes it, the name as the Live Doc writes it, and the declarations it links.
+
+#### `writesUndeclaredParameter` {#symbol-writesundeclaredparameter}
+- Type: function
+- Source: [source](../../../../scripts/oracle/csharp-compare.ts#L220)
+- Parameters: `declared`: `ReadonlySet`
+
+##### `writesUndeclaredParameter` — Summary
+Whether a reference's parameter list writes a type the compilation, having no framework references, cannot bind: a
+keyword of the framework's types, or a name no file of the folder declares, its type arguments read the same way.
+The oracle's own reading of the syntax, kept apart from the reader's.
 
 #### `compareDocumentation` {#symbol-comparedocumentation}
 - Type: function
-- Source: [source](../../../../scripts/oracle/csharp-compare.ts#L194)
+- Source: [source](../../../../scripts/oracle/csharp-compare.ts#L239)
 - Returns: [`DocumentationRelation`](#symbol-documentationrelation)
 - Parameters: `record`: [`CompilerRecord`](#symbol-compilerrecord)
 
 ##### `compareDocumentation` — Summary
-Sets the reader's documentation relation beside the compiler's resolution, pair by pair. A reference is matched to
-the compiler's by its file and its name as the Live Doc writes it (`normalizeCrefTarget`), so that two references
-written alike in one file, under two scopes, are taken together.
+Sets the reader's documentation references beside the compiler's, reference by reference and declaration by
+declaration. A reference is matched by its file, the line of the declaration its comment documents and its name as
+the Live Doc writes it (`crefLinkTarget`); alike references on one declaration are taken once, since they
+resolve alike. An ambiguous reference names every candidate, and a reader that links them all agrees. A namespace
+names no declaration, as the reader links none. `onlyThrough` tells a target whose project the file's reaches only
+through another.
 
 #### `CSharpReport` {#symbol-csharpreport}
 - Type: interface
-- Source: [source](../../../../scripts/oracle/csharp-compare.ts#L240)
+- Source: [source](../../../../scripts/oracle/csharp-compare.ts#L307)
 
 ##### `CSharpReport` — Summary
 The comparison of one folder: what was read, how its projects' references were, and the edges side by side.
 
 #### `compareCSharp` {#symbol-comparecsharp}
 - Type: function
-- Source: [source](../../../../scripts/oracle/csharp-compare.ts#L272)
+- Source: [source](../../../../scripts/oracle/csharp-compare.ts#L339)
 - Parameters: `kept`: [`CompilerRecord`](#symbol-compilerrecord)
 
 ##### `compareCSharp` — Summary
@@ -118,7 +147,7 @@ Reads the folder both ways, or the compiler's kept record of it, and sets the ed
 - `node:path` - `path`
 - `node:process` - `process`
 - [`csharp.csharpAdapter`](../../packages/engine/src/live-docs/adapters/csharp.ts.mdmd.md#symbol-csharpadapter)
-- [`csharp.xmldoc.normalizeCrefTarget`](../../packages/engine/src/live-docs/adapters/csharp.xmldoc.ts.mdmd.md#symbol-normalizecreftarget)
+- [`csharp.xmldoc.crefLinkTarget`](../../packages/engine/src/live-docs/adapters/csharp.xmldoc.ts.mdmd.md#symbol-creflinktarget)
 - [`powershell-compare.folderFiles`](./powershell-compare.ts.mdmd.md#symbol-folderfiles)
 - [`scip-edges.msbuildProjectReferences`](./scip-edges.ts.mdmd.md#symbol-msbuildprojectreferences)
 - [`sources.sourceDigests`](./sources.ts.mdmd.md#symbol-sourcedigests)

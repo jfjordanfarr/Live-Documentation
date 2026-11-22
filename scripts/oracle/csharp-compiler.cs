@@ -19,9 +19,12 @@
 // It prints, as JSON: the tool, the projects with how each one's references were read, the counts of names bound, every
 // edge, every file's declared type names (simple, without type parameters), by which the caller tells a namesake, and
 // every documentation comment's `cref` (on whatever element carries it) with the compiler's resolution of it: the
-// symbol's kind and name and the files that declare it, every candidate where it cannot choose, or none. A `cref` in a
-// section the preprocessor symbols above leave inactive is not parsed, and is not among them. Added on 2026-11-22, so
-// that an author's documentation reference, which the owner asked to be honoured, is measured before a reader draws it.
+// symbol's kind and name, the files that declare it and the file and line of each declaration (and of its type's, for
+// a member), every candidate where it cannot choose, or none; with the line of the declaration the comment documents,
+// and as `unparsed` a `cref` the compiler's grammar does not take. A `cref` in a section the preprocessor symbols above
+// leave inactive is not parsed, and is not among them. Added on 2026-11-22, so that an author's documentation
+// reference, which the owner asked to be honoured, is measured before a reader draws it; its declarations the same
+// day, when an independent review showed that file pairs hide a wrong overload and every reference within one file.
 // Written on 2026-11-21 from the November 19 probe's compiler-edges program (Probes/dotnet-gaps), whose references were
 // read by a pattern that took a commented-out reference for a real one.
 using System.Text.Json;
@@ -145,28 +148,62 @@ foreach (var dir in filesByProject.Keys.OrderBy(d => d, StringComparer.Ordinal))
         // Every documentation reference: a `cref` on any element of a documentation comment, resolved as the compiler
         // resolves it for its documentation file. A symbol the compiler cannot choose among (`cref="M"` with overloads,
         // its warning CS0419) is kept with every candidate; a reference it resolves to nothing (CS1574) has no symbol.
-        foreach (var attribute in tree.GetRoot().DescendantNodes(descendIntoTrivia: true).OfType<XmlCrefAttributeSyntax>())
+        // Each answer names its declarations, the file and line of each name the symbol is declared by (every part of a
+        // partial type), and for a member the declarations of the type that holds it; and each reference names the line
+        // of the declaration its comment documents, so that it is matched with the reader's, reference by reference.
+        // A `cref` the compiler's grammar does not take (`L::Calc`) is no cref node but an ordinary attribute: it is kept
+        // too, as `unparsed`, so that a reader that links one is told apart from one in an inactive section.
+        foreach (var attribute in tree.GetRoot().DescendantNodes(descendIntoTrivia: true).OfType<XmlAttributeSyntax>().Where(a => a is XmlCrefAttributeSyntax || a.Name.ToString() == "cref"))
         {
+            if (attribute.FirstAncestorOrSelf<DocumentationCommentTriviaSyntax>() == null) continue;
             var element = attribute.Parent switch
             {
                 XmlElementStartTagSyntax start => start.Name.ToString(),
                 XmlEmptyElementSyntax empty => empty.Name.ToString(),
                 _ => "?"
             };
-            var info = model.GetSymbolInfo(attribute.Cref);
+            var documented = attribute.Ancestors().OfType<MemberDeclarationSyntax>().FirstOrDefault();
+            SyntaxToken? name = documented switch
+            {
+                BaseTypeDeclarationSyntax t => t.Identifier,
+                DelegateDeclarationSyntax d => d.Identifier,
+                MethodDeclarationSyntax m => m.Identifier,
+                ConstructorDeclarationSyntax c => c.Identifier,
+                DestructorDeclarationSyntax d => d.Identifier,
+                PropertyDeclarationSyntax p => p.Identifier,
+                EventDeclarationSyntax e => e.Identifier,
+                BaseFieldDeclarationSyntax f => f.Declaration.Variables[0].Identifier,
+                EnumMemberDeclarationSyntax e => e.Identifier,
+                _ => null
+            };
+            int? on = name is { } token ? token.GetLocation().GetLineSpan().StartLinePosition.Line + 1 : null;
+            var line = attribute.GetLocation().GetLineSpan().StartLinePosition.Line + 1;
+            if (attribute is not XmlCrefAttributeSyntax crefAttribute)
+            {
+                var text = attribute is XmlTextAttributeSyntax textAttribute ? string.Concat(textAttribute.TextTokens.Select(t => t.Text)) : attribute.ToString();
+                crefs.Add(new { from, line, on, element, written = text, outcome = "unparsed", resolved = Array.Empty<object>() });
+                continue;
+            }
+            var info = model.GetSymbolInfo(crefAttribute.Cref);
             var found = info.Symbol != null ? new[] { info.Symbol } : info.CandidateSymbols.ToArray();
+            object[] Declarations(ISymbol s) => s.Locations.Where(l => l.IsInSource && !string.IsNullOrEmpty(l.SourceTree?.FilePath))
+                .Select(l => (file: Rel(l.SourceTree!.FilePath), line: l.GetLineSpan().StartLinePosition.Line + 1)).Distinct()
+                .OrderBy(d => d.file, StringComparer.Ordinal).ThenBy(d => d.line).Select(d => (object)new { d.file, d.line }).ToArray();
             var resolved = found.Select(s =>
             {
                 if (s is INamedTypeSymbol named && !SymbolEqualityComparer.Default.Equals(named, named.OriginalDefinition)) s = named.OriginalDefinition;
+                if (s is IMethodSymbol method && !SymbolEqualityComparer.Default.Equals(method, method.OriginalDefinition)) s = method.OriginalDefinition;
                 var files = s.DeclaringSyntaxReferences.Select(r => r.SyntaxTree.FilePath).Where(f => !string.IsNullOrEmpty(f)).Select(Rel).Distinct().OrderBy(f => f, StringComparer.Ordinal).ToArray();
-                return new { kind = s.Kind.ToString(), symbol = s.ToDisplayString(), files };
+                var holder = s is INamedTypeSymbol || s is INamespaceSymbol || s.ContainingType == null ? Array.Empty<object>() : Declarations(s.ContainingType.OriginalDefinition);
+                return new { kind = s.Kind.ToString(), symbol = s.ToDisplayString(), files, declarations = Declarations(s), holder };
             }).OrderBy(r => r.symbol, StringComparer.Ordinal).ToArray();
             crefs.Add(new
             {
                 from,
-                line = attribute.GetLocation().GetLineSpan().StartLinePosition.Line + 1,
+                line,
+                on,
                 element,
-                written = attribute.Cref.ToString(),
+                written = crefAttribute.Cref.ToString(),
                 outcome = info.Symbol != null ? "resolved" : found.Length > 0 ? info.CandidateReason.ToString() : "unresolved",
                 resolved
             });
