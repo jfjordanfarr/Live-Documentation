@@ -202,3 +202,63 @@ describe("live-docs:inspect, a directory as an end", () => {
     assert.strictEqual(result.stderr, "PaymentService is a directory: give --to for a path from any of its files, or --reachable for what they reach.\n");
   });
 });
+
+describe("live-docs:inspect, two ends that share files", () => {
+  // Root's rule, 2026-11-22, after the engine review: a path's ends are each a file or a directory, so apart or one
+  // holding the other; when one holds the other the path runs between the inner end and the rest of the outer, and when
+  // the two are the same there is no path. A name in another case is one directory only when one answers to it.
+  let nested = "";
+  beforeAll(async () => {
+    nested = fs.mkdtempSync(path.join(os.tmpdir(), "cli-answers-nested-"));
+    folders.push(nested);
+    const files: Record<string, string> = {
+      "src/a.ts": 'import { b } from "./b";\nexport const a = b;\n',
+      "src/b.ts": "export const b = 1;\n",
+      "src/Pay/p.ts": 'import { a } from "../a";\nexport const p = a;\n',
+      "src/PaymentService/s.ts": "export const s = 2;\n"
+    };
+    for (const [file, text] of Object.entries(files)) {
+      fs.mkdirSync(path.dirname(path.join(nested, file)), { recursive: true });
+      fs.writeFileSync(path.join(nested, file), text);
+    }
+    await generateLiveDocs({ workspaceRoot: nested, config: normalizeLiveDocumentationConfig({}),
+      logger: { info: () => undefined, warn: () => undefined, error: (message) => { throw new Error(message); } } });
+  });
+
+  it("runs from the rest of an outer directory to a file it holds, and says the outer was taken without the inner", () => {
+    const result = cli("inspect.ts", nested, ["--from", "src/", "--to", "src/b.ts"]);
+    assert.strictEqual(result.status, 0, result.stderr);
+    assert.strictEqual(result.stdout.replace(/ \[[^\]]+\]/g, ""), "Path from src/a.ts to src/b.ts, 1 hop(s): each file uses the next; src/ taken without src/b.ts.\n  1. src/a.ts uses src/b.ts\n");
+    const json = JSON.parse(cli("inspect.ts", nested, ["--from", "src/", "--to", "src/b.ts", "--json"]).stdout) as { kind: string; asked: unknown };
+    assert.deepStrictEqual([json.kind, json.asked], ["path", { from: "src/", to: "src/b.ts", narrowed: "from" }]);
+  });
+
+  it("runs from an inner directory to the rest of the outer one", () => {
+    const result = cli("inspect.ts", nested, ["--from", "src/Pay", "--to", "src"]);
+    assert.strictEqual(result.status, 0, result.stderr);
+    assert.match(result.stdout.replace(/ \[[^\]]+\]/g, ""), /^Path from src\/Pay\/p\.ts to src\/a\.ts, 1 hop\(s\): each file uses the next; src\/ taken without src\/Pay\/\.\n/u);
+  });
+
+  it("is no path when the two ends are the same, a directory or a file", () => {
+    for (const [end, label] of [["src", "src/"], ["src/a.ts", "src/a.ts"]]) {
+      const result = cli("inspect.ts", nested, ["--from", end, "--to", end]);
+      assert.strictEqual(result.status, 1);
+      assert.strictEqual(result.stdout, `No path runs between ${label} and ${label}: the two ends are the same.\n`);
+      const json = JSON.parse(cli("inspect.ts", nested, ["--from", end, "--to", end, "--json"]).stdout) as { kind: string; asked: { narrowed: string } };
+      assert.deepStrictEqual([json.kind, json.asked.narrowed], ["not-found", "same"]);
+    }
+  });
+
+  it("takes a directory named in another case as the one directory that answers, spelled as it is", () => {
+    const json = JSON.parse(cli("inspect.ts", nested, ["--from", "src/PAY", "--to", "src/a.ts", "--json"]).stdout) as { asked: { from: string } };
+    assert.strictEqual(json.asked.from, "src/Pay/");
+  });
+
+  it("is no path from a symbol to itself, nor from a symbol to its own file", () => {
+    for (const to of ["src/a.ts#a", "src/a.ts"]) {
+      const result = cli("inspect.ts", nested, ["--from", "src/a.ts#a", "--to", to]);
+      assert.strictEqual(result.status, 1, to);
+      assert.strictEqual(result.stdout, `No symbol path found from src/a.ts#a to ${to} (outbound).\n`);
+    }
+  });
+});

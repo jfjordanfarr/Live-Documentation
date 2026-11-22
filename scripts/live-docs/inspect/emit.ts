@@ -148,7 +148,8 @@ export function emitPathResult(
   direction: Direction,
   graph: LiveDocGraph,
   json: boolean,
-  verbose: boolean
+  verbose: boolean,
+  asked?: AskedEnds
 ): void {
   const hops: HopDescriptor[] = [];
   for (let index = 0; index < pathNodes.length - 1; index += 1) {
@@ -166,6 +167,7 @@ export function emitPathResult(
       kind: "path" as const,
       direction,
       each,
+      ...(asked ? { asked: askedOf(asked) } : {}),
       length: pathNodes.length - 1,
       from: describeNode(graph, pathNodes[0], verbose),
       to: describeNode(graph, pathNodes[pathNodes.length - 1], verbose),
@@ -176,7 +178,7 @@ export function emitPathResult(
     return;
   }
 
-  console.log(`Path from ${pathNodes[0]} to ${pathNodes[pathNodes.length - 1]}, ${pathNodes.length - 1} hop(s): each file ${each} the next.`);
+  console.log(`Path from ${pathNodes[0]} to ${pathNodes[pathNodes.length - 1]}, ${pathNodes.length - 1} hop(s): each file ${each} the next${narrowedClause(asked)}.`);
   hops.forEach((hop, index) => {
     const fromDoc = hop.from.docPath ? ` [${hop.from.docPath}]` : "";
     const toDoc = hop.to.docPath ? ` [${hop.to.docPath}]` : "";
@@ -200,7 +202,8 @@ export function emitNotFound(
   json: boolean,
   verbose: boolean,
   reverse?: { hops: number },
-  eitherWay = false
+  eitherWay = false,
+  asked?: AskedEnds
 ): void {
   const command = reverseCommand(from, to, direction);
   const payload = {
@@ -209,6 +212,7 @@ export function emitNotFound(
     from: describeNode(graph, from, verbose),
     to: describeNode(graph, to, verbose),
     reverse: reverse ? { hops: reverse.hops, command } : null,
+    ...(asked ? { asked: askedOf(asked) } : {}),
     visited: Array.from(result.visited).map((node) => describeNode(graph, node, verbose)),
     frontier: result.frontier.map((entry) => ({
       node: describeNode(graph, entry.node, verbose),
@@ -222,11 +226,32 @@ export function emitNotFound(
     return;
   }
 
-  console.log(eitherWay
-    ? `No path runs between ${from} and ${to}, either way.`
+  console.log(asked?.narrowed === "same"
+    ? `No path runs between ${from} and ${to}: the two ends are the same.`
+    : eitherWay
+    ? `No path runs between ${from} and ${to}, either way${narrowedClause(asked)}.`
     : reverse
     ? `No path runs from ${from} to ${to} (${direction}); one runs the other way, ${reverse.hops} hop(s): ${command}`
     : `No path runs from ${from} to ${to} (${direction}), nor the other way.`);
+}
+
+/** The two ends of a path as asked, and which gave way when one held the other (see the engine's `endsApart`). */
+export interface AskedEnds {
+  from: string;
+  to: string;
+  narrowed?: "from" | "to" | "same";
+}
+
+/** The ends as asked, for the JSON: each as typed and resolved, and the end taken without the other, or null. */
+function askedOf(asked: AskedEnds): { from: string; to: string; narrowed: "from" | "to" | "same" | null } {
+  return { from: asked.from, to: asked.to, narrowed: asked.narrowed ?? null };
+}
+
+/** The clause that says an outer end was taken without the inner one; empty when the ends were apart. */
+function narrowedClause(asked: AskedEnds | undefined): string {
+  if (asked?.narrowed === "from") return `; ${asked.from} taken without ${asked.to}`;
+  if (asked?.narrowed === "to") return `; ${asked.to} taken without ${asked.from}`;
+  return "";
 }
 
 /** The command that asks the reverse question: from the end back to the start, the same way. */
