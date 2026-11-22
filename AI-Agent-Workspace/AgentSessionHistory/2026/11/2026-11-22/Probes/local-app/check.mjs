@@ -1,9 +1,10 @@
 // What automation can check of the local app probe, in headless Chromium. From the repository root:
-//   node <this file> seal <scratch folder>       rewrites the page's Content-Security-Policy hashes after an edit
+//   node <this file> seal                        rewrites the page's Content-Security-Policy hashes after an edit
 //   node scripts/browser-lane.mjs --label <who> -- node <this file> check <scratch folder>
 // The check copies the page to three folders under the scratch folder, opens them from disk in one browser profile over
-// two launches, and stands in for the folder and save pickers (which no automation can press) with the browser's own
-// private file system and a recording writer. Prints one line per finding and exits 1 if any fails.
+// two launches, and stands in for the folder and save pickers (which no automation can press) with an in-memory folder
+// and a recording writer. It retakes the two pictures beside it on every run. Prints one line per finding and exits 1
+// if any fails.
 import { chromium } from "@playwright/test";
 import crypto from "node:crypto";
 import fs from "node:fs";
