@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: `tests/page-scan/node-needs.json`
-- Generated At: 2026-11-22T01:22:10.824Z
+- Generated At: 2026-11-22T01:36:30.557Z
 
 ## Authored
 ### Purpose
@@ -308,16 +308,16 @@ The committed list of what of Node the scanning page's bundle needs: by engine a
 #### `engine:packages/engine/src/tooling/gitIgnored.ts:node:process` {#symbol-enginepackagesenginesrctoolinggitignoredtsnodeprocess}
 - Type: key
 
+#### `engine:packages/engine/src/tooling/nodeHost.ts` {#symbol-enginepackagesenginesrctoolingnodehostts}
+- Type: key
+
+#### `engine:packages/engine/src/tooling/nodeHost.ts:node:fs` {#symbol-enginepackagesenginesrctoolingnodehosttsnodefs}
+- Type: key
+
 #### `engine:packages/engine/src/tooling/pathUtils.ts` {#symbol-enginepackagesenginesrctoolingpathutilsts}
 - Type: key
 
 #### `engine:packages/engine/src/tooling/pathUtils.ts:node:path` {#symbol-enginepackagesenginesrctoolingpathutilstsnodepath}
-- Type: key
-
-#### `engine:packages/engine/src/tooling/sourceText.ts` {#symbol-enginepackagesenginesrctoolingsourcetextts}
-- Type: key
-
-#### `engine:packages/engine/src/tooling/sourceText.ts:node:fs` {#symbol-enginepackagesenginesrctoolingsourcetexttsnodefs}
 - Type: key
 
 #### `engine:packages/generator/src/generator.ts` {#symbol-enginepackagesgeneratorsrcgeneratorts}

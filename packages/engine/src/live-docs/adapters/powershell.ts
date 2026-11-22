@@ -1792,7 +1792,7 @@ async function buildWorkspace(workspaceRoot: string, files: WorkspaceFileIndex):
     const extension = path.posix.extname(file).toLowerCase();
     if (!extensions.has(extension)) continue;
     try {
-      const content = await readSourceText(path.join(workspaceRoot, file));
+      const content = await readSourceText(path.join(workspaceRoot, file), files);
       workspace.entries.set(file, extension === ".psd1"
         ? { kind: "data", hash: digest(content), facts: await extractDataFacts(content) }
         : { kind: "script", hash: digest(content), facts: await extractFacts(content) });
@@ -2117,7 +2117,7 @@ export const powershellAdapter: LanguageAdapter = {
   id: "powershell-basic",
   extensions: powershellSyntax.extensions,
   async analyze({ absolutePath, workspaceRoot, fileIndex }): Promise<SourceAnalysisResult | null> {
-    const content = await readSourceText(absolutePath);
+    const content = await readSourceText(absolutePath, fileIndex);
     return analyzePowerShellSource({ content, absolutePath, workspaceRoot, fileIndex });
   }
 };

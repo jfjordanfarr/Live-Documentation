@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/engine/src/live-docs/heuristics/dom.ts`
-- Generated At: 2026-11-21T18:54:37.674Z
+- Generated At: 2026-11-22T01:36:20.328Z
 
 ## Authored
 ### Purpose
@@ -44,6 +44,7 @@ the raw text).
 - [`aspnet.markupWithoutComments`](../adapters/aspnet.ts.mdmd.md#symbol-markupwithoutcomments)
 - [`core.DependencyEntry`](../core.ts.mdmd.md#symbol-dependencyentry) (type-only)
 - [`pathUtils.normalizeWorkspacePath`](../../tooling/pathUtils.ts.mdmd.md#symbol-normalizeworkspacepath)
+- [`sourceText.SourceReads`](../../tooling/sourceText.ts.mdmd.md#symbol-sourcereads)
 - [`sourceText.readSourceText`](../../tooling/sourceText.ts.mdmd.md#symbol-readsourcetext)
 - [`sourceText.throwIfMachineFailure`](../../tooling/sourceText.ts.mdmd.md#symbol-throwifmachinefailure)
 - `typescript` - `ts`

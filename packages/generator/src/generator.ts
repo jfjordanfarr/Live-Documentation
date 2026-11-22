@@ -24,8 +24,10 @@ import { readLiveDocGraph, writeLiveDocGraph } from "@live-documentation/engine/
 import { markProcess } from "@live-documentation/engine/live-docs/processMark";
 import { citingDocuments, isMarkdownDocument, type DocumentText } from "@live-documentation/engine/live-docs/relatedDocs";
 import { gitIgnored } from "@live-documentation/engine/tooling/gitIgnored";
+import { NODE_FILE_HOST } from "@live-documentation/engine/tooling/nodeHost";
 import { normalizeWorkspacePath, toWorkspaceRelativePath } from "@live-documentation/engine/tooling/pathUtils";
-import { decodeSourceText, throwIfMachineFailure, type SourceTextReading } from "@live-documentation/engine/tooling/sourceText";
+import { readSourceReading, throwIfMachineFailure, type SourceTextReading } from "@live-documentation/engine/tooling/sourceText";
+import { type FileHost, workspaceReads } from "@live-documentation/engine/tooling/workspaceFiles";
 
 interface GenerateLiveDocsOptions {
   workspaceRoot: string;
@@ -41,6 +43,11 @@ interface GenerateLiveDocsOptions {
    * commit's mirror kept in place must give exactly the files this run documents (2026-10-20).
    */
   keepAuthoredStaleDocs?: boolean;
+  /**
+   * What the scan reads the workspace's files through: the disk, by Node, unless another host is handed, as the check
+   * that the engine runs in a page hands one over the folder a person picked (2026-11-22).
+   */
+  host?: FileHost;
 }
 
 interface LiveDocGeneratorLogger {
@@ -159,10 +166,15 @@ export async function generateLiveDocs(
   // path's archetype under this run's configuration, so that a reader telling a test from working code reads the
   // workspace's overrides and sample roots, as the docs' `Archetype` lines do (2026-11-19, the PowerShell probe), and,
   // once the first pass has gathered them, the readers' facts of which files exist for the tests (2026-11-21).
+  // It also carries the run's reads (`workspaceFiles.ts`): every reader, every table a reader builds from many files,
+  // the binary test and the count of how each file was decoded take a file's bytes from one read of the run, through
+  // the host (2026-11-22; before, each file was read three to five times).
   const gathered: { tests?: WorkspaceTestIndex } = {};
+  const reads = workspaceReads(options.host ?? NODE_FILE_HOST, BINARY_SNIFF_BYTES);
   const fileIndex: WorkspaceFileIndex = Object.assign(
     new Set(allTargetFiles.map((absPath) => normalizeWorkspacePath(path.relative(workspaceRoot, absPath)))),
-    { archetypeOf: (file: string) => resolveArchetype(file, normalizedConfig, false, gathered.tests) }
+    { archetypeOf: (file: string) => resolveArchetype(file, normalizedConfig, false, gathered.tests) },
+    reads
   );
   logger.info(`Built file index with ${fileIndex.size} workspace paths`);
 
@@ -230,11 +242,11 @@ export async function generateLiveDocs(
     try {
       // A file whose reading threw in the index pass is one this run could not map, though it reads here.
       if (unindexed.has(absoluteSourcePath)) throw unindexed.get(absoluteSourcePath);
-      const archetype = resolveArchetype(normalizedSourcePath, normalizedConfig, isBinaryContent(await readFileHead(absoluteSourcePath, BINARY_SNIFF_BYTES)), tests);
+      const archetype = resolveArchetype(normalizedSourcePath, normalizedConfig, isBinaryContent(await reads.headOf(absoluteSourcePath, BINARY_SNIFF_BYTES)), tests);
 
       // Which rule of the one reading step reads the file's text, counted for the run's last lines, where a reader reads it.
       if (hasReader(normalizedSourcePath)) {
-        noteReading(readings, normalizedSourcePath, decodeSourceText(await fs.readFile(absoluteSourcePath)));
+        noteReading(readings, normalizedSourcePath, await readSourceReading(absoluteSourcePath, fileIndex));
       }
 
       const analysis = await analyzeSourceFile(absoluteSourcePath, workspaceRoot, fileIndex, symbolIndex);
@@ -591,18 +603,6 @@ async function cleanupEmptyParents(startDir: string, stopDir: string): Promise<v
     } catch {
       break;
     }
-  }
-}
-
-/** The first `bytes` of a file, for the content's say on what the file is; fewer when the file is shorter. */
-async function readFileHead(filePath: string, bytes: number): Promise<Uint8Array> {
-  const handle = await fs.open(filePath, "r");
-  try {
-    const buffer = new Uint8Array(bytes);
-    const { bytesRead } = await handle.read(buffer, 0, bytes, 0);
-    return buffer.subarray(0, bytesRead);
-  } finally {
-    await handle.close();
   }
 }
 

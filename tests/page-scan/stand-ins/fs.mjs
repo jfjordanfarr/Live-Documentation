@@ -216,7 +216,6 @@ function statOrNothing(path, options, syscall) {
 }
 export const statSync = counted("fs.statSync", (path, options) => statOrNothing(path, options, "stat"));
 export const lstatSync = counted("fs.lstatSync", (path, options) => statOrNothing(path, options, "lstat"));
-export const readFileSync = counted("fs.readFileSync", (path, options) => text(bytesOf(path, "open"), options));
 
 /** The page's own hand on the tree, uncounted: to fill it, empty it, and read back what the scan wrote and read. */
 export const tree = {
@@ -234,10 +233,15 @@ export const tree = {
   },
   files: () => [...files.keys()].sort(),
   bytes: (path) => files.get(absolute(path))?.bytes,
+  /**
+   * A file's bytes for the page's own host of the scan (`page-entry.mjs`), counted as a read of the scan's but not as a
+   * call of `fs`: failing as `fs.promises.readFile` fails, so that the engine reads an absence or a folder as it does on a disk.
+   */
+  read: (path) => bytesOf(path, "open"),
   /** Each file the scan read, with the number of times it read it. */
   reads: () => Object.fromEntries([...reads].sort(([a], [b]) => (a < b ? -1 : a > b ? 1 : 0))),
   /** Each folder's entries, uncounted, for the stand-in for `glob`, whose walk is its own and not the scan's call of `fs`. */
   entries: (path) => entriesOf(path, { withFileTypes: true })
 };
 
-export default { promises, readdir, readdirSync, statSync, lstatSync, readFileSync };
+export default { promises, readdir, readdirSync, statSync, lstatSync };

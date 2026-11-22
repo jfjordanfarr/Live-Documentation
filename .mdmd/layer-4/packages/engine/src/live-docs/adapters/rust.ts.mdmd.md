@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/engine/src/live-docs/adapters/rust.ts`
-- Generated At: 2026-11-21T20:21:42.538Z
+- Generated At: 2026-11-22T01:36:19.876Z
 
 ## Authored
 ### Purpose
@@ -51,6 +51,7 @@ Language adapter for Rust (`.rs`): tree-sitter symbols and path resolution throu
 - [`coreTypes.ProgramEntry`](../coreTypes.ts.mdmd.md#symbol-programentry) (type-only)
 - [`compareText`](../../tooling/compareText.ts.mdmd.md#symbol-comparetext)
 - [`pathUtils.normalizeWorkspacePath`](../../tooling/pathUtils.ts.mdmd.md#symbol-normalizeworkspacepath)
+- [`sourceText.SourceReads`](../../tooling/sourceText.ts.mdmd.md#symbol-sourcereads)
 - [`sourceText.readSourceText`](../../tooling/sourceText.ts.mdmd.md#symbol-readsourcetext)
 - [`sourceText.throwIfMachineFailure`](../../tooling/sourceText.ts.mdmd.md#symbol-throwifmachinefailure)
 <!-- LIVE-DOC:END Dependencies -->

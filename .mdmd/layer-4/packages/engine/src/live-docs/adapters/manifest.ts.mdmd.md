@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/engine/src/live-docs/adapters/manifest.ts`
-- Generated At: 2026-11-20T15:12:45.865Z
+- Generated At: 2026-11-22T01:36:19.584Z
 
 ## Authored
 ### Purpose
@@ -51,6 +51,7 @@ A non-empty string, or `undefined`.
 #### `readToml` {#symbol-readtoml}
 - Type: function
 - Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/manifest.ts#L53)
+- Parameters: `reads`: [`SourceReads`](../../tooling/sourceText.ts.mdmd.md#symbol-sourcereads)
 
 ##### `readToml` — Summary
 A TOML document's root table, or `undefined` when the file cannot be read or is not valid TOML.
@@ -128,6 +129,7 @@ Declared entries without repeats, in path order, then by reason and name.
 - [`openings.PACKAGE_KIND`](../openings.ts.mdmd.md#symbol-package_kind)
 - [`compareText`](../../tooling/compareText.ts.mdmd.md#symbol-comparetext)
 - [`pathUtils.normalizeWorkspacePath`](../../tooling/pathUtils.ts.mdmd.md#symbol-normalizeworkspacepath)
+- [`sourceText.SourceReads`](../../tooling/sourceText.ts.mdmd.md#symbol-sourcereads)
 - [`sourceText.readSourceText`](../../tooling/sourceText.ts.mdmd.md#symbol-readsourcetext)
 - [`sourceText.throwIfMachineFailure`](../../tooling/sourceText.ts.mdmd.md#symbol-throwifmachinefailure)
 - `smol-toml` - `parse`

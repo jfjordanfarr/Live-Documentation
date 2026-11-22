@@ -124,7 +124,6 @@
     },
     "packages/engine/src/live-docs/adapters/json.ts": {
       "node:fs": [
-        "readFileSync",
         "statSync"
       ],
       "node:path": [
@@ -358,16 +357,17 @@
         "nextTick"
       ]
     },
+    "packages/engine/src/tooling/nodeHost.ts": {
+      "node:fs": [
+        "promises.open",
+        "promises.readFile"
+      ]
+    },
     "packages/engine/src/tooling/pathUtils.ts": {
       "node:path": [
         "relative",
         "resolve",
         "sep"
-      ]
-    },
-    "packages/engine/src/tooling/sourceText.ts": {
-      "node:fs": [
-        "promises.readFile"
       ]
     },
     "packages/generator/src/generator.ts": {
@@ -376,7 +376,6 @@
       ],
       "node:fs/promises": [
         "mkdir",
-        "open",
         "readFile",
         "readdir",
         "rm",
@@ -410,17 +409,16 @@
       "lstatSync",
       "promises.access",
       "promises.mkdir",
+      "promises.open",
       "promises.readFile",
       "promises.stat",
       "promises.writeFile",
-      "readFileSync",
       "readdir",
       "readdirSync",
       "statSync"
     ],
     "node:fs/promises": [
       "mkdir",
-      "open",
       "readFile",
       "readdir",
       "rm",

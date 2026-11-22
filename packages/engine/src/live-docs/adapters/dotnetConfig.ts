@@ -74,7 +74,7 @@ export const dotnetConfigAdapter: LanguageAdapter = {
   extensions: [".config"],
   async analyze({ absolutePath, workspaceRoot, fileIndex, symbolIndex }): Promise<SourceAnalysisResult | null> {
     // An XML comment is no element: it is written over in spaces before any pattern runs, its lines kept.
-    const content = withoutXmlComments(await readSourceText(absolutePath));
+    const content = withoutXmlComments(await readSourceText(absolutePath, fileIndex));
     const thisFile = normalizeWorkspacePath(path.relative(workspaceRoot, absolutePath));
     const symbols: PublicSymbolEntry[] = [];
     const seen    = new Set<string>();

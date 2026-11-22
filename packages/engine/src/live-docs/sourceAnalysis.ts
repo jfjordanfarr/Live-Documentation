@@ -87,7 +87,7 @@ export async function analyzeSourceFile(
     return EMPTY_ANALYSIS_RESULT;
   }
 
-  const content = await readSourceText(absolutePath);
+  const content = await readSourceText(absolutePath, fileIndex);
   const scriptKind = inferScriptKind(extension);
   const sourceFile = ts.createSourceFile(
     absolutePath,
@@ -133,7 +133,8 @@ export async function analyzeSourceFile(
     sourceAbsolute: absolutePath,
     workspaceRoot,
     dependencies,
-    existingSymbols: directSymbols
+    existingSymbols: directSymbols,
+    reads: fileIndex
   });
 
   return {

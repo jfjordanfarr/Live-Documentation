@@ -1,7 +1,8 @@
 // The scanning page's script: the generator as it stands, bundled with the stand-ins, run over a folder the page is
 // handed through its `<input webkitdirectory>`. It puts the folder's files into the stand-in for `node:fs` at `/ws`,
-// runs `generateLiveDocs` there, and keeps what the scan wrote, what it read and what it asked of the stand-ins, for
-// `tests/e2e/page-scan.spec.ts` to read as `window.pageScan`. Test scaffolding, not the product.
+// runs `generateLiveDocs` there with the page's own host of the files' bytes (`PAGE_HOST`), and keeps what the scan
+// wrote, what it read and what it asked of the stand-ins, for `tests/e2e/page-scan.spec.ts` to read as
+// `window.pageScan`. Test scaffolding, not the product.
 import { generateLiveDocs } from "../../packages/generator/src/generator";
 import { callCounts, resetCalls } from "./stand-ins/calls.mjs";
 import { asked } from "./stand-ins/child_process.mjs";
@@ -18,6 +19,17 @@ const WORKSPACE = "/ws";
  * to hold them in memory. A folder with `.git` is therefore scanned here as one that lies in no repository.
  */
 const LEFT_OUT = new Set([".git", "node_modules"]);
+
+/**
+ * The page's host of the scan's files (`FileHost`, `packages/engine/src/tooling/workspaceFiles.ts`): their bytes from the
+ * folder the page was handed, read without Node's `fs`, so that the calls of the stand-in for it count only what the
+ * engine still asks of Node; each read is counted with the scan's reads. The page holds every file already, so a head
+ * is cut from the whole.
+ */
+const PAGE_HOST = {
+  read: async (path) => tree.read(path),
+  head: async (path, bytes) => tree.read(path).subarray(0, bytes)
+};
 
 const log = (line) => {
   document.getElementById("log").textContent += `${line}\n`;
@@ -62,6 +74,7 @@ async function scan(fileList, now) {
   const started = performance.now();
   const result = await generateLiveDocs({
     workspaceRoot: WORKSPACE,
+    host: PAGE_HOST,
     now: () => new Date(now),
     logger: { info: () => undefined, warn: (message) => warnings.push(message), error: (message) => warnings.push(message) }
   });

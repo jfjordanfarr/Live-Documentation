@@ -66,7 +66,7 @@ export const aspNetMarkupAdapter: LanguageAdapter = {
   id: "aspnet-markup",
   extensions: [".aspx", ".ascx", ".master", ".ashx", ".asmx", ".asax", ".svc", ".cshtml", ".razor"],
   async analyze({ absolutePath, workspaceRoot, fileIndex }): Promise<SourceAnalysisResult | null> {
-    const content = await readSourceText(absolutePath);
+    const content = await readSourceText(absolutePath, fileIndex);
     const thisFile = normalizeWorkspacePath(path.relative(workspaceRoot, absolutePath));
     const extension = path.extname(absolutePath).toLowerCase();
     // Each `notices` says why each path left unlinked has no link, for the run to count at its end.
@@ -318,7 +318,7 @@ function webApplications(workspaceRoot: string, fileIndex: WorkspaceFileIndex): 
       const applications = new Map<string, WebApplication>();
       for (const file of Array.from(fileIndex).filter(isProjectFile).sort()) {
         try {
-          const text = await readSourceText(path.join(workspaceRoot, file));
+          const text = await readSourceText(path.join(workspaceRoot, file), fileIndex);
           if (projectKind(text) !== "web") continue;
           const folder = folderOf(file);
           const core = projectSdk(text).toLowerCase() === "microsoft.net.sdk.web" && webRoots.has(folder);
