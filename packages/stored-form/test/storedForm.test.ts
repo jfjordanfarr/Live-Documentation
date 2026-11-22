@@ -307,6 +307,41 @@ describe("the text form's bytes, as the specification states them", () => {
   });
 });
 
+describe("the text's end line", () => {
+  // The five forms the second blind reading of 2026-11-22 found the module accepting before the end line was written
+  // again and compared (its finding 2): each is the end line of a text of three files, written another way.
+  const head = everyFact().head;
+  const empty = (codePath: string): StoredFile => ({ codePath, layer: 4, entries: [], authored: "", symbols: [], dependencies: [] });
+  const text = textOfScan({ head, files: [empty("a"), empty("b"), empty("c")] });
+  for (const end of ['[null, "end",3]', '[null,"end",3] ', '[null,"end", 3]', '[ null,"end",3]', '[null,"end",3.0]']) {
+    it(`is refused written ${JSON.stringify(end)}`, () => {
+      const variant = text.replace('[null,"end",3]', end);
+      expect(variant).not.toBe(text);
+      const read = scanOfText(variant);
+      expect(read.ok ? "read" : read.reason).toMatch(/line \d+ is not written as the text form writes it|is not JSON/u);
+    });
+  }
+});
+
+describe("names an object's prototype answers", () => {
+  it("are files like any other: __proto__, constructor, toString and hasOwnProperty are each in the graph, wired, and a path no file has answers nothing", async () => {
+    const names = ["__proto__", "constructor", "hasOwnProperty", "toString"];
+    const file = (codePath: string, to?: string): StoredFile => ({ codePath, layer: 4, entries: [], authored: "", symbols: [], dependencies: to ? [{ label: to, link: `${to}.mdmd.md`, target: to, qualifiers: [] }] : [] });
+    // Each depends on the next, the last on the first.
+    const scan: Scan = { head: everyFact().head, files: names.map((n, i) => file(n, names[(i + 1) % names.length])) };
+    const read = await readScan(await bytesOf(scan));
+    if (!read.ok) throw new Error(read.reason);
+    const graph = graphOf(read.value);
+    expect(Object.keys(graph.files)).toEqual(names);
+    for (const [i, n] of names.entries()) {
+      expect(graph.files[n].outbound, n).toEqual([names[(i + 1) % names.length]]);
+      expect(graph.files[n].inbound, n).toEqual([names[(i + names.length - 1) % names.length]]);
+    }
+    expect((graph.files as Record<string, unknown>).valueOf).toBeUndefined();
+    expect(JSON.parse(JSON.stringify(graph)).files.__proto__.codePath).toBe("__proto__");
+  });
+});
+
 describe("the documentation a file's symbols name", () => {
   it("is carried as the scanner read it, and gives the graph a relation of its own, apart from the edges", async () => {
     const scan = everyFact();

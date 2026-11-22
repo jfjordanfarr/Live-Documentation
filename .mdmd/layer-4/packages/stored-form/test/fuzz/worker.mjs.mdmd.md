@@ -8,7 +8,7 @@
 
 ## Authored
 ### Purpose
-The fuzzer's worker: reads each mutant of a range of seeds with the reader it is given (`readScan`, `resumeFrom` and, where facts came back, `textOf`), measures the most memory each read held over the worker at rest, and posts the outcome after each, so that the test can stop a reader that hangs.
+The fuzzer's worker: reads each mutant of a range of seeds with the reader it is given (`readScan`, `resumeFrom` and, where facts came back, `textOf`), measures the most memory each read held over the worker at rest, and posts the outcome after each, so that the test can stop a reader that hangs. Where facts came back and the reader can write, it also writes them again and reads the result, and a different content name is a finding: one set of facts, one name (the independent review's oracle of 2026-11-22).
 
 ### Notes
 A worker, so that a hang or a reader taking the machine's memory is stopped without stopping the test process; it loads the TypeScript source unchanged, by Node's own type stripping.
