@@ -67,7 +67,8 @@ Source inventory, maintained by the root agent. The October 31 session that ende
   - [the stored form as one module](2026-11-22/Probes/stored-form-module/README.md): what was built, its measurements on three corpora against today's index, its fuzzer seen failing first, and SCIP read against our facts;
   - [parity](2026-11-22/Probes/parity/README.md): what was run for each row of the table of the page against the command line, the pipeline's measurements, and 24 scored runs of agents given the files alone or the command line, each with its commands and its answer;
   - [the hand reading of 222 PowerShell wires as a test](2026-11-22/Probes/powershell-extract/README.md): the extract of four public repositories and what it keeps, the reader's count against the judges, four readings of every row set side by side, and PowerShell's own answer on small files of the builder's;
-  - [the engine reading through its host](2026-11-22/Probes/engine-hosts/README.md): reads for each file, time and peak memory before and after on DNN, the probes a scan makes counted by what a listing could answer, with the scripts that measured them.
+  - [the engine reading through its host](2026-11-22/Probes/engine-hosts/README.md): reads for each file, time and peak memory before and after on DNN, the probes a scan makes counted by what a listing could answer, with the scripts that measured them;
+  - [the stored form read by two strangers](2026-11-22/Probes/stored-form-second-reader/README.md): a reader in Python and one in Go, each written from the specification alone by a headless run in a sandbox, set beside the module on files they had not seen, with their programs, their questions and every disagreement classed.
 
 ## November 21, session 1 — Claude Code, Fable 5.2
 
