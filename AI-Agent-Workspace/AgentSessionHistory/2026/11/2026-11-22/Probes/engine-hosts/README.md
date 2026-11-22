@@ -53,3 +53,30 @@ Taken on the code of step 3 (`27b2bf9de`), before any probe moved.
 Every probe on the disk but outside the listing was discovery's, through `tooling/gitIgnored.ts` (16) and glob (2), looking at the docs a sample keeps and a fixture's `docs` folder: the walk that makes the listing, not a reader. **No reader's probe reached a file on the disk that the listing does not hold**, so a reader's probes answered from the listing change no fact on these folders.
 
 No reader probes outside the workspace either. Taken again once the readers' caches no longer asked a file's time of change (step 4's first piece), the probes outside are, on each of the three folders, the generator's search of the folders above for a scan it lies inside (14 `stat`s), `gitIgnored.ts` looking up for a repository (40 `lstat`s, discovery's), and the grammars found beside the engine (1 to 8 `statSync`s, step 7's). The search above is the host's to answer. That second count also shows what the caches' times cost: the probes of a kept file fell from 4,227 to none on the Library, from 981 to 306 on the programs and from 165 to 72 on the fixtures.
+
+## 2026-11-22, later: the read budget, the manifest's exports, and this repository's probes
+
+Taken on the code after commit `610af3c6e`, with the read budget built.
+
+### What made the peak, and the read budget
+
+The whole of DNN was scanned four times under Node, one after another, each from a frozen copy of its engine. Before is `60b01e695`. The other three are the mended code, keeping every file, keeping 16 MiB, and keeping none (`measure.mts`'s third argument, in MiB). Every read was already in the disk's cache.
+
+| Run | Load | Time | Peak memory | Reads | Reads per file | Digest |
+| --- | ---: | ---: | ---: | ---: | --- | --- |
+| before | 10.5 | 276.9 s | 1,116 MB | 35,481 | 1 to 10 (3,994 files five times) | `2a4c87ca522483b6` |
+| keep every file | 26.1 | 196.5 s | 1,381 MB | 10,903 | 10,858 once | `2a4c87ca522483b6` |
+| keep 16 MiB | 16.7 | 155.6 s | 1,203 MB | 16,692 | 6,627 once, 2,720 twice, 1,519 three times | `2a4c87ca522483b6` |
+| keep none | 11.4 | 110.1 s | 1,399 MB | 21,896 | 4,066 once, 2,722 twice, 3,994 three times | `2a4c87ca522483b6` |
+
+- **The 515 MB of the morning's measure were mostly a mistake in step 3, not the text.** Each read keeps its first 8,000 bytes for the binary test, and they were cut with `slice`, which on Node's `Buffer` is a view of the same memory. Each kept head therefore held its whole file. The first two budget runs, on the code before the mend, showed it: a budget of 64 MiB, which DNN's texts never fill, peaked at 1,551 MB, against 1,635 MB for keeping everything (noise), with the reads unchanged. Mended, `new Uint8Array(bytes.subarray(…))` copies, and a unit case fails on the view: keeping everything peaks at 1,381 MB, not 1,622 MB.
+- **The budget cannot be chosen here.** The time follows the machine's load, not the budget: keeping none was fastest at the lowest load. The peaks lie within one another's noise, since what the run keeps (DNN's texts come to less than 64 MiB) is small beside the rest of the scan's memory. With every read in the disk's cache, reading again costs nothing, so nothing here shows what keeping saves. The default stays at keeping everything. The measure that can choose it is in a page on the slowed machine, where every read waits on the browser; that was not taken.
+- **Past the budget, a C# file is read three times, not two.** It is read once for the table of types in the first pass, once for its own reading in that pass, and once in the second pass. Two of these three are the same pass: the table is built from every file before the file's own turn comes.
+
+### `exports` read as Node reads it
+
+`node -e 'require.resolve("@live-documentation/stored-form")'` and `import.meta.resolve` of it, from this repository, both give `packages/stored-form/dist/storedForm.js`. The tsconfig maps that to `src/storedForm.ts`. Eleven manifest shapes are held to the same resolver in `packages/engine/src/live-docs/adapters/json.exports.test.ts`; seven failed with the reader reading `main` alone. This repository's docs changed in four: the JSON reader's, its new test's, `packages/stored-form/src/storedForm.ts`'s (its `Entry` line) and the expected entries'.
+
+### This repository's probes, with its `node_modules` (root's fourth ruling)
+
+[`probes-in-place.mts`](probes-in-place.mts), which is `probes.mts` changed to scan in place as a dry run with the checkout's own configuration (nothing copied, nothing written), was run over this worktree with its installed `node_modules`. Of 15,452 probes, 2,866 were of a kept file, 2,238 of a folder of kept files, 8,504 of a path absent on the disk, 14 of the docs root, 10 outside the workspace, and 1,820 of a path on the disk outside the listing. **All 1,820 are `gitIgnored.ts` looking for a `.git` in each folder: discovery's. No reader's probe, the TypeScript resolution of `dependencies.ts` among them, reached `node_modules` or any other file outside the listing.** So answering the readers' probes from the listing should change no fact of this repository. The comparison of its whole docs and index before and after, which the ruling asks for, is to be made when the probes move.

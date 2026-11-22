@@ -44,25 +44,50 @@ export interface WorkspaceReads {
 interface Kept {
   reading: SourceTextReading;
   head: Uint8Array;
+  /** The file's size in bytes, which is what it costs the run's budget. */
+  size: number;
 }
 
 /**
  * The reads of one run over a host. Of each whole read the first `keptHead` bytes are kept with its reading, so that a
  * head no longer than that is answered without asking the host again; a head asked of a file not read whole is asked
  * of the host, once.
+ *
+ * What the run keeps is bounded by `budget`, in bytes of the files kept (2026-11-22). Until the budget is spent, each
+ * file read whole is kept for the run; after, a file read is kept only until another is read, so that the asks of one
+ * file's turn (its reader, the count of how it was decoded, its first bytes) still share one read, and is then let go,
+ * to be read again by whoever asks next. A scan reads every file in its first pass and again, in the same order, in its
+ * second, so the second pass finds the first files kept and reads the rest a second time; keeping the newest in their
+ * place would find nothing, since each let go would be the one the second pass asks for next. Without a budget every
+ * file is kept, and the peak is every file's text at the turn between the passes.
  */
-export function workspaceReads(host: FileHost, keptHead: number): WorkspaceReads {
+export function workspaceReads(host: FileHost, keptHead: number, budget = Number.POSITIVE_INFINITY): WorkspaceReads {
   const whole = new Map<string, Promise<Kept>>();
   const heads = new Map<string, Promise<Uint8Array>>();
+  /** The one file read after the budget was spent, held until another is read. */
+  let passing: { absolutePath: string; kept: Promise<Kept> } | undefined;
+  let keptBytes = 0;
+  const known = (absolutePath: string): Promise<Kept> | undefined => whole.get(absolutePath) ?? (passing?.absolutePath === absolutePath ? passing.kept : undefined);
   const readWhole = (absolutePath: string): Promise<Kept> => {
-    let kept = whole.get(absolutePath);
+    let kept = known(absolutePath);
     if (kept === undefined) {
-      // A copy, so that the head kept holds none of the rest of the file's bytes.
-      kept = host.read(absolutePath).then((bytes) => ({ reading: decodeSourceText(bytes), head: bytes.slice(0, keptHead) }));
-      whole.set(absolutePath, kept);
+      // A copy, so that the head kept holds none of the rest of the file's bytes. Not `slice`: on Node's `Buffer`, which
+      // the Node host hands, `slice` is a view of the same memory, and the head kept every file's bytes whole for the run
+      // (500 MB more at the peak on the whole of DNN until this was found, 2026-11-22).
+      kept = host.read(absolutePath).then((bytes) => ({ reading: decodeSourceText(bytes), head: new Uint8Array(bytes.subarray(0, keptHead)), size: bytes.byteLength }));
+      const reading = kept;
+      if (keptBytes < budget) {
+        whole.set(absolutePath, reading);
+        reading.then(({ size }) => {
+          keptBytes += size;
+        }, () => undefined);
+      } else {
+        passing = { absolutePath, kept: reading };
+      }
       // A failure is the asker's alone; the next to ask reads again.
-      kept.then(undefined, () => {
-        whole.delete(absolutePath);
+      reading.then(undefined, () => {
+        if (whole.get(absolutePath) === reading) whole.delete(absolutePath);
+        if (passing?.kept === reading) passing = undefined;
       });
     }
     return kept;
@@ -70,7 +95,7 @@ export function workspaceReads(host: FileHost, keptHead: number): WorkspaceReads
   return {
     readingOf: async (absolutePath) => (await readWhole(absolutePath)).reading,
     headOf: async (absolutePath, bytes) => {
-      if (whole.has(absolutePath) && bytes <= keptHead) return (await readWhole(absolutePath)).head.subarray(0, bytes);
+      if (known(absolutePath) !== undefined && bytes <= keptHead) return (await readWhole(absolutePath)).head.subarray(0, bytes);
       const key = `${bytes}\0${absolutePath}`;
       let head = heads.get(key);
       if (head === undefined) {
