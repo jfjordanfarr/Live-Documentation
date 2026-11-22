@@ -1,0 +1,16 @@
+1. The run's files (9): Actions/.Modules/DebugLogHelper.psm1, Actions/.Modules/ReadSettings.psm1, Actions/AL-Go-Helper.ps1, Actions/AL-Go-TestRepoHelper.ps1, Actions/Github-Helper.psm1, Actions/Invoke-AlGoAction.ps1, Actions/TelemetryHelper.psm1, Actions/Troubleshooting/Troubleshoot.Secrets.ps1, Actions/Troubleshooting/Troubleshooting.ps1
+2. Functions of those files the run reaches by name (33): add-telemetryproperty, addtelemetryevent, addvaluetohashtable, checksecretforcommonmistakes, convertto-hashtable, downloadnugetpackage, get-applicationinsightstelemetryclient, get-githubhostingtype, get-repositoryisfork, getdefaultsettings, getdisplaysecretname, getpackageversion, getsettingsobject, initializedefaultsettingsmetadata, ispropertysecret, loadapplicationinsightsdll, mergecustomobjectintoordereddictionary, outputdebug, outputerror, outputsuggestion, outputwarning, readsettings, sanitizeworkflowname, test-deprecations, test-jsonfile, test-jsonstr, test-property, test-settingsjson, test-shell, testalgorepository, trace-exception, trace-information, validatesettings
+   GetLatestRelease among them: no
+3. Commands named by a value only a run knows, in the run's files:
+   Actions/.Modules/DebugLogHelper.psm1:262 in OutputArray (not reached): $Formatter
+   Actions/AL-Go-Helper.ps1:564 in DownloadAndImportBcContainerHelper (not reached): $bcContainerHelperPath
+   Actions/AL-Go-Helper.ps1:2592 in RunAndCheck (not reached): $args[0]
+   Actions/AL-Go-TestRepoHelper.ps1:1 in (own level) (runs): (Join-Path $PSScriptRoot "AL-Go-Helper.ps1")
+   Actions/TelemetryHelper.psm1:1 in (own level) (runs): (Join-Path -Path $PSScriptRoot -ChildPath ".\AL-Go-Helper.ps1" -Resolv
+   Actions/Troubleshooting/Troubleshooting.ps1:8 in (own level) (runs): (Join-Path -Path $PSScriptRoot -ChildPath "..\AL-Go-Helper.ps1" -Resol
+   Actions/Troubleshooting/Troubleshooting.ps1:44 in (own level) (runs): (Join-Path -Path $PSScriptRoot -ChildPath "..\AL-Go-TestRepoHelper.ps1
+   Actions/Troubleshooting/Troubleshooting.ps1:48 in (own level) (runs): (Join-Path -Path $PSScriptRoot -ChildPath "Troubleshoot.Secrets.ps1" -
+4. Every command in the corpus that names GetLatestRelease:
+   Actions/CreateReleaseNotes/CreateReleaseNotes.ps1:36 in (own level)
+   Actions/DownloadPreviousRelease/DownloadPreviousRelease.ps1:18 in (own level)
+   Tests/GitHub-Helper.Test.ps1: 20 commands, a Pester test
