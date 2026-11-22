@@ -1,0 +1,27 @@
+{
+  "name": "@live-documentation/stored-form",
+  "version": "0.0.0",
+  "private": true,
+  "description": "A scan's facts in one stored form: a binary layout written as facts arrive and read with a refusal for anything else, and a text form of one fact a line. One module that imports nothing. A proposal; its name, extension and leading bytes are provisional.",
+  "license": "MIT",
+  "author": "Jordan Farr <jfjordanfarr@gmail.com>",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jfjordanfarr/Live-Documentation.git",
+    "directory": "packages/stored-form"
+  },
+  "type": "module",
+  "files": [
+    "dist"
+  ],
+  "exports": {
+    ".": {
+      "types": "./dist/storedForm.d.ts",
+      "default": "./dist/storedForm.js"
+    },
+    "./package.json": "./package.json"
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.json"
+  }
+}

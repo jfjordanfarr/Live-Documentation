@@ -58,6 +58,7 @@ export default defineConfig({
             "packages/engine/src/**/*.test.ts",
             "packages/generator/src/**/*.test.ts",
             "packages/explorer/src/**/*.test.ts",
+            "packages/stored-form/src/**/*.test.ts",
             "scripts/**/*.test.ts",
             "tests/integration/slopcop/**/*.test.ts",
             "tests/e2e/**/*.test.ts"
