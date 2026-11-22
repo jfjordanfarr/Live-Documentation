@@ -30,7 +30,7 @@
  * The program's entry point is a definition of `main`, `wmain`, `WinMain` or
  * `wWinMain` with a body, in a file that is not a header.
  */
-import { promises as fs, readdirSync, statSync } from "node:fs";
+import { readdirSync, statSync } from "node:fs";
 import path from "node:path";
 
 import { cSyntax } from "../../languages";
@@ -603,12 +603,12 @@ function capitalize(value: string): string {
 }
 
 // ---------------------------------------------------------------------------
-// Per-file facts, cached by modification time
+// Per-file facts, kept for the run
 // ---------------------------------------------------------------------------
 
 // Kept for one generation, the run its file index names, with `listingCache` below: a run with another index, or
 // none, begins with nothing, so a process that generates commit after commit in one folder never reads another's.
-const factsCache = new Map<string, { mtimeMs: number; facts: FileFacts }>();
+const factsCache = new Map<string, FileFacts>();
 let factsRun: WorkspaceFileIndex | undefined;
 function beginRun(fileIndex: WorkspaceFileIndex | undefined): void {
   if (fileIndex === undefined || fileIndex !== factsRun) {
@@ -623,11 +623,10 @@ async function extractFacts(content: string, absolutePath: string): Promise<File
 }
 
 async function fileFacts(absolutePath: string, reads: SourceReads | undefined): Promise<FileFacts> {
-  const stats = await fs.stat(absolutePath);
   const cached = factsCache.get(absolutePath);
-  if (cached && cached.mtimeMs === stats.mtimeMs) return cached.facts;
+  if (cached) return cached;
   const facts = await extractFacts(await readSourceText(absolutePath, reads), absolutePath);
-  factsCache.set(absolutePath, { mtimeMs: stats.mtimeMs, facts });
+  factsCache.set(absolutePath, facts);
   return facts;
 }
 

@@ -51,6 +51,36 @@ export function differencesBetween(page: Record<string, string>, node: Record<st
   return found;
 }
 
+/**
+ * A file the page's scan read more than once, which the engine promises it never does (each file once per run, through
+ * the host: `packages/engine/src/tooling/workspaceFiles.ts`); a ledger's entry of one adds why it is known.
+ */
+export interface MultipleRead {
+  /** The file, relative to the scanned folder. */
+  file: string;
+  times: number;
+}
+
+export interface MultipleReadEntry extends MultipleRead {
+  fixture: string;
+  /** Why the file is read more than once, and which step of the road ends it. */
+  why: string;
+}
+
+/** The files read more than once, from a count of reads by file, in path order. */
+export function readMoreThanOnce(readsByFile: Record<string, number>): MultipleRead[] {
+  return Object.entries(readsByFile).filter(([, times]) => times > 1).sort(([a], [b]) => (a < b ? -1 : a > b ? 1 : 0)).map(([file, times]) => ({ file, times }));
+}
+
+/** The files read more than once that the ledger does not list for the fixture, and its entries for it no longer found. */
+export function readsHeldToLedger(fixture: string, found: readonly MultipleRead[], ledger: readonly MultipleReadEntry[]): { unlisted: MultipleRead[]; gone: MultipleReadEntry[] } {
+  const readKey = (read: MultipleRead): string => JSON.stringify([read.file, read.times]);
+  const listed = ledger.filter((entry) => entry.fixture === fixture);
+  const listedKeys = new Set(listed.map(readKey));
+  const foundKeys = new Set(found.map(readKey));
+  return { unlisted: found.filter((read) => !listedKeys.has(readKey(read))), gone: listed.filter((entry) => !foundKeys.has(readKey(entry))) };
+}
+
 const key = (difference: Difference): string => JSON.stringify([difference.file, difference.kind, difference.first ?? null, difference.lines ?? null]);
 
 /** The differences found that the ledger does not list for the fixture, and the ledger's entries for it no longer found. */

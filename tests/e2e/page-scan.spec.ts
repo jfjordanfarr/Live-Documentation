@@ -7,7 +7,7 @@ import path from "node:path";
 import { pathToFileURL } from "node:url";
 
 import { copyFixture, listFixtureFiles } from "../../scripts/oracle/fixture";
-import { differencesBetween, heldToLedger, type LedgerEntry } from "../page-scan/compare";
+import { differencesBetween, heldToLedger, type LedgerEntry, type MultipleReadEntry, readMoreThanOnce, readsHeldToLedger } from "../page-scan/compare";
 import { FIXTURES } from "../page-scan/fixtures";
 
 /**
@@ -17,7 +17,8 @@ import { FIXTURES } from "../page-scan/fixtures";
  * `<input webkitdirectory>`, and scans it; then Node's generator scans the same copy, which lies outside every git
  * repository, so that both take the way for no git. Every file each wrote is compared whole, with both given the same
  * clock. A difference fails the case unless the ledger (`tests/page-scan/differences.json`) lists it, and a listed
- * difference that no longer occurs fails it too. Each case keeps, as an artifact of the run, what the page asked of the
+ * difference that no longer occurs fails it too; and so does a file the page's scan read more than once, held to the
+ * same ledger by the same rule, since the engine reads each file once in a run. Each case keeps, as an artifact of the run, what the page asked of the
  * stand-ins, what it read and how often, and both sides' times; nothing of that is asserted.
  *
  * The page is built by `npm run e2e:bundles` into `dist/page-scan/` (`tests/page-scan/build-page.mjs`); a page built
@@ -26,7 +27,7 @@ import { FIXTURES } from "../page-scan/fixtures";
 
 const REPO = path.resolve(__dirname, "..", "..");
 const PAGE_FOLDER = path.join(REPO, "dist", "page-scan");
-const LEDGER: LedgerEntry[] = (JSON.parse(fs.readFileSync(path.join(REPO, "tests", "page-scan", "differences.json"), "utf8")) as { differences: LedgerEntry[] }).differences;
+const { differences: LEDGER, readMoreThanOnce: READ_LEDGER } = JSON.parse(fs.readFileSync(path.join(REPO, "tests", "page-scan", "differences.json"), "utf8")) as { differences: LedgerEntry[]; readMoreThanOnce: MultipleReadEntry[] };
 /** The instant both runs write as `Generated At`. */
 const NOW = "2026-01-01T00:00:00.000Z";
 const TSX = createRequire(__filename).resolve("tsx/cli");
@@ -139,6 +140,9 @@ test.describe("the engine in a page", () => {
         console.log(`page-scan ${fixture.name}: ${record.docsAndIndex.page} files written in the page in ${record.seconds.page} s, ${record.docsAndIndex.node} under Node in ${record.seconds.node} s; ${record.filesRead} files read ${record.reads} times; ${found.length} differences; calls ${JSON.stringify(inPage.calls)}`);
 
         expect(heldToLedger(fixture.name, found, LEDGER), "differences from Node's output that the ledger does not list, and listed ones no longer found").toEqual({ unlisted: [], gone: [] });
+        // Each file is read once in a run, through the host (2026-11-22): a reader that forgets to hand the run's reads
+        // to `readSourceText` reads its file again, here through the stand-in for `node:fs`, and shows as a second read.
+        expect(readsHeldToLedger(fixture.name, readMoreThanOnce(inPage.reads), READ_LEDGER), "files the page's scan read more than once that the ledger does not list, and listed ones no longer read so").toEqual({ unlisted: [], gone: [] });
       } finally {
         fs.rmSync(copy, { recursive: true, force: true });
       }

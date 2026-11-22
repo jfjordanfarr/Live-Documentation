@@ -392,7 +392,7 @@ async function extractFacts(source: string): Promise<ModuleFacts> {
 
 // Kept for one generation, the run its file index names, with `directoryCache` below: a run with another index, or
 // none, begins with nothing, so a process that generates commit after commit in one folder never reads another's.
-const factsCache = new Map<string, { mtimeMs: number; facts: Promise<ModuleFacts> }>();
+const factsCache = new Map<string, Promise<ModuleFacts>>();
 let factsRun: WorkspaceFileIndex | undefined;
 function beginRun(fileIndex: WorkspaceFileIndex | undefined): void {
   if (fileIndex === undefined || fileIndex !== factsRun) {
@@ -403,11 +403,10 @@ function beginRun(fileIndex: WorkspaceFileIndex | undefined): void {
 }
 
 async function moduleFacts(absolutePath: string, reads: SourceReads | undefined): Promise<ModuleFacts> {
-  const mtimeMs = statSync(absolutePath).mtimeMs;
-  const cached  = factsCache.get(absolutePath);
-  if (cached && cached.mtimeMs === mtimeMs) return cached.facts;
+  const cached = factsCache.get(absolutePath);
+  if (cached) return cached;
   const facts = readSourceText(absolutePath, reads).then(extractFacts);
-  factsCache.set(absolutePath, { mtimeMs, facts });
+  factsCache.set(absolutePath, facts);
   return facts;
 }
 

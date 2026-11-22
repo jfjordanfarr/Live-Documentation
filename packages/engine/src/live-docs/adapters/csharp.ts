@@ -38,7 +38,6 @@
  * the C# compiler's own binding on any folder.
  */
 import { glob } from "glob";
-import { promises as fs } from "node:fs";
 import path from "node:path";
 
 import { compareText } from "../../tooling/compareText";
@@ -1019,12 +1018,12 @@ class FileExtractor {
 }
 
 // ---------------------------------------------------------------------------
-// Per-file facts, cached by modification time
+// Per-file facts, kept for the run
 // ---------------------------------------------------------------------------
 
 // Kept for one generation, the run its file index names: a run with another index, or none, begins with nothing, so
 // a process that generates commit after commit in one folder never reads a fact of another commit.
-const factsCache = new Map<string, { mtimeMs: number; facts: FileFacts }>();
+const factsCache = new Map<string, FileFacts>();
 let factsRun: WorkspaceFileIndex | undefined;
 function beginRun(fileIndex: WorkspaceFileIndex | undefined): void {
   if (fileIndex === undefined || fileIndex !== factsRun) factsCache.clear();
@@ -1074,14 +1073,13 @@ function withoutFalseSections(text: string): string {
 }
 
 async function fileFacts(absolutePath: string, reads: SourceReads | undefined): Promise<FileFacts> {
-  const stats  = await fs.stat(absolutePath);
   const cached = factsCache.get(absolutePath);
-  if (cached && cached.mtimeMs === stats.mtimeMs) {
-    return cached.facts;
+  if (cached) {
+    return cached;
   }
   const content = withoutFalseSections(await readSourceText(absolutePath, reads));
   const facts   = await readTree("c-sharp", content, (root) => ({ ...new FileExtractor().extract(root), comments: rangesOf(root) }));
-  factsCache.set(absolutePath, { mtimeMs: stats.mtimeMs, facts });
+  factsCache.set(absolutePath, facts);
   return facts;
 }
 
