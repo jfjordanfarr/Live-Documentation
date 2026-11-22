@@ -14,7 +14,7 @@ value: A person can see it
 
 **Rests on.** Thirty-two runs by models, on one build, most of them on one sample. Models "live on text" (your caution of 2026-11-19), so a stumble is counted from what a tester did and got wrong and never from what it wished for; a person may stumble elsewhere. The order of the tasks below is the order in which strangers stumbled, most often first, and is a reading of those runs, not a decision of what to build: each is to come to you as pictures of alternatives tried on strangers, the form you asked for on 2026-11-19.
 
-**Waiting on the owner.** Their eye on the Step default, not blocking the work (root recommends With Its Lines; Tuning → 2D Layout → Step). The arrival they meant is Reading, Then Neighbours ([Turn 5](../AgentSessionHistory/2026/11/2026-11-21/2026-11-21.1.record.md#turn-5)); its motion is being measured before it is put to their eye again.
+**Waiting on the owner.** Their eye on the Step default, not blocking the work (root recommends With Its Lines; Tuning → 2D Layout → Step); the World Map's dashes, with the request or with the offering; and whether a route asked page first is told page first. **Decided by them on 2026-11-22** ([Turn 2](../AgentSessionHistory/2026/11/2026-11-22/2026-11-22.1.record.md#turn-2)): the arrival is Reading, Then Neighbours, Look After, holding reading size for a minimum time and then releasing when the pointer or the focus leaves the card; and Wire Answers is on, its panel to be one the pointer can enter and copy from. Both are with a builder as defaults.
 
 ## Tasks
 
