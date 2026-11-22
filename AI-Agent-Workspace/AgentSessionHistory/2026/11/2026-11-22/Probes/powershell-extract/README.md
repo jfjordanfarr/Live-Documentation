@@ -97,8 +97,7 @@ The one row where they part is #60, below. The parser records came from `powersh
 - **#50's shape.** `Action.ps1` dot-sources the helper, which imports `Github-Helper.psm1` and `DebugLogHelper.psm1`. `Action.ps1` then calls `Github-Helper`'s function, which calls `OutputWarning`. It printed "OutputWarning of Actions/.Modules/DebugLogHelper.psm1", as the judges said.
 - **A third run found a reason #50 is close.** `Troubleshooting-Module.ps1` does what `Troubleshooting.ps1` does: it dot-sources the helper and defines its own copy. It then calls the same module function, which printed that script's own copy. So a module's call reaches a function the running script defines.
   - #50's true verdict therefore rests on the judges' other claim: the function holding line 677, `GetLatestRelease`, never runs under `Troubleshooting.ps1`.
-  - By the parser's record, nothing in `Troubleshooting.ps1`, `Troubleshoot.Secrets.ps1` or `AL-Go-TestRepoHelper.ps1` calls `GetLatestRelease` by name. A call through some other function was not traced.
-  - The verdict stands. It is the nearest of the 222 to arguable.
+  - That claim is now traced; see [Row 50, traced](#row-50-traced-added-november-22-2026-later). It holds, so the verdict stays true.
 
 All six rows have one thing in common. What the judges used is who loads the calling file: who dot-sources it, or who imports it alongside the other module. The rule reads only what the calling file itself loads. This is a fork for the root, below.
 
@@ -146,3 +145,36 @@ All six rows have one thing in common. What the judges used is who loads the cal
 **For the root:**
 1. **Reading who loads a file.** In all six differences, the hand used who loads the caller: who dot-sources a script, and which modules a module's importer imports beside it. A rule that, where the caller's own loading reaches no copy, looked at its loaders would draw #71. It might draw #50, depending on the order the importer loads in. It would not draw #53 and #55, whose script is loaded by no file of the repository, or #105 and #107. pwsh above shows the mechanism, and also shows it is order- and run-dependent: a module's call reaches the running script's own copy. Whether to measure such a rule is the root's choice. Nothing was built.
 2. **#50's verdict.** It rests on `GetLatestRelease` never running under `Troubleshooting.ps1`. Should it be read again as arguable? I left the judges' verdict as it is.
+
+The root's rulings (November 22): the first is a hypothesis, set down in the work item and not built, to be measured on the four corpora before it is a rule. On the second, trace the claim or mark the row arguable. It was traced, below.
+
+## Row 50, traced _(added November 22, 2026, later)_
+
+**The question.** #50 is `Actions/Github-Helper.psm1:677` calling `OutputWarning`, judged to reach `Actions/.Modules/DebugLogHelper.psm1`. The call stands in `GetLatestRelease` (line 603). If `GetLatestRelease` ever ran while the Troubleshooting action is the running script, the pwsh run above shows the call would reach `Troubleshooting.ps1`'s own copy, and the row would be arguable.
+
+**How it was traced.** [`trace-row-50.cjs`](trace-row-50.cjs) reads the parser's record of AL-Go at `403f36ab`: `powershell-ast.ps1` over all 198 PowerShell files, run again for this. Its output is kept as [`trace-row-50.txt`](trace-row-50.txt).
+- **What runs.** `Actions/Troubleshooting/action.yaml` runs `Invoke-AlGoAction.ps1 -Action { Troubleshooting.ps1 … }`. So the run starts from those two scripts, and every file they load or run is followed, as the parser resolved it.
+- **That gives nine files:** `Invoke-AlGoAction.ps1`, `Troubleshooting.ps1`, `Troubleshoot.Secrets.ps1`, `AL-Go-TestRepoHelper.ps1`, `AL-Go-Helper.ps1`, `Github-Helper.psm1`, `TelemetryHelper.psm1`, `.Modules/DebugLogHelper.psm1` and `.Modules/ReadSettings.psm1`.
+- **What those files run.** Every command at their own level, including those inside script blocks there. Then every function such a command names, followed through the commands in each function's body. Where a name has several copies, every copy is followed.
+
+**What the trace found.**
+- **The run reaches 33 functions by name.** `GetLatestRelease` is not among them, and neither is any function that calls it.
+- **No function anywhere in the corpus calls `GetLatestRelease`.** It is named by exactly two commands outside the tests, each at its script's own level, and neither script is a file of the run: `Actions/CreateReleaseNotes/CreateReleaseNotes.ps1:36` and `Actions/DownloadPreviousRelease/DownloadPreviousRelease.ps1:18`. The rest are 20 commands in the Pester test `Tests/GitHub-Helper.Test.ps1`.
+- **A command named by a value only a run knows** could, in principle, call it. The run's files hold three such commands, and each stands in a function the run does not reach:
+  - `DebugLogHelper.psm1:262`, `& $Formatter`, in `OutputArray`;
+  - `AL-Go-Helper.ps1:564`, `. $bcContainerHelperPath`, in `DownloadAndImportBcContainerHelper`;
+  - `AL-Go-Helper.ps1:2592`, `& $args[0]`, in `RunAndCheck`.
+- **The run's other commands named by a value** are its own loads by `Join-Path`, already followed above.
+- **The name as text.** `GetLatestRelease` is written in no file of the run but `Github-Helper.psm1`, where it is defined. So no value the run's text builds could name it, unless it were assembled from pieces, and the text holds no such piece.
+
+**The verdict stays true.** Both of the corpus's working callers dot-source `AL-Go-Helper.ps1` (`CreateReleaseNotes.ps1` at line 12, `DownloadPreviousRelease.ps1` at line 8), and that script imports `DebugLogHelper.psm1` at its line 18. Neither caller defines an `OutputWarning` of its own: the table judges both their wires to `Troubleshooting.ps1` false, #34 and #47. So every run of the corpus that makes the call at line 677 has `DebugLogHelper.psm1`'s copy. The row stays in the register as a true wire the reader misses, with the trace written on its cause.
+
+**What this does not cover.**
+- Scripts outside the repository: the BcContainerHelper that `DownloadAndImportBcContainerHelper` downloads, and the override scripts a user's own repository holds. The run reaches neither: that function and `Get-ScriptOverrides` are outside the 33 it reaches.
+- A command built from a name the run reads from data, such as settings or secrets. The text holds no such command in a reached function.
+
+**Seen failing on the row.** With #50 marked arguable in the extract for one run, the test failed twice:
+- the row check, against `samples.md`'s `T / T`;
+- the drawing check: "#50 true, not drawn" was no longer among the differences, and the arguable pin was missing.
+
+Restored, it passes. The register's cause for #50 now carries the trace.

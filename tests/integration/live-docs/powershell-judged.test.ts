@@ -39,7 +39,7 @@ const SAMPLES = path.resolve(__dirname, "..", "..", "..", "AI-Agent-Workspace", 
  * reader at `b3fe1749a`; see `AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-22/Probes/powershell-extract/`.
  */
 const MEASURED_DIFFERENCES: Record<string, string> = {
-  "#50 true, not drawn":  "OutputWarning is defined in DebugLogHelper.psm1 and in Troubleshooting.ps1; Github-Helper.psm1 loads neither, and the judges found the copy each run reaches by how the actions are run, which the text does not say",
+  "#50 true, not drawn":  "OutputWarning is defined in DebugLogHelper.psm1 and in Troubleshooting.ps1; Github-Helper.psm1 loads neither. The call is in GetLatestRelease, which no route of the Troubleshooting action's run reaches (traced on 2026-11-22 from the parser's record); its two working callers, CreateReleaseNotes.ps1 and DownloadPreviousRelease.ps1, dot-source AL-Go-Helper.ps1, which imports DebugLogHelper.psm1. The caller's own text does not say so",
   "#53 true, not drawn":  "OutputError is defined twice; ProcessALCodeAnalysisLogs.ps1 loads neither copy, and only how the action is run tells which",
   "#55 true, not drawn":  "OutputWarning is defined twice; ProcessALCodeAnalysisLogs.ps1 loads neither copy, and only how the action is run tells which",
   "#71 true, not drawn":  "OutputWarning is defined twice; Troubleshoot.Secrets.ps1 loads neither copy, and is dot-sourced by Troubleshooting.ps1, which defines its own",
