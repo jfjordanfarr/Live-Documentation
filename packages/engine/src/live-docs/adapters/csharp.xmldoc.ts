@@ -261,7 +261,7 @@ export function extractLinkTags(block: string): SymbolDocumentationLink[] {
     }
     // A documentation ID (`M:Lib.Store.Put(System.String)`) is copied by the compiler as written, never resolved, so
     // the list keeps it as written: its prefix is what tells it from a name the compiler resolves.
-    const resolvedTarget = kind === "cref" && !DOCUMENTATION_ID.test(normalizedTarget) ? normalizeCrefTarget(normalizedTarget) : normalizedTarget;
+    const resolvedTarget = kind === "cref" ? crefLinkTarget(normalizedTarget) : normalizedTarget;
     const normalizedText = text?.trim();
     const key = `${kind}|${resolvedTarget}|${normalizedText ?? ""}|${element ?? ""}`;
     if (seen.has(key)) {
@@ -314,6 +314,12 @@ export function extractLinkTags(block: string): SymbolDocumentationLink[] {
 
 /** A reference written as a documentation ID, a kind's letter and a colon before the name, which the compiler copies without resolving it. */
 const DOCUMENTATION_ID = /^[A-Za-z]:/u;
+
+/** A `cref` as a symbol's Links list writes it: a documentation ID as written, any other name as {@link normalizeCrefTarget} gives it. */
+export function crefLinkTarget(written: string): string {
+  const trimmed = written.trim();
+  return DOCUMENTATION_ID.test(trimmed) ? trimmed : normalizeCrefTarget(trimmed);
+}
 
 /** A documentation reference's name as C# reads it: its dotted segments, and the parameter list a member's reference writes. */
 export interface CrefName {

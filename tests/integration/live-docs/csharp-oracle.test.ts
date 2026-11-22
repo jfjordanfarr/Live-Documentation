@@ -61,17 +61,22 @@ const MEASURED_MISSES: Record<string, string[]> = {
  * `drawn` is the pairs the adapter draws by its dependency lines: only those the code makes too, since a reference is
  * no use by the code. `related` is the pairs the reader's documentation relation makes, the owner's word of 2026-11-21
  * that an author's reference is to be honoured, drawn as a relation of its own kind (root's ruling of 2026-11-22): set
- * beside the compiler's pairs, with every pair on which they part in `differences`, by cause (`DOCUMENTATION_CAUSES`),
- * so that a difference mended in silence, or a new one, fails here. On the five samples there is none.
+ * beside the compiler's pairs. Each reference is also set beside the compiler's declaration by declaration, a
+ * reference within its own file as any other (since a later leg of 2026-11-22, when an independent review showed that
+ * pairs hide a wrong overload): `agree` counts those that name the same declarations, and every one on which they part
+ * is in `differences`, by cause (`DOCUMENTATION_CAUSES`), so that a difference mended in silence, or a new one, fails
+ * here. `names/App/Overloads.cs`, written by that leg, names overloads told apart only by an array's mark or rank, a
+ * modifier, a type's arguments or `params`, references no overload answers, and a name the compiler cannot parse.
  */
-const DOCUMENTATION: Record<string, { references: string[]; alsoCode: string[]; authorOnly: string[]; drawn: string[]; related: string[]; differences: string[] }> = {
-  "programs/csharp/basic":  { references: [], alsoCode: [], authorOnly: [], drawn: [], related: [], differences: [] },
+const DOCUMENTATION: Record<string, { references: string[]; alsoCode: string[]; authorOnly: string[]; drawn: string[]; related: string[]; agree: number; differences: string[] }> = {
+  "programs/csharp/basic":  { references: [], alsoCode: [], authorOnly: [], drawn: [], related: [], agree: 0, differences: [] },
   "programs/csharp/estate": {
     references:  ["Hub/PaymentHub.cs:12 <seealso> IPaymentService.Post(PaymentRequest): resolved, Method Estate.Contracts.IPaymentService.Post(Estate.Contracts.PaymentRequest) in Contracts/IPaymentService.cs"],
     alsoCode:    ["Hub/PaymentHub.cs → Contracts/IPaymentService.cs"],
     authorOnly:  [],
     drawn:       ["Hub/PaymentHub.cs → Contracts/IPaymentService.cs"],
     related:     ["Hub/PaymentHub.cs → Contracts/IPaymentService.cs"],
+    agree:       1,
     differences: []
   },
   "programs/csharp/names": {
@@ -88,7 +93,24 @@ const DOCUMENTATION: Record<string, { references: string[]; alsoCode: string[]; 
       "App/Documented.cs:10 <see> Missing: unresolved",
       "App/Documented.cs:12 <permission> Derived: resolved, NamedType App.Derived in App/Derived.cs",
       "App/Documented.cs:15 <inheritdoc> Base.Gadget: resolved, Property App.Base.Gadget in App/Base.cs",
-      "App/Documented.cs:16 <exception> Lib.Thing: unresolved"
+      "App/Documented.cs:16 <exception> Lib.Thing: unresolved",
+      "App/Overloads.cs:23 <see> Mixer: resolved, NamedType App.Mixer in App/Overloads.cs",
+      "App/Overloads.cs:28 <see> Mixer.Mix(Mixer[]): resolved, Method App.Mixer.Mix(App.Mixer[]) in App/Overloads.cs",
+      "App/Overloads.cs:28 <see> Mixer.Mix(ref Mixer): resolved, Method App.Mixer.Mix(ref App.Mixer) in App/Overloads.cs",
+      "App/Overloads.cs:28 <see> Mixer.Mix(Mixer, Mixer): resolved, Method App.Mixer.Mix(App.Mixer, App.Mixer) in App/Overloads.cs",
+      "App/Overloads.cs:29 <see> Mixer.Grid(Mixer[,]): resolved, Method App.Mixer.Grid(App.Mixer[*,*]) in App/Overloads.cs",
+      "App/Overloads.cs:29 <see> Mixer.Grid(Mixer[]): resolved, Method App.Mixer.Grid(App.Mixer[]) in App/Overloads.cs",
+      "App/Overloads.cs:30 <see> Mixer.Take(Box{Mixer}): resolved, Method App.Mixer.Take(App.Box<App.Mixer>) in App/Overloads.cs",
+      "App/Overloads.cs:30 <see> Mixer.Take(Box{Box{Mixer}}): resolved, Method App.Mixer.Take(App.Box<App.Box<App.Mixer>>) in App/Overloads.cs",
+      "App/Overloads.cs:31 <see> Mixer.Opt(Mixer, Mixer[]): resolved, Method App.Mixer.Opt(App.Mixer, params App.Mixer[]) in App/Overloads.cs",
+      "App/Overloads.cs:31 <see> Mixer.Out(out Mixer): resolved, Method App.Mixer.Out(out App.Mixer) in App/Overloads.cs",
+      "App/Overloads.cs:31 <see> Mixer.Out(Mixer): resolved, Method App.Mixer.Out(App.Mixer) in App/Overloads.cs",
+      "App/Overloads.cs:32 <see> Mixer.Mixer(Mixer): resolved, Method App.Mixer.Mixer(App.Mixer) in App/Overloads.cs",
+      "App/Overloads.cs:33 <see> Mixer.Mix(Box{Mixer}): unresolved",
+      "App/Overloads.cs:33 <see> Mixer.Mix(Mixer,): unresolved",
+      "App/Overloads.cs:33 <see> Mixer.Out(ref Mixer): unresolved",
+      "App/Overloads.cs:34 <see> Mixer.Mixer(Box{Mixer}): unresolved",
+      "App/Overloads.cs:34 <see> M::Mixer: unparsed"
     ],
     alsoCode:   [],
     authorOnly: [
@@ -108,18 +130,30 @@ const DOCUMENTATION: Record<string, { references: string[]; alsoCode: string[]; 
       "App/Documented.cs → App/Runner.Text.cs",
       "App/Documented.cs → App/Runner.cs"
     ],
-    differences: []
+    agree: 17,
+    differences: [
+      "the compiler resolves the reference to nothing, and the reader links it: App/Overloads.cs:33 <see> Mixer.Mix(Box{Mixer}): the compiler nothing; the reader App/Overloads.cs:10, App/Overloads.cs:11",
+      "the compiler resolves the reference to nothing, and the reader links it: App/Overloads.cs:33 <see> Mixer.Mix(Mixer,): the compiler nothing; the reader App/Overloads.cs:12",
+      "the compiler resolves the reference to nothing, and the reader links it: App/Overloads.cs:33 <see> Mixer.Out(ref Mixer): the compiler nothing; the reader App/Overloads.cs:19, App/Overloads.cs:20",
+      "the compiler resolves the reference to nothing, and the reader links it: App/Overloads.cs:34 <see> Mixer.Mixer(Box{Mixer}): the compiler nothing; the reader App/Overloads.cs:9",
+      "the reader links the declarations the compiler names and more: App/Overloads.cs:28 <see> Mixer.Mix(Mixer[]): the compiler App/Overloads.cs:10; the reader App/Overloads.cs:10, App/Overloads.cs:11",
+      "the reader links the declarations the compiler names and more: App/Overloads.cs:28 <see> Mixer.Mix(ref Mixer): the compiler App/Overloads.cs:11; the reader App/Overloads.cs:10, App/Overloads.cs:11",
+      "the reader links the declarations the compiler names and more: App/Overloads.cs:29 <see> Mixer.Grid(Mixer[,]): the compiler App/Overloads.cs:13; the reader App/Overloads.cs:13, App/Overloads.cs:14",
+      "the reader links the declarations the compiler names and more: App/Overloads.cs:29 <see> Mixer.Grid(Mixer[]): the compiler App/Overloads.cs:14; the reader App/Overloads.cs:13, App/Overloads.cs:14",
+      "the reader links the declarations the compiler names and more: App/Overloads.cs:30 <see> Mixer.Take(Box{Mixer}): the compiler App/Overloads.cs:15; the reader App/Overloads.cs:15, App/Overloads.cs:16",
+      "the reader links the declarations the compiler names and more: App/Overloads.cs:30 <see> Mixer.Take(Box{Box{Mixer}}): the compiler App/Overloads.cs:16; the reader App/Overloads.cs:15, App/Overloads.cs:16",
+      "the reader links the declarations the compiler names and more: App/Overloads.cs:31 <see> Mixer.Out(out Mixer): the compiler App/Overloads.cs:19; the reader App/Overloads.cs:19, App/Overloads.cs:20",
+      "the reader links the declarations the compiler names and more: App/Overloads.cs:31 <see> Mixer.Out(Mixer): the compiler App/Overloads.cs:20; the reader App/Overloads.cs:19, App/Overloads.cs:20",
+      "the reader reads the reference and resolves it to nothing: App/Overloads.cs:31 <see> Mixer.Opt(Mixer, Mixer[]): the compiler App/Overloads.cs:18; the reader nothing"
+    ]
   },
-  "programs/csharp/rosetta":  { references: ["src/Processor/Processor.cs:33 <exception> ArgumentException: unresolved"], alsoCode: [], authorOnly: [], drawn: [], related: [], differences: [] },
-  "programs/csharp/webforms": { references: [], alsoCode: [], authorOnly: [], drawn: [], related: [], differences: [] }
+  "programs/csharp/rosetta":  { references: ["src/Processor/Processor.cs:33 <exception> ArgumentException: unresolved"], alsoCode: [], authorOnly: [], drawn: [], related: [], agree: 1, differences: [] },
+  "programs/csharp/webforms": { references: [], alsoCode: [], authorOnly: [], drawn: [], related: [], agree: 0, differences: [] }
 };
 
-/** Every pair on which the reader's documentation relation and the compiler part, in words, by cause. */
+/** Every reference on which the reader and the compiler part, declaration by declaration, in words, by cause. */
 function documentationDifferences(relation: CSharpReport["documentation"]["relation"]): string[] {
-  return [
-    ...Object.entries(relation.compilerOnly).flatMap(([cause, pairs]) => pairs.map((pair) => `the compiler names ${pair}, and ${cause}`)),
-    ...Object.entries(relation.readerOnly).flatMap(([cause, pairs]) => pairs.map((pair) => `the reader relates ${pair}, and ${cause}`))
-  ];
+  return Object.entries(relation.byCause).sort(([left], [right]) => left.localeCompare(right)).flatMap(([cause, entries]) => entries.map((entry) => `${cause}: ${entry}`));
 }
 
 /** A documentation reference and the compiler's answer for it, in words. */
@@ -182,6 +216,7 @@ describe("the C# adapter against the C# compiler's binding", () => {
         authorOnly: documentation.authorOnly,
         drawn:      documentation.drawn,
         related:    documentation.relation.pairs,
+        agree:      documentation.relation.agree,
         differences: documentationDifferences(documentation.relation)
       }).toEqual(DOCUMENTATION[fixture]);
     });
