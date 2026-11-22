@@ -51,7 +51,12 @@ export interface SearchBar {
    * The first field shows the newest pin; the second appears once there is one, shows the destination asked, and
    * offers what the reach from the newest pin holds.
    */
-  sync(subject: SearchWords | null, destination: SearchWords | null, reach: Reach | null, localMapShown: boolean): void;
+  sync(subject: SearchWords | null, destination: SearchWords | null, reach: Reach | null, localMapShown: boolean, named?: SearchScope["named"]): void;
+  /**
+   * A line in the report's place while no path is asked, or none: what a way down from the World Map could not pin
+   * (Tuning's Way Down, a trial of 2026-11-22). A path's own status takes the line while one is asked.
+   */
+  setNote(text: string | null): void;
   /** Draw the strip of a path's hops; an empty path hides it. */
   showPath(hops: readonly PathHop[]): void;
   /** Write the status line; `tone` colours it, and `at` names the commit it was asked at when that is not today. Returns the element so that a link can be appended. */
@@ -80,12 +85,16 @@ export function createSearchBar(options: SearchBarOptions): SearchBar {
   let everything: SearchScope = { index: options.index };
   let reachShown: Reach | null = null;
   let destinationScopeShown: SearchScope = everything;
+  // Things the second field offers by a name of their own, above what it finds (a World Map thing by its board name).
+  let namedShown: SearchScope["named"];
+  let note: string | null = null;
 
   const subject = createSearchField({
     input: subjectInput, results: requireElement("search-subject-results"), scope: () => everything, onChoose: options.onChooseSubject
   });
   const destination = createSearchField({
-    input: destinationInput, results: requireElement("search-destination-results"), scope: () => destinationScopeShown, onChoose: options.onChooseDestination
+    input: destinationInput, results: requireElement("search-destination-results"),
+    scope: () => namedShown?.length ? { ...destinationScopeShown, named: namedShown } : destinationScopeShown, onChoose: options.onChooseDestination
   });
   destinationClear.addEventListener("click", event => {
     options.onClearDestination();
@@ -113,8 +122,24 @@ export function createSearchBar(options: SearchBarOptions): SearchBar {
       everything = { index };
       destinationScopeShown = reachShown ? destinationScope(index, reachShown) : everything;
     },
-    sync(newest, asked, reach, localMapShown): void {
-      report.hidden = !localMapShown || !asked;
+    setNote(text): void {
+      if (text === note) return;
+      note = text;
+      // The note has the status line only while no path's status stands there; a path asked writes over it.
+      if (text) {
+        status.replaceChildren(text);
+        status.removeAttribute("title");
+        status.className = "pathfind-status";
+        status.hidden = false;
+      } else if (strip.hidden) {
+        status.hidden = true;
+        status.textContent = "";
+      }
+    },
+
+    sync(newest, asked, reach, localMapShown, named): void {
+      namedShown = named;
+      report.hidden = !localMapShown || !(asked || note);
       subject.show(newest?.name ?? "");
       subjectInput.title = newest ? `${newest.context}: the newest pin, where a path starts` : "";
       subjectInput.classList.toggle("has-selection", !!newest);
@@ -179,6 +204,7 @@ export function createSearchBar(options: SearchBarOptions): SearchBar {
 
     setStatus(text, tone, at = null): HTMLElement {
       status.replaceChildren();
+      status.removeAttribute("title");
       if (at) {
         const moment = document.createElement("span");
         moment.className = "pathfind-at";
@@ -194,6 +220,8 @@ export function createSearchBar(options: SearchBarOptions): SearchBar {
     clearPath(): void {
       status.hidden = true;
       status.textContent = "";
+      status.removeAttribute("title");
+      note = null;
       strip.innerHTML = "";
       strip.hidden = true;
       localMap.classList.remove("has-path");

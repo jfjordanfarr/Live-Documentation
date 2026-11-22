@@ -229,6 +229,11 @@ export class LocalViewController implements LocalViewApi {
    */
   private stepNewcomer: { card: string } | { directory: string } | null = null;
   /**
+   * An arrival from the World Map that carries its question (Tuning's Way Down, a trial of 2026-11-22): what it brought,
+   * framed with the cards its lines reach once the picture has settled, whatever Tuning's Step says ({@link arriveWithLines}).
+   */
+  private linesArrival: { card: string } | { directory: string } | null = null;
+  /**
    * The last step whose cut Tuning's Cut Counted says at the frame's edges (cut-signs.ts, a trial of 2026-11-21), with
    * what it opened as last measured; null after an arrival, and before any step.
    */
@@ -1398,6 +1403,25 @@ export class LocalViewController implements LocalViewApi {
     this.settleArrival();
   }
 
+  /**
+   * An arrival from the World Map that carries its question (Tuning's Way Down, a trial of 2026-11-22): once the picture
+   * has settled, the opened directory, or the file's card, is framed with the cards its lines reach, by the rule of Step's
+   * With Its Lines (camera-intent.ts's `stepLinesFrame`): never closer than reading scale, never past the scale at which
+   * every name still reads, and where that floor cannot hold it, entered at its start as a step enters it. The frame of
+   * the newest pin at reading size, which an arrival would otherwise owe, gives way to it.
+   */
+  arriveWithLines(target: { card: string } | { directory: string }): void {
+    this.cancelArrival();
+    this.focusRequest = null;
+    this.arrivalFocus = false;
+    this.arrivalPending = false;
+    this.readingFrameTarget = null;
+    this.linesArrival = target;
+    this.stepNewcomer = target;
+    this.directoryArrivalPending = false;
+    if (!this.stage?.move) this.settleArrival();
+  }
+
   /** Bring a directory's label into reading position without opening or pinning anything. */
   focusDirectory(directory: string): void {
     const selector = `.local-directory-label[data-directory="${CSS.escape(directory)}"], .local-directory-closed[data-directory="${CSS.escape(directory)}"]`;
@@ -2053,7 +2077,10 @@ export class LocalViewController implements LocalViewApi {
     // A step's newcomer (camera-intent.ts): the least pan that brings it wholly into view at this scale, which wins over
     // the hold of what was pressed, and its outline emphasised for a moment, so that the eye finds it.
     const newcomer = step ? this.newcomerOf(step) : null;
-    const lever = this.options.state.tuning.localMap.step;
+    // An arrival that carries the World Map's question is framed with its lines, whatever the lever says.
+    const carried = step !== null && this.linesArrival === step;
+    this.linesArrival = null;
+    const lever = carried ? "lines" : this.options.state.tuning.localMap.step;
     const whole = step && (lever === "whole" || lever === "lines") ? this.stepProduced(step) : null;
     if (newcomer && whole) {
       // Tuning's Step, a trial (2026-11-21): the whole newcomer, eased out only as far as it needs; or the newcomer with

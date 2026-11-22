@@ -51,6 +51,11 @@ export interface SearchScope {
   index: SearchIndex;
   /** Words on an offered file or directory in place of the file's kind, such as how far a path to it runs. */
   badge?: (hit: SearchHit) => string | undefined;
+  /**
+   * Directories offered by a name of their own above everything the index finds: a thing of the World Map by its board
+   * name, which may not be its folder's ("payments" for `PaymentService`). Choosing one chooses its directory.
+   */
+  named?: ReadonlyArray<{ name: string; directory: string }>;
   /** Files that exist but are not offered, folded under a count so that a typed name is never silently absent. */
   apart?: {
     index: SearchIndex;
@@ -135,6 +140,20 @@ function termScore(name: string, term: string): number {
   if (name === term) return 100;
   if (name.startsWith(term)) return 50;
   return name.includes(term) ? 25 : 0;
+}
+
+/**
+ * The named directories a query offers (a scope's `named`): those whose name every word is found in, the best
+ * answered first, then as given. An empty query offers none.
+ */
+export function namedMatches<T extends { name: string }>(query: string, named: readonly T[]): T[] {
+  const terms = termsOf(query);
+  if (terms.length === 0) return [];
+  return named
+    .map((each, index) => ({ each, index, scores: terms.map(term => termScore(each.name.toLowerCase(), term)) }))
+    .filter(scored => scored.scores.every(score => score > 0))
+    .sort((a, b) => b.scores.reduce((sum, score) => sum + score, 0) - a.scores.reduce((sum, score) => sum + score, 0) || a.index - b.index)
+    .map(scored => scored.each);
 }
 
 /**

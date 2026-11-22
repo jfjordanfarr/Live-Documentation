@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 
 import type { ExplorerNodePayload } from "../../shared/types";
-import { destinationScope, directoriesOf, directoryOf, fileNameScore, reachWords, searchGraph, searchIndexOf, searchRows, stemOf, termsOf, type SearchIndex } from "./graph-search";
+import { destinationScope, directoriesOf, directoryOf, fileNameScore, namedMatches, reachWords, searchGraph, searchIndexOf, searchRows, stemOf, termsOf, type SearchIndex } from "./graph-search";
 
 const file = (id: string, symbols: string[] = []): ExplorerNodePayload =>
   ({ id, name: id.split("/").pop()!, codeRelativePath: id, archetype: "code", publicSymbols: symbols }) as ExplorerNodePayload;
@@ -263,5 +263,32 @@ describe("destinationScope", () => {
     expect(scope.apart!.fold(3, true)).toBe("3 more files match, but no path connects them");
     expect(searchGraph("project", scope.index).files).toBe(1);
     expect(searchGraph("project", scope.apart!.index).files).toBe(1);
+  });
+});
+
+describe("namedMatches", () => {
+  // The estate's things by their board names, which are not always their folders' names.
+  const things = [
+    { name: "portal", directory: "Portal" },
+    { name: "payments", directory: "PaymentService" },
+    { name: "sqlserver", directory: "Database/SqlServer" },
+    { name: "oracle", directory: "Database/Oracle" }
+  ];
+
+  it("offers a thing by its board name, whole or begun, whatever its folder is called", () => {
+    expect(namedMatches("payments", things)).toEqual([things[1]]);
+    expect(namedMatches("Pay", things)).toEqual([things[1]]);
+    // The folder's name is the index's to find, not the board's: "PaymentService" names no thing.
+    expect(namedMatches("PaymentService", things)).toEqual([]);
+  });
+
+  it("puts the best answered name first, then keeps the order given", () => {
+    expect(namedMatches("p", things).map(thing => thing.name)).toEqual(["portal", "payments"]);
+    expect(namedMatches("o", things).map(thing => thing.name)).toEqual(["oracle", "portal"]);
+  });
+
+  it("wants every word, and offers nothing for no words", () => {
+    expect(namedMatches("sql portal", things)).toEqual([]);
+    expect(namedMatches("  ", things)).toEqual([]);
   });
 });

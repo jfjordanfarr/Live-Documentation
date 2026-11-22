@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: `packages/explorer/src/client/search/graph-search.test.ts`
-- Generated At: 2026-11-19T21:10:14.404Z
+- Generated At: 2026-11-22T02:00:44.031Z
 
 ## Authored
 ### Purpose
@@ -28,6 +28,7 @@ _No public symbols detected_
 - [`graph-search.directoriesOf`](./graph-search.ts.mdmd.md#symbol-directoriesof)
 - [`graph-search.directoryOf`](./graph-search.ts.mdmd.md#symbol-directoryof)
 - [`graph-search.fileNameScore`](./graph-search.ts.mdmd.md#symbol-filenamescore)
+- [`graph-search.namedMatches`](./graph-search.ts.mdmd.md#symbol-namedmatches)
 - [`graph-search.reachWords`](./graph-search.ts.mdmd.md#symbol-reachwords)
 - [`graph-search.searchGraph`](./graph-search.ts.mdmd.md#symbol-searchgraph)
 - [`graph-search.searchIndexOf`](./graph-search.ts.mdmd.md#symbol-searchindexof)

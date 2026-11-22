@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/explorer/src/shared/template.html`
-- Generated At: 2026-11-21T19:01:38.601Z
+- Generated At: 2026-11-22T02:00:47.104Z
 
 ## Authored
 ### Purpose
@@ -583,6 +583,9 @@ Since 2026-11-19 ([Turn 14 of the November 18 record](../../../../../../AI-Agent
 - Type: variable
 
 #### `tuning-vertical-offset-value` {#symbol-tuning-vertical-offset-value}
+- Type: variable
+
+#### `tuning-way-down` {#symbol-tuning-way-down}
 - Type: variable
 
 #### `tuning-width-cost` {#symbol-tuning-width-cost}

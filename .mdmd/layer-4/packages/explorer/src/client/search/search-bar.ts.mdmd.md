@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/explorer/src/client/search/search-bar.ts`
-- Generated At: 2026-11-19T21:10:14.447Z
+- Generated At: 2026-11-22T02:00:44.064Z
 
 ## Authored
 ### Purpose
@@ -48,7 +48,7 @@ The words a field shows for a pinned thing or a destination: its name, and where
 
 #### `createSearchBar` {#symbol-createsearchbar}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/search/search-bar.ts#L67)
+- Source: [source](../../../../../../../packages/explorer/src/client/search/search-bar.ts#L72)
 - Returns: [`SearchBar`](#symbol-searchbar)
 - Parameters: `options`: [`SearchBarOptions`](#symbol-searchbaroptions)
 <!-- LIVE-DOC:END Public Symbols -->

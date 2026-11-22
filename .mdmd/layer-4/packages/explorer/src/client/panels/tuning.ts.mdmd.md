@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/explorer/src/client/panels/tuning.ts`
-- Generated At: 2026-11-21T19:01:32.286Z
+- Generated At: 2026-11-22T02:00:43.786Z
 
 ## Authored
 ### Purpose
@@ -88,7 +88,7 @@ Initialize the tuning panel with all slider and checkbox controls.
 
 #### `withholdThreeDLayout` {#symbol-withholdthreedlayout}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/panels/tuning.ts#L571)
+- Source: [source](../../../../../../../packages/explorer/src/client/panels/tuning.ts#L580)
 
 ##### `withholdThreeDLayout` — Summary
 Where the browser cannot draw 3D (2026-11-21), the 3D layout's group is not offered, as the 3D control is not: its
@@ -129,6 +129,7 @@ once, when the browser is known to refuse WebGL, which may be after the page's f
 - [`types.MARBLE_CHOICES`](../types.ts.mdmd.md#symbol-marble_choices)
 - [`types.OVERVIEW_FILES`](../types.ts.mdmd.md#symbol-overview_files)
 - [`types.STEPS`](../types.ts.mdmd.md#symbol-steps)
+- [`types.WAY_DOWNS`](../types.ts.mdmd.md#symbol-way_downs)
 - [`types.WIRE_ANSWERS`](../types.ts.mdmd.md#symbol-wire_answers)
 - [`template.export-layout-settings`](../../shared/template.html.mdmd.md#symbol-export-layout-settings)
 - [`template.tuning-arrival`](../../shared/template.html.mdmd.md#symbol-tuning-arrival)
@@ -183,6 +184,7 @@ once, when the browser is known to refuse WebGL, which may be after the page's f
 - [`template.tuning-symbol-order`](../../shared/template.html.mdmd.md#symbol-tuning-symbol-order)
 - [`template.tuning-text-resistance`](../../shared/template.html.mdmd.md#symbol-tuning-text-resistance)
 - [`template.tuning-vertical-offset`](../../shared/template.html.mdmd.md#symbol-tuning-vertical-offset)
+- [`template.tuning-way-down`](../../shared/template.html.mdmd.md#symbol-tuning-way-down)
 - [`template.tuning-wire-answers`](../../shared/template.html.mdmd.md#symbol-tuning-wire-answers)
 - [`template.tuning-zoom-looks`](../../shared/template.html.mdmd.md#symbol-tuning-zoom-looks)
 <!-- LIVE-DOC:END Dependencies -->

@@ -8,7 +8,7 @@
 import { applyMarbles, applyPalette } from "../dom";
 import { layoutSettingsOf } from "../layout-presets";
 import { DEFAULT_PALETTE, isPaletteName } from "../palette";
-import { ARRIVAL_WAITS, ARRIVALS, CUT_COUNTED, DIRECTION_MARKS, WIRE_ANSWERS, FRAMINGS, STEPS, CHANGE_EMPHASES, CLOSED_CELL_COLOURS, CLOSED_DIRECTORY_LOOKS, CLOSED_DIRECTORY_SHAPES, DESCRIPTIONS_ZOOMED_OUT, DIRECTORY_LAYOUTS, GROUP_WRAPPERS, BEYOND_HOPS, FRAME_CHOICES, HIDDEN_FILES_LOOKS, MARBLE_CHOICES, OVERVIEW_FILES, type ExplorerState, type FrameChoice } from "../types";
+import { ARRIVAL_WAITS, ARRIVALS, CUT_COUNTED, DIRECTION_MARKS, WAY_DOWNS, WIRE_ANSWERS, FRAMINGS, STEPS, CHANGE_EMPHASES, CLOSED_CELL_COLOURS, CLOSED_DIRECTORY_LOOKS, CLOSED_DIRECTORY_SHAPES, DESCRIPTIONS_ZOOMED_OUT, DIRECTORY_LAYOUTS, GROUP_WRAPPERS, BEYOND_HOPS, FRAME_CHOICES, HIDDEN_FILES_LOOKS, MARBLE_CHOICES, OVERVIEW_FILES, type ExplorerState, type FrameChoice } from "../types";
 import { TUNING_HELP, tuningHelpId } from "./tuning-levers";
 import { initTuningReset } from "./tuning-reset";
 
@@ -89,6 +89,7 @@ export function initTuningPanel(config: TuningPanelConfig): () => void {
   const cutCountedSelect = document.getElementById("tuning-cut-counted") as HTMLSelectElement | null;
   const wireAnswersSelect = document.getElementById("tuning-wire-answers") as HTMLSelectElement | null;
   const directionMarksSelect = document.getElementById("tuning-direction-marks") as HTMLSelectElement | null;
+  const wayDownSelect = document.getElementById("tuning-way-down") as HTMLSelectElement | null;
   const paletteSelect = document.getElementById("tuning-palette") as HTMLSelectElement | null;
   const marblesSelect = document.getElementById("tuning-marbles") as HTMLSelectElement | null;
   const frameSelect = document.getElementById("tuning-frame") as HTMLSelectElement | null;
@@ -218,6 +219,7 @@ export function initTuningPanel(config: TuningPanelConfig): () => void {
     if (cutCountedSelect) cutCountedSelect.value = state.tuning.localMap.cutCounted;
     if (wireAnswersSelect) wireAnswersSelect.value = state.tuning.localMap.wireAnswers;
     if (directionMarksSelect) directionMarksSelect.value = state.tuning.localMap.directionMarks;
+    if (wayDownSelect) wayDownSelect.value = state.tuning.localMap.wayDown;
     if (paletteSelect) paletteSelect.value = state.tuning.appearance.palette;
     if (marblesSelect) marblesSelect.value = state.tuning.appearance.marbles;
     if (frameSelect) frameSelect.value = state.tuning.appearance.frame;
@@ -359,6 +361,13 @@ export function initTuningPanel(config: TuningPanelConfig): () => void {
   if (stepSelect) {
     stepSelect.addEventListener("change", () => {
       state.tuning.localMap.step = STEPS.find(choice => choice === stepSelect.value) ?? STEPS[0];
+      onTuningChange();
+    });
+  }
+  // The way down changes no picture: the next way down from the World Map reads it, and the board's panels and bar with it.
+  if (wayDownSelect) {
+    wayDownSelect.addEventListener("change", () => {
+      state.tuning.localMap.wayDown = WAY_DOWNS.find(choice => choice === wayDownSelect.value) ?? WAY_DOWNS[0];
       onTuningChange();
     });
   }

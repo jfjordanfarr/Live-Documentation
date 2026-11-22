@@ -158,7 +158,7 @@ These are stated so a builder does not mistake them for accidents. Each is in [t
 | Act | Meanings | Recorded as |
 | --- | --- | --- |
 | A click on a file | 2D: inspect. 3D: pin. | Two decisions, 2026-10-20 and 2026-11-02. |
-| The word "pin" | Local Maps: retain a file or symbol and its connections across exploration. World Map: keep one thing's panel open. | No decision names the clash. |
+| The word "pin" | Local Maps: retain a file or symbol and its connections across exploration. World Map: keep one thing's panel open. | No decision names the clash. The Way Down trial (2026-11-22, off by default) joins the two for the length of a way down: what is pinned on the board opens as the Local Map's pins, a thing as the files that carry its calls and a wire as the files at its ends, and stays pinned on the board for the way back ([the Explorer design](../../layer-3/live-documentation-explorer.mdmd.md#independent-exploration)). |
 | The wheel | Local Maps: zoom. World Map: zoom, and past half the view, change view. | The World Map's journey into the Local Map is the open ticket T8 of [the World Map plan](../../layer-3/world-map.mdmd.md). |
 | Enter on a focused card body | 2D: opens the reader (`views/localView/card-factory.ts:278-282`), where a click on the same body does nothing (`:276`). The card is reachable only by script focus (`tabIndex = -1`, `:100`). | Not recorded. |
 

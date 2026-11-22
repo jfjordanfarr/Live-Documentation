@@ -26,7 +26,7 @@ import { renderSourcesView } from "./panels/sources-view";
 import { watchLocalKinds } from "./panels/spatial-legend";
 import { statsLineOf } from "./panels/stats-line";
 import { initTuningPanel, withholdThreeDLayout } from "./panels/tuning";
-import { findPath, reachOf, referencesAgainstPath, type PathfindResult, type Reach } from "./pathfind";
+import { adjacencyOf, findPath, reachOf, referencesAgainstPath, type Adjacency, type PathfindResult, type Reach } from "./pathfind";
 import {
   parseInitialState,
   getDefaultFilters,
@@ -54,7 +54,7 @@ import { animatePerspective, captureLocalScene, holdPerspective } from "./views/
 import { addPin, EMPTY_PIN_SET, INTERNAL_SYMBOL, isSymbolPinned, pressSymbol, removePinsForNode, retainFile, type PinSet } from "./views/pin-state";
 import { clearRetainedDirectory, describeRetained, newestRetained, reconcileRetained, releaseRetained, retainedKey, subjectAfterRelease, othersReleasedWords, releaseOthers, type OthersReleased, type OthersStrength, type RetainedItem, type RetainedState } from "./views/retained-state";
 import { perspectiveRemembered, perspectiveShown, WEBGL_REFUSED, webglKnown, webglOffered, whenIdle } from "./views/webgl-support";
-import { createWorldMapView } from "./views/worldMap";
+import { createWorldMapView, heldFiles, type OpenedThing } from "./views/worldMap";
 
 attachGlobalErrorHandler();
 
@@ -465,16 +465,64 @@ function startExplorer(bundle: StaticExplorerData, initialSnapshot: UrlStateSnap
     }
   });
 
-  // Opening a thing is a new Local Map scope, rendered in the remembered representation.
-  const openThingInLocalMap = (thing: { name: string; folder: string }): void => {
+  // The way down from the World Map (Tuning's Way Down, a trial of 2026-11-22): at Carries The Question a thing opens
+  // with the files that carry its wires pinned, a wire as the files at its two ends, and two things as the path between
+  // their folders; each is the Local Map's own pins or path, so its address is the Local Map's.
+  const carriesQuestion = (): boolean => state.tuning.localMap.wayDown === "question";
+  /** The thing pinned on the board: where the bar's path starts while the World Map is shown and the question is carried. */
+  let boardThing: { name: string; folder: string } | null = null;
+  /** What the last way down could not pin, said above the map until the pins change. */
+  let wayDownNote: { pins: string; text: string } | null = null;
+  const pinsKey = (): string => JSON.stringify([(state.pins ?? EMPTY_PIN_SET).entries, [...(state.openDirectories ?? [])]]);
+
+  /**
+   * Lands a way down on the Local Map: the files given pinned and nothing else, the directories given opened, framed with
+   * the cards the lines of what was brought reach; where more files carry the question than one picture is asked to
+   * hold, the report above the map says how many of them are pinned, and the page's status region says it once.
+   */
+  const landWayDown = (files: readonly string[], directories: readonly string[], frame: { card: string } | { directory: string } | null, left: string | null): void => {
     leavePath();
     state.discovery = null;
-    state.pins = { entries: [] };
-    state.openDirectories = new Set([thing.folder]);
+    state.pins = files.reduce((pins, file) => retainFile(pins, file), EMPTY_PIN_SET);
+    state.openDirectories = new Set(directories);
     state.selectedNode = null;
     closeInspection(false);
+    // The line that counts what is not pinned stands before the map is drawn, so that the arrival is framed in the room
+    // the line leaves it: set after, the line pushed the map down and the opened folder's label under itself.
+    wayDownNote = left ? { pins: pinsKey(), text: left } : null;
     changePerspective(state.perspective, null);
+    // What carries a question is framed with what its lines reach; a folder opened alone arrives as it always has.
+    if (frame && state.perspective === "2d") localView.arriveWithLines(frame);
+    else if (frame) forceGraphView.fit();
+    if (left) announce(left);
     persistExploration();
+  };
+
+  /** The words for the files a way down left unpinned; null when it pinned them all. */
+  const leftWords = (pinned: number, total: number, of: string): string | null =>
+    pinned < total ? `${pinned} of the ${total} files that carry ${of} are pinned` : null;
+
+  /**
+   * What one picture holds of the files a way down carries: those whose cards, with the files a line joins to them,
+   * which the Local Map draws beside a pin, stay within the budget (`heldFiles`).
+   */
+  let wiredTo: Adjacency | null = null;
+  const heldOf = (files: readonly string[], least: number): { files: string[]; total: number } => {
+    const wired = wiredTo ??= adjacencyOf(graphData.links);
+    return heldFiles(files.filter(file => nodesById.has(file)), file => [...wired.dependents(file), ...wired.dependencies(file)], least);
+  };
+
+  // Opening a thing is a new Local Map scope, rendered in the remembered representation.
+  const openThingInLocalMap = (thing: OpenedThing): void => {
+    const held = heldOf(thing.wireFiles ?? [], 0);
+    landWayDown(held.files, [thing.folder], thing.wireFiles ? { directory: thing.folder } : null, leftWords(held.files.length, held.total, `${thing.name}'s wires`));
+  };
+
+  /** A wire opens as the files at its two ends, both pinned: the file that calls and the file that serves. */
+  const openWireInLocalMap = (wire: { from: string; to: string; files: string[] }): void => {
+    const held = heldOf(wire.files, 2);
+    if (held.files.length === 0) return;
+    landWayDown(held.files, [], { card: held.files[0] }, leftWords(held.files.length, held.total, `the wire between ${wire.from} and ${wire.to}`));
   };
 
   const worldMapView = createWorldMapView({
@@ -487,8 +535,17 @@ function startExplorer(bundle: StaticExplorerData, initialSnapshot: UrlStateSnap
         openLocalViewForNode(node);
       }
     },
-    onOpenThing: openThingInLocalMap
+    onOpenThing: openThingInLocalMap,
+    carriesQuestion,
+    onOpenWire: openWireInLocalMap,
+    onPinnedThing: thing => {
+      boardThing = thing;
+      syncRetainedWords();
+    }
   });
+  /** The thing a path asked in the bar starts from: the board's pinned thing, while the World Map is shown and the question is carried. */
+  const boardQuestion = (): { name: string; folder: string } | null => state.view === "world" && carriesQuestion() ? boardThing : null;
+  const thingOfFolder = (folder: string): string | undefined => worldMapView.things.find(thing => thing.folder === folder)?.name;
 
   syncFilterControls();
 
@@ -674,7 +731,11 @@ function startExplorer(bundle: StaticExplorerData, initialSnapshot: UrlStateSnap
   const searchBar = createSearchBar({
     index: searchIndex,
     onChooseSubject: pinHit,
-    onChooseDestination: askPath,
+    onChooseDestination: hit => {
+      const from = boardQuestion();
+      if (from) askChain(from, hit);
+      else askPath(hit);
+    },
     onClearDestination: () => { leavePath(); persistExploration(); },
     // A hop is inspected at the moment that supplies the path, even when the file is gone today.
     onHopClick: node => {
@@ -1016,6 +1077,32 @@ function startExplorer(bundle: StaticExplorerData, initialSnapshot: UrlStateSnap
     runPath();
   }
 
+  /**
+   * A path asked on the World Map from the thing pinned there (Tuning's Way Down, a trial of 2026-11-22): between that
+   * thing's folder and what was chosen, another thing by its board name or anything the bar finds. A question asked on
+   * the board has no direction a person could know, since the board runs from what calls to what serves and the 2D
+   * drawing from what offers to what uses; so where a path runs only from what was chosen to the pinned thing, that is
+   * the path asked, and "no path runs that way" is never the answer. The landing is the Local Map's own path: the start
+   * its one retained thing, the end its destination.
+   */
+  function askChain(from: { name: string; folder: string }, hit: SearchHit): void {
+    const ground = pathGround();
+    const start: RetainedItem = { kind: "directory", directory: from.folder };
+    const end = itemOf(destinationOfHit(hit));
+    const found = findPath(endFiles(start, ground), endFiles(end, ground), ground.nodesById, ground.links);
+    const [origin, target] = found.path.length === 0 && found.reversePath.length > 0 ? [end, start] : [start, end];
+    clearPathResult(false);
+    state.discovery = null;
+    state.selectedNode = null;
+    closeInspection(false);
+    state.pins = origin.kind === "pin" ? (origin.pin.symbol === "*" ? retainFile(EMPTY_PIN_SET, origin.pin.nodeId) : addPin(EMPTY_PIN_SET, origin.pin.nodeId, origin.pin.symbol)) : EMPTY_PIN_SET;
+    state.openDirectories = new Set(origin.kind === "directory" ? [origin.directory] : []);
+    state.retentionOrder = [retainedKey(origin)];
+    state.destination = destinationOfItem(target);
+    wayDownNote = null;
+    runPath();
+  }
+
   /** Leave the path: the destination forgotten, the exploration shown again. */
   function leavePath(): void {
     state.destination = null;
@@ -1058,7 +1145,11 @@ function startExplorer(bundle: StaticExplorerData, initialSnapshot: UrlStateSnap
     const last = result.path.at(-1);
     if (origin.kind === "pin" && origin.pin.symbol !== "*" && first && first.nodeId === ground.fileAt(origin.pin.nodeId)) first.symbol = origin.pin.symbol;
     if (destination.kind === "file" && destination.symbol && last && last.nodeId === ground.fileAt(destination.nodeId)) last.symbol = destination.symbol;
-    showPathResult(result, wordsOf(origin), wordsOf(target), ground, draw);
+    // A path between the folders of two things of the board, where the way down carries the question, is said for what
+    // it is, by the things' board names; an address opened cold says the same, since both ends are in it.
+    const from = carriesQuestion() && origin.kind === "directory" ? thingOfFolder(origin.directory) : undefined;
+    const to = from && destination.kind === "directory" ? thingOfFolder(destination.directory) : undefined;
+    showPathResult(result, wordsOf(origin), wordsOf(target), ground, draw, from && to ? { from, to } : null);
   }
 
   /** The exploration with the destination pinned as the newest item: the state the reverse question leads to. */
@@ -1195,6 +1286,17 @@ function startExplorer(bundle: StaticExplorerData, initialSnapshot: UrlStateSnap
       reachKey = key;
       const ground = pathGround();
       reach = newest ? reachOf(endFiles(newest, ground), ground.nodesById, ground.links) : null;
+    }
+    // What a way down left unpinned is said until the pins change (Tuning's Way Down, a trial of 2026-11-22).
+    if (wayDownNote && wayDownNote.pins !== pinsKey()) wayDownNote = null;
+    searchBar.setNote(state.view === "map" && !state.destination ? wayDownNote?.text ?? null : null);
+    // On the World Map, with a thing pinned there and the question carried, the bar's path starts from that thing and
+    // takes another thing by its board name, beside everything it takes on the Local Map.
+    const from = boardQuestion();
+    if (from) {
+      searchBar.sync({ name: from.name, context: from.folder }, null, null, false,
+        worldMapView.things.filter(thing => thing.name !== from.name).map(thing => ({ name: thing.name, directory: thing.folder })));
+      return;
     }
     searchBar.sync(newest ? chipWordsOf(newest) : null, state.destination ? chipWordsOf(itemOf(state.destination)) : null, reach, state.view === "map");
   }
@@ -1396,6 +1498,8 @@ function startExplorer(bundle: StaticExplorerData, initialSnapshot: UrlStateSnap
   // ==================
 
   let restoringPath = false;
+  /** What the report's tooltip says of a path between two things of the board: it is a shortest connection, not a request's route. */
+  const SHORTEST_CONNECTION_HELP = "The fewest files that join the two folders, one of perhaps several such routes. What runs between them may pass through other files.";
 
   /**
    * Shows what the search found. The Local Map draws a path only in its reading
@@ -1403,7 +1507,7 @@ function startExplorer(bundle: StaticExplorerData, initialSnapshot: UrlStateSnap
    * files connect only the other way, nothing is drawn: the status says so and
    * offers the reverse question as a link, the owner's rule of 2025-12-18.
    */
-  const showPathResult = (result: PathfindResult, origin: SearchWords, destination: SearchWords, ground: PathGround, draw: boolean): void => {
+  const showPathResult = (result: PathfindResult, origin: SearchWords, destination: SearchWords, ground: PathGround, draw: boolean, things: { from: string; to: string } | null = null): void => {
     const fromName = origin.name;
     const toName = destination.name;
 
@@ -1442,7 +1546,11 @@ function startExplorer(bundle: StaticExplorerData, initialSnapshot: UrlStateSnap
         ? ""
         : `; ${against} ${against === 1 ? "reference" : "references"} between these files ${against === 1 ? "runs" : "run"} the other way and ${against === 1 ? "is" : "are"} not drawn in 2D`;
       if (draw) renderCurrentView();
-      searchBar.setStatus(`Path found: ${result.path.length} files${notDrawn}`, "success", reportAt());
+      // Between two things of the board (Tuning's Way Down, a trial of 2026-11-22) the report says what the route is, one
+      // shortest connection, and its tooltip what it is not; the wording is the owner's to settle.
+      const found = things ? `One shortest connection between ${things.from} and ${things.to}: ${result.path.length} files` : `Path found: ${result.path.length} files`;
+      const report = searchBar.setStatus(`${found}${notDrawn}`, "success", reportAt());
+      if (things) report.title = SHORTEST_CONNECTION_HELP;
       return;
     }
 
@@ -1536,7 +1644,7 @@ function startExplorer(bundle: StaticExplorerData, initialSnapshot: UrlStateSnap
 
   syncTuningControls = initTuningPanel({
     state,
-    onTuningChange: () => { schedulePersistUi(); persistExploration(); syncPerspectiveControls(); },
+    onTuningChange: () => { schedulePersistUi(); persistExploration(); syncPerspectiveControls(); worldMapView.refresh(); },
     onFrame: choice => frame?.apply(choice),
     onRender: () => {
       // The spatial renderer owns both file and directory camera anchors.
