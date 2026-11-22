@@ -601,3 +601,57 @@ The whole unit project, run once: 3,737 cases passed and 4 were skipped. Two fai
 ### Commands the harness refused in this leg
 
 None.
+
+## Fifth milestone, second leg, 2026-11-22: the fuzzer reaches the grammar; inflating ahead measured
+
+The root ruled on the first leg's forks:
+- the link rule is mine: nothing climbing above the scanned folder, no scheme, no NUL;
+- inflating ahead is to be decided by a quiet measure of strict against a bounded window.
+
+### F. The fuzzer's second stage: the review's twelfth case is green
+
+The package's mutants (`test/fuzz/mutants.mjs`) now have a second stage, the review's raw-section fuzzer taken in. On every odd seed but a bomb's, one section's uncompressed bytes are changed in one of nine ways: a bit, a byte set, a byte put in or taken out, a number written longer, a count one off, two bytes swapped, a byte one off, a section cut. The file is set down again with every hash and the end right, so that the mutant reaches the section's grammar.
+
+Two more changes to the harness:
+- **The worker gains the review's oracle.** What a reader accepts and can write again is written again and read back. A different content name is a finding ("a second name").
+- **The harness goes on after a hang**, from the next seed, in a fresh worker. It used to stop at the first hang, and with the second stage the careless reader hung at seed 1, hiding every fault after it.
+
+**What the cases show:**
+- **The review's case "reaches the grammar of a section"** (at least a tenth of the mutants refused by a section's grammar) now passes. It failed before.
+- **The fuzzer's own cases pass.** The real reader returns facts or a refusal for all 800 mutants, within its bounds, with no second name. The careless reader is still found out in at least two ways.
+
+**The review's fifteen cases:** fourteen now pass. The one still failing is finding 5, the memory a byte of the file costs once its facts are built, which is A's.
+
+### B4. Inflating ahead, measured
+
+[`window.mjs`](window.mjs) writes a copy of the module with a window. The window inflates ahead, in order, only sections whose headers have passed every header-only check, and holds the raw bytes in flight within a constant. The probe times the whole read with and without it, interleaved, seven runs each. The machine was never quiet: other agents held its load at 11 to 17.
+
+| Median of 7 | Strict | 8 MiB window | Strict | 32 MiB window |
+| --- | ---: | ---: | ---: | ---: |
+| DNN, 10,777 files | 1,345 ms | 927 ms | 816 ms | 655 ms |
+| Five times DNN, 53,885 files | 2,395 ms | 2,241 ms | 2,847 ms | 2,336 ms |
+
+**Strict is not within the noise of the window.** It is 20 to 30 % slower on DNN in both pairs, and 6 to 18 % at five times. So by the ruling the window is to be built, and its waste stated as its constant: at most the window's raw bytes, inflated ahead of the section being checked.
+
+**Not built yet,** nor its case. A case that holds the bound needs a hostile file whose refusal comes only in its records, after valid paths and wires for every file the records declare. With sections of compressible bytes, the inflation bound refuses such a file before it reaches the records. The way I see: a file of a few incompressible 1 MiB records sections, the first refused, and a case holding that what is inflated ahead stays under the window's constant, measured as memory against the window. That is the next leg's first work, with the window set at 8 MiB unless the root prefers more speed for more memory.
+
+Five times DNN, written as facts arrive from disk for these measures, took 8.3 s at a 251 MB peak (6,427,108 bytes). DNN took 2.4 s at 206 MB (2,238,498 bytes).
+
+### What held in the second leg
+
+The whole unit project, run once: 3,738 cases passed and 4 were skipped. One failed, the review's fifth, which waits on A.
+
+Lint, the audits, `docs:links:enforce` and `live-docs:generate` passed too.
+
+### Not reached in the second leg
+
+- **The window built**, with its case.
+- **C built:** targets and anchors derived, the rule in the specification in full, and what caching by folder buys.
+- **D built:** the link rule measured, stated and refused.
+- **A's two designs**, measured on DNN and five times DNN, under Node and in a tab. They decide the review's fifth case.
+- **G:** the Windows hazards.
+- **What the page does with a name holding bidirectional controls.**
+
+### Commands the harness refused in the second leg
+
+None.

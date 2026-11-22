@@ -37,8 +37,17 @@ for (let seed = from; seed < to; seed += 1) {
     const read = await reader.readScan(bytes);
     const resumed = await reader.resumeFrom(bytes);
     const text = read.ok ? await reader.textOf(bytes) : { ok: false, reason: "not read" };
+    // One set of facts, one name: what a reader accepts, written again from the facts it read, has the same name.
+    let again;
+    if (read.ok && reader.writeScan) {
+      const written = await reader.writeScan({ head: read.value.head, files: read.value.files });
+      again = written.ok ? await reader.readScan(written.value) : written;
+    }
     if (!shaped(read) || !shaped(resumed) || !shaped(text)) {
       outcome = "unshaped";
+    } else if (again !== undefined && !(again.ok && again.value.name === read.value.name)) {
+      outcome = "a second name";
+      detail = again.ok ? `${read.value.name} written again is ${again.value.name}` : `its facts cannot be written again: ${again.reason}`;
     } else {
       outcome = read.ok ? "facts" : "refused";
       detail = read.ok ? "" : read.reason;
