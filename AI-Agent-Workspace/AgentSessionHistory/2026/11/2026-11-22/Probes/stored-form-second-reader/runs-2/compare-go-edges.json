@@ -1,0 +1,24 @@
+{
+ "reader": "go-reader-2",
+ "tally": {
+  "edges read same": 5,
+  "edges graph same": 5,
+  "edges name same": 5,
+  "edges name both refuse": 1
+ },
+ "slowest": [
+  "edge-anchor-outside-scan.fpk 118 ms, 11 MB",
+  "edge-path-backslash-inside.fpk 114 ms, 11 MB",
+  "edge-link-empty.fpk 113 ms, 11 MB",
+  "edge-path-backslash-inside.txt 110 ms, 11 MB",
+  "edge-self-edge-anchor.fpk 110 ms, 11 MB"
+ ],
+ "heaviest": [
+  "edge-anchor-outside-scan.fpk 11 MB of 1024",
+  "edge-anchor-outside-scan.fpk 11 MB of 1024",
+  "edge-anchor-outside-scan.txt 11 MB of 1024",
+  "edge-link-empty.fpk 11 MB of 1024",
+  "edge-link-empty.fpk 11 MB of 1024"
+ ],
+ "disagreements": []
+}

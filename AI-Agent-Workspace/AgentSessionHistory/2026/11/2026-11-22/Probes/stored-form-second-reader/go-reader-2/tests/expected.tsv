@@ -1,0 +1,160 @@
+read	tests/binary/empty-file.fpk	signature
+read	tests/binary/bad-signature.fpk	signature
+read	tests/binary/signature-only.fpk	unfinished
+read	tests/binary/header-cut-short.fpk	unfinished
+read	tests/binary/stops-before-end.fpk	unfinished
+read	tests/binary/stored-past-end.fpk	unfinished
+read	tests/binary/byte-after-end.fpk	follow the end frame
+read	tests/binary/kind-0.fpk	not a kind
+read	tests/binary/kind-7.fpk	not a kind
+read	tests/binary/raw-over-max-section.fpk	MAX_SECTION
+read	tests/binary/raw-over-deflate-ratio.fpk	most raw deflate can give
+read	tests/binary/total-inflation-bound.fpk	sections together would inflate
+read	tests/binary/head-count-not-0.fpk	head frame's count
+read	tests/binary/strings-first.fpk	head must come first
+read	tests/binary/strings-before-strings.fpk	not immediately before a records
+read	tests/binary/strings-count-0.fpk	holds no strings
+read	tests/binary/records-count-0.fpk	must hold 1 to 256
+read	tests/binary/records-count-257.fpk	must hold 1 to 256
+read	tests/binary/short-records-not-last.fpk	only the last may hold fewer
+read	tests/binary/paths-count-wrong.fpk	paths frame's count
+read	tests/binary/wires-count-wrong.fpk	wires frame's count
+read	tests/binary/no-paths-frame.fpk	where the paths frame is due
+read	tests/binary/wires-before-paths.fpk	where the paths frame is due
+read	tests/binary/head-then-end.fpk	where the paths frame is due
+read	tests/binary/two-heads.fpk	where the paths frame is due
+read	tests/binary/end-count-wrong.fpk	end frame's count
+read	tests/binary/end-rawlength-not-32.fpk	must be 32
+read	tests/binary/end-wrong-name.fpk	content's name
+read	tests/binary/end-content-not-name.fpk	SHA-256 of the inflated
+read	tests/binary/section-hash-wrong.fpk	not the header's hash
+read	tests/binary/deflate-garbage.fpk	deflate
+read	tests/binary/inflates-short.fpk	do not inflate to rawLength
+read	tests/binary/inflates-long.fpk	more than rawLength
+read	tests/binary/byte-after-deflate-stream.fpk	follow the end of the deflate stream
+read	tests/binary/deflate-cut-short.fpk	deflate
+read	tests/binary/deflate-no-final-block.fpk	deflate
+read	tests/binary/head-version-2.fpk	version is 2
+read	tests/binary/head-root-absolute.fpk	root is not a folder
+read	tests/binary/head-baselayer-dotdot.fpk	baseLayer is not a folder
+read	tests/binary/head-root-drive.fpk	root is not a folder
+read	tests/binary/head-extension-slash.fpk	extension
+read	tests/binary/head-extension-backslash.fpk	extension
+read	tests/binary/head-extension-nul.fpk	extension
+read	tests/binary/head-overlong-utf8.fpk	UTF-8
+read	tests/binary/head-trailing-byte.fpk	follow its last item
+read	tests/binary/head-left-out-count-too-big.fpk	count of 100
+read	tests/binary/varint-not-shortest.fpk	shortest form
+read	tests/binary/varint-above-2-32.fpk	above 2^32
+read	tests/binary/varint-sixth-byte.fpk	sixth byte
+read	tests/binary/varint-cut-short.fpk	cut short
+read	tests/binary/string-twice.fpk	appears twice
+read	tests/binary/utf8-overlong.fpk	UTF-8
+read	tests/binary/utf8-surrogate.fpk	UTF-8
+read	tests/binary/utf8-above-10ffff.fpk	UTF-8
+read	tests/binary/utf8-lone-continuation.fpk	UTF-8
+read	tests/binary/utf8-cut-short.fpk	UTF-8
+read	tests/binary/utf8-ff-byte.fpk	UTF-8
+read	tests/binary/string-not-met.fpk	not met
+read	tests/binary/strings-trailing-byte.fpk	follow its last item
+read	tests/binary/strings-count-too-big.fpk	cut short
+read	tests/binary/sid-out-of-order.fpk	first-met order
+read	tests/binary/sid-not-set-down.fpk	no strings section before it sets down
+read	tests/binary/file-mark-bit-4.fpk	does not define
+read	tests/binary/dependency-mark-bit-4.fpk	does not define
+read	tests/binary/target-without-link.fpk	target without a link
+read	tests/binary/anchor-without-target.fpk	anchor without a target
+read	tests/binary/entry-link-without-name.fpk	without bit 0
+read	tests/binary/entry-reason-6.fpk	reason 6
+read	tests/binary/reference-role-5.fpk	role 5
+read	tests/binary/symbol-mark-bit-2.fpk	does not define
+read	tests/binary/type-mark-bit-5.fpk	does not define
+read	tests/binary/records-trailing-byte.fpk	follow its last item
+read	tests/binary/records-count-too-big.fpk	count of 200
+read	tests/binary/record-path-differs.fpk	not the paths section
+read	tests/binary/wires-not-records.fpk	not the other scanned files its links land on
+read	tests/binary/wires-missing-a-link.fpk	not the other scanned files its links land on
+read	tests/binary/target-empty.fpk	is empty
+read	tests/binary/target-slash.fpk	begins with /
+read	tests/binary/target-backslash.fpk	begins with /
+read	tests/binary/target-drive.fpk	drive
+read	tests/binary/target-file-scheme.fpk	file:
+read	tests/binary/target-nul.fpk	U+0000
+read	tests/binary/target-empty-segment.fpk	empty segment
+read	tests/binary/target-dot.fpk	'.' segment
+read	tests/binary/target-dotdot.fpk	'..' segment
+read	tests/binary/target-trailing-slash.fpk	empty segment
+read	tests/binary/link-slash.fpk	begins with /
+read	tests/binary/link-backslash.fpk	begins with /
+read	tests/binary/link-drive.fpk	drive
+read	tests/binary/link-file-scheme.fpk	file:
+read	tests/binary/source-link-absolute.fpk	sourcePath
+read	tests/binary/cited-by-link-drive.fpk	drive
+read	tests/binary/paths-shared-too-long.fpk	shares 5 bytes
+read	tests/binary/paths-not-longest-shared.fpk	longest beginning
+read	tests/binary/paths-prefix-path-differs.fpk	not the paths section
+read	tests/binary/paths-over-strings-budget.fpk	strings frames' raw lengths
+read	tests/binary/paths-trailing-byte.fpk	follow its last item
+read	tests/binary/paths-bad-utf8.fpk	UTF-8
+read	tests/binary/paths-out-of-order.fpk	strict path order
+read	tests/binary/paths-repeated.fpk	strict path order
+read	tests/binary/paths-absolute.fpk	not a path
+read	tests/binary/paths-dotdot.fpk	not a path
+read	tests/binary/wire-to-itself.fpk	wire to itself
+read	tests/binary/wire-past-files.fpk	the scan has 2 files
+read	tests/binary/wire-gap-past-files.fpk	the scan has 2 files
+read	tests/binary/wires-trailing-byte.fpk	follow its last item
+read	tests/binary/wires-count-too-big.fpk	count of 9
+read	tests/valid-past-text-bound.fpk	the text is not offered, though the file is valid
+name	tests/text/empty.txt	empty
+name	tests/text/bom.txt	byte-order mark
+name	tests/text/crlf.txt	CR
+name	tests/text/no-final-lf.txt	LF
+name	tests/text/bad-utf8.txt	UTF-8
+name	tests/text/no-end-line.txt	no end line
+name	tests/text/line-after-end.txt	after the end line
+name	tests/text/end-count-wrong.txt	counts 2 files
+name	tests/text/space-outside-string.txt	whitespace
+name	tests/text/number-4.0.txt	decimal point
+name	tests/text/number-4e0.txt	exponent
+name	tests/text/number-leading-zero.txt	leading zero
+name	tests/text/number-negative.txt	sign
+name	tests/text/number-too-big.txt	above 2^32
+name	tests/text/letter-u-escape.txt	escape
+name	tests/text/uppercase-u-escape.txt	uppercase
+name	tests/text/slash-escape.txt	\/
+name	tests/text/surrogate-pair-escape.txt	escape
+name	tests/text/tab-as-u-escape.txt	escape
+name	tests/text/raw-control-char.txt	control character
+name	tests/text/false-for-absent.txt	never written false
+name	tests/text/member-twice.txt	written twice
+name	tests/text/member-unknown.txt	does not have
+name	tests/text/members-out-of-order.txt	one form
+name	tests/text/member-missing.txt	always present
+name	tests/text/line-order-symbol-before-entry.txt	out of its place
+name	tests/text/authored-missing.txt	authored
+name	tests/text/two-cited-by.txt	out of its place
+name	tests/text/unknown-kind.txt	does not have
+name	tests/text/path-mismatch-line.txt	path is not that of
+name	tests/text/files-out-of-order.txt	strict path order
+name	tests/text/file-repeated.txt	strict path order
+name	tests/text/version-2.txt	version is 2
+name	tests/text/format-name.txt	fact-pak
+name	tests/text/head-order.txt	format line is due
+name	tests/text/left-out-after-files.txt	after the files began
+name	tests/text/reason-unknown.txt	words of section 4.3
+name	tests/text/role-lowercase.txt	words of section 4.3
+name	tests/text/target-without-link.txt	target without a link
+name	tests/text/anchor-without-target.txt	anchor without a target
+name	tests/text/absolute-path.txt	not a path
+name	tests/text/absolute-link.txt	begins with /
+name	tests/text/drive-link.txt	drive
+name	tests/text/file-link.txt	file:
+name	tests/text/target-dotdot.txt	'..' segment
+name	tests/text/root-absolute.txt	root is not a folder
+name	tests/text/extension-slash.txt	extension
+name	tests/text/file-line-too-short.txt	file line is
+name	tests/text/nesting-too-deep.txt	nest deeper
+name	tests/text/archetype-number.txt	not a string
+name	tests/text/true-as-string.txt	never written false
+name	tests/text/format-line-path.txt	not null
