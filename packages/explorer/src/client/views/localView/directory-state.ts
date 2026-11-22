@@ -15,6 +15,7 @@
  *
  * @module directory-state
  */
+import { under } from "@live-documentation/engine/live-docs/pathfind";
 
 /** The directories opened, by path relative to the scan root. */
 export type OpenDirectories = ReadonlySet<string>;
@@ -25,9 +26,12 @@ export const NO_OPEN_DIRECTORIES: OpenDirectories = new Set();
 /** Where a directory stands on the scale: a box, a membrane around its party files, or a membrane around everything it holds. */
 export type DirectoryState = "closed" | "encasing" | "open";
 
-/** Whether a path is the directory or stands under it; the scan root, "", holds everything. */
-export const under = (path: string, directory: string): boolean =>
-  directory === "" || path === directory || path.startsWith(`${directory}/`);
+/**
+ * Whether a path is the directory or stands under it: the engine's rule, which the page and the command line share
+ * since 2026-11-22, when the command line took a directory as a path's end; kept under this name for the modules that
+ * take it with the picture's directories.
+ */
+export { under };
 
 /** The set with the directory opened; the same set when it already was. */
 export function openDirectory(opened: OpenDirectories, directory: string): OpenDirectories {

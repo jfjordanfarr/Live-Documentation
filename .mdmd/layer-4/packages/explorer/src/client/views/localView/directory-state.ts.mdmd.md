@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/explorer/src/client/views/localView/directory-state.ts`
-- Generated At: 2026-11-19T21:10:16.741Z
+- Generated At: 2026-11-22T05:09:39.320Z
 
 ## Authored
 ### Purpose
@@ -18,7 +18,7 @@ The opened set is the only state; `directoryState` derives the rest: open when o
 ### Public Symbols
 #### `OpenDirectories` {#symbol-opendirectories}
 - Type: type
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/directory-state.ts#L20)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/directory-state.ts#L21)
 - Returns: `ReadonlySet`
 
 ##### `OpenDirectories` — Summary
@@ -26,7 +26,7 @@ The directories opened, by path relative to the scan root.
 
 #### `NO_OPEN_DIRECTORIES` {#symbol-no_open_directories}
 - Type: const
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/directory-state.ts#L23)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/directory-state.ts#L24)
 - Returns: [`OpenDirectories`](#symbol-opendirectories)
 
 ##### `NO_OPEN_DIRECTORIES` — Summary
@@ -34,21 +34,18 @@ No directory opened: the picture as the pins alone make it.
 
 #### `DirectoryState (type)` {#symbol-directorystate-type}
 - Type: type
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/directory-state.ts#L26)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/directory-state.ts#L27)
 
 ##### `DirectoryState (type)` — Summary
 Where a directory stands on the scale: a box, a membrane around its party files, or a membrane around everything it holds.
 
 #### `under` {#symbol-under}
-- Type: const
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/directory-state.ts#L29)
-
-##### `under` — Summary
-Whether a path is the directory or stands under it; the scan root, "", holds everything.
+- Type: unknown
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/directory-state.ts#L34)
 
 #### `openDirectory` {#symbol-opendirectory}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/directory-state.ts#L33)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/directory-state.ts#L37)
 - Returns: [`OpenDirectories`](#symbol-opendirectories)
 - Parameters: `opened`: [`OpenDirectories`](#symbol-opendirectories)
 
@@ -57,7 +54,7 @@ The set with the directory opened; the same set when it already was.
 
 #### `closeDirectory` {#symbol-closedirectory}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/directory-state.ts#L39)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/directory-state.ts#L43)
 - Returns: [`OpenDirectories`](#symbol-opendirectories)
 - Parameters: `opened`: [`OpenDirectories`](#symbol-opendirectories)
 
@@ -66,7 +63,7 @@ Release this opening, preserving independently opened descendants. Bulk clearing
 
 #### `directoryState (function)` {#symbol-directorystate-function}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/directory-state.ts#L50)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/directory-state.ts#L54)
 - Returns: [`DirectoryState`](#symbol-directorystate-type)
 - Parameters: `opened`: [`OpenDirectories`](#symbol-opendirectories); `party`: `Iterable`
 
@@ -77,5 +74,5 @@ or another opened directory, stands under it; else closed.
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
-_No dependencies documented yet_
+- [`pathfind.under`](../../../../../engine/src/live-docs/pathfind.ts.mdmd.md#symbol-under)
 <!-- LIVE-DOC:END Dependencies -->
