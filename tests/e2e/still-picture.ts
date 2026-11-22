@@ -386,9 +386,19 @@ export async function readPicture(page: Page, view: ViewReading, names: Record<s
       const frame = document.querySelector(frameSelector)!.getBoundingClientRect();
       const inside = (r: DOMRect): boolean => r.width > 0 && r.height > 0 && r.left >= frame.left - 0.5 && r.right <= frame.right + 0.5 && r.top >= frame.top - 0.5 && r.bottom <= frame.bottom + 0.5;
       const meets = (r: DOMRect): boolean => r.width > 0 && r.height > 0 && r.right > frame.left && r.left < frame.right && r.bottom > frame.top && r.top < frame.bottom;
+      // What the page's hit test meets at a point, past the wires' own drawing. A wire's stroke takes no pointer, so
+      // the topmost element at one of its samples was the card it crossed, where it crossed one. Since 2026-11-22 a
+      // wire has a band along its route, an undrawn stroke that does take the pointer, and the topmost element was
+      // that band at 5,914 of 5,976 samples of one picture: the reading could not see a card across a wire; a
+      // returning connection's lace, a wire that takes the pointer itself, had hidden a card the same way. The
+      // reading looks past all of it by where it stands, not by a caller's selector or by how the page stacks it:
+      // whatever is in the wires' own drawing and is no part of a card (for a view that draws both in one).
+      const wireDrawings = new Set([...document.querySelectorAll<SVGElement>(view.wires)].map(wire => wire.ownerSVGElement).filter(Boolean));
+      const drawnAt = (x: number, y: number): Element | null =>
+        document.elementsFromPoint(x, y).find(element => !(element instanceof SVGElement && wireDrawings.has(element.ownerSVGElement) && !element.closest(view.card))) ?? null;
       const uncovered = (el: Element): boolean => {
         const r = el.getBoundingClientRect();
-        const top = document.elementFromPoint((r.left + r.right) / 2, (r.top + r.bottom) / 2);
+        const top = drawnAt((r.left + r.right) / 2, (r.top + r.bottom) / 2);
         return !!top && (top === el || el.contains(top) || top.contains(el));
       };
       const fontPx = (el: Element): number => {
@@ -636,7 +646,7 @@ export async function readPicture(page: Page, view: ViewReading, names: Record<s
             // Occluded where the page's topmost element at the sample belongs to a card other than the wire's ends; the
             // hit test, the costly reading, is asked only within such a card's hull, where alone it can say so.
             if (hullsNear.some(hull => within(hull.bounds, x, y))) {
-              const over = document.elementFromPoint(x, y);
+              const over = drawnAt(x, y);
               const card = over?.closest<HTMLElement>(view.card);
               if (card && card.dataset.id !== consumer && card.dataset.id !== provider) occludedSamples += 1;
             }

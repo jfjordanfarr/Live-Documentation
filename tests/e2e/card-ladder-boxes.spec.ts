@@ -89,6 +89,25 @@ const auditInPage = ({ half, segmentsOf }: { half: number; segmentsOf: Record<st
     const style = getComputedStyle(element);
     return style.visibility !== "visible" || style.display === "none" || Number(style.opacity) === 0 ? null : rect;
   };
+  // What is drawn of a part of a card: its box within every ancestor that clips, up to its card. A part with nothing
+  // left is not drawn, and what is left is what the audit sets against the card, so that a part cut by an ancestor that
+  // itself runs out of the card is still seen to run out. Until 2026-11-22 a part's own box was set against the card,
+  // and a code span in a line a two-line description does not show, its box where that line would be, 20 to 50 px
+  // under a short card's foot with nothing painted there, was read as a part run out of its card.
+  const drawn = (part: Element, card: Element): Box | null => {
+    const rect = shown(part);
+    if (!rect) return null;
+    const box = { left: rect.left, top: rect.top, right: rect.right, bottom: rect.bottom };
+    for (let at = part.parentElement; at && at !== card; at = at.parentElement) {
+      const style = getComputedStyle(at);
+      if (style.overflowX === "visible" && style.overflowY === "visible") continue;
+      const clip = at.getBoundingClientRect();
+      if (style.overflowX !== "visible") { box.left = Math.max(box.left, clip.left); box.right = Math.min(box.right, clip.right); }
+      if (style.overflowY !== "visible") { box.top = Math.max(box.top, clip.top); box.bottom = Math.min(box.bottom, clip.bottom); }
+      if (box.right <= box.left || box.bottom <= box.top) return null;
+    }
+    return box;
+  };
   const outside = (part: Box, box: Box): number => Math.max(box.left - part.left, part.right - box.right, box.top - part.top, part.bottom - box.bottom);
   const overlap = (a: Box, b: Box): number => Math.min(Math.min(a.right, b.right) - Math.max(a.left, b.left), Math.min(a.bottom, b.bottom) - Math.max(a.top, b.top));
   const named = (card: HTMLElement, row?: HTMLElement | null): string => `${card.dataset.id!.split("/").pop()}${row ? `:${row.dataset.symbol}` : ""}`;
@@ -116,7 +135,7 @@ const auditInPage = ({ half, segmentsOf }: { half: number; segmentsOf: Record<st
     };
     // Every drawn part of the card inside the card, but the hub, whose overhang at reading scale is designed.
     for (const part of card.querySelectorAll("*")) {
-      const rect = shown(part);
+      const rect = drawn(part, card);
       if (!rect || part.closest(".symbol-anchor.hub")) continue;
       const by = outside(rect, box);
       if (by > half) broken.push(`${named(card, part.closest<HTMLElement>(".symbol-row"))}: ${part.getAttribute("class") || part.tagName} ${by.toFixed(1)} px outside its card`);
@@ -363,6 +382,42 @@ function expectBoxesHeld(audits: readonly Audit[]): void {
     }
   }
 }
+
+/**
+ * The audit's own sight, on made inputs (2026-11-22): what it sets against a card is what is drawn of a part. Three
+ * parts are put into one card of the estate's picture: one in a description's slot far below the lines the slot shows,
+ * so below the card's foot and clipped wholly away; one stood out of the card's side where nothing clips it; and one
+ * inside a box that clips and itself stands out of the card. The first is not a part run out of its card; the other
+ * two and the clipping box are. Seen failing first on the audit as it was, which reported the unseen part 213.5 px
+ * outside its card.
+ */
+test("the audit sets against a card what is drawn of a part: one clipped wholly away is not reported, one that runs out is", async ({ page }) => {
+  await page.goto(url(payment));
+  await page.locator(`.node-card[data-id="${payment}"]`).waitFor();
+  await localMapStill(page);
+  const card = await page.evaluate(() => {
+    const prose = document.querySelector<HTMLElement>("#map-container .node-card .local-reading-slot .local-reading-prose")!;
+    const card = prose.closest<HTMLElement>(".node-card")!;
+    const make = (tag: string, name: string, style: string, into: Element): HTMLElement => {
+      const made = document.createElement(tag);
+      made.className = name;
+      made.textContent = tag === "span" ? name : "";
+      made.style.cssText = style;
+      into.append(made);
+      return made;
+    };
+    make("span", "made-unseen", `display:block;margin-top:${card.offsetHeight + 60}px`, prose);
+    make("span", "made-out", `display:block;position:relative;left:${card.offsetWidth + 12}px;width:40px;height:12px`, card);
+    const clip = make("div", "made-clip", `position:relative;left:${card.offsetWidth + 80}px;width:40px;height:12px;overflow:clip`, card);
+    make("span", "made-cut", "display:block;width:300px;height:12px", clip);
+    return card.dataset.id!.split("/").pop()!;
+  });
+  const made = (await audit(page)).broken.filter(line => line.includes(" made-"));
+  expect(made.filter(line => line.includes("made-unseen")), "a part no line of its slot shows is not drawn").toEqual([]);
+  for (const name of ["made-out", "made-clip", "made-cut"]) {
+    expect(made.filter(line => line.startsWith(`${card}: ${name} `) && line.endsWith("px outside its card")), `${name} runs out of its card`).toHaveLength(1);
+  }
+});
 
 test("on this repository's still picture, every press out keeps each held part inside its box and names at one size", async ({ page }) => {
   test.setTimeout(120_000);

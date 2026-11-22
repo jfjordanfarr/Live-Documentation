@@ -1,0 +1,121 @@
+[
+ {
+  "picture": "repository, chain: Local Map, retained",
+  "look": "reading",
+  "cards": 132,
+  "laces": 0,
+  "wires": 521,
+  "samples": 7837,
+  "onBand": 7202,
+  "onLace": 0,
+  "topmost": 0,
+  "pastBands": 0,
+  "pastTheDrawing": 0,
+  "wiresCrossed": {
+   "topmost": 0,
+   "pastBands": 0,
+   "pastTheDrawing": 0
+  },
+  "crossingsPastBands": [],
+  "crossingsOnlyPastLaces": {}
+ },
+ {
+  "picture": "estate, five files: Local Map",
+  "look": "reading",
+  "cards": 9,
+  "laces": 2,
+  "wires": 15,
+  "samples": 560,
+  "onBand": 539,
+  "onLace": 15,
+  "topmost": 0,
+  "pastBands": 0,
+  "pastTheDrawing": 0,
+  "wiresCrossed": {
+   "topmost": 0,
+   "pastBands": 0,
+   "pastTheDrawing": 0
+  },
+  "crossingsPastBands": [],
+  "crossingsOnlyPastLaces": {}
+ },
+ {
+  "picture": "estate, five files: Local Map, retained",
+  "look": "reading",
+  "cards": 20,
+  "laces": 2,
+  "wires": 58,
+  "samples": 2923,
+  "onBand": 2681,
+  "onLace": 0,
+  "topmost": 0,
+  "pastBands": 0,
+  "pastTheDrawing": 0,
+  "wiresCrossed": {
+   "topmost": 0,
+   "pastBands": 0,
+   "pastTheDrawing": 0
+  },
+  "crossingsPastBands": [],
+  "crossingsOnlyPastLaces": {}
+ },
+ {
+  "picture": "estate, chain: Local Map",
+  "look": "reading",
+  "cards": 5,
+  "laces": 0,
+  "wires": 10,
+  "samples": 467,
+  "onBand": 418,
+  "onLace": 0,
+  "topmost": 0,
+  "pastBands": 0,
+  "pastTheDrawing": 0,
+  "wiresCrossed": {
+   "topmost": 0,
+   "pastBands": 0,
+   "pastTheDrawing": 0
+  },
+  "crossingsPastBands": [],
+  "crossingsOnlyPastLaces": {}
+ },
+ {
+  "picture": "estate, chain: Local Map, retained",
+  "look": "reading",
+  "cards": 14,
+  "laces": 0,
+  "wires": 39,
+  "samples": 470,
+  "onBand": 332,
+  "onLace": 0,
+  "topmost": 0,
+  "pastBands": 0,
+  "pastTheDrawing": 0,
+  "wiresCrossed": {
+   "topmost": 0,
+   "pastBands": 0,
+   "pastTheDrawing": 0
+  },
+  "crossingsPastBands": [],
+  "crossingsOnlyPastLaces": {}
+ },
+ {
+  "picture": "the lanes case's",
+  "cards": 114,
+  "laces": 0,
+  "wires": 518,
+  "samples": 9628,
+  "onBand": 7086,
+  "onLace": 0,
+  "topmost": 0,
+  "pastBands": 0,
+  "pastTheDrawing": 0,
+  "wiresCrossed": {
+   "topmost": 0,
+   "pastBands": 0,
+   "pastTheDrawing": 0
+  },
+  "crossingsPastBands": [],
+  "crossingsOnlyPastLaces": {}
+ }
+]

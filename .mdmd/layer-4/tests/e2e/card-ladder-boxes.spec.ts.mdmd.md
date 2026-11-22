@@ -25,6 +25,8 @@ Since the three looks became Zoom Looks' default on 2026-11-13 ([Turn 3 of that 
 
 Since 2026-11-15 ([Turn 1 of that day's record](../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-15/2026-11-15.1.record.md#turn-1)) the cases that draw a picture at a zoom and compare its layout with the one drawn at reading scale choose "Cards keep their size" for Zoomed Out Fully: files only became its default that day, a design change by the owner's eye and a comparison with the cards' rows drawn as bars, and under it the overview look lays the picture out again for compact cards by design, which the three looks' case met as a card 19 units shorter with no row.
 
+Since 2026-11-22 the audit sets against a card what is drawn of each part: its box within every ancestor that clips, up to its card, and a part with nothing left is not drawn (`drawn`). Until then a part's own box was used, and the day's gate reported two code spans "outside their card": they stood in lines a two-line description's slot does not show, their boxes where those lines would be, 20 to 50 px under a short card's foot, with nothing painted there ([what was measured](../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-22/Probes/gate-six-cases/README.md)). A case of made parts holds it: one clipped wholly away is not reported, and one that runs out, alone or inside a clipping box that itself stands out, still is; on the audit as it was the first was reported 213.5 px outside its card.
+
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols

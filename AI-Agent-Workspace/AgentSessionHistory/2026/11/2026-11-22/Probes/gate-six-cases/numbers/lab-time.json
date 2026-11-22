@@ -1,0 +1,62 @@
+[
+ {
+  "scope": "repository, five files",
+  "stretches": {
+   "goto": 331,
+   "capture": 22589,
+   "loadBundleGraph": 180,
+   "evaluate": 8464,
+   "driftOf": 1,
+   "evaluate again": 7238
+  },
+  "cards": 114,
+  "drift": 0,
+  "same": true,
+  "pageLayoutMs": "3804"
+ },
+ {
+  "scope": "repository, chain",
+  "stretches": {
+   "goto": 281,
+   "capture": 26626,
+   "loadBundleGraph": 193,
+   "evaluate": 9626,
+   "driftOf": 1,
+   "evaluate again": 9080
+  },
+  "cards": 132,
+  "drift": 0,
+  "same": true,
+  "pageLayoutMs": "3465"
+ },
+ {
+  "scope": "estate, five files",
+  "stretches": {
+   "goto": 367,
+   "capture": 2110,
+   "loadBundleGraph": 2,
+   "evaluate": 103,
+   "driftOf": 0,
+   "evaluate again": 100
+  },
+  "cards": 20,
+  "drift": 0,
+  "same": true,
+  "pageLayoutMs": "466"
+ },
+ {
+  "scope": "estate, chain",
+  "stretches": {
+   "goto": 109,
+   "capture": 1517,
+   "loadBundleGraph": 2,
+   "evaluate": 53,
+   "driftOf": 0,
+   "evaluate again": 45
+  },
+  "cards": 14,
+  "drift": 0,
+  "same": true,
+  "pageLayoutMs": "320"
+ }
+]

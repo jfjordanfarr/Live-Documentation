@@ -1,0 +1,96 @@
+// Temporary probe, never committed here: what the page's hit test meets along the wires of the deck's pictures and the
+// lanes case's, by three rules: the topmost element (the reading until 2026-11-22), the topmost that is not a part of
+// the wires' drawing other than a wire (a band), and the topmost outside the wires' drawing altogether (through the
+// returning laces too, which are wires that take the pointer).
+import { test, type Page } from "@playwright/test";
+import fs from "node:fs";
+
+import { DECK_SCOPES } from "./scopes";
+import { LOCAL_MAP, arriveAtReadingSize, keepGrowingComposition, localMapSettled, localMapUrl, localRetainUrl } from "./still-picture";
+
+const OUT = process.env.GATE_PROBE_OUT ?? "/tmp";
+test.use({ viewport: { width: 1600, height: 1000 } });
+
+const meet = (page: Page) => page.evaluate(({ wires: wireSelector, card: cardSelector }) => {
+  const frame = document.querySelector("#main")!.getBoundingClientRect();
+  const wires = [...document.querySelectorAll<SVGGeometryElement>(wireSelector)];
+  const drawings = new Set(wires.map(wire => wire.ownerSVGElement));
+  const inDrawing = (element: Element): boolean => element instanceof SVGElement && drawings.has(element.ownerSVGElement);
+  const boxes = [...document.querySelectorAll<HTMLElement>(cardSelector)].map(card => ({ id: card.dataset.id, box: card.getBoundingClientRect() }));
+  const laceBoxes = [...document.querySelectorAll(`${wireSelector}.returning`)].map(lace => lace.getBoundingClientRect());
+  const counts = { wires: 0, samples: 0, onBand: 0, onLace: 0, topmost: 0, pastBands: 0, pastTheDrawing: 0 };
+  const crossed = { topmost: new Set<string>(), pastBands: new Set<string>(), pastTheDrawing: new Set<string>() };
+  const onlyPastLaces: Record<string, number> = {};
+  for (const wire of wires) {
+    const data = (wire as unknown as HTMLElement).dataset;
+    const { sourceId, targetId } = data;
+    if (!sourceId || !targetId || sourceId === targetId || getComputedStyle(wire).display === "none" || typeof wire.getTotalLength !== "function") continue;
+    const ctm = wire.getScreenCTM();
+    if (!ctm) continue;
+    counts.wires += 1;
+    const key = `${sourceId} | ${targetId} | ${data.sourceSymbol ?? ""} | ${data.targetSymbol ?? ""}`;
+    const foreign = (element: Element | undefined): string | null => {
+      const id = element?.closest<HTMLElement>(cardSelector)?.dataset.id;
+      return id && id !== sourceId && id !== targetId ? id : null;
+    };
+    const length = wire.getTotalLength();
+    for (let at = 0; at <= length; at += 8) {
+      const p = wire.getPointAtLength(at).matrixTransform(ctm);
+      if (p.x < frame.left || p.x > frame.right || p.y < frame.top || p.y > frame.bottom) continue;
+      counts.samples += 1;
+      // The whole stack is asked only where it can matter: within a card that is neither end, or within a lace's box.
+      const within = (r: DOMRect): boolean => p.x >= r.left - 8 && p.x <= r.right + 8 && p.y >= r.top - 8 && p.y <= r.bottom + 8;
+      const top = document.elementFromPoint(p.x, p.y);
+      if (!boxes.some(each => each.id !== sourceId && each.id !== targetId && within(each.box)) && !laceBoxes.some(within)) {
+        if (top && inDrawing(top) && !top.matches(wireSelector)) counts.onBand += 1;
+        continue;
+      }
+      const all = document.elementsFromPoint(p.x, p.y);
+      const pastBands = all.find(element => !(inDrawing(element) && !element.matches(wireSelector)));
+      const pastTheDrawing = all.find(element => !inDrawing(element));
+      if (all[0] && inDrawing(all[0]) && !all[0].matches(wireSelector)) counts.onBand += 1;
+      if (pastBands && inDrawing(pastBands)) counts.onLace += 1;
+      if (foreign(all[0])) { counts.topmost += 1; crossed.topmost.add(key); }
+      if (foreign(pastBands)) { counts.pastBands += 1; crossed.pastBands.add(`${key} over ${foreign(pastBands)}`); }
+      const under = foreign(pastTheDrawing);
+      if (under) {
+        counts.pastTheDrawing += 1;
+        crossed.pastTheDrawing.add(`${key} over ${under}`);
+        if (!foreign(pastBands)) onlyPastLaces[`${key} over ${under}`] = (onlyPastLaces[`${key} over ${under}`] ?? 0) + 1;
+      }
+    }
+  }
+  const map = document.querySelector<HTMLElement>("#map-container")!;
+  return {
+    look: map.dataset.look, cards: document.querySelectorAll(cardSelector).length, laces: document.querySelectorAll(`${wireSelector}.returning`).length, ...counts,
+    wiresCrossed: { topmost: crossed.topmost.size, pastBands: crossed.pastBands.size, pastTheDrawing: crossed.pastTheDrawing.size },
+    crossingsPastBands: [...crossed.pastBands].slice(0, 12), crossingsOnlyPastLaces: onlyPastLaces
+  };
+}, { wires: LOCAL_MAP.wires, card: LOCAL_MAP.card });
+
+test("probe: what the hit test meets along the wires of the deck's pictures", async ({ page }) => {
+  test.setTimeout(280_000);
+  await arriveAtReadingSize(page);
+  const found: unknown[] = [];
+  // The first three pictures were measured by the first run, which the lane's five minutes cut; this takes the rest.
+  let at = 0;
+  for (const run of DECK_SCOPES) {
+    for (const [state, url] of [["Local Map", localMapUrl(run.base, run.subject)], ["Local Map, retained", localRetainUrl(run.base, run.scope)]] as const) {
+      if (at++ < 3) continue;
+      await page.goto(url);
+      await page.waitForSelector("#map-connections .connection-path:not(.bundle-run)", { state: "attached", timeout: 30_000 });
+      await localMapSettled(page);
+      await page.waitForTimeout(900);
+      found.push({ picture: `${run.bundle}, ${run.scopeName}: ${state}`, ...(await meet(page)) });
+      fs.writeFileSync(`${OUT}/laces.json`, JSON.stringify(found, null, 1));
+    }
+  }
+  // The lanes case's picture: the repository's five files retained, on the growing composition its spec keeps.
+  await keepGrowingComposition(page);
+  await page.goto(localRetainUrl("/", DECK_SCOPES[0].scope));
+  await page.waitForSelector("#map-connections .connection-path:not(.bundle-run)", { state: "attached", timeout: 30_000 });
+  await localMapSettled(page);
+  await page.waitForTimeout(900);
+  found.push({ picture: "the lanes case's", ...(await meet(page)) });
+  fs.writeFileSync(`${OUT}/laces.json`, JSON.stringify(found, null, 1));
+});
