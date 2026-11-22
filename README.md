@@ -149,7 +149,7 @@ Google CodeWiki, Windsurf Codemaps and GitLab Knowledge Graph answer related que
 
 The map of a single repository is what works today, and it is still changing week to week. The World Map is younger. The 3D view takes a while to settle on a repository of a thousand files. [The vision](.mdmd/layer-1/vision.mdmd.md) says where it is going.
 
-This repository is built by one person working with AI coding agents, and the whole record of that work is kept in [AI-Agent-Workspace](AI-Agent-Workspace/README.md). Contributors run `npm run safe:commit` before committing.
+This repository is built by one person working with AI coding agents, and the whole record of that work is kept in [AI-Agent-Workspace](AI-Agent-Workspace/README.md). It is not open to contributions yet.
 
 ## License
 
