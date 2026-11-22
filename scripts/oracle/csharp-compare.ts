@@ -94,6 +94,8 @@ export interface DocumentationPairs {
   references: number;
   unresolved: number;
   ambiguous:  number;
+  /** References the compiler's grammar does not take (`unparsed`): a documentation ID such as `M:Lib.Store.Put(System.String)`, or `L::Calc`. */
+  unparsed:   number;
   /** C# file pairs a `cref` names a declaration across: a type or a member, never a namespace, never the file itself. */
   pairs:      string[];
   /** Of those, the pairs the compiler also binds through code, and the pairs only the author's word makes. */
@@ -120,7 +122,8 @@ export function documentationPairs(record: CompilerRecord): DocumentationPairs {
   return {
     references: crefs.length,
     unresolved: crefs.filter((reference) => reference.outcome === "unresolved").length,
-    ambiguous:  crefs.filter((reference) => reference.outcome !== "unresolved" && reference.outcome !== "resolved").length,
+    ambiguous:  crefs.filter((reference) => !["unresolved", "resolved", "unparsed"].includes(reference.outcome)).length,
+    unparsed:   crefs.filter((reference) => reference.outcome === "unparsed").length,
     pairs:      sorted,
     alsoCode:   sorted.filter((pair) => code.has(pair)),
     authorOnly: sorted.filter((pair) => !code.has(pair))
@@ -418,7 +421,7 @@ function printReport(report: CSharpReport, detail: boolean): void {
   console.log(`  the adapter's only: ${only.namesake.length + only.conditional.length + only.other.length}: a namesake ${only.namesake.length}, resting on a reference under a condition the default configuration does not meet ${only.conditional.length}, other ${only.other.length}`);
   console.log(`  the compiler's only: ${report.edges.compilerOnly.length}`);
   const doc = report.documentation;
-  console.log(`Documentation references (cref): ${doc.references}, resolved to nothing ${doc.unresolved} (a framework type among them, having no framework references), ambiguous ${doc.ambiguous}`);
+  console.log(`Documentation references (cref): ${doc.references}, resolved to nothing ${doc.unresolved} (a framework type among them, having no framework references), ambiguous ${doc.ambiguous}, not taken by its grammar ${doc.unparsed}`);
   console.log(`  C# file pairs they name: ${doc.pairs.length}; the compiler binds ${doc.alsoCode.length} of them through code too, the author's word alone makes ${doc.authorOnly.length}; the adapter's dependency lines draw ${doc.drawn.length}`);
   const relation = doc.relation;
   const pairs = new Set(doc.pairs);

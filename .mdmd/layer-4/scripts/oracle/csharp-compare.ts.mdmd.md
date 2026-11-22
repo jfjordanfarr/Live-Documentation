@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: `scripts/oracle/csharp-compare.ts`
 - Entry: command `oracle:csharp` of [`package.json`](../../package.json.mdmd.md)
-- Generated At: 2026-11-22T06:14:41.062Z
+- Generated At: 2026-11-22T06:21:06.985Z
 
 ## Authored
 ### Purpose
@@ -53,7 +53,7 @@ The file pairs documentation references make, set beside the pairs the code bind
 
 #### `documentationPairs (function)` {#symbol-documentationpairs-function}
 - Type: function
-- Source: [source](../../../../scripts/oracle/csharp-compare.ts#L109)
+- Source: [source](../../../../scripts/oracle/csharp-compare.ts#L111)
 - Returns: [`DocumentationPairs`](#symbol-documentationpairs-interface)
 - Parameters: `record`: [`CompilerRecord`](#symbol-compilerrecord)
 
@@ -64,14 +64,14 @@ opens one declares it.
 
 #### `compiledSources` {#symbol-compiledsources}
 - Type: function
-- Source: [source](../../../../scripts/oracle/csharp-compare.ts#L131)
+- Source: [source](../../../../scripts/oracle/csharp-compare.ts#L134)
 
 ##### `compiledSources` — Summary
 The files a compilation of the folder is made from: its C# files, and its project files, from which its references are read.
 
 #### `compileFolder` {#symbol-compilefolder}
 - Type: function
-- Source: [source](../../../../scripts/oracle/csharp-compare.ts#L150)
+- Source: [source](../../../../scripts/oracle/csharp-compare.ts#L153)
 - Returns: [`CompilerRecord`](#symbol-compilerrecord)
 
 ##### `compileFolder` — Summary
@@ -79,7 +79,7 @@ Runs the compiler program over the folder; `dotnet` must be on the path.
 
 #### `DOCUMENTATION_CAUSES` {#symbol-documentation_causes}
 - Type: const
-- Source: [source](../../../../scripts/oracle/csharp-compare.ts#L176)
+- Source: [source](../../../../scripts/oracle/csharp-compare.ts#L179)
 
 ##### `DOCUMENTATION_CAUSES` — Summary
 Why the reader and the compiler part on a documentation reference, declaration by declaration. Each reference the
@@ -88,21 +88,21 @@ declarations each names are then set side by side, a reference within its own fi
 
 #### `DocumentationRelation` {#symbol-documentationrelation}
 - Type: interface
-- Source: [source](../../../../scripts/oracle/csharp-compare.ts#L191)
+- Source: [source](../../../../scripts/oracle/csharp-compare.ts#L194)
 
 ##### `DocumentationRelation` — Summary
 The reader's documentation references set beside the compiler's, declaration by declaration.
 
 #### `ReaderReference` {#symbol-readerreference}
 - Type: interface
-- Source: [source](../../../../scripts/oracle/csharp-compare.ts#L202)
+- Source: [source](../../../../scripts/oracle/csharp-compare.ts#L205)
 
 ##### `ReaderReference` — Summary
 One reference as the reader read it: the file, the line of the symbol whose documentation writes it, the name as the Live Doc writes it, and the declarations it links.
 
 #### `writesUndeclaredParameter` {#symbol-writesundeclaredparameter}
 - Type: function
-- Source: [source](../../../../scripts/oracle/csharp-compare.ts#L217)
+- Source: [source](../../../../scripts/oracle/csharp-compare.ts#L220)
 - Parameters: `declared`: `ReadonlySet`
 
 ##### `writesUndeclaredParameter` — Summary
@@ -112,7 +112,7 @@ The oracle's own reading of the syntax, kept apart from the reader's.
 
 #### `compareDocumentation` {#symbol-comparedocumentation}
 - Type: function
-- Source: [source](../../../../scripts/oracle/csharp-compare.ts#L236)
+- Source: [source](../../../../scripts/oracle/csharp-compare.ts#L239)
 - Returns: [`DocumentationRelation`](#symbol-documentationrelation)
 - Parameters: `record`: [`CompilerRecord`](#symbol-compilerrecord)
 
@@ -126,14 +126,14 @@ through another.
 
 #### `CSharpReport` {#symbol-csharpreport}
 - Type: interface
-- Source: [source](../../../../scripts/oracle/csharp-compare.ts#L304)
+- Source: [source](../../../../scripts/oracle/csharp-compare.ts#L307)
 
 ##### `CSharpReport` — Summary
 The comparison of one folder: what was read, how its projects' references were, and the edges side by side.
 
 #### `compareCSharp` {#symbol-comparecsharp}
 - Type: function
-- Source: [source](../../../../scripts/oracle/csharp-compare.ts#L336)
+- Source: [source](../../../../scripts/oracle/csharp-compare.ts#L339)
 - Parameters: `kept`: [`CompilerRecord`](#symbol-compilerrecord)
 
 ##### `compareCSharp` — Summary

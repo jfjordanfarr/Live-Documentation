@@ -130,22 +130,8 @@ const DOCUMENTATION: Record<string, { references: string[]; alsoCode: string[]; 
       "App/Documented.cs → App/Runner.Text.cs",
       "App/Documented.cs → App/Runner.cs"
     ],
-    agree: 17,
-    differences: [
-      "the compiler resolves the reference to nothing, and the reader links it: App/Overloads.cs:33 <see> Mixer.Mix(Box{Mixer}): the compiler nothing; the reader App/Overloads.cs:10, App/Overloads.cs:11",
-      "the compiler resolves the reference to nothing, and the reader links it: App/Overloads.cs:33 <see> Mixer.Mix(Mixer,): the compiler nothing; the reader App/Overloads.cs:12",
-      "the compiler resolves the reference to nothing, and the reader links it: App/Overloads.cs:33 <see> Mixer.Out(ref Mixer): the compiler nothing; the reader App/Overloads.cs:19, App/Overloads.cs:20",
-      "the compiler resolves the reference to nothing, and the reader links it: App/Overloads.cs:34 <see> Mixer.Mixer(Box{Mixer}): the compiler nothing; the reader App/Overloads.cs:9",
-      "the reader links the declarations the compiler names and more: App/Overloads.cs:28 <see> Mixer.Mix(Mixer[]): the compiler App/Overloads.cs:10; the reader App/Overloads.cs:10, App/Overloads.cs:11",
-      "the reader links the declarations the compiler names and more: App/Overloads.cs:28 <see> Mixer.Mix(ref Mixer): the compiler App/Overloads.cs:11; the reader App/Overloads.cs:10, App/Overloads.cs:11",
-      "the reader links the declarations the compiler names and more: App/Overloads.cs:29 <see> Mixer.Grid(Mixer[,]): the compiler App/Overloads.cs:13; the reader App/Overloads.cs:13, App/Overloads.cs:14",
-      "the reader links the declarations the compiler names and more: App/Overloads.cs:29 <see> Mixer.Grid(Mixer[]): the compiler App/Overloads.cs:14; the reader App/Overloads.cs:13, App/Overloads.cs:14",
-      "the reader links the declarations the compiler names and more: App/Overloads.cs:30 <see> Mixer.Take(Box{Mixer}): the compiler App/Overloads.cs:15; the reader App/Overloads.cs:15, App/Overloads.cs:16",
-      "the reader links the declarations the compiler names and more: App/Overloads.cs:30 <see> Mixer.Take(Box{Box{Mixer}}): the compiler App/Overloads.cs:16; the reader App/Overloads.cs:15, App/Overloads.cs:16",
-      "the reader links the declarations the compiler names and more: App/Overloads.cs:31 <see> Mixer.Out(out Mixer): the compiler App/Overloads.cs:19; the reader App/Overloads.cs:19, App/Overloads.cs:20",
-      "the reader links the declarations the compiler names and more: App/Overloads.cs:31 <see> Mixer.Out(Mixer): the compiler App/Overloads.cs:20; the reader App/Overloads.cs:19, App/Overloads.cs:20",
-      "the reader reads the reference and resolves it to nothing: App/Overloads.cs:31 <see> Mixer.Opt(Mixer, Mixer[]): the compiler App/Overloads.cs:18; the reader nothing"
-    ]
+    agree: 30,
+    differences: []
   },
   "programs/csharp/rosetta":  { references: ["src/Processor/Processor.cs:33 <exception> ArgumentException: unresolved"], alsoCode: [], authorOnly: [], drawn: [], related: [], agree: 1, differences: [] },
   "programs/csharp/webforms": { references: [], alsoCode: [], authorOnly: [], drawn: [], related: [], agree: 0, differences: [] }

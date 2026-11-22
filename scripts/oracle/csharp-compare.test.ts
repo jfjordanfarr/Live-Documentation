@@ -88,6 +88,7 @@ describe("the pairs a documentation reference makes", () => {
       references: 6,
       unresolved: 1,
       ambiguous:  1,
+      unparsed:   0,
       pairs:      ["A.cs → B.cs", "A.cs → C.Part.cs", "A.cs → C.cs", "A.cs → E.cs", "A.cs → F.cs"],
       alsoCode:   ["A.cs → B.cs"],
       authorOnly: ["A.cs → C.Part.cs", "A.cs → C.cs", "A.cs → E.cs", "A.cs → F.cs"]
@@ -169,6 +170,6 @@ describe("the pairs a documentation reference makes", () => {
 
   it("reads a record written before documentation references were kept as holding none", () => {
     const record: CompilerRecord = { tool: "stand-in", files: 0, names: 0, bound: 0, projects: [], declared: {}, edges: [] };
-    expect(documentationPairs(record)).toEqual({ references: 0, unresolved: 0, ambiguous: 0, pairs: [], alsoCode: [], authorOnly: [] });
+    expect(documentationPairs(record)).toEqual({ references: 0, unresolved: 0, ambiguous: 0, unparsed: 0, pairs: [], alsoCode: [], authorOnly: [] });
   });
 });

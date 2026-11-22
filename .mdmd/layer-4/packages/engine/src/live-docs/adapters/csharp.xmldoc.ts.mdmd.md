@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/engine/src/live-docs/adapters/csharp.xmldoc.ts`
-- Generated At: 2026-11-22T06:14:35.400Z
+- Generated At: 2026-11-22T06:21:01.321Z
 
 ## Authored
 ### Purpose
@@ -236,7 +236,7 @@ Normalized reference (e.g., "MyNamespace.MyClass")
 
 #### `renderCrefText` {#symbol-rendercreftext}
 - Type: function
-- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/csharp.xmldoc.ts#L562)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/csharp.xmldoc.ts#L563)
 
 ##### `renderCrefText` — Summary
 Renders a cref target as display text, optionally with custom inner text.
@@ -250,7 +250,7 @@ Formatted reference text
 
 #### `hasStructuredContent` {#symbol-hasstructuredcontent}
 - Type: function
-- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/csharp.xmldoc.ts#L577)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/csharp.xmldoc.ts#L578)
 - Parameters: `doc`: [`SymbolDocumentation`](../coreTypes.ts.mdmd.md#symbol-symboldocumentation)
 
 ##### `hasStructuredContent` — Summary

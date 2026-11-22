@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `tests/integration/programs/csharp/names/App/Overloads.cs`
-- Generated At: 2026-11-22T06:14:44.166Z
+- Generated At: 2026-11-22T06:21:10.878Z
 
 ## Authored
 ### Purpose
@@ -105,7 +105,7 @@ A generic type for `Mixer`'s overloads to take.
 Names one overload each, within its own file, as the compiler resolves it:
 `Mixer.Mix(Mixer[])`, `Mixer.Mix(ref Mixer)`, `Mixer.Mix(Mixer, Mixer)`,
 `Mixer.Grid(Mixer[,])`, `Mixer.Grid(Mixer[])`,
-`Mixer.Take(Box<Mixer>)`, `Mixer.Take(Box<Box{Mixer>})`,
+`Mixer.Take(Box<Mixer>)`, `Mixer.Take(Box<Box<Mixer>>)`,
 `Mixer.Opt(Mixer, Mixer[])`, `Mixer.Out(out Mixer)`, `Mixer.Out(Mixer)`,
 `Mixer.Mixer(Mixer)`; and names none where no overload has the parameters written:
 `Mixer.Mix(Box<Mixer>)`, `Mixer.Mix(Mixer,)`, `Mixer.Out(ref Mixer)`,
@@ -114,30 +114,20 @@ Names one overload each, within its own file, as the compiler resolves it:
 ##### `MixerNotes` — Links
 - `M::Mixer`
 - [`Mixer.Grid(Mixer[,])`](#symbol-grid-method-overload-1)
-- [`Mixer.Grid(Mixer[,])`](#symbol-grid-method-overload-2)
-- [`Mixer.Grid(Mixer[])`](#symbol-grid-method-overload-1)
 - [`Mixer.Grid(Mixer[])`](#symbol-grid-method-overload-2)
-- [`Mixer.Mix(Box<Mixer>)`](#symbol-mix-method-overload-1)
-- [`Mixer.Mix(Box<Mixer>)`](#symbol-mix-method-overload-2)
+- `Mixer.Mix(Box<Mixer>)`
 - [`Mixer.Mix(Mixer, Mixer)`](#symbol-mix-method-overload-3)
-- [`Mixer.Mix(Mixer,)`](#symbol-mix-method-overload-3)
+- `Mixer.Mix(Mixer,)`
 - [`Mixer.Mix(Mixer[])`](#symbol-mix-method-overload-1)
-- [`Mixer.Mix(Mixer[])`](#symbol-mix-method-overload-2)
-- [`Mixer.Mix(ref Mixer)`](#symbol-mix-method-overload-1)
 - [`Mixer.Mix(ref Mixer)`](#symbol-mix-method-overload-2)
-- [`Mixer.Mixer(Box<Mixer>)`](#symbol-mixer-constructor-overload-2)
+- `Mixer.Mixer(Box<Mixer>)`
 - [`Mixer.Mixer(Mixer)`](#symbol-mixer-constructor-overload-2)
-- `Mixer.Opt(Mixer, Mixer[])`
-- [`Mixer.Out(Mixer)`](#symbol-out-method-overload-1)
+- [`Mixer.Opt(Mixer, Mixer[])`](#symbol-opt-method-overload-2)
 - [`Mixer.Out(Mixer)`](#symbol-out-method-overload-2)
 - [`Mixer.Out(out Mixer)`](#symbol-out-method-overload-1)
-- [`Mixer.Out(out Mixer)`](#symbol-out-method-overload-2)
-- [`Mixer.Out(ref Mixer)`](#symbol-out-method-overload-1)
-- [`Mixer.Out(ref Mixer)`](#symbol-out-method-overload-2)
-- [`Mixer.Take(Box<Box{Mixer>})`](#symbol-take-method-overload-1)
-- [`Mixer.Take(Box<Box{Mixer>})`](#symbol-take-method-overload-2)
+- `Mixer.Out(ref Mixer)`
+- [`Mixer.Take(Box<Box<Mixer>>)`](#symbol-take-method-overload-2)
 - [`Mixer.Take(Box<Mixer>)`](#symbol-take-method-overload-1)
-- [`Mixer.Take(Box<Mixer>)`](#symbol-take-method-overload-2)
 <!-- LIVE-DOC:END Public Symbols -->
 
 <!-- LIVE-DOC:BEGIN Dependencies -->

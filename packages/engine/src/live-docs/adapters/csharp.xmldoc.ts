@@ -547,7 +547,8 @@ export function normalizeCrefTarget(value: string): string {
 
   normalized = normalized.replace(/^[A-Z]:/, "");
   normalized = normalized.replace(/#ctor/g, ".ctor");
-  normalized = normalized.replace(/\{([^}]+)\}/g, "<$1>");
+  // A brace in a `cref` is only ever a type's arguments, nested or not: `Box{Box{T}}` is `Box<Box<T>>`.
+  normalized = normalized.replace(/\{/g, "<").replace(/\}/g, ">");
 
   return normalized;
 }
