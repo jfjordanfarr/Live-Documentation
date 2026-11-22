@@ -2839,920 +2839,1863 @@
   "reason": "a wire of file 1 names file 34",
   "fileSha256": "87cd5cee4cc863d2b95846e7d73ff8f1fcb6e21b6b845e518cfba3f74a55664e"
  },
- "its-own/after-deflate-end.fpk": {
+ "python-reader-own/after-deflate-end.fpk": {
   "reads": false,
   "readOk": false,
   "reason": "the head is not a whole raw deflate stream",
   "fileSha256": "f322c4d1371a03a44cf03bd1466b35a52ad4eb9a8f844f4eb85408c6265554f8"
  },
- "its-own/after-end.txt": {
+ "python-reader-own/after-end.txt": {
   "reads": false,
   "reason": "lines after the end line",
   "fileSha256": "1a3fb9cd6bd1cf6467324e11427bfbdccc35189c9b00a967c1cbce5dc63c95aa"
  },
- "its-own/array-1.txt": {
+ "python-reader-own/array-1.txt": {
   "reads": false,
   "reason": "line 16 is not written as the text form writes it: \"[\\\"src/a.ts\\\",\\\"file\\\",4,\\\"implementation\\\",\\\"2026-11-22T00:00:00.000Z\\\"]\\n[\\\"src/a.ts\\\",\\\"authored\\\",\\\"### Purpose\\\\nSays hello.\\\\n\\\\n##\"",
   "fileSha256": "657aaaf2f8cc3599b33e0ddb08b7430060a605621505de7b3e8544df9ea10b04"
  },
- "its-own/bad-utf8.txt": {
+ "python-reader-own/bad-utf8.txt": {
   "reads": false,
   "reason": "the text holds text that is not UTF-8",
   "fileSha256": "9268c045cf560a30cefd83d1d5f8883b5c299ae3994262b305e91e73dc99389b"
  },
- "its-own/blank-after-end.txt": {
+ "python-reader-own/blank-after-end.txt": {
   "reads": false,
   "reason": "lines after the end line",
   "fileSha256": "18a89a9488c2d175d350b887b9507d1475db85981409978ed93c7c43a34b5486"
  },
- "its-own/bom.txt": {
+ "python-reader-own/bom.txt": {
   "reads": false,
   "reason": "line 1 is not JSON",
   "fileSha256": "dfba97897a845b88c552dbb64d7ae24321fe025b957205c02be11783a1f6d1f4"
  },
- "its-own/bomb-64MiB-zeros.fpk": {
+ "python-reader-own/bomb-64MiB-zeros.fpk": {
   "reads": false,
   "readOk": false,
   "reason": "the sections declare 67108864 bytes in all from a file of 66108, past 5279488",
   "fileSha256": "4d087edbd6228d49c2e369bfd12ae38d9d10bca6b7286c380ee49b91ca72d585"
  },
- "its-own/cited-by-link-drive.fpk": {
+ "python-reader-own/cited-by-link-drive.fpk": {
   "reads": false,
   "readOk": false,
   "reason": "the facts of \"src/a.ts\": a citing link \"Z:/x\" names an absolute place",
   "fileSha256": "10c05a9baf1d6fff403b8c12cf41b23acd1ef9140abd0f123ecf03db9f7caa4d"
  },
- "its-own/crlf-mangled-signature.fpk": {
+ "python-reader-own/crlf-mangled-signature.fpk": {
   "reads": false,
   "readOk": false,
   "reason": "these bytes do not begin with the layout's signature",
   "fileSha256": "2e3a0ec00f85f838ca72a35fec6d55c85e4e693fa439b22dbf936aa7a8d5c802"
  },
- "its-own/crlf.txt": {
+ "python-reader-own/crlf.txt": {
   "reads": false,
   "reason": "line 1 is not written as the text form writes it: \"[null,\\\"format\\\",\\\"fact-pack\\\",1]\\r\"",
   "fileSha256": "6e2491f63b9d263d59d224820fd66cfdb82ad440c2f1fdfe859aa80c401b3572"
  },
- "its-own/declarer-link-abs.fpk": {
+ "python-reader-own/declarer-link-abs.fpk": {
   "reads": false,
   "readOk": false,
   "reason": "the facts of \"src/a.ts\": an entry's declarer link \"file:///p\" names an absolute place",
   "fileSha256": "f7767354dd5b972c8897be117d67ff7f1f20b56663527565d677ab3a1c191c35"
  },
- "its-own/deflate-cut.fpk": {
+ "python-reader-own/deflate-cut.fpk": {
   "reads": false,
   "readOk": false,
   "reason": "the head is not a whole raw deflate stream",
   "fileSha256": "e729730b4577bd83bc56d4ca3c4e72fa3fe4d6fb14f0cc34ada31d48734a9a3b"
  },
- "its-own/dep-anchor-no-target.fpk": {
+ "python-reader-own/dep-anchor-no-target.fpk": {
   "reads": false,
   "readOk": false,
   "reason": "the facts of \"src/a.ts\": an anchor without a target",
   "fileSha256": "ac3d5914f4de03d4e676d8a84300598b66c5b4e5b33a63f06c355dabbd88be3b"
  },
- "its-own/dep-link-absolute.fpk": {
+ "python-reader-own/dep-link-absolute.fpk": {
   "reads": false,
   "readOk": false,
   "reason": "the facts of \"src/a.ts\": a link \"/etc/passwd\" names an absolute place",
   "fileSha256": "091c5d6ef557b8dae07592d45567c784e321b61345742e0af262e5cd620189c4"
  },
- "its-own/dep-link-backslash.fpk": {
+ "python-reader-own/dep-link-backslash.fpk": {
   "reads": false,
   "readOk": false,
   "reason": "the facts of \"src/a.ts\": a link \"\\\\\\\\server\\\\x\" names an absolute place",
   "fileSha256": "083b7b3f1b37206a4510b111f50823b49699bfffa895c51ab534fb8bc28ba7d7"
  },
- "its-own/dep-link-drive.fpk": {
+ "python-reader-own/dep-link-drive.fpk": {
   "reads": false,
   "readOk": false,
   "reason": "the facts of \"src/a.ts\": a link \"c:x\" names an absolute place",
   "fileSha256": "b338526e1d6ae967903175d33f26c4ee16e2369810d79757efbaaa70ef5f7dd2"
  },
- "its-own/dep-link-file-scheme.fpk": {
+ "python-reader-own/dep-link-file-scheme.fpk": {
   "reads": false,
   "readOk": false,
   "reason": "the facts of \"src/a.ts\": a link \"FiLe:x\" names an absolute place",
   "fileSha256": "b855f5d13999f473cb5e657740acdf695a41bd2c7fea20b89e83fa9564c2c0d5"
  },
- "its-own/dep-target-dot.fpk": {
+ "python-reader-own/dep-target-dot.fpk": {
   "reads": false,
   "readOk": false,
   "reason": "the facts of \"src/a.ts\": a target \"./b.ts\" is not a plain relative path",
   "fileSha256": "a267d4fc7e0124b2768b91b90a89f8edae2594ad2a46fe39e58be85c083dd244"
  },
- "its-own/dep-target-dotdot.fpk": {
+ "python-reader-own/dep-target-dotdot.fpk": {
   "reads": false,
   "readOk": false,
   "reason": "the facts of \"src/a.ts\": a target \"src/../b.ts\" is not a plain relative path",
   "fileSha256": "ffe4317c92039f627d286b55e93fb6143e8f8ef414d4ae14685e33e671a3f7db"
  },
- "its-own/dep-target-empty.fpk": {
+ "python-reader-own/dep-target-empty.fpk": {
   "reads": false,
   "readOk": false,
   "reason": "the facts of \"src/a.ts\": a target \"\" is not a relative path",
   "fileSha256": "6d8cb81b7716c2b69a83330ded84671d747c87fc7bcc6734d9cd5c58ce42ef12"
  },
- "its-own/empty-text-bom.txt": {
+ "python-reader-own/empty-text-bom.txt": {
   "reads": false,
   "reason": "line 1 is not JSON",
   "fileSha256": "82ded93468075014ad961fa78d64571026d2e58c7bf2ca78519a6eb8d3f7e5ea"
  },
- "its-own/empty.fpk": {
+ "python-reader-own/empty.fpk": {
   "reads": false,
   "readOk": false,
   "reason": "these bytes do not begin with the layout's signature",
   "fileSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
  },
- "its-own/empty.txt": {
+ "python-reader-own/empty.txt": {
   "reads": false,
   "reason": "the text does not end with a line break",
   "fileSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
  },
- "its-own/end-count-wrong.fpk": {
+ "python-reader-own/end-count-wrong.fpk": {
   "reads": false,
   "readOk": false,
   "reason": "the end does not count the sections before it",
   "fileSha256": "22be3f80d8051d8c1030e34b8d67634959b0e4e7e38f41ed81ae1d532fa8116f"
  },
- "its-own/end-count-wrong.txt": {
+ "python-reader-own/end-count-wrong.txt": {
   "reads": false,
   "reason": "the end line does not count the 3 files",
   "fileSha256": "8e0b842d5a7e6bc520ba9ded77301727749ea3936eec376858f6fb7a212867bb"
  },
- "its-own/end-raw-33.fpk": {
+ "python-reader-own/end-raw-33.fpk": {
   "reads": false,
   "readOk": false,
   "reason": "the end does not count the sections before it",
   "fileSha256": "1a6732faa3d5ac2ac9022becb5c0dda78dc46c82c4e62fdf475f786424bab959"
  },
- "its-own/entry-before-authored.txt": {
+ "python-reader-own/entry-before-authored.txt": {
   "reads": false,
   "reason": "line 6 is not \"src/a.ts\"'s authored words",
   "fileSha256": "4904cde0ef4e9441b5be893aaf5c0b7167c15b39002f6c4c685f15e5b761fb8c"
  },
- "its-own/entry-link-without-name.fpk": {
+ "python-reader-own/entry-link-without-name.fpk": {
   "reads": false,
   "readOk": false,
   "reason": "the facts of \"src/a.ts\": an entry's symbol link without its symbol",
   "fileSha256": "9dacb0fe9e23f5bd1798090373b6459c8bf3370a69ae109ed4e42c28a4083174"
  },
- "its-own/entry-reason-6.fpk": {
+ "python-reader-own/entry-reason-6.fpk": {
   "reads": false,
   "readOk": false,
   "reason": "the facts of \"src/a.ts\": an entry's reason is not one the layout names",
   "fileSha256": "ed0c3bbcb701adce6e9c5085e659d317b1d1faa4f962412025fe7c91837376b8"
  },
- "its-own/entry-symbol-link-abs.fpk": {
+ "python-reader-own/entry-symbol-link-abs.fpk": {
   "reads": false,
   "readOk": false,
   "reason": "the facts of \"src/a.ts\": an entry's link \"/main\" names an absolute place",
   "fileSha256": "eb33d904e2092e2a6b8c772fc81b0b31eb2290915a0bdc9ab4be77934459cc1d"
  },
- "its-own/escaped-letter.txt": {
+ "python-reader-own/escaped-letter.txt": {
   "reads": false,
   "reason": "line 5 is not written as the text form writes it: \"[null,\\\"format\\\",\\\"fact-pack\\\",1]\\n[null,\\\"location\\\",\\\".mdmd\\\",\\\"layer-4\\\",\\\".mdmd.md\\\"]\\n[null,\\\"scanner\\\",\\\"\\\\u0061 test 1.0\\\"]\\n[null,\\\"l\"",
   "fileSha256": "d5d2d11833202764170cc147c7cfe82a6baff2edf87e588ee3d9891e1637006e"
  },
- "its-own/escaped-slash.txt": {
+ "python-reader-own/escaped-slash.txt": {
   "reads": false,
   "reason": "line 5 is not written as the text form writes it: \"[null,\\\"format\\\",\\\"fact-pack\\\",1]\\n[null,\\\"location\\\",\\\".mdmd\\\",\\\"layer-4\\\",\\\".mdmd.md\\\"]\\n[null,\\\"scanner\\\",\\\"a test 1.0\\\"]\\n[null,\\\"left-o\"",
   "fileSha256": "b400b3410e43245e2f9a8e08f303b830fc4dcb14ea2b1bdce81e6ec2d7390b2c"
  },
- "its-own/extension-slash.fpk": {
+ "python-reader-own/extension-slash.fpk": {
   "reads": false,
   "readOk": false,
   "reason": "the location's extension holds a slash",
   "fileSha256": "df1d082b71e193d5773c20bb79992e7ea9e081bdee4bd22efd93e127dfdccfff"
  },
- "its-own/extension-slash.txt": {
+ "python-reader-own/extension-slash.txt": {
   "reads": false,
   "reason": "the location's extension holds a slash",
   "fileSha256": "c56da90cc79f32b990dc43df1ecf1b54260ea65a85f3be5addc795ac6f83599b"
  },
- "its-own/false-for-absent.txt": {
+ "python-reader-own/false-for-absent.txt": {
   "reads": false,
   "reason": "line 16 is not written as the text form writes it: \"[\\\"src/a.ts\\\",\\\"file\\\",4,\\\"implementation\\\",\\\"2026-11-22T00:00:00.000Z\\\"]\\n[\\\"src/a.ts\\\",\\\"authored\\\",\\\"### Purpose\\\\nSays hello.\\\\n\\\\n##\"",
   "fileSha256": "18b2adbca67a2c2952e989de7826b085e8ac81ece661aff2363a00f84598bb99"
  },
- "its-own/files-out-of-order.txt": {
+ "python-reader-own/files-out-of-order.txt": {
   "reads": false,
   "reason": "the files are not in path order at \"src/0.ts\"",
   "fileSha256": "d0aa0b36cdc1c3d4df3b930b820a6b89eb540ee6f273e201eff61eff3fcffb22"
  },
- "its-own/flags-1M.fpk": {
+ "python-reader-own/flags-1M.fpk": {
   "reads": true,
   "textSha256": "3f4626601c8e8ac00cfa6b7c77c43f1e65a32e05e5b3e48739ce3547b31bbd68",
   "textBytes": 4002560,
   "name": "e889b0e5ce4bbc94dfc05c77820590dfcd75c214ad6adb499300e9872fda5b33",
   "fileSha256": "c570aea29eb2d98b25167ec8706518d99d07fe5990fcbecd7fe662d488076a54"
  },
- "its-own/flags-not-list.txt": {
+ "python-reader-own/flags-not-list.txt": {
   "reads": false,
   "reason": "the facts of \"src/a.ts\": a symbol's flags is not a list",
   "fileSha256": "f0ad18697016cceae32d1bb200c5566bdb3e3c2c0063e936d9933c8789f1ab86"
  },
- "its-own/format-name-other.txt": {
+ "python-reader-own/format-name-other.txt": {
   "reads": false,
   "reason": "line 1 is not written as the text form writes it: \"[null,\\\"format\\\",\\\"fact-park\\\",1]\"",
   "fileSha256": "5f972cebdd159a81e089fd559a16c14599d479c2b62b95f653f41268a17cc78d"
  },
- "its-own/good-300.fpk": {
+ "python-reader-own/good-300.fpk": {
   "reads": true,
   "textSha256": "a16b5a9342d8b24c99b1feccb1503d3e5d45835acf306f4ed3f8b72d4c785945",
   "textBytes": 31096,
   "name": "9f1c71f6ae7e79b8c601d8c2d768817c7bbb94e30ab810ce80446838d223aa84",
   "fileSha256": "d6abdd1835769bf57d178b34e22cfa5de3d610a4da3c08177ef6c9a10901a016"
  },
- "its-own/good-300.txt": {
+ "python-reader-own/good-300.txt": {
   "reads": true,
   "name": "9f1c71f6ae7e79b8c601d8c2d768817c7bbb94e30ab810ce80446838d223aa84",
   "fileSha256": "a16b5a9342d8b24c99b1feccb1503d3e5d45835acf306f4ed3f8b72d4c785945"
  },
- "its-own/hash-mismatch.fpk": {
+ "python-reader-own/hash-mismatch.fpk": {
   "reads": false,
   "readOk": false,
   "reason": "strings does not match its hash",
   "fileSha256": "1d28c291be389fa978c7160e209ad01eefbb9b0118a998a54442f885f03577e0"
  },
- "its-own/head-bad-utf8.fpk": {
+ "python-reader-own/head-bad-utf8.fpk": {
   "reads": false,
   "readOk": false,
   "reason": "the head holds text that is not UTF-8",
   "fileSha256": "a3929b240f8b5754d8dc9db625e5bb1f243565dd91db9f737dce0a1d58170765"
  },
- "its-own/head-count-1.fpk": {
+ "python-reader-own/head-count-1.fpk": {
   "reads": false,
   "readOk": false,
   "reason": "the first section is not the head",
   "fileSha256": "f4a4ff0a40e33cf6c8f120947d1a256ceb6655b16593e49310777400276d3f36"
  },
- "its-own/head-leftout-count-too-big.fpk": {
+ "python-reader-own/head-leftout-count-too-big.fpk": {
   "reads": false,
   "readOk": false,
   "reason": "the head claims 5 items in 3 bytes",
   "fileSha256": "c621ab88896bceae043d27e3d714d54f49386d71a4fed53b21cc6bbce2a81417"
  },
- "its-own/head-leftout-cut.fpk": {
+ "python-reader-own/head-leftout-cut.fpk": {
   "reads": false,
   "readOk": false,
   "reason": "the head ends early",
   "fileSha256": "db3e0f6015315726bc2b6ccf178030ac2366af2ffa26ee38b2b84769af2f633a"
  },
- "its-own/head-not-first.fpk": {
+ "python-reader-own/head-not-first.fpk": {
   "reads": false,
   "readOk": false,
   "reason": "the first section is not the head",
   "fileSha256": "e676c67b8526fab17d0de8273f98f6dee9ed6e23a14c029a3040c2b813c1fe06"
  },
- "its-own/head-root-file.fpk": {
+ "python-reader-own/head-root-file.fpk": {
   "reads": false,
   "readOk": false,
   "reason": "the location's root \"file:x\" is not a relative path",
   "fileSha256": "0cc4af9719867f7ebfff3187ae409b185a16c08995672b0ebe1651b959833e28"
  },
- "its-own/head-trailing-byte.fpk": {
+ "python-reader-own/head-trailing-byte.fpk": {
   "reads": false,
   "readOk": false,
   "reason": "the head has 1 bytes after its last fact",
   "fileSha256": "a701f96784319a5e3deae6699df2cc667bc4f2383e78d86e2ea4dc75e329d571"
  },
- "its-own/head-varint-above-u32.fpk": {
+ "python-reader-own/head-varint-above-u32.fpk": {
   "reads": false,
   "readOk": false,
   "reason": "the head holds a number past 2^32 - 1",
   "fileSha256": "c1996b1c39a8427795214577a18201c84eadba9d0ab6bebe3d4374ece69013f7"
  },
- "its-own/head-varint-not-shortest.fpk": {
+ "python-reader-own/head-varint-not-shortest.fpk": {
   "reads": false,
   "readOk": false,
   "reason": "the head holds a number written longer than it needs",
   "fileSha256": "b5a1ce5257d3e8fb372fcdf4d52534a86efe36beca945bea97e1dae8f2c8a0a5"
  },
- "its-own/head-varint-six-bytes.fpk": {
+ "python-reader-own/head-varint-six-bytes.fpk": {
   "reads": false,
   "readOk": false,
   "reason": "the head holds a number longer than five bytes",
   "fileSha256": "95d14dd32b084e9d70f7b45beca76e7dfa6c71a660bb60abb37ab5c3f70b67f1"
  },
- "its-own/head-version-0.fpk": {
+ "python-reader-own/head-version-0.fpk": {
   "reads": false,
   "readOk": false,
   "reason": "the layout's version is 0; this reader reads 1",
   "fileSha256": "3cd4bab281a6692888706ce44c2c2a0997fd466fcbf049604ed37a09cfba33c8"
  },
- "its-own/head-version-2.fpk": {
+ "python-reader-own/head-version-2.fpk": {
   "reads": false,
   "readOk": false,
   "reason": "the layout's version is 2; this reader reads 1",
   "fileSha256": "e263c41171afa309211b63c57ca3363cc67145e7595530424942b387162eeae4"
  },
- "its-own/header-cut.fpk": {
+ "python-reader-own/header-cut.fpk": {
   "reads": false,
   "readOk": false,
   "reason": "the file stops before its end: a stopped write, which `resumeFrom` can go on from",
   "fileSha256": "2983b2da0a7cf2b6ba3f408b13d06baf9523a902f0d2e15193caf839775086fd"
  },
- "its-own/huge-int.txt": {
+ "python-reader-own/huge-int.txt": {
   "reads": false,
   "reason": "the facts of \"src/a.ts\": a source line is not a whole number from 0 to 2^32 - 1",
   "fileSha256": "825d6ce2e6e2ae091665acb49882a540b0cbd01cda8c2602fafb83ca64e69fba"
  },
- "its-own/inflates-fewer.fpk": {
+ "python-reader-own/inflates-fewer.fpk": {
   "reads": false,
   "readOk": false,
   "reason": "the head inflates to 84 bytes, not the 85 it declares",
   "fileSha256": "7875b8ff4b7fd206860005e967ea88837219d7845dd9e8a85c4609a89581fb36"
  },
- "its-own/inflates-more.fpk": {
+ "python-reader-own/inflates-more.fpk": {
   "reads": false,
   "readOk": false,
   "reason": "the head inflates past the 85 bytes it declares",
   "fileSha256": "43f11f1719c6a2017a90ba6f9eceba2acf0bfb35c3a9365617eec524426308c9"
  },
- "its-own/kind-0.fpk": {
+ "python-reader-own/kind-0.fpk": {
   "reads": false,
   "readOk": false,
   "reason": "a section of kind 0 at byte 135, which the layout does not define",
   "fileSha256": "8a1e9a7973f38ed426dfc994c744559752631d8f9f3d83bbe512e9b8350cb9ed"
  },
- "its-own/kind-7.fpk": {
+ "python-reader-own/kind-7.fpk": {
   "reads": false,
   "readOk": false,
   "reason": "a section of kind 7 at byte 135, which the layout does not define",
   "fileSha256": "840067e53ac4d084d98d44a73309d85660f3a04d3b0e706ff8cb1a04dd57ae4e"
  },
- "its-own/line-true.txt": {
+ "python-reader-own/line-true.txt": {
   "reads": false,
   "reason": "the facts of \"src/a.ts\": a source line is not a whole number from 0 to 2^32 - 1",
   "fileSha256": "f18db29d493ba66a6b97ce4e2c701ab1852e554e34d908a77e1d494d1bb3953b"
  },
- "its-own/link-absolute.txt": {
+ "python-reader-own/link-absolute.txt": {
   "reads": false,
   "reason": "the facts of \"src/a.ts\": a citing link \"/README.md\" names an absolute place",
   "fileSha256": "55288aba09b85051db53de57d72a3305011ba54d5637ad31d214b3e9bba9ce20"
  },
- "its-own/lone-surrogate-escape.txt": {
+ "python-reader-own/lone-surrogate-escape.txt": {
   "reads": false,
   "reason": "the facts of \"src/a.ts\": a section's line holds a lone surrogate, which UTF-8 cannot carry",
   "fileSha256": "8d832a103fa0da17b8fc5cc24d00b4213030d0de911057387d970f1fdbd2167b"
  },
- "its-own/member-not-had.txt": {
+ "python-reader-own/member-not-had.txt": {
   "reads": false,
   "reason": "line 16 is not written as the text form writes it: \"[\\\"src/a.ts\\\",\\\"file\\\",4,\\\"implementation\\\",\\\"2026-11-22T00:00:00.000Z\\\"]\\n[\\\"src/a.ts\\\",\\\"authored\\\",\\\"### Purpose\\\\nSays hello.\\\\n\\\\n##\"",
   "fileSha256": "6ca2635f2727409282c53be4f551499a2b11caeab720b0da1fccebc355f4eaca"
  },
- "its-own/member-twice.txt": {
+ "python-reader-own/member-twice.txt": {
   "reads": false,
   "reason": "line 16 is not written as the text form writes it: \"[\\\"src/a.ts\\\",\\\"file\\\",4,\\\"implementation\\\",\\\"2026-11-22T00:00:00.000Z\\\"]\\n[\\\"src/a.ts\\\",\\\"authored\\\",\\\"### Purpose\\\\nSays hello.\\\\n\\\\n##\"",
   "fileSha256": "82365d9160e4fa4fd28f13f2aaba4c1d5a44560e7e9d1ba8a17353cde703c6fb"
  },
- "its-own/members-reordered.txt": {
+ "python-reader-own/members-reordered.txt": {
   "reads": false,
   "reason": "line 21 is not written as the text form writes it: \"[\\\"src/b.ts\\\",\\\"file\\\",4,null,null]\\n[\\\"src/b.ts\\\",\\\"authored\\\",\\\"### Purpose\\\\n_Pending authored purpose_\\\"]\\n[\\\"src/b.ts\\\",\\\"symbol\\\",{\"",
   "fileSha256": "9c09e697eed555f47dd8fef8814ce185ebe5dcd72bb3ab59539ffb3d6f8db7b1"
  },
- "its-own/missing-end.txt": {
+ "python-reader-own/missing-end.txt": {
   "reads": false,
   "reason": "the text stops before its end line",
   "fileSha256": "420070ea885373775ce44c6c2e406455ca347bdb9ba311d59cf3e555a38948e8"
  },
- "its-own/name-mismatch.fpk": {
+ "python-reader-own/name-mismatch.fpk": {
   "reads": false,
   "readOk": false,
   "reason": "the end does not name the sections before it",
   "fileSha256": "6a05c7df6c14b479650721132e482fd53ee528d81bb16a0ee71f38a57ca06887"
  },
- "its-own/nan.txt": {
+ "python-reader-own/nan.txt": {
   "reads": false,
   "reason": "line 10 is not JSON",
   "fileSha256": "397adcacf443a31f1cd7a157f90b8bec7d775cfabb5da4b5875365e25942960b"
  },
- "its-own/nested-deep.txt": {
+ "python-reader-own/nested-deep.txt": {
   "reads": false,
   "reason": "the facts of \"src/a.ts\": a flag is not text",
   "fileSha256": "83c18a6d1d060a58df5e95e985a4b9aa99b0fb697fb9c3934c276e34a89bb474"
  },
- "its-own/no-authored.txt": {
+ "python-reader-own/no-authored.txt": {
   "reads": false,
   "reason": "line 22 is not \"src/c.ts\"'s authored words",
   "fileSha256": "3155fbef92e9759c4ea193dfafc5c7ad04175479794e803c6cacf3ed7ef3234b"
  },
- "its-own/no-end-frame.fpk": {
+ "python-reader-own/no-end-frame.fpk": {
   "reads": false,
   "readOk": false,
   "reason": "the file stops before its end: a stopped write, which `resumeFrom` can go on from",
   "fileSha256": "5addcc437573b58d76cd2aa4a128871d1a74647ffc7b82af09c5b8294974b659"
  },
- "its-own/no-final-lf.txt": {
+ "python-reader-own/no-final-lf.txt": {
   "reads": false,
   "reason": "the text does not end with a line break",
   "fileSha256": "5796978a7db406bf50ac3229478b49450f7794bb5bdf83e9dc7d2c7a5089998e"
  },
- "its-own/no-wires.fpk": {
+ "python-reader-own/no-wires.fpk": {
   "reads": false,
   "readOk": false,
   "reason": "the sections after the records are not the paths, the wires and the end",
   "fileSha256": "2ffb30a68392fa872c98b76a51a3cc3941c1b8379e86e6383bed3e2f54ffd4d9"
  },
- "its-own/not-deflate.fpk": {
+ "python-reader-own/not-deflate.fpk": {
   "reads": false,
   "readOk": false,
   "reason": "the head is not a whole raw deflate stream",
   "fileSha256": "b340443fc802750b79519cc6a87bc6c5570f1e54a979a2b2940c463ceae5bf8c"
  },
- "its-own/number-4.0.txt": {
+ "python-reader-own/number-4.0.txt": {
   "reads": false,
   "reason": "line 16 is not written as the text form writes it: \"[\\\"src/a.ts\\\",\\\"file\\\",4.0,\\\"implementation\\\",\\\"2026-11-22T00:00:00.000Z\\\"]\\n[\\\"src/a.ts\\\",\\\"authored\\\",\\\"### Purpose\\\\nSays hello.\\\\n\\\\n\"",
   "fileSha256": "d6cd9965d390c6ea89fdeede182e7fcbfa06127e268ecb3268ebd6ea250e4a01"
  },
- "its-own/number-4e0.txt": {
+ "python-reader-own/number-4e0.txt": {
   "reads": false,
   "reason": "line 16 is not written as the text form writes it: \"[\\\"src/a.ts\\\",\\\"file\\\",4e0,\\\"implementation\\\",\\\"2026-11-22T00:00:00.000Z\\\"]\\n[\\\"src/a.ts\\\",\\\"authored\\\",\\\"### Purpose\\\\nSays hello.\\\\n\\\\n\"",
   "fileSha256": "037765f5324eeb3fb333da8b5f26d4fe9ea842de74932484913596cd7399a4bc"
  },
- "its-own/number-above-u32.txt": {
+ "python-reader-own/number-above-u32.txt": {
   "reads": false,
   "reason": "the facts of \"src/a.ts\": its layer is not a whole number from 0 to 2^32 - 1",
   "fileSha256": "407a4f2d96fe6a698e1f70b7f638cc5a0cb75e2a8e6fcc160da1954a085fe5d0"
  },
- "its-own/number-leading-zero.txt": {
+ "python-reader-own/number-leading-zero.txt": {
   "reads": false,
   "reason": "line 5 is not JSON",
   "fileSha256": "4f2a22babb766cc1aa46cd72b804c1561aa6fae720a4ca1e2a9156b65f07a654"
  },
- "its-own/number-negative.txt": {
+ "python-reader-own/number-negative.txt": {
   "reads": false,
   "reason": "the facts of \"src/a.ts\": its layer is not a whole number from 0 to 2^32 - 1",
   "fileSha256": "c13b2d2cbd88f50d0f4034393f4be6a990e24ce243bc052bd86f95036bad973f"
  },
- "its-own/only-lf.txt": {
+ "python-reader-own/only-lf.txt": {
   "reads": false,
   "reason": "line 1 is not JSON",
   "fileSha256": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b"
  },
- "its-own/path-absolute.fpk": {
+ "python-reader-own/path-absolute.fpk": {
   "reads": false,
   "readOk": false,
   "reason": "a path \"/src/a.ts\" is not a relative path",
   "fileSha256": "4ada5b68b41d861eafae63ab5687ded7dcaae4bcc0151a5a04a6f2c2cbeefc1d"
  },
- "its-own/path-absolute.txt": {
+ "python-reader-own/path-absolute.txt": {
   "reads": false,
   "reason": "a path \"/src/c.ts\" is not a relative path",
   "fileSha256": "9fdc7c06da4413745798f430335ee3dc36dc62f4621b96461a34ca141456c4c0"
  },
- "its-own/path-backslash-start.fpk": {
+ "python-reader-own/path-backslash-start.fpk": {
   "reads": false,
   "readOk": false,
   "reason": "a path \"\\\\a.ts\" is not a relative path",
   "fileSha256": "0572699d23b04a89fcd5bcbe06655e31d3b885e5a06100fd83223741ce3ea255"
  },
- "its-own/path-dotdot.txt": {
+ "python-reader-own/path-dotdot.txt": {
   "reads": false,
   "reason": "a path \"src/../c.ts\" is not a plain relative path",
   "fileSha256": "bae494954cfd71df8359c34b49d207633d8daa5b5d72fdbee20b01ace87dc492"
  },
- "its-own/path-drive.fpk": {
+ "python-reader-own/path-drive.fpk": {
   "reads": false,
   "readOk": false,
   "reason": "a path \"C:/a.ts\" is not a relative path",
   "fileSha256": "2a3ca9b7122f09f58bdc4c85a6c977032e40ac2a48ae4820996174a5a4d3496a"
  },
- "its-own/path-empty-segment.fpk": {
+ "python-reader-own/path-empty-segment.fpk": {
   "reads": false,
   "readOk": false,
   "reason": "a path \"src//a.ts\" is not a plain relative path",
   "fileSha256": "bcdf7b9d9b1fcb268f59f2b76a9290078585e6236d74d840689ba915fa7f23fe"
  },
- "its-own/path-nul.fpk": {
+ "python-reader-own/path-nul.fpk": {
   "reads": false,
   "readOk": false,
   "reason": "a path \"src/a\\u0000.ts\" is not a relative path",
   "fileSha256": "8155aa5786cce8f389b9fc7baccb53d6ec2fbf3a3a0d7a476d458330c0e55eef"
  },
- "its-own/paths-count-wrong.fpk": {
+ "python-reader-own/paths-count-wrong.fpk": {
   "reads": false,
   "readOk": false,
   "reason": "the paths or wires count other than the 3 files recorded",
   "fileSha256": "46b1fb1de001aff764c0e44f16d3071e8a33b03adc75dae688b1195cc444a540"
  },
- "its-own/paths-differ-from-records.fpk": {
+ "python-reader-own/paths-differ-from-records.fpk": {
   "reads": false,
   "readOk": false,
   "reason": "the paths name \"src/d.ts\" where the records hold \"src/c.ts\"",
   "fileSha256": "37cbd4b88936aa859fd392803205a6b68ef655672dc530ac60533b7d335247f0"
  },
- "its-own/paths-dotdot.fpk": {
+ "python-reader-own/paths-dotdot.fpk": {
   "reads": false,
   "readOk": false,
   "reason": "a path \"../xx\" is not a plain relative path",
   "fileSha256": "fe40f4f57ea68be3054fe98fc9f4e6049b5dcf0279bf0a46e85a5a51d9805203"
  },
- "its-own/paths-not-longest-shared.fpk": {
+ "python-reader-own/paths-not-longest-shared.fpk": {
   "reads": false,
   "readOk": false,
   "reason": "a path's shared beginning is written shorter than it is",
   "fileSha256": "fcec9cfdc1e758ecd34e59bc71f08b1101fa69a46f8f5459456f401b99c33f4f"
  },
- "its-own/paths-out-of-order-idx.fpk": {
+ "python-reader-own/paths-out-of-order-idx.fpk": {
   "reads": false,
   "readOk": false,
   "reason": "the paths are not in order at \"src/a.ts\"",
   "fileSha256": "0bcc56265e00a98ad2db6c69dd9b967593577a1f195a820a6a9a71b4a4dd55a7"
  },
- "its-own/paths-out-of-order.fpk": {
+ "python-reader-own/paths-out-of-order.fpk": {
   "reads": false,
   "readOk": false,
   "reason": "the paths are not in order at \"src/b.ts\"",
   "fileSha256": "2c547ed0cdf6225cb19e201f240e1138b77fc5a328fccbd39153aebab9eec065"
  },
- "its-own/paths-repeat.fpk": {
+ "python-reader-own/paths-repeat.fpk": {
   "reads": false,
   "readOk": false,
   "reason": "the paths are not in order at \"src/a.ts\"",
   "fileSha256": "f4d29c2077a46a46003ffe5ecb4566adff341c7dc3c60d43251cef7109da804e"
  },
- "its-own/paths-shared-too-long.fpk": {
+ "python-reader-own/paths-shared-too-long.fpk": {
   "reads": false,
   "readOk": false,
   "reason": "a path shares more with the one before it than that one holds",
   "fileSha256": "b41e701ec83a4694793906ed08c678093a49b599f3ed7add386ef3292ed4d226"
  },
- "its-own/paths-trailing.fpk": {
+ "python-reader-own/paths-trailing.fpk": {
   "reads": false,
   "readOk": false,
   "reason": "the paths has 1 bytes after its last fact",
   "fileSha256": "f69640fe3de28bc72faf85c58d0a997266fd54f61fec10bcc73744eac427377c"
  },
- "its-own/paths-wires-swapped.fpk": {
+ "python-reader-own/paths-wires-swapped.fpk": {
   "reads": false,
   "readOk": false,
   "reason": "the sections after the records are not the paths, the wires and the end",
   "fileSha256": "2cd16f85715c52fb2b65063ba7342490021b50205ae83a93c83d35dad3b2ffec"
  },
- "its-own/raw-above-deflate-ratio.fpk": {
+ "python-reader-own/raw-above-deflate-ratio.fpk": {
   "reads": false,
   "readOk": false,
   "reason": "a section at byte 8 declares 86681 bytes from 82, more than deflate can give",
   "fileSha256": "0108c1273c917b4af1b7e692243c60fb46d8c91372be21a56cc990fe1789692c"
  },
- "its-own/raw-above-max-section.fpk": {
+ "python-reader-own/raw-above-max-section.fpk": {
   "reads": false,
   "readOk": false,
   "reason": "a section at byte 135 declares 67108865 bytes, past the layout's 67108864",
   "fileSha256": "4cfe0fb73e33477f3c8e58189f0da47590bce08aa4e0a87242d911637890e411"
  },
- "its-own/raw-tab-in-string.txt": {
+ "python-reader-own/raw-tab-in-string.txt": {
   "reads": false,
   "reason": "line 10 is not JSON",
   "fileSha256": "fbe832130660cb902d15c967a11d9999b4f1ba60cefb3a020bafff7efdbf3169"
  },
- "its-own/reason-unknown.txt": {
+ "python-reader-own/reason-unknown.txt": {
   "reads": false,
   "reason": "the facts of \"src/a.ts\": an entry's reason is not a whole number from 0 to 2^32 - 1",
   "fileSha256": "1d612ef751348131484b6890cb512d28ed58e68aa982e9f195605ab5fa3b69df"
  },
- "its-own/records-count-wrong.fpk": {
+ "python-reader-own/records-count-wrong.fpk": {
   "reads": false,
   "readOk": false,
   "reason": "the paths or wires count other than the 2 files recorded",
   "fileSha256": "d483e55055c1f5ce60c24b67abca3cf28d1354fa180e9c8e53604ed8576501b6"
  },
- "its-own/records-cut.fpk": {
+ "python-reader-own/records-cut.fpk": {
   "reads": false,
   "readOk": false,
   "reason": "the facts of \"src/c.ts\": a section of records ends early",
   "fileSha256": "ac8f28aad74f8116664d6dda43e53f1f872deabe9ae0e4da7491e251f3389d80"
  },
- "its-own/records-file-mark-bit-4.fpk": {
+ "python-reader-own/records-file-mark-bit-4.fpk": {
   "reads": false,
   "readOk": false,
   "reason": "the facts of \"src/a.ts\": its marks sets a mark the layout does not define",
   "fileSha256": "fc8a65c912551bd7caafcd4b932aa084c0e147c196df334a477d5aece85ee054"
  },
- "its-own/records-frame-of-300.fpk": {
+ "python-reader-own/records-frame-of-300.fpk": {
   "reads": false,
   "readOk": false,
   "reason": "a section of 300 records",
   "fileSha256": "23f4536b76949fb6db6528e336a52631e0675577705b786eedd127169c8956d4"
  },
- "its-own/records-short-before-last.fpk": {
+ "python-reader-own/records-short-before-last.fpk": {
   "reads": false,
   "readOk": false,
   "reason": "a section of 100 records before the last",
   "fileSha256": "3ca2374d51c4c2868b485e746d0e1f55eadcfc8bda4663edd87774ba5d5443c3"
  },
- "its-own/records-sid-skips-ahead.fpk": {
+ "python-reader-own/records-sid-skips-ahead.fpk": {
   "reads": false,
   "readOk": false,
   "reason": "a string numbered 1 where the next new one is 0",
   "fileSha256": "15f5a2436bfc7477c9775adf25588cf83f397844e5cadebfbcb969649afa96a8"
  },
- "its-own/records-trailing-byte.fpk": {
+ "python-reader-own/records-trailing-byte.fpk": {
   "reads": false,
   "readOk": false,
   "reason": "a section of records has 1 bytes after its last fact",
   "fileSha256": "7ff9d7a4c1f348972bb03e41cd4c16b583f49bfe86739a8fba87926b59d7bb24"
  },
- "its-own/records-without-strings.fpk": {
+ "python-reader-own/records-without-strings.fpk": {
   "reads": false,
   "readOk": false,
   "reason": "the paths are longer than the strings that hold them",
   "fileSha256": "5093dc4b3978eb435f4055096768f00183d5f0d4bf6ee7762c188e14b501e9ea"
  },
- "its-own/reexport-from-link-abs.fpk": {
+ "python-reader-own/reexport-from-link-abs.fpk": {
   "reads": false,
   "readOk": false,
   "reason": "the facts of \"src/b.ts\": a re-export's link \"/a\" names an absolute place",
   "fileSha256": "c4f9b349fa974b01cba1aa728bec907b182fbcdb4a6b7d7c6d4f89cd22a2e49a"
  },
- "its-own/role-unknown.txt": {
+ "python-reader-own/role-unknown.txt": {
   "reads": false,
   "reason": "the facts of \"src/a.ts\": a reference's role is not a whole number from 0 to 2^32 - 1",
   "fileSha256": "4ee018f4dda8c10170c3404dd2df22482f98eb70a759d5f3cae0a49b859eb5c8"
  },
- "its-own/root-absolute.fpk": {
+ "python-reader-own/root-absolute.fpk": {
   "reads": false,
   "readOk": false,
   "reason": "the location's root \"/abs\" is not a relative path",
   "fileSha256": "e8f30ade65a4387f6ad9eb43f2603b3e0670679ac3b8b47fb5488d2bb7dce3e2"
  },
- "its-own/root-absolute.txt": {
+ "python-reader-own/root-absolute.txt": {
   "reads": false,
   "reason": "the location's root \"/mdmd\" is not a relative path",
   "fileSha256": "04025b7a4f9ef1a9ee9bacb0b438c1a1667bd53f14673d4f19d353aa65f7a792"
  },
- "its-own/root-dotdot.fpk": {
+ "python-reader-own/root-dotdot.fpk": {
   "reads": false,
   "readOk": false,
   "reason": "the location's root \"a/../b\" is not a plain relative path",
   "fileSha256": "a0bef0d8fda165a564770a4853467113686767a73a51d279096e617fd539ec4f"
  },
- "its-own/root-drive.fpk": {
+ "python-reader-own/root-drive.fpk": {
   "reads": false,
   "readOk": false,
   "reason": "the location's root \"C:x\" is not a relative path",
   "fileSha256": "6856bfddbaecbab74b978edaf1b528412e5f265096c84f7b4aa5ff0373193b2d"
  },
- "its-own/root-trailing-slash.fpk": {
+ "python-reader-own/root-trailing-slash.fpk": {
   "reads": false,
   "readOk": false,
   "reason": "the location's root \"a/\" is not a plain relative path",
   "fileSha256": "9f308a1b358c992dbcfc89d6a0c30cbe2fa7a40885db3a12b0b4a11afaae75ba"
  },
- "its-own/signature-only.fpk": {
+ "python-reader-own/signature-only.fpk": {
   "reads": false,
   "readOk": false,
   "reason": "the file stops before its end: a stopped write, which `resumeFrom` can go on from",
   "fileSha256": "c0c465146f1f1ad58f8b0e76aa8a5a9ff1658387b5fe752ef3a995213bc71b95"
  },
- "its-own/source-path-absolute.fpk": {
+ "python-reader-own/source-path-absolute.fpk": {
   "reads": false,
   "readOk": false,
   "reason": "the facts of \"src/a.ts\": a source \"/src/a.ts\" names an absolute place",
   "fileSha256": "7db3802500a55658731cb5420a169d509c852739af1dcd46218965427ee6c88e"
  },
- "its-own/space-after-comma.txt": {
+ "python-reader-own/space-after-comma.txt": {
   "reads": false,
   "reason": "line 5 is not written as the text form writes it: \"[null,\\\"format\\\",\\\"fact-pack\\\",1]\\n[null,\\\"location\\\",\\\".mdmd\\\",\\\"layer-4\\\",\\\".mdmd.md\\\"]\\n[null, \\\"scanner\\\",\\\"a test 1.0\\\"]\\n[null,\\\"left-\"",
   "fileSha256": "b5c95235060960640d8492be9e8fa8d27c6aab21458c6e11276c5232ec5ad276"
  },
- "its-own/space-at-end.txt": {
+ "python-reader-own/space-at-end.txt": {
   "reads": false,
   "reason": "line 5 is not written as the text form writes it: \"[null,\\\"format\\\",\\\"fact-pack\\\",1]\\n[null,\\\"location\\\",\\\".mdmd\\\",\\\"layer-4\\\",\\\".mdmd.md\\\"]\\n[null,\\\"scanner\\\",\\\"a test 1.0\\\"] \\n[null,\\\"left-\"",
   "fileSha256": "1c764cde43d335584281d8b89c186b4b7f3b874985b51cc976554685dfaea696"
  },
- "its-own/stored-past-end-middle.fpk": {
+ "python-reader-own/stored-past-end-middle.fpk": {
   "reads": false,
   "readOk": false,
   "reason": "the file stops before its end: a stopped write, which `resumeFrom` can go on from",
   "fileSha256": "6d0cddc835c36f08276a2c9b529d4a825f49439728784da98e8dd274d069aea9"
  },
- "its-own/stored-past-end.fpk": {
+ "python-reader-own/stored-past-end.fpk": {
   "reads": false,
   "readOk": false,
   "reason": "the file stops before its end: a stopped write, which `resumeFrom` can go on from",
   "fileSha256": "c8e8d9ba2a44ba52b8ac3f5f1fed1cf79b69428e858a710efe40b81020b7fd2b"
  },
- "its-own/strings-count-0.fpk": {
+ "python-reader-own/strings-count-0.fpk": {
   "reads": false,
   "readOk": false,
   "reason": "a section of no strings",
   "fileSha256": "9a48a3c81b46f42c3c114524449e886e625c0a8836f4e18c1989956d28a0eed0"
  },
- "its-own/strings-count-wrong.fpk": {
+ "python-reader-own/strings-count-wrong.fpk": {
   "reads": false,
   "readOk": false,
   "reason": "a section of strings has 1 bytes after its last fact",
   "fileSha256": "5c5d3251779f3619411b844e7a6534cfba99b12cc08534d9ca72ced626b60a3e"
  },
- "its-own/strings-duplicate.fpk": {
+ "python-reader-own/strings-duplicate.fpk": {
   "reads": false,
   "readOk": false,
   "reason": "the string \"src/a.ts\" is set down twice",
   "fileSha256": "adf9c1d36d50f8ea2f8b5d477345ebf0ff5e291531a9d4de37cf9b81e3622045"
  },
- "its-own/strings-not-before-records.fpk": {
+ "python-reader-own/strings-not-before-records.fpk": {
   "reads": false,
   "readOk": false,
   "reason": "strings not followed by records",
   "fileSha256": "904b4e29c76050becb80f3101a1b84fb817b6c88a00909c837fcb8c469f744f5"
  },
- "its-own/strings-set-down-early.fpk": {
+ "python-reader-own/strings-set-down-early.fpk": {
   "reads": false,
   "readOk": false,
   "reason": "44 strings set down before a section of records are not met in it",
   "fileSha256": "015ce9fb37a3b738c643d77e3981e1fda515de4bf901ea6bb109b9d7d6851492"
  },
- "its-own/strings-trailing-byte.fpk": {
+ "python-reader-own/strings-trailing-byte.fpk": {
   "reads": false,
   "readOk": false,
   "reason": "a section of strings has 1 bytes after its last fact",
   "fileSha256": "8060bfa5717c068f1516cfd1ad14f106bcd089664102fd3b7cbd5f17124b1b11"
  },
- "its-own/strings-unmet-extra.fpk": {
+ "python-reader-own/strings-unmet-extra.fpk": {
   "reads": false,
   "readOk": false,
   "reason": "1 strings set down before a section of records are not met in it",
   "fileSha256": "9235de7f16ebb620556fb257f790965586b4061564b6a6c43218e8a93037accd"
  },
- "its-own/surrogate-pair-escape.txt": {
+ "python-reader-own/surrogate-pair-escape.txt": {
   "reads": false,
   "reason": "line 16 is not written as the text form writes it: \"[\\\"src/a.ts\\\",\\\"file\\\",4,\\\"implementation\\\",\\\"2026-11-22T00:00:00.000Z\\\"]\\n[\\\"src/a.ts\\\",\\\"authored\\\",\\\"### Purpose\\\\nSays hello.\\\\n\\\\n##\"",
   "fileSha256": "9528b85385f074ea0b0a5e3d0c82836d963ed288083a03bbc0e94ef8442a4ae6"
  },
- "its-own/symbol-before-entry.txt": {
+ "python-reader-own/symbol-before-entry.txt": {
   "reads": false,
   "reason": "line 10 is not a file's first line",
   "fileSha256": "0eb3e8f021d85c9d8c28fc22ce271fb742bab4ce3f5cf7334ecc649bc5ceb2c3"
  },
- "its-own/target-without-link.txt": {
+ "python-reader-own/target-without-link.txt": {
   "reads": false,
   "reason": "the facts of \"src/a.ts\": a target without a link",
   "fileSha256": "865b2ada188b15e907beaa9984d56b0f4549080e0afe5520ca52fd0a26fa5952"
  },
- "its-own/text-expansion-300MB.fpk": {
+ "python-reader-own/text-expansion-300MB.fpk": {
   "reads": false,
   "readOk": true,
   "reason": "the text would hold 300006727 bytes of names from a file of 7022 bytes, past 1497984",
   "fileSha256": "b7cfade909d2f0a93949f93b3c5e612004093673d438251992bb6bfae0ee268e"
  },
- "its-own/total-inflation-bound.fpk": {
+ "python-reader-own/total-inflation-bound.fpk": {
   "reads": false,
   "readOk": false,
   "reason": "the sections declare 2000000 bytes in all from a file of 2876, past 1232640",
   "fileSha256": "9b5f9e61a21ee7822a2694aa259745bb3aff4ac56611f94fbfebf58099d417a5"
  },
- "its-own/trailing-byte.fpk": {
+ "python-reader-own/trailing-byte.fpk": {
   "reads": false,
   "readOk": false,
   "reason": "1 bytes after the end",
   "fileSha256": "039d4aad7d07dff936d52486ad92829a34367e1db8f1bc11ae06bdba07bc4b8b"
  },
- "its-own/two-cited-by.txt": {
+ "python-reader-own/two-cited-by.txt": {
   "reads": false,
   "reason": "\"src/c.ts\" has two cited-by lines",
   "fileSha256": "acbd88ec43b32b861a348d97a1b14b40989c8d9bbe8f27621ea952ba43f87efd"
  },
- "its-own/two-heads.fpk": {
+ "python-reader-own/two-heads.fpk": {
   "reads": false,
   "readOk": false,
   "reason": "the sections after the records are not the paths, the wires and the end",
   "fileSha256": "d8b28d0e6a807b3bf7956beed051b11c3e2c8b54832f9230f315f7b6941edaf0"
  },
- "its-own/type-target-abs.fpk": {
+ "python-reader-own/type-target-abs.fpk": {
   "reads": false,
   "readOk": false,
   "reason": "the facts of \"src/a.ts\": a target \"/src/b.ts\" is not a relative path",
   "fileSha256": "48449cfb427096c4117697e891c876924da8ba266961d788b9a2ea11887a1a81"
  },
- "its-own/type-target-no-link.fpk": {
+ "python-reader-own/type-target-no-link.fpk": {
   "reads": false,
   "readOk": false,
   "reason": "the facts of \"src/a.ts\": a target without a link",
   "fileSha256": "72120a74036cbed537399d19a3978f81d44b1aced8dc5994edfcd8298fb04d2e"
  },
- "its-own/u-escape-for-tab.txt": {
+ "python-reader-own/u-escape-for-tab.txt": {
   "reads": false,
   "reason": "line 16 is not written as the text form writes it: \"[\\\"src/a.ts\\\",\\\"file\\\",4,\\\"implementation\\\",\\\"2026-11-22T00:00:00.000Z\\\"]\\n[\\\"src/a.ts\\\",\\\"authored\\\",\\\"### Purpose\\\\nSays hello.\\\\n\\\\n##\"",
   "fileSha256": "d31ddb041c14cc7752ea63ee50e57b802360dc1e938ef43fc35f874b213947dd"
  },
- "its-own/unknown-line.txt": {
+ "python-reader-own/unknown-line.txt": {
   "reads": false,
   "reason": "line 23 is not a file's first line",
   "fileSha256": "8575008ef23c3f1de88aa9f22c2abd8571a5374f5ed709809e3dcb805aba7487"
  },
- "its-own/uppercase-hex-escape.txt": {
+ "python-reader-own/uppercase-hex-escape.txt": {
   "reads": false,
   "reason": "line 5 is not written as the text form writes it: \"[null,\\\"format\\\",\\\"fact-pack\\\",1]\\n[null,\\\"location\\\",\\\".mdmd\\\",\\\"layer-4\\\",\\\".mdmd.md\\\"]\\n[null,\\\"scanner\\\",\\\"a test 1.0\\\\u001F\\\"]\\n[null,\\\"\"",
   "fileSha256": "81623be3d5a1c0e90f06398d723c3fa196be6c6c3a3feba58b6efd87de8a3ed1"
  },
- "its-own/utf8-above-10ffff.fpk": {
+ "python-reader-own/utf8-above-10ffff.fpk": {
   "reads": false,
   "readOk": false,
   "reason": "a section of strings holds text that is not UTF-8",
   "fileSha256": "c1e130bc81113d157d8729e9a4c6083bb54234f4dad9f7c2ecd98ed7b5f9cfd7"
  },
- "its-own/utf8-cut-sequence.fpk": {
+ "python-reader-own/utf8-cut-sequence.fpk": {
   "reads": false,
   "readOk": false,
   "reason": "a section of strings holds text that is not UTF-8",
   "fileSha256": "7b5da6f2317b7050abb088d46906b0100936d2c5d6a7bbbff7e9ac2a1db86107"
  },
- "its-own/utf8-ff-byte.fpk": {
+ "python-reader-own/utf8-ff-byte.fpk": {
   "reads": false,
   "readOk": false,
   "reason": "a section of strings holds text that is not UTF-8",
   "fileSha256": "2f3a401a3c28876e1d6eb2b4365621c0ff6b68ef6797885174e1a6db2cbabc27"
  },
- "its-own/utf8-lone-continuation.fpk": {
+ "python-reader-own/utf8-lone-continuation.fpk": {
   "reads": false,
   "readOk": false,
   "reason": "a string begins in the middle of a character",
   "fileSha256": "b85b4223d2afd8a4a5fed19fc94e76375199043b01f025b1f515b168fbfe42f6"
  },
- "its-own/utf8-overlong-3.fpk": {
+ "python-reader-own/utf8-overlong-3.fpk": {
   "reads": false,
   "readOk": false,
   "reason": "a section of strings holds text that is not UTF-8",
   "fileSha256": "5b2733e73b930be3cc72463d20e6f395eca8292d96af2645daa574d8b57fa6ac"
  },
- "its-own/utf8-overlong.fpk": {
+ "python-reader-own/utf8-overlong.fpk": {
   "reads": false,
   "readOk": false,
   "reason": "a section of strings holds text that is not UTF-8",
   "fileSha256": "a80420c82f328fc530af2875ac225784965dd3775c1d3db76653b505d27f4c56"
  },
- "its-own/utf8-surrogate.fpk": {
+ "python-reader-own/utf8-surrogate.fpk": {
   "reads": false,
   "readOk": false,
   "reason": "a section of strings holds text that is not UTF-8",
   "fileSha256": "28f77dd6510b7e6e3a26efa795ecdc383ae63934afa0aaf236e78b5028c2da5e"
  },
- "its-own/version-2.txt": {
+ "python-reader-own/version-2.txt": {
   "reads": false,
   "reason": "line 1 is not written as the text form writes it: \"[null,\\\"format\\\",\\\"fact-pack\\\",2]\"",
   "fileSha256": "96cde7de58dd3af9a96448d50733cb440f619de62243569bffcacfb91af60fb1"
  },
- "its-own/wires-beyond.fpk": {
+ "python-reader-own/wires-beyond.fpk": {
   "reads": false,
   "readOk": false,
   "reason": "a wire of file 0 names file 3",
   "fileSha256": "c2d2df9b6deed2f77a644c85a48e45a1d4519941008c1ed3200bd3a1a804a331"
  },
- "its-own/wires-count-wrong.fpk": {
+ "python-reader-own/wires-count-wrong.fpk": {
   "reads": false,
   "readOk": false,
   "reason": "the paths or wires count other than the 3 files recorded",
   "fileSha256": "5228b52818cbe455cc82614192b377c446c8dd606c37aa2260795efb9b977cdd"
  },
- "its-own/wires-disagree.fpk": {
+ "python-reader-own/wires-disagree.fpk": {
   "reads": false,
   "readOk": false,
   "reason": "the wires of \"src/a.ts\" are not those its links name",
   "fileSha256": "43d48e4a6a1b64fd447dbc64d7ca5e570f5d149192bbca69ea1c662eced33cd3"
  },
- "its-own/wires-missing-one.fpk": {
+ "python-reader-own/wires-missing-one.fpk": {
   "reads": false,
   "readOk": false,
   "reason": "the wires of \"src/a.ts\" are not those its links name",
   "fileSha256": "f4337cfaa46d02a8a114e731c97474d65c8c872d38596502ba1d80123a867bf1"
  },
- "its-own/wires-n0-with-first.fpk": {
+ "python-reader-own/wires-n0-with-first.fpk": {
   "reads": false,
   "readOk": false,
   "reason": "the wires has 2 bytes after its last fact",
   "fileSha256": "95c5b0db79d657aa47e1448186e931d69aed2782871527ff93fc0a3ea34b5e35"
  },
- "its-own/wires-self.fpk": {
+ "python-reader-own/wires-self.fpk": {
   "reads": false,
   "readOk": false,
   "reason": "a wire of file 0 names file 0",
   "fileSha256": "20ee50655311f23bcacd9a2005099e8badd16909222672d2790de25ef322b646"
  },
- "its-own/wires-trailing.fpk": {
+ "python-reader-own/wires-trailing.fpk": {
   "reads": false,
   "readOk": false,
   "reason": "the wires has 1 bytes after its last fact",
   "fileSha256": "6f270a65aa8f7cd24e17db4a4014e6ee74fefa158c6049dbc520ad15a95f07b2"
  },
- "its-own/wires-unsorted-dup.fpk": {
+ "python-reader-own/wires-unsorted-dup.fpk": {
   "reads": false,
   "readOk": false,
   "reason": "the wires of \"src/a.ts\" are not those its links name",
   "fileSha256": "1d8186df3a8c70aa98cf155621947046a4922e194ab43845841e0c4cf9df5413"
  },
- "its-own/wrong-signature.fpk": {
+ "python-reader-own/wrong-signature.fpk": {
   "reads": false,
   "readOk": false,
   "reason": "these bytes do not begin with the layout's signature",
   "fileSha256": "e12fd49131a331710afe4fa5ad5b9518f7352a2bb33bc566b41daf184b9726b4"
  },
- "its-own/zlib-wrapped.fpk": {
+ "python-reader-own/zlib-wrapped.fpk": {
   "reads": false,
   "readOk": false,
   "reason": "the head is not a whole raw deflate stream",
   "fileSha256": "b3ce35fea18a4d9d84fe73512a86e8eb8768b1ef4d20b6f4cbf0187a8fc91cdb"
+ },
+ "go-reader-own/accept--escapes.fpk": {
+  "reads": true,
+  "textSha256": "41bfa86fe3d75d12bd49c0faac867226c250f7f366aadb1ba18b195537dec4a0",
+  "textBytes": 25696,
+  "name": "8b20a131fc016a6d12fb7eb77daa74264bef7a566eeb832210e2df1880cf50e4",
+  "fileSha256": "30fd29fa7bd15d4f7333cbd8a31b0d96d47700605398a0518c9eef36bd19cba6"
+ },
+ "go-reader-own/accept--escapes.txt": {
+  "reads": true,
+  "name": "8b20a131fc016a6d12fb7eb77daa74264bef7a566eeb832210e2df1880cf50e4",
+  "fileSha256": "41bfa86fe3d75d12bd49c0faac867226c250f7f366aadb1ba18b195537dec4a0"
+ },
+ "go-reader-own/accept--many-files.fpk": {
+  "reads": true,
+  "textSha256": "1b1a0d2bd390f7b1c6f9faeefff9088485f8b8de3376d445eb3e5ae893c86a06",
+  "textBytes": 166000,
+  "name": "7cb322d801ab4c4256b5b0637fb70fb3a8a274fbead0d95996bd10eb3da71020",
+  "fileSha256": "32ec498a3beabab47e8cee3613614d35a661eb72f1d319cbdd8e2c525a0d36bf"
+ },
+ "go-reader-own/accept--many-files.txt": {
+  "reads": true,
+  "name": "7cb322d801ab4c4256b5b0637fb70fb3a8a274fbead0d95996bd10eb3da71020",
+  "fileSha256": "1b1a0d2bd390f7b1c6f9faeefff9088485f8b8de3376d445eb3e5ae893c86a06"
+ },
+ "go-reader-own/refuse--00-empty-file.fpk": {
+  "reads": false,
+  "readOk": false,
+  "reason": "these bytes do not begin with the layout's signature",
+  "fileSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+ },
+ "go-reader-own/refuse--01-signature-only.fpk": {
+  "reads": false,
+  "readOk": false,
+  "reason": "the file stops before its end: a stopped write, which `resumeFrom` can go on from",
+  "fileSha256": "c0c465146f1f1ad58f8b0e76aa8a5a9ff1658387b5fe752ef3a995213bc71b95"
+ },
+ "go-reader-own/refuse--02-signature-crlf-changed.fpk": {
+  "reads": false,
+  "readOk": false,
+  "reason": "these bytes do not begin with the layout's signature",
+  "fileSha256": "d958cb564ae033fed497abc08e541aa84e2d2476ef15f01929a4e9fc7cad2993"
+ },
+ "go-reader-own/refuse--03-signature-high-bit-dropped.fpk": {
+  "reads": false,
+  "readOk": false,
+  "reason": "these bytes do not begin with the layout's signature",
+  "fileSha256": "f2486b9cabb5260bc38745ebbc7aca5ac60612fb53f60ff45cdf532294a9748c"
+ },
+ "go-reader-own/refuse--04-header-cut.fpk": {
+  "reads": false,
+  "readOk": false,
+  "reason": "the file stops before its end: a stopped write, which `resumeFrom` can go on from",
+  "fileSha256": "3834011ea663d3c693e6725f983737f15c61fe4560f8ee509edcefb67eb5427e"
+ },
+ "go-reader-own/refuse--05-stored-cut.fpk": {
+  "reads": false,
+  "readOk": false,
+  "reason": "the file stops before its end: a stopped write, which `resumeFrom` can go on from",
+  "fileSha256": "68ed47ef6895dc5721fd0628270335ff71900ae5a1eea4e3b8ad4fb9570fd471"
+ },
+ "go-reader-own/refuse--06-no-end-frame.fpk": {
+  "reads": false,
+  "readOk": false,
+  "reason": "the file stops before its end: a stopped write, which `resumeFrom` can go on from",
+  "fileSha256": "77a4079a40ae6ab301c95d221e73d6483fd10a4753986c2dd736ad5514da0f69"
+ },
+ "go-reader-own/refuse--07-byte-after-end.fpk": {
+  "reads": false,
+  "readOk": false,
+  "reason": "1 bytes after the end",
+  "fileSha256": "6f65d317c8a67718eb3a7b4eddb586caa6ceae4d7f157b98935cd9fa00bd520d"
+ },
+ "go-reader-own/refuse--08-kind-0.fpk": {
+  "reads": false,
+  "readOk": false,
+  "reason": "a section of kind 0 at byte 8, which the layout does not define",
+  "fileSha256": "d609f71f2976a9f711d14129e0a97b95ee2184a9cf175a32f12fefa05457da9b"
+ },
+ "go-reader-own/refuse--09-kind-7.fpk": {
+  "reads": false,
+  "readOk": false,
+  "reason": "a section of kind 7 at byte 8, which the layout does not define",
+  "fileSha256": "7e5a25a3e7fcdb3a0f45e22c57d98ae235353e25439f44ac85459ecb69c41756"
+ },
+ "go-reader-own/refuse--10-kind-255.fpk": {
+  "reads": false,
+  "readOk": false,
+  "reason": "a section of kind 255 at byte 8, which the layout does not define",
+  "fileSha256": "97d9b52042740961ffb3ca91a8e27bb4b8d5917298aa0b521c47a2941ada2324"
+ },
+ "go-reader-own/refuse--100-wires-missing-one.fpk": {
+  "reads": false,
+  "readOk": false,
+  "reason": "the wires of \"src/a.ts\" are not those its links name",
+  "fileSha256": "e97c5210ab84fefbd592f840285a7c9d59e17e82b2e876a1a73c08c0d8f4960c"
+ },
+ "go-reader-own/refuse--101-wire-to-self.fpk": {
+  "reads": false,
+  "readOk": false,
+  "reason": "a wire of file 0 names file 0",
+  "fileSha256": "926848f52b92305726a503b02145def92c81916181a2f5e3717a798d74903cc0"
+ },
+ "go-reader-own/refuse--102-wire-out-of-range.fpk": {
+  "reads": false,
+  "readOk": false,
+  "reason": "a wire of file 0 names file 3",
+  "fileSha256": "9eeffcca83e3c7ba1f1a6bff2412c1e2f8538b616283afede87444d7cce7e17a"
+ },
+ "go-reader-own/refuse--103-wire-gap-out-of-range.fpk": {
+  "reads": false,
+  "readOk": false,
+  "reason": "a wire of file 0 names file 3",
+  "fileSha256": "22d0e2dc2a55044a1b234f815dd8637ca631e7f4355943036d0ff991f19eff78"
+ },
+ "go-reader-own/refuse--104-wires-trailing-byte.fpk": {
+  "reads": false,
+  "readOk": false,
+  "reason": "the wires has 1 bytes after its last fact",
+  "fileSha256": "0abebe94d923bcd82566dc6a2d6f6a4acbb3440f78b446c6ab1532cc18ec3e63"
+ },
+ "go-reader-own/refuse--105-wires-count-too-large.fpk": {
+  "reads": false,
+  "readOk": false,
+  "reason": "the wires claims 100 items in 4 bytes",
+  "fileSha256": "7f503085bafcdf9bc51c8963db803c0f62ff57dd44b18d8691245bbe78dbaebf"
+ },
+ "go-reader-own/refuse--106-paths-not-longest-shared.fpk": {
+  "reads": false,
+  "readOk": false,
+  "reason": "a path's shared beginning is written shorter than it is",
+  "fileSha256": "e615eb3b098331dfde2eebb87113fe9624751ee58b7e2bc695ca5afd647cb330"
+ },
+ "go-reader-own/refuse--107-paths-shared-too-long.fpk": {
+  "reads": false,
+  "readOk": false,
+  "reason": "a path shares more with the one before it than that one holds",
+  "fileSha256": "243abeb25529fe9ddd6cac7b547eb484454c021b17137e29a7229730606e88fe"
+ },
+ "go-reader-own/refuse--108-paths-differ-from-records.fpk": {
+  "reads": false,
+  "readOk": false,
+  "reason": "the paths name \"src/d.ts\" where the records hold \"src/c.ts\"",
+  "fileSha256": "e299c5b6e76608469841fc7ef028ba69d505adf2fdccb43b864f89b90fb99040"
+ },
+ "go-reader-own/refuse--109-paths-out-of-order.fpk": {
+  "reads": false,
+  "readOk": false,
+  "reason": "the paths are not in order at \"src/a.ts\"",
+  "fileSha256": "40ebcb8c9fd94a4a83b7c87c404ad26f8d5135f7002b575b4c4bf839e8067a78"
+ },
+ "go-reader-own/refuse--11-raw-above-max-section.fpk": {
+  "reads": false,
+  "readOk": false,
+  "reason": "a section at byte 8 declares 67108865 bytes, past the layout's 67108864",
+  "fileSha256": "48615494e920de64bd9cb6cb9a1357ff816621d79a7f3e880fc95f7719f82d17"
+ },
+ "go-reader-own/refuse--110-paths-dotdot.fpk": {
+  "reads": false,
+  "readOk": false,
+  "reason": "a path \"..\" is not a plain relative path",
+  "fileSha256": "c06aad8df40f822521496cb076bc4e4a676ffbcfb9ce274ecbb001da76ff5477"
+ },
+ "go-reader-own/refuse--111-paths-trailing-byte.fpk": {
+  "reads": false,
+  "readOk": false,
+  "reason": "the paths has 1 bytes after its last fact",
+  "fileSha256": "d9bc8089d618ce4ae4a859ae958dc131748ac624fe8e516ec0a1b7e7714caa2a"
+ },
+ "go-reader-own/refuse--112-paths-longer-than-strings.fpk": {
+  "reads": false,
+  "readOk": false,
+  "reason": "the paths are longer than the strings that hold them",
+  "fileSha256": "41fec09ba9982d6eb04ef9ea515b82e2bd2b3adfa17a41858eba5d21b562e224"
+ },
+ "go-reader-own/refuse--113-empty-paths-count-1.fpk": {
+  "reads": false,
+  "readOk": false,
+  "reason": "the paths or wires count other than the 0 files recorded",
+  "fileSha256": "a0fb6b494c589c3c83311df053bda9fecf694e93734da4e401d2114a82494ba5"
+ },
+ "go-reader-own/refuse--12-raw-above-deflate-ratio.fpk": {
+  "reads": false,
+  "readOk": false,
+  "reason": "a section at byte 8 declares 86681 bytes from 83, more than deflate can give",
+  "fileSha256": "319d4a64f984526dc3b430bd660d74ecd43cf1587e212cd3834d19720e8833f7"
+ },
+ "go-reader-own/refuse--13-total-inflation-bound.fpk": {
+  "reads": false,
+  "readOk": false,
+  "reason": "the sections declare 2097152 bytes in all from a file of 3053, past 1243968",
+  "fileSha256": "0f3ef50220f376c9b6eebaf086a1baf5ea9f28dfdabbea9f55f696a3bbf006aa"
+ },
+ "go-reader-own/refuse--14-inflation-bomb.fpk": {
+  "reads": false,
+  "readOk": false,
+  "reason": "the head inflates past the 100 bytes it declares",
+  "fileSha256": "95bacb93d43a76083bdfb0ad5ccb50f54608a77c732764f5ffa0652eb9809059"
+ },
+ "go-reader-own/refuse--15-deflate-gives-fewer.fpk": {
+  "reads": false,
+  "readOk": false,
+  "reason": "the head inflates to 84 bytes, not the 85 it declares",
+  "fileSha256": "4726911e3e7ccef22f3dc49dcaee3763d604e802c62ff63a84258c675b0d93d9"
+ },
+ "go-reader-own/refuse--16-deflate-gives-more.fpk": {
+  "reads": false,
+  "readOk": false,
+  "reason": "the head inflates past the 85 bytes it declares",
+  "fileSha256": "66e645027892409a1c061507dfd374b2be85b8f69f46fb2ef9fa239d38ab6f92"
+ },
+ "go-reader-own/refuse--17-deflate-trailing-byte.fpk": {
+  "reads": false,
+  "readOk": false,
+  "reason": "the head is not a whole raw deflate stream",
+  "fileSha256": "be73f0fd6f4ec9b36b845ab5c2192bc0886f99f70968e941bb4f1510c09ab777"
+ },
+ "go-reader-own/refuse--18-deflate-zlib-wrapped.fpk": {
+  "reads": false,
+  "readOk": false,
+  "reason": "the head is not a whole raw deflate stream",
+  "fileSha256": "c2273ea1bbe975b2af7689592a795c6a8f176be5b4724e5458f3039f546394f7"
+ },
+ "go-reader-own/refuse--19-deflate-reserved-block-type.fpk": {
+  "reads": false,
+  "readOk": false,
+  "reason": "the head is not a whole raw deflate stream",
+  "fileSha256": "1546d795da5e93c484035830a250b1d99c50f2378da6c9fb1a0c5b9940df1ce0"
+ },
+ "go-reader-own/refuse--20-deflate-cut-short.fpk": {
+  "reads": false,
+  "readOk": false,
+  "reason": "records is not a whole raw deflate stream",
+  "fileSha256": "8a244cfbde280a533d3f9f6ca6bb9a4f2f01538f4b6063c0b83882e6d64f121b"
+ },
+ "go-reader-own/refuse--21-deflate-stored-len-nlen-mismatch.fpk": {
+  "reads": false,
+  "readOk": false,
+  "reason": "the head is not a whole raw deflate stream",
+  "fileSha256": "706cc1de211bbad082d3bc895aaab39e5bde24f27a3264c22e9b243b46ba42b7"
+ },
+ "go-reader-own/refuse--22-head-hash-flipped.fpk": {
+  "reads": false,
+  "readOk": false,
+  "reason": "the end does not name the sections before it",
+  "fileSha256": "3ed8bd8430280b46ba520f7e9aca0c7668b1bbee0daf7b94a519ade8190ecd79"
+ },
+ "go-reader-own/refuse--23-section-hash-wrong-name-consistent.fpk": {
+  "reads": false,
+  "readOk": false,
+  "reason": "the paths does not match its hash",
+  "fileSha256": "4fc2422c8b13ab4b2b83c5af8b573a252e36f4c36628149f6a2f611784954f43"
+ },
+ "go-reader-own/refuse--24-end-section-not-the-name.fpk": {
+  "reads": false,
+  "readOk": false,
+  "reason": "the end does not name the sections before it",
+  "fileSha256": "d8d7abc64cbbda4672ddd7319d3c96a114231135f3812a6dbe63667296cc0e51"
+ },
+ "go-reader-own/refuse--25-no-head.fpk": {
+  "reads": false,
+  "readOk": false,
+  "reason": "the first section is not the head",
+  "fileSha256": "e8a0b1378db991123cba02c7be653580ef2fdd2f6135568c6d784d533fe22939"
+ },
+ "go-reader-own/refuse--26-two-heads.fpk": {
+  "reads": false,
+  "readOk": false,
+  "reason": "the sections after the records are not the paths, the wires and the end",
+  "fileSha256": "ddd2ec0341cf11d1ab901fb49df487769b0c5ef29d820e87d2f5bedd8abace70"
+ },
+ "go-reader-own/refuse--27-head-count-not-0.fpk": {
+  "reads": false,
+  "readOk": false,
+  "reason": "the first section is not the head",
+  "fileSha256": "4b192b75207867894474978e819ec27a916b9b06174902af6dd7c6f5cfc40d34"
+ },
+ "go-reader-own/refuse--28-strings-without-records.fpk": {
+  "reads": false,
+  "readOk": false,
+  "reason": "strings not followed by records",
+  "fileSha256": "55195c45f98fbaa831d19064b7e9cb1dd7d4371753579836941bc8733afcdcbb"
+ },
+ "go-reader-own/refuse--29-strings-count-0.fpk": {
+  "reads": false,
+  "readOk": false,
+  "reason": "a section of no strings",
+  "fileSha256": "66c576813895666fad86f65d30b55e436598dbbc20ba0b25836acdf7f5ff5e8c"
+ },
+ "go-reader-own/refuse--30-records-count-0.fpk": {
+  "reads": false,
+  "readOk": false,
+  "reason": "a section of 0 records",
+  "fileSha256": "6df96bfbac224c748498aae656bc4cb93e535a0f91f77bc49790d01ffa6524ed"
+ },
+ "go-reader-own/refuse--31-records-count-257.fpk": {
+  "reads": false,
+  "readOk": false,
+  "reason": "a section of 257 records",
+  "fileSha256": "40e63d2cc63ab5be853ca1cde8411d2547083280913bfe29324348762c05c8cd"
+ },
+ "go-reader-own/refuse--32-paths-count-wrong.fpk": {
+  "reads": false,
+  "readOk": false,
+  "reason": "the paths or wires count other than the 3 files recorded",
+  "fileSha256": "97589bc32d762d695075eb9ccddc01a30f2ccb68c0f6172142b1baee63bb35dc"
+ },
+ "go-reader-own/refuse--33-wires-count-wrong.fpk": {
+  "reads": false,
+  "readOk": false,
+  "reason": "the paths or wires count other than the 3 files recorded",
+  "fileSha256": "e9b22e865534e30889cfbfdec2ab56eca60dca76f2fd6f1bf695769133645962"
+ },
+ "go-reader-own/refuse--34-paths-and-wires-swapped.fpk": {
+  "reads": false,
+  "readOk": false,
+  "reason": "the sections after the records are not the paths, the wires and the end",
+  "fileSha256": "d5883395d27c518b37dc1b429d15022448d4abbb55c2c72e83ade0bb016adb22"
+ },
+ "go-reader-own/refuse--35-no-wires.fpk": {
+  "reads": false,
+  "readOk": false,
+  "reason": "the sections after the records are not the paths, the wires and the end",
+  "fileSha256": "d49e10610585cd7391c2fd9178041451023f73bf8e795b00362e6c575263ccb5"
+ },
+ "go-reader-own/refuse--36-short-records-not-last.fpk": {
+  "reads": false,
+  "readOk": false,
+  "reason": "a section of 1 records before the last",
+  "fileSha256": "570a5fc4e616f03c0ce903cb9564e7a20cd87c01f4cf44ae779b1e5bd2698550"
+ },
+ "go-reader-own/refuse--37-end-count-wrong.fpk": {
+  "reads": false,
+  "readOk": false,
+  "reason": "the end does not count the sections before it",
+  "fileSha256": "cff0a9e754c80ebeb00cf1d1c3e730d34411a90668b6f0a5eeafde99522a3b8a"
+ },
+ "go-reader-own/refuse--38-end-raw-not-32.fpk": {
+  "reads": false,
+  "readOk": false,
+  "reason": "the end does not count the sections before it",
+  "fileSha256": "af4f87827499bff2f0d583dac7680de90763d2c03b98b73b1fa7821d4bbd9389"
+ },
+ "go-reader-own/refuse--39-head-version-2.fpk": {
+  "reads": false,
+  "readOk": false,
+  "reason": "the layout's version is 2; this reader reads 1",
+  "fileSha256": "415bb4f3026fe6a7f5ec41b08452b199f1ac2b65fae8485d839b8811bff631c4"
+ },
+ "go-reader-own/refuse--40-head-trailing-byte.fpk": {
+  "reads": false,
+  "readOk": false,
+  "reason": "the head has 1 bytes after its last fact",
+  "fileSha256": "c97f481bb48483f0278c6b626945d7b8c74c13ef15ea5c512b07505d81d646d6"
+ },
+ "go-reader-own/refuse--41-head-cut.fpk": {
+  "reads": false,
+  "readOk": false,
+  "reason": "the head claims 21 bytes where 18 are left",
+  "fileSha256": "37e7b71aae1934d5a13d0ba20732d51183254282f66ea4953729d7572d68b342"
+ },
+ "go-reader-own/refuse--42-leftout-count-too-large.fpk": {
+  "reads": false,
+  "readOk": false,
+  "reason": "the head claims 1000 items in 49 bytes",
+  "fileSha256": "2dff1e1a3602c03d4029ad0cf2f44d092938ef1013906ecfd854df0edb56283a"
+ },
+ "go-reader-own/refuse--43-head-root-absolute.fpk": {
+  "reads": false,
+  "readOk": false,
+  "reason": "the location's root \"/abs\" is not a relative path",
+  "fileSha256": "cc95801e0ba517a473eeb928110eaa6559ba9d36358d520918bee81ff257986b"
+ },
+ "go-reader-own/refuse--44-head-root-backslash.fpk": {
+  "reads": false,
+  "readOk": false,
+  "reason": "the location's root \"\\\\abs\" is not a relative path",
+  "fileSha256": "efa8e33c658c324ca5d196d1ec03164e895ce98e40031d7d4ab28594a751b6e2"
+ },
+ "go-reader-own/refuse--45-head-root-drive.fpk": {
+  "reads": false,
+  "readOk": false,
+  "reason": "the location's root \"C:x\" is not a relative path",
+  "fileSha256": "f79e135828e65f2b70b62d0def63154fbff9a38d882dc20652d6e2307d83d8d1"
+ },
+ "go-reader-own/refuse--46-head-root-file-scheme.fpk": {
+  "reads": false,
+  "readOk": false,
+  "reason": "the location's root \"FiLe:x\" is not a relative path",
+  "fileSha256": "b1f8fb69618d39fca256eb7fa245b3f8f35f5799c7ab0299efdd88ba5b4969dc"
+ },
+ "go-reader-own/refuse--47-head-root-dotdot.fpk": {
+  "reads": false,
+  "readOk": false,
+  "reason": "the location's root \"a/../b\" is not a plain relative path",
+  "fileSha256": "e747cfa92002e38ce639d9fdb0e0db49fb4cb941bad2e6f7ba08026b19df183b"
+ },
+ "go-reader-own/refuse--48-head-baselayer-empty-segment.fpk": {
+  "reads": false,
+  "readOk": false,
+  "reason": "the location's base layer \"b//c\" is not a plain relative path",
+  "fileSha256": "57edb4da49c5d0cc8bfb3aaf844c9aa80178aaf951918bbca809e1a51b5992d2"
+ },
+ "go-reader-own/refuse--49-head-baselayer-dot.fpk": {
+  "reads": false,
+  "readOk": false,
+  "reason": "the location's base layer \".\" is not a plain relative path",
+  "fileSha256": "ced97731eb08b11712681cf6b23896cdbc4d01bd1f75d591e4eafde93dd427fb"
+ },
+ "go-reader-own/refuse--50-head-baselayer-nul.fpk": {
+  "reads": false,
+  "readOk": false,
+  "reason": "the location's base layer \"b\\u0000\" is not a relative path",
+  "fileSha256": "0be179158df7f148b3184f5e91fd56f836512b5a6133e5a92c3a786772f1425c"
+ },
+ "go-reader-own/refuse--51-head-extension-slash.fpk": {
+  "reads": false,
+  "readOk": false,
+  "reason": "the location's extension holds a slash",
+  "fileSha256": "1b8cadb88938d00bfbe8857a74fdf2343d3997bd88393df4cd1eacdc9e176f84"
+ },
+ "go-reader-own/refuse--52-utf8-overlong.fpk": {
+  "reads": false,
+  "readOk": false,
+  "reason": "the head holds text that is not UTF-8",
+  "fileSha256": "cdf68b6fff7f5cf99a47be0edef72f73fe191c386383ed5d59f3ea3a90cfff5e"
+ },
+ "go-reader-own/refuse--53-utf8-overlong-3.fpk": {
+  "reads": false,
+  "readOk": false,
+  "reason": "the head holds text that is not UTF-8",
+  "fileSha256": "933fe5a47416e1c4de46acfceaa64b7a608e98ff78c1a581840f073bc111ba6b"
+ },
+ "go-reader-own/refuse--54-utf8-surrogate.fpk": {
+  "reads": false,
+  "readOk": false,
+  "reason": "the head holds text that is not UTF-8",
+  "fileSha256": "fde1f55e3ad74244f087fc4b4a89155e68c02af27a3d71d88e2dc12befb55c4a"
+ },
+ "go-reader-own/refuse--55-utf8-above-10ffff.fpk": {
+  "reads": false,
+  "readOk": false,
+  "reason": "the head holds text that is not UTF-8",
+  "fileSha256": "8bd0ef7ad2c537130b8916ba9a2467d3d716c37bbabce201287b3beb5a5e2bd7"
+ },
+ "go-reader-own/refuse--56-utf8-lone-continuation.fpk": {
+  "reads": false,
+  "readOk": false,
+  "reason": "the head holds text that is not UTF-8",
+  "fileSha256": "4ef91629edf47b16aeafaa77ea10bd36d42e35363ca4bc217111874661ea6f84"
+ },
+ "go-reader-own/refuse--57-utf8-cut-sequence.fpk": {
+  "reads": false,
+  "readOk": false,
+  "reason": "the head holds text that is not UTF-8",
+  "fileSha256": "64580310f2c84638dba76b8ceec6583e95a8b1e1e76b81703e1b98755639ebfd"
+ },
+ "go-reader-own/refuse--58-utf8-byte-ff.fpk": {
+  "reads": false,
+  "readOk": false,
+  "reason": "the head holds text that is not UTF-8",
+  "fileSha256": "004562d5b9789cd8f356caf3aa17134036efa2754e3aba6ecc5f9326045ebd93"
+ },
+ "go-reader-own/refuse--59-utf8-f5.fpk": {
+  "reads": false,
+  "readOk": false,
+  "reason": "the head holds text that is not UTF-8",
+  "fileSha256": "876e18b03d29e7f6c081e6a40b34d6f0fc7bd97db715cdba2f62201c4fd3fd58"
+ },
+ "go-reader-own/refuse--60-varint-not-shortest.fpk": {
+  "reads": false,
+  "readOk": false,
+  "reason": "the head holds a number written longer than it needs",
+  "fileSha256": "c9c4fa9050e84bf338d48aa5cb22539a8876ea47823d9bbd0840d95cca6b55c1"
+ },
+ "go-reader-own/refuse--61-varint-above-2^32.fpk": {
+  "reads": false,
+  "readOk": false,
+  "reason": "the head holds a number past 2^32 - 1",
+  "fileSha256": "c4a2773015bd220ef4460a3d2eb539e53b84219784e5a4bf7dd108e744b44f21"
+ },
+ "go-reader-own/refuse--62-varint-sixth-byte.fpk": {
+  "reads": false,
+  "readOk": false,
+  "reason": "the head holds a number longer than five bytes",
+  "fileSha256": "73cde0caf96a0fd59906c1d076d13210b0367cd6cc29f6d73289c12a2340eece"
+ },
+ "go-reader-own/refuse--63-varint-cut.fpk": {
+  "reads": false,
+  "readOk": false,
+  "reason": "the head ends early",
+  "fileSha256": "31d4974e8a56fa823722619a989a829345aa66aac3d00d223ce51a95413bf84b"
+ },
+ "go-reader-own/refuse--64-string-twice.fpk": {
+  "reads": false,
+  "readOk": false,
+  "reason": "the string \"src/a.ts\" is set down twice",
+  "fileSha256": "a0d371b54a6e928b71f260078aaabd1bb4d2d9c06800f591f3ab2d9b3b239da7"
+ },
+ "go-reader-own/refuse--65-string-never-met.fpk": {
+  "reads": false,
+  "readOk": false,
+  "reason": "1 strings set down before a section of records are not met in it",
+  "fileSha256": "91e804f91b792e391738c97f301826c9522c407e93ae4b004a5b25e69891dcbf"
+ },
+ "go-reader-own/refuse--66-strings-trailing-byte.fpk": {
+  "reads": false,
+  "readOk": false,
+  "reason": "a section of strings has 1 bytes after its last fact",
+  "fileSha256": "feea855dcfb64d5e8de75ba86f82b431c4da0acff36be88d33ada4e43c0052cb"
+ },
+ "go-reader-own/refuse--67-strings-count-above-raw.fpk": {
+  "reads": false,
+  "readOk": false,
+  "reason": "a section of strings claims 645 strings in 644 bytes",
+  "fileSha256": "68d9eea01eb6d6d5d267056bef5fdb4033b05eeeab1cd02cb6e542978f564e54"
+ },
+ "go-reader-own/refuse--68-records-trailing-byte.fpk": {
+  "reads": false,
+  "readOk": false,
+  "reason": "a section of records has 1 bytes after its last fact",
+  "fileSha256": "a25d6da2c44e1b8c8ef946e7c28ed0985a5a74f3aa110c95301a36288da95316"
+ },
+ "go-reader-own/refuse--69-records-cut.fpk": {
+  "reads": false,
+  "readOk": false,
+  "reason": "the facts of \"src/c.ts\": a section of records ends early",
+  "fileSha256": "f2a848cc2a10d17c73495d063d7737ba9d46ed172f200127ef0368ca85abf44b"
+ },
+ "go-reader-own/refuse--70-sid-skips-ahead.fpk": {
+  "reads": false,
+  "readOk": false,
+  "reason": "a string numbered 1 where the next new one is 0",
+  "fileSha256": "e2310b14e6e203d045c1b2a00ec3d04d79dc230ead7f97a507fc8eb5f860e6ec"
+ },
+ "go-reader-own/refuse--71-filemark-undefined-bit.fpk": {
+  "reads": false,
+  "readOk": false,
+  "reason": "the facts of \"src/a.ts\": its marks sets a mark the layout does not define",
+  "fileSha256": "8a7b84f24facc68b584a37769ba55da5b6444aa0dd9400646a7a8b141a8a3848"
+ },
+ "go-reader-own/refuse--72-path-absolute.fpk": {
+  "reads": false,
+  "readOk": false,
+  "reason": "a path \"/src/a.ts\" is not a relative path",
+  "fileSha256": "162cc313833442296db3a56113e9e0d278c8d426101e06eee9857347f6942e9e"
+ },
+ "go-reader-own/refuse--73-path-drive.fpk": {
+  "reads": false,
+  "readOk": false,
+  "reason": "a path \"C:/src/a.ts\" is not a relative path",
+  "fileSha256": "d85eda68c366dd987d09647f2f0ae1c5ade695188c4271b83cbf5b4392e00afe"
+ },
+ "go-reader-own/refuse--74-path-file-scheme.fpk": {
+  "reads": false,
+  "readOk": false,
+  "reason": "a path \"FILE:src/a.ts\" is not a relative path",
+  "fileSha256": "e3de1d397f8ca6ab1bd352da9d41d7a4f086f6abf8e2cc40d0d02d01df8afe11"
+ },
+ "go-reader-own/refuse--75-path-dotdot.fpk": {
+  "reads": false,
+  "readOk": false,
+  "reason": "a path \"src/../a.ts\" is not a plain relative path",
+  "fileSha256": "b8790244363330b502e0b34a0f5420254fa9211bd10828c618a546e971d538b9"
+ },
+ "go-reader-own/refuse--76-path-dot.fpk": {
+  "reads": false,
+  "readOk": false,
+  "reason": "a path \"./src/a.ts\" is not a plain relative path",
+  "fileSha256": "286d2c2e7ff386a0876d3fee4947623e16bd6935b05d5a204f76c8a6c9d5469b"
+ },
+ "go-reader-own/refuse--77-path-trailing-slash.fpk": {
+  "reads": false,
+  "readOk": false,
+  "reason": "a path \"src/a.ts/\" is not a plain relative path",
+  "fileSha256": "8b3987c2c9f0d6327e223192bed19cb63fcf9ce0c173695651fee7c7e1b4843e"
+ },
+ "go-reader-own/refuse--78-path-nul.fpk": {
+  "reads": false,
+  "readOk": false,
+  "reason": "a path \"src/a\\u0000.ts\" is not a relative path",
+  "fileSha256": "e3969ae0b060cfad4490f098e5eee0a77042f2eea022e45096598adadfad8d06"
+ },
+ "go-reader-own/refuse--79-path-backslash-first.fpk": {
+  "reads": false,
+  "readOk": false,
+  "reason": "a path \"\\\\src\\\\a.ts\" is not a relative path",
+  "fileSha256": "1c60994f17379d8503f9477f91d5afe9bff5e447c932635d7db472e2d4664ab4"
+ },
+ "go-reader-own/refuse--80-path-empty.fpk": {
+  "reads": false,
+  "readOk": false,
+  "reason": "a path \"\" is not a relative path",
+  "fileSha256": "27e2c0bf9fae61ba4812f8cee8f0bd6690402c9c2586f735fe8aa7d07725259e"
+ },
+ "go-reader-own/refuse--81-paths-out-of-order.fpk": {
+  "reads": false,
+  "readOk": false,
+  "reason": "the paths are not in order at \"src/a.ts\"",
+  "fileSha256": "ded827634e73e81b3bdc00d0583acd77a27842952216b386df2dbba995958286"
+ },
+ "go-reader-own/refuse--82-path-repeated.fpk": {
+  "reads": false,
+  "readOk": false,
+  "reason": "the paths are not in order at \"src/a.ts\"",
+  "fileSha256": "c31c59a0eba44f4bce9288adea51ff32f7ec7d5b9188dfe41450f73870800c11"
+ },
+ "go-reader-own/refuse--83-link-absolute.fpk": {
+  "reads": false,
+  "readOk": false,
+  "reason": "the facts of \"src/a.ts\": a link \"/etc/passwd\" names an absolute place",
+  "fileSha256": "f84ad1188747d7b5400ca020a25e69904b52edd0763fcd240e1a912ea30c242a"
+ },
+ "go-reader-own/refuse--84-link-file-url.fpk": {
+  "reads": false,
+  "readOk": false,
+  "reason": "the facts of \"src/a.ts\": a link \"file:///etc/passwd\" names an absolute place",
+  "fileSha256": "6889005fd21858f76cdb979cb4bc350e8f311690ba8d719c4ba9f07fad324b7b"
+ },
+ "go-reader-own/refuse--85-link-drive.fpk": {
+  "reads": false,
+  "readOk": false,
+  "reason": "the facts of \"src/a.ts\": a link \"c:\\\\windows\" names an absolute place",
+  "fileSha256": "a8da0f61af4c665ee7469d8475a0e204eae666fede96625094f478a5d9d078a6"
+ },
+ "go-reader-own/refuse--86-link-unc.fpk": {
+  "reads": false,
+  "readOk": false,
+  "reason": "the facts of \"src/a.ts\": a link \"\\\\\\\\server\\\\share\" names an absolute place",
+  "fileSha256": "356e180a22ee116207ee5a4126692c227dc4cb64b2ecd69bf4137eb5f5050d0b"
+ },
+ "go-reader-own/refuse--87-source-path-absolute.fpk": {
+  "reads": false,
+  "readOk": false,
+  "reason": "the facts of \"src/a.ts\": a source \"/src/a.ts\" names an absolute place",
+  "fileSha256": "31e9c359fd86e63072c91ed890f549b7a0920036dac5c24b55e971a3c44e7033"
+ },
+ "go-reader-own/refuse--88-cited-by-link-absolute.fpk": {
+  "reads": false,
+  "readOk": false,
+  "reason": "the facts of \"src/a.ts\": a citing link \"/README.md\" names an absolute place",
+  "fileSha256": "9f15839dc0244602320f9ae6193f9771896aa09f0f2bb7201374ff6739d11a44"
+ },
+ "go-reader-own/refuse--89-entry-symbol-link-absolute.fpk": {
+  "reads": false,
+  "readOk": false,
+  "reason": "the facts of \"src/a.ts\": an entry's link \"/x#main\" names an absolute place",
+  "fileSha256": "74a8082d1a0953573743ba815d3d8953070e7a150923732a02bf6c1ac6775018"
+ },
+ "go-reader-own/refuse--90-declarer-link-absolute.fpk": {
+  "reads": false,
+  "readOk": false,
+  "reason": "the facts of \"src/a.ts\": an entry's declarer link \"\\\\package.json\" names an absolute place",
+  "fileSha256": "b5f049ea1813a69b2ad3b0d19276f7bbafa64218f39c3189948569d7a8904889"
+ },
+ "go-reader-own/refuse--91-re-export-link-absolute.fpk": {
+  "reads": false,
+  "readOk": false,
+  "reason": "the facts of \"src/b.ts\": a re-export's link \"File:a.ts\" names an absolute place",
+  "fileSha256": "cee58dc1e9d1f90b0118ad7fb9b103ac7d554a20c3b54e4bc4a47d338f04da58"
+ },
+ "go-reader-own/refuse--92-target-dotdot.fpk": {
+  "reads": false,
+  "readOk": false,
+  "reason": "the facts of \"src/a.ts\": a target \"../src/b.ts\" is not a plain relative path",
+  "fileSha256": "97b5fa41d49178e15d91abf60bfcf7e8517822607e045239efd5d3dbc1ace040"
+ },
+ "go-reader-own/refuse--93-target-absolute.fpk": {
+  "reads": false,
+  "readOk": false,
+  "reason": "the facts of \"src/a.ts\": a target \"/src/b.ts\" is not a relative path",
+  "fileSha256": "3536957c2341285aeb09b8f904ae71a89560c85ed067465e8e90ab08dd7a05b4"
+ },
+ "go-reader-own/refuse--94-target-without-link.fpk": {
+  "reads": false,
+  "readOk": false,
+  "reason": "the facts of \"src/a.ts\": a target without a link",
+  "fileSha256": "75b89e969b0945c06e58dbe56ddaae4cd9c05006926d173b4ee1ad43dcae958c"
+ },
+ "go-reader-own/refuse--95-anchor-without-target.fpk": {
+  "reads": false,
+  "readOk": false,
+  "reason": "the facts of \"src/a.ts\": an anchor without a target",
+  "fileSha256": "36875278cf7319fbb1380300673732f15c87d0d692fe7152d0d1b235b0d11226"
+ },
+ "go-reader-own/refuse--96-entry-link-without-name.fpk": {
+  "reads": false,
+  "readOk": false,
+  "reason": "the facts of \"src/a.ts\": an entry's symbol link without its symbol",
+  "fileSha256": "c0186054314dfdd18e1de263bb447a33ad82f5a4001dd1b6ff774444152e36c7"
+ },
+ "go-reader-own/refuse--97-entry-reason-6.fpk": {
+  "reads": false,
+  "readOk": false,
+  "reason": "the facts of \"src/a.ts\": an entry's reason is not one the layout names",
+  "fileSha256": "abbdc72a9048e8ac2ceb4e298fea9aed06f065cdd9a547a10cb518481feb4352"
+ },
+ "go-reader-own/refuse--98-role-5.fpk": {
+  "reads": false,
+  "readOk": false,
+  "reason": "the facts of \"src/a.ts\": a reference's role is not one the layout names",
+  "fileSha256": "dfa09652cc297606be6954b6b045cfca47d44ab283a03fac3e596d867036bbf0"
+ },
+ "go-reader-own/refuse--99-root-backslash-from-text.fpk": {
+  "reads": false,
+  "readOk": false,
+  "reason": "the location's root \"\\\\x\" is not a relative path",
+  "fileSha256": "21341f52f8de57fc0d7e86e47cc886264aa95b4a351b69351ec87ed8e445e8d8"
+ },
+ "go-reader-own/refuse-text--00-empty.txt": {
+  "reads": false,
+  "reason": "the text does not end with a line break",
+  "fileSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+ },
+ "go-reader-own/refuse-text--01-bom.txt": {
+  "reads": false,
+  "reason": "line 1 is not JSON",
+  "fileSha256": "dfba97897a845b88c552dbb64d7ae24321fe025b957205c02be11783a1f6d1f4"
+ },
+ "go-reader-own/refuse-text--02-crlf.txt": {
+  "reads": false,
+  "reason": "line 1 is not written as the text form writes it: \"[null,\\\"format\\\",\\\"fact-pack\\\",1]\\r\"",
+  "fileSha256": "6e2491f63b9d263d59d224820fd66cfdb82ad440c2f1fdfe859aa80c401b3572"
+ },
+ "go-reader-own/refuse-text--03-no-final-lf.txt": {
+  "reads": false,
+  "reason": "the text does not end with a line break",
+  "fileSha256": "5796978a7db406bf50ac3229478b49450f7794bb5bdf83e9dc7d2c7a5089998e"
+ },
+ "go-reader-own/refuse-text--04-invalid-utf8.txt": {
+  "reads": false,
+  "reason": "the text holds text that is not UTF-8",
+  "fileSha256": "59b2bc9373c0db2087888d553c314738a2dca5283179c7491e59888aeb71bee8"
+ },
+ "go-reader-own/refuse-text--05-space-after-comma.txt": {
+  "reads": false,
+  "reason": "line 5 is not written as the text form writes it: \"[null,\\\"format\\\",\\\"fact-pack\\\",1]\\n[null,\\\"location\\\",\\\".mdmd\\\",\\\"layer-4\\\",\\\".mdmd.md\\\"]\\n[null, \\\"scanner\\\",\\\"a test 1.0\\\"]\\n[null,\\\"left-\"",
+  "fileSha256": "b5c95235060960640d8492be9e8fa8d27c6aab21458c6e11276c5232ec5ad276"
+ },
+ "go-reader-own/refuse-text--06-space-at-end.txt": {
+  "reads": false,
+  "reason": "line 5 is not written as the text form writes it: \"[null,\\\"format\\\",\\\"fact-pack\\\",1]\\n[null,\\\"location\\\",\\\".mdmd\\\",\\\"layer-4\\\",\\\".mdmd.md\\\"]\\n[null,\\\"scanner\\\",\\\"a test 1.0\\\"] \\n[null,\\\"left-\"",
+  "fileSha256": "1c764cde43d335584281d8b89c186b4b7f3b874985b51cc976554685dfaea696"
+ },
+ "go-reader-own/refuse-text--07-members-reordered.txt": {
+  "reads": false,
+  "reason": "line 16 is not written as the text form writes it: \"[\\\"src/a.ts\\\",\\\"file\\\",4,\\\"implementation\\\",\\\"2026-11-22T00:00:00.000Z\\\"]\\n[\\\"src/a.ts\\\",\\\"authored\\\",\\\"### Purpose\\\\nSays hello.\\\\n\\\\n##\"",
+  "fileSha256": "461297d228fa72e84f4210e1e49a0b8544d33c02838d84b9c5caf30121fe9b77"
+ },
+ "go-reader-own/refuse-text--08-unknown-member.txt": {
+  "reads": false,
+  "reason": "line 21 is not written as the text form writes it: \"[\\\"src/b.ts\\\",\\\"file\\\",4,null,null]\\n[\\\"src/b.ts\\\",\\\"authored\\\",\\\"### Purpose\\\\n_Pending authored purpose_\\\"]\\n[\\\"src/b.ts\\\",\\\"symbol\\\",{\"",
+  "fileSha256": "9e79c78dae728a78ded74825f620ebcbe08762d84a6095fef10f6e1e1cfec747"
+ },
+ "go-reader-own/refuse-text--09-duplicate-member.txt": {
+  "reads": false,
+  "reason": "line 21 is not written as the text form writes it: \"[\\\"src/b.ts\\\",\\\"file\\\",4,null,null]\\n[\\\"src/b.ts\\\",\\\"authored\\\",\\\"### Purpose\\\\n_Pending authored purpose_\\\"]\\n[\\\"src/b.ts\\\",\\\"symbol\\\",{\"",
+  "fileSha256": "5f9d5270fb77ba31d8ac9c1f67a7b9f11b44730e5f7776486626bedf2cd072e3"
+ },
+ "go-reader-own/refuse-text--10-number-4.0.txt": {
+  "reads": false,
+  "reason": "line 21 is not written as the text form writes it: \"[\\\"src/b.ts\\\",\\\"file\\\",4.0,null,null]\\n[\\\"src/b.ts\\\",\\\"authored\\\",\\\"### Purpose\\\\n_Pending authored purpose_\\\"]\\n[\\\"src/b.ts\\\",\\\"symbol\\\"\"",
+  "fileSha256": "27a5280657730a84bb890df0897597e8a1487337738f05286090bc52a9f8b4d1"
+ },
+ "go-reader-own/refuse-text--11-number-4e0.txt": {
+  "reads": false,
+  "reason": "line 21 is not written as the text form writes it: \"[\\\"src/b.ts\\\",\\\"file\\\",4e0,null,null]\\n[\\\"src/b.ts\\\",\\\"authored\\\",\\\"### Purpose\\\\n_Pending authored purpose_\\\"]\\n[\\\"src/b.ts\\\",\\\"symbol\\\"\"",
+  "fileSha256": "cbd96bc25f02c94edd89a647329de737bd3746f502f692896159af137ea6726f"
+ },
+ "go-reader-own/refuse-text--12-number-leading-zero.txt": {
+  "reads": false,
+  "reason": "line 16 is not JSON",
+  "fileSha256": "7f8692ded7f8d92a1b47dc540e9acc0b44564e435246dc717cfbba82ee4a5cc8"
+ },
+ "go-reader-own/refuse-text--13-number-negative.txt": {
+  "reads": false,
+  "reason": "the facts of \"src/b.ts\": its layer is not a whole number from 0 to 2^32 - 1",
+  "fileSha256": "3dd9a3cc4641a232d1e15cedf2e8c3afa6adfaf8a54fdba014bc59927f6ea803"
+ },
+ "go-reader-own/refuse-text--14-number-too-big.txt": {
+  "reads": false,
+  "reason": "the facts of \"src/b.ts\": its layer is not a whole number from 0 to 2^32 - 1",
+  "fileSha256": "0dcb589c51f090882a257a2386875d65b09dde680dbe51948b34cc35981cdc60"
+ },
+ "go-reader-own/refuse-text--15-escape-A.txt": {
+  "reads": false,
+  "reason": "line 16 is not written as the text form writes it: \"[\\\"src/a.ts\\\",\\\"file\\\",4,\\\"implementation\\\",\\\"2026-11-22T00:00:00.000Z\\\"]\\n[\\\"src/a.ts\\\",\\\"authored\\\",\\\"### Purpose\\\\nSays hello.\\\\n\\\\n##\"",
+  "fileSha256": "5082169510651adb70b25ba47f12b4cd38e5fa02f6ce2efc7f74d012c8fe6c65"
+ },
+ "go-reader-own/refuse-text--16-escape-slash.txt": {
+  "reads": false,
+  "reason": "line 21 is not written as the text form writes it: \"[\\\"src\\\\/b.ts\\\",\\\"file\\\",4,null,null]\\n[\\\"src/b.ts\\\",\\\"authored\\\",\\\"### Purpose\\\\n_Pending authored purpose_\\\"]\\n[\\\"src/b.ts\\\",\\\"symbol\\\",\"",
+  "fileSha256": "0a656158342f58ee20f4b65c64a31eaffb957f47928afd2799900db02f4c5b71"
+ },
+ "go-reader-own/refuse-text--17-escape-uppercase-hex.txt": {
+  "reads": false,
+  "reason": "line 16 is not written as the text form writes it: \"[\\\"src/a.ts\\\",\\\"file\\\",4,\\\"implementation\\\",\\\"2026-11-22T00:00:00.000Z\\\"]\\n[\\\"src/a.ts\\\",\\\"authored\\\",\\\"### Purpose\\\\nSays hello.\\\\n\\\\n##\"",
+  "fileSha256": "d31ddb041c14cc7752ea63ee50e57b802360dc1e938ef43fc35f874b213947dd"
+ },
+ "go-reader-own/refuse-text--18-surrogate-pair-escape.txt": {
+  "reads": false,
+  "reason": "line 16 is not written as the text form writes it: \"[\\\"src/a.ts\\\",\\\"file\\\",4,\\\"implementation\\\",\\\"2026-11-22T00:00:00.000Z\\\"]\\n[\\\"src/a.ts\\\",\\\"authored\\\",\\\"### Purpose\\\\nSays hello.\\\\n\\\\n##\"",
+  "fileSha256": "9528b85385f074ea0b0a5e3d0c82836d963ed288083a03bbc0e94ef8442a4ae6"
+ },
+ "go-reader-own/refuse-text--19-lone-surrogate-escape.txt": {
+  "reads": false,
+  "reason": "the facts of \"src/a.ts\": a section's line holds a lone surrogate, which UTF-8 cannot carry",
+  "fileSha256": "8d832a103fa0da17b8fc5cc24d00b4213030d0de911057387d970f1fdbd2167b"
+ },
+ "go-reader-own/refuse-text--20-raw-tab-in-string.txt": {
+  "reads": false,
+  "reason": "line 10 is not JSON",
+  "fileSha256": "fbe832130660cb902d15c967a11d9999b4f1ba60cefb3a020bafff7efdbf3169"
+ },
+ "go-reader-own/refuse-text--21-false-for-absent.txt": {
+  "reads": false,
+  "reason": "line 16 is not written as the text form writes it: \"[\\\"src/a.ts\\\",\\\"file\\\",4,\\\"implementation\\\",\\\"2026-11-22T00:00:00.000Z\\\"]\\n[\\\"src/a.ts\\\",\\\"authored\\\",\\\"### Purpose\\\\nSays hello.\\\\n\\\\n##\"",
+  "fileSha256": "52ef159661f2070c90c6e949393bbf4d3bf1f81fb2bab58c30df99b1d69d8427"
+ },
+ "go-reader-own/refuse-text--22-array-written-1.txt": {
+  "reads": false,
+  "reason": "line 16 is not written as the text form writes it: \"[\\\"src/a.ts\\\",\\\"file\\\",4,\\\"implementation\\\",\\\"2026-11-22T00:00:00.000Z\\\"]\\n[\\\"src/a.ts\\\",\\\"authored\\\",\\\"### Purpose\\\\nSays hello.\\\\n\\\\n##\"",
+  "fileSha256": "657aaaf2f8cc3599b33e0ddb08b7430060a605621505de7b3e8544df9ea10b04"
+ },
+ "go-reader-own/refuse-text--23-missing-end.txt": {
+  "reads": false,
+  "reason": "the text stops before its end line",
+  "fileSha256": "420070ea885373775ce44c6c2e406455ca347bdb9ba311d59cf3e555a38948e8"
+ },
+ "go-reader-own/refuse-text--24-after-end.txt": {
+  "reads": false,
+  "reason": "lines after the end line",
+  "fileSha256": "1a3fb9cd6bd1cf6467324e11427bfbdccc35189c9b00a967c1cbce5dc63c95aa"
+ },
+ "go-reader-own/refuse-text--25-end-count-wrong.txt": {
+  "reads": false,
+  "reason": "the end line does not count the 3 files",
+  "fileSha256": "8e0b842d5a7e6bc520ba9ded77301727749ea3936eec376858f6fb7a212867bb"
+ },
+ "go-reader-own/refuse-text--26-version-2.txt": {
+  "reads": false,
+  "reason": "line 1 is not written as the text form writes it: \"[null,\\\"format\\\",\\\"fact-pack\\\",2]\"",
+  "fileSha256": "96cde7de58dd3af9a96448d50733cb440f619de62243569bffcacfb91af60fb1"
+ },
+ "go-reader-own/refuse-text--27-format-name.txt": {
+  "reads": false,
+  "reason": "line 1 is not written as the text form writes it: \"[null,\\\"format\\\",\\\"fact-pac\\\",1]\"",
+  "fileSha256": "7f774c0004032f450711f954f3a1acc035daf5dd7a93cd4058d011bd786f23c9"
+ },
+ "go-reader-own/refuse-text--28-missing-authored.txt": {
+  "reads": false,
+  "reason": "line 22 is not \"src/c.ts\"'s authored words",
+  "fileSha256": "3155fbef92e9759c4ea193dfafc5c7ad04175479794e803c6cacf3ed7ef3234b"
+ },
+ "go-reader-own/refuse-text--29-null-as-flags.txt": {
+  "reads": false,
+  "reason": "the facts of \"src/b.ts\": a symbol's flags is not a list",
+  "fileSha256": "4fe3dd569af31d28832fd7f274e277651fd09bcd88e23aec1be55c57b47d9cc9"
+ },
+ "go-reader-own/refuse-text--30-lines-out-of-order.txt": {
+  "reads": false,
+  "reason": "line 12 is not a file's first line",
+  "fileSha256": "f7a1ff7ceabe66f3c75a0006e21e89888c556db55b90761f2483881181972ec9"
+ },
+ "go-reader-own/refuse-text--31-files-out-of-order.txt": {
+  "reads": false,
+  "reason": "the files are not in path order at \"src/b.ts\"",
+  "fileSha256": "b57faed0da16ca956f9acd6af185b475cbdb272016bd3c160b495b65295998df"
+ },
+ "go-reader-own/refuse-text--32-line-of-other-file.txt": {
+  "reads": false,
+  "reason": "line 22 is not \"src/c.ts\"'s authored words",
+  "fileSha256": "e2299a8571bbdc2f5d53bd547293dfd4dd4321c60f66714086d12f6e04565d79"
+ },
+ "go-reader-own/refuse-text--33-absolute-path.txt": {
+  "reads": false,
+  "reason": "a path \"/src/c.ts\" is not a relative path",
+  "fileSha256": "9fdc7c06da4413745798f430335ee3dc36dc62f4621b96461a34ca141456c4c0"
+ },
+ "go-reader-own/refuse-text--34-absolute-link.txt": {
+  "reads": false,
+  "reason": "the facts of \"src/a.ts\": an entry's declarer link \"/package.json.mdmd.md\" names an absolute place",
+  "fileSha256": "578ad56eb6fd29348d3f18d59e4177354fa6897af1b93845526d5a14f6761ddf"
+ },
+ "go-reader-own/refuse-text--35-target-not-path.txt": {
+  "reads": false,
+  "reason": "the facts of \"src/a.ts\": a target \"src//gone.ts\" is not a plain relative path",
+  "fileSha256": "fb13e445183ac877cc2c863bd58eccb892d1b99c2a15983ae52c5fa2b95f2a57"
+ },
+ "go-reader-own/refuse-text--36-target-no-link.txt": {
+  "reads": false,
+  "reason": "the facts of \"src/a.ts\": a target without a link",
+  "fileSha256": "865b2ada188b15e907beaa9984d56b0f4549080e0afe5520ca52fd0a26fa5952"
+ },
+ "go-reader-own/refuse-text--37-unknown-role.txt": {
+  "reads": false,
+  "reason": "the facts of \"src/a.ts\": a reference's role is not a whole number from 0 to 2^32 - 1",
+  "fileSha256": "78c84fe46b87e72cdef464bc331cfa4c407a5017d3e3a5db97e3f063aebf146f"
+ },
+ "go-reader-own/refuse-text--38-unknown-reason.txt": {
+  "reads": false,
+  "reason": "the facts of \"src/a.ts\": an entry's reason is not a whole number from 0 to 2^32 - 1",
+  "fileSha256": "1d612ef751348131484b6890cb512d28ed58e68aa982e9f195605ab5fa3b69df"
+ },
+ "go-reader-own/refuse-text--39-unknown-kind.txt": {
+  "reads": false,
+  "reason": "line 17 is not \"src/b.ts\"'s authored words",
+  "fileSha256": "0c92c6b0be1c2e2d2c0e79d6c7304955dff9ee5b9f326f0c5cf8d80de5dce8df"
+ },
+ "go-reader-own/refuse-text--40-root-absolute.txt": {
+  "reads": false,
+  "reason": "the location's root \"/mdmd\" is not a relative path",
+  "fileSha256": "04025b7a4f9ef1a9ee9bacb0b438c1a1667bd53f14673d4f19d353aa65f7a792"
+ },
+ "go-reader-own/refuse-text--41-extension-slash.txt": {
+  "reads": false,
+  "reason": "the location's extension holds a slash",
+  "fileSha256": "44a3a1af6702f15ee0f0e823171142e668e79b4e0632a8e90b37648cfcc331b2"
+ },
+ "go-reader-own/refuse-text--42-not-json.txt": {
+  "reads": false,
+  "reason": "line 3 is not JSON",
+  "fileSha256": "0d3b96ac068944e1d6054a501dc55d432c17ff38f112b2c3a44bc6c5b62805d4"
+ },
+ "go-reader-own/refuse-text--43-empty-line.txt": {
+  "reads": false,
+  "reason": "line 3 is not JSON",
+  "fileSha256": "fb6292706c7430a79259030fecf2de19c825a58a918057f127a3e52dd845aa5e"
+ },
+ "go-reader-own/refuse-text--44-deep-nesting.txt": {
+  "reads": false,
+  "reason": "line 1 is not JSON",
+  "fileSha256": "d6e47e3ddbe4e3b0db1f90ff9409944f71812049d3873ae0efa5a39524d6dd24"
+ },
+ "go-reader-own/refuse-text--45-cited-by-twice.txt": {
+  "reads": false,
+  "reason": "\"src/c.ts\" has two cited-by lines",
+  "fileSha256": "acbd88ec43b32b861a348d97a1b14b40989c8d9bbe8f27621ea952ba43f87efd"
+ },
+ "go-reader-own/refuse-text--46-declarer-without-link.txt": {
+  "reads": false,
+  "reason": "the facts of \"src/a.ts\": an entry's declarer link is not text",
+  "fileSha256": "2315c18630cb200ba721640fec605075c94b8161a1a0f26be2cf0fc5abfb36c0"
  }
 }

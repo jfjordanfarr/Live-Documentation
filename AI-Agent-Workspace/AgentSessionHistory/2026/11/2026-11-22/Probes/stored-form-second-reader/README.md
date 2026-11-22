@@ -140,13 +140,49 @@ The exit status of a refusal (question 12) is the brief's own gap. The second re
 
 ## The second implementer, in a language of its own choosing
 
-Started at 02:58 UTC from a fresh folder holding the same six files, after its own blindness check. Its result is not yet in this record.
+**The run.** It started from a fresh folder holding the same six files, after its own blindness check, and with the first reader's folder moved out of reach. The instruction was the same, but "in a language of your own choosing other than Python, one that is installed here, using its standard library only", run by a `run.sh` beside it.
+- **Language:** it chose Go.
+- **Time and cost:** 23.3 minutes, 34 turns, **$4.29**.
+- **What it wrote:** [`go-reader/`](go-reader/), committed unchanged but for its built binary:
+  - `main.go`, `reader.go`, `text.go` and `writer.go`, 2,049 lines;
+  - a Go test file of 843 lines;
+  - [`questions.md`](go-reader/questions.md), with 20 questions.
+- **Its own tests:** 167 files, not committed. Four were valid; 115 binary files and 48 texts were to be refused.
+
+**What it answered.** It was run over the same samples, under the same limits, at a machine load of 36 to 50. It agrees with the module on every sample exactly as the Python reader does:
+- the corpora, both ways, byte for byte;
+- all ten made scans, both ways;
+- the 400 mutants;
+- the unit cases' and this probe's files;
+- the 23 texts;
+- the Python reader's 161 files.
+
+Its only disagreements are the two files of the first finding. It prints their texts too: 65,701,031 and 300,908,680 bytes, the same bytes as the Python reader's.
+
+**The other side.** The module and the Python reader were also run over the Go reader's own 165 files, its `.tsv` index aside. All three agree on every one: the four valid files are read the same, and the 161 others are refused.
+
+**So the two blind readers agree with each other everywhere.** Where they disagree with the module, they disagree together, and the specification is on their side (finding 1).
+
+**One run past a limit, and not the reader's.** Once, `name` of `made-seeded-11-773.txt` died before reading a byte. It stopped in the Go runtime's start (`runtime.schedinit`), under an address-space limit of 1,170 MiB. Run again alone under limits of 1,024, 1,100, 1,300 and 2,048 MiB, it gave the module's name each time. It failed again only at exactly 1,170 MiB, at a peak of 12 MB when unlimited. That is how Go reserves address space at start-up under `prlimit --as`, not memory the reader used, and the sample counts as the same.
+
+**Speed.** Under the higher load, DNN's stored form read in 2.2 s (28 MB peak), and its text named in 8.2 s (210 MB peak). The 50 bombs were refused within 1.1 s, holding at most 11 MB.
+
+**What its questions add.** Its questions overlap the Python reader's on trailing bytes, the text's bound, the compressor, the links that make wires, `Constraints`, the extension, the declared length and what makes a text valid. Five are new:
+
+- **The name from the headers, or by inflating the end** (sections 3.4 and 6, step 4; its question 2). Section 3.4 says "A reader checks the name from the headers alone, before inflating anything", and section 6 says to inflate the end and compare. The two can both hold: the end's header holds the SHA-256 of the name. The text does not say that is the check meant. It made both.
+- **Which raw deflate streams are valid** (section 3.2; question 13). RFC 1951 leaves corner cases to implementations: incomplete or over-subscribed Huffman codes, distance codes 30 and 31, length codes 286 and 287, and the padding bits after the final block. zlib (which the module, Python and Node use) and Go's `compress/flate` may decide them differently. Then a hostile file is a scan to one reader and refused by another. No mutant here found such a split, and none was built to look for one. This is against the specification, which leans on an implementation's reading of the RFC, and it is unmeasured.
+- **The order in which sids are first met** (section 4.2; question 8). The text form puts `generatedAt` and `authored` before the entries, and the layout after them. The text's "walking the records in order (section 4.3)" settles it, and the samples confirm it.
+- **The drive rule refuses ordinary names** (section 2.4; question 20). A path such as `a:b.txt`, or a link such as `c:foo`, begins with a letter and `:`. Both are refused, though on Linux and macOS each is a plain relative name. The text means this, but a file of that name in a scanned folder can then only be left out. That is a cost of the rule, which the owner may want to weigh.
+- **How far a count may be refused sooner** (section 2.1; question 16). It used minimum sizes for every kind of item, not only the two the text names. Section 2.1's "None of these changes which files are accepted" makes that safe.
 
 ## Cost, as the program reports it
 
-- The first implementer: $2.64, 876 s.
-- The blindness checks: $0.18 and $0.11, for the first and second folders.
-- Two trials of the sandbox with Haiku, about $0.08. The first of them found `/tmp/claude-1000` readable.
+**$7.30 in all:**
+
+- The Python implementer: $2.64, 876 s.
+- The Go implementer: $4.29, 1,400 s.
+- The blindness checks: $0.18 and $0.11.
+- Two trials of the sandbox with Haiku: about $0.08. The first of them found `/tmp/claude-1000` readable.
 
 ## Files
 
@@ -158,7 +194,8 @@ Started at 02:58 UTC from a fresh folder holding the same six files, after its o
   - `answers <dir>` records the module's answers.
   - The estate's `index.json` was made by `npm run live-docs:generate -- --workspace <a copy of tests/integration/programs/csharp/estate>`.
 - [`compare.mjs`](compare.mjs) and [`peak.py`](peak.py): the comparison under time and memory limits. Run it as `node compare.mjs <out.json> --reader "/usr/bin/python3 -I python-reader/reader.py" --skip <the six shown files> <dir>...`.
-- [`module-answers.json`](module-answers.json): every sample's SHA-256 and the module's answer.
-- [`shown/`](shown/): exactly what the blind folder held.
+- [`module-answers.json`](module-answers.json): every sample's SHA-256 and the module's answer, including the two blind readers' own test files (`python-reader-own/`, `go-reader-own/`).
+- [`shown/`](shown/): exactly what each blind folder held.
 - [`python-reader/`](python-reader/): the first implementer's program, questions and test scripts, unchanged.
+- [`go-reader/`](go-reader/): the second's, unchanged, without its built binary. The comparison runs it as `--reader "/bin/sh go-reader/run.sh"`, which builds it with the installed Go on first use.
 - [`runs/`](runs/): each headless run's prompt, answer, usage and cost.
