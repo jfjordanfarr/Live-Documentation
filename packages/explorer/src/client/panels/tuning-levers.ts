@@ -74,6 +74,8 @@ export const TUNING_HELP: Readonly<Record<string, string>> = {
   "tuning-force-beyond-hops":         "With wrappers on, what stands past the hops: every file of the groups shown, or only what is one step away.",
   "tuning-force-shell-depth":         "With wrappers on, how many directories deep the shells of hidden files stand; deeper makes more, smaller shells.",
   "tuning-force-reveal-frames":       "How many frames the picture takes to enter, hop by hop; fewer is quicker.",
+  "tuning-force-scan-growth":         "A trial: the 3D map opened with nothing asked fills as a scan would, file by file, by path or by first commit.",
+  "tuning-force-scan-pace":           "The rhythm of the scan trial: as measured on this repository, or four times slower, as on a weak machine.",
 
   // 3D forces: the field and its motion (forceGraphPhysics.ts, forceGraphLayout.ts).
   "tuning-force-charge":              "How strongly spheres push one another apart.",

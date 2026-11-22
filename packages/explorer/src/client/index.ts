@@ -2,7 +2,7 @@ import type { HistorySequence } from "@live-documentation/engine/live-docs/histo
 
 import { explorerGraphOf } from "../shared/graph";
 import type { StaticExplorerData } from "../shared/staticExplorerData";
-import type { ExplorerNodePayload } from "../shared/types";
+import type { ExplorerGraphPayload, ExplorerNodePayload } from "../shared/types";
 import { announce } from "./announce";
 import { inferDefaultEntryNodeId } from "./bootstrap";
 import { landingOf } from "./bootstrap/landing";
@@ -25,7 +25,7 @@ import { sourcesFacts } from "./panels/sources-facts";
 import { renderSourcesView } from "./panels/sources-view";
 import { watchLocalKinds } from "./panels/spatial-legend";
 import { statsLineOf } from "./panels/stats-line";
-import { initTuningPanel, withholdThreeDLayout } from "./panels/tuning";
+import { initTuningPanel, withholdFirstCommitOrder, withholdThreeDLayout } from "./panels/tuning";
 import { findPath, reachOf, referencesAgainstPath, type PathfindResult, type Reach } from "./pathfind";
 import {
   parseInitialState,
@@ -53,6 +53,8 @@ import type { ReadingControl } from "./views/localView/types";
 import { animatePerspective, captureLocalScene, holdPerspective } from "./views/perspectiveTransition";
 import { addPin, EMPTY_PIN_SET, INTERNAL_SYMBOL, isSymbolPinned, pressSymbol, removePinsForNode, retainFile, type PinSet } from "./views/pin-state";
 import { clearRetainedDirectory, describeRetained, newestRetained, reconcileRetained, releaseRetained, retainedKey, subjectAfterRelease, othersReleasedWords, releaseOthers, type OthersReleased, type OthersStrength, type RetainedItem, type RetainedState } from "./views/retained-state";
+import { birthSteps } from "./views/scanGrowth";
+import { createScanGrowthPlay } from "./views/scanGrowthPlay";
 import { perspectiveRemembered, perspectiveShown, WEBGL_REFUSED, webglKnown, webglOffered, whenIdle } from "./views/webgl-support";
 import { createWorldMapView } from "./views/worldMap";
 
@@ -321,8 +323,10 @@ function startExplorer(bundle: StaticExplorerData, initialSnapshot: UrlStateSnap
   let backwardConnections = 0;
   // The strength the 3D button shows, so that its pulse plays only as the cue lights or rises.
   let shownStrength: BackwardStrength = "none";
+  /** Today's graph as the scan trial has it so far, while it plays: the counts are then of the files arrived, not of a scan not yet done. */
+  let scanGraph: ExplorerGraphPayload | null = null;
   const syncStatsLine = (): void => {
-    const counts = statsLineOf((shownMoment?.graph ?? graphData).stats);
+    const counts = statsLineOf((shownMoment?.graph ?? scanGraph ?? graphData).stats);
     const n = (count: number): string => count.toLocaleString("en-US");
     const shown = state.view === "map" && state.perspective === "3d" && shownFiles
       ? ` · ${n(shownFiles.shown)} of ${n(shownFiles.total)} files shown · ${n(shownFiles.groups)} ${shownFiles.groups === 1 ? "group" : "groups"}, ${n(shownFiles.alone)} alone` : "";
@@ -455,7 +459,8 @@ function startExplorer(bundle: StaticExplorerData, initialSnapshot: UrlStateSnap
     },
     hasDocument: hasBundledDoc,
     onReadDocument: path => openInspection({ kind: "bundled-doc", path }),
-    onOpenChange: () => syncPerspectiveControls(),
+    // A history opened shows its own moments: a scan trial under way ends.
+    onOpenChange: () => { if (historyControl.isOpen()) scanPlay.stop(); syncPerspectiveControls(); },
     // The scrubber's speed is Tuning's Play Rate, chosen where play is (2026-10-31).
     onPlayRate: rate => {
       state.tuning.history.playRate = rate;
@@ -553,6 +558,31 @@ function startExplorer(bundle: StaticExplorerData, initialSnapshot: UrlStateSnap
   // retained branches, or released, which is what was asked about. The one state the address already carries.
   const wholeButton = iconButton("Whole", '<circle cx="12" cy="12" r="9"/><g fill="currentColor" stroke="none"><circle cx="9" cy="9.5" r="1.3"/><circle cx="14.5" cy="8" r="1.3"/><circle cx="15" cy="13.5" r="1.3"/><circle cx="9.5" cy="15" r="1.3"/><circle cx="12" cy="12" r="1.3"/></g>');
   const nothingAsked = (): boolean => !state.pins?.entries.length && !state.selectedNode && !state.openDirectories?.size && !state.discovery && !localView.getActivePath();
+  // The scan trial (2026-11-22, Tuning's Scan Growth, off by default): opening the 3D map with nothing asked about plays
+  // a scan over it, today's finished graph arriving file by file in a scan's rhythm, so that the owner can judge a map
+  // that fills while it is explored before the engine is changed to feed one. The history is read only for the order
+  // by first commit, and once.
+  let firstCommits: Promise<ReadonlyMap<string, number>> | null = null;
+  const scanPlay = createScanGrowthPlay({
+    host: requireElement("view-graph"),
+    graph: graphData,
+    choice: () => ({ growth: state.tuning.forceGraph.scanGrowth, pace: state.tuning.forceGraph.scanPace }),
+    births: () => bundle.history
+      ? firstCommits ??= (preloadedHistory ? Promise.resolve(preloadedHistory) : loadHistory(bundle.history.file)).then(birthSteps)
+      : null,
+    feed: graph => {
+      scanGraph = graph;
+      forceGraphView.setArrived(graph);
+      syncStatsLine();
+    },
+    waiting: () => forceGraphView.packing()
+  });
+  let threeDShown = false;
+  /** Play the scan where the 3D map shows today with nothing asked about; anywhere else, end one under way. */
+  const playScan = (): void => {
+    if (state.view === "map" && state.perspective === "3d" && nothingAsked() && !state.historyCommit && !historyControl.isOpen()) scanPlay.play();
+    else scanPlay.stop();
+  };
   wholeButton.addEventListener("click", () => {
     historyControl.pause();
     if (state.openDirectories?.has("")) closeRetainedDirectory("");
@@ -1554,7 +1584,9 @@ function startExplorer(bundle: StaticExplorerData, initialSnapshot: UrlStateSnap
       if (subject && anchor) view.placeSubjectAnchor(subject.id, anchor);
     },
     drawLocalConnections: () => localView.drawConnections(),
+    onScanGrowth: () => { if (threeDShown) playScan(); }
   });
+  if (!bundle.history) withholdFirstCommitOrder("First-commit order needs a history, which this map does not carry.");
 
   // The browser's answer on WebGL, when it comes after the controls are built: a no makes the 3D control and Tuning's 3D
   // layout unavailable, with their reason, and lets the remembered choice be written as it now stands.
@@ -2033,6 +2065,12 @@ function startExplorer(bundle: StaticExplorerData, initialSnapshot: UrlStateSnap
     syncPerspectiveControls();
     syncTuningControls();
     forceGraphView.setActive(state.view === "map" && state.perspective === "3d");
+    // The 3D map opened or left: the scan trial plays from its start, or ends.
+    const threeD = state.view === "map" && state.perspective === "3d" && graphData.nodes.length > 0;
+    if (threeD !== threeDShown) {
+      threeDShown = threeD;
+      playScan();
+    }
     if (reason === "change") localView.render();
     if (state.view === "sources") {
       doRenderSourcesView();

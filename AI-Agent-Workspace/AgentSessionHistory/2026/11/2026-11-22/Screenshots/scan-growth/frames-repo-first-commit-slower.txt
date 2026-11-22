@@ -1,0 +1,31 @@
+repo-first-commit-slower-00.png	0.5 s	(no sign)	Loading…
+repo-first-commit-slower-01.png	4.5 s	Listing Files… (366)	0 files, 0 references · 0 of 0 files shown · 0 groups, 0 alone
+repo-first-commit-slower-02.png	8.5 s	Listing Files… (798)	0 files, 0 references · 0 of 0 files shown · 0 groups, 0 alone
+repo-first-commit-slower-03.png	12.5 s	Listing Files… (1,230)	0 files, 0 references · 0 of 0 files shown · 0 groups, 0 alone
+repo-first-commit-slower-04.png	16.5 s	Reading File Text… (0/1,297)	0 files, 0 references · 0 of 0 files shown · 0 groups, 0 alone
+repo-first-commit-slower-05.png	20.5 s	Reading File Text… (0/1,297)	0 files, 0 references · 0 of 0 files shown · 0 groups, 0 alone
+repo-first-commit-slower-06.png	24.5 s	Reading File Text… (0/1,297)	0 files, 0 references · 0 of 0 files shown · 0 groups, 0 alone
+repo-first-commit-slower-07.png	28.6 s	Reading File Text… (0/1,297)	0 files, 0 references · 0 of 0 files shown · 0 groups, 0 alone
+repo-first-commit-slower-08.png	32.6 s	Reading File Text… (0/1,297)	0 files, 0 references · 0 of 0 files shown · 0 groups, 0 alone
+repo-first-commit-slower-09.png	36.6 s	Reading File Text… (89/1,297)	89 files, 126 references · 31 of 89 files shown · 12 groups, 19 alone
+repo-first-commit-slower-10.png	40.6 s	Reading File Text… (198/1,297)	197 files, 429 references · 52 of 197 files shown · 26 groups, 26 alone
+repo-first-commit-slower-11.png	44.6 s	Reading File Text… (306/1,297)	306 files, 1,144 references · 61 of 306 files shown · 30 groups, 31 alone
+repo-first-commit-slower-12.png	48.6 s	Reading File Text… (414/1,297)	414 files, 1,565 references · 78 of 414 files shown · 29 groups, 49 alone
+repo-first-commit-slower-13.png	52.6 s	Reading File Text… (522/1,297)	521 files, 2,077 references · 65 of 521 files shown · 33 groups, 32 alone
+repo-first-commit-slower-14.png	56.6 s	Reading File Text… (628/1,297)	628 files, 3,375 references · 67 of 628 files shown · 34 groups, 33 alone
+repo-first-commit-slower-15.png	60.6 s	Reading File Text… (736/1,297)	736 files, 4,159 references · 74 of 736 files shown · 35 groups, 39 alone
+repo-first-commit-slower-16.png	64.6 s	Reading File Text… (845/1,297)	845 files, 5,023 references · 88 of 844 files shown · 40 groups, 48 alone
+repo-first-commit-slower-17.png	68.6 s	Reading File Text… (952/1,297)	932 files, 5,782 references · 90 of 931 files shown · 41 groups, 49 alone
+repo-first-commit-slower-18.png	72.6 s	Reading File Text… (1,053/1,297)	1,053 files, 6,769 references · 96 of 990 files shown · 42 groups, 54 alone
+repo-first-commit-slower-19.png	76.6 s	Reading File Text… (1,169/1,297)	1,152 files, 7,427 references · 105 of 1,138 files shown · 44 groups, 61 alone
+repo-first-commit-slower-20.png	80.6 s	Reading File Text… (1,272/1,297)	1,272 files, 7,761 references · 124 of 1,200 files shown · 48 groups, 76 alone
+repo-first-commit-slower-21.png	84.6 s	(no sign)	1,297 files, 7,899 references, 1,355 dependencies outside the scan · 132 of 1,283 files shown · 47 groups, 85 alone
+frames at no scan	143	median 24 ms	worst 701 ms	over 100 ms: 4 frames, 1635 ms
+frames at waiting	1523	median 17 ms	worst 406 ms	over 100 ms: 9 frames, 1500 ms
+frames at 0+	113	median 56 ms	worst 602 ms	over 100 ms: 5 frames, 1141 ms
+frames at 200+	181	median 31 ms	worst 139 ms	over 100 ms: 4 frames, 506 ms
+frames at 400+	276	median 24 ms	worst 91 ms	over 100 ms: 0 frames, 0 ms
+frames at 600+	265	median 22 ms	worst 154 ms	over 100 ms: 8 frames, 923 ms
+frames at 800+	221	median 24 ms	worst 359 ms	over 100 ms: 9 frames, 2008 ms
+frames at 1000+	221	median 25 ms	worst 588 ms	over 100 ms: 5 frames, 2158 ms
+frames at 1200+	114	median 25 ms	worst 555 ms	over 100 ms: 4 frames, 1416 ms
