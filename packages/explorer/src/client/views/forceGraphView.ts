@@ -41,6 +41,12 @@
  * or hub keeps its object under its new id, today's pins, subject and open
  * directories are read where they stand at that moment, and the step is fed
  * through the one update path at the energy asked, zero while a thumb drags.
+ *
+ * Since 2026-11-22, a trial for the owner's eye (Tuning's Scan Growth, off by default): the view can be fed today's
+ * graph cut to the files a scan has finished so far, step after step through the same update path, so that the picture
+ * fills while a person watches and explores (`scanGrowth.ts`, `scanGrowthPlay.ts`). While it is fed so the building
+ * rule is suspended: the nodes take hover and press throughout, since the owner asked to explore during a scan of a
+ * minute or more, where the rule was made for a transition of a few seconds.
  */
 
 import { forceSimulation } from "d3-force-3d";
@@ -204,6 +210,13 @@ export interface ForceGraphViewApi {
   wrapGroup(directory: string): void;
   /** Feed the standing picture at the tuning's energy, after a drag placed it without a tick. */
   settle(): void;
+  /**
+   * The scan trial (2026-11-22): show today's graph cut to the files a scan has finished so far, or today's whole graph
+   * again (null). Drawn at once when the view is shown, else at its next render.
+   */
+  setArrived(graph: ExplorerGraphPayload | null): void;
+  /** Whether a picture waits for its bodies to be packed, so that a feeder of pictures does not ask for the next before this one stands. */
+  packing(): boolean;
 }
 
 /** Creates the Force Graph (3D) view for the Live Docs Explorer. */
@@ -252,6 +265,8 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
   // and the energy that render feeds the change at (ticket C4, 2026-10-18).
   let moment: HistoryMoment | null = null;
   let historyChanges: HistoryChanges | null = null;
+  /** Today's graph cut to the files a scan has finished so far, while the scan trial plays; null otherwise (2026-11-22). */
+  let arriving: ExplorerGraphPayload | null = null;
   /**
    * What a person asked about directly and the picture holds, the pins, the subject, the inspected file or hub, a path's
    * files; none while the picture is the layout's start. A step of the history never dims it (2026-11-19).
@@ -547,10 +562,12 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
    */
   function updateBuilding(beginning = false): void {
     const now = performance.now(), reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    const work = beginning || transitioning || packing.size > 0 || reveal.shown < reveal.order.length;
+    // While a scan fills the picture (the trial of 2026-11-22) the map does not build: every arrival is a change of what
+    // is shown, and a rule that refuses the pointer for the length of a scan would refuse the exploring it was asked for.
+    const work = !arriving && (beginning || transitioning || packing.size > 0 || reveal.shown < reveal.order.length);
     // The flight is the 650 ms from its start; a camera that follows without one, as when the picture has no room to be
     // framed in, is no flight (a history step built for ever so, measured on the scripted sample).
-    const flight = following && !!focusMotion && !reduced && now - focusMotion.started < 650;
+    const flight = !arriving && following && !!focusMotion && !reduced && now - focusMotion.started < 650;
     building = nextBuilding(building, { work, flight }, now);
     const phase = buildingPhase(building, now);
     if (phase === shownBuilding) return;
@@ -1382,7 +1399,7 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
     pendingEnergy = undefined;
     // The data: the moment's snapshot, or today's docs; today's pins, subject and open directories are read where they
     // stand at the moment, and a pin that does not stand there retains nothing. The path is already the moment's.
-    const source = moment?.graph ?? graphData;
+    const source = moment?.graph ?? arriving ?? graphData;
     // The marbles' counts are the scan's: a moment of the history has its own, and the files within the skins take them.
     const counts = marbleCounts(source);
     if (counts !== scanCounts) { scanCounts = counts; fileLooks = new Map(); shownUnits = new WeakMap(); }
@@ -1400,6 +1417,8 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
     const directoryScope = directories.length && !state.selectedNode && !path?.length ? JSON.stringify(directories) : "";
     container.dataset.directoryScope = directoryScope;
     container.dataset.historyStep = moment ? String(moment.step) : "";
+    // The files a scan has finished so far, while the scan trial plays: what a test and a person's tools can read.
+    if (arriving && !moment) container.dataset.scanArrived = String(arriving.nodes.length); else delete container.dataset.scanArrived;
 
     const includeNode = (node: ExplorerNodePayload): boolean => {
       if (path?.includes(node.id) || subjectAt === node.id || discoveredFile === node.id || pins.entries.some(pin => pin.nodeId === node.id)) {
@@ -1469,6 +1488,20 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
     const horizon = hasQuestion && wrapping() && state.spatialLayout === "connections" && state.tuning.forceGraph.beyondHops === "next-step";
     const reached = spatialScope(data.nodes, data.links, new Set([...asked, ...members]), hopsShown, pulls);
     const scope = horizon ? withoutUnreachedSeeds(reached, hopsShown) : reached;
+    // While a scan fills the picture, a group's seed is whichever of its files is the most connected so far, so a group
+    // changes its seed as it grows and two groups become one under a third file. The new seed is born where the group
+    // stood, at the seed that held the most room among its files, and not outside the mass as a stranger is.
+    if (arriving) for (const [seed, files] of scope.groupFiles) {
+      if (onScreenIds.has(seed) || bornAt.has(seed)) continue;
+      let stood: ForceGraphNode | undefined, room = -1;
+      for (const file of files) {
+        const node = onScreenIds.has(file) ? nodeCache.get(file) : undefined;
+        if (!node || !Number.isFinite(node.x) || !Number.isFinite(node.y) || !Number.isFinite(node.z)) continue;
+        const held = wrapperRoom.get(file) ?? 0;
+        if (held > room) { stood = node; room = held; }
+      }
+      if (stood) bornAt.set(seed, { x: stood.x!, y: stood.y!, z: stood.z! });
+    }
     // The wrappers (2026-11-05): in the connections layout, by the tuning's choice, every group the picture shows only by
     // its seed, of two files or more, and, inside the groups it shows in part, the directory shells of the files it leaves
     // out, each one body of the picture with its members' references bundled into its wires; the files a pop releases
@@ -1530,9 +1563,14 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
         if (!packingFrame) packingFrame = requestAnimationFrame(packOn);
         return;
       }
+      const hulling = performance.now();
       for (const body of named) {
         nextWrapped.set(body.id, body.key);
-        if (!bodies.get(body.key)!.hull && !bodyWork.includes(body.key)) bodyWork.push(body.key);
+        const built = bodies.get(body.key)!;
+        // While a scan fills the picture, a group that gains a file is a new body: its skin is built before the frame
+        // that would draw it without one, within the frame's share for hulls, so that a growing skin does not blink.
+        if (arriving && !built.hull && isWrapped(body.id) && performance.now() - hulling < WRAPPER_BUDGET) built.hull = wrapperHull(built.shape, built.shape.margin ?? 0);
+        if (!built.hull && !bodyWork.includes(body.key)) bodyWork.push(body.key);
       }
       if (held) {
         shellWires = held.wires;
@@ -1625,7 +1663,8 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
     const groupSizes = [...componentLandmarks(connectedNeighbours(data.nodes.filter(node => node.directoryPath === undefined && node.archetype !== "related-doc"), data.links, link => linkPulls(link, "connections"))).values()];
     const picture: SpatialGraphData = { nodes: [...data.nodes.filter(node => scopeHops.has(node.id)), ...shellNodes],
       links: [...data.links.filter(link => scopeHops.has(link.source) && scopeHops.has(link.target)), ...shellWires] };
-    emptyHint.hidden = picture.nodes.length > 0;
+    // A scan that has finished no file yet shows no absence: its own sign says what it is doing.
+    emptyHint.hidden = picture.nodes.length > 0 || (!!arriving && !moment);
     deeperDirectory = !picture.nodes.length && discovery?.kind === "directory" && state.spatialLayout === "connections"
       && filteredNodes.some(node => under(node.id, directoryAt(discovery.directory))) ? discovery.directory : null;
     const directoryFilteredOut = discovery?.kind === "directory"
@@ -1698,9 +1737,11 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
     /** Build the field again when the forces' settings changed; unfold at full strength for a change of the forces alone, since a membership change is fed at the update energy instead. */
     const updateForces = (reheat: boolean): void => {
       const instance = forceGraphInstance!;
-      const { updateEnergy, settleHold, linkWidth, nodeZoomResistance, wireZoomResistance, groupWrappers, shellDepth, ...forces } = state.tuning.forceGraph;
+      const { updateEnergy, settleHold, linkWidth, nodeZoomResistance, wireZoomResistance, groupWrappers, shellDepth, scanGrowth, scanPace, ...forces } = state.tuning.forceGraph;
       // The energy feeds the next membership change and the Settle Hold the next settle; neither changes a force.
       void updateEnergy; void settleHold;
+      // The scan trial feeds the picture what it shows; it changes no force.
+      void scanGrowth; void scanPace;
       // What is wrapped changes what is shown, which the membership carries; a wrapper's room is its seed's clearance.
       void groupWrappers; void shellDepth;
       void nodeZoomResistance; void wireZoomResistance; // Appearance does not change the layout's physical sizes.
@@ -2300,6 +2341,24 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
   }
 
   /**
+   * Feed the picture today's graph cut to the files a scan has finished so far, or today's whole graph again (null):
+   * a step of the scan trial, through the one update path at the tuning's energy. The camera keeps framing the growing
+   * picture, as it keeps a Fit across the history's steps, until a hand takes it.
+   */
+  function setArrived(next: ExplorerGraphPayload | null): void {
+    const intent = historyCameraIntent;
+    arriving = next;
+    if (active && forceGraphInstance) render();
+    // A flight under way is left to end: begun again at every arrival, it would never leave its start.
+    if (intent && !following) {
+      following = true;
+      fittingScope = intent === "scope";
+      focusMotion = null;
+      subjectAnchor = null;
+    }
+  }
+
+  /**
    * The piece of the picture currently shown: the spheres that have entered, in the order the picture lists them, and
    * the wires among them. A sphere that was in the picture keeps its place; a new one starts beside what holds it, so
    * that the structure layout folds the network into the tree from where the eye left it and a born file does not fly
@@ -2624,5 +2683,5 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
     container.setAttribute("aria-busy", "true");
   }
 
-  return { render, setActive, focusNode, focusDirectory, fit, keepInspectionVisible, cameraRoom, getSubjectAnchor, placeSubjectAnchor, captureScene, revealForTransition, setMoment, settle, poppedGroups, keepPoppedGroups, groupHolding, wrapGroup: wrapShell, whenReady: () => ready && !packing.size ? Promise.resolve() : new Promise(resolve => readyWaiters.push(resolve)) };
+  return { render, setActive, focusNode, focusDirectory, fit, keepInspectionVisible, cameraRoom, getSubjectAnchor, placeSubjectAnchor, captureScene, revealForTransition, setMoment, setArrived, packing: () => packing.size > 0, settle, poppedGroups, keepPoppedGroups, groupHolding, wrapGroup: wrapShell, whenReady: () => ready && !packing.size ? Promise.resolve() : new Promise(resolve => readyWaiters.push(resolve)) };
 }

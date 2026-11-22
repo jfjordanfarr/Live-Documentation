@@ -369,6 +369,24 @@ export type BeyondHops = "everything" | "next-step";
 /** Every choice of what stands beyond the hops, the default first, in the order the control offers them. */
 export const BEYOND_HOPS: readonly BeyondHops[] = ["everything", "next-step"];
 
+/**
+ * Whether the 3D Local Map, opened with nothing asked about, plays a scan (a trial for the owner's eye, 2026-11-22: "let
+ * users do some exploring in 2D/3D local map _while the scan is happening_"): off, the picture as it is and the
+ * default; or the finished graph's files arriving one by one after a scan's waits, in path order, as a scan finishes
+ * them, or in the order the history says they were first committed (`views/scanGrowth.ts`). Nothing is scanned: the
+ * bundle's finished graph is fed in a scan's rhythm, so that the look can be judged before the engine is changed.
+ */
+export type ScanGrowth = "off" | "path" | "first-commit";
+
+/** Every choice of the scan trial, the default first, in the order the control offers them. */
+export const SCAN_GROWTHS: readonly ScanGrowth[] = ["off", "path", "first-commit"];
+
+/** The rhythm the scan trial plays at: the one measured on this repository, or four times slower, as on a weak machine. */
+export type ScanPace = "measured" | "slower";
+
+/** Every pace of the scan trial, the default first, in the order the control offers them. */
+export const SCAN_PACES: readonly ScanPace[] = ["measured", "slower"];
+
 /** How a slot card changes as the 2D map zooms out: the card ladder's steps, or the three looks of the 2026-11-10 trial. */
 export type ZoomLooks = "stepped" | "three";
 
@@ -610,6 +628,10 @@ export interface ForceGraphTuning {
    * trial, 2026-11-18): everything, today's picture, or the next step alone (`BeyondHops`).
    */
   beyondHops: BeyondHops;
+  /** Whether the map opened with nothing asked about plays a scan, and in which order its files arrive (a trial, 2026-11-22; `ScanGrowth`). */
+  scanGrowth: ScanGrowth;
+  /** The rhythm the scan trial plays at (`ScanPace`). */
+  scanPace: ScanPace;
 }
 
 /** The end of a path a person asked for: a file, perhaps one symbol of it, or a directory. The path starts at the newest pin (2026-10-14). */

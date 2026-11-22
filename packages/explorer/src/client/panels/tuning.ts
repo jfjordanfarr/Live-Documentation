@@ -8,7 +8,7 @@
 import { applyMarbles, applyPalette } from "../dom";
 import { layoutSettingsOf } from "../layout-presets";
 import { DEFAULT_PALETTE, isPaletteName } from "../palette";
-import { ARRIVAL_WAITS, ARRIVALS, CUT_COUNTED, DIRECTION_MARKS, WIRE_ANSWERS, FRAMINGS, STEPS, CHANGE_EMPHASES, CLOSED_CELL_COLOURS, CLOSED_DIRECTORY_LOOKS, CLOSED_DIRECTORY_SHAPES, DESCRIPTIONS_ZOOMED_OUT, DIRECTORY_LAYOUTS, GROUP_WRAPPERS, BEYOND_HOPS, FRAME_CHOICES, HIDDEN_FILES_LOOKS, MARBLE_CHOICES, OVERVIEW_FILES, type ExplorerState, type FrameChoice } from "../types";
+import { ARRIVAL_WAITS, ARRIVALS, CUT_COUNTED, DIRECTION_MARKS, WIRE_ANSWERS, FRAMINGS, STEPS, CHANGE_EMPHASES, CLOSED_CELL_COLOURS, CLOSED_DIRECTORY_LOOKS, CLOSED_DIRECTORY_SHAPES, DESCRIPTIONS_ZOOMED_OUT, DIRECTORY_LAYOUTS, GROUP_WRAPPERS, BEYOND_HOPS, SCAN_GROWTHS, SCAN_PACES, FRAME_CHOICES, HIDDEN_FILES_LOOKS, MARBLE_CHOICES, OVERVIEW_FILES, type ExplorerState, type FrameChoice } from "../types";
 import { TUNING_HELP, tuningHelpId } from "./tuning-levers";
 import { initTuningReset } from "./tuning-reset";
 
@@ -26,13 +26,15 @@ export interface TuningPanelConfig {
   drawLocalConnections: () => void;
   /** Puts a frame in force: the sidebar, or the Bare trial's breadcrumb, key and sheet (frame.ts). */
   onFrame: (frame: FrameChoice) => void;
+  /** The scan trial's order or pace was chosen: the 3D map, where it stands with nothing asked about, plays it from its start. */
+  onScanGrowth: () => void;
 }
 
 /**
  * Initialize the tuning panel with all slider and checkbox controls.
  */
 export function initTuningPanel(config: TuningPanelConfig): () => void {
-  const { state, onTuningChange: persistChange, onRender, drawLocalConnections, onFrame } = config;
+  const { state, onTuningChange: persistChange, onRender, drawLocalConnections, onFrame, onScanGrowth } = config;
   describeTuningControls();
   let controlPerspective: ExplorerState["perspective"] | undefined;
   const onTuningChange = (): void => {
@@ -47,6 +49,7 @@ export function initTuningPanel(config: TuningPanelConfig): () => void {
     syncTuningControlsFromState();
     onTuningChange();
     if (state.view === "map") onRender();
+    onScanGrowth();
   } });
   const packingSliders = [
     ...([ ["itemGap", "item-gap"], ["bandGap", "band-gap"], ["heightCost", "height-cost"], ["widthCost", "width-cost"] ] as const).map(([key, name]) => ({
@@ -120,6 +123,8 @@ export function initTuningPanel(config: TuningPanelConfig): () => void {
   const historyChangeEmphasisSelect = document.getElementById("tuning-history-change-emphasis") as HTMLSelectElement | null;
   const groupWrappersSelect = document.getElementById("tuning-force-group-wrappers") as HTMLSelectElement | null;
   const beyondHopsSelect = document.getElementById("tuning-force-beyond-hops") as HTMLSelectElement | null;
+  const scanGrowthSelect = document.getElementById("tuning-force-scan-growth") as HTMLSelectElement | null;
+  const scanPaceSelect = document.getElementById("tuning-force-scan-pace") as HTMLSelectElement | null;
 
   const wireSlider = (input: HTMLInputElement | null, outputId: string, setter: (v: number) => void): void => {
     if (!input) return;
@@ -242,6 +247,8 @@ export function initTuningPanel(config: TuningPanelConfig): () => void {
     if (historyChangeEmphasisSelect) historyChangeEmphasisSelect.value = state.tuning.history.changeEmphasis;
     if (groupWrappersSelect) groupWrappersSelect.value = state.tuning.forceGraph.groupWrappers;
     if (beyondHopsSelect) beyondHopsSelect.value = state.tuning.forceGraph.beyondHops;
+    if (scanGrowthSelect) scanGrowthSelect.value = state.tuning.forceGraph.scanGrowth;
+    if (scanPaceSelect) scanPaceSelect.value = state.tuning.forceGraph.scanPace;
 
     // Set CSS custom properties on document root so they cascade to both views
     document.documentElement.style.setProperty("--local-column-gap", `${state.tuning.localMap.columnGap}px`);
@@ -517,6 +524,22 @@ export function initTuningPanel(config: TuningPanelConfig): () => void {
     });
   }
 
+  // The scan trial (2026-11-22): a choice of its order or its pace plays it from the start, so that it can be watched again.
+  if (scanGrowthSelect) {
+    scanGrowthSelect.addEventListener("change", () => {
+      state.tuning.forceGraph.scanGrowth = SCAN_GROWTHS.find(choice => choice === scanGrowthSelect.value) ?? SCAN_GROWTHS[0];
+      onTuningChange();
+      onScanGrowth();
+    });
+  }
+  if (scanPaceSelect) {
+    scanPaceSelect.addEventListener("change", () => {
+      state.tuning.forceGraph.scanPace = SCAN_PACES.find(choice => choice === scanPaceSelect.value) ?? SCAN_PACES[0];
+      onTuningChange();
+      onScanGrowth();
+    });
+  }
+
   for (const slider of packingSliders) {
     const input = document.getElementById(slider.id) as HTMLInputElement | null;
     input?.addEventListener("input", () => {
@@ -577,4 +600,22 @@ export function withholdThreeDLayout(why: string): void {
   heading.title = why;
   heading.addEventListener("click", event => event.preventDefault());
   group.addEventListener("toggle", () => { if (group.open) group.open = false; });
+}
+
+/**
+ * Where the bundle carries no history (2026-11-22), the scan trial's first-commit order is not offered, since only a
+ * history says when each file was first committed: the choice stays in its list, disabled, and the lever's tooltip and
+ * description say why, as the 3D control does where the browser refuses WebGL. A stored choice of it is left as it is.
+ */
+export function withholdFirstCommitOrder(why: string): void {
+  const select = document.getElementById("tuning-force-scan-growth") as HTMLSelectElement | null;
+  const option = select?.querySelector<HTMLOptionElement>('option[value="first-commit"]');
+  if (!select || !option) return;
+  option.disabled = true;
+  const sentence = `${TUNING_HELP["tuning-force-scan-growth"]} ${why}`;
+  select.title = sentence;
+  const label = select.closest<HTMLElement>(".tuning-slider");
+  if (label) label.title = sentence;
+  const help = document.getElementById(tuningHelpId("tuning-force-scan-growth"));
+  if (help) help.textContent = sentence;
 }
