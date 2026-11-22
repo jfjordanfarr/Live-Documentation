@@ -481,6 +481,44 @@ The two pictures are in [`numbers/pin-near-and-far--layout-order.json`](numbers/
 
 Without a fault, `overview-files.spec.ts` passes whole, 10 of 10, with `still-picture-reference.spec.ts`, 5 of 5, in one hold (2.1 minutes).
 
+## Fourteenth milestone, from 22:26 UTC: the press of 3D pays for making the 2D map inert
+
+The case is `force-graph-focus.spec.ts`'s "the 2D and 3D presses return at once": the page opened in 3D on `packages/engine/src/live-docs/graph.ts`, 2D pressed, 3D pressed. The 2D map there holds 52 cards, 247 wires and 14,810 elements. Everything below is a recording in the page on the tip `b0f2253b9`, each in a hold of its own with nothing of this builder's beside it. **Nothing of the product was changed in this milestone**: the cause is found and a mend is measured, and the mend is a change to how a view is held and put away that was not built or verified in the thirty minutes.
+
+**Which read pays.** `changePerspective`'s second read of the destination's box, `requireElement("view-graph").getBoundingClientRect()` after the views are switched and the destination rendered: 189.7 ms with Wire Answers on, 188.0 ms with it off, 172.8 ms in a third recording. The first read (before anything changes) is not among the reads over 4 ms; the subject's anchor (`getClientRects` of the card's title, after the hold's writes) is 11.4 to 13.7 ms. (`numbers/press-3d--reads--wire-answers-on.json`, `…-off.json`.)
+
+**Which write makes it.** One: `container.inert = !active` in `setActiveView` (`packages/explorer/src/client/dom.ts`), on `#view-map`. It was named by asking, after every write of the press, what the costly read asks, so that the layout a write makes necessary is paid at that write: `inert = true on div#view-map` cost 194.1 ms; every other write of the press cost 2.4 to 23 ms, most about 10 ms, which is this page's price for any layout while the held map is drawn and is paid once in an ordinary press (`numbers/press-3d--each-write-asked.json`; that press took 1,177 ms because it was asked 80 times). It is not the hold's class, the cover, the hand's spot, the arrival or the bands: on a 2D map at rest, five times each, the next read after the write cost
+
+| Write to `#view-map` | Next read, ms (first, then four more) |
+| --- | --- |
+| nothing | 0, 0, 0.1, 0, 0 |
+| `inert = true` | 263.7, 85.0, 75.3, 78.3, 82.2 |
+| `aria-hidden` | 0 five times |
+| `active` off and `perspective-held` on | 0.4, 0.3, 0.4, 0.4, 0.5 |
+| `visibility: hidden` | 194.6, 83.7, 76.1, 84.1, 86.5 |
+| the body's `zoom-controls-active` off | 3.4, 3.1, 3.1, 3.2, 3.3 |
+
+(`numbers/press-3d--what-each-write-costs--arrival-default.json`; the same with the arrival seeded at reading size beside it: 187.0 first for `inert`. The look is `reading` in both and the element count the same, so the arrival's default is not in it.) Making a subtree inert makes the browser work out the style of every element in it again; the first time after a render is the dearest, and a press is always a first time. With Wire Answers off the map has 233 fewer elements and the read costs the same.
+
+**Whether it is today's.** The write is not: the line came in `708f0cfa3` (October 20), an ancestor of `76cd9914c`, and neither `dom.ts` nor `perspectiveTransition.ts` differs between `76cd9914c` and the tip; of `changePerspective`'s reads and writes only the two `placeReturnedSubject` lines differ, which are on the way to 2D. The press of `76cd9914c` itself was **not** measured: no second checkout was built in the time. So what was found is that this layout is older than yesterday by the code that makes it, and what makes today's press 70 to 110 ms longer than the 390 ms recorded yesterday is not separated here. One part of the press is not layout at all: timed as the case times it, five presses alone (load 0.7 before, 2.8 after) took
+
+| | 1 | 2 | 3 | 4 | 5 |
+| --- | --- | --- | --- | --- | --- |
+| the handler, ms | 332.7 | 318.7 | 296.1 | 296.7 | 311.7 |
+| with the microtasks it queued (the case's `returned`), ms | 485.1 | 473.4 | 451.8 | 451.1 | 467.5 |
+
+About 155 ms of each press is after the handler returns, in the continuation that places the subject and captures the 3D scene; the reads of a box in it cost 9.8 and 9.5 ms (`numbers/press-3d--reads-through-the-microtasks.json`), so the rest is not a forced layout and was not attributed. If today's addition is anywhere other than load, that continuation is the unmeasured place to look. The first frame was not measured by this probe.
+
+**The mend, measured but not built.** Moving the read before the write would not mend it: the destination's box is not the same before the switch (leaving 2D takes away the strip its zoom controls kept), and the styles would be worked out at the next frame instead, in the first frame's time. What does take the cost away is that a view not being drawn costs nothing to make inert. The first write to a fresh 2D map, twice each:
+
+| First write | Next read, ms | Taken back, ms |
+| --- | --- | --- |
+| `inert` alone | 178.0, 187.8 | 154.8, 90.7 |
+| `content-visibility: hidden`, then `inert` | 2.9 + 0.1, 3.2 + 0.2 | 0.1 + 2.6, 0 + 2.6 |
+| `display: none`, then `inert` | 13.9 + 0.1, 15.3 + 0.1 | 0 + 184.6, 0 + 149.6 |
+
+(`numbers/press-3d--first-inert-on-a-fresh-map.jsonl`.) A held view has to be drawn, so the shape of the mend is: while held, the source is kept from a reader by what already keeps it (the cover takes the pointer, `aria-hidden` hides it from assistive technology) and is made inert only when the hold lets go, at the moment it is also taken out of drawing. What that leaves to decide, and why it was not built in the time: a held view could take the keyboard's focus for the length of the hold unless something else prevents it; "an inactive view is laid out and drawn, only transparent" is a stated property of the hold (`perspectiveTransition.ts`) that other code may lean on, the 3D picture's canvas among it; and `setActiveView` serves every view, not these two.
+
 ## Not done
 
 - The sweep: eight holds of twenty-five ran.

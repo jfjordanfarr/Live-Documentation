@@ -1,0 +1,91 @@
+{
+ "wireAnswers": "on",
+ "picture": {
+  "wires": 247,
+  "bands": 233,
+  "cards": 52,
+  "elements": 14810
+ },
+ "returned": "handler 303.8, with its microtasks 459.0",
+ "measures": [
+  "live-docs:switch-capture 69.2",
+  "live-docs:switch-press 303.6",
+  "live-docs:switch-hold 0.3",
+  "live-docs:switch-render 39.6"
+ ],
+ "reads": [
+  {
+   "at": 12481,
+   "took": 11.4,
+   "read": "getClientRects of div.node-title",
+   "writesSinceTheLastRead": 49,
+   "writes": [
+    "11 x attribute disabled on button.",
+    "7 x attribute aria-pressed on button.",
+    "4 x attribute title on button.",
+    "3 x attribute hidden on button.",
+    "2 x attribute style on div#view-map.view-container.active (is \"cursor: grab; height: 600px; border-bottom: 1px solid rgb(47, 47, 52);\")",
+    "1 x attribute class on div#view-map.view-container.active (was \"view-container active\", is \"view-container active perspective-held\")",
+    "1 x children of body.local-map-active.zoom-controls-active: +div.perspective-hold-cover -",
+    "1 x children of span#context-name.: +#text -#text",
+    "1 x attribute aria-label on button.",
+    "1 x attribute hidden on select.",
+    "1 x attribute disabled on select.",
+    "1 x attribute hidden on section.history-scrubber",
+    "1 x attribute hidden on div.history-finder",
+    "1 x attribute aria-expanded on button.history-readout"
+   ],
+   "by": "Ky.getSubjectAnchor (static/index.js:5177:41384) < Object.getSubjectAnchor (static/index.js:5177:95115) < Qn (static/index.js:5202:33546) < HTMLButtonElement.<anonymous> (static/index.js:5202:17435)"
+  },
+  {
+   "at": 12539,
+   "took": 172.8,
+   "read": "getBoundingClientRect of div#view-graph.view-container.active",
+   "writesSinceTheLastRead": 227,
+   "writes": [
+    "33 x attribute disabled on button.",
+    "21 x attribute aria-pressed on button.",
+    "13 x attribute title on button.",
+    "9 x attribute hidden on button.",
+    "4 x attribute aria-label on button.",
+    "3 x children of span#context-name.: +#text -#text",
+    "3 x attribute disabled on select.",
+    "3 x attribute hidden on section.history-scrubber",
+    "3 x attribute hidden on div.history-finder",
+    "3 x attribute aria-expanded on button.history-readout",
+    "3 x attribute hidden on section.history-step-panel",
+    "3 x children of span#pin-tray-count.: +#text -#text",
+    "3 x attribute hidden on section#path-report.path-report",
+    "3 x attribute title on input#search-subject.search-input"
+   ],
+   "by": "Qn (static/index.js:5202:33850) < HTMLButtonElement.<anonymous> (static/index.js:5202:17435) < eval (eval at evaluate (:303:30), <anonymous>:21:12) < new Promise (<anonymous>)"
+  },
+  {
+   "at": 12715,
+   "took": 0,
+   "read": "THE HANDLER RETURNED HERE",
+   "writes": []
+  },
+  {
+   "at": 12715,
+   "took": 9.8,
+   "read": "getBoundingClientRect of div#graph-svg.",
+   "writesSinceTheLastRead": 0,
+   "writes": [],
+   "by": "Object.rd [as placeSubjectAnchor] (static/index.js:5168:73038) < static/index.js:5202:34137 < async Promise.all (index 0)"
+  },
+  {
+   "at": 12725,
+   "took": 9.5,
+   "read": "getBoundingClientRect of div#graph-svg.",
+   "writesSinceTheLastRead": 3,
+   "writes": [
+    "1 x children of button.force-graph-focus: +#text -#text",
+    "1 x attribute data-node-id on button.force-graph-focus",
+    "1 x attribute title on button.force-graph-focus"
+   ],
+   "by": "Object.An [as captureScene] (static/index.js:5168:112828) < static/index.js:5202:34210 < async Promise.all (index 0)"
+  }
+ ],
+ "writes": []
+}

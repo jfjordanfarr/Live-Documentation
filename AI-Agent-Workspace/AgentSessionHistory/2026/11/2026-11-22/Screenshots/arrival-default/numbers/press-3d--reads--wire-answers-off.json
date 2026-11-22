@@ -1,0 +1,64 @@
+{
+ "wireAnswers": "off",
+ "picture": {
+  "wires": 247,
+  "bands": 0,
+  "cards": 52,
+  "elements": 14577
+ },
+ "returned": 323,
+ "measures": [
+  "live-docs:switch-capture 67.5",
+  "live-docs:switch-press 322.4",
+  "live-docs:switch-hold 0.4",
+  "live-docs:switch-render 41.7"
+ ],
+ "reads": [
+  {
+   "at": 14367,
+   "took": 13.7,
+   "read": "getClientRects of div.node-title",
+   "writesSinceTheLastRead": 49,
+   "writes": [
+    "11 x attribute disabled on button.",
+    "7 x attribute aria-pressed on button.",
+    "4 x attribute title on button.",
+    "3 x attribute hidden on button.",
+    "2 x attribute style on div#view-map.view-container.active (is \"cursor: grab; height: 600px; border-bottom: 1px solid rgb(47, 47, 52);\")",
+    "1 x attribute class on div#view-map.view-container.active (was \"view-container active\", is \"view-container active perspective-held\")",
+    "1 x children of body.local-map-active.zoom-controls-active: +div.perspective-hold-cover -",
+    "1 x children of span#context-name.: +#text -#text",
+    "1 x attribute aria-label on button.",
+    "1 x attribute hidden on select.",
+    "1 x attribute disabled on select.",
+    "1 x attribute hidden on section.history-scrubber",
+    "1 x attribute hidden on div.history-finder",
+    "1 x attribute aria-expanded on button.history-readout"
+   ],
+   "by": "Ky.getSubjectAnchor (static/index.js:5177:41384) < Object.getSubjectAnchor (static/index.js:5177:95115) < Qn (static/index.js:5202:33546) < HTMLButtonElement.<anonymous> (static/index.js:5202:17435)"
+  },
+  {
+   "at": 14429,
+   "took": 188,
+   "read": "getBoundingClientRect of div#view-graph.view-container.active",
+   "writesSinceTheLastRead": 227,
+   "writes": [
+    "33 x attribute disabled on button.",
+    "21 x attribute aria-pressed on button.",
+    "13 x attribute title on button.",
+    "9 x attribute hidden on button.",
+    "4 x attribute aria-label on button.",
+    "3 x children of span#context-name.: +#text -#text",
+    "3 x attribute disabled on select.",
+    "3 x attribute hidden on section.history-scrubber",
+    "3 x attribute hidden on div.history-finder",
+    "3 x attribute aria-expanded on button.history-readout",
+    "3 x attribute hidden on section.history-step-panel",
+    "3 x children of span#pin-tray-count.: +#text -#text",
+    "3 x attribute hidden on section#path-report.path-report",
+    "3 x attribute title on input#search-subject.search-input"
+   ],
+   "by": "Qn (static/index.js:5202:33850) < HTMLButtonElement.<anonymous> (static/index.js:5202:17435) < eval (eval at evaluate (:303:30), <anonymous>:8:12) < UtilityScript.evaluate (<anonymous>:305:16)"
+  }
+ ]
+}

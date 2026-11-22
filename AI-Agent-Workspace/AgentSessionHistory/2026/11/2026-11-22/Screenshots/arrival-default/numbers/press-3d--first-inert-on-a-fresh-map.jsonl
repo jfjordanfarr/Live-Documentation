@@ -1,0 +1,6 @@
+{"first":"inert alone","elements":14810,"out":{"nothing written":0,"inert":178,"inert taken back":154.8}}
+{"first":"content-visibility hidden, then inert","elements":14810,"out":{"nothing written":0.1,"content-visibility hidden":2.9,"inert":0.1,"inert taken back":0.1,"content-visibility taken back":2.6}}
+{"first":"display none, then inert","elements":14810,"out":{"nothing written":0,"display none":13.9,"inert":0.1,"inert taken back":0,"display taken back":184.6}}
+{"first":"inert alone","elements":14810,"out":{"nothing written":0.1,"inert":187.8,"inert taken back":90.7}}
+{"first":"content-visibility hidden, then inert","elements":14810,"out":{"nothing written":0,"content-visibility hidden":3.2,"inert":0.2,"inert taken back":0,"content-visibility taken back":2.6}}
+{"first":"display none, then inert","elements":14810,"out":{"nothing written":0,"display none":15.3,"inert":0.1,"inert taken back":0,"display taken back":149.6}}
