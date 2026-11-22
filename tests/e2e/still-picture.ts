@@ -24,7 +24,7 @@ import { normalizeSymbolIdentifier } from "../../packages/explorer/src/client/vi
 import { explorerGraphOf } from "../../packages/explorer/src/shared/graph";
 import type { StaticExplorerData } from "../../packages/explorer/src/shared/staticExplorerData";
 import type { ExplorerGraphPayload } from "../../packages/explorer/src/shared/types";
-import { describeFaults, farLookNames, overlapsAmong, textBoxes, truncations } from "./design-audit";
+import { describeFaults, farLookNames, overlapsAmong, textBoxes, truncations, type Truncation, type TruncationCheck } from "./design-audit";
 import {
   crossings,
   flowOf,
@@ -940,13 +940,24 @@ export interface TextScore {
  * `design-audit.ts`): shortened by its own ellipsis under a title that says it whole is right there. Those names are
  * counted apart and named, so the report says how many names the resting picture shortens; every other cut is still a
  * cut-off, and at reading size every cut is.
+ *
+ * What is set aside, and only this (the root's ruling of 2026-11-22). The audit's own-width check stands in for "this
+ * text belongs inside this box"; for a far look's name the one standard asks the stricter and exact thing, that what
+ * is drawn of the name stands inside its own button and is whole or shortened under its title. That button draws no
+ * box, so its padding is the name's room and not air a text crowds: an own-width finding on a name the standard calls
+ * right is not a cut-off, and neither is the hiding of a shortened name's end by its own text's clip, which is its
+ * ellipsis. A clip by the button or an ancestor, and a sibling's text on the same line, are faults on those names as on
+ * any text; a name the standard calls a fault is counted whatever found it.
  */
 export async function scoreText(page: Page, view: ViewReading): Promise<TextScore> {
   const boxes = await textBoxes(page, view.text);
   const overlaps = overlapsAmong(boxes);
   const all = await truncations(page, view.text);
-  const allowed = new Set((await farLookNames(page)).filter(name => name.verdict === "shortened").map(name => name.row));
-  const shortened = all.filter(item => item.row !== undefined && allowed.has(item.row)), cut = all.filter(item => !shortened.includes(item));
+  const names = new Map((await farLookNames(page)).filter(name => name.far).map(name => [name.row, name.verdict]));
+  const only = (item: Truncation, ...checks: TruncationCheck[]): boolean => item.by.every(check => checks.includes(check));
+  const verdictOf = (item: Truncation) => (item.row === undefined ? undefined : names.get(item.row));
+  const shortened = all.filter(item => verdictOf(item) === "shortened" && only(item, "own-width", "inner-clip"));
+  const cut = all.filter(item => !shortened.includes(item) && !(verdictOf(item) === "whole" && only(item, "own-width")));
   const faults = [
     ...(overlaps.length + cut.length > 0 || shortened.length === 0 ? [describeFaults(overlaps, cut)] : []),
     ...(shortened.length ? [`shortened with an ellipsis: ${shortened.length}: ${shortened.map(item => item.text).join(", ")}`] : [])

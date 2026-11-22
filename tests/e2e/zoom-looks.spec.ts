@@ -4,7 +4,7 @@ import { compressSnapshot, decompressSnapshot, DEFAULT_SNAPSHOT } from "../../pa
 import { PERSISTED_UI_KEY, PERSISTED_UI_VERSION } from "../../packages/explorer/src/client/persistence/local-storage";
 import { farLookNames, truncations } from "./design-audit";
 import { CHAIN_REPOSITORY } from "./scopes";
-import { AT_READING_SIZE, LOCAL_MAP, localMapStill } from "./still-picture";
+import { AT_READING_SIZE, LOCAL_MAP, localMapStill, scoreText } from "./still-picture";
 
 /**
  * The zoom looks (Tuning → 2D Layout → Zoom Looks; the owner's hypothesis of 2026-11-08, "very very FEW breakpoints (2-3)
@@ -420,10 +420,20 @@ test("the far looks' standard for a name counts a shortened name apart, and stil
   const one = names.find(name => name.verdict === "shortened" && name.name === "inferDefaultEntryNodeId");
   expect(one, "the picture shortens inferDefaultEntryNodeId").toBeDefined();
   // The audit's cut-off check does report the shortened name: counting it apart is what the standard is for.
-  expect((await truncations(page, LOCAL_MAP.text)).map(item => item.row), "the audit sees the name's hidden end").toContain(one!.row);
-  // No title, and a wrong one.
+  const seen = (await truncations(page, LOCAL_MAP.text)).find(item => item.row === one!.row);
+  expect(seen, "the audit sees the name's hidden end").toBeDefined();
+  // By its own-width check and by the clip of the name's own text, whose ellipsis it is; by nothing else.
+  expect([...seen!.by].sort(), "the checks that found it").toEqual(["inner-clip", "own-width"]);
+  // The still picture's scoring counts it apart, by name, and not among its cut-offs.
+  const drawn = await scoreText(page, LOCAL_MAP);
+  expect(drawn.shortened, drawn.faults).toBeGreaterThan(0);
+  expect(drawn.faults).toMatch(/shortened with an ellipsis: \d+: .*inferDefaultEntryNodeId/u);
+  expect(drawn.faults).not.toContain("\"inferDefaultEntryNodeId\" (button.symbol-label) is cut off");
+  // No title, and a wrong one. The scoring counts a name the standard faults as a cut-off again.
   const untitled = await judged(one!.row, { title: null });
   expect([untitled.verdict, untitled.fault]).toEqual(["fault", "is shortened and its button's title is absent"]);
+  const untitledScore = await scoreText(page, LOCAL_MAP);
+  expect([untitledScore.cutOffs, untitledScore.shortened], untitledScore.faults).toEqual([drawn.cutOffs + 1, drawn.shortened! - 1]);
   const mistitled = await judged(one!.row, { title: "inferDefault" });
   expect([mistitled.verdict, mistitled.fault]).toEqual(["fault", "is shortened and its button's title is \"inferDefault\""]);
   expect((await judged(one!.row, { title: one!.name })).verdict, "its title put back").toBe("shortened");
@@ -435,6 +445,14 @@ test("the far looks' standard for a name counts a shortened name apart, and stil
   const past = await judged(one!.row, { style: "max-width: none; overflow: visible;" });
   expect(past.verdict, "a name drawn past its own button").toBe("fault");
   expect(past.fault).toMatch(/^runs [\d.]+ px past its button$/u);
+  // The scoring sets aside an own-width finding only on a name the standard calls right: this one is a cut-off.
+  const pastScore = await scoreText(page, LOCAL_MAP);
+  expect(pastScore.cutOffs, pastScore.faults).toBe(drawn.cutOffs + 1);
+  expect(pastScore.faults).toContain("\"inferDefaultEntryNodeId\" (button.symbol-label) is cut off");
+  // Put back as it was drawn, the scoring is as it was: the set-aside is the standard's, not a name's.
+  await judged(one!.row, { style: "" });
+  const again = await scoreText(page, LOCAL_MAP);
+  expect([again.cutOffs, again.shortened]).toEqual([drawn.cutOffs, drawn.shortened]);
 });
 
 test("in the connections and overview looks a symbol's name is cut only where its row holds no further line of it", async ({ page }) => {

@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: `tests/e2e/still-picture.ts`
-- Generated At: 2026-11-22T15:17:02.686Z
+- Generated At: 2026-11-22T15:54:53.043Z
 
 ## Authored
 ### Purpose
@@ -345,7 +345,7 @@ The screen box of the first card of each file.
 
 #### `scoreText` {#symbol-scoretext}
 - Type: function
-- Source: [source](../../../../tests/e2e/still-picture.ts#L944)
+- Source: [source](../../../../tests/e2e/still-picture.ts#L952)
 - Parameters: `page`: `Page`; `view`: [`ViewReading`](#symbol-viewreading)
 
 ##### `scoreText` — Summary
@@ -355,9 +355,17 @@ so the picture measured is a far look, and a far look has a standard of its own 
 counted apart and named, so the report says how many names the resting picture shortens; every other cut is still a
 cut-off, and at reading size every cut is.
 
+What is set aside, and only this (the root's ruling of 2026-11-22). The audit's own-width check stands in for "this
+text belongs inside this box"; for a far look's name the one standard asks the stricter and exact thing, that what
+is drawn of the name stands inside its own button and is whole or shortened under its title. That button draws no
+box, so its padding is the name's room and not air a text crowds: an own-width finding on a name the standard calls
+right is not a cut-off, and neither is the hiding of a shortened name's end by its own text's clip, which is its
+ellipsis. A clip by the button or an ancestor, and a sibling's text on the same line, are faults on those names as on
+any text; a name the standard calls a fault is counted whatever found it.
+
 #### `panIntoView` {#symbol-panintoview}
 - Type: function
-- Source: [source](../../../../tests/e2e/still-picture.ts#L1016)
+- Source: [source](../../../../tests/e2e/still-picture.ts#L1027)
 - Parameters: `page`: `Page`; `element`: `Locator`
 
 ##### `panIntoView` — Summary
@@ -367,7 +375,7 @@ shown, so a picture that outgrew the frame is reached by dragging (2026-10-16).
 
 #### `dragBy` {#symbol-dragby}
 - Type: function
-- Source: [source](../../../../tests/e2e/still-picture.ts#L1030)
+- Source: [source](../../../../tests/e2e/still-picture.ts#L1041)
 - Parameters: `page`: `Page`; `view`: [`ViewReading`](#symbol-viewreading)
 
 ##### `dragBy` — Summary
@@ -375,11 +383,11 @@ Pans the view by dragging an empty spot of it with the mouse, as a person would;
 
 #### `RouteScore` {#symbol-routescore}
 - Type: interface
-- Source: [source](../../../../tests/e2e/still-picture.ts#L1047)
+- Source: [source](../../../../tests/e2e/still-picture.ts#L1058)
 
 #### `scoreRoutes` {#symbol-scoreroutes}
 - Type: function
-- Source: [source](../../../../tests/e2e/still-picture.ts#L1057)
+- Source: [source](../../../../tests/e2e/still-picture.ts#L1068)
 - Parameters: `page`: `Page`; `view`: [`ViewReading`](#symbol-viewreading)
 
 ##### `scoreRoutes` — Summary
@@ -387,11 +395,11 @@ Test 4: the shape of every wire across six pans by mouse, translation removed.
 
 #### `TourScore` {#symbol-tourscore}
 - Type: interface
-- Source: [source](../../../../tests/e2e/still-picture.ts#L1083)
+- Source: [source](../../../../tests/e2e/still-picture.ts#L1094)
 
 #### `runTour` {#symbol-runtour}
 - Type: function
-- Source: [source](../../../../tests/e2e/still-picture.ts#L1104)
+- Source: [source](../../../../tests/e2e/still-picture.ts#L1115)
 - Parameters: `page`: `Page`; `view`: [`ViewReading`](#symbol-viewreading)
 
 ##### `runTour` — Summary
@@ -401,22 +409,22 @@ cards stand, so its readings leave out the sampling along the wires.
 
 #### `Journey` {#symbol-journey}
 - Type: interface
-- Source: [source](../../../../tests/e2e/still-picture.ts#L1140)
+- Source: [source](../../../../tests/e2e/still-picture.ts#L1151)
 
 #### `ChainJourney` {#symbol-chainjourney}
 - Type: interface
-- Source: [source](../../../../tests/e2e/still-picture.ts#L1157)
+- Source: [source](../../../../tests/e2e/still-picture.ts#L1168)
 
 ##### `ChainJourney` — Summary
 The chain scope's journey: from A's single-file state to a picture in which the hops are legible.
 
 #### `Box` {#symbol-box}
 - Type: interface
-- Source: [source](../../../../tests/e2e/still-picture.ts#L1173)
+- Source: [source](../../../../tests/e2e/still-picture.ts#L1184)
 
 #### `boxOf` {#symbol-boxof}
 - Type: function
-- Source: [source](../../../../tests/e2e/still-picture.ts#L1181)
+- Source: [source](../../../../tests/e2e/still-picture.ts#L1192)
 - Parameters: `page`: `Page`
 
 ##### `boxOf` — Summary
@@ -424,18 +432,18 @@ The screen box of the first element the selector names, or null.
 
 #### `centerDistance` {#symbol-centerdistance}
 - Type: const
-- Source: [source](../../../../tests/e2e/still-picture.ts#L1190)
+- Source: [source](../../../../tests/e2e/still-picture.ts#L1201)
 
 #### `Move` {#symbol-move}
 - Type: interface
-- Source: [source](../../../../tests/e2e/still-picture.ts#L1194)
+- Source: [source](../../../../tests/e2e/still-picture.ts#L1205)
 
 ##### `Move` — Summary
 What one move of a journey cost: the gestures it took, counting the pans that brought the target into the frame, and the short side of the target hit.
 
 #### `gesture` {#symbol-gesture}
 - Type: function
-- Source: [source](../../../../tests/e2e/still-picture.ts#L1203)
+- Source: [source](../../../../tests/e2e/still-picture.ts#L1214)
 - Parameters: `page`: `Page`; `view`: [`ViewReading`](#symbol-viewreading)
 
 ##### `gesture` — Summary
@@ -444,7 +452,7 @@ target is inside the frame, each pan a gesture, then clicking its center. Report
 
 #### `legibleNames` {#symbol-legiblenames}
 - Type: function
-- Source: [source](../../../../tests/e2e/still-picture.ts#L1226)
+- Source: [source](../../../../tests/e2e/still-picture.ts#L1237)
 - Parameters: `page`: `Page`; `view`: [`ViewReading`](#symbol-viewreading)
 
 ##### `legibleNames` — Summary
@@ -452,29 +460,29 @@ How many of the files' names are legible on their cards now: in frame, uncovered
 
 #### `backEnabled` {#symbol-backenabled}
 - Type: const
-- Source: [source](../../../../tests/e2e/still-picture.ts#L1251)
+- Source: [source](../../../../tests/e2e/still-picture.ts#L1262)
 
 #### `Scoreboard` {#symbol-scoreboard}
 - Type: interface
-- Source: [source](../../../../tests/e2e/still-picture.ts#L1255)
+- Source: [source](../../../../tests/e2e/still-picture.ts#L1266)
 
 #### `scoreboardTable` {#symbol-scoreboardtable}
 - Type: function
-- Source: [source](../../../../tests/e2e/still-picture.ts#L1289)
+- Source: [source](../../../../tests/e2e/still-picture.ts#L1300)
 
 ##### `scoreboardTable` — Summary
 The scoreboard of one bundle as a markdown table, one row per view, one column per number the deck defines.
 
 #### `expandedTable` {#symbol-expandedtable}
 - Type: function
-- Source: [source](../../../../tests/e2e/still-picture.ts#L1333)
+- Source: [source](../../../../tests/e2e/still-picture.ts#L1344)
 
 ##### `expandedTable` — Summary
 The expanded measures of one bundle as a second table, one row per view.
 
 #### `chainTable` {#symbol-chaintable}
 - Type: function
-- Source: [source](../../../../tests/e2e/still-picture.ts#L1365)
+- Source: [source](../../../../tests/e2e/still-picture.ts#L1376)
 
 ##### `chainTable` — Summary
 The chain journeys of one bundle as a table.
@@ -490,6 +498,8 @@ The chain journeys of one bundle as a table.
 - [`graph.explorerGraphOf`](../../packages/explorer/src/shared/graph.ts.mdmd.md#symbol-explorergraphof)
 - [`StaticExplorerData`](../../packages/explorer/src/shared/staticExplorerData.ts.mdmd.md#symbol-staticexplorerdata) (type-only)
 - [`types.ExplorerGraphPayload`](../../packages/explorer/src/shared/types.ts.mdmd.md#symbol-explorergraphpayload) (type-only)
+- [`design-audit.Truncation`](./design-audit.ts.mdmd.md#symbol-truncation) (type-only)
+- [`design-audit.TruncationCheck`](./design-audit.ts.mdmd.md#symbol-truncationcheck) (type-only)
 - [`design-audit.describeFaults`](./design-audit.ts.mdmd.md#symbol-describefaults)
 - [`design-audit.farLookNames`](./design-audit.ts.mdmd.md#symbol-farlooknames)
 - [`design-audit.overlapsAmong`](./design-audit.ts.mdmd.md#symbol-overlapsamong)

@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: `tests/e2e/zoom-looks.spec.ts`
-- Generated At: 2026-11-22T15:17:02.991Z
+- Generated At: 2026-11-22T15:54:53.166Z
 
 ## Authored
 ### Purpose
@@ -43,4 +43,5 @@ _No public symbols detected_
 - [`still-picture.AT_READING_SIZE`](./still-picture.ts.mdmd.md#symbol-at_reading_size)
 - [`still-picture.LOCAL_MAP`](./still-picture.ts.mdmd.md#symbol-local_map)
 - [`still-picture.localMapStill`](./still-picture.ts.mdmd.md#symbol-localmapstill)
+- [`still-picture.scoreText`](./still-picture.ts.mdmd.md#symbol-scoretext)
 <!-- LIVE-DOC:END Dependencies -->

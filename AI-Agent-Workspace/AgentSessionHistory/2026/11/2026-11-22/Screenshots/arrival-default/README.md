@@ -282,6 +282,34 @@ The standard found one fault of mine on its first reading: a shortened Internals
 
 **What ran on the build with the reach, each in a hold of its own, the machine's load between 17 and 20:** `zoom-looks.spec.ts` 12 of 12 (the names' case, the standard's case, the platform font case untouched, and "a change of look moves the held parts…", which failed once in its hold and passed alone); `descriptions-zoomed-out.spec.ts` 9 of 9, the count of names cut in their middle back at nine. The still picture's five-file Local Map failed as above; its retained case and the chain's were cut by the lane's limit beside the case before them; the estate's cases, `camera-intent.spec.ts` and the search bar's two were not run on this build.
 
+## Eighth milestone, from 15:20 UTC: which check found a cut, and the runs
+
+**The ruling on the six names the audit still counted.** The root took the first way: "The audit says which check found each cut, and the still picture sets aside only an own-width finding on a far-look row name that `farLookNames` calls right." Its reason is written beside the code (`still-picture.ts`, `scoreText`): the own-width check stands in for "this text belongs inside this box", the standard asks the exact thing of a far look's name, and a button that draws no box has no padding for a text to crowd.
+
+- `truncations` now says, for each cut, which of its checks found it (`by`): the text past its element's own content box, a clip between the element and the text, a clip on the element or an ancestor, or two fragments over one another on a line. Nothing it counts changed.
+- One thing the first run showed, which made a shortened name look like two texts over one another: a browser gives an ellipsis a fragment of its own, lying over the fragment of the text it replaces. That pair is now counted with the clip of the element drawing the ellipsis, where it belongs; any other pair is still one text over another.
+- `scoreText` sets aside an own-width finding on a name the standard calls whole, and counts apart a name it calls shortened when only the own-width check and the clip of the name's own text found it. A clip by the button or an ancestor, one text over another, and any name the standard faults are cut-offs as before, and so is everything at reading size.
+- Seen to fail through the scoring: the standard's case of `zoom-looks.spec.ts` now reads `scoreText` four times on one picture. As drawn, `inferDefaultEntryNodeId` is among the shortened names and not among the cut-offs, found by exactly the own-width check and its text's clip. With its title removed, the cut-offs go up by one and the shortened down by one. Drawn past its button, the cut-offs go up by one and name it. Put back, both numbers are as they were. On its first run in this form the case failed, on the ellipsis' fragment above.
+
+**The card measure, repeated on the final build** (after the rounding of the button's measured width): both pictures, 624 comparisons each against the build before the change, none differing. The numbers after are in [`numbers/cards--after--five.json`](numbers/cards--after--five.json) and [`numbers/cards--after--chain.json`](numbers/cards--after--chain.json).
+
+**The still pictures, each case in a hold of its own, with the names each resting picture shortens** (from the report's rows):
+
+| Picture | State | Collisions | Cut-offs | Shortened names |
+| --- | --- | ---: | ---: | --- |
+| Repository, five files | `graph.ts` selected | 0 | 0 | 0 |
+| Repository, five files | 5 files retained | 0 | 0 | 0 |
+| Repository, chain | `index.ts` selected | 0 | 0 | 2: `inferDefaultEntryNodeId`, `Internals` |
+| Repository, chain | 4 files retained | 0 | 0 | 3: `inferDefaultEntryNodeId`, `createPersistNavScheduler`, `readPersistedNav` |
+| Estate, five files | `PaymentService.cs` selected | 0 | 0 | 0 |
+| Estate, five files | 5 files retained | 0 | 0 | 0 |
+| Estate, chain | `GatewayClient.cs` selected | 0 | 0 | 0 |
+| Estate, chain | 4 files retained | 0 | 0 | 0 |
+
+All eight passed. The four names the narrowing had put on two lines wanting a third (`DEFAULT_LIVE_DOCUMENTATION_CONFIG`, `savedPicture (function)`, `backwardStrength (function)`, `createWorldMapView`) are whole again.
+
+**The other runs on the final build:** `zoom-looks.spec.ts` 12 of 12 (the standard's case passed on its second run, after the ellipsis' fragment was placed; "a change of look moves the held parts…" failed in its hold under a load of 18 and passed alone, 17 s); `descriptions-zoomed-out.spec.ts` 9 of 9; `camera-intent.spec.ts` whole, 29 cases in three parts; the search bar's two ran out of their 30 s limit in a hold shared with the rule's cases under that load (38 and 40 s) and passed alone (19 s each); `look-change-cost.spec.ts`, run because the reach gives a look change two more properties to lay out, 2 passed. The repository's five-file retained case was cut once by the lane's five minutes under the same load and passed in 1.4 minutes when the machine was quiet; no limit was changed.
+
 ## Not done
 
 - The sweep: eight holds of twenty-five ran.
