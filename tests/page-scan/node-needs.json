@@ -9,7 +9,6 @@
     },
     "packages/engine/src/live-docs/adapters/c.ts": {
       "node:fs": [
-        "promises.stat",
         "readdirSync",
         "statSync"
       ],
@@ -37,9 +36,6 @@
     "packages/engine/src/live-docs/adapters/csharp.ts": {
       "glob": [
         "glob"
-      ],
-      "node:fs": [
-        "promises.stat"
       ],
       "node:path": [
         "join",
@@ -78,9 +74,6 @@
       "glob": [
         "glob"
       ],
-      "node:fs": [
-        "promises.stat"
-      ],
       "node:path": [
         "dirname",
         "join",
@@ -113,9 +106,6 @@
     "packages/engine/src/live-docs/adapters/java.ts": {
       "glob": [
         "glob"
-      ],
-      "node:fs": [
-        "promises.stat"
       ],
       "node:path": [
         "join",
@@ -205,8 +195,7 @@
         "glob"
       ],
       "node:fs": [
-        "promises.access",
-        "promises.stat"
+        "promises.access"
       ],
       "node:path": [
         "basename",

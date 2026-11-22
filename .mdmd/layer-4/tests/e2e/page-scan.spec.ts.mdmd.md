@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: `tests/e2e/page-scan.spec.ts`
-- Generated At: 2026-11-21T03:40:54.454Z
+- Generated At: 2026-11-22T02:29:55.831Z
 
 ## Authored
 ### Purpose
@@ -34,7 +34,10 @@ _No public symbols detected_
 - [`fixture.copyFixture`](../../scripts/oracle/fixture.ts.mdmd.md#symbol-copyfixture)
 - [`fixture.listFixtureFiles`](../../scripts/oracle/fixture.ts.mdmd.md#symbol-listfixturefiles)
 - [`compare.LedgerEntry`](../page-scan/compare.ts.mdmd.md#symbol-ledgerentry)
+- [`compare.MultipleReadEntry`](../page-scan/compare.ts.mdmd.md#symbol-multiplereadentry)
 - [`compare.differencesBetween`](../page-scan/compare.ts.mdmd.md#symbol-differencesbetween)
 - [`compare.heldToLedger`](../page-scan/compare.ts.mdmd.md#symbol-heldtoledger)
+- [`compare.readMoreThanOnce`](../page-scan/compare.ts.mdmd.md#symbol-readmorethanonce)
+- [`compare.readsHeldToLedger`](../page-scan/compare.ts.mdmd.md#symbol-readsheldtoledger)
 - [`FIXTURES`](../page-scan/fixtures.ts.mdmd.md#symbol-fixtures)
 <!-- LIVE-DOC:END Dependencies -->

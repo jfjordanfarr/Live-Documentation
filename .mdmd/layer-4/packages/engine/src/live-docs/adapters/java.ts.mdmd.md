@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/engine/src/live-docs/adapters/java.ts`
-- Generated At: 2026-11-22T01:36:19.532Z
+- Generated At: 2026-11-22T02:29:39.023Z
 
 ## Authored
 ### Purpose
@@ -21,7 +21,7 @@ The Java adapter: tree-sitter symbols (types, nested types and the members they 
 ### Public Symbols
 #### `javaAdapter` {#symbol-javaadapter}
 - Type: const
-- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/java.ts#L698)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/java.ts#L696)
 - Returns: [`LanguageAdapter`](./index.ts.mdmd.md#symbol-languageadapter)
 
 ##### `javaAdapter` — Summary
@@ -31,7 +31,6 @@ Language adapter for Java (`.java`): tree-sitter symbols and javac-style name re
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
 - `glob` - `glob`
-- `node:fs` - `promises`
 - `node:path` - `path`
 - [`index.javaSyntax`](../../languages/index.ts.mdmd.md#symbol-javasyntax)
 - [`index.LanguageAdapter`](./index.ts.mdmd.md#symbol-languageadapter) (type-only)

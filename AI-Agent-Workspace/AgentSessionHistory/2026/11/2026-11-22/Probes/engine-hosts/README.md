@@ -1,0 +1,55 @@
+# The engine reading through its host: what was measured
+
+Historical evidence, taken on November 22, 2026 by the builder of the road to one engine for a page and a command line, on branch `worktree-agent-ac72d8a99b54c2e5d` from `8bc5736cd`. These are the measurements that steps 3 and 4 of [that road](../../../../../../../.mdmd/layer-3/engine-and-hosts.mdmd.md#6-the-road) rest on: reading each file once (commit `27b2bf9de`), and answering a reader's probes from the listing. The design, which is current, cites the figures; the figures and how to take them again are here.
+
+The machine was shared with up to seven other builders all day. Its load average is given beside each figure. Under that load a time is only a rough figure; a count of reads, a digest of what was written, and a peak of memory are not moved by it.
+
+## The scripts
+
+- [`measure.mts`](measure.mts) copies a folder, scans it under Node with the generator as the command line runs it, counting every `readFile`, `open` and `readFileSync` the scan makes of a file in the folder, and prints the time, the process's peak resident memory, the reads per file, and a digest of every doc and the index it wrote. Equal digests mean the same facts to the byte.
+- [`probes.mts`](probes.mts) copies a folder, works out the files a scan keeps (discovery, as the generator calls it), then scans it, recording every `stat`, `lstat`, `access` and `readdir`, sync and promise forms, with the module of the engine that made it. It sorts each probe by what a listing of the kept files could answer: a kept file, a folder holding kept files, a path absent on the disk, a path outside the workspace, the docs root, or a path **on the disk but outside the listing**. The last sort is where an answer from the listing would differ from the disk's.
+
+Both run from a checkout with its packages installed: `node_modules/.bin/tsx --tsconfig tsconfig.base.json <script> <folder> <label>`. The folder is copied beside itself and the copy removed after the scan. For a "before", the engine of a commit was unpacked with `git archive <commit> packages tsconfig.base.json package.json`, linked to an installed `node_modules`, and the script was run with that tree's `tsconfig.base.json`.
+
+The corpora were the copies the readers' builder of 2026-11-21 took, used here read-only and copied again before each scan: DNN Platform's repository, without its `.git` and the docs an earlier scan had left in it (10,941 files, of which a scan keeps 10,755), and its `DNN Platform/Library` folder (1,413 files, 1,409 of them C#); and this repository's 31 sample programs and its fixtures, each set copied whole and scanned as one folder.
+
+## Reading each file once (step 3)
+
+Before is `60b01e695`, after is `27b2bf9de`.
+
+| Folder | Run | Load | Time | Peak memory | Files read | Reads | Most reads of one file | Digest |
+| --- | --- | ---: | ---: | ---: | ---: | ---: | ---: | --- |
+| DNN Library | before 1 | 3.4 | 14.9 s | 527 MB | 1,414 | 7,054 | 5 (1,410 files) | `02fee93084cbd80e` |
+| DNN Library | before 2 | 8.5 | 22.7 s | 526 MB | 1,414 | 7,054 | 5 | `02fee93084cbd80e` |
+| DNN Library | before 3 | 7.8 | 23.7 s | 508 MB | 1,414 | 7,054 | 5 | `02fee93084cbd80e` |
+| DNN Library | after 1 | 8.2 | 21.1 s | 531 MB | 1,414 | 1,414 | 1 | `02fee93084cbd80e` |
+| DNN Library | after 2 | 8.5 | 22.1 s | 517 MB | 1,414 | 1,414 | 1 | `02fee93084cbd80e` |
+| DNN Library | after 3 | 7.1 | 19.7 s | 518 MB | 1,414 | 1,414 | 1 | `02fee93084cbd80e` |
+| DNN whole | before | 44.5 | 194.1 s | 1,107 MB | 10,880 | 35,481 | 10 (`Default.aspx` and two other pages) | `2a4c87ca522483b6` |
+| DNN whole | after | 19.6 | 239.5 s | 1,622 MB | 10,880 | 10,903 | 3 (`.gitignore`) | `2a4c87ca522483b6` |
+
+Before, on the whole of DNN, 4,066 files were read once, 2,700 four times, 3,994 five times, 95 six times and 3 ten times. After, 10,858 files are read once. The 22 read more than once are the workspace's `.gitignore`, which discovery reads for itself once in each of its three walks, outside the run's reads (the leave-out choice, step 5); and 21 `tsconfig.json` files that are not there at all. The reader of a `package.json` looks for a `tsconfig.json` beside it in each of the scan's two passes, a read that fails is kept by no one, and the script counts a read that fails as a read. These are probes in the shape of a read, which an answer from the listing ends (step 4).
+
+**What it cost.** On the Library, peak memory did not move beyond the runs' spread. On the whole of DNN it rose by 515 MB, about a half, because the run now keeps each file's text, and its first 8,000 bytes, from the first pass to the second. The time is not comparable: the before ran at a load of 44, the after at 20. The page was not measured on the whole of DNN this day.
+
+The peak comes at the turn between the two passes, when every file's text is held, so releasing a text once its last asker has had it (its own turn in the second pass) would not lower it. What would is a budget: once B bytes of text are kept, keep no more, so that the second pass finds the first B kept and reads the rest again, at most two reads where there were five. Letting the oldest go first would find nothing, since both passes go in the same order. The design's section 8 carries this as a fork.
+
+## "Read once" held by the page check
+
+The check that the engine runs in a page now fails a folder's case on any file its scan reads more than once that its ledger (`readMoreThanOnce` in `tests/page-scan/differences.json`) does not list, and on a listed one no longer read so. The ledger lists six docs, which the generator reads for their authored words and reads back for the index: five in `typescript/tidepool` and one in `fixtures/link-targets`.
+
+Shown red on the code of step 4's first piece. The CSS reader's argument was taken away (`readSourceText(absolutePath)` with no `fileIndex`), the page was rebuilt, and `fixtures/slopcop-assets` was run through the lane. It failed on the read-once assertion alone, naming `workspace/public/styles/missing.css` and `workspace/styles/site.css`, each read four times: twice by the reader through the Node host's fallback, once for the count of how its text was decoded, and once for its first bytes. The argument was then put back.
+
+## Probes answered from the listing (step 4's evidence)
+
+Taken on the code of step 3 (`27b2bf9de`), before any probe moved.
+
+| Folder | Kept files | Probes | A kept file | A folder of kept files | Absent on the disk | Outside the workspace | The docs root | On the disk, outside the listing |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| DNN Library | 1,413 | 4,663 | 4,227 | 189 | 190 | 55 | 2 | 0 |
+| the 31 sample programs | 367 | 2,700 | 981 | 1,028 | 619 | 62 | 2 | 8 |
+| the fixtures | 159 | 1,147 | 165 | 447 | 462 | 61 | 2 | 10 |
+
+Every probe on the disk but outside the listing was discovery's, through `tooling/gitIgnored.ts` (16) and glob (2), looking at the docs a sample keeps and a fixture's `docs` folder: the walk that makes the listing, not a reader. **No reader's probe reached a file on the disk that the listing does not hold**, so a reader's probes answered from the listing change no fact on these folders.
+
+No reader probes outside the workspace either. Taken again once the readers' caches no longer asked a file's time of change (step 4's first piece), the probes outside are, on each of the three folders, the generator's search of the folders above for a scan it lies inside (14 `stat`s), `gitIgnored.ts` looking up for a repository (40 `lstat`s, discovery's), and the grammars found beside the engine (1 to 8 `statSync`s, step 7's). The search above is the host's to answer. That second count also shows what the caches' times cost: the probes of a kept file fell from 4,227 to none on the Library, from 981 to 306 on the programs and from 165 to 72 on the fixtures.
