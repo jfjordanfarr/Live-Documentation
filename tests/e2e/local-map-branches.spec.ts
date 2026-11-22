@@ -1,7 +1,8 @@
 import { expect, test, type Page } from "@playwright/test";
 
+import { PERSISTED_UI_KEY } from "../../packages/explorer/src/client/persistence/local-storage";
 import { framePadding } from "../../packages/explorer/src/client/views/localView/layout-measure";
-import { displayNames, gesture, keepGrowingComposition, loadGraph, LOCAL_MAP, localMapSettled, localRetainUrl, panIntoView, readPicture, scoreExpanded, scoreForeign, scoreOcclusion, symbolCounts } from "./still-picture";
+import { AT_READING_SIZE, displayNames, gesture, keepGrowingComposition, loadGraph, LOCAL_MAP, localMapSettled, localRetainUrl, panIntoView, readPicture, scoreExpanded, scoreForeign, scoreOcclusion, symbolCounts } from "./still-picture";
 
 /** These journeys read the growing composition's recorded facts and in-place descriptions, so they keep it (2026-11-05). */
 test.beforeEach(async ({ page }) => { await keepGrowingComposition(page); });
@@ -293,6 +294,17 @@ test("a retained exploration threads skipped references through lanes: nothing o
   // on one worker, takes 25 to 45 seconds as the machine's load runs from light to about 18, the rest being the page
   // drawing 113 cards (that day's probe, Probes/instrument-and-look-cost). The minute is its limit, not its measure.
   test.setTimeout(60_000);
+  // The picture at reading size is this case's subject: its wires are sampled every eight of the screen's pixels, and
+  // its top rule sets the wires' points beside the cards' boxes read a moment later. The arrival that ships eases back
+  // to the neighbours' frame after a rest (2026-11-22), and the fixed wait below read the wires mid-motion and the
+  // cards after it: that day's gate saw the "highest wire" 944 px over the top, where within the one reading the
+  // highest wire stood 115 px under the highest card. Held at reading size, merged into the tuning this spec keeps
+  // (the growing composition, written before every load), and waited for by the page's own word.
+  await page.addInitScript(({ key, arrival }) => {
+    const saved = JSON.parse(localStorage.getItem(key)!) as { tuning: { localMap: Record<string, unknown> } };
+    saved.tuning.localMap = { ...saved.tuning.localMap, ...arrival };
+    localStorage.setItem(key, JSON.stringify(saved));
+  }, { key: PERSISTED_UI_KEY, arrival: AT_READING_SIZE });
   await page.setViewportSize({ width: 1600, height: 1000 });
   const files = [
     "packages/engine/src/live-docs/graph.ts",
@@ -304,6 +316,7 @@ test("a retained exploration threads skipped references through lanes: nothing o
   await page.goto(localRetainUrl("/", files));
   await page.waitForSelector("#map-container .branch-mode");
   await page.waitForSelector("#map-connections .connection-path:not(.bundle-run)", { state: "attached" });
+  await localMapSettled(page);
   await page.waitForTimeout(900);
   const graph = await loadGraph(page, "/");
   const picture = await readPicture(page, LOCAL_MAP, displayNames(graph, graph.nodes.map(node => node.id)));

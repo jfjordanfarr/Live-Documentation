@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: `tests/e2e/still-picture.spec.ts`
-- Generated At: 2026-11-22T07:12:59.343Z
+- Generated At: 2026-11-22T18:50:22.590Z
 
 ## Authored
 ### Purpose
@@ -23,6 +23,8 @@ Plays the still-picture deck over the shipped bundles, this repository's and the
 - Since 2026-10-05 each scope also has a "Local Map, retained" row: every file of the scope retained whole by URL, the first as the subject, at the view's own fit, the retained exploration state. Three rules hold there beyond the four above: no wire crosses a card it does not end at, no route reads backward, and no lane lies in a directory that holds neither end of its wires; a cycle's feedback is stubs, which the deck's own numbers count as backward in both views alike. Since 2026-10-06 the deck's four scopes (the repository's five files and chain, the estate's) are defined once in `scopes.ts` and shared with the layout lab, so both instruments measure the same pictures; and every wait for a drawn wire asks for a wire that is not a bundle's shared run, since a level run has a bounding box of no height and Playwright calls it invisible.
 
 Since [Turn 12](../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-05/2026-11-05.1.record.md#turn-12--november-6) the repository chain's retained case is expected to fail, with its reason: on the fixed-slot composition three lane samples of two wires lie inside the layout-lab membrane, a corridor between two of its taller cards; the case announces the fix by passing. See direction.md. Later on November 6, in the far bands' round, the case passed: once the Live Docs had gained that round's files the picture drew no foreign lane sample, with the round's code and with the code of `a5a7047e` built on the same Live Docs alike, so the mark was removed. The picture changed; the rule that a membrane leaves a corridor it does not own was not repaired.
+
+Since 2026-11-22 the deck holds its arrival at reading size (`arriveAtReadingSize`) and waits for the page's own word that it is at rest. The arrival that ships rests at reading size and then eases back to the neighbours' frame; the deck had waited seven or nine tenths of a second and read, and that day's gate saw 65 of the estate's 77 retained routes "change" under a pan. The easing alone changes those 65 and no pan changes any ([what was measured](../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-22/Probes/gate-six-cases/README.md)). The deck's measures are of the picture at reading size: facts legible there, the tour's pans, routes that keep their shape.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
@@ -46,6 +48,7 @@ _No public symbols detected_
 - [`still-picture.PictureReading`](./still-picture.ts.mdmd.md#symbol-picturereading) (type-only)
 - [`still-picture.Scoreboard`](./still-picture.ts.mdmd.md#symbol-scoreboard) (type-only)
 - [`still-picture.ViewReading`](./still-picture.ts.mdmd.md#symbol-viewreading) (type-only)
+- [`still-picture.arriveAtReadingSize`](./still-picture.ts.mdmd.md#symbol-arriveatreadingsize)
 - [`still-picture.backEnabled`](./still-picture.ts.mdmd.md#symbol-backenabled)
 - [`still-picture.boxOf`](./still-picture.ts.mdmd.md#symbol-boxof)
 - [`still-picture.cardBoxes`](./still-picture.ts.mdmd.md#symbol-cardboxes)
@@ -59,6 +62,7 @@ _No public symbols detected_
 - [`still-picture.gesture`](./still-picture.ts.mdmd.md#symbol-gesture)
 - [`still-picture.legibleNames`](./still-picture.ts.mdmd.md#symbol-legiblenames)
 - [`still-picture.loadGraph`](./still-picture.ts.mdmd.md#symbol-loadgraph)
+- [`still-picture.localMapSettled`](./still-picture.ts.mdmd.md#symbol-localmapsettled)
 - [`still-picture.localMapUrl`](./still-picture.ts.mdmd.md#symbol-localmapurl)
 - [`still-picture.localRetainUrl`](./still-picture.ts.mdmd.md#symbol-localretainurl)
 - [`still-picture.readPicture`](./still-picture.ts.mdmd.md#symbol-readpicture)

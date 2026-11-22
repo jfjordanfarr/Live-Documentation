@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: `tests/e2e/local-map-branches.spec.ts`
-- Generated At: 2026-11-22T05:09:40.865Z
+- Generated At: 2026-11-22T18:50:22.154Z
 
 ## Authored
 ### Purpose
@@ -29,6 +29,8 @@ Since Flow became Opened Directory's default on 2026-11-13 the unpinned scan roo
 
 Since the tone round of 2026-11-15 ([Turn 1 of that day's record](../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-15/2026-11-15.1.record.md#turn-1)) the case of a hovered row expects the wires the row keeps at 0.7, a wire's opacity at rest, where it had expected 1: the hover had boosted them, against the owner's rule to fade the irrelevant rather than boost the relevant, and the root's correction of that day has a hover fade the others only.
 
+Since 2026-11-22 the lanes case holds its arrival at reading size and waits for rest. Its top rule sets the wires' points beside the cards' top read a moment later, and the arrival that ships eases to another look in between: that day's gate saw a wire 944 px "over the top" where, within the one reading, the highest wire stood 115 px under the highest card ([what was measured](../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-22/Probes/gate-six-cases/README.md)). The same record holds a finding not yet mended: since every wire has a band that takes the pointer, the reading's hit test meets the band first, and "nothing across a card" cannot fail.
+
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
@@ -38,7 +40,9 @@ _No public symbols detected_
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
 - `@playwright/test` - `Page`, `expect`, `test`
+- [`local-storage.PERSISTED_UI_KEY`](../../packages/explorer/src/client/persistence/local-storage.ts.mdmd.md#symbol-persisted_ui_key)
 - [`layout-measure.framePadding`](../../packages/explorer/src/client/views/localView/layout-measure.ts.mdmd.md#symbol-framepadding)
+- [`still-picture.AT_READING_SIZE`](./still-picture.ts.mdmd.md#symbol-at_reading_size)
 - [`still-picture.LOCAL_MAP`](./still-picture.ts.mdmd.md#symbol-local_map)
 - [`still-picture.displayNames`](./still-picture.ts.mdmd.md#symbol-displaynames)
 - [`still-picture.gesture`](./still-picture.ts.mdmd.md#symbol-gesture)

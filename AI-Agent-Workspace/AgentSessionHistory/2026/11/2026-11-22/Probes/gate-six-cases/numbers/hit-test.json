@@ -1,0 +1,20 @@
+{
+ "scale": 0.485602,
+ "wires": 56,
+ "bands": 74,
+ "asDrawn": {
+  "samples": 5976,
+  "band": 5914,
+  "card": 40,
+  "other": 22,
+  "nothing": 0,
+  "foreignCardUnderABand": 0
+ },
+ "made": {
+  "wire": "Contracts/IPaymentService.cs -> Contracts/PaymentRequest.cs",
+  "card": "Portal/Controllers/PaymentsController.cs",
+  "topmost": "path.wire-band run-band",
+  "firstThatIsNoBand": "DIV.local-reading-block local-reading-slot local-reading-purpose",
+  "itsCard": "Portal/Controllers/PaymentsController.cs"
+ }
+}
