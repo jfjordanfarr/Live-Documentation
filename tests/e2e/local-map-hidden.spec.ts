@@ -29,10 +29,33 @@ test.use({ viewport: { width: 1600, height: 1000 } });
 /** `tried` counts every trial of the search, its seeds, its boundary joins and its cycles' orders: a pause must stop them all (2026-11-18; before, the seeds alone). */
 interface Reading { status: string; tried: number; next: number; marked: number; cards: number }
 
-/** Opens the retained scope with a long search, so that a view is switched while it runs. */
-async function open(page: Page): Promise<void> {
-  await page.addInitScript(({ key, value }) => { window.localStorage.setItem(key, value); }, { key: PERSISTED_UI_KEY, value: JSON.stringify({ version: PERSISTED_UI_VERSION, tuning: { localMap: { ...AT_READING_SIZE, orderStarts: 0, searchStarts: 80, searchPatience: 80, moveMs: 0 } } }) });
-  await page.goto(localRetainUrl("/", FILES));
+/**
+ * The estate sample's C# files retained whole: a picture whose search is the sample's size, which does not grow with this
+ * repository. On this repository's five files the search's boundary joins were 121 on 2026-11-18, 107 on `main` at the
+ * close of November 21 (110 cards) and 278 on 2026-11-22 (114 cards), when the case of another view ran out of its 45 s
+ * wait at the gate: each adopted picture brings joins of its own to try, so four more cards made the search twice as
+ * long, at the same cost per trial on that day's code and the day before's
+ * (AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-22/Probes/hidden-map-search/README.md).
+ */
+const ESTATE = [
+  "Portal/Services/GatewayClient.cs", "Contracts/IPaymentHub.cs", "Contracts/IPaymentService.cs", "Contracts/PaymentQuery.cs", "Contracts/PaymentRequest.cs",
+  "Contracts/PaymentResult.cs", "Gateway/Controllers/PaymentsController.cs", "Gateway/GatewaySettings.cs", "Gateway/Wcf/HubProxy.cs", "Hub/PaymentHub.cs",
+  "Hub/ServiceRouting.cs", "PaymentService/Data/Payment.cs", "PaymentService/Data/PaymentsContext.cs", "PaymentService/Data/PostPaymentRow.cs",
+  "PaymentService/PaymentService.cs", "Portal/App_Code/Globals.cs", "Portal/Controllers/PaymentsController.cs", "Portal/Models/PaymentRequestModel.cs",
+  "Portal/Models/PaymentResultModel.cs", "Portal/Pages/Default.aspx.cs"
+];
+/**
+ * Its search, measured on 2026-11-22 alone at one worker: 29 cards and 108 wires, the joins 24 whatever the seeds, and the
+ * seeds tried at some nineteen a second in the page's idle moments (80 seeds in 4.4 s after the return, 300 in 15.8 s).
+ * A hundred and sixty seeds leave some six seconds of search after the return; the wait is three times that.
+ */
+const ESTATE_STARTS = 160;
+const ESTATE_WAIT = 20_000;
+
+/** Opens a retained scope with a long search, so that a view is switched while it runs: by default this repository's five files and eighty seeds. */
+async function open(page: Page, scope: { base: string; files: readonly string[]; starts: number } = { base: "/", files: FILES, starts: 80 }): Promise<void> {
+  await page.addInitScript(({ key, value }) => { window.localStorage.setItem(key, value); }, { key: PERSISTED_UI_KEY, value: JSON.stringify({ version: PERSISTED_UI_VERSION, tuning: { localMap: { ...AT_READING_SIZE, orderStarts: 0, searchStarts: scope.starts, searchPatience: scope.starts, moveMs: 0 } } }) });
+  await page.goto(localRetainUrl(scope.base, scope.files));
   await page.waitForSelector("#map-container .branch-mode", { timeout: 20_000 });
   await page.waitForSelector("#map-connections .connection-path:not(.bundle-run)", { state: "attached", timeout: 15_000 });
 }
@@ -48,11 +71,13 @@ const mark = (page: Page): Promise<void> => page.evaluate(() => { document.query
 
 const show = async (page: Page, view: "sources" | "world" | "map"): Promise<void> => { await page.click(`.nav-item[data-view="${view}"]`); };
 
-test("the search pauses while another view is shown, and a return to the unchanged picture keeps it and resumes the search", { tag: "@alone" }, async ({ page }) => {
-  // The search runs to its end after the return: 23 to 29 seconds on one worker (2026-10-19), 41 to 42 on 2026-11-18 (80
-  // seeds and 121 boundary joins), so the case runs alone (`@alone`); the half minute is not its measure.
-  test.setTimeout(60_000);
-  await open(page);
+test("the search pauses while another view is shown, and a return to the unchanged picture keeps it and resumes the search", async ({ page }) => {
+  // The search runs to its end after the return, so its subject is the estate sample, whose search does not grow with
+  // this repository (ESTATE, above): ESTATE_STARTS seeds and the joins that follow them.
+  await open(page, { base: "/samples/estate/", files: ESTATE, starts: ESTATE_STARTS });
+  // Midway: the search's first trials are joins of the first picture, so the view is switched once a quarter of the
+  // seeds are tried, where a search begun anew from its first seed would be told apart.
+  await expect.poll(() => read(page).then(reading => reading.next), { message: "the search tries its seeds", timeout: 10_000 }).toBeGreaterThan(ESTATE_STARTS / 4);
   const started = await read(page);
   expect(started.status, "the search is still running when the view is switched").toBe("running");
   await mark(page);
@@ -69,8 +94,7 @@ test("the search pauses while another view is shown, and a return to the unchang
   const back = await read(page);
   expect(back.marked, "the picture is the one that stood before: every card kept its element").toBe(back.cards);
   expect(back.next, "the search goes on from the seed after the last tried, not from the first").toBeGreaterThanOrEqual(away.next);
-  // The existing 60-second test budget covers the boundary-alignment trials that continue after all 80 seeds.
-  await localMapSettled(page, 45_000);
+  await localMapSettled(page, ESTATE_WAIT);
   const done = await read(page);
   expect(done.tried, "the search tried more starts after the return").toBeGreaterThan(later.tried);
   expect(done.marked, "the search's adoptions move the cards without drawing them anew").toBe(done.cards);
