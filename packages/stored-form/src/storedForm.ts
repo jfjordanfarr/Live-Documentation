@@ -88,6 +88,21 @@ export interface StoredSymbol {
   source?: { path: string; line: number };
   references: StoredReference[];
   sections: { title: string; body: string[] }[];
+  /**
+   * The references the symbol's documentation makes, as the scanner read them from its documentation's lines: the
+   * name as the author wrote it, the element that carries it where that is not a `see` (`exception`, `inheritdoc`),
+   * and, where the scanner resolved it, the link and what the link names. Empty when it makes none.
+   */
+  documentation: StoredDocumentation[];
+}
+
+/** One reference a symbol's documentation makes, as the scanner read it. */
+export interface StoredDocumentation {
+  name: string;
+  element?: string;
+  link?: string;
+  target?: string;
+  anchor?: string;
 }
 
 /** One dependency line: a label, and for a workspace file the link and what it names. */
@@ -566,7 +581,7 @@ function walkType(c: Codec, t: StoredType | undefined): StoredType {
 function walkSymbol(c: Codec, s: StoredSymbol | undefined): StoredSymbol {
   const name = c.str(s?.name, `a symbol's name`);
   const bits = c.bits(s && (+(s.slug !== undefined) | (+(s.source !== undefined) << 1)), 0b11, `a symbol`);
-  const symbol: StoredSymbol = { name, kind: "", flags: [], references: [], sections: [] };
+  const symbol: StoredSymbol = { name, kind: "", flags: [], references: [], sections: [], documentation: [] };
   if (bits & 1) symbol.slug = c.str(s?.slug, `a symbol's slug`);
   symbol.kind = c.str(s?.kind, `a symbol's kind`);
   symbol.flags = c.list(s?.flags, `a symbol's flags`, (x) => c.str(x, `a flag`));
@@ -587,6 +602,13 @@ function walkSymbol(c: Codec, s: StoredSymbol | undefined): StoredSymbol {
     title: c.str(x?.title, `a section's title`),
     body: c.list(x?.body, `a section's lines`, (line) => c.str(line, `a section's line`))
   }));
+  symbol.documentation = c.list(s?.documentation, `a symbol's documentation`, (d) => {
+    const reference = { name: c.str(d?.name, `a documentation reference`) } as StoredDocumentation;
+    const bits = c.bits(d && (linkedBits(d) | (+(d.element !== undefined) << 3)), 0b1111, `a documentation reference`);
+    if (bits & 8) reference.element = c.str(d?.element, `a documentation reference's element`);
+    walkLinked(c, bits, d, reference);
+    return reference;
+  });
   return symbol;
 }
 
@@ -796,13 +818,24 @@ function outboundOf(file: StoredFile, index: Map<string, number>): number[] {
 // Sections
 // ============================================================================
 
+/**
+ * The extension ends every document path, so it holds nothing a path could not: no `/` or `\`, which would put the
+ * document in another folder on one system or another, and no NUL, which no file system's names hold.
+ */
+function checkExtension(extension: string): void {
+  for (let i = 0; i < extension.length; i += 1) {
+    const c = extension.charCodeAt(i);
+    if (c === 0x2f || c === 0x5c || c === 0) refuse("the location's extension holds a slash, a backslash or a NUL");
+  }
+}
+
 function headBytes(head: ScanHead): Uint8Array {
   const out = new Out();
   out.byte(LAYOUT_VERSION);
   out.text(checkFolder(head.location?.root, "the location's root"));
   out.text(checkFolder(head.location?.baseLayer, "the location's base layer"));
   const extension = checkText(head.location?.extension, "the location's extension");
-  if (extension.includes("/")) refuse("the location's extension holds a slash");
+  checkExtension(extension);
   out.text(extension);
   out.text(checkText(head.scanner, "the scanner"));
   if (!Array.isArray(head.leftOut)) refuse("what was left out is not a list");
@@ -822,7 +855,7 @@ function readHead(raw: Uint8Array): ScanHead {
   const root = checkFolder(input.text(), "the location's root");
   const baseLayer = checkFolder(input.text(), "the location's base layer");
   const extension = checkText(input.text(), "the location's extension");
-  if (extension.includes("/")) refuse("the location's extension holds a slash");
+  checkExtension(extension);
   const scanner = checkText(input.text(), "the scanner");
   const leftOut: LeftOut[] = [];
   const n = input.count(3);
@@ -1405,7 +1438,8 @@ function fileLines(f: StoredFile): string[] {
           flags: s.flags,
           source: s.source && { path: s.source.path, line: s.source.line },
           references: s.references.map((r) => (r.role === "Parameters" ? { role: r.role, parameters: r.parameters.map((x) => ({ name: x.name, types: x.types.map(typeText) })) } : { role: r.role, types: r.types.map(typeText) })),
-          sections: s.sections.map((x) => ({ title: x.title, body: x.body }))
+          sections: s.sections.map((x) => ({ title: x.title, body: x.body })),
+          documentation: s.documentation.map((d) => ({ name: d.name, element: d.element, link: d.link, target: d.target, anchor: d.anchor }))
         }
       ])
     );
@@ -1578,6 +1612,23 @@ export interface GraphFile {
   edges: GraphEdge[];
   outbound: string[];
   inbound: string[];
+  /** The declarations this file's documentation names on scanned files; present only when there is one. */
+  documentation?: DocumentationEdge[];
+  /** The files, other than this one, whose documentation names a declaration of this one, in path order; present only when there is one. */
+  documentedBy?: string[];
+}
+
+/**
+ * One reference a symbol's documentation makes to a scanned file: the author's word that the two are related, which
+ * is not a use, so that nothing that follows the edges or the wires follows it.
+ */
+export interface DocumentationEdge {
+  label: string;
+  link: string;
+  to: string;
+  element?: string;
+  toSymbol?: string;
+  from?: string;
 }
 
 /** The graph of a scan: its location and every file keyed by path, in path order. */
@@ -1666,8 +1717,25 @@ export function graphOf(scan: Scan): Graph {
       outbound,
       inbound: []
     };
+    // The documentation's references that land on a scanned file: a relation of its own, never an edge or a wire.
+    const documentation: DocumentationEdge[] = [];
+    for (const s of f.symbols) {
+      for (const d of s.documentation) {
+        if (d.link === undefined || d.target === undefined || !scanned.has(d.target)) continue;
+        const reference: DocumentationEdge = { label: d.name, link: d.link, to: d.target };
+        if (d.element !== undefined) reference.element = d.element;
+        if (d.anchor !== undefined) reference.toSymbol = d.anchor;
+        if (s.slug !== undefined) reference.from = s.slug;
+        documentation.push(reference);
+      }
+    }
+    if (documentation.length > 0) files[f.codePath].documentation = documentation;
   }
   for (const f of Object.values(files)) for (const to of f.outbound) files[to].inbound.push(f.codePath);
+  for (const f of Object.values(files)) {
+    const named = [...new Set((f.documentation ?? []).map((d) => d.to).filter((to) => to !== f.codePath))].sort(comparePaths);
+    for (const to of named) (files[to].documentedBy ??= []).push(f.codePath);
+  }
   const { root, baseLayer, extension } = scan.head.location;
   return { root, baseLayer, extension, files };
 }
