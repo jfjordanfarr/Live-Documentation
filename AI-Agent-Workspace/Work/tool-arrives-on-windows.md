@@ -29,14 +29,14 @@ opened: 2026-11-20
 
 ### A check that the engine, bundled for a browser, maps what Node maps
 - state: done
-- holds: on the day branch since 2026-11-21 (`8f4a86d2e`, merged as `a95f93b91`); `main` receives it with the day's merge. Its builder is mending the one cause of difference it found and drafting the interface's design
+- holds: on `main` since 2026-11-21 (`8f4a86d2e`, merged as `a95f93b91`), with the one cause of difference it found mended (`7e9dbdae5`) and the interface's design drafted from what it counted
 - evidence: [the builder's account](../AgentSessionHistory/2026/11/2026-11-21/Probes/page-check/README.md); root ran the browser-free tests (3 files, 10 tests) and the 45 browser cases again and all pass
 
 All 45 sample folders, which between them reach every one of the 19 readers, are mapped in a real Chromium page and under Node with the same clock and compared file by file: 43 identical, and the two that differ (six files) share one cause in the engine, a question put to TypeScript's host on Node that a page cannot answer and that Windows and Linux answer differently. That cause was mended the same day (`7e9dbdae5`: names are read as written), and since then all 45 are identical and the ledger of differences is empty. Over the 45 the page took 6.3 s where Node took 9.6 s. Three guards now stand: the bundle refuses any Node module the scan imports that has no stand-in; a committed list says what the scan needs of Node, and changes to it show in review; the ledger of differences fails on a new difference and on a listed one that has gone. What the scan needs of Node today is 36 modules, 13 of them only for paths: in order of use, path arithmetic, 2,163 synchronous is-a-file probes, 2,144 file reads, and five walks of the folder for each scan.
 
 ### The engine reads a folder through one interface
 - state: open
-- holds: designed and not begun; it waits for [the readers' join](readers-on-main.md), which holds every reader's file
+- holds: designed and not begun; unblocked since [the readers](readers-on-main.md) landed on 2026-11-21, which had held every reader's file
 - evidence: [the design, as a proposal](../../.mdmd/layer-3/engine-and-hosts.mdmd.md), drafted by the page check's builder from every call it counted and corrected by root: what the host gives (a listing of names, a file's bytes, its first bytes), what it takes (the facts, and word of how far the scan has come), what the engine builds once over them, what cannot cross into a page, the road in nine steps each deleting a stand-in, and the alternatives
 
 List once, read a file's bytes, is-a-file answered from the listing, write. It carries with it the task of reading each file once (today a file is read about four times in a scan, and each of nine walks lists the folder again). The check above is its oracle: a stand-in is deleted each time the engine stops needing it, and the interface is whole when none is left.
@@ -47,12 +47,12 @@ List once, read a file's bytes, is-a-file answered from the listing, write. It c
 
 ### What a scan leaves out is chosen on the listing, before anything is read
 - state: active
-- holds: the function is on the day branch since 2026-11-21 (four legs, the last merged as `3e8813006`; [its record](../AgentSessionHistory/2026/11/2026-11-21/Probes/leave-out/README.md)): new files only, nothing of Node, nothing calling it yet, git's own answer its oracle for `.gitignore` and Microsoft's open-source client's for `.tfignore`; a folder's own ignore files are asked for when something inside it is decided, which is what a walk that lists lazily needs. Wiring it into discovery waits for the interface above. How a person sees and changes the choice is designed with [the scan that leaves no trace](scan-leaves-no-trace.md#choosing-what-a-scan-leaves-out-before-it-scans-on-either-surface)
+- holds: on `main` since 2026-11-22 in its second shape, the owner's one list (the list's text in; for each path, kept or left out and by which line; [its record](../AgentSessionHistory/2026/11/2026-11-21/Probes/leave-out/README.md)): nothing of Node, nothing calling it yet, nested `.gitignore` files flattened into the list held to git's own answer and translated `.tfignore` files to Microsoft's open-source client's. Wiring it into discovery waits for the interface above. How a person sees and changes the choice is designed with [the scan that leaves no trace](scan-leaves-no-trace.md#choosing-what-a-scan-leaves-out-before-it-scans-on-either-surface)
 - evidence:
 
 ### A scan's facts in one stored form, written by either host
 - state: active
-- holds: its research leg with a builder since 2026-11-21, on a branch `stored-form-research` (designs that differ in kind, each measured on real facts; no product code); the build itself is [the store's trial](../Memory/direction.md#engine-and-docs), given leave on 2026-11-19 and ordered after the readers' landing
+- holds: the research is done and on `main` (three legs, 2026-11-21; no product code); the owner's lean of that day is the binary layout with text exported on demand; the module itself is not begun, and the build is [the store's trial](../Memory/direction.md#engine-and-docs), given leave on 2026-11-19 and ordered after the readers' landing, which has happened
 - evidence:
 
 The owner's bar for the form (2026-11-19): "Don't just settle for JSON by default. Do a lot of research to choose a format that is going to be right for what we need at scale and prove it by the efficiency gains that are reaped." The values that research trades, as listed then: read by the Explorer's page with no network and nothing installed; read and written by Node on Windows with nothing compiled; the same bytes for the same facts; a question answered without reading the whole. Since 2026-11-21 there is one more: written by a page, and carried inside the one HTML file that page saves. The command line keeps the facts in a folder that ignores itself, the page keeps them in itself, and Markdown is exported from either, one way, when a person asks.

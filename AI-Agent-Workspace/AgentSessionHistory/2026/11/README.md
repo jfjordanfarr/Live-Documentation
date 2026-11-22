@@ -57,9 +57,22 @@ Source inventory, maintained by the root agent. The October 31 session that ende
 - [Linked summary](Summarized/2026-11-16.1.SUMMARIZED.md): written by the session's root from a full read of the record. One table of what each colour means, a second and a third palette, files as marbles, and a trial of cells for what a drawn directory hides; five full gates, none green, the last 478 of 488 browser cases with every red case a 3D case that was red or on its time limit before.
 - [The owner's screenshots](2026-11-16/2026-11-16.1.images/), kept as received and named by root for what each shows; the record lists them under the turns they came with.
 
+## November 22, session 1 — Claude Code, Fable 5.2
+
+- [Maintained root record](2026-11-22/2026-11-22.1.record.md): opened by the owner at 00:46 UTC on November 22 (7:46 PM on November 21 by their clock), eight minutes after the November 21 chat's closing message, as "the 11/22/26 dev day". Begins with the startup read and the close of the November 21 chat (its closing message from its log, its summary, the narrative, this inventory, Memory and the work items brought level, its finished worktrees and scratch removed). On the branch `day/2026-11-22`. In progress; no summary yet.
+
 ## November 21, session 1 — Claude Code, Fable 5.2
 
-- [Maintained root record](2026-11-21/2026-11-21.1.record.md): opened by the owner at 01:39 UTC on November 21 (8:40 PM on November 20 by their clock), thirty-five minutes after the November 19 dev day closed; named for November 21 by root's choice, which the record's Coverage explains. Begins with the owner's answers to the seven closing questions of the chat before, and their ask that five days of records be mined for what they had left unanswered. The first session on a branch of its own, `day/2026-11-21`. In progress; no summary yet.
+- [Maintained root record](2026-11-21/2026-11-21.1.record.md): opened by the owner at 01:39 UTC on November 21 (8:40 PM on November 20 by their clock), thirty-five minutes after the November 19 dev day closed; named for November 21 by root's choice, which the record's Coverage explains. Begins with the owner's answers to the seven closing questions of the chat before, and their ask that five days of records be mined for what they had left unanswered. Fourteen owner turns; one root throughout. The first session on a branch of its own, `day/2026-11-21`. Closed at 00:38 UTC on November 22; its closing message and the note of its end were filed by the next session.
+- [Linked summary](Summarized/2026-11-21.1.SUMMARIZED.md): written by the next session's root on November 22 at the new chat's opening, from the whole record as the owner's editor attached it and the closing message read from the session's log.
+- [Harness export](2026-11-21/2026-11-21-025328-the-1119-chat-concluded-with-the-following-set-o.txt): exported by the owner from the Claude Code extension's UI, first at 02:53 UTC on November 21 (the time in its name) and saved again under the same name through the day; no earlier save was committed. **As last saved at 00:41:27 UTC on November 22, after the closing message, and committed by the owner themselves as `76cd9914c`: 1,005,534 bytes**, SHA-256 **`74a2076f302e216b7d7eb7be103e4f93d159d5035ba6c4b8b9826c29f547b83b`**, 19,078 lines of terminal text. Its lines at the owner's prompt mark, in order: the editor's note of an opened file and the message of Turn 1; a `/compact`; the editor's note of a selection with the message of Turn 2 under it; the messages of Turns 3 and 4; two `/compact`; the editor's note of a selection and the message of Turn 5; a `/compact`; the editor's note of a selection and the message of Turn 6; and the messages of Turns 7 to 14, each under or straight after an editor's note of an opened file. So it holds the chat from its start to its end, across four compactions the owner made by hand, and no message of the owner's that the record lacks. It ends with root's closing message of 00:38 UTC on November 22. Read by the next session's root: its prompt lines, its first 600 bytes and its last 900, not the whole.
+- Probes and measurements of the day, each with a README, most by builders with root's readings and rulings written beneath:
+  - the owner's questions and their machine: [five days of unanswered questions, counted and grouped](2026-11-21/Probes/unanswered-questions/README.md), and [the Explorer on an imitation of a weak machine](2026-11-21/Probes/weak-machine/README.md);
+  - one engine, a page and a command line: [a scan inside a browser tab](2026-11-21/Probes/scan-in-a-tab/README.md), [the check that a page maps what Node maps](2026-11-21/Probes/page-check/README.md), [git read from a page, with git's own rename detection ported](2026-11-21/Probes/git-in-a-page/README.md), and [what a scan leaves out](2026-11-21/Probes/leave-out/README.md), with the trial page a person can open on a folder of their own;
+  - the readers: [the three readers joined and reviewed](2026-11-21/Probes/readers-gathering/README.md), [the evening's batch: the comment guard, a PowerShell path as Windows runs it, more SQL spellings](2026-11-21/Probes/readers-batch/README.md), and [what makes a file a test in each language](2026-11-21/Probes/test-rules/README.md);
+  - the Explorer and its strangers: [the blind playtests of the day](2026-11-21/Probes/blind-playtests/README.md), [what the record holds on a line's direction](2026-11-21/Probes/line-direction/README.md), and [the arrival's pull-back measured frame by frame](2026-11-21/Probes/arrival-pull-back/README.md).
+- [The research on the stored form of a scan's facts](2026-11-21/Research/stored-form/README.md): seven forms measured in Node and in a slowed browser tab, in three legs.
+- Pictures of the built Explorer: listed under [Pictures of the Explorer](#2026-11-21).
 
 ## November 19, session 1 — Claude Code, Fable 5.2
 
@@ -164,6 +177,22 @@ The evidence collections are [tap reading](2026-11-05/Screenshots/tap-reading/RE
 ## Pictures of the Explorer
 
 Each day's pictures of the built Explorer, as the index `Screenshots/README.md` listed them until 2026-11-18, when it was carried into the month inventories. The convention, and the owner's standing request behind it, are in [the archive's README](../../README.md#where-things-are). Newest first.
+
+### 2026-11-21
+
+[A browser that gives no WebGL](2026-11-21/Screenshots/webgl-refused/README.md): a 3D link shown in 2D, the 3D control and Tuning's 3D Layout unavailable and saying why.
+
+[What the 2D camera frames after a step](2026-11-21/Screenshots/step-framing/README.md): the Step lever's three values on the estate's folder and on a folder too large for any frame, the camera's mends, and Cut Counted, a count at each edge of what the window cuts.
+
+[Which way a 2D line runs](2026-11-21/Screenshots/line-direction/README.md): Wire Answers, a wire that says one line when rested on or pressed, and Direction Marks, chevrons along the wires.
+
+[A folder found by its path in the search](2026-11-21/Screenshots/search-folder/README.md): the folder's own row, and a count where the list is cut.
+
+[The 3D start with this repository's largest group veiled](2026-11-21/Screenshots/archipelago-veiled/README.md): the picture and its cause, a question for the owner's eye.
+
+The arrival's pull-back, its strips of frames and the stills of the trial that skipped unseen cards, are under `2026-11-21/Screenshots/arrival-pull-back/` and are named in [the probe's record](2026-11-21/Probes/arrival-pull-back/README.md).
+
+Pictures kept beside their probes and not here: [the choice before a scan, as a trial page](2026-11-21/Probes/leave-out/README.md), [the blind testers' own pictures](2026-11-21/Probes/blind-playtests/README.md), and [the weak machine's](2026-11-21/Probes/weak-machine/README.md).
 
 ### 2026-11-19
 
