@@ -55,7 +55,14 @@ const SHAPES: Array<[string, Record<string, unknown>]> = [
   ["exports beside main, which Node does not read", { main: "./old/main.js", exports: { ".": "./new/index.js" } }],
   ["a condition no program under Node matches", { exports: { ".": { browser: "./browser/index.js" } } }],
   ["`.` not exported", { exports: { ".": null, "./feature": "./lib/feature.js" } }],
-  ["patterns alone, as the engine's and the Explorer's own manifests", { exports: { "./*": { types: "./dist/*.d.ts", default: "./dist/*.js" }, "./package.json": "./package.json" } }]
+  ["patterns alone, as the engine's and the Explorer's own manifests", { exports: { "./*": { types: "./dist/*.d.ts", default: "./dist/*.js" }, "./package.json": "./package.json" } }],
+  // The independent review of 2026-11-22 (`json.exports-held-by-node.test.ts`): shapes no installed package holds.
+  ["exports null beside main, which Node reads as no exports", { exports: null, main: "./lib/main.js" }],
+  ["a null under a nested condition, which ends that side", { exports: { ".": { node: { import: null, require: "./n.cjs" }, default: "./d.js" } } }],
+  ["an empty list under a condition", { exports: { ".": { import: [], require: "./r.cjs", default: "./d.js" } } }],
+  ["a list of one null under a condition", { exports: { ".": { import: [null], require: "./r.cjs", default: "./d.js" } } }],
+  ["a target with a `..` segment, which Node refuses", { exports: "./lib/../x.js" }],
+  ["subpaths mixed with conditions, which Node refuses", { exports: { ".": "./a.js", import: "./b.js" } }]
 ];
 
 describe("the files a package's own name loads, held to Node's own resolver", () => {
@@ -75,8 +82,8 @@ describe("the files a package's own name loads, held to Node's own resolver", ()
     expect(byReader).toEqual(byNode);
   });
 
-  it("finds a module in every shape but the four Node resolves to nothing, so that the comparison is not empty throughout", () => {
-    const resolving = SHAPES.filter(([shape]) => !/no program|not exported|patterns alone/u.test(shape)).length;
-    expect(resolving).toBe(8);
+  it("finds a module in every shape but the six Node resolves to nothing, so that the comparison is not empty throughout", () => {
+    const resolving = SHAPES.filter(([shape]) => !/no program|not exported|patterns alone|Node refuses/u.test(shape)).length;
+    expect(resolving).toBe(12);
   });
 });
