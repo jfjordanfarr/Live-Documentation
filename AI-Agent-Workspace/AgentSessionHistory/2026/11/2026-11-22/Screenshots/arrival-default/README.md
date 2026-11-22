@@ -466,6 +466,21 @@ The two pictures are in [`numbers/pin-near-and-far--layout-order.json`](numbers/
 - *One order however the reader came.* The order would have to be chosen again when the rows are laid out again at reading size, as for a picture made there. That is the search the product runs after every picture and this spec turns off; whether it brings the two pictures to one order was not measured: with the search left on, the map did not come to its rest within the 30 s the instrument's own wait allows, in three runs on this picture of 79 cards. It moves cards under a reader who has just come back.
 - *A subject that does not change.* The estate's sample would stop this repository's own edits from moving the case, but would not settle the question: the same disagreement can arise there.
 
+**The ruling: the first.** "The order of a card's rows is the picture's, like the cards' places." The root's reason is in the record already: direction's line "A picture may rearrange once after it arrives" (2026-11-16) sets aside for the playtests "that a pin made while files only is showing is priced on compact cards and can stand a few cards in another order than the same pin made at reading size"; Symbol Order's default orders a card's rows by where their wires lead, so where the cards may stand elsewhere the rows follow; and the control run above is the proof that nothing else moves. The estate's sample was not taken (the claim is about this product on any picture), and one order however the reader came stays set aside for the playtests.
+
+**The case, as it holds the claim now.** Both variants of `overview-files.spec.ts`'s case hold the same cards, each of the same size, with the same rows (name, height, pinned by name), the same ports (side and symbol) and whether it is pinned, and the same wires; a card's rows and ports are compared by name and not by place. A paragraph beside the one about the cards' places says why and names direction's line and this measure.
+
+**Seen red, by four made faults** in the second picture's page before it is read, on the whole-file variant:
+
+| The fault made | What the comparison said of the subject's card |
+| --- | --- |
+| A row taken out of the drawing | `consumersOf 66` missing with its two ports, the card 305 by 3,995 for 305 by 4,067 |
+| The card's pin taken off | `pinned` false for true |
+| A row marked pinned by name | `consumersOf 66 pinned by name` for `consumersOf 66` |
+| A port taken out of the drawing | `offers *` missing |
+
+Without a fault, `overview-files.spec.ts` passes whole, 10 of 10, with `still-picture-reference.spec.ts`, 5 of 5, in one hold (2.1 minutes).
+
 ## Not done
 
 - The sweep: eight holds of twenty-five ran.
