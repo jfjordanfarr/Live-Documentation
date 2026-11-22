@@ -655,3 +655,82 @@ Lint, the audits, `docs:links:enforce` and `live-docs:generate` passed too.
 ### Commands the harness refused in the second leg
 
 None.
+
+## Fifth milestone, third leg, 2026-11-22: the two designs for a reader's cost, measured
+
+The root's order: measure A's two designs first, since they decide the review's last red case and whether a whole read survives. The window waits on that, and C, D and G follow. Nothing was built; these are measures.
+
+### What the consumers ask
+
+From the page's own code:
+- **The map** (the world map's model and controller) reads every file's paths, edges or wires, archetype and entries.
+- **The search** (`graph-search.ts`, `search-field.ts`) walks every file's symbols for their names.
+- **The reader's pane** (the detail panel, `sources-facts.ts`) reads one file's whole facts.
+- **The command line** asks one file's facts, or walks wires.
+
+So the page needs every file's paths, wires and symbol names, but one file's details at a time.
+
+### Under Node
+
+[`design-a.mjs`](design-a.mjs) runs each in a fresh process, at a load of 17 to 27:
+- **Design 1**, the facts never built whole, is a copy of the module whose quick open keeps only the section it last decoded, and decodes an asked section again.
+- **Design 2** is the whole read in a worker.
+
+| | DNN: time | DNN: peak | DNN: held after | 5× DNN: time | 5× DNN: peak | 5× DNN: held after |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: |
+| Today's whole read, every fact built and kept | 2.1 s | 238 MB | 87 MB | 4.5 s | 475 MB | 277 MB |
+| 1: validation walk, every check made, nothing kept but strings, paths and wires | 2.4 s | 226 MB | 47 MB | 4.3 s | 373 MB | 76 MB |
+| 1: one file asked after the walk (the hub's, 209 symbols) | 68 ms | | | 45 ms | | |
+| 1: a search walk, every symbol's name read, the matches kept | 2.9 s | 217 MB | 57 MB | 4.3 s | 371 MB | 74 MB |
+| 2: the scan cloned out of the worker | 3.7 s | 324 MB | 81 MB in the caller | 10.8 s | 827 MB | 368 MB in the caller |
+| 2: kept in the worker, one file asked by message | 1.9 s, then 8 ms an ask | 253 MB | 12 MB in the caller | 3.5 s, then 8 ms | 507 MB | 20 MB in the caller |
+| 2: the graph built in the worker and cloned out | 4.8 s | 371 MB | 101 MB in the caller | 11.5 s | 1,018 MB | 458 MB in the caller |
+
+### In a tab
+
+[`tab-worker.mjs`](tab-worker.mjs) builds a page holding DNN's stored form and the module's built script. The page starts a worker from a blob holding the module and hands it the bytes, transferred. One hold each.
+- **Under today's policy, a page cannot start a worker at all.** Chromium refuses the blob worker by the page's `script-src` hash: "Creating a worker from 'blob:null/…' violates the following Content Security Policy directive". So design 2 on the page needs the policy to grow a `worker-src`, which is a change to the page's security the owner must weigh.
+- **With `worker-src blob:` added, the module worker still failed**, with no message, on DNN and on five times. Why was not established in this leg: a module worker from a blob in a page opened from disk, or the worker inheriting the page's policy, are the first suspects.
+
+### What the numbers say
+
+**Design 1 cuts what a reader holds once it has read**, not its peak while reading:
+- held after: 87 → 47 MB on DNN, and 277 → 76 MB at five times DNN, 3.6 times less;
+- peak during the walk: 238 → 226 MB and 475 → 373 MB;
+- time: about the whole read's, since every check is still made;
+- one file is answered in 45 to 68 ms by decoding its section again.
+
+What it does not do as measured: bound the memory of one section. A section holds 256 files, and its records may be up to 64 MiB, so asking for one file can still build a great deal. **The review's fifth case** (one file of a million symbols, its `length` asked within 54 MB) **can be met only by design 1 carried into a file's own lists**: a file read back as a view whose `symbols` decodes a symbol when it is asked for.
+- No representation that builds the million symbols passes that case. V8's smallest object of a symbol's six fields is some 70 bytes, so a million is about 70 MB against the case's 54.
+- Design 2 cannot pass it either, since the case reads in-process.
+
+**Design 2 contains the cost; it does not reduce it:**
+- **Cloning across the boundary doubles both time and memory** (10.8 s and 827 MB at five times DNN, against 4.5 s and 475 MB). It is not a way to hand a page its facts.
+- **Kept in the worker and asked by message is cheap** (8 ms an ask, the caller holding 12 to 20 MB), but the worker holds the whole read as today (507 MB peak at five times).
+- What design 2 buys is a ceiling: a stranger's file that would take the machine's memory ends the worker, not the page.
+- On the page it needs a policy that allows a worker, which today's does not.
+
+**My recommendation, which is the root's guess, now measured:**
+- **Design 1 for memory.** The read gives back views, a file's lists decoded as asked. A validation walk checks the whole file once, keeping nothing but the string table, paths and wires. This is what makes the review's fifth case green.
+- **Design 2 as the page's protection,** but only by asking through messages, never by cloning. It also needs a policy change, so it is the owner's to weigh against the page's single hashed script.
+
+**Before building, a fork for the root and the owner:** design 1 changes what a reader returns. A `StoredFile` read back becomes a view and no longer a plain object, which every consumer of the module would read through. That is the API's shape for every later reader, and is worth a ruling before it is built.
+
+**The window (B4)** survives design 1, since its validation walk is still a whole read in order. It is to be built after the ruling, at 8 MiB, with its case.
+
+### Not reached in the third leg
+
+- **Design 1 built**, which needs the ruling above.
+- **The tab's worker under a `worker-src` policy**, debugged.
+- **The window and its case.**
+- **C, D and G**, and the page's bidirectional controls.
+- **The second blind reading's additions**, received during this leg and not yet begun:
+  - the end line's five variants as cases;
+  - one reading of the text's bound;
+  - nothing bounding the graph, to be named in A;
+  - its thirty-five questions answered in the text;
+  - the two Provenance sentences that tell a reader of blind readers, removed or moved.
+
+### Commands the harness refused in the third leg
+
+One, by a safety check, not the worktree rule: a command whose `rm -f $S/*.ndjson` named a shell variable that would reach `/` were it empty. It was re-issued with `"${S:?}"` and no removals. Because the refused command had also held the `mkdir` of the scratch folder, the first try at making the stored files did nothing, and was run again.
