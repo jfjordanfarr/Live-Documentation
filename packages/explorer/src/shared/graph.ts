@@ -8,7 +8,7 @@
  * bundle the static builder wrote. It keeps the shape the views expect, quirks
  * included, until the views read the graph directly.
  */
-import type { GraphEdge, GraphFile, LiveDocGraph } from "@live-documentation/engine/live-docs/graph";
+import { fileAt, type GraphEdge, type GraphFile, type LiveDocGraph } from "@live-documentation/engine/live-docs/graph";
 
 import type {
     ExplorerDependencyReference,
@@ -78,7 +78,7 @@ export function explorerGraphOf(graph: LiveDocGraph): ExplorerGraphPayload {
             if (!isReference(edge)) {
                 dependencies.push({
                     targetId: edge.to,
-                    targetDocPath: edge.to ? graph.files[edge.to].docPath : undefined,
+                    targetDocPath: edge.to ? fileAt(graph.files, edge.to)?.docPath : undefined,
                     targetSymbol: edge.toSymbol,
                     label: edge.label,
                     raw: edge.link ?? edge.label,
@@ -90,7 +90,7 @@ export function explorerGraphOf(graph: LiveDocGraph): ExplorerGraphPayload {
                 const sourceSymbol = nameOfSlug.get(edge.from) ?? edge.from ?? "";
                 dependencies.push({
                     targetId: edge.to,
-                    targetDocPath: graph.files[edge.to].docPath,
+                    targetDocPath: fileAt(graph.files, edge.to)?.docPath,
                     targetSymbol: edge.toSymbol,
                     sourceSymbol,
                     label: `${role}: ${edge.label}`,

@@ -136,7 +136,7 @@ const MAIN_ENDINGS = ["", ".js", ".json", ".node"] as const;
  *
  * Until 2026-11-22 only `main` was read, as written. Held to Node's own resolver over every package of this
  * repository's `node_modules` (`tests/integration/live-docs/package-modules.oracle.test.ts`) and over made shapes no
- * installed package holds (`json.exports.test.ts`, `json.exports-held-by-node.test.ts`).
+ * installed package holds (`json.exports.test.ts`, the independent review's shapes among them).
  */
 export function packageModules(manifest: Record<string, unknown>): string[][] {
   const exported = manifest.exports;

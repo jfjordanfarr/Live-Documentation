@@ -1,5 +1,5 @@
 import { symbolName } from "@live-documentation/engine/live-docs/document";
-import type { GraphFile } from "@live-documentation/engine/live-docs/graph";
+import { fileAt, type GraphFile } from "@live-documentation/engine/live-docs/graph";
 import { linkPath } from "@live-documentation/engine/tooling/markdownLinks";
 
 import type { ExplorerNodePayload } from "../shared/types";
@@ -40,7 +40,7 @@ export function fileInspection(
   const key = `${node.id}#${fragment}`;
   if (visited.has(key)) return whole;
   visited.add(key);
-  const file = context.files[node.id];
+  const file = fileAt(context.files, node.id);
   const anchored = file?.symbols.find(entry => entry.slug === fragment);
   const reExport = file?.reExports?.find(entry => entry.slug === fragment)
     ?? (anchored ? undefined : file?.reExports?.find(entry => entry.name === fragment));

@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/explorer/src/shared/graph.ts`
-- Generated At: 2026-11-19T21:10:17.812Z
+- Generated At: 2026-11-22T06:30:52.889Z
 
 ## Authored
 ### Purpose
@@ -46,9 +46,10 @@ places in the Explorer give the number differently (2026-10-30).
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
-- [`graph.GraphEdge`](../../../engine/src/live-docs/graph.ts.mdmd.md#symbol-graphedge) (type-only)
-- [`graph.GraphFile`](../../../engine/src/live-docs/graph.ts.mdmd.md#symbol-graphfile) (type-only)
-- [`graph.LiveDocGraph`](../../../engine/src/live-docs/graph.ts.mdmd.md#symbol-livedocgraph) (type-only)
+- [`graph.GraphEdge`](../../../engine/src/live-docs/graph.ts.mdmd.md#symbol-graphedge)
+- [`graph.GraphFile`](../../../engine/src/live-docs/graph.ts.mdmd.md#symbol-graphfile)
+- [`graph.LiveDocGraph`](../../../engine/src/live-docs/graph.ts.mdmd.md#symbol-livedocgraph)
+- [`graph.fileAt`](../../../engine/src/live-docs/graph.ts.mdmd.md#symbol-fileat)
 - [`types.ExplorerDependencyReference`](./types.ts.mdmd.md#symbol-explorerdependencyreference) (type-only)
 - [`types.ExplorerGraphPayload`](./types.ts.mdmd.md#symbol-explorergraphpayload) (type-only)
 - [`types.ExplorerLinkPayload`](./types.ts.mdmd.md#symbol-explorerlinkpayload) (type-only)
