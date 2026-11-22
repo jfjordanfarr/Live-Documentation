@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: `packages/generator/src/generator.ts`
 - Entry: module of [`packages/generator/package.json`](../package.json.mdmd.md)
-- Generated At: 2026-11-22T01:36:24.985Z
+- Generated At: 2026-11-22T03:42:33.097Z
 
 ## Authored
 ### Purpose
@@ -32,9 +32,20 @@ Coordinates Live Documentation generation: analyzes source files, carries author
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
+#### `READ_BUDGET` {#symbol-read_budget}
+- Type: const
+- Source: [source](../../../../../packages/generator/src/generator.ts#L65)
+
+##### `READ_BUDGET` — Summary
+The bytes of files a run keeps between its passes unless told otherwise: every file, for now. Measured on 2026-11-22
+on the whole of DNN (10,755 files kept) under Node, with every read already in the disk's cache and the machine shared:
+keeping everything, 16 MiB and nothing took 197, 156 and 110 s, following the machine's load and not the budget, at
+peaks of 1,381, 1,203 and 1,399 MB, within one another's noise. Where reading is free the budget costs nothing and
+spares little, so the measure that can choose it is where reading costs, in a page on a slowed machine, not yet taken.
+
 #### `LiveDocGeneratorResult` {#symbol-livedocgeneratorresult}
 - Type: interface
-- Source: [source](../../../../../packages/generator/src/generator.ts#L65)
+- Source: [source](../../../../../packages/generator/src/generator.ts#L79)
 
 ##### `LiveDocGeneratorResult` — Summary
 Summary returned by {@link generateLiveDocs} after processing all target files.
@@ -44,14 +55,14 @@ the `files` array gives per-file detail for dry-run previews and CI checks.
 
 #### `SourceReadings` {#symbol-sourcereadings}
 - Type: interface
-- Source: [source](../../../../../packages/generator/src/generator.ts#L86)
+- Source: [source](../../../../../packages/generator/src/generator.ts#L100)
 
 ##### `SourceReadings` — Summary
 The files the one reading step read as UTF-16 or as Windows-1252, and those it did not read as text, by source path.
 
 #### `generateLiveDocs` {#symbol-generatelivedocs}
 - Type: function
-- Source: [source](../../../../../packages/generator/src/generator.ts#L127)
+- Source: [source](../../../../../packages/generator/src/generator.ts#L141)
 - Parameters: `options`: `GenerateLiveDocsOptions`
 
 ##### `generateLiveDocs` — Summary

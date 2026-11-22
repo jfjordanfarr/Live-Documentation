@@ -57,6 +57,43 @@ describe("a run's reads of its files", () => {
     expect(host.asked).toEqual(["read /ws/a.cs", "read /ws/a.cs", "read /ws/missing.cs", "read /ws/missing.cs"]);
   });
 
+  it("keep files until the budget is spent, then hold a file only until another is read, so that a second pass in the same order finds the first files kept", async () => {
+    const files = { "/ws/a.cs": utf8("aaaa"), "/ws/b.cs": utf8("bbbb"), "/ws/c.cs": utf8("cccc"), "/ws/d.cs": utf8("dddd") };
+    const host = countingHost(files);
+    // Room for two files of four bytes: `a` and `b` are kept, `c` and `d` each only until the next is read.
+    const reads = workspaceReads(host, 8, 8);
+    const pass = async (): Promise<string[]> => {
+      const texts: string[] = [];
+      for (const file of Object.keys(files)) {
+        texts.push(await readSourceText(file, reads));
+        // The asks of one file's turn share its read, kept or not: its reading again, then its first bytes.
+        await reads.readingOf(file);
+        await reads.headOf(file, 2);
+      }
+      return texts;
+    };
+    expect(await pass()).toEqual(["aaaa", "bbbb", "cccc", "dddd"]);
+    expect(await pass()).toEqual(["aaaa", "bbbb", "cccc", "dddd"]);
+    expect(host.asked).toEqual(["read /ws/a.cs", "read /ws/b.cs", "read /ws/c.cs", "read /ws/d.cs", "read /ws/c.cs", "read /ws/d.cs"]);
+  });
+
+  it("keep of a file's bytes only its first ones, even when the host hands Node's Buffer, whose slice is a view of the whole", async () => {
+    const whole = Buffer.alloc(64 * 1024, 0x61);
+    const reads = workspaceReads({ read: async () => whole, head: async () => new Uint8Array() }, 8);
+    await reads.readingOf("/ws/big.cs");
+    const head = await reads.headOf("/ws/big.cs", 8);
+    expect(Array.from(head)).toEqual(Array(8).fill(0x61));
+    expect(head.buffer.byteLength).toBe(8);
+  });
+
+  it("keep every file without a budget", async () => {
+    const files = { "/ws/a.cs": utf8("aaaa"), "/ws/b.cs": utf8("bbbb") };
+    const host = countingHost(files);
+    const reads = workspaceReads(host, 8);
+    for (let pass = 0; pass < 2; pass += 1) for (const file of Object.keys(files)) await readSourceText(file, reads);
+    expect(host.asked).toEqual(["read /ws/a.cs", "read /ws/b.cs"]);
+  });
+
   it("say why bytes are not read as text, by the one reading step's rule", async () => {
     const reads = workspaceReads(countingHost({ "/ws/blob.dat": Uint8Array.from([0x41, 0, 0x42]) }), 8);
     expect((await reads.readingOf("/ws/blob.dat")).encoding).toBe("unread");
