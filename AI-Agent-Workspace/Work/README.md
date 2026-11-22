@@ -17,6 +17,8 @@ state: open            # open | active | waiting | done | dropped
 milestone: december-showing
 order: 10              # the board's order: lower is sooner
 opened: 2026-11-20
+value: The map does not lie   # the design philosophy's value it serves first, by its title; `none` for a milestone or a matter of process
+also: It meets you where you are   # a second value it serves in earnest, if any
 ---
 # What the owner gets, in a sentence
 
@@ -50,18 +52,50 @@ The road to the showing at the owner's work on about December 7 or 8, 2026, on t
 
 **What the owner's answers of 2026-11-21 did to it** ([their words](../AgentSessionHistory/2026/11/2026-11-21/2026-11-21.1.record.md#turn-1); [what root found on looking](../AgentSessionHistory/2026/11/2026-11-21/Probes/unanswered-questions/README.md)). The first board was written without five facts and guessed at each. Their code is under git in two repositories and under TFS in the rest, so most scans have no git to ask and no history. They would rather open a page than install a package, the page that scans by itself, which the first board set down as "not on this road". Nothing leaves the machine, so the loop of a report pasted back, which two issues rested on, is gone. No scan is large; the machine is weak. Asked whether the page comes before the package, they refused the fork the same day ([Turn 2](../AgentSessionHistory/2026/11/2026-11-21/2026-11-21.1.record.md#turn-2)): both, from one architecture if that is possible and elegant; the page alone if not; the command line alone last. They also declined, on purpose, to say which shapes their own code has most of, since breadth is what keeps the design honest, and asked that a person can choose what a scan leaves out before it scans, on either surface ([Turn 3](../AgentSessionHistory/2026/11/2026-11-21/2026-11-21.1.record.md#turn-3)).
 
+Grouped by the value each issue serves first (the owner, 2026-11-22: "Sure! Metadata's fine :)"); the number is the order across the whole board, lower sooner.
+
+**A person can see it**
+
 | Order | Issue | State | What it rests on |
 | --- | --- | --- | --- |
-| 10 | [Their kinds of code read truthfully: the readers on `main`](readers-on-main.md) | active | Three public codebases, too narrow a base by the owner's word; breadth ranks what is mended next |
 | 15 | [A stranger follows a request from the World Map down to its files](stranger-follows-a-request.md) | active | Thirty-two blind runs of 2026-11-21, by models, mostly on one sample; each stumble to be answered with alternatives tried on strangers |
+| 50 | [Several repositories on one map](several-repositories-one-map.md) | open | One command over folders, where the owner pictures a blank board asking for its first scan. Also serves: The map does not lie |
+
+**The map does not lie**
+
+| Order | Issue | State | What it rests on |
+| --- | --- | --- | --- |
+| 10 | [Their kinds of code read truthfully: the readers on `main`](readers-on-main.md) | active | Three public codebases, too narrow a base by the owner's word; breadth ranks what is mended next. Also serves: It meets you where you are |
+| 40 | [Proven on real repositories, on Linux and on Windows](proven-on-real-repositories.md) | open | Stands; its report can no longer be carried home from work. Also serves: It meets you where you are |
+
+**It is yours**
+
+| Order | Issue | State | What it rests on |
+| --- | --- | --- | --- |
 | 20 | [A scan leaves no trace in the repository it maps](scan-leaves-no-trace.md) | active | The scan writing docs into the folder; and, since 2026-11-21, a person choosing what is left out before the scan by one list, built as a function and a trial page and not yet wired into a scan |
-| 30 | [The tool arrives as a page and as a command line, from one engine](tool-arrives-on-windows.md) | active | An exploration: one interface the engine reads a folder through, two hosts; a standing check that it runs in a page |
-| 40 | [Proven on real repositories, on Linux and on Windows](proven-on-real-repositories.md) | open | Stands; its report can no longer be carried home from work |
-| 50 | [Several repositories on one map](several-repositories-one-map.md) | open | One command over folders, where the owner pictures a blank board asking for its first scan |
-| 60 | [The Explorer holds up on a weak machine](explorer-holds-a-large-map.md) | active | Measured on 2026-11-21 without a card: small maps hold, large ones do not |
+
+**It meets you where you are**
+
+| Order | Issue | State | What it rests on |
+| --- | --- | --- | --- |
+| 30 | [The tool arrives as a page and as a command line, from one engine](tool-arrives-on-windows.md) | active | An exploration: one interface the engine reads a folder through, two hosts; a standing check that it runs in a page. Also serves: It is yours; As simple as possible, and no simpler |
+| 60 | [The Explorer holds up on a weak machine](explorer-holds-a-large-map.md) | active | Measured on 2026-11-21 without a card: small maps hold, large ones do not. Also serves: A person can see it |
+
+**As simple as possible, and no simpler**
+
+No issue serves it first. [The tool arriving as a page and a command line](tool-arrives-on-windows.md) serves it second: one engine, read through one interface.
+
+**Do it the right way**
+
+No issue serves it first: every issue is held to it.
+
+**None of the six: a date, and how we work**
+
+| Order | Issue | State | What it rests on |
+| --- | --- | --- | --- |
 | 70 | [The showing rehearsed, at home and then at work](showing-rehearsed.md) | waiting | A loop that carried a report out of the work machine, which is not allowed |
 | 90 | [The work items themselves](work-items.md) | open | The form "will do for now" |
 
-**The values and this board** (2026-11-22). The owner asked for a design philosophy whose values might head the work as epics ([the document](../../.mdmd/layer-1/design-philosophy.mdmd.md#the-values-and-the-work-items) tests that on these nine issues). Root's recommendation, not yet answered: a field on each issue naming the value it serves first, and this board grouped by it, in place of directories. Nothing here is changed until they say.
+**The values and this board** (2026-11-22). The owner asked for a design philosophy whose values might head the work as epics ([the document](../../.mdmd/layer-1/design-philosophy.mdmd.md#the-values-and-the-work-items) tests that on these nine issues). Root recommended a field on each issue naming the value it serves first, with this board grouped by it, in place of directories; **the owner agreed** ([Turn 2 of the November 22 record](../AgentSessionHistory/2026/11/2026-11-22/2026-11-22.1.record.md#turn-2)): "Sure! Metadata's fine :)". So each issue carries `value`, and `also` where it serves a second in earnest, and the board above is grouped by the first. No issue moved and no link changed.
 
 **Not on this road, and so not begun before it:** the store's change away from a Markdown doc for each file, with the format's research and documents as nodes (though a page that scans would keep a scan's facts in the page, which is that change by another door); a sound way to keep the history's workers; the history taking a parent's summary where nothing read changed; the browser suite's time; the parked trials for the packet beyond what the issues above name; the whole design of open, close and pin. Each is in [the day's summary](../AgentSessionHistory/2026/11/Summarized/2026-11-19.1.SUMMARIZED.md#unfinished-work-in-roots-order) and [direction](../Memory/direction.md#next), and becomes an issue here when it is taken up.

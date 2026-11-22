@@ -433,8 +433,8 @@ export const htmlAdapter: LanguageAdapter = {
   id: "html",
   extensions: [".html", ".htm"],
 
-  async analyze({ absolutePath, workspaceRoot }): Promise<SourceAnalysisResult | null> {
-    const content = withoutHtmlComments(await readSourceText(absolutePath));
+  async analyze({ absolutePath, workspaceRoot, fileIndex }): Promise<SourceAnalysisResult | null> {
+    const content = withoutHtmlComments(await readSourceText(absolutePath, fileIndex));
 
     const dependencies = extractHtmlDependencies({
       content,

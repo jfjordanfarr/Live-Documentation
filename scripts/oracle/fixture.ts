@@ -7,7 +7,8 @@ import * as fs from "node:fs";
 import os from "node:os";
 import path from "node:path";
 
-const NOT_FIXTURE = new Set(["bin", "obj", "target", "node_modules", "__pycache__", "expected", "index.scip"]);
+/** What is never part of a fixture: build outputs, and its own `expected/` directory. */
+export const NOT_FIXTURE = new Set(["bin", "obj", "target", "node_modules", "__pycache__", "expected", "index.scip"]);
 
 /** Copies the fixture, minus build outputs and its own `expected/` directory, to a fresh temporary directory. */
 export function copyFixture(fixtureDir: string, prefix: string): string {

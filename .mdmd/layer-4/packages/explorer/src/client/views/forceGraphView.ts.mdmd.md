@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/explorer/src/client/views/forceGraphView.ts`
-- Generated At: 2026-11-19T21:10:15.572Z
+- Generated At: 2026-11-22T01:29:33.663Z
 
 ## Authored
 ### Purpose
@@ -92,19 +92,21 @@ Since 2026-11-19 ([Turn 22 of the November 18 record](../../../../../../../AI-Ag
 
 Since 2026-11-20 a sphere's actions go with their sphere whenever keyboard focus alone holds them: a thing's actions go with what they act on, except under the pointer or an open menu, where they still stand still on the screen ([the design system's rule](../../../../../../layer-2/design-system/interaction-and-accessibility.mdmd.md#22-the-rules-of-the-grammar)); a control holding focus is not hidden from under it. Keyboard focus is no place on the screen. Until then focus held them still on the screen too, a rule of 2026-10-20 whose reason was not recorded. For a few hours of 2026-11-20 they kept instead the place in the picture where their sphere had stood, which left them drifting against a subject the camera holds still; the root asked for the simpler rule. Centre on in the reader gives focus back to More, which the reader opened from, and the camera's flight brought the centred file to rest under its own actions, left where More had been pressed: the file was covered and its name, finding no side clear of them, was hidden. The case `force-graph-focus.spec.ts` found it on this repository's map after the engine round's landing, where `graph.ts` stood a little below the room's centre when More was pressed ([the measurements](../../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-19/Probes/landing-reds/README.md#the-focus-case-run-down)).
 
+Since 2026-11-22, a trial (Tuning's Scan Growth, off by default): `setArrived` hands the view today's graph cut to the files a scan would have finished so far, and `render` reads it in place of today's graph through the one update path, as it reads a moment of the history; [`scanGrowthPlay.ts`](scanGrowthPlay.ts.mdmd.md) feeds it. While a cut is held, three things differ, each only then: the building rule is suspended (`updateBuilding`), so that the nodes take hover and press for the length of a scan; a group's new seed, when the most connected file changes or two groups join, is born where the group stood and not outside the mass as a stranger is; and a body that replaces a drawn one has its hull built in the same render, within the frame's share for hulls, so that a growing skin does not blink. With no cut held none of the three runs and the picture is as it was. The owner's wish, what was seen and the frame times are in [the day's pictures](../../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-22/Screenshots/scan-growth/README.md).
+
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `ForceGraphLink` {#symbol-forcegraphlink}
 - Type: interface
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphView.ts#L111)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphView.ts#L117)
 
 ##### `ForceGraphLink` — Summary
 A link in the Force Graph between two nodes.
 
 #### `ForceGraphNode` {#symbol-forcegraphnode}
 - Type: type
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphView.ts#L124)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphView.ts#L130)
 - Returns: [`SpatialGraphNode`](./forceGraphData.ts.mdmd.md#symbol-spatialgraphnode)
 
 ##### `ForceGraphNode` — Summary
@@ -112,28 +114,28 @@ A node in the Force Graph, extending the payload with optional archetype.
 
 #### `ForceGraphData` {#symbol-forcegraphdata}
 - Type: interface
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphView.ts#L133)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphView.ts#L139)
 
 ##### `ForceGraphData` — Summary
 Complete data structure for the Force Graph view.
 
 #### `ForceGraphViewOptions` {#symbol-forcegraphviewoptions}
 - Type: interface
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphView.ts#L144)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphView.ts#L150)
 
 ##### `ForceGraphViewOptions` — Summary
 Options passed to the Force Graph view factory.
 
 #### `ForceGraphViewApi` {#symbol-forcegraphviewapi}
 - Type: interface
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphView.ts#L173)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphView.ts#L179)
 
 ##### `ForceGraphViewApi` — Summary
 Public API surface of the Force Graph view.
 
 #### `createForceGraphView` {#symbol-createforcegraphview}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphView.ts#L210)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphView.ts#L223)
 - Returns: [`ForceGraphViewApi`](#symbol-forcegraphviewapi)
 - Parameters: `options`: [`ForceGraphViewOptions`](#symbol-forcegraphviewoptions)
 

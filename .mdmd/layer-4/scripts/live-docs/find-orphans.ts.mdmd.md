@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: `scripts/live-docs/find-orphans.ts`
 - Entry: command `live-docs:orphans` of [`package.json`](../../package.json.mdmd.md)
-- Generated At: 2026-11-19T20:23:44.576Z
+- Generated At: 2026-11-22T02:17:41.551Z
 
 ## Authored
 ### Purpose
@@ -27,10 +27,12 @@ _No public symbols detected_
 - `node:fs/promises` - `fs`
 - `node:path` - `path`
 - `node:process` - `process`
-- [`liveDocumentationConfig.LIVE_DOCUMENTATION_FILE_EXTENSION`](../../packages/engine/src/config/liveDocumentationConfig.ts.mdmd.md#symbol-live_documentation_file_extension)
+- [`liveDocumentationConfig.DEFAULT_LIVE_DOCUMENTATION_CONFIG`](../../packages/engine/src/config/liveDocumentationConfig.ts.mdmd.md#symbol-default_live_documentation_config)
+- [`liveDocumentationConfig.normalizeLiveDocumentationConfig`](../../packages/engine/src/config/liveDocumentationConfig.ts.mdmd.md#symbol-normalizelivedocumentationconfig)
 - [`document.parseLiveDoc`](../../packages/engine/src/live-docs/document.ts.mdmd.md#symbol-parselivedoc)
 - [`cli.UsageError`](./cli.ts.mdmd.md#symbol-usageerror)
 - [`cli.optionValue`](./cli.ts.mdmd.md#symbol-optionvalue)
+- [`cli.readConfiguration`](./cli.ts.mdmd.md#symbol-readconfiguration)
 - [`cli.runCommand`](./cli.ts.mdmd.md#symbol-runcommand)
 - [`cli.workspaceFolder`](./cli.ts.mdmd.md#symbol-workspacefolder)
 <!-- LIVE-DOC:END Dependencies -->

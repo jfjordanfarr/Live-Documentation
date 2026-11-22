@@ -3,7 +3,7 @@ import { tmpdir } from "node:os";
 import path from "node:path";
 import { afterAll, describe, expect, it } from "vitest";
 
-import { compareCSharp, type CompilerRecord } from "./csharp-compare";
+import { compareCSharp, documentationPairs, type CompilerRecord } from "./csharp-compare";
 
 const folders: string[] = [];
 afterAll(() => {
@@ -64,5 +64,38 @@ describe("the C# comparison of a folder", () => {
     const report = await compareCSharp(root, record);
     expect(report.conditional).toEqual(["App/App.csproj → MySql/MySql.csproj"]);
     expect(report.edges.adapterOnly).toEqual({ namesake: [], conditional: ["App/Use.cs → MySql/Store.cs"], other: [] });
+  });
+});
+
+describe("the pairs a documentation reference makes", () => {
+  const reference = (from: string, outcome: string, resolved: Array<{ kind: string; files: string[] }>) =>
+    ({ from, line: 1, element: "see", written: "X", outcome, resolved: resolved.map((symbol) => ({ ...symbol, symbol: "X" })) });
+
+  it("names a pair to every file declaring the symbol, never a namespace nor the file itself, and tells the pairs the code binds too", () => {
+    const record: CompilerRecord = {
+      tool: "stand-in", files: 4, names: 0, bound: 0, projects: [], declared: {},
+      edges: [{ from: "A.cs", to: "B.cs", type: ["B"], member: [] }],
+      crefs: [
+        reference("A.cs", "resolved", [{ kind: "NamedType", files: ["B.cs"] }]),
+        reference("A.cs", "resolved", [{ kind: "NamedType", files: ["C.cs", "C.Part.cs"] }]),
+        reference("A.cs", "resolved", [{ kind: "Namespace", files: ["D.cs"] }]),
+        reference("A.cs", "resolved", [{ kind: "Method", files: ["A.cs"] }]),
+        reference("A.cs", "Ambiguous", [{ kind: "Method", files: ["E.cs"] }, { kind: "Method", files: ["F.cs"] }]),
+        reference("A.cs", "unresolved", [])
+      ]
+    };
+    expect(documentationPairs(record)).toEqual({
+      references: 6,
+      unresolved: 1,
+      ambiguous:  1,
+      pairs:      ["A.cs → B.cs", "A.cs → C.Part.cs", "A.cs → C.cs", "A.cs → E.cs", "A.cs → F.cs"],
+      alsoCode:   ["A.cs → B.cs"],
+      authorOnly: ["A.cs → C.Part.cs", "A.cs → C.cs", "A.cs → E.cs", "A.cs → F.cs"]
+    });
+  });
+
+  it("reads a record written before documentation references were kept as holding none", () => {
+    const record: CompilerRecord = { tool: "stand-in", files: 0, names: 0, bound: 0, projects: [], declared: {}, edges: [] };
+    expect(documentationPairs(record)).toEqual({ references: 0, unresolved: 0, ambiguous: 0, pairs: [], alsoCode: [], authorOnly: [] });
   });
 });

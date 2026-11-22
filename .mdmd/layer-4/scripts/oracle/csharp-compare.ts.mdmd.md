@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: `scripts/oracle/csharp-compare.ts`
 - Entry: command `oracle:csharp` of [`package.json`](../../package.json.mdmd.md)
-- Generated At: 2026-11-21T07:25:44.727Z
+- Generated At: 2026-11-22T01:24:24.087Z
 
 ## Authored
 ### Purpose
@@ -22,21 +22,49 @@ Grades the C# reader on a whole folder against the C# compiler's own binding: `n
 ### Public Symbols
 #### `CompilerRecord` {#symbol-compilerrecord}
 - Type: interface
-- Source: [source](../../../../scripts/oracle/csharp-compare.ts#L48)
+- Source: [source](../../../../scripts/oracle/csharp-compare.ts#L50)
 
 ##### `CompilerRecord` — Summary
 What the compiler program printed of a folder.
 
+#### `DocumentationReference` {#symbol-documentationreference}
+- Type: interface
+- Source: [source](../../../../scripts/oracle/csharp-compare.ts#L70)
+
+##### `DocumentationReference` — Summary
+One `cref` of a documentation comment: the file and line it stands on, the element that carries it (`see`, `seealso`,
+`inheritdoc`, `exception`, `permission` …), the reference as written, and the compiler's answer: `resolved` to one
+symbol, a reason it could not choose among several candidates (`Ambiguous`, for a method's name with overloads), or
+`unresolved`, which without framework references also says of a framework type such as `ArgumentException`.
+
+#### `DocumentationPairs (interface)` {#symbol-documentationpairs-interface}
+- Type: interface
+- Source: [source](../../../../scripts/oracle/csharp-compare.ts#L80)
+
+##### `DocumentationPairs (interface)` — Summary
+The file pairs documentation references make, set beside the pairs the code binds.
+
+#### `documentationPairs (function)` {#symbol-documentationpairs-function}
+- Type: function
+- Source: [source](../../../../scripts/oracle/csharp-compare.ts#L97)
+- Returns: [`DocumentationPairs`](#symbol-documentationpairs-interface)
+- Parameters: `record`: [`CompilerRecord`](#symbol-compilerrecord)
+
+##### `documentationPairs (function)` — Summary
+The pairs the record's documentation references make: each to every file declaring the symbol (each part of a
+partial type; each candidate of an ambiguous one). A namespace is no pair, as among the edges: every file that
+opens one declares it.
+
 #### `compiledSources` {#symbol-compiledsources}
 - Type: function
-- Source: [source](../../../../scripts/oracle/csharp-compare.ts#L61)
+- Source: [source](../../../../scripts/oracle/csharp-compare.ts#L119)
 
 ##### `compiledSources` — Summary
 The files a compilation of the folder is made from: its C# files, and its project files, from which its references are read.
 
 #### `compileFolder` {#symbol-compilefolder}
 - Type: function
-- Source: [source](../../../../scripts/oracle/csharp-compare.ts#L80)
+- Source: [source](../../../../scripts/oracle/csharp-compare.ts#L138)
 - Returns: [`CompilerRecord`](#symbol-compilerrecord)
 
 ##### `compileFolder` — Summary
@@ -44,14 +72,14 @@ Runs the compiler program over the folder; `dotnet` must be on the path.
 
 #### `CSharpReport` {#symbol-csharpreport}
 - Type: interface
-- Source: [source](../../../../scripts/oracle/csharp-compare.ts#L102)
+- Source: [source](../../../../scripts/oracle/csharp-compare.ts#L160)
 
 ##### `CSharpReport` — Summary
 The comparison of one folder: what was read, how its projects' references were, and the edges side by side.
 
 #### `compareCSharp` {#symbol-comparecsharp}
 - Type: function
-- Source: [source](../../../../scripts/oracle/csharp-compare.ts#L129)
+- Source: [source](../../../../scripts/oracle/csharp-compare.ts#L189)
 - Parameters: `kept`: [`CompilerRecord`](#symbol-compilerrecord)
 
 ##### `compareCSharp` — Summary

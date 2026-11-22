@@ -68,7 +68,7 @@ export const projectAdapter: LanguageAdapter = {
   extensions: [".csproj", ".vbproj", ".fsproj"],
   async analyze({ absolutePath, workspaceRoot, fileIndex, symbolIndex }): Promise<SourceAnalysisResult | null> {
     // An XML comment is no element (`dotnetXml.ts`): what a comment holds is no reference, kind or name.
-    const content  = withoutXmlComments(await readSourceText(absolutePath));
+    const content  = withoutXmlComments(await readSourceText(absolutePath, fileIndex));
     const thisFile = normalizeWorkspacePath(path.relative(workspaceRoot, absolutePath));
     const symbols: PublicSymbolEntry[] = [{ name: projectName(thisFile, content), kind: projectKind(content), location: { line: 1, character: 1 } }];
 

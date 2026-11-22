@@ -18,7 +18,9 @@
  *               project is reached by the project's XML elements and not by MSBuild's evaluation, as mojoPortal's
  *               references for each database are); and the rest;
  *   references  every reference a project's XML holds under a condition MSBuild's default configuration does not
- *               meet, counted as a class of its own, since the reader reads every condition's reference as real.
+ *               meet, counted as a class of its own, since the reader reads every condition's reference as real;
+ *   documentation  the C# file pairs a documentation comment's `cref` names, as the compiler resolves it, split into
+ *               those the code binds as well and those only the author's word makes, and those the adapter draws.
  *
  * Without framework references a name reached only through a framework type does not bind, so the compiler's column
  * undercounts, as the November 19 probe measured. It prints figures, and every disagreement with `--detail`, and exits
@@ -53,8 +55,64 @@ export interface CompilerRecord {
   bound:    number;
   edges:    Array<{ from: string; to: string; type: string[]; member: string[] }>;
   declared: Record<string, string[]>;
+  /** Every documentation comment's `cref`, as the compiler resolves it; absent from a record written before 2026-11-22. */
+  crefs?:   DocumentationReference[];
   /** The files the compilation was made from, its C# files and its project files, each with its digest (`sources.ts`). */
   sources?: Record<string, string>;
+}
+
+/**
+ * One `cref` of a documentation comment: the file and line it stands on, the element that carries it (`see`, `seealso`,
+ * `inheritdoc`, `exception`, `permission` …), the reference as written, and the compiler's answer: `resolved` to one
+ * symbol, a reason it could not choose among several candidates (`Ambiguous`, for a method's name with overloads), or
+ * `unresolved`, which without framework references also says of a framework type such as `ArgumentException`.
+ */
+export interface DocumentationReference {
+  from:     string;
+  line:     number;
+  element:  string;
+  written:  string;
+  outcome:  string;
+  resolved: Array<{ kind: string; symbol: string; files: string[] }>;
+}
+
+/** The file pairs documentation references make, set beside the pairs the code binds. */
+export interface DocumentationPairs {
+  /** Every `cref` the record holds, and how many the compiler resolved to nothing or could not choose for. */
+  references: number;
+  unresolved: number;
+  ambiguous:  number;
+  /** C# file pairs a `cref` names a declaration across: a type or a member, never a namespace, never the file itself. */
+  pairs:      string[];
+  /** Of those, the pairs the compiler also binds through code, and the pairs only the author's word makes. */
+  alsoCode:   string[];
+  authorOnly: string[];
+}
+
+/**
+ * The pairs the record's documentation references make: each to every file declaring the symbol (each part of a
+ * partial type; each candidate of an ambiguous one). A namespace is no pair, as among the edges: every file that
+ * opens one declares it.
+ */
+export function documentationPairs(record: CompilerRecord): DocumentationPairs {
+  const crefs = record.crefs ?? [];
+  const pairs = new Set<string>();
+  for (const reference of crefs) {
+    for (const symbol of reference.resolved) {
+      if (symbol.kind === "Namespace") continue;
+      for (const to of symbol.files) if (to !== reference.from) pairs.add(`${reference.from} → ${to}`);
+    }
+  }
+  const code = new Set(record.edges.map((edge) => `${edge.from} → ${edge.to}`));
+  const sorted = Array.from(pairs).sort();
+  return {
+    references: crefs.length,
+    unresolved: crefs.filter((reference) => reference.outcome === "unresolved").length,
+    ambiguous:  crefs.filter((reference) => reference.outcome !== "unresolved" && reference.outcome !== "resolved").length,
+    pairs:      sorted,
+    alsoCode:   sorted.filter((pair) => code.has(pair)),
+    authorOnly: sorted.filter((pair) => !code.has(pair))
+  };
 }
 
 /** The files a compilation of the folder is made from: its C# files, and its project files, from which its references are read. */
@@ -108,6 +166,8 @@ export interface CSharpReport {
   conditional: string[];
   edges:      Measure;
   names:      { simple: number; bound: number };
+  /** The pairs the author's documentation references make, and of them those the adapter's dependency lines draw. */
+  documentation: DocumentationPairs & { drawn: string[] };
 }
 
 /** The projects one reaches, itself among them, following references. */
@@ -171,7 +231,9 @@ export async function compareCSharp(root: string, kept?: CompilerRecord): Promis
     (namesake ? adapterOnly.namesake : restsOnCondition ? adapterOnly.conditional : adapterOnly.other).push(key);
   }
   const compilerOnly = Array.from(compiler).filter((edge) => !ours.has(edge)).sort();
+  const documentation = documentationPairs(record);
   return {
+    documentation: { ...documentation, drawn: documentation.pairs.filter((pair) => ours.has(pair)) },
     folder:      root,
     tool:        record.tool,
     files:       csharp.length,
@@ -194,6 +256,9 @@ function printReport(report: CSharpReport, detail: boolean): void {
   console.log(`Edges (C# file pairs): the compiler's ${report.edges.compiler}, the adapter's ${report.edges.adapter}, both ${report.edges.both}`);
   console.log(`  the adapter's only: ${only.namesake.length + only.conditional.length + only.other.length}: a namesake ${only.namesake.length}, resting on a reference under a condition the default configuration does not meet ${only.conditional.length}, other ${only.other.length}`);
   console.log(`  the compiler's only: ${report.edges.compilerOnly.length}`);
+  const doc = report.documentation;
+  console.log(`Documentation references (cref): ${doc.references}, resolved to nothing ${doc.unresolved} (a framework type among them, having no framework references), ambiguous ${doc.ambiguous}`);
+  console.log(`  C# file pairs they name: ${doc.pairs.length}; the compiler binds ${doc.alsoCode.length} of them through code too, the author's word alone makes ${doc.authorOnly.length}; the adapter draws ${doc.drawn.length}`);
   if (!detail) return;
   const list = (label: string, keys: string[]): void => {
     if (keys.length === 0) return;
@@ -207,6 +272,7 @@ function printReport(report: CSharpReport, detail: boolean): void {
   list("Edges the adapter draws on a reference under such a condition", only.conditional);
   list("Other edges the adapter draws and the compiler does not", only.other);
   list("Edges the compiler binds and the adapter does not draw", report.edges.compilerOnly);
+  list("Pairs only a documentation reference makes", doc.authorOnly);
 }
 
 async function main(): Promise<void> {

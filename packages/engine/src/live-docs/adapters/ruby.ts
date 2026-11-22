@@ -69,8 +69,8 @@ const UNRUN_NODES: ReadonlySet<string> = new Set([...COMMENT_NODES, ...DATA_NODE
 export const rubyAdapter: LanguageAdapter = {
   id: "ruby-basic",
   extensions: [".rb"],
-  async analyze({ absolutePath, workspaceRoot }): Promise<SourceAnalysisResult | null> {
-    const content = await readSourceText(absolutePath);
+  async analyze({ absolutePath, workspaceRoot, fileIndex }): Promise<SourceAnalysisResult | null> {
+    const content = await readSourceText(absolutePath, fileIndex);
     const { unrun, data } = await readTree("ruby", content, (root) => ({ unrun: rangesOf(root, UNRUN_NODES), data: rangesOf(root, DATA_NODES) }));
     const code = writtenOver(content, unrun);
     const symbols = extractSymbols(writtenOver(content, data));

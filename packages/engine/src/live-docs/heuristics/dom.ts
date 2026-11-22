@@ -4,7 +4,7 @@ import path from "node:path";
 import ts from "typescript";
 
 import { normalizeWorkspacePath } from "../../tooling/pathUtils";
-import { readSourceText, throwIfMachineFailure } from "../../tooling/sourceText";
+import { readSourceText, type SourceReads, throwIfMachineFailure } from "../../tooling/sourceText";
 import { markupWithoutComments } from "../adapters/aspnet";
 import type { DependencyEntry } from "../core";
 
@@ -13,8 +13,8 @@ interface DomDependencyParams {
   workspaceRoot: string;
   /** The parsed script, from which the calls are read, so that none a comment holds is. */
   sourceFile: ts.SourceFile;
-  /** The files selected for this scan; absent for standalone source analysis. */
-  fileIndex?: ReadonlySet<string>;
+  /** The files selected for this scan, with the run's reads of them; absent for standalone source analysis. */
+  fileIndex?: ReadonlySet<string> & SourceReads;
 }
 
 const CANDIDATE_EXTENSIONS = [".aspx", ".ascx", ".cshtml", ".razor", ".html"] as const;
@@ -64,7 +64,8 @@ export async function inferDomDependencies(params: DomDependencyParams): Promise
       elementId,
       candidateFiles,
       workspaceRoot: params.workspaceRoot,
-      fileCache
+      fileCache,
+      reads: fileIndex
     });
 
     for (const resolvedPath of targets) {
@@ -140,13 +141,14 @@ async function locateMarkupFilesForId(args: {
   candidateFiles: string[];
   workspaceRoot: string;
   fileCache: FileContentCache;
+  reads: SourceReads | undefined;
 }): Promise<string[]> {
   const matches: string[] = [];
 
   const searchPattern = buildAttributePattern(args.elementId);
 
   for (const absoluteFile of args.candidateFiles) {
-    const content = await readFileCached(absoluteFile, args.fileCache);
+    const content = await readFileCached(absoluteFile, args.fileCache, args.reads);
     if (!content) {
       continue;
     }
@@ -273,14 +275,14 @@ async function readDirectoryEntries(dir: string): Promise<Dirent[] | null> {
 }
 
 /** A markup file's text with its comments written over, so that an element a comment holds is no element; null when it cannot be read. */
-async function readFileCached(filePath: string, cache: FileContentCache): Promise<string | null> {
+async function readFileCached(filePath: string, cache: FileContentCache, reads: SourceReads | undefined): Promise<string | null> {
   if (cache.has(filePath)) {
     const cached = cache.get(filePath);
     return cached === undefined ? null : cached;
   }
 
   try {
-    const content = markupWithoutComments(filePath, await readSourceText(filePath));
+    const content = markupWithoutComments(filePath, await readSourceText(filePath, reads));
     cache.set(filePath, content);
     return content;
   } catch (error) {

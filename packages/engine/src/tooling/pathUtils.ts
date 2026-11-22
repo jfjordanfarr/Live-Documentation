@@ -1,38 +1,18 @@
 import path from "node:path";
-import { fileURLToPath, pathToFileURL } from "node:url";
 
 /**
- * Convert a file URI into a workspace-relative path using POSIX-style separators.
- * Returns undefined when the URI is outside the workspace or cannot be resolved.
+ * A file's path relative to the workspace, with forward slashes, or undefined when it lies outside the workspace or is
+ * the workspace itself. A relative `candidate` is taken from the workspace. Until 2026-11-22 the generator made a file
+ * URL of the path and read the path back from it before taking it relative, which a page cannot do without Node's
+ * `node:url`; the round trip gave back the path it was handed, so the relative path is taken directly.
  */
-export function toWorkspaceRelativePath(uri: string, workspaceRoot: string): string | undefined {
-  if (!uri.startsWith("file://")) {
-    return undefined;
-  }
-
-  let filePath: string;
-  try {
-    filePath = path.resolve(fileURLToPath(uri));
-  } catch {
-    return undefined;
-  }
-
-  const relative = path.relative(workspaceRoot, filePath);
+export function toWorkspaceRelativePath(candidate: string, workspaceRoot: string): string | undefined {
+  const relative = path.relative(workspaceRoot, path.resolve(workspaceRoot, candidate));
   if (!relative || relative.startsWith("..")) {
     return undefined;
   }
 
   return normalizeWorkspacePath(relative);
-}
-
-/**
- * Resolve a workspace-relative path (or absolute path) to a file URI.
- */
-export function toWorkspaceFileUri(workspaceRoot: string, candidate: string): string {
-  const resolved = path.isAbsolute(candidate)
-    ? candidate
-    : path.resolve(workspaceRoot, candidate);
-  return pathToFileURL(resolved).toString();
 }
 
 /**

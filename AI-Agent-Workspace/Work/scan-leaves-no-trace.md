@@ -4,6 +4,7 @@ state: open
 milestone: december-showing
 order: 20
 opened: 2026-11-20
+value: It is yours
 ---
 # A scan leaves no trace in the repository it maps
 

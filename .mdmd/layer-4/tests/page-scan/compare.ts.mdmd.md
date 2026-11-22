@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: `tests/page-scan/compare.ts`
-- Generated At: 2026-11-21T03:40:56.632Z
+- Generated At: 2026-11-22T02:30:00.411Z
 
 ## Authored
 ### Purpose
@@ -13,6 +13,7 @@ How the check compares the page's output with Node's, every file whole (the same
 ### Notes
 - Written on 2026-11-21 for the standing check that the engine runs in a browser page ([the November 21 record, Turn 2](../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-21/2026-11-21.1.record.md#turn-2)), where the owner asked for the tool as one HTML page that scans a folder and as a command line, both from one engine. It makes permanent the probe of 2026-11-19 ([its README](../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-19/Probes/execution-surface/README.md)), whose page had stopped building two days later with nothing to say so; what the check found on its first runs is [the page check's evidence](../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-21/Probes/page-check/README.md).
 - Both runs are given the same clock, so the `Generated At` lines are compared like every other line rather than set aside.
+- Since 2026-11-22 it also finds the files the page's scan read more than once and holds them to the ledger's `readMoreThanOnce` by the same rule, so that the engine's promise to read each file once in a run is held, not only observed.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
@@ -40,9 +41,37 @@ An entry of the ledger: a difference as found, and what is known of it.
 ##### `differencesBetween` — Summary
 Every difference between the files each side wrote, each keyed by its path relative to the scanned folder.
 
+#### `MultipleRead` {#symbol-multipleread}
+- Type: interface
+- Source: [source](../../../../tests/page-scan/compare.ts#L58)
+
+##### `MultipleRead` — Summary
+A file the page's scan read more than once, which the engine promises it never does (each file once per run, through
+the host: `packages/engine/src/tooling/workspaceFiles.ts`); a ledger's entry of one adds why it is known.
+
+#### `MultipleReadEntry` {#symbol-multiplereadentry}
+- Type: interface
+- Source: [source](../../../../tests/page-scan/compare.ts#L64)
+- Extends: [`MultipleRead`](#symbol-multipleread)
+
+#### `readMoreThanOnce` {#symbol-readmorethanonce}
+- Type: function
+- Source: [source](../../../../tests/page-scan/compare.ts#L71)
+- Returns: [`MultipleRead`](#symbol-multipleread)[]
+
+##### `readMoreThanOnce` — Summary
+The files read more than once, from a count of reads by file, in path order.
+
+#### `readsHeldToLedger` {#symbol-readsheldtoledger}
+- Type: function
+- Source: [source](../../../../tests/page-scan/compare.ts#L76)
+
+##### `readsHeldToLedger` — Summary
+The files read more than once that the ledger does not list for the fixture, and its entries for it no longer found.
+
 #### `heldToLedger` {#symbol-heldtoledger}
 - Type: function
-- Source: [source](../../../../tests/page-scan/compare.ts#L57)
+- Source: [source](../../../../tests/page-scan/compare.ts#L87)
 
 ##### `heldToLedger` — Summary
 The differences found that the ledger does not list for the fixture, and the ledger's entries for it no longer found.

@@ -1,0 +1,5916 @@
+{
+ "about": [
+  "An extract of four public repositories, kept as the test data of tests/integration/live-docs/powershell-judged.test.ts: for each file, its path, the functions it defines whose names a judged wire calls, the judged calls it makes and the files it loads, each at its line. No code of theirs is kept.",
+  "It was changed from the repositories' files, by keeping only those facts; each repository's own licence notice is kept beside it, under licences/, as its licence asks.",
+  "The 222 wires are the hand reading of 2026-11-19 (AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-19/Probes/powershell-wires/samples.md), two judges agreeing on every row. Row 215 is of the cold run's shop, which was never committed, so it is kept and never scored.",
+  "Written by scripts/oracle/powershell-judged.ts from the repositories at the commits named, read with PowerShell's parser (pwsh 7.7.0)."
+ ],
+ "permission": {
+  "asked": "a small extract of those four public MIT and Apache repositories committed as test data: paths, function names, calls; no code",
+  "answer": "Yep! Go ahead!",
+  "by": "the owner",
+  "date": "2026-11-22"
+ },
+ "corpora": [
+  {
+   "name": "dbatools",
+   "repository": "dataplat/dbatools",
+   "address": "https://github.com/dataplat/dbatools",
+   "commit": "067b215bf843ec3573a79226ac9d2b871d1440cb",
+   "licence": "MIT",
+   "notice": "licences/dbatools.txt",
+   "files": {
+    ".github/runners/controller/Modules/FleetCore/FleetCore.psm1": {
+     "defines": [
+      {
+       "name": "Get-FleetState",
+       "line": 532
+      },
+      {
+       "name": "Get-RunnerDemand",
+       "line": 963
+      },
+      {
+       "name": "Register-PoolVms",
+       "line": 1226
+      }
+     ]
+    },
+    ".github/runners/image-scripts/step1-tools.ps1": {
+     "calls": [
+      {
+       "name": "Remove-Item",
+       "line": 75
+      }
+     ]
+    },
+    ".github/runners/reconcile-runner-fleet.ps1": {
+     "defines": [
+      {
+       "name": "Get-FleetState",
+       "line": 153
+      },
+      {
+       "name": "Get-RunnerDemand",
+       "line": 371
+      },
+      {
+       "name": "Register-PoolVms",
+       "line": 467
+      }
+     ]
+    },
+    ".github/runners/tests/fleet-controller.Tests.ps1": {
+     "calls": [
+      {
+       "name": "Get-RunnerDemand",
+       "line": 143
+      },
+      {
+       "name": "Register-PoolVms",
+       "line": 802
+      },
+      {
+       "name": "Get-FleetState",
+       "line": 1043
+      }
+     ]
+    },
+    ".github/scripts/gh-actions-repl-3.ps1": {
+     "calls": [
+      {
+       "name": "Invoke-DbaQuery",
+       "line": 17
+      }
+     ]
+    },
+    ".github/scripts/gh-s3actions.ps1": {
+     "calls": [
+      {
+       "name": "Test-DbaPath",
+       "line": 449
+      }
+     ]
+    },
+    ".github/scripts/gh-winactions.ps1": {
+     "calls": [
+      {
+       "name": "Export-DbaDacPackage",
+       "line": 39
+      }
+     ]
+    },
+    "dbatools.psd1": {
+     "manifest": [
+      {
+       "key": "RootModule",
+       "value": "dbatools.psm1"
+      }
+     ]
+    },
+    "dbatools.psm1": {
+     "loads": [
+      {
+       "kind": "dot",
+       "to": "private/functions/ConvertFrom-DbccPageDump.ps1",
+       "line": 232
+      },
+      {
+       "kind": "dot",
+       "to": "private/functions/Get-ErrorMessage.ps1",
+       "line": 232
+      },
+      {
+       "kind": "dot",
+       "to": "private/functions/Get-ObjectNameParts.ps1",
+       "line": 232
+      },
+      {
+       "kind": "dot",
+       "to": "private/functions/Get-XpDirTreeRestoreFile.ps1",
+       "line": 232
+      },
+      {
+       "kind": "dot",
+       "to": "private/functions/Import-DbaCmdlet.ps1",
+       "line": 232
+      },
+      {
+       "kind": "dot",
+       "to": "private/functions/Invoke-Command2.ps1",
+       "line": 232
+      },
+      {
+       "kind": "dot",
+       "to": "private/functions/Invoke-CommandWithFallback.ps1",
+       "line": 232
+      },
+      {
+       "kind": "dot",
+       "to": "private/functions/Invoke-ManagedComputerCommand.ps1",
+       "line": 232
+      },
+      {
+       "kind": "dot",
+       "to": "private/functions/Select-DefaultView.ps1",
+       "line": 232
+      },
+      {
+       "kind": "dot",
+       "to": "private/functions/Test-PSRemoting.ps1",
+       "line": 232
+      },
+      {
+       "kind": "dot",
+       "to": "private/functions/Update-SqlDbReadOnly.ps1",
+       "line": 232
+      },
+      {
+       "kind": "dot",
+       "to": "private/functions/Write-ProgressHelper.ps1",
+       "line": 232
+      },
+      {
+       "kind": "dot",
+       "to": "private/functions/configuration/Write-DbatoolsConfigFile.ps1",
+       "line": 232
+      },
+      {
+       "kind": "dot",
+       "to": "private/functions/flowcontrol/Stop-Function.ps1",
+       "line": 232
+      },
+      {
+       "kind": "dot",
+       "to": "private/functions/flowcontrol/Test-Bound.ps1",
+       "line": 232
+      },
+      {
+       "kind": "dot",
+       "to": "private/functions/flowcontrol/Test-FunctionInterrupt.ps1",
+       "line": 232
+      },
+      {
+       "kind": "dot",
+       "to": "private/functions/tabcompletion/Register-DbaTeppScriptBlock.ps1",
+       "line": 232
+      },
+      {
+       "kind": "dot",
+       "to": "public/Add-DbaAgDatabase.ps1",
+       "line": 244
+      },
+      {
+       "kind": "dot",
+       "to": "public/Add-DbaComputerCertificate.ps1",
+       "line": 244
+      },
+      {
+       "kind": "dot",
+       "to": "public/Backup-DbaDatabase.ps1",
+       "line": 244
+      },
+      {
+       "kind": "dot",
+       "to": "public/Backup-DbaDbCertificate.ps1",
+       "line": 244
+      },
+      {
+       "kind": "dot",
+       "to": "public/Backup-DbaDbMasterKey.ps1",
+       "line": 244
+      },
+      {
+       "kind": "dot",
+       "to": "public/Connect-DbaInstance.ps1",
+       "line": 244
+      },
+      {
+       "kind": "dot",
+       "to": "public/Copy-DbaAgentJob.ps1",
+       "line": 244
+      },
+      {
+       "kind": "dot",
+       "to": "public/Copy-DbaAgentJobCategory.ps1",
+       "line": 244
+      },
+      {
+       "kind": "dot",
+       "to": "public/Copy-DbaAgentServer.ps1",
+       "line": 244
+      },
+      {
+       "kind": "dot",
+       "to": "public/Copy-DbaDbCertificate.ps1",
+       "line": 244
+      },
+      {
+       "kind": "dot",
+       "to": "public/Disconnect-DbaInstance.ps1",
+       "line": 244
+      },
+      {
+       "kind": "dot",
+       "to": "public/Export-DbaCredential.ps1",
+       "line": 244
+      },
+      {
+       "kind": "dot",
+       "to": "public/Export-DbaDacPackage.ps1",
+       "line": 244
+      },
+      {
+       "kind": "dot",
+       "to": "public/Export-DbaInstance.ps1",
+       "line": 244
+      },
+      {
+       "kind": "dot",
+       "to": "public/Export-DbaSpConfigure.ps1",
+       "line": 244
+      },
+      {
+       "kind": "dot",
+       "to": "public/Export-DbaSysDbUserObject.ps1",
+       "line": 244
+      },
+      {
+       "kind": "dot",
+       "to": "public/Find-DbaCommand.ps1",
+       "line": 244
+      },
+      {
+       "kind": "dot",
+       "to": "public/Find-DbaLoginInGroup.ps1",
+       "line": 244
+      },
+      {
+       "kind": "dot",
+       "to": "public/Find-DbaUserObject.ps1",
+       "line": 244
+      },
+      {
+       "kind": "dot",
+       "to": "public/Get-DbaAgReplica.ps1",
+       "line": 244
+      },
+      {
+       "kind": "dot",
+       "to": "public/Get-DbaAgRingBuffer.ps1",
+       "line": 244
+      },
+      {
+       "kind": "dot",
+       "to": "public/Get-DbaBackupDevice.ps1",
+       "line": 244
+      },
+      {
+       "kind": "dot",
+       "to": "public/Get-DbaCpuUsage.ps1",
+       "line": 244
+      },
+      {
+       "kind": "dot",
+       "to": "public/Get-DbaCredential.ps1",
+       "line": 244
+      },
+      {
+       "kind": "dot",
+       "to": "public/Get-DbaDbCertificate.ps1",
+       "line": 244
+      },
+      {
+       "kind": "dot",
+       "to": "public/Get-DbaDbDataClassification.ps1",
+       "line": 244
+      },
+      {
+       "kind": "dot",
+       "to": "public/Get-DbaDbForeignKey.ps1",
+       "line": 244
+      },
+      {
+       "kind": "dot",
+       "to": "public/Get-DbaDbQueryStoreOption.ps1",
+       "line": 244
+      },
+      {
+       "kind": "dot",
+       "to": "public/Get-DbaDefaultPath.ps1",
+       "line": 244
+      },
+      {
+       "kind": "dot",
+       "to": "public/Get-DbaInstanceAudit.ps1",
+       "line": 244
+      },
+      {
+       "kind": "dot",
+       "to": "public/Get-DbaKbUpdate.ps1",
+       "line": 244
+      },
+      {
+       "kind": "dot",
+       "to": "public/Get-DbaLocaleSetting.ps1",
+       "line": 244
+      },
+      {
+       "kind": "dot",
+       "to": "public/Get-DbaMemoryCondition.ps1",
+       "line": 244
+      },
+      {
+       "kind": "dot",
+       "to": "public/Get-DbaMsdtc.ps1",
+       "line": 244
+      },
+      {
+       "kind": "dot",
+       "to": "public/Get-DbaPermission.ps1",
+       "line": 244
+      },
+      {
+       "kind": "dot",
+       "to": "public/Get-DbaPfDataCollectorSet.ps1",
+       "line": 244
+      },
+      {
+       "kind": "dot",
+       "to": "public/Get-DbaPrivilege.ps1",
+       "line": 244
+      },
+      {
+       "kind": "dot",
+       "to": "public/Get-DbaRegServer.ps1",
+       "line": 244
+      },
+      {
+       "kind": "dot",
+       "to": "public/Get-DbaWaitingTask.ps1",
+       "line": 244
+      },
+      {
+       "kind": "dot",
+       "to": "public/Import-DbaBinaryFile.ps1",
+       "line": 244
+      },
+      {
+       "kind": "dot",
+       "to": "public/Import-DbaParquet.ps1",
+       "line": 244
+      },
+      {
+       "kind": "dot",
+       "to": "public/Install-DbaMaintenanceSolution.ps1",
+       "line": 244
+      },
+      {
+       "kind": "dot",
+       "to": "public/Install-DbaWhoIsActive.ps1",
+       "line": 244
+      },
+      {
+       "kind": "dot",
+       "to": "public/Invoke-DbaAdvancedUpdate.ps1",
+       "line": 244
+      },
+      {
+       "kind": "dot",
+       "to": "public/Invoke-DbaBalanceDataFiles.ps1",
+       "line": 244
+      },
+      {
+       "kind": "dot",
+       "to": "public/Invoke-DbaDbLogShipRecovery.ps1",
+       "line": 244
+      },
+      {
+       "kind": "dot",
+       "to": "public/Invoke-DbaDbLogShipping.ps1",
+       "line": 244
+      },
+      {
+       "kind": "dot",
+       "to": "public/Invoke-DbaQuery.ps1",
+       "line": 244
+      },
+      {
+       "kind": "dot",
+       "to": "public/New-DbaAgentAlert.ps1",
+       "line": 244
+      },
+      {
+       "kind": "dot",
+       "to": "public/New-DbaAvailabilityGroup.ps1",
+       "line": 244
+      },
+      {
+       "kind": "dot",
+       "to": "public/New-DbaComputerCertificate.ps1",
+       "line": 244
+      },
+      {
+       "kind": "dot",
+       "to": "public/New-DbaCustomError.ps1",
+       "line": 244
+      },
+      {
+       "kind": "dot",
+       "to": "public/New-DbaDatabase.ps1",
+       "line": 244
+      },
+      {
+       "kind": "dot",
+       "to": "public/New-DbaDbDataGeneratorConfig.ps1",
+       "line": 244
+      },
+      {
+       "kind": "dot",
+       "to": "public/New-DbaDbSequence.ps1",
+       "line": 244
+      },
+      {
+       "kind": "dot",
+       "to": "public/New-DbaDbSnapshot.ps1",
+       "line": 244
+      },
+      {
+       "kind": "dot",
+       "to": "public/New-DbaLogin.ps1",
+       "line": 244
+      },
+      {
+       "kind": "dot",
+       "to": "public/Remove-DbaComputerCertificate.ps1",
+       "line": 244
+      },
+      {
+       "kind": "dot",
+       "to": "public/Remove-DbaCustomError.ps1",
+       "line": 244
+      },
+      {
+       "kind": "dot",
+       "to": "public/Remove-DbaDatabase.ps1",
+       "line": 244
+      },
+      {
+       "kind": "dot",
+       "to": "public/Rename-DbaLogin.ps1",
+       "line": 244
+      },
+      {
+       "kind": "dot",
+       "to": "public/Set-DbaAgentJob.ps1",
+       "line": 244
+      },
+      {
+       "kind": "dot",
+       "to": "public/Set-DbaDbSchema.ps1",
+       "line": 244
+      },
+      {
+       "kind": "dot",
+       "to": "public/Set-DbaExtendedProtection.ps1",
+       "line": 244
+      },
+      {
+       "kind": "dot",
+       "to": "public/Set-DbaNetworkConfiguration.ps1",
+       "line": 244
+      },
+      {
+       "kind": "dot",
+       "to": "public/Set-DbaStartupParameter.ps1",
+       "line": 244
+      },
+      {
+       "kind": "dot",
+       "to": "public/Show-DbaDbList.ps1",
+       "line": 244
+      },
+      {
+       "kind": "dot",
+       "to": "public/Start-DbaXESession.ps1",
+       "line": 244
+      },
+      {
+       "kind": "dot",
+       "to": "public/Stop-DbaEndpoint.ps1",
+       "line": 244
+      },
+      {
+       "kind": "dot",
+       "to": "public/Stop-DbaPfDataCollectorSet.ps1",
+       "line": 244
+      },
+      {
+       "kind": "dot",
+       "to": "public/Stop-DbaProcess.ps1",
+       "line": 244
+      },
+      {
+       "kind": "dot",
+       "to": "public/Test-DbaDbDataGeneratorConfig.ps1",
+       "line": 244
+      },
+      {
+       "kind": "dot",
+       "to": "public/Test-DbaPath.ps1",
+       "line": 244
+      },
+      {
+       "kind": "dot",
+       "to": "public/Test-DbaReplLatency.ps1",
+       "line": 244
+      },
+      {
+       "kind": "dot",
+       "to": "public/Update-DbaInstance.ps1",
+       "line": 244
+      },
+      {
+       "kind": "dot",
+       "to": "public/Write-DbaDbTableData.ps1",
+       "line": 244
+      }
+     ]
+    },
+    "private/dynamicparams/group.ps1": {
+     "calls": [
+      {
+       "name": "Register-DbaTeppScriptblock",
+       "line": 58
+      }
+     ]
+    },
+    "private/functions/ConvertFrom-DbccPageDump.ps1": {
+     "calls": [
+      {
+       "name": "New-Object",
+       "line": 70
+      }
+     ]
+    },
+    "private/functions/Get-ErrorMessage.ps1": {
+     "defines": [
+      {
+       "name": "Get-ErrorMessage",
+       "line": 1
+      }
+     ]
+    },
+    "private/functions/Get-ObjectNameParts.ps1": {
+     "defines": [
+      {
+       "name": "Get-ObjectNameParts",
+       "line": 1
+      }
+     ]
+    },
+    "private/functions/Get-XpDirTreeRestoreFile.ps1": {
+     "defines": [
+      {
+       "name": "Get-XpDirTreeRestoreFile",
+       "line": 1
+      }
+     ]
+    },
+    "private/functions/Import-DbaCmdlet.ps1": {
+     "calls": [
+      {
+       "name": "New-Object",
+       "line": 67
+      }
+     ]
+    },
+    "private/functions/Invoke-Command2.ps1": {
+     "defines": [
+      {
+       "name": "Invoke-Command2",
+       "line": 1
+      }
+     ]
+    },
+    "private/functions/Invoke-CommandWithFallback.ps1": {
+     "calls": [
+      {
+       "name": "Stop-Function",
+       "line": 43
+      }
+     ]
+    },
+    "private/functions/Invoke-ManagedComputerCommand.ps1": {
+     "defines": [
+      {
+       "name": "Invoke-ManagedComputerCommand",
+       "line": 1
+      }
+     ]
+    },
+    "private/functions/Select-DefaultView.ps1": {
+     "defines": [
+      {
+       "name": "Select-DefaultView",
+       "line": 1
+      }
+     ]
+    },
+    "private/functions/Test-PSRemoting.ps1": {
+     "defines": [
+      {
+       "name": "Test-PSRemoting",
+       "line": 3
+      }
+     ]
+    },
+    "private/functions/Update-SqlDbReadOnly.ps1": {
+     "calls": [
+      {
+       "name": "Connect-DbaInstance",
+       "line": 27
+      }
+     ]
+    },
+    "private/functions/Write-ProgressHelper.ps1": {
+     "defines": [
+      {
+       "name": "Write-ProgressHelper",
+       "line": 1
+      }
+     ]
+    },
+    "private/functions/configuration/Write-DbatoolsConfigFile.ps1": {
+     "calls": [
+      {
+       "name": "Test-Path",
+       "line": 43
+      }
+     ]
+    },
+    "private/functions/flowcontrol/Stop-Function.ps1": {
+     "defines": [
+      {
+       "name": "Stop-Function",
+       "line": 2
+      }
+     ]
+    },
+    "private/functions/flowcontrol/Test-Bound.ps1": {
+     "defines": [
+      {
+       "name": "Test-Bound",
+       "line": 1
+      }
+     ]
+    },
+    "private/functions/flowcontrol/Test-FunctionInterrupt.ps1": {
+     "defines": [
+      {
+       "name": "Test-FunctionInterrupt",
+       "line": 2
+      }
+     ]
+    },
+    "private/functions/tabcompletion/Register-DbaTeppScriptBlock.ps1": {
+     "defines": [
+      {
+       "name": "Register-DbaTeppScriptblock",
+       "line": 1
+      }
+     ]
+    },
+    "public/Add-DbaAgDatabase.ps1": {
+     "calls": [
+      {
+       "name": "New-Object",
+       "line": 545
+      }
+     ]
+    },
+    "public/Add-DbaComputerCertificate.ps1": {
+     "defines": [
+      {
+       "name": "Add-DbaComputerCertificate",
+       "line": 1
+      }
+     ]
+    },
+    "public/Backup-DbaDatabase.ps1": {
+     "defines": [
+      {
+       "name": "Backup-DbaDatabase",
+       "line": 1
+      }
+     ]
+    },
+    "public/Backup-DbaDbCertificate.ps1": {
+     "defines": [
+      {
+       "name": "Backup-DbaDbCertificate",
+       "line": 1
+      }
+     ]
+    },
+    "public/Backup-DbaDbMasterKey.ps1": {
+     "defines": [
+      {
+       "name": "Backup-DbaDbMasterKey",
+       "line": 1
+      }
+     ]
+    },
+    "public/Connect-DbaInstance.ps1": {
+     "defines": [
+      {
+       "name": "Connect-DbaInstance",
+       "line": 1
+      }
+     ]
+    },
+    "public/Copy-DbaAgentJob.ps1": {
+     "calls": [
+      {
+       "name": "Stop-Function",
+       "line": 176
+      }
+     ]
+    },
+    "public/Copy-DbaAgentJobCategory.ps1": {
+     "calls": [
+      {
+       "name": "Connect-DbaInstance",
+       "line": 378
+      }
+     ]
+    },
+    "public/Copy-DbaAgentServer.ps1": {
+     "calls": [
+      {
+       "name": "Connect-DbaInstance",
+       "line": 116
+      }
+     ]
+    },
+    "public/Copy-DbaDbCertificate.ps1": {
+     "calls": [
+      {
+       "name": "Get-DbaDbCertificate",
+       "line": 161
+      },
+      {
+       "name": "Stop-Function",
+       "line": 166
+      }
+     ]
+    },
+    "public/Disconnect-DbaInstance.ps1": {
+     "defines": [
+      {
+       "name": "Disconnect-DbaInstance",
+       "line": 1
+      }
+     ]
+    },
+    "public/Export-DbaCredential.ps1": {
+     "calls": [
+      {
+       "name": "Connect-DbaInstance",
+       "line": 143
+      }
+     ]
+    },
+    "public/Export-DbaDacPackage.ps1": {
+     "defines": [
+      {
+       "name": "Export-DbaDacPackage",
+       "line": 1
+      }
+     ],
+     "calls": [
+      {
+       "name": "Stop-Function",
+       "line": 153
+      }
+     ]
+    },
+    "public/Export-DbaInstance.ps1": {
+     "calls": [
+      {
+       "name": "Get-DbaBackupDevice",
+       "line": 402
+      },
+      {
+       "name": "Backup-DbaDbMasterKey",
+       "line": 584
+      }
+     ]
+    },
+    "public/Export-DbaSpConfigure.ps1": {
+     "calls": [
+      {
+       "name": "Get-ChildItem",
+       "line": 137
+      }
+     ]
+    },
+    "public/Export-DbaSysDbUserObject.ps1": {
+     "calls": [
+      {
+       "name": "Test-Path",
+       "line": 153
+      }
+     ]
+    },
+    "public/Find-DbaCommand.ps1": {
+     "calls": [
+      {
+       "name": "Test-Path",
+       "line": 148
+      }
+     ]
+    },
+    "public/Find-DbaLoginInGroup.ps1": {
+     "calls": [
+      {
+       "name": "New-Object",
+       "line": 100
+      }
+     ]
+    },
+    "public/Find-DbaUserObject.ps1": {
+     "calls": [
+      {
+       "name": "Stop-Function",
+       "line": 97
+      }
+     ]
+    },
+    "public/Get-DbaAgReplica.ps1": {
+     "defines": [
+      {
+       "name": "Get-DbaAgReplica",
+       "line": 1
+      }
+     ]
+    },
+    "public/Get-DbaAgRingBuffer.ps1": {
+     "calls": [
+      {
+       "name": "Stop-Function",
+       "line": 114
+      }
+     ]
+    },
+    "public/Get-DbaBackupDevice.ps1": {
+     "defines": [
+      {
+       "name": "Get-DbaBackupDevice",
+       "line": 1
+      }
+     ]
+    },
+    "public/Get-DbaCpuUsage.ps1": {
+     "calls": [
+      {
+       "name": "Connect-DbaInstance",
+       "line": 149
+      }
+     ]
+    },
+    "public/Get-DbaCredential.ps1": {
+     "calls": [
+      {
+       "name": "Select-DefaultView",
+       "line": 143
+      }
+     ]
+    },
+    "public/Get-DbaDbCertificate.ps1": {
+     "defines": [
+      {
+       "name": "Get-DbaDbCertificate",
+       "line": 1
+      }
+     ]
+    },
+    "public/Get-DbaDbDataClassification.ps1": {
+     "calls": [
+      {
+       "name": "Stop-Function",
+       "line": 126
+      }
+     ]
+    },
+    "public/Get-DbaDbForeignKey.ps1": {
+     "calls": [
+      {
+       "name": "Stop-Function",
+       "line": 129
+      }
+     ]
+    },
+    "public/Get-DbaDbQueryStoreOption.ps1": {
+     "calls": [
+      {
+       "name": "Select-DefaultView",
+       "line": 186
+      }
+     ]
+    },
+    "public/Get-DbaDefaultPath.ps1": {
+     "defines": [
+      {
+       "name": "Get-DbaDefaultPath",
+       "line": 1
+      }
+     ]
+    },
+    "public/Get-DbaInstanceAudit.ps1": {
+     "calls": [
+      {
+       "name": "Test-Bound",
+       "line": 103
+      }
+     ]
+    },
+    "public/Get-DbaKbUpdate.ps1": {
+     "calls": [
+      {
+       "name": "New-Object",
+       "line": 137
+      },
+      {
+       "name": "Stop-Function",
+       "line": 365
+      }
+     ]
+    },
+    "public/Get-DbaLocaleSetting.ps1": {
+     "calls": [
+      {
+       "name": "Invoke-CimMethod",
+       "line": 127
+      }
+     ]
+    },
+    "public/Get-DbaMemoryCondition.ps1": {
+     "calls": [
+      {
+       "name": "Stop-Function",
+       "line": 147
+      }
+     ]
+    },
+    "public/Get-DbaMsdtc.ps1": {
+     "calls": [
+      {
+       "name": "Test-PSRemoting",
+       "line": 112
+      }
+     ]
+    },
+    "public/Get-DbaPermission.ps1": {
+     "calls": [
+      {
+       "name": "Connect-DbaInstance",
+       "line": 329
+      }
+     ]
+    },
+    "public/Get-DbaPfDataCollectorSet.ps1": {
+     "defines": [
+      {
+       "name": "Get-DbaPfDataCollectorSet",
+       "line": 1
+      }
+     ]
+    },
+    "public/Get-DbaPrivilege.ps1": {
+     "calls": [
+      {
+       "name": "secedit",
+       "line": 123
+      }
+     ]
+    },
+    "public/Get-DbaRegServer.ps1": {
+     "defines": [
+      {
+       "name": "Get-DbaRegServer",
+       "line": 1
+      }
+     ],
+     "calls": [
+      {
+       "name": "Test-Path",
+       "line": 235
+      }
+     ]
+    },
+    "public/Get-DbaWaitingTask.ps1": {
+     "calls": [
+      {
+       "name": "Connect-DbaInstance",
+       "line": 135
+      }
+     ]
+    },
+    "public/Import-DbaBinaryFile.ps1": {
+     "calls": [
+      {
+       "name": "Test-FunctionInterrupt",
+       "line": 181
+      }
+     ]
+    },
+    "public/Import-DbaParquet.ps1": {
+     "calls": [
+      {
+       "name": "Get-ChildItem",
+       "line": 293
+      }
+     ]
+    },
+    "public/Install-DbaMaintenanceSolution.ps1": {
+     "calls": [
+      {
+       "name": "Get-DbaDefaultPath",
+       "line": 497
+      }
+     ]
+    },
+    "public/Install-DbaWhoIsActive.ps1": {
+     "calls": [
+      {
+       "name": "Test-Path",
+       "line": 113
+      }
+     ]
+    },
+    "public/Invoke-DbaAdvancedUpdate.ps1": {
+     "calls": [
+      {
+       "name": "Remove-Item",
+       "line": 236
+      }
+     ]
+    },
+    "public/Invoke-DbaBalanceDataFiles.ps1": {
+     "calls": [
+      {
+       "name": "Get-ErrorMessage",
+       "line": 221
+      }
+     ]
+    },
+    "public/Invoke-DbaDbLogShipRecovery.ps1": {
+     "defines": [
+      {
+       "name": "Invoke-DbaDbLogShipRecovery",
+       "line": 1
+      }
+     ]
+    },
+    "public/Invoke-DbaDbLogShipping.ps1": {
+     "calls": [
+      {
+       "name": "Test-FunctionInterrupt",
+       "line": 1047
+      }
+     ]
+    },
+    "public/Invoke-DbaQuery.ps1": {
+     "defines": [
+      {
+       "name": "Invoke-DbaQuery",
+       "line": 1
+      }
+     ]
+    },
+    "public/New-DbaAgentAlert.ps1": {
+     "calls": [
+      {
+       "name": "Stop-Function",
+       "line": 207
+      }
+     ]
+    },
+    "public/New-DbaAvailabilityGroup.ps1": {
+     "calls": [
+      {
+       "name": "Write-ProgressHelper",
+       "line": 475
+      }
+     ]
+    },
+    "public/New-DbaComputerCertificate.ps1": {
+     "calls": [
+      {
+       "name": "Test-Path",
+       "line": 474
+      }
+     ]
+    },
+    "public/New-DbaCustomError.ps1": {
+     "calls": [
+      {
+       "name": "New-Object",
+       "line": 153
+      }
+     ]
+    },
+    "public/New-DbaDatabase.ps1": {
+     "defines": [
+      {
+       "name": "New-DbaDatabase",
+       "line": 1
+      }
+     ]
+    },
+    "public/New-DbaDbDataGeneratorConfig.ps1": {
+     "defines": [
+      {
+       "name": "New-DbaDbDataGeneratorConfig",
+       "line": 1
+      }
+     ],
+     "calls": [
+      {
+       "name": "Get-ChildItem",
+       "line": 368
+      }
+     ]
+    },
+    "public/New-DbaDbSequence.ps1": {
+     "calls": [
+      {
+       "name": "Test-Bound",
+       "line": 152
+      }
+     ]
+    },
+    "public/New-DbaDbSnapshot.ps1": {
+     "calls": [
+      {
+       "name": "New-Object",
+       "line": 324
+      }
+     ]
+    },
+    "public/New-DbaLogin.ps1": {
+     "defines": [
+      {
+       "name": "New-DbaLogin",
+       "line": 1
+      }
+     ]
+    },
+    "public/Remove-DbaComputerCertificate.ps1": {
+     "defines": [
+      {
+       "name": "Remove-DbaComputerCertificate",
+       "line": 1
+      }
+     ]
+    },
+    "public/Remove-DbaCustomError.ps1": {
+     "calls": [
+      {
+       "name": "Stop-Function",
+       "line": 99
+      }
+     ]
+    },
+    "public/Remove-DbaDatabase.ps1": {
+     "calls": [
+      {
+       "name": "Get-ErrorMessage",
+       "line": 169
+      }
+     ]
+    },
+    "public/Rename-DbaLogin.ps1": {
+     "calls": [
+      {
+       "name": "Stop-Function",
+       "line": 110
+      }
+     ]
+    },
+    "public/Set-DbaAgentJob.ps1": {
+     "calls": [
+      {
+       "name": "Test-FunctionInterrupt",
+       "line": 310
+      }
+     ]
+    },
+    "public/Set-DbaDbSchema.ps1": {
+     "defines": [
+      {
+       "name": "Set-DbaDbSchema",
+       "line": 1
+      }
+     ]
+    },
+    "public/Set-DbaExtendedProtection.ps1": {
+     "calls": [
+      {
+       "name": "Stop-Function",
+       "line": 128
+      }
+     ]
+    },
+    "public/Set-DbaNetworkConfiguration.ps1": {
+     "calls": [
+      {
+       "name": "New-Object",
+       "line": 163
+      },
+      {
+       "name": "Stop-Function",
+       "line": 318
+      }
+     ]
+    },
+    "public/Set-DbaStartupParameter.ps1": {
+     "calls": [
+      {
+       "name": "Invoke-ManagedComputerCommand",
+       "line": 448
+      }
+     ]
+    },
+    "public/Show-DbaDbList.ps1": {
+     "calls": [
+      {
+       "name": "Stop-Function",
+       "line": 90
+      }
+     ]
+    },
+    "public/Start-DbaXESession.ps1": {
+     "calls": [
+      {
+       "name": "Stop-Function",
+       "line": 156
+      }
+     ]
+    },
+    "public/Stop-DbaEndpoint.ps1": {
+     "calls": [
+      {
+       "name": "Test-Bound",
+       "line": 95
+      }
+     ]
+    },
+    "public/Stop-DbaPfDataCollectorSet.ps1": {
+     "calls": [
+      {
+       "name": "Test-Bound",
+       "line": 115
+      }
+     ]
+    },
+    "public/Stop-DbaProcess.ps1": {
+     "defines": [
+      {
+       "name": "Stop-DbaProcess",
+       "line": 1
+      }
+     ]
+    },
+    "public/Test-DbaDbDataGeneratorConfig.ps1": {
+     "calls": [
+      {
+       "name": "Test-Path",
+       "line": 75
+      }
+     ]
+    },
+    "public/Test-DbaPath.ps1": {
+     "defines": [
+      {
+       "name": "Test-DbaPath",
+       "line": 1
+      }
+     ]
+    },
+    "public/Test-DbaReplLatency.ps1": {
+     "calls": [
+      {
+       "name": "New-Object",
+       "line": 137
+      }
+     ]
+    },
+    "public/Update-DbaInstance.ps1": {
+     "calls": [
+      {
+       "name": "Copy-Item",
+       "line": 435
+      },
+      {
+       "name": "Invoke-Command2",
+       "line": 539
+      }
+     ]
+    },
+    "public/Write-DbaDbTableData.ps1": {
+     "calls": [
+      {
+       "name": "Get-ObjectNameParts",
+       "line": 448
+      }
+     ]
+    },
+    "tests/Add-DbaAgReplica.Tests.ps1": {
+     "calls": [
+      {
+       "name": "Get-DbaAgReplica",
+       "line": 107
+      }
+     ]
+    },
+    "tests/Add-DbaRegServerGroup.Tests.ps1": {
+     "calls": [
+      {
+       "name": "Connect-DbaInstance",
+       "line": 119
+      }
+     ]
+    },
+    "tests/Backup-DbaComputerCertificate.Tests.ps1": {
+     "calls": [
+      {
+       "name": "Add-DbaComputerCertificate",
+       "line": 46
+      }
+     ]
+    },
+    "tests/Backup-DbaDbCertificate.Tests.ps1": {
+     "calls": [
+      {
+       "name": "Remove-Item",
+       "line": 70
+      }
+     ]
+    },
+    "tests/Compare-DbaDbSchema.Tests.ps1": {
+     "calls": [
+      {
+       "name": "New-Object",
+       "line": 200
+      }
+     ]
+    },
+    "tests/Copy-DbaPolicyManagement.Tests.ps1": {
+     "local": [
+      {
+       "name": "Test-FunctionInterrupt",
+       "line": 81
+      },
+      {
+       "name": "Select-DefaultView",
+       "line": 83
+      },
+      {
+       "name": "Connect-DbaInstance",
+       "line": 95
+      },
+      {
+       "name": "New-Object",
+       "line": 104
+      }
+     ]
+    },
+    "tests/Copy-DbaXESessionTemplate.Tests.ps1": {
+     "calls": [
+      {
+       "name": "Get-ChildItem",
+       "line": 46
+      }
+     ]
+    },
+    "tests/Export-DbaDacPackage.Tests.ps1": {
+     "calls": [
+      {
+       "name": "Remove-Item",
+       "line": 97
+      }
+     ]
+    },
+    "tests/Export-DbaDiagnosticQuery.Tests.ps1": {
+     "calls": [
+      {
+       "name": "Remove-Item",
+       "line": 46
+      }
+     ]
+    },
+    "tests/Export-DbaExecutionPlan.Tests.ps1": {
+     "calls": [
+      {
+       "name": "Get-ChildItem",
+       "line": 95
+      }
+     ]
+    },
+    "tests/Export-DbaInstance.Tests.ps1": {
+     "local": [
+      {
+       "name": "Test-FunctionInterrupt",
+       "line": 57
+      },
+      {
+       "name": "Write-ProgressHelper",
+       "line": 59
+      },
+      {
+       "name": "Test-Path",
+       "line": 60
+      },
+      {
+       "name": "Stop-Function",
+       "line": 61
+      },
+      {
+       "name": "Connect-DbaInstance",
+       "line": 68
+      },
+      {
+       "name": "Disconnect-DbaInstance",
+       "line": 77
+      },
+      {
+       "name": "Test-FunctionInterrupt",
+       "line": 142
+      },
+      {
+       "name": "Write-ProgressHelper",
+       "line": 144
+      },
+      {
+       "name": "Test-Path",
+       "line": 154
+      },
+      {
+       "name": "Stop-Function",
+       "line": 155
+      },
+      {
+       "name": "Connect-DbaInstance",
+       "line": 166
+      },
+      {
+       "name": "Disconnect-DbaInstance",
+       "line": 175
+      },
+      {
+       "name": "Test-FunctionInterrupt",
+       "line": 250
+      },
+      {
+       "name": "Write-ProgressHelper",
+       "line": 253
+      },
+      {
+       "name": "Test-Path",
+       "line": 254
+      },
+      {
+       "name": "Stop-Function",
+       "line": 255
+      },
+      {
+       "name": "Connect-DbaInstance",
+       "line": 265
+      },
+      {
+       "name": "Test-DbaPath",
+       "line": 274
+      },
+      {
+       "name": "Copy-Item",
+       "line": 289
+      },
+      {
+       "name": "Remove-Item",
+       "line": 301
+      },
+      {
+       "name": "Get-ChildItem",
+       "line": 311
+      },
+      {
+       "name": "Backup-DbaDbCertificate",
+       "line": 318
+      },
+      {
+       "name": "Backup-DbaDbMasterKey",
+       "line": 325
+      }
+     ],
+     "calls": [
+      {
+       "name": "Get-DbaRegServer",
+       "line": 520
+      }
+     ]
+    },
+    "tests/Export-DbaPfDataCollectorSetTemplate.Tests.ps1": {
+     "calls": [
+      {
+       "name": "Get-DbaPfDataCollectorSet",
+       "line": 44
+      }
+     ]
+    },
+    "tests/Export-DbaScript.Tests.ps1": {
+     "calls": [
+      {
+       "name": "New-Object",
+       "line": 35
+      }
+     ]
+    },
+    "tests/Export-DbaUser.Tests.ps1": {
+     "local": [
+      {
+       "name": "Write-ProgressHelper",
+       "line": 40
+      },
+      {
+       "name": "Test-FunctionInterrupt",
+       "line": 42
+      }
+     ],
+     "calls": [
+      {
+       "name": "Remove-Item",
+       "line": 199
+      }
+     ]
+    },
+    "tests/Get-DbaDbQueryStoreOption.Tests.ps1": {
+     "calls": [
+      {
+       "name": "Disconnect-DbaInstance",
+       "line": 31
+      }
+     ]
+    },
+    "tests/Get-DbaDbSpace.Tests.ps1": {
+     "calls": [
+      {
+       "name": "Backup-DbaDatabase",
+       "line": 46
+      }
+     ]
+    },
+    "tests/Get-DbaNetworkConfiguration.Tests.ps1": {
+     "calls": [
+      {
+       "name": "Remove-DbaComputerCertificate",
+       "line": 129
+      }
+     ]
+    },
+    "tests/Get-DbaPermission.Tests.ps1": {
+     "calls": [
+      {
+       "name": "New-DbaLogin",
+       "line": 40
+      }
+     ]
+    },
+    "tests/Get-DbaStartupProcedure.Tests.ps1": {
+     "calls": [
+      {
+       "name": "Connect-DbaInstance",
+       "line": 29
+      }
+     ]
+    },
+    "tests/Get-XpDirTreeRestoreFile.Tests.ps1": {
+     "calls": [
+      {
+       "name": "Get-XpDirTreeRestoreFile",
+       "line": 19
+      }
+     ]
+    },
+    "tests/Install-DbaMultiTool.Tests.ps1": {
+     "calls": [
+      {
+       "name": "Connect-DbaInstance",
+       "line": 85
+      }
+     ]
+    },
+    "tests/Invoke-DbaDbDecryptObject.Hardening.Tests.ps1": {
+     "calls": [
+      {
+       "name": "New-Object",
+       "line": 45
+      }
+     ]
+    },
+    "tests/Invoke-DbaDbLogShipRecovery.Tests.ps1": {
+     "calls": [
+      {
+       "name": "Invoke-DbaDbLogShipRecovery",
+       "line": 83
+      }
+     ]
+    },
+    "tests/Measure-DbaDiskSpaceRequirement.Tests.ps1": {
+     "calls": [
+      {
+       "name": "New-Object",
+       "line": 86
+      }
+     ]
+    },
+    "tests/New-DbaDbDataGeneratorConfig.Tests.ps1": {
+     "calls": [
+      {
+       "name": "New-DbaDbDataGeneratorConfig",
+       "line": 91
+      }
+     ]
+    },
+    "tests/Remove-DbaDbMirror.Tests.ps1": {
+     "calls": [
+      {
+       "name": "New-DbaDatabase",
+       "line": 38
+      }
+     ]
+    },
+    "tests/Remove-DbaDbView.Tests.ps1": {
+     "calls": [
+      {
+       "name": "Stop-DbaProcess",
+       "line": 32
+      }
+     ]
+    },
+    "tests/Restore-DbaDbCertificate.Tests.ps1": {
+     "calls": [
+      {
+       "name": "Backup-DbaDbCertificate",
+       "line": 47
+      }
+     ]
+    },
+    "tests/Set-DbaDbSchema.Tests.ps1": {
+     "calls": [
+      {
+       "name": "Set-DbaDbSchema",
+       "line": 111
+      }
+     ]
+    },
+    "tests/Set-DbaPrivilege.Tests.ps1": {
+     "local": [
+      {
+       "name": "secedit",
+       "line": 28
+      }
+     ],
+     "calls": [
+      {
+       "name": "Remove-Item",
+       "line": 72
+      }
+     ]
+    },
+    "tests/Start-DbaMigration.Tests.ps1": {
+     "local": [
+      {
+       "name": "Test-FunctionInterrupt",
+       "line": 67
+      },
+      {
+       "name": "Write-ProgressHelper",
+       "line": 69
+      },
+      {
+       "name": "Disconnect-DbaInstance",
+       "line": 70
+      },
+      {
+       "name": "Stop-Function",
+       "line": 71
+      },
+      {
+       "name": "Connect-DbaInstance",
+       "line": 78
+      },
+      {
+       "name": "Test-FunctionInterrupt",
+       "line": 161
+      },
+      {
+       "name": "Write-ProgressHelper",
+       "line": 163
+      },
+      {
+       "name": "Disconnect-DbaInstance",
+       "line": 164
+      },
+      {
+       "name": "Stop-Function",
+       "line": 165
+      },
+      {
+       "name": "Connect-DbaInstance",
+       "line": 172
+      },
+      {
+       "name": "Test-FunctionInterrupt",
+       "line": 254
+      },
+      {
+       "name": "Write-ProgressHelper",
+       "line": 255
+      },
+      {
+       "name": "Stop-Function",
+       "line": 256
+      },
+      {
+       "name": "Connect-DbaInstance",
+       "line": 270
+      },
+      {
+       "name": "Test-FunctionInterrupt",
+       "line": 352
+      },
+      {
+       "name": "Write-ProgressHelper",
+       "line": 353
+      },
+      {
+       "name": "Stop-Function",
+       "line": 354
+      },
+      {
+       "name": "Connect-DbaInstance",
+       "line": 382
+      }
+     ],
+     "calls": [
+      {
+       "name": "Test-Path",
+       "line": 61
+      },
+      {
+       "name": "New-Object",
+       "line": 790
+      }
+     ]
+    },
+    "tests/Test-DbaLastBackup.Tests.ps1": {
+     "calls": [
+      {
+       "name": "Get-ChildItem",
+       "line": 464
+      }
+     ]
+    },
+    "tests/Update-DbaInstance.Tests.ps1": {
+     "calls": [
+      {
+       "name": "New-Object",
+       "line": 106
+      }
+     ]
+    },
+    "tests/Update-ServiceStatus.Tests.ps1": {
+     "local": [
+      {
+       "name": "Select-DefaultView",
+       "line": 50
+      },
+      {
+       "name": "Invoke-CimMethod",
+       "line": 108
+      }
+     ]
+    },
+    "tests/appveyor.common.Tests.ps1": {
+     "calls": [
+      {
+       "name": "Test-Path",
+       "line": 76
+      }
+     ]
+    }
+   }
+  },
+  {
+   "name": "al-go",
+   "repository": "microsoft/AL-Go",
+   "address": "https://github.com/microsoft/AL-Go",
+   "commit": "403f36ab563291207687c513c8dedd93f683f8ce",
+   "licence": "MIT",
+   "notice": "licences/al-go.txt",
+   "files": {
+    "Actions/.Modules/CheckForWarningsUtils.psm1": {
+     "loads": [
+      {
+       "kind": "import",
+       "to": "Actions/Github-Helper.psm1",
+       "line": 180
+      },
+      {
+       "kind": "import",
+       "to": "Actions/TelemetryHelper.psm1",
+       "line": 181
+      }
+     ]
+    },
+    "Actions/.Modules/CompileFromWorkspace.psm1": {
+     "defines": [
+      {
+       "name": "Get-CodeAnalyzers",
+       "line": 19
+      },
+      {
+       "name": "Get-CustomAnalyzers",
+       "line": 64
+      }
+     ],
+     "calls": [
+      {
+       "name": "OutputWarning",
+       "line": 344
+      }
+     ],
+     "loads": [
+      {
+       "kind": "import",
+       "to": "Actions/.Modules/DebugLogHelper.psm1",
+       "line": 1
+      },
+      {
+       "kind": "import",
+       "to": "Actions/TelemetryHelper.psm1",
+       "line": 2
+      },
+      {
+       "kind": "import",
+       "to": "Actions/Github-Helper.psm1",
+       "line": 3
+      },
+      {
+       "kind": "dot",
+       "to": "Actions/AL-Go-Helper.ps1",
+       "line": 4
+      }
+     ]
+    },
+    "Actions/.Modules/DebugLogHelper.psm1": {
+     "defines": [
+      {
+       "name": "OutputError",
+       "line": 122
+      },
+      {
+       "name": "OutputWarning",
+       "line": 144
+      },
+      {
+       "name": "OutputDebug",
+       "line": 204
+      }
+     ]
+    },
+    "Actions/.Modules/ReadSettings.psm1": {
+     "calls": [
+      {
+       "name": "OutputWarning",
+       "line": 581
+      }
+     ],
+     "loads": [
+      {
+       "kind": "import",
+       "to": "Actions/.Modules/DebugLogHelper.psm1",
+       "line": 1
+      }
+     ]
+    },
+    "Actions/AL-Go-Helper.ps1": {
+     "defines": [
+      {
+       "name": "ConvertTo-HashTable",
+       "line": 278
+      },
+      {
+       "name": "DownloadAndImportBcContainerHelper",
+       "line": 524
+      },
+      {
+       "name": "CloneIntoNewFolder",
+       "line": 1145
+      },
+      {
+       "name": "CommitFromNewFolder",
+       "line": 1184
+      },
+      {
+       "name": "Select-Value",
+       "line": 1264
+      },
+      {
+       "name": "GetPackageVersion",
+       "line": 2461
+      },
+      {
+       "name": "InstallAzModuleIfNeeded",
+       "line": 2489
+      }
+     ],
+     "calls": [
+      {
+       "name": "OutputError",
+       "line": 93
+      },
+      {
+       "name": "OutputWarning",
+       "line": 652
+      },
+      {
+       "name": "invoke-gh",
+       "line": 993
+      }
+     ],
+     "loads": [
+      {
+       "kind": "import",
+       "to": "Actions/Github-Helper.psm1",
+       "line": 9
+      },
+      {
+       "kind": "import",
+       "to": "Actions/.Modules/ReadSettings.psm1",
+       "line": 14
+      },
+      {
+       "kind": "import",
+       "to": "Actions/.Modules/DebugLogHelper.psm1",
+       "line": 18
+      }
+     ]
+    },
+    "Actions/AL-Go-TestRepoHelper.ps1": {
+     "calls": [
+      {
+       "name": "OutputError",
+       "line": 17
+      },
+      {
+       "name": "OutputWarning",
+       "line": 20
+      }
+     ],
+     "loads": [
+      {
+       "kind": "dot",
+       "to": "Actions/AL-Go-Helper.ps1",
+       "line": 1
+      }
+     ]
+    },
+    "Actions/AddExistingApp/AddExistingApp.ps1": {
+     "calls": [
+      {
+       "name": "OutputWarning",
+       "line": 144
+      },
+      {
+       "name": "CommitFromNewFolder",
+       "line": 210
+      }
+     ],
+     "loads": [
+      {
+       "kind": "dot",
+       "to": "Actions/AL-Go-Helper.ps1",
+       "line": 79
+      }
+     ]
+    },
+    "Actions/AnalyzeTests/TestResultAnalyzer.ps1": {
+     "calls": [
+      {
+       "name": "OutputWarning",
+       "line": 306
+      },
+      {
+       "name": "OutputError",
+       "line": 422
+      }
+     ],
+     "loads": [
+      {
+       "kind": "import",
+       "to": "Actions/TelemetryHelper.psm1",
+       "line": 12
+      }
+     ]
+    },
+    "Actions/BuildReferenceDocumentation/BuildReferenceDocumentation.HelperFunctions.ps1": {
+     "calls": [
+      {
+       "name": "OutputDebug",
+       "line": 19
+      }
+     ]
+    },
+    "Actions/BuildReferenceDocumentation/BuildReferenceDocumentation.ps1": {
+     "calls": [
+      {
+       "name": "OutputWarning",
+       "line": 117
+      }
+     ],
+     "loads": [
+      {
+       "kind": "dot",
+       "to": "Actions/AL-Go-Helper.ps1",
+       "line": 10
+      },
+      {
+       "kind": "dot",
+       "to": "Actions/BuildReferenceDocumentation/BuildReferenceDocumentation.HelperFunctions.ps1",
+       "line": 11
+      }
+     ]
+    },
+    "Actions/CheckForUpdates/CheckForUpdates.HelperFunctions.ps1": {
+     "calls": [
+      {
+       "name": "OutputWarning",
+       "line": 500
+      },
+      {
+       "name": "ConvertTo-HashTable",
+       "line": 592
+      }
+     ],
+     "loads": [
+      {
+       "kind": "import",
+       "to": "Actions/.Modules/ReadSettings.psm1",
+       "line": 1
+      },
+      {
+       "kind": "import",
+       "to": "Actions/.Modules/DebugLogHelper.psm1",
+       "line": 2
+      }
+     ]
+    },
+    "Actions/CheckForUpdates/CheckForUpdates.ps1": {
+     "calls": [
+      {
+       "name": "OutputWarning",
+       "line": 226
+      },
+      {
+       "name": "CloneIntoNewFolder",
+       "line": 255
+      }
+     ],
+     "loads": [
+      {
+       "kind": "import",
+       "to": "Actions/TelemetryHelper.psm1",
+       "line": 19
+      },
+      {
+       "kind": "import",
+       "to": "Actions/DetermineProjectsToBuild/DetermineProjectsToBuild.psm1",
+       "line": 130
+      },
+      {
+       "kind": "dot",
+       "to": "Actions/AL-Go-Helper.ps1",
+       "line": 18
+      },
+      {
+       "kind": "dot",
+       "to": "Actions/CheckForUpdates/CheckForUpdates.HelperFunctions.ps1",
+       "line": 21
+      }
+     ]
+    },
+    "Actions/CompileApps/Compile.ps1": {
+     "calls": [
+      {
+       "name": "OutputWarning",
+       "line": 137
+      },
+      {
+       "name": "Get-CustomAnalyzers",
+       "line": 253
+      }
+     ],
+     "loads": [
+      {
+       "kind": "import",
+       "to": "Actions/.Modules/CompileFromWorkspace.psm1",
+       "line": 23
+      },
+      {
+       "kind": "import",
+       "to": "Actions/TelemetryHelper.psm1",
+       "line": 24
+      },
+      {
+       "kind": "import",
+       "to": "Actions/DetermineProjectsToBuild/DetermineProjectsToBuild.psm1",
+       "line": 25
+      },
+      {
+       "kind": "import",
+       "to": "Actions/.Modules/CheckForWarningsUtils.psm1",
+       "line": 316
+      },
+      {
+       "kind": "dot",
+       "to": "Actions/AL-Go-Helper.ps1",
+       "line": 22
+      }
+     ]
+    },
+    "Actions/CreateApp/AppHelper.psm1": {
+     "loads": [
+      {
+       "kind": "dot",
+       "to": "Actions/AL-Go-Helper.ps1",
+       "line": 5
+      }
+     ]
+    },
+    "Actions/CreateApp/CreateApp.ps1": {
+     "calls": [
+      {
+       "name": "OutputWarning",
+       "line": 81
+      }
+     ],
+     "loads": [
+      {
+       "kind": "import",
+       "to": "Actions/CreateApp/AppHelper.psm1",
+       "line": 35
+      },
+      {
+       "kind": "dot",
+       "to": "Actions/AL-Go-Helper.ps1",
+       "line": 27
+      }
+     ]
+    },
+    "Actions/CreateReleaseNotes/CreateReleaseNotes.ps1": {
+     "calls": [
+      {
+       "name": "OutputError",
+       "line": 50
+      },
+      {
+       "name": "OutputWarning",
+       "line": 57
+      }
+     ],
+     "loads": [
+      {
+       "kind": "import",
+       "to": "Actions/Github-Helper.psm1",
+       "line": 15
+      },
+      {
+       "kind": "dot",
+       "to": "Actions/AL-Go-Helper.ps1",
+       "line": 12
+      }
+     ]
+    },
+    "Actions/Deliver/Deliver.ps1": {
+     "calls": [
+      {
+       "name": "InstallAzModuleIfNeeded",
+       "line": 45
+      },
+      {
+       "name": "OutputWarning",
+       "line": 360
+      }
+     ],
+     "loads": [
+      {
+       "kind": "import",
+       "to": "Actions/Deliver/Deliver.psm1",
+       "line": 61
+      },
+      {
+       "kind": "dot",
+       "to": "Actions/AL-Go-Helper.ps1",
+       "line": 60
+      }
+     ]
+    },
+    "Actions/Deliver/Deliver.psm1": {
+     "loads": [
+      {
+       "kind": "dot",
+       "to": "Actions/AL-Go-Helper.ps1",
+       "line": 1
+      }
+     ]
+    },
+    "Actions/Deploy/Deploy.ps1": {
+     "calls": [
+      {
+       "name": "DownloadAndImportBcContainerHelper",
+       "line": 19
+      },
+      {
+       "name": "OutputError",
+       "line": 136
+      }
+     ],
+     "loads": [
+      {
+       "kind": "import",
+       "to": "Actions/Deploy/Deploy.psm1",
+       "line": 17
+      },
+      {
+       "kind": "dot",
+       "to": "Actions/AL-Go-Helper.ps1",
+       "line": 18
+      }
+     ]
+    },
+    "Actions/Deploy/Deploy.psm1": {
+     "calls": [
+      {
+       "name": "OutputWarning",
+       "line": 118
+      }
+     ],
+     "loads": [
+      {
+       "kind": "dot",
+       "to": "Actions/AL-Go-Helper.ps1",
+       "line": 1
+      }
+     ]
+    },
+    "Actions/DetermineProjectsToBuild/DetermineProjectsToBuild.Action.ps1": {
+     "calls": [
+      {
+       "name": "FindLatestSuccessfulCICDRun",
+       "line": 33
+      },
+      {
+       "name": "OutputWarning",
+       "line": 47
+      }
+     ],
+     "loads": [
+      {
+       "kind": "import",
+       "to": "Actions/DetermineProjectsToBuild/DetermineProjectsToBuild.psm1",
+       "line": 14
+      },
+      {
+       "kind": "dot",
+       "to": "Actions/AL-Go-Helper.ps1",
+       "line": 11
+      }
+     ]
+    },
+    "Actions/DetermineProjectsToBuild/DetermineProjectsToBuild.psm1": {
+     "loads": [
+      {
+       "kind": "dot",
+       "to": "Actions/AL-Go-Helper.ps1",
+       "line": 1
+      },
+      {
+       "kind": "dot",
+       "to": "Actions/AL-Go-Helper.ps1",
+       "line": 171
+      }
+     ]
+    },
+    "Actions/DownloadPreviousRelease/DownloadPreviousRelease.ps1": {
+     "calls": [
+      {
+       "name": "OutputWarning",
+       "line": 28
+      },
+      {
+       "name": "OutputError",
+       "line": 32
+      }
+     ],
+     "loads": [
+      {
+       "kind": "dot",
+       "to": "Actions/AL-Go-Helper.ps1",
+       "line": 8
+      }
+     ]
+    },
+    "Actions/DownloadProjectDependencies/DownloadProjectDependencies.psm1": {
+     "calls": [
+      {
+       "name": "OutputWarning",
+       "line": 59
+      }
+     ],
+     "loads": [
+      {
+       "kind": "import",
+       "to": "Actions/Github-Helper.psm1",
+       "line": 1
+      },
+      {
+       "kind": "dot",
+       "to": "Actions/AL-Go-Helper.ps1",
+       "line": 2
+      }
+     ]
+    },
+    "Actions/Github-Helper.psm1": {
+     "defines": [
+      {
+       "name": "InvokeWebRequest",
+       "line": 57
+      },
+      {
+       "name": "invoke-gh",
+       "line": 349
+      },
+      {
+       "name": "FindLatestSuccessfulCICDRun",
+       "line": 997
+      }
+     ],
+     "calls": [
+      {
+       "name": "OutputWarning",
+       "line": 677
+      }
+     ]
+    },
+    "Actions/IncrementVersionNumber/IncrementVersionNumber.ps1": {
+     "calls": [
+      {
+       "name": "Set-VersionInAppManifests",
+       "line": 92
+      }
+     ],
+     "loads": [
+      {
+       "kind": "import",
+       "to": "Actions/IncrementVersionNumber/IncrementVersionNumber.psm1",
+       "line": 19
+      },
+      {
+       "kind": "dot",
+       "to": "Actions/AL-Go-Helper.ps1",
+       "line": 18
+      }
+     ]
+    },
+    "Actions/IncrementVersionNumber/IncrementVersionNumber.psm1": {
+     "defines": [
+      {
+       "name": "Set-VersionInAppManifests",
+       "line": 195
+      }
+     ]
+    },
+    "Actions/ProcessALCodeAnalysisLogs/ProcessALCodeAnalysisLogs.ps1": {
+     "calls": [
+      {
+       "name": "OutputError",
+       "line": 14
+      },
+      {
+       "name": "OutputWarning",
+       "line": 132
+      }
+     ]
+    },
+    "Actions/ReadSecrets/ReadSecretsHelper.psm1": {
+     "calls": [
+      {
+       "name": "OutputWarning",
+       "line": 160
+      }
+     ],
+     "loads": [
+      {
+       "kind": "dot",
+       "to": "Actions/AL-Go-Helper.ps1",
+       "line": 9
+      }
+     ]
+    },
+    "Actions/ReadSettings/ReadSettings.ps1": {
+     "calls": [
+      {
+       "name": "OutputError",
+       "line": 50
+      }
+     ],
+     "loads": [
+      {
+       "kind": "dot",
+       "to": "Actions/AL-Go-Helper.ps1",
+       "line": 12
+      }
+     ]
+    },
+    "Actions/ReviewAgent/scripts/BCQualityContextAndMetrics.ps1": {
+     "defines": [
+      {
+       "name": "Clear-CopilotMetricsArtifacts",
+       "line": 537
+      }
+     ]
+    },
+    "Actions/ReviewAgent/scripts/CommentPublishing.ps1": {
+     "calls": [
+      {
+       "name": "Test-GlobMatch",
+       "line": 470
+      }
+     ]
+    },
+    "Actions/ReviewAgent/scripts/FindingPlacement.ps1": {
+     "defines": [
+      {
+       "name": "Test-GlobMatch",
+       "line": 296
+      }
+     ]
+    },
+    "Actions/ReviewAgent/scripts/Invoke-CopilotPRReview.psm1": {
+     "calls": [
+      {
+       "name": "Clear-CopilotMetricsArtifacts",
+       "line": 347
+      }
+     ],
+     "loads": [
+      {
+       "kind": "dot",
+       "to": "Actions/ReviewAgent/scripts/FindingPlacement.ps1",
+       "line": 696
+      },
+      {
+       "kind": "dot",
+       "to": "Actions/ReviewAgent/scripts/BCQualityContextAndMetrics.ps1",
+       "line": 696
+      },
+      {
+       "kind": "dot",
+       "to": "Actions/ReviewAgent/scripts/CommentPublishing.ps1",
+       "line": 696
+      }
+     ]
+    },
+    "Actions/RunPipeline/RunPipeline.ps1": {
+     "calls": [
+      {
+       "name": "OutputWarning",
+       "line": 275
+      }
+     ],
+     "loads": [
+      {
+       "kind": "import",
+       "to": "Actions/TelemetryHelper.psm1",
+       "line": 120
+      },
+      {
+       "kind": "import",
+       "to": "Actions/DetermineProjectsToBuild/DetermineProjectsToBuild.psm1",
+       "line": 122
+      },
+      {
+       "kind": "import",
+       "to": "Actions/.Modules/CheckForWarningsUtils.psm1",
+       "line": 653
+      },
+      {
+       "kind": "dot",
+       "to": "Actions/AL-Go-Helper.ps1",
+       "line": 119
+      }
+     ]
+    },
+    "Actions/RunTests/AlToolTestRunner.psm1": {
+     "loads": [
+      {
+       "kind": "dot",
+       "to": "Actions/AL-Go-Helper.ps1",
+       "line": 13
+      }
+     ]
+    },
+    "Actions/RunTests/RunTests.psm1": {
+     "calls": [
+      {
+       "name": "OutputWarning",
+       "line": 372
+      }
+     ],
+     "loads": [
+      {
+       "kind": "import",
+       "to": "Actions/RunTests/AlToolTestRunner.psm1",
+       "line": 9
+      }
+     ]
+    },
+    "Actions/SetupBCQuality/SetupBCQuality.ps1": {
+     "calls": [
+      {
+       "name": "Get-RelativePluginPath",
+       "line": 180
+      },
+      {
+       "name": "Test-GlobMatch",
+       "line": 185
+      }
+     ],
+     "loads": [
+      {
+       "kind": "import",
+       "to": "Actions/SetupBCQuality/SetupBCQuality.psm1",
+       "line": 28
+      },
+      {
+       "kind": "dot",
+       "to": "Actions/AL-Go-Helper.ps1",
+       "line": 29
+      }
+     ]
+    },
+    "Actions/SetupBCQuality/SetupBCQuality.psm1": {
+     "defines": [
+      {
+       "name": "Test-GlobMatch",
+       "line": 35
+      },
+      {
+       "name": "Get-RelativePluginPath",
+       "line": 90
+      }
+     ]
+    },
+    "Actions/Sign/Sign.psm1": {
+     "loads": [
+      {
+       "kind": "dot",
+       "to": "Actions/AL-Go-Helper.ps1",
+       "line": 20
+      }
+     ]
+    },
+    "Actions/TelemetryHelper.psm1": {
+     "calls": [
+      {
+       "name": "OutputWarning",
+       "line": 333
+      }
+     ],
+     "loads": [
+      {
+       "kind": "import",
+       "to": "Actions/Github-Helper.psm1",
+       "line": 2
+      },
+      {
+       "kind": "dot",
+       "to": "Actions/AL-Go-Helper.ps1",
+       "line": 1
+      }
+     ]
+    },
+    "Actions/Troubleshooting/Troubleshoot.Secrets.ps1": {
+     "calls": [
+      {
+       "name": "OutputWarning",
+       "line": 50
+      }
+     ]
+    },
+    "Actions/Troubleshooting/Troubleshooting.ps1": {
+     "defines": [
+      {
+       "name": "OutputWarning",
+       "line": 14
+      },
+      {
+       "name": "OutputError",
+       "line": 24
+      }
+     ],
+     "loads": [
+      {
+       "kind": "dot",
+       "to": "Actions/AL-Go-Helper.ps1",
+       "line": 8
+      },
+      {
+       "kind": "dot",
+       "to": "Actions/AL-Go-TestRepoHelper.ps1",
+       "line": 44
+      },
+      {
+       "kind": "dot",
+       "to": "Actions/Troubleshooting/Troubleshoot.Secrets.ps1",
+       "line": 48
+      }
+     ]
+    },
+    "Templates/AppSource App/.AL-Go/localDevEnv.ps1": {
+     "calls": [
+      {
+       "name": "Select-Value",
+       "line": 210
+      }
+     ]
+    },
+    "Tests/AL-Go-Helper.Test.ps1": {
+     "calls": [
+      {
+       "name": "GetPackageVersion",
+       "line": 8
+      }
+     ],
+     "loads": [
+      {
+       "kind": "dot",
+       "to": "Actions/AL-Go-Helper.ps1",
+       "line": 3
+      }
+     ]
+    },
+    "Tests/BuildReferenceDocumentation.Action.Test.ps1": {
+     "calls": [
+      {
+       "name": "DownloadAndImportBcContainerHelper",
+       "line": 8
+      }
+     ],
+     "loads": [
+      {
+       "kind": "import",
+       "to": "Tests/TestActionsHelper.psm1",
+       "line": 2
+      },
+      {
+       "kind": "dot",
+       "to": "Actions/AL-Go-Helper.ps1",
+       "line": 7
+      },
+      {
+       "kind": "dot",
+       "to": "Actions/BuildReferenceDocumentation/BuildReferenceDocumentation.HelperFunctions.ps1",
+       "line": 30
+      },
+      {
+       "kind": "dot",
+       "to": "Actions/BuildReferenceDocumentation/BuildReferenceDocumentation.HelperFunctions.ps1",
+       "line": 68
+      },
+      {
+       "kind": "dot",
+       "to": "Actions/BuildReferenceDocumentation/BuildReferenceDocumentation.HelperFunctions.ps1",
+       "line": 96
+      },
+      {
+       "kind": "dot",
+       "to": "Actions/AL-Go-Helper.ps1",
+       "line": 97
+      },
+      {
+       "kind": "dot",
+       "to": "Actions/BuildReferenceDocumentation/BuildReferenceDocumentation.HelperFunctions.ps1",
+       "line": 116
+      },
+      {
+       "kind": "dot",
+       "to": "Actions/AL-Go-Helper.ps1",
+       "line": 117
+      },
+      {
+       "kind": "dot",
+       "to": "Actions/BuildReferenceDocumentation/BuildReferenceDocumentation.HelperFunctions.ps1",
+       "line": 139
+      },
+      {
+       "kind": "dot",
+       "to": "Actions/AL-Go-Helper.ps1",
+       "line": 140
+      },
+      {
+       "kind": "dot",
+       "to": "Actions/BuildReferenceDocumentation/BuildReferenceDocumentation.HelperFunctions.ps1",
+       "line": 177
+      },
+      {
+       "kind": "dot",
+       "to": "Actions/AL-Go-Helper.ps1",
+       "line": 178
+      }
+     ]
+    },
+    "Tests/CompileFromWorkspace.Test.ps1": {
+     "calls": [
+      {
+       "name": "Get-CodeAnalyzers",
+       "line": 131
+      }
+     ],
+     "loads": [
+      {
+       "kind": "import",
+       "to": "Actions/.Modules/CompileFromWorkspace.psm1",
+       "line": 7
+      },
+      {
+       "kind": "dot",
+       "to": "Actions/AL-Go-Helper.ps1",
+       "line": 6
+      },
+      {
+       "kind": "dot",
+       "to": "Actions/AL-Go-Helper.ps1",
+       "line": 239
+      },
+      {
+       "kind": "dot",
+       "to": "Actions/AL-Go-Helper.ps1",
+       "line": 331
+      }
+     ]
+    },
+    "Tests/DetermineArtifactUrl.Test.ps1": {
+     "calls": [
+      {
+       "name": "GetActionScript",
+       "line": 136
+      }
+     ],
+     "loads": [
+      {
+       "kind": "import",
+       "to": "Tests/TestActionsHelper.psm1",
+       "line": 1
+      },
+      {
+       "kind": "dot",
+       "to": "Actions/AL-Go-Helper.ps1",
+       "line": 12
+      }
+     ]
+    },
+    "Tests/ReadSecrets.Action.Test.ps1": {
+     "calls": [
+      {
+       "name": "GetActionScript",
+       "line": 13
+      }
+     ],
+     "loads": [
+      {
+       "kind": "import",
+       "to": "Tests/TestActionsHelper.psm1",
+       "line": 2
+      }
+     ]
+    },
+    "Tests/SetupBCQuality.Action.Test.ps1": {
+     "calls": [
+      {
+       "name": "Test-GlobMatch",
+       "line": 192
+      }
+     ],
+     "loads": [
+      {
+       "kind": "import",
+       "to": "Tests/TestActionsHelper.psm1",
+       "line": 4
+      },
+      {
+       "kind": "import",
+       "to": "Actions/SetupBCQuality/SetupBCQuality.psm1",
+       "line": 11
+      },
+      {
+       "kind": "run",
+       "to": "Actions/SetupBCQuality/SetupBCQuality.ps1",
+       "line": 101
+      },
+      {
+       "kind": "run",
+       "to": "Actions/SetupBCQuality/SetupBCQuality.ps1",
+       "line": 113
+      },
+      {
+       "kind": "run",
+       "to": "Actions/SetupBCQuality/SetupBCQuality.ps1",
+       "line": 132
+      },
+      {
+       "kind": "run",
+       "to": "Actions/SetupBCQuality/SetupBCQuality.ps1",
+       "line": 146
+      },
+      {
+       "kind": "run",
+       "to": "Actions/SetupBCQuality/SetupBCQuality.ps1",
+       "line": 167
+      },
+      {
+       "kind": "run",
+       "to": "Actions/SetupBCQuality/SetupBCQuality.ps1",
+       "line": 179
+      },
+      {
+       "kind": "run",
+       "to": "Actions/SetupBCQuality/SetupBCQuality.ps1",
+       "line": 196
+      },
+      {
+       "kind": "run",
+       "to": "Actions/SetupBCQuality/SetupBCQuality.ps1",
+       "line": 205
+      },
+      {
+       "kind": "run",
+       "to": "Actions/SetupBCQuality/SetupBCQuality.ps1",
+       "line": 215
+      },
+      {
+       "kind": "run",
+       "to": "Actions/SetupBCQuality/SetupBCQuality.ps1",
+       "line": 221
+      },
+      {
+       "kind": "run",
+       "to": "Actions/SetupBCQuality/SetupBCQuality.ps1",
+       "line": 225
+      },
+      {
+       "kind": "run",
+       "to": "Actions/SetupBCQuality/SetupBCQuality.ps1",
+       "line": 322
+      },
+      {
+       "kind": "run",
+       "to": "Actions/SetupBCQuality/SetupBCQuality.ps1",
+       "line": 330
+      },
+      {
+       "kind": "run",
+       "to": "Actions/SetupBCQuality/SetupBCQuality.ps1",
+       "line": 340
+      },
+      {
+       "kind": "run",
+       "to": "Actions/SetupBCQuality/SetupBCQuality.ps1",
+       "line": 362
+      },
+      {
+       "kind": "run",
+       "to": "Actions/SetupBCQuality/SetupBCQuality.ps1",
+       "line": 390
+      },
+      {
+       "kind": "run",
+       "to": "Actions/SetupBCQuality/SetupBCQuality.ps1",
+       "line": 400
+      }
+     ]
+    },
+    "Tests/TestActionsHelper.psm1": {
+     "defines": [
+      {
+       "name": "GetActionScript",
+       "line": 30
+      }
+     ],
+     "loads": [
+      {
+       "kind": "import",
+       "to": "Actions/.Modules/DebugLogHelper.psm1",
+       "line": 5
+      }
+     ]
+    },
+    "e2eTests/Test-AL-Go-Upgrade.ps1": {
+     "calls": [
+      {
+       "name": "OutputWarning",
+       "line": 95
+      },
+      {
+       "name": "MergePRandPull",
+       "line": 118
+      }
+     ],
+     "loads": [
+      {
+       "kind": "import",
+       "to": "e2eTests/e2eTestHelper.psm1",
+       "line": 49
+      }
+     ]
+    },
+    "e2eTests/e2eTestHelper.psm1": {
+     "defines": [
+      {
+       "name": "SetTokenAndRepository",
+       "line": 16
+      },
+      {
+       "name": "Remove-PropertiesFromJsonFile",
+       "line": 113
+      },
+      {
+       "name": "CreateNewAppInFolder",
+       "line": 353
+      },
+      {
+       "name": "CreateAlGoRepository",
+       "line": 409
+      },
+      {
+       "name": "MergePRandPull",
+       "line": 617
+      },
+      {
+       "name": "RemoveRepository",
+       "line": 666
+      }
+     ],
+     "loads": [
+      {
+       "kind": "import",
+       "to": "Actions/Github-Helper.psm1",
+       "line": 9
+      },
+      {
+       "kind": "dot",
+       "to": "Actions/AL-Go-Helper.ps1",
+       "line": 10
+      }
+     ]
+    },
+    "e2eTests/scenarios/BCApps/runtest.ps1": {
+     "calls": [
+      {
+       "name": "InvokeWebRequest",
+       "line": 123
+      }
+     ],
+     "loads": [
+      {
+       "kind": "import",
+       "to": "e2eTests/e2eTestHelper.psm1",
+       "line": 52
+      }
+     ]
+    },
+    "e2eTests/scenarios/FederatedCredentials/runtest.ps1": {
+     "calls": [
+      {
+       "name": "SetTokenAndRepository",
+       "line": 63
+      }
+     ],
+     "loads": [
+      {
+       "kind": "import",
+       "to": "e2eTests/e2eTestHelper.psm1",
+       "line": 56
+      }
+     ]
+    },
+    "e2eTests/scenarios/GitHubPackages/runtest.ps1": {
+     "calls": [
+      {
+       "name": "CreateAlGoRepository",
+       "line": 78
+      }
+     ],
+     "loads": [
+      {
+       "kind": "import",
+       "to": "e2eTests/e2eTestHelper.psm1",
+       "line": 57
+      }
+     ]
+    },
+    "e2eTests/scenarios/PowerPlatform/runtest.ps1": {
+     "calls": [
+      {
+       "name": "Remove-PropertiesFromJsonFile",
+       "line": 70
+      }
+     ],
+     "loads": [
+      {
+       "kind": "import",
+       "to": "e2eTests/e2eTestHelper.psm1",
+       "line": 44
+      }
+     ]
+    },
+    "e2eTests/scenarios/SpecialCharacters/runtest.ps1": {
+     "calls": [
+      {
+       "name": "CreateNewAppInFolder",
+       "line": 69
+      }
+     ],
+     "loads": [
+      {
+       "kind": "import",
+       "to": "e2eTests/e2eTestHelper.psm1",
+       "line": 46
+      }
+     ]
+    },
+    "e2eTests/scenarios/WorkspaceCompilation/runtest.ps1": {
+     "calls": [
+      {
+       "name": "RemoveRepository",
+       "line": 151
+      }
+     ],
+     "loads": [
+      {
+       "kind": "import",
+       "to": "e2eTests/e2eTestHelper.psm1",
+       "line": 52
+      }
+     ]
+    }
+   }
+  },
+  {
+   "name": "azurestack-tools",
+   "repository": "Azure/AzureStack-Tools",
+   "address": "https://github.com/Azure/AzureStack-Tools",
+   "commit": "0e4a9f32c4677e2ee3b687032e0472b890a772b6",
+   "licence": "MIT",
+   "notice": "licences/azurestack-tools.txt",
+   "files": {
+    "DatacenterIntegration/Portal/PortalUserDataGdprUtilities.psm1": {
+     "calls": [
+      {
+       "name": "Initialize-AzureRmEnvironment",
+       "line": 52
+      },
+      {
+       "name": "Resolve-GraphEnvironment",
+       "line": 84
+      },
+      {
+       "name": "Invoke-GraphApi",
+       "line": 217
+      }
+     ],
+     "loads": [
+      {
+       "kind": "import",
+       "to": "Identity/GraphAPI/GraphAPI.psm1",
+       "line": 43
+      },
+      {
+       "kind": "import",
+       "to": "Identity/AzureStack.Identity.Common.psm1",
+       "line": 44
+      }
+     ]
+    },
+    "DatacenterIntegration/Portal/PortalUserDataUtilities.psm1": {
+     "calls": [
+      {
+       "name": "Initialize-AzureRmEnvironment",
+       "line": 52
+      },
+      {
+       "name": "Resolve-GraphEnvironment",
+       "line": 84
+      }
+     ],
+     "loads": [
+      {
+       "kind": "import",
+       "to": "Identity/GraphAPI/GraphAPI.psm1",
+       "line": 43
+      },
+      {
+       "kind": "import",
+       "to": "Identity/AzureStack.Identity.Common.psm1",
+       "line": 44
+      }
+     ]
+    },
+    "Identity/AzureStack.Identity.Common.psm1": {
+     "defines": [
+      {
+       "name": "Initialize-AzureRmEnvironment",
+       "line": 8
+      },
+      {
+       "name": "Resolve-GraphEnvironment",
+       "line": 168
+      }
+     ]
+    },
+    "Identity/AzureStack.Identity.psm1": {
+     "defines": [
+      {
+       "name": "Initialize-AzureRmEnvironment",
+       "line": 85
+      },
+      {
+       "name": "Resolve-GraphEnvironment",
+       "line": 191
+      }
+     ],
+     "calls": [
+      {
+       "name": "Initialize-GraphApplicationServicePrincipal",
+       "line": 480
+      },
+      {
+       "name": "Get-GraphApplicationServicePrincipal",
+       "line": 487
+      },
+      {
+       "name": "Get-GraphEnvironmentInfo",
+       "line": 487
+      },
+      {
+       "name": "Initialize-GraphOAuth2PermissionGrant",
+       "line": 660
+      }
+     ],
+     "loads": [
+      {
+       "kind": "import",
+       "to": "Identity/GraphAPI/GraphAPI.psm1",
+       "line": 366
+      },
+      {
+       "kind": "import",
+       "to": "Identity/GraphAPI/GraphAPI.psm1",
+       "line": 450
+      },
+      {
+       "kind": "import",
+       "to": "Identity/GraphAPI/GraphAPI.psm1",
+       "line": 642
+      },
+      {
+       "kind": "import",
+       "to": "Identity/GraphAPI/GraphAPI.psm1",
+       "line": 934
+      }
+     ]
+    },
+    "Identity/GraphAPI/GraphAPI.psm1": {
+     "defines": [
+      {
+       "name": "Get-GraphEnvironmentInfo",
+       "line": 372
+      },
+      {
+       "name": "Invoke-GraphApi",
+       "line": 584
+      },
+      {
+       "name": "Get-GraphApplicationServicePrincipal",
+       "line": 1028
+      },
+      {
+       "name": "Initialize-GraphApplicationServicePrincipal",
+       "line": 1063
+      },
+      {
+       "name": "Initialize-GraphOAuth2PermissionGrant",
+       "line": 1179
+      }
+     ]
+    },
+    "Registration/RegisterWithAzure.psm1": {
+     "defines": [
+      {
+       "name": "Initialize-AzureRmEnvironment",
+       "line": 14
+      }
+     ]
+    }
+   }
+  },
+  {
+   "name": "tsqlt",
+   "repository": "tSQLt-org/tSQLt",
+   "address": "https://github.com/tSQLt-org/tSQLt",
+   "commit": "4a921d0dacfb1d66b3db124c58158c80e5e910e6",
+   "licence": "Apache-2.0",
+   "notice": "licences/tsqlt.txt",
+   "files": {
+    "Build/CommonFunctionsAndMethods.psm1": {
+     "defines": [
+      {
+       "name": "Log-Output",
+       "line": 16
+      },
+      {
+       "name": "Invoke-SqlFile",
+       "line": 18
+      },
+      {
+       "name": "Remove-DirectoryQuietly",
+       "line": 174
+      }
+     ]
+    },
+    "Build/tSQLt_Build/CreateAssemblyGenerator.ps1": {
+     "calls": [
+      {
+       "name": "Log-Output",
+       "line": 90
+      }
+     ],
+     "loads": [
+      {
+       "kind": "import",
+       "to": "Build/CommonFunctionsAndMethods.psm1",
+       "line": 1
+      }
+     ]
+    },
+    "Build/tSQLt_BuildCLR.ps1": {
+     "calls": [
+      {
+       "name": "Remove-DirectoryQuietly",
+       "line": 13
+      }
+     ],
+     "loads": [
+      {
+       "kind": "import",
+       "to": "Build/CommonFunctionsAndMethods.psm1",
+       "line": 1
+      }
+     ]
+    },
+    "Build/tSQLt_BuildDacpac.ps1": {
+     "calls": [
+      {
+       "name": "Remove-DirectoryQuietly",
+       "line": 25
+      },
+      {
+       "name": "Invoke-SqlFile",
+       "line": 37
+      }
+     ]
+    },
+    "Build/tSQLt_BuildPackage.ps1": {
+     "calls": [
+      {
+       "name": "Remove-DirectoryQuietly",
+       "line": 43
+      }
+     ],
+     "loads": [
+      {
+       "kind": "import",
+       "to": "Build/CommonFunctionsAndMethods.psm1",
+       "line": 1
+      }
+     ]
+    },
+    "Build/tSQLt_Validate.ps1": {
+     "calls": [
+      {
+       "name": "Log-Output",
+       "line": 53
+      }
+     ],
+     "loads": [
+      {
+       "kind": "import",
+       "to": "Build/CommonFunctionsAndMethods.psm1",
+       "line": 1
+      }
+     ]
+    },
+    "Build/tSQLt_ValidateRuntSQLtTests.ps1": {
+     "calls": [
+      {
+       "name": "Log-Output",
+       "line": 1
+      }
+     ]
+    }
+   }
+  }
+ ],
+ "wires": [
+  {
+   "row": 1,
+   "corpus": "al-go",
+   "caller": "Actions/.Modules/CompileFromWorkspace.psm1",
+   "line": 344,
+   "name": "OutputWarning",
+   "definer": "Actions/.Modules/DebugLogHelper.psm1",
+   "verdict": "T",
+   "second": "T",
+   "definerLine": 144
+  },
+  {
+   "row": 2,
+   "corpus": "al-go",
+   "caller": "Actions/.Modules/CompileFromWorkspace.psm1",
+   "line": 344,
+   "name": "OutputWarning",
+   "definer": "Actions/Troubleshooting/Troubleshooting.ps1",
+   "verdict": "F",
+   "second": "F",
+   "why": "the caller never runs after Troubleshooting.ps1 defines its own copy; it reaches DebugLogHelper.psm1 through AL-Go-Helper.ps1 or its module",
+   "definerLine": 14
+  },
+  {
+   "row": 3,
+   "corpus": "al-go",
+   "caller": "Actions/.Modules/ReadSettings.psm1",
+   "line": 581,
+   "name": "OutputWarning",
+   "definer": "Actions/.Modules/DebugLogHelper.psm1",
+   "verdict": "T",
+   "second": "T",
+   "definerLine": 144
+  },
+  {
+   "row": 4,
+   "corpus": "al-go",
+   "caller": "Actions/AddExistingApp/AddExistingApp.ps1",
+   "line": 210,
+   "name": "CommitFromNewFolder",
+   "definer": "Actions/AL-Go-Helper.ps1",
+   "verdict": "T",
+   "second": "T",
+   "definerLine": 1184
+  },
+  {
+   "row": 5,
+   "corpus": "al-go",
+   "caller": "Actions/AddExistingApp/AddExistingApp.ps1",
+   "line": 144,
+   "name": "OutputWarning",
+   "definer": "Actions/Troubleshooting/Troubleshooting.ps1",
+   "verdict": "F",
+   "second": "F",
+   "why": "the caller never runs after Troubleshooting.ps1 defines its own copy; it reaches DebugLogHelper.psm1 through AL-Go-Helper.ps1 or its module",
+   "definerLine": 14
+  },
+  {
+   "row": 6,
+   "corpus": "al-go",
+   "caller": "Actions/AL-Go-Helper.ps1",
+   "line": 993,
+   "name": "invoke-gh",
+   "definer": "Actions/Github-Helper.psm1",
+   "verdict": "T",
+   "second": "T",
+   "definerLine": 349
+  },
+  {
+   "row": 7,
+   "corpus": "al-go",
+   "caller": "Actions/AL-Go-Helper.ps1",
+   "line": 93,
+   "name": "OutputError",
+   "definer": "Actions/.Modules/DebugLogHelper.psm1",
+   "verdict": "T",
+   "second": "T",
+   "definerLine": 122
+  },
+  {
+   "row": 8,
+   "corpus": "al-go",
+   "caller": "Actions/AL-Go-Helper.ps1",
+   "line": 93,
+   "name": "OutputError",
+   "definer": "Actions/Troubleshooting/Troubleshooting.ps1",
+   "verdict": "F",
+   "second": "F",
+   "why": "the caller never runs after Troubleshooting.ps1 defines its own copy; it reaches DebugLogHelper.psm1 through AL-Go-Helper.ps1 or its module",
+   "definerLine": 24
+  },
+  {
+   "row": 9,
+   "corpus": "al-go",
+   "caller": "Actions/AL-Go-Helper.ps1",
+   "line": 652,
+   "name": "OutputWarning",
+   "definer": "Actions/.Modules/DebugLogHelper.psm1",
+   "verdict": "T",
+   "second": "T",
+   "definerLine": 144
+  },
+  {
+   "row": 10,
+   "corpus": "al-go",
+   "caller": "Actions/AL-Go-Helper.ps1",
+   "line": 652,
+   "name": "OutputWarning",
+   "definer": "Actions/Troubleshooting/Troubleshooting.ps1",
+   "verdict": "F",
+   "second": "F",
+   "why": "the caller never runs after Troubleshooting.ps1 defines its own copy; it reaches DebugLogHelper.psm1 through AL-Go-Helper.ps1 or its module",
+   "definerLine": 14
+  },
+  {
+   "row": 11,
+   "corpus": "al-go",
+   "caller": "Actions/AL-Go-TestRepoHelper.ps1",
+   "line": 17,
+   "name": "OutputError",
+   "definer": "Actions/.Modules/DebugLogHelper.psm1",
+   "verdict": "A",
+   "second": "A",
+   "why": "WorkflowInitialize.ps1 reaches this; Troubleshooting.ps1 shadows it with its own copy",
+   "definerLine": 122
+  },
+  {
+   "row": 12,
+   "corpus": "al-go",
+   "caller": "Actions/AL-Go-TestRepoHelper.ps1",
+   "line": 17,
+   "name": "OutputError",
+   "definer": "Actions/Troubleshooting/Troubleshooting.ps1",
+   "verdict": "A",
+   "second": "A",
+   "why": "reached when Troubleshooting.ps1 dot-sources the helper; WorkflowInitialize.ps1 reaches DebugLogHelper.psm1",
+   "definerLine": 24
+  },
+  {
+   "row": 13,
+   "corpus": "al-go",
+   "caller": "Actions/AL-Go-TestRepoHelper.ps1",
+   "line": 20,
+   "name": "OutputWarning",
+   "definer": "Actions/.Modules/DebugLogHelper.psm1",
+   "verdict": "A",
+   "second": "A",
+   "why": "WorkflowInitialize.ps1 reaches this; Troubleshooting.ps1 shadows it with its own copy",
+   "definerLine": 144
+  },
+  {
+   "row": 14,
+   "corpus": "al-go",
+   "caller": "Actions/AL-Go-TestRepoHelper.ps1",
+   "line": 20,
+   "name": "OutputWarning",
+   "definer": "Actions/Troubleshooting/Troubleshooting.ps1",
+   "verdict": "A",
+   "second": "A",
+   "why": "reached when Troubleshooting.ps1 dot-sources the helper; WorkflowInitialize.ps1 reaches DebugLogHelper.psm1",
+   "definerLine": 14
+  },
+  {
+   "row": 15,
+   "corpus": "al-go",
+   "caller": "Actions/AnalyzeTests/TestResultAnalyzer.ps1",
+   "line": 422,
+   "name": "OutputError",
+   "definer": "Actions/.Modules/DebugLogHelper.psm1",
+   "verdict": "T",
+   "second": "T",
+   "definerLine": 122
+  },
+  {
+   "row": 16,
+   "corpus": "al-go",
+   "caller": "Actions/AnalyzeTests/TestResultAnalyzer.ps1",
+   "line": 422,
+   "name": "OutputError",
+   "definer": "Actions/Troubleshooting/Troubleshooting.ps1",
+   "verdict": "F",
+   "second": "F",
+   "why": "the caller never runs after Troubleshooting.ps1 defines its own copy; it reaches DebugLogHelper.psm1 through AL-Go-Helper.ps1 or its module",
+   "definerLine": 24
+  },
+  {
+   "row": 17,
+   "corpus": "al-go",
+   "caller": "Actions/AnalyzeTests/TestResultAnalyzer.ps1",
+   "line": 306,
+   "name": "OutputWarning",
+   "definer": "Actions/.Modules/DebugLogHelper.psm1",
+   "verdict": "T",
+   "second": "T",
+   "definerLine": 144
+  },
+  {
+   "row": 18,
+   "corpus": "al-go",
+   "caller": "Actions/AnalyzeTests/TestResultAnalyzer.ps1",
+   "line": 306,
+   "name": "OutputWarning",
+   "definer": "Actions/Troubleshooting/Troubleshooting.ps1",
+   "verdict": "F",
+   "second": "F",
+   "why": "the caller never runs after Troubleshooting.ps1 defines its own copy; it reaches DebugLogHelper.psm1 through AL-Go-Helper.ps1 or its module",
+   "definerLine": 14
+  },
+  {
+   "row": 19,
+   "corpus": "al-go",
+   "caller": "Actions/BuildReferenceDocumentation/BuildReferenceDocumentation.HelperFunctions.ps1",
+   "line": 19,
+   "name": "OutputDebug",
+   "definer": "Actions/.Modules/DebugLogHelper.psm1",
+   "verdict": "T",
+   "second": "T",
+   "definerLine": 204
+  },
+  {
+   "row": 20,
+   "corpus": "al-go",
+   "caller": "Actions/BuildReferenceDocumentation/BuildReferenceDocumentation.ps1",
+   "line": 117,
+   "name": "OutputWarning",
+   "definer": "Actions/Troubleshooting/Troubleshooting.ps1",
+   "verdict": "F",
+   "second": "F",
+   "why": "the caller never runs after Troubleshooting.ps1 defines its own copy; it reaches DebugLogHelper.psm1 through AL-Go-Helper.ps1 or its module",
+   "definerLine": 14
+  },
+  {
+   "row": 21,
+   "corpus": "al-go",
+   "caller": "Actions/CheckForUpdates/CheckForUpdates.HelperFunctions.ps1",
+   "line": 592,
+   "name": "ConvertTo-HashTable",
+   "definer": "Actions/AL-Go-Helper.ps1",
+   "verdict": "T",
+   "second": "T",
+   "definerLine": 278
+  },
+  {
+   "row": 22,
+   "corpus": "al-go",
+   "caller": "Actions/CheckForUpdates/CheckForUpdates.HelperFunctions.ps1",
+   "line": 500,
+   "name": "OutputWarning",
+   "definer": "Actions/.Modules/DebugLogHelper.psm1",
+   "verdict": "T",
+   "second": "T",
+   "definerLine": 144
+  },
+  {
+   "row": 23,
+   "corpus": "al-go",
+   "caller": "Actions/CheckForUpdates/CheckForUpdates.HelperFunctions.ps1",
+   "line": 500,
+   "name": "OutputWarning",
+   "definer": "Actions/Troubleshooting/Troubleshooting.ps1",
+   "verdict": "F",
+   "second": "F",
+   "why": "the caller never runs after Troubleshooting.ps1 defines its own copy; it reaches DebugLogHelper.psm1 through AL-Go-Helper.ps1 or its module",
+   "definerLine": 14
+  },
+  {
+   "row": 24,
+   "corpus": "al-go",
+   "caller": "Actions/CheckForUpdates/CheckForUpdates.ps1",
+   "line": 255,
+   "name": "CloneIntoNewFolder",
+   "definer": "Actions/AL-Go-Helper.ps1",
+   "verdict": "T",
+   "second": "T",
+   "definerLine": 1145
+  },
+  {
+   "row": 25,
+   "corpus": "al-go",
+   "caller": "Actions/CheckForUpdates/CheckForUpdates.ps1",
+   "line": 226,
+   "name": "OutputWarning",
+   "definer": "Actions/.Modules/DebugLogHelper.psm1",
+   "verdict": "T",
+   "second": "T",
+   "definerLine": 144
+  },
+  {
+   "row": 26,
+   "corpus": "al-go",
+   "caller": "Actions/CheckForUpdates/CheckForUpdates.ps1",
+   "line": 226,
+   "name": "OutputWarning",
+   "definer": "Actions/Troubleshooting/Troubleshooting.ps1",
+   "verdict": "F",
+   "second": "F",
+   "why": "the caller never runs after Troubleshooting.ps1 defines its own copy; it reaches DebugLogHelper.psm1 through AL-Go-Helper.ps1 or its module",
+   "definerLine": 14
+  },
+  {
+   "row": 27,
+   "corpus": "al-go",
+   "caller": "Actions/CompileApps/Compile.ps1",
+   "line": 253,
+   "name": "Get-CustomAnalyzers",
+   "definer": "Actions/.Modules/CompileFromWorkspace.psm1",
+   "verdict": "T",
+   "second": "T",
+   "definerLine": 64
+  },
+  {
+   "row": 28,
+   "corpus": "al-go",
+   "caller": "Actions/CompileApps/Compile.ps1",
+   "line": 137,
+   "name": "OutputWarning",
+   "definer": "Actions/.Modules/DebugLogHelper.psm1",
+   "verdict": "T",
+   "second": "T",
+   "definerLine": 144
+  },
+  {
+   "row": 29,
+   "corpus": "al-go",
+   "caller": "Actions/CompileApps/Compile.ps1",
+   "line": 137,
+   "name": "OutputWarning",
+   "definer": "Actions/Troubleshooting/Troubleshooting.ps1",
+   "verdict": "F",
+   "second": "F",
+   "why": "the caller never runs after Troubleshooting.ps1 defines its own copy; it reaches DebugLogHelper.psm1 through AL-Go-Helper.ps1 or its module",
+   "definerLine": 14
+  },
+  {
+   "row": 30,
+   "corpus": "al-go",
+   "caller": "Actions/CreateApp/CreateApp.ps1",
+   "line": 81,
+   "name": "OutputWarning",
+   "definer": "Actions/.Modules/DebugLogHelper.psm1",
+   "verdict": "T",
+   "second": "T",
+   "definerLine": 144
+  },
+  {
+   "row": 31,
+   "corpus": "al-go",
+   "caller": "Actions/CreateApp/CreateApp.ps1",
+   "line": 81,
+   "name": "OutputWarning",
+   "definer": "Actions/Troubleshooting/Troubleshooting.ps1",
+   "verdict": "F",
+   "second": "F",
+   "why": "the caller never runs after Troubleshooting.ps1 defines its own copy; it reaches DebugLogHelper.psm1 through AL-Go-Helper.ps1 or its module",
+   "definerLine": 14
+  },
+  {
+   "row": 32,
+   "corpus": "al-go",
+   "caller": "Actions/CreateReleaseNotes/CreateReleaseNotes.ps1",
+   "line": 50,
+   "name": "OutputError",
+   "definer": "Actions/Troubleshooting/Troubleshooting.ps1",
+   "verdict": "F",
+   "second": "F",
+   "why": "the caller never runs after Troubleshooting.ps1 defines its own copy; it reaches DebugLogHelper.psm1 through AL-Go-Helper.ps1 or its module",
+   "definerLine": 24
+  },
+  {
+   "row": 33,
+   "corpus": "al-go",
+   "caller": "Actions/CreateReleaseNotes/CreateReleaseNotes.ps1",
+   "line": 57,
+   "name": "OutputWarning",
+   "definer": "Actions/.Modules/DebugLogHelper.psm1",
+   "verdict": "T",
+   "second": "T",
+   "definerLine": 144
+  },
+  {
+   "row": 34,
+   "corpus": "al-go",
+   "caller": "Actions/CreateReleaseNotes/CreateReleaseNotes.ps1",
+   "line": 57,
+   "name": "OutputWarning",
+   "definer": "Actions/Troubleshooting/Troubleshooting.ps1",
+   "verdict": "F",
+   "second": "F",
+   "why": "the caller never runs after Troubleshooting.ps1 defines its own copy; it reaches DebugLogHelper.psm1 through AL-Go-Helper.ps1 or its module",
+   "definerLine": 14
+  },
+  {
+   "row": 35,
+   "corpus": "al-go",
+   "caller": "Actions/Deliver/Deliver.ps1",
+   "line": 45,
+   "name": "InstallAzModuleIfNeeded",
+   "definer": "Actions/AL-Go-Helper.ps1",
+   "verdict": "T",
+   "second": "T",
+   "definerLine": 2489
+  },
+  {
+   "row": 36,
+   "corpus": "al-go",
+   "caller": "Actions/Deliver/Deliver.ps1",
+   "line": 360,
+   "name": "OutputWarning",
+   "definer": "Actions/.Modules/DebugLogHelper.psm1",
+   "verdict": "T",
+   "second": "T",
+   "definerLine": 144
+  },
+  {
+   "row": 37,
+   "corpus": "al-go",
+   "caller": "Actions/Deliver/Deliver.ps1",
+   "line": 360,
+   "name": "OutputWarning",
+   "definer": "Actions/Troubleshooting/Troubleshooting.ps1",
+   "verdict": "F",
+   "second": "F",
+   "why": "the caller never runs after Troubleshooting.ps1 defines its own copy; it reaches DebugLogHelper.psm1 through AL-Go-Helper.ps1 or its module",
+   "definerLine": 14
+  },
+  {
+   "row": 38,
+   "corpus": "al-go",
+   "caller": "Actions/Deploy/Deploy.ps1",
+   "line": 19,
+   "name": "DownloadAndImportBcContainerHelper",
+   "definer": "Actions/AL-Go-Helper.ps1",
+   "verdict": "T",
+   "second": "T",
+   "definerLine": 524
+  },
+  {
+   "row": 39,
+   "corpus": "al-go",
+   "caller": "Actions/Deploy/Deploy.ps1",
+   "line": 136,
+   "name": "OutputError",
+   "definer": "Actions/.Modules/DebugLogHelper.psm1",
+   "verdict": "T",
+   "second": "T",
+   "definerLine": 122
+  },
+  {
+   "row": 40,
+   "corpus": "al-go",
+   "caller": "Actions/Deploy/Deploy.ps1",
+   "line": 136,
+   "name": "OutputError",
+   "definer": "Actions/Troubleshooting/Troubleshooting.ps1",
+   "verdict": "F",
+   "second": "F",
+   "why": "the caller never runs after Troubleshooting.ps1 defines its own copy; it reaches DebugLogHelper.psm1 through AL-Go-Helper.ps1 or its module",
+   "definerLine": 24
+  },
+  {
+   "row": 41,
+   "corpus": "al-go",
+   "caller": "Actions/Deploy/Deploy.psm1",
+   "line": 118,
+   "name": "OutputWarning",
+   "definer": "Actions/.Modules/DebugLogHelper.psm1",
+   "verdict": "T",
+   "second": "T",
+   "definerLine": 144
+  },
+  {
+   "row": 42,
+   "corpus": "al-go",
+   "caller": "Actions/Deploy/Deploy.psm1",
+   "line": 118,
+   "name": "OutputWarning",
+   "definer": "Actions/Troubleshooting/Troubleshooting.ps1",
+   "verdict": "F",
+   "second": "F",
+   "why": "the caller never runs after Troubleshooting.ps1 defines its own copy; it reaches DebugLogHelper.psm1 through AL-Go-Helper.ps1 or its module",
+   "definerLine": 14
+  },
+  {
+   "row": 43,
+   "corpus": "al-go",
+   "caller": "Actions/DetermineProjectsToBuild/DetermineProjectsToBuild.Action.ps1",
+   "line": 33,
+   "name": "FindLatestSuccessfulCICDRun",
+   "definer": "Actions/Github-Helper.psm1",
+   "verdict": "T",
+   "second": "T",
+   "definerLine": 997
+  },
+  {
+   "row": 44,
+   "corpus": "al-go",
+   "caller": "Actions/DetermineProjectsToBuild/DetermineProjectsToBuild.Action.ps1",
+   "line": 47,
+   "name": "OutputWarning",
+   "definer": "Actions/.Modules/DebugLogHelper.psm1",
+   "verdict": "T",
+   "second": "T",
+   "definerLine": 144
+  },
+  {
+   "row": 45,
+   "corpus": "al-go",
+   "caller": "Actions/DetermineProjectsToBuild/DetermineProjectsToBuild.Action.ps1",
+   "line": 47,
+   "name": "OutputWarning",
+   "definer": "Actions/Troubleshooting/Troubleshooting.ps1",
+   "verdict": "F",
+   "second": "F",
+   "why": "the caller never runs after Troubleshooting.ps1 defines its own copy; it reaches DebugLogHelper.psm1 through AL-Go-Helper.ps1 or its module",
+   "definerLine": 14
+  },
+  {
+   "row": 46,
+   "corpus": "al-go",
+   "caller": "Actions/DownloadPreviousRelease/DownloadPreviousRelease.ps1",
+   "line": 32,
+   "name": "OutputError",
+   "definer": "Actions/Troubleshooting/Troubleshooting.ps1",
+   "verdict": "F",
+   "second": "F",
+   "why": "the caller never runs after Troubleshooting.ps1 defines its own copy; it reaches DebugLogHelper.psm1 through AL-Go-Helper.ps1 or its module",
+   "definerLine": 24
+  },
+  {
+   "row": 47,
+   "corpus": "al-go",
+   "caller": "Actions/DownloadPreviousRelease/DownloadPreviousRelease.ps1",
+   "line": 28,
+   "name": "OutputWarning",
+   "definer": "Actions/Troubleshooting/Troubleshooting.ps1",
+   "verdict": "F",
+   "second": "F",
+   "why": "the caller never runs after Troubleshooting.ps1 defines its own copy; it reaches DebugLogHelper.psm1 through AL-Go-Helper.ps1 or its module",
+   "definerLine": 14
+  },
+  {
+   "row": 48,
+   "corpus": "al-go",
+   "caller": "Actions/DownloadProjectDependencies/DownloadProjectDependencies.psm1",
+   "line": 59,
+   "name": "OutputWarning",
+   "definer": "Actions/.Modules/DebugLogHelper.psm1",
+   "verdict": "T",
+   "second": "T",
+   "definerLine": 144
+  },
+  {
+   "row": 49,
+   "corpus": "al-go",
+   "caller": "Actions/DownloadProjectDependencies/DownloadProjectDependencies.psm1",
+   "line": 59,
+   "name": "OutputWarning",
+   "definer": "Actions/Troubleshooting/Troubleshooting.ps1",
+   "verdict": "F",
+   "second": "F",
+   "why": "the caller never runs after Troubleshooting.ps1 defines its own copy; it reaches DebugLogHelper.psm1 through AL-Go-Helper.ps1 or its module",
+   "definerLine": 14
+  },
+  {
+   "row": 50,
+   "corpus": "al-go",
+   "caller": "Actions/Github-Helper.psm1",
+   "line": 677,
+   "name": "OutputWarning",
+   "definer": "Actions/.Modules/DebugLogHelper.psm1",
+   "verdict": "T",
+   "second": "T",
+   "definerLine": 144
+  },
+  {
+   "row": 51,
+   "corpus": "al-go",
+   "caller": "Actions/Github-Helper.psm1",
+   "line": 677,
+   "name": "OutputWarning",
+   "definer": "Actions/Troubleshooting/Troubleshooting.ps1",
+   "verdict": "F",
+   "second": "F",
+   "why": "the caller never runs after Troubleshooting.ps1 defines its own copy; it reaches DebugLogHelper.psm1 through AL-Go-Helper.ps1 or its module",
+   "definerLine": 14
+  },
+  {
+   "row": 52,
+   "corpus": "al-go",
+   "caller": "Actions/IncrementVersionNumber/IncrementVersionNumber.ps1",
+   "line": 92,
+   "name": "Set-VersionInAppManifests",
+   "definer": "Actions/IncrementVersionNumber/IncrementVersionNumber.psm1",
+   "verdict": "T",
+   "second": "T",
+   "definerLine": 195
+  },
+  {
+   "row": 53,
+   "corpus": "al-go",
+   "caller": "Actions/ProcessALCodeAnalysisLogs/ProcessALCodeAnalysisLogs.ps1",
+   "line": 14,
+   "name": "OutputError",
+   "definer": "Actions/.Modules/DebugLogHelper.psm1",
+   "verdict": "T",
+   "second": "T",
+   "definerLine": 122
+  },
+  {
+   "row": 54,
+   "corpus": "al-go",
+   "caller": "Actions/ProcessALCodeAnalysisLogs/ProcessALCodeAnalysisLogs.ps1",
+   "line": 14,
+   "name": "OutputError",
+   "definer": "Actions/Troubleshooting/Troubleshooting.ps1",
+   "verdict": "F",
+   "second": "F",
+   "why": "the caller never runs after Troubleshooting.ps1 defines its own copy; it reaches DebugLogHelper.psm1 through AL-Go-Helper.ps1 or its module",
+   "definerLine": 24
+  },
+  {
+   "row": 55,
+   "corpus": "al-go",
+   "caller": "Actions/ProcessALCodeAnalysisLogs/ProcessALCodeAnalysisLogs.ps1",
+   "line": 132,
+   "name": "OutputWarning",
+   "definer": "Actions/.Modules/DebugLogHelper.psm1",
+   "verdict": "T",
+   "second": "T",
+   "definerLine": 144
+  },
+  {
+   "row": 56,
+   "corpus": "al-go",
+   "caller": "Actions/ProcessALCodeAnalysisLogs/ProcessALCodeAnalysisLogs.ps1",
+   "line": 132,
+   "name": "OutputWarning",
+   "definer": "Actions/Troubleshooting/Troubleshooting.ps1",
+   "verdict": "F",
+   "second": "F",
+   "why": "the caller never runs after Troubleshooting.ps1 defines its own copy; it reaches DebugLogHelper.psm1 through AL-Go-Helper.ps1 or its module",
+   "definerLine": 14
+  },
+  {
+   "row": 57,
+   "corpus": "al-go",
+   "caller": "Actions/ReadSecrets/ReadSecretsHelper.psm1",
+   "line": 160,
+   "name": "OutputWarning",
+   "definer": "Actions/.Modules/DebugLogHelper.psm1",
+   "verdict": "T",
+   "second": "T",
+   "definerLine": 144
+  },
+  {
+   "row": 58,
+   "corpus": "al-go",
+   "caller": "Actions/ReadSecrets/ReadSecretsHelper.psm1",
+   "line": 160,
+   "name": "OutputWarning",
+   "definer": "Actions/Troubleshooting/Troubleshooting.ps1",
+   "verdict": "F",
+   "second": "F",
+   "why": "the caller never runs after Troubleshooting.ps1 defines its own copy; it reaches DebugLogHelper.psm1 through AL-Go-Helper.ps1 or its module",
+   "definerLine": 14
+  },
+  {
+   "row": 59,
+   "corpus": "al-go",
+   "caller": "Actions/ReadSettings/ReadSettings.ps1",
+   "line": 50,
+   "name": "OutputError",
+   "definer": "Actions/Troubleshooting/Troubleshooting.ps1",
+   "verdict": "F",
+   "second": "F",
+   "why": "the caller never runs after Troubleshooting.ps1 defines its own copy; it reaches DebugLogHelper.psm1 through AL-Go-Helper.ps1 or its module",
+   "definerLine": 24
+  },
+  {
+   "row": 60,
+   "corpus": "al-go",
+   "caller": "Actions/ReviewAgent/scripts/CommentPublishing.ps1",
+   "line": 470,
+   "name": "Test-GlobMatch",
+   "definer": "Actions/ReviewAgent/scripts/FindingPlacement.ps1",
+   "verdict": "T",
+   "second": "T",
+   "definerLine": 296
+  },
+  {
+   "row": 61,
+   "corpus": "al-go",
+   "caller": "Actions/ReviewAgent/scripts/CommentPublishing.ps1",
+   "line": 470,
+   "name": "Test-GlobMatch",
+   "definer": "Actions/SetupBCQuality/SetupBCQuality.psm1",
+   "verdict": "F",
+   "second": "F",
+   "why": "the caller loads the other copy of Test-GlobMatch",
+   "definerLine": 35
+  },
+  {
+   "row": 62,
+   "corpus": "al-go",
+   "caller": "Actions/ReviewAgent/scripts/Invoke-CopilotPRReview.psm1",
+   "line": 347,
+   "name": "Clear-CopilotMetricsArtifacts",
+   "definer": "Actions/ReviewAgent/scripts/BCQualityContextAndMetrics.ps1",
+   "verdict": "T",
+   "second": "T",
+   "definerLine": 537
+  },
+  {
+   "row": 63,
+   "corpus": "al-go",
+   "caller": "Actions/RunPipeline/RunPipeline.ps1",
+   "line": 275,
+   "name": "OutputWarning",
+   "definer": "Actions/Troubleshooting/Troubleshooting.ps1",
+   "verdict": "F",
+   "second": "F",
+   "why": "the caller never runs after Troubleshooting.ps1 defines its own copy; it reaches DebugLogHelper.psm1 through AL-Go-Helper.ps1 or its module",
+   "definerLine": 14
+  },
+  {
+   "row": 64,
+   "corpus": "al-go",
+   "caller": "Actions/RunTests/RunTests.psm1",
+   "line": 372,
+   "name": "OutputWarning",
+   "definer": "Actions/.Modules/DebugLogHelper.psm1",
+   "verdict": "T",
+   "second": "T",
+   "definerLine": 144
+  },
+  {
+   "row": 65,
+   "corpus": "al-go",
+   "caller": "Actions/RunTests/RunTests.psm1",
+   "line": 372,
+   "name": "OutputWarning",
+   "definer": "Actions/Troubleshooting/Troubleshooting.ps1",
+   "verdict": "F",
+   "second": "F",
+   "why": "the caller never runs after Troubleshooting.ps1 defines its own copy; it reaches DebugLogHelper.psm1 through AL-Go-Helper.ps1 or its module",
+   "definerLine": 14
+  },
+  {
+   "row": 66,
+   "corpus": "al-go",
+   "caller": "Actions/SetupBCQuality/SetupBCQuality.ps1",
+   "line": 180,
+   "name": "Get-RelativePluginPath",
+   "definer": "Actions/SetupBCQuality/SetupBCQuality.psm1",
+   "verdict": "T",
+   "second": "T",
+   "definerLine": 90
+  },
+  {
+   "row": 67,
+   "corpus": "al-go",
+   "caller": "Actions/SetupBCQuality/SetupBCQuality.ps1",
+   "line": 185,
+   "name": "Test-GlobMatch",
+   "definer": "Actions/ReviewAgent/scripts/FindingPlacement.ps1",
+   "verdict": "F",
+   "second": "F",
+   "why": "the caller loads the other copy of Test-GlobMatch",
+   "definerLine": 296
+  },
+  {
+   "row": 68,
+   "corpus": "al-go",
+   "caller": "Actions/SetupBCQuality/SetupBCQuality.ps1",
+   "line": 185,
+   "name": "Test-GlobMatch",
+   "definer": "Actions/SetupBCQuality/SetupBCQuality.psm1",
+   "verdict": "T",
+   "second": "T",
+   "definerLine": 35
+  },
+  {
+   "row": 69,
+   "corpus": "al-go",
+   "caller": "Actions/TelemetryHelper.psm1",
+   "line": 333,
+   "name": "OutputWarning",
+   "definer": "Actions/.Modules/DebugLogHelper.psm1",
+   "verdict": "T",
+   "second": "T",
+   "definerLine": 144
+  },
+  {
+   "row": 70,
+   "corpus": "al-go",
+   "caller": "Actions/TelemetryHelper.psm1",
+   "line": 333,
+   "name": "OutputWarning",
+   "definer": "Actions/Troubleshooting/Troubleshooting.ps1",
+   "verdict": "F",
+   "second": "F",
+   "why": "the caller never runs after Troubleshooting.ps1 defines its own copy; it reaches DebugLogHelper.psm1 through AL-Go-Helper.ps1 or its module",
+   "definerLine": 14
+  },
+  {
+   "row": 71,
+   "corpus": "al-go",
+   "caller": "Actions/Troubleshooting/Troubleshoot.Secrets.ps1",
+   "line": 50,
+   "name": "OutputWarning",
+   "definer": "Actions/Troubleshooting/Troubleshooting.ps1",
+   "verdict": "T",
+   "second": "T",
+   "definerLine": 14
+  },
+  {
+   "row": 72,
+   "corpus": "al-go",
+   "caller": "e2eTests/scenarios/BCApps/runtest.ps1",
+   "line": 123,
+   "name": "InvokeWebRequest",
+   "definer": "Actions/Github-Helper.psm1",
+   "verdict": "T",
+   "second": "T",
+   "definerLine": 57
+  },
+  {
+   "row": 73,
+   "corpus": "al-go",
+   "caller": "e2eTests/scenarios/FederatedCredentials/runtest.ps1",
+   "line": 63,
+   "name": "SetTokenAndRepository",
+   "definer": "e2eTests/e2eTestHelper.psm1",
+   "verdict": "T",
+   "second": "T",
+   "definerLine": 16
+  },
+  {
+   "row": 74,
+   "corpus": "al-go",
+   "caller": "e2eTests/scenarios/GitHubPackages/runtest.ps1",
+   "line": 78,
+   "name": "CreateAlGoRepository",
+   "definer": "e2eTests/e2eTestHelper.psm1",
+   "verdict": "T",
+   "second": "T",
+   "definerLine": 409
+  },
+  {
+   "row": 75,
+   "corpus": "al-go",
+   "caller": "e2eTests/scenarios/PowerPlatform/runtest.ps1",
+   "line": 70,
+   "name": "Remove-PropertiesFromJsonFile",
+   "definer": "e2eTests/e2eTestHelper.psm1",
+   "verdict": "T",
+   "second": "T",
+   "definerLine": 113
+  },
+  {
+   "row": 76,
+   "corpus": "al-go",
+   "caller": "e2eTests/scenarios/SpecialCharacters/runtest.ps1",
+   "line": 69,
+   "name": "CreateNewAppInFolder",
+   "definer": "e2eTests/e2eTestHelper.psm1",
+   "verdict": "T",
+   "second": "T",
+   "definerLine": 353
+  },
+  {
+   "row": 77,
+   "corpus": "al-go",
+   "caller": "e2eTests/scenarios/WorkspaceCompilation/runtest.ps1",
+   "line": 151,
+   "name": "RemoveRepository",
+   "definer": "e2eTests/e2eTestHelper.psm1",
+   "verdict": "T",
+   "second": "T",
+   "definerLine": 666
+  },
+  {
+   "row": 78,
+   "corpus": "al-go",
+   "caller": "e2eTests/Test-AL-Go-Upgrade.ps1",
+   "line": 118,
+   "name": "MergePRandPull",
+   "definer": "e2eTests/e2eTestHelper.psm1",
+   "verdict": "T",
+   "second": "T",
+   "definerLine": 617
+  },
+  {
+   "row": 79,
+   "corpus": "al-go",
+   "caller": "e2eTests/Test-AL-Go-Upgrade.ps1",
+   "line": 95,
+   "name": "OutputWarning",
+   "definer": "Actions/.Modules/DebugLogHelper.psm1",
+   "verdict": "T",
+   "second": "T",
+   "definerLine": 144
+  },
+  {
+   "row": 80,
+   "corpus": "al-go",
+   "caller": "e2eTests/Test-AL-Go-Upgrade.ps1",
+   "line": 95,
+   "name": "OutputWarning",
+   "definer": "Actions/Troubleshooting/Troubleshooting.ps1",
+   "verdict": "F",
+   "second": "F",
+   "why": "the caller never runs after Troubleshooting.ps1 defines its own copy; it reaches DebugLogHelper.psm1 through AL-Go-Helper.ps1 or its module",
+   "definerLine": 14
+  },
+  {
+   "row": 81,
+   "corpus": "al-go",
+   "caller": "Templates/AppSource App/.AL-Go/localDevEnv.ps1",
+   "line": 210,
+   "name": "Select-Value",
+   "definer": "Actions/AL-Go-Helper.ps1",
+   "verdict": "T",
+   "second": "T",
+   "definerLine": 1264
+  },
+  {
+   "row": 82,
+   "corpus": "al-go",
+   "caller": "Tests/AL-Go-Helper.Test.ps1",
+   "line": 8,
+   "name": "GetPackageVersion",
+   "definer": "Actions/AL-Go-Helper.ps1",
+   "verdict": "T",
+   "second": "T",
+   "definerLine": 2461
+  },
+  {
+   "row": 83,
+   "corpus": "al-go",
+   "caller": "Tests/BuildReferenceDocumentation.Action.Test.ps1",
+   "line": 8,
+   "name": "DownloadAndImportBcContainerHelper",
+   "definer": "Actions/AL-Go-Helper.ps1",
+   "verdict": "T",
+   "second": "T",
+   "definerLine": 524
+  },
+  {
+   "row": 84,
+   "corpus": "al-go",
+   "caller": "Tests/CompileFromWorkspace.Test.ps1",
+   "line": 131,
+   "name": "Get-CodeAnalyzers",
+   "definer": "Actions/.Modules/CompileFromWorkspace.psm1",
+   "verdict": "T",
+   "second": "T",
+   "definerLine": 19
+  },
+  {
+   "row": 85,
+   "corpus": "al-go",
+   "caller": "Tests/DetermineArtifactUrl.Test.ps1",
+   "line": 136,
+   "name": "GetActionScript",
+   "definer": "Tests/TestActionsHelper.psm1",
+   "verdict": "T",
+   "second": "T",
+   "definerLine": 30
+  },
+  {
+   "row": 86,
+   "corpus": "al-go",
+   "caller": "Tests/ReadSecrets.Action.Test.ps1",
+   "line": 13,
+   "name": "GetActionScript",
+   "definer": "Tests/TestActionsHelper.psm1",
+   "verdict": "T",
+   "second": "T",
+   "definerLine": 30
+  },
+  {
+   "row": 87,
+   "corpus": "al-go",
+   "caller": "Tests/SetupBCQuality.Action.Test.ps1",
+   "line": 192,
+   "name": "Test-GlobMatch",
+   "definer": "Actions/ReviewAgent/scripts/FindingPlacement.ps1",
+   "verdict": "F",
+   "second": "F",
+   "why": "the caller loads the other copy of Test-GlobMatch",
+   "definerLine": 296
+  },
+  {
+   "row": 88,
+   "corpus": "al-go",
+   "caller": "Tests/SetupBCQuality.Action.Test.ps1",
+   "line": 192,
+   "name": "Test-GlobMatch",
+   "definer": "Actions/SetupBCQuality/SetupBCQuality.psm1",
+   "verdict": "T",
+   "second": "T",
+   "definerLine": 35
+  },
+  {
+   "row": 89,
+   "corpus": "azurestack-tools",
+   "caller": "DatacenterIntegration/Portal/PortalUserDataGdprUtilities.psm1",
+   "line": 52,
+   "name": "Initialize-AzureRmEnvironment",
+   "definer": "Identity/AzureStack.Identity.Common.psm1",
+   "verdict": "T",
+   "second": "T",
+   "definerLine": 8
+  },
+  {
+   "row": 90,
+   "corpus": "azurestack-tools",
+   "caller": "DatacenterIntegration/Portal/PortalUserDataGdprUtilities.psm1",
+   "line": 52,
+   "name": "Initialize-AzureRmEnvironment",
+   "definer": "Identity/AzureStack.Identity.psm1",
+   "verdict": "F",
+   "second": "F",
+   "why": "the Portal module imports AzureStack.Identity.Common.psm1 (line 44), whose copy it reaches; the target is never loaded",
+   "definerLine": 85
+  },
+  {
+   "row": 91,
+   "corpus": "azurestack-tools",
+   "caller": "DatacenterIntegration/Portal/PortalUserDataGdprUtilities.psm1",
+   "line": 52,
+   "name": "Initialize-AzureRmEnvironment",
+   "definer": "Registration/RegisterWithAzure.psm1",
+   "verdict": "F",
+   "second": "F",
+   "why": "the Portal module imports AzureStack.Identity.Common.psm1 (line 44), whose copy it reaches; the target is never loaded",
+   "definerLine": 14
+  },
+  {
+   "row": 92,
+   "corpus": "azurestack-tools",
+   "caller": "DatacenterIntegration/Portal/PortalUserDataGdprUtilities.psm1",
+   "line": 217,
+   "name": "Invoke-GraphApi",
+   "definer": "Identity/GraphAPI/GraphAPI.psm1",
+   "verdict": "T",
+   "second": "T",
+   "definerLine": 584
+  },
+  {
+   "row": 93,
+   "corpus": "azurestack-tools",
+   "caller": "DatacenterIntegration/Portal/PortalUserDataGdprUtilities.psm1",
+   "line": 84,
+   "name": "Resolve-GraphEnvironment",
+   "definer": "Identity/AzureStack.Identity.Common.psm1",
+   "verdict": "T",
+   "second": "T",
+   "definerLine": 168
+  },
+  {
+   "row": 94,
+   "corpus": "azurestack-tools",
+   "caller": "DatacenterIntegration/Portal/PortalUserDataGdprUtilities.psm1",
+   "line": 84,
+   "name": "Resolve-GraphEnvironment",
+   "definer": "Identity/AzureStack.Identity.psm1",
+   "verdict": "F",
+   "second": "F",
+   "why": "the Portal module imports AzureStack.Identity.Common.psm1 (line 44), whose copy it reaches; the target is never loaded",
+   "definerLine": 191
+  },
+  {
+   "row": 95,
+   "corpus": "azurestack-tools",
+   "caller": "DatacenterIntegration/Portal/PortalUserDataUtilities.psm1",
+   "line": 52,
+   "name": "Initialize-AzureRmEnvironment",
+   "definer": "Identity/AzureStack.Identity.Common.psm1",
+   "verdict": "T",
+   "second": "T",
+   "definerLine": 8
+  },
+  {
+   "row": 96,
+   "corpus": "azurestack-tools",
+   "caller": "DatacenterIntegration/Portal/PortalUserDataUtilities.psm1",
+   "line": 52,
+   "name": "Initialize-AzureRmEnvironment",
+   "definer": "Identity/AzureStack.Identity.psm1",
+   "verdict": "F",
+   "second": "F",
+   "why": "the Portal module imports AzureStack.Identity.Common.psm1 (line 44), whose copy it reaches; the target is never loaded",
+   "definerLine": 85
+  },
+  {
+   "row": 97,
+   "corpus": "azurestack-tools",
+   "caller": "DatacenterIntegration/Portal/PortalUserDataUtilities.psm1",
+   "line": 52,
+   "name": "Initialize-AzureRmEnvironment",
+   "definer": "Registration/RegisterWithAzure.psm1",
+   "verdict": "F",
+   "second": "F",
+   "why": "the Portal module imports AzureStack.Identity.Common.psm1 (line 44), whose copy it reaches; the target is never loaded",
+   "definerLine": 14
+  },
+  {
+   "row": 98,
+   "corpus": "azurestack-tools",
+   "caller": "DatacenterIntegration/Portal/PortalUserDataUtilities.psm1",
+   "line": 84,
+   "name": "Resolve-GraphEnvironment",
+   "definer": "Identity/AzureStack.Identity.Common.psm1",
+   "verdict": "T",
+   "second": "T",
+   "definerLine": 168
+  },
+  {
+   "row": 99,
+   "corpus": "azurestack-tools",
+   "caller": "DatacenterIntegration/Portal/PortalUserDataUtilities.psm1",
+   "line": 84,
+   "name": "Resolve-GraphEnvironment",
+   "definer": "Identity/AzureStack.Identity.psm1",
+   "verdict": "F",
+   "second": "F",
+   "why": "the Portal module imports AzureStack.Identity.Common.psm1 (line 44), whose copy it reaches; the target is never loaded",
+   "definerLine": 191
+  },
+  {
+   "row": 100,
+   "corpus": "azurestack-tools",
+   "caller": "Identity/AzureStack.Identity.psm1",
+   "line": 487,
+   "name": "Get-GraphApplicationServicePrincipal",
+   "definer": "Identity/GraphAPI/GraphAPI.psm1",
+   "verdict": "T",
+   "second": "T",
+   "definerLine": 1028
+  },
+  {
+   "row": 101,
+   "corpus": "azurestack-tools",
+   "caller": "Identity/AzureStack.Identity.psm1",
+   "line": 487,
+   "name": "Get-GraphEnvironmentInfo",
+   "definer": "Identity/GraphAPI/GraphAPI.psm1",
+   "verdict": "T",
+   "second": "T",
+   "definerLine": 372
+  },
+  {
+   "row": 102,
+   "corpus": "azurestack-tools",
+   "caller": "Identity/AzureStack.Identity.psm1",
+   "line": 480,
+   "name": "Initialize-GraphApplicationServicePrincipal",
+   "definer": "Identity/GraphAPI/GraphAPI.psm1",
+   "verdict": "T",
+   "second": "T",
+   "definerLine": 1063
+  },
+  {
+   "row": 103,
+   "corpus": "azurestack-tools",
+   "caller": "Identity/AzureStack.Identity.psm1",
+   "line": 660,
+   "name": "Initialize-GraphOAuth2PermissionGrant",
+   "definer": "Identity/GraphAPI/GraphAPI.psm1",
+   "verdict": "T",
+   "second": "T",
+   "definerLine": 1179
+  },
+  {
+   "row": 104,
+   "corpus": "dbatools",
+   "caller": ".github/runners/image-scripts/step1-tools.ps1",
+   "line": 75,
+   "name": "Remove-Item",
+   "definer": "tests/Export-DbaInstance.Tests.ps1",
+   "verdict": "F",
+   "second": "F",
+   "why": "Remove-Item is the cmdlet or program; the target is a test-local stub inside a block",
+   "definerLine": 301
+  },
+  {
+   "row": 105,
+   "corpus": "dbatools",
+   "caller": ".github/runners/tests/fleet-controller.Tests.ps1",
+   "line": 1043,
+   "name": "Get-FleetState",
+   "definer": ".github/runners/controller/Modules/FleetCore/FleetCore.psm1",
+   "verdict": "T",
+   "second": "T",
+   "definerLine": 532
+  },
+  {
+   "row": 106,
+   "corpus": "dbatools",
+   "caller": ".github/runners/tests/fleet-controller.Tests.ps1",
+   "line": 1043,
+   "name": "Get-FleetState",
+   "definer": ".github/runners/reconcile-runner-fleet.ps1",
+   "verdict": "F",
+   "second": "F",
+   "why": "the test calls inside InModuleScope FleetCore, reaching FleetCore.psm1; reconcile-runner-fleet.ps1 is never loaded",
+   "definerLine": 153
+  },
+  {
+   "row": 107,
+   "corpus": "dbatools",
+   "caller": ".github/runners/tests/fleet-controller.Tests.ps1",
+   "line": 143,
+   "name": "Get-RunnerDemand",
+   "definer": ".github/runners/controller/Modules/FleetCore/FleetCore.psm1",
+   "verdict": "T",
+   "second": "T",
+   "definerLine": 963
+  },
+  {
+   "row": 108,
+   "corpus": "dbatools",
+   "caller": ".github/runners/tests/fleet-controller.Tests.ps1",
+   "line": 143,
+   "name": "Get-RunnerDemand",
+   "definer": ".github/runners/reconcile-runner-fleet.ps1",
+   "verdict": "F",
+   "second": "F",
+   "why": "the test calls inside InModuleScope FleetCore, reaching FleetCore.psm1; reconcile-runner-fleet.ps1 is never loaded",
+   "definerLine": 371
+  },
+  {
+   "row": 109,
+   "corpus": "dbatools",
+   "caller": ".github/runners/tests/fleet-controller.Tests.ps1",
+   "line": 802,
+   "name": "Register-PoolVms",
+   "definer": ".github/runners/reconcile-runner-fleet.ps1",
+   "verdict": "F",
+   "second": "F",
+   "why": "the test calls inside InModuleScope FleetCore, reaching FleetCore.psm1; reconcile-runner-fleet.ps1 is never loaded",
+   "definerLine": 467
+  },
+  {
+   "row": 110,
+   "corpus": "dbatools",
+   "caller": ".github/scripts/gh-actions-repl-3.ps1",
+   "line": 17,
+   "name": "Invoke-DbaQuery",
+   "definer": "public/Invoke-DbaQuery.ps1",
+   "verdict": "T",
+   "second": "T",
+   "definerLine": 1
+  },
+  {
+   "row": 111,
+   "corpus": "dbatools",
+   "caller": ".github/scripts/gh-s3actions.ps1",
+   "line": 449,
+   "name": "Test-DbaPath",
+   "definer": "public/Test-DbaPath.ps1",
+   "verdict": "T",
+   "second": "T",
+   "definerLine": 1
+  },
+  {
+   "row": 112,
+   "corpus": "dbatools",
+   "caller": ".github/scripts/gh-winactions.ps1",
+   "line": 39,
+   "name": "Export-DbaDacPackage",
+   "definer": "public/Export-DbaDacPackage.ps1",
+   "verdict": "T",
+   "second": "T",
+   "definerLine": 1
+  },
+  {
+   "row": 113,
+   "corpus": "dbatools",
+   "caller": "private/dynamicparams/group.ps1",
+   "line": 58,
+   "name": "Register-DbaTeppScriptblock",
+   "definer": "private/functions/tabcompletion/Register-DbaTeppScriptBlock.ps1",
+   "verdict": "T",
+   "second": "T",
+   "definerLine": 1
+  },
+  {
+   "row": 114,
+   "corpus": "dbatools",
+   "caller": "private/functions/configuration/Write-DbatoolsConfigFile.ps1",
+   "line": 43,
+   "name": "Test-Path",
+   "definer": "tests/Export-DbaInstance.Tests.ps1",
+   "verdict": "F",
+   "second": "F",
+   "why": "Test-Path is the cmdlet or program; the target is a test-local stub inside a block",
+   "definerLine": 60
+  },
+  {
+   "row": 115,
+   "corpus": "dbatools",
+   "caller": "private/functions/ConvertFrom-DbccPageDump.ps1",
+   "line": 70,
+   "name": "New-Object",
+   "definer": "tests/Copy-DbaPolicyManagement.Tests.ps1",
+   "verdict": "F",
+   "second": "F",
+   "why": "New-Object is the cmdlet or program; the target is a test-local stub inside a block",
+   "definerLine": 104
+  },
+  {
+   "row": 116,
+   "corpus": "dbatools",
+   "caller": "private/functions/Import-DbaCmdlet.ps1",
+   "line": 67,
+   "name": "New-Object",
+   "definer": "tests/Copy-DbaPolicyManagement.Tests.ps1",
+   "verdict": "F",
+   "second": "F",
+   "why": "New-Object is the cmdlet or program; the target is a test-local stub inside a block",
+   "definerLine": 104
+  },
+  {
+   "row": 117,
+   "corpus": "dbatools",
+   "caller": "private/functions/Invoke-CommandWithFallback.ps1",
+   "line": 43,
+   "name": "Stop-Function",
+   "definer": "private/functions/flowcontrol/Stop-Function.ps1",
+   "verdict": "T",
+   "second": "T",
+   "definerLine": 2
+  },
+  {
+   "row": 118,
+   "corpus": "dbatools",
+   "caller": "private/functions/Update-SqlDbReadOnly.ps1",
+   "line": 27,
+   "name": "Connect-DbaInstance",
+   "definer": "public/Connect-DbaInstance.ps1",
+   "verdict": "T",
+   "second": "T",
+   "definerLine": 1
+  },
+  {
+   "row": 119,
+   "corpus": "dbatools",
+   "caller": "public/Add-DbaAgDatabase.ps1",
+   "line": 545,
+   "name": "New-Object",
+   "definer": "tests/Copy-DbaPolicyManagement.Tests.ps1",
+   "verdict": "F",
+   "second": "F",
+   "why": "New-Object is the cmdlet or program; the target is a test-local stub inside a block",
+   "definerLine": 104
+  },
+  {
+   "row": 120,
+   "corpus": "dbatools",
+   "caller": "public/Copy-DbaAgentJob.ps1",
+   "line": 176,
+   "name": "Stop-Function",
+   "definer": "private/functions/flowcontrol/Stop-Function.ps1",
+   "verdict": "T",
+   "second": "T",
+   "definerLine": 2
+  },
+  {
+   "row": 121,
+   "corpus": "dbatools",
+   "caller": "public/Copy-DbaAgentJobCategory.ps1",
+   "line": 378,
+   "name": "Connect-DbaInstance",
+   "definer": "public/Connect-DbaInstance.ps1",
+   "verdict": "T",
+   "second": "T",
+   "definerLine": 1
+  },
+  {
+   "row": 122,
+   "corpus": "dbatools",
+   "caller": "public/Copy-DbaAgentServer.ps1",
+   "line": 116,
+   "name": "Connect-DbaInstance",
+   "definer": "public/Connect-DbaInstance.ps1",
+   "verdict": "T",
+   "second": "T",
+   "definerLine": 1
+  },
+  {
+   "row": 123,
+   "corpus": "dbatools",
+   "caller": "public/Copy-DbaDbCertificate.ps1",
+   "line": 161,
+   "name": "Get-DbaDbCertificate",
+   "definer": "public/Get-DbaDbCertificate.ps1",
+   "verdict": "T",
+   "second": "T",
+   "definerLine": 1
+  },
+  {
+   "row": 124,
+   "corpus": "dbatools",
+   "caller": "public/Copy-DbaDbCertificate.ps1",
+   "line": 166,
+   "name": "Stop-Function",
+   "definer": "private/functions/flowcontrol/Stop-Function.ps1",
+   "verdict": "T",
+   "second": "T",
+   "definerLine": 2
+  },
+  {
+   "row": 125,
+   "corpus": "dbatools",
+   "caller": "public/Export-DbaCredential.ps1",
+   "line": 143,
+   "name": "Connect-DbaInstance",
+   "definer": "public/Connect-DbaInstance.ps1",
+   "verdict": "T",
+   "second": "T",
+   "definerLine": 1
+  },
+  {
+   "row": 126,
+   "corpus": "dbatools",
+   "caller": "public/Export-DbaDacPackage.ps1",
+   "line": 153,
+   "name": "Stop-Function",
+   "definer": "private/functions/flowcontrol/Stop-Function.ps1",
+   "verdict": "T",
+   "second": "T",
+   "definerLine": 2
+  },
+  {
+   "row": 127,
+   "corpus": "dbatools",
+   "caller": "public/Export-DbaInstance.ps1",
+   "line": 584,
+   "name": "Backup-DbaDbMasterKey",
+   "definer": "public/Backup-DbaDbMasterKey.ps1",
+   "verdict": "T",
+   "second": "T",
+   "definerLine": 1
+  },
+  {
+   "row": 128,
+   "corpus": "dbatools",
+   "caller": "public/Export-DbaInstance.ps1",
+   "line": 402,
+   "name": "Get-DbaBackupDevice",
+   "definer": "public/Get-DbaBackupDevice.ps1",
+   "verdict": "T",
+   "second": "T",
+   "definerLine": 1
+  },
+  {
+   "row": 129,
+   "corpus": "dbatools",
+   "caller": "public/Export-DbaSpConfigure.ps1",
+   "line": 137,
+   "name": "Get-ChildItem",
+   "definer": "tests/Export-DbaInstance.Tests.ps1",
+   "verdict": "F",
+   "second": "F",
+   "why": "Get-ChildItem is the cmdlet or program; the target is a test-local stub inside a block",
+   "definerLine": 311
+  },
+  {
+   "row": 130,
+   "corpus": "dbatools",
+   "caller": "public/Export-DbaSysDbUserObject.ps1",
+   "line": 153,
+   "name": "Test-Path",
+   "definer": "tests/Export-DbaInstance.Tests.ps1",
+   "verdict": "F",
+   "second": "F",
+   "why": "Test-Path is the cmdlet or program; the target is a test-local stub inside a block",
+   "definerLine": 60
+  },
+  {
+   "row": 131,
+   "corpus": "dbatools",
+   "caller": "public/Find-DbaCommand.ps1",
+   "line": 148,
+   "name": "Test-Path",
+   "definer": "tests/Export-DbaInstance.Tests.ps1",
+   "verdict": "F",
+   "second": "F",
+   "why": "Test-Path is the cmdlet or program; the target is a test-local stub inside a block",
+   "definerLine": 60
+  },
+  {
+   "row": 132,
+   "corpus": "dbatools",
+   "caller": "public/Find-DbaLoginInGroup.ps1",
+   "line": 100,
+   "name": "New-Object",
+   "definer": "tests/Copy-DbaPolicyManagement.Tests.ps1",
+   "verdict": "F",
+   "second": "F",
+   "why": "New-Object is the cmdlet or program; the target is a test-local stub inside a block",
+   "definerLine": 104
+  },
+  {
+   "row": 133,
+   "corpus": "dbatools",
+   "caller": "public/Find-DbaUserObject.ps1",
+   "line": 97,
+   "name": "Stop-Function",
+   "definer": "private/functions/flowcontrol/Stop-Function.ps1",
+   "verdict": "T",
+   "second": "T",
+   "definerLine": 2
+  },
+  {
+   "row": 134,
+   "corpus": "dbatools",
+   "caller": "public/Get-DbaAgRingBuffer.ps1",
+   "line": 114,
+   "name": "Stop-Function",
+   "definer": "private/functions/flowcontrol/Stop-Function.ps1",
+   "verdict": "T",
+   "second": "T",
+   "definerLine": 2
+  },
+  {
+   "row": 135,
+   "corpus": "dbatools",
+   "caller": "public/Get-DbaCpuUsage.ps1",
+   "line": 149,
+   "name": "Connect-DbaInstance",
+   "definer": "public/Connect-DbaInstance.ps1",
+   "verdict": "T",
+   "second": "T",
+   "definerLine": 1
+  },
+  {
+   "row": 136,
+   "corpus": "dbatools",
+   "caller": "public/Get-DbaCredential.ps1",
+   "line": 143,
+   "name": "Select-DefaultView",
+   "definer": "private/functions/Select-DefaultView.ps1",
+   "verdict": "T",
+   "second": "T",
+   "definerLine": 1
+  },
+  {
+   "row": 137,
+   "corpus": "dbatools",
+   "caller": "public/Get-DbaDbDataClassification.ps1",
+   "line": 126,
+   "name": "Stop-Function",
+   "definer": "private/functions/flowcontrol/Stop-Function.ps1",
+   "verdict": "T",
+   "second": "T",
+   "definerLine": 2
+  },
+  {
+   "row": 138,
+   "corpus": "dbatools",
+   "caller": "public/Get-DbaDbForeignKey.ps1",
+   "line": 129,
+   "name": "Stop-Function",
+   "definer": "private/functions/flowcontrol/Stop-Function.ps1",
+   "verdict": "T",
+   "second": "T",
+   "definerLine": 2
+  },
+  {
+   "row": 139,
+   "corpus": "dbatools",
+   "caller": "public/Get-DbaDbQueryStoreOption.ps1",
+   "line": 186,
+   "name": "Select-DefaultView",
+   "definer": "private/functions/Select-DefaultView.ps1",
+   "verdict": "T",
+   "second": "T",
+   "definerLine": 1
+  },
+  {
+   "row": 140,
+   "corpus": "dbatools",
+   "caller": "public/Get-DbaInstanceAudit.ps1",
+   "line": 103,
+   "name": "Test-Bound",
+   "definer": "private/functions/flowcontrol/Test-Bound.ps1",
+   "verdict": "T",
+   "second": "T",
+   "definerLine": 1
+  },
+  {
+   "row": 141,
+   "corpus": "dbatools",
+   "caller": "public/Get-DbaKbUpdate.ps1",
+   "line": 137,
+   "name": "New-Object",
+   "definer": "tests/Copy-DbaPolicyManagement.Tests.ps1",
+   "verdict": "F",
+   "second": "F",
+   "why": "New-Object is the cmdlet or program; the target is a test-local stub inside a block",
+   "definerLine": 104
+  },
+  {
+   "row": 142,
+   "corpus": "dbatools",
+   "caller": "public/Get-DbaKbUpdate.ps1",
+   "line": 365,
+   "name": "Stop-Function",
+   "definer": "private/functions/flowcontrol/Stop-Function.ps1",
+   "verdict": "T",
+   "second": "T",
+   "definerLine": 2
+  },
+  {
+   "row": 143,
+   "corpus": "dbatools",
+   "caller": "public/Get-DbaLocaleSetting.ps1",
+   "line": 127,
+   "name": "Invoke-CimMethod",
+   "definer": "tests/Update-ServiceStatus.Tests.ps1",
+   "verdict": "F",
+   "second": "F",
+   "why": "Invoke-CimMethod is the cmdlet or program; the target is a test-local stub inside a block",
+   "definerLine": 108
+  },
+  {
+   "row": 144,
+   "corpus": "dbatools",
+   "caller": "public/Get-DbaMemoryCondition.ps1",
+   "line": 147,
+   "name": "Stop-Function",
+   "definer": "private/functions/flowcontrol/Stop-Function.ps1",
+   "verdict": "T",
+   "second": "T",
+   "definerLine": 2
+  },
+  {
+   "row": 145,
+   "corpus": "dbatools",
+   "caller": "public/Get-DbaMsdtc.ps1",
+   "line": 112,
+   "name": "Test-PSRemoting",
+   "definer": "private/functions/Test-PSRemoting.ps1",
+   "verdict": "T",
+   "second": "T",
+   "definerLine": 3
+  },
+  {
+   "row": 146,
+   "corpus": "dbatools",
+   "caller": "public/Get-DbaPermission.ps1",
+   "line": 329,
+   "name": "Connect-DbaInstance",
+   "definer": "public/Connect-DbaInstance.ps1",
+   "verdict": "T",
+   "second": "T",
+   "definerLine": 1
+  },
+  {
+   "row": 147,
+   "corpus": "dbatools",
+   "caller": "public/Get-DbaPrivilege.ps1",
+   "line": 123,
+   "name": "secedit",
+   "definer": "tests/Set-DbaPrivilege.Tests.ps1",
+   "verdict": "F",
+   "second": "F",
+   "why": "secedit is the cmdlet or program; the target is a test-local stub inside a block",
+   "definerLine": 28
+  },
+  {
+   "row": 148,
+   "corpus": "dbatools",
+   "caller": "public/Get-DbaRegServer.ps1",
+   "line": 235,
+   "name": "Test-Path",
+   "definer": "tests/Export-DbaInstance.Tests.ps1",
+   "verdict": "F",
+   "second": "F",
+   "why": "Test-Path is the cmdlet or program; the target is a test-local stub inside a block",
+   "definerLine": 60
+  },
+  {
+   "row": 149,
+   "corpus": "dbatools",
+   "caller": "public/Get-DbaWaitingTask.ps1",
+   "line": 135,
+   "name": "Connect-DbaInstance",
+   "definer": "public/Connect-DbaInstance.ps1",
+   "verdict": "T",
+   "second": "T",
+   "definerLine": 1
+  },
+  {
+   "row": 150,
+   "corpus": "dbatools",
+   "caller": "public/Import-DbaBinaryFile.ps1",
+   "line": 181,
+   "name": "Test-FunctionInterrupt",
+   "definer": "private/functions/flowcontrol/Test-FunctionInterrupt.ps1",
+   "verdict": "T",
+   "second": "T",
+   "definerLine": 2
+  },
+  {
+   "row": 151,
+   "corpus": "dbatools",
+   "caller": "public/Import-DbaParquet.ps1",
+   "line": 293,
+   "name": "Get-ChildItem",
+   "definer": "tests/Export-DbaInstance.Tests.ps1",
+   "verdict": "F",
+   "second": "F",
+   "why": "Get-ChildItem is the cmdlet or program; the target is a test-local stub inside a block",
+   "definerLine": 311
+  },
+  {
+   "row": 152,
+   "corpus": "dbatools",
+   "caller": "public/Install-DbaMaintenanceSolution.ps1",
+   "line": 497,
+   "name": "Get-DbaDefaultPath",
+   "definer": "public/Get-DbaDefaultPath.ps1",
+   "verdict": "T",
+   "second": "T",
+   "definerLine": 1
+  },
+  {
+   "row": 153,
+   "corpus": "dbatools",
+   "caller": "public/Install-DbaWhoIsActive.ps1",
+   "line": 113,
+   "name": "Test-Path",
+   "definer": "tests/Export-DbaInstance.Tests.ps1",
+   "verdict": "F",
+   "second": "F",
+   "why": "Test-Path is the cmdlet or program; the target is a test-local stub inside a block",
+   "definerLine": 60
+  },
+  {
+   "row": 154,
+   "corpus": "dbatools",
+   "caller": "public/Invoke-DbaAdvancedUpdate.ps1",
+   "line": 236,
+   "name": "Remove-Item",
+   "definer": "tests/Export-DbaInstance.Tests.ps1",
+   "verdict": "F",
+   "second": "F",
+   "why": "Remove-Item is the cmdlet or program; the target is a test-local stub inside a block",
+   "definerLine": 301
+  },
+  {
+   "row": 155,
+   "corpus": "dbatools",
+   "caller": "public/Invoke-DbaBalanceDataFiles.ps1",
+   "line": 221,
+   "name": "Get-ErrorMessage",
+   "definer": "private/functions/Get-ErrorMessage.ps1",
+   "verdict": "T",
+   "second": "T",
+   "definerLine": 1
+  },
+  {
+   "row": 156,
+   "corpus": "dbatools",
+   "caller": "public/Invoke-DbaDbLogShipping.ps1",
+   "line": 1047,
+   "name": "Test-FunctionInterrupt",
+   "definer": "private/functions/flowcontrol/Test-FunctionInterrupt.ps1",
+   "verdict": "T",
+   "second": "T",
+   "definerLine": 2
+  },
+  {
+   "row": 157,
+   "corpus": "dbatools",
+   "caller": "public/New-DbaAgentAlert.ps1",
+   "line": 207,
+   "name": "Stop-Function",
+   "definer": "private/functions/flowcontrol/Stop-Function.ps1",
+   "verdict": "T",
+   "second": "T",
+   "definerLine": 2
+  },
+  {
+   "row": 158,
+   "corpus": "dbatools",
+   "caller": "public/New-DbaAvailabilityGroup.ps1",
+   "line": 475,
+   "name": "Write-ProgressHelper",
+   "definer": "private/functions/Write-ProgressHelper.ps1",
+   "verdict": "T",
+   "second": "T",
+   "definerLine": 1
+  },
+  {
+   "row": 159,
+   "corpus": "dbatools",
+   "caller": "public/New-DbaComputerCertificate.ps1",
+   "line": 474,
+   "name": "Test-Path",
+   "definer": "tests/Export-DbaInstance.Tests.ps1",
+   "verdict": "F",
+   "second": "F",
+   "why": "Test-Path is the cmdlet or program; the target is a test-local stub inside a block",
+   "definerLine": 60
+  },
+  {
+   "row": 160,
+   "corpus": "dbatools",
+   "caller": "public/New-DbaCustomError.ps1",
+   "line": 153,
+   "name": "New-Object",
+   "definer": "tests/Copy-DbaPolicyManagement.Tests.ps1",
+   "verdict": "F",
+   "second": "F",
+   "why": "New-Object is the cmdlet or program; the target is a test-local stub inside a block",
+   "definerLine": 104
+  },
+  {
+   "row": 161,
+   "corpus": "dbatools",
+   "caller": "public/New-DbaDbDataGeneratorConfig.ps1",
+   "line": 368,
+   "name": "Get-ChildItem",
+   "definer": "tests/Export-DbaInstance.Tests.ps1",
+   "verdict": "F",
+   "second": "F",
+   "why": "Get-ChildItem is the cmdlet or program; the target is a test-local stub inside a block",
+   "definerLine": 311
+  },
+  {
+   "row": 162,
+   "corpus": "dbatools",
+   "caller": "public/New-DbaDbSequence.ps1",
+   "line": 152,
+   "name": "Test-Bound",
+   "definer": "private/functions/flowcontrol/Test-Bound.ps1",
+   "verdict": "T",
+   "second": "T",
+   "definerLine": 1
+  },
+  {
+   "row": 163,
+   "corpus": "dbatools",
+   "caller": "public/New-DbaDbSnapshot.ps1",
+   "line": 324,
+   "name": "New-Object",
+   "definer": "tests/Copy-DbaPolicyManagement.Tests.ps1",
+   "verdict": "F",
+   "second": "F",
+   "why": "New-Object is the cmdlet or program; the target is a test-local stub inside a block",
+   "definerLine": 104
+  },
+  {
+   "row": 164,
+   "corpus": "dbatools",
+   "caller": "public/Remove-DbaCustomError.ps1",
+   "line": 99,
+   "name": "Stop-Function",
+   "definer": "private/functions/flowcontrol/Stop-Function.ps1",
+   "verdict": "T",
+   "second": "T",
+   "definerLine": 2
+  },
+  {
+   "row": 165,
+   "corpus": "dbatools",
+   "caller": "public/Remove-DbaDatabase.ps1",
+   "line": 169,
+   "name": "Get-ErrorMessage",
+   "definer": "private/functions/Get-ErrorMessage.ps1",
+   "verdict": "T",
+   "second": "T",
+   "definerLine": 1
+  },
+  {
+   "row": 166,
+   "corpus": "dbatools",
+   "caller": "public/Rename-DbaLogin.ps1",
+   "line": 110,
+   "name": "Stop-Function",
+   "definer": "private/functions/flowcontrol/Stop-Function.ps1",
+   "verdict": "T",
+   "second": "T",
+   "definerLine": 2
+  },
+  {
+   "row": 167,
+   "corpus": "dbatools",
+   "caller": "public/Set-DbaAgentJob.ps1",
+   "line": 310,
+   "name": "Test-FunctionInterrupt",
+   "definer": "private/functions/flowcontrol/Test-FunctionInterrupt.ps1",
+   "verdict": "T",
+   "second": "T",
+   "definerLine": 2
+  },
+  {
+   "row": 168,
+   "corpus": "dbatools",
+   "caller": "public/Set-DbaExtendedProtection.ps1",
+   "line": 128,
+   "name": "Stop-Function",
+   "definer": "private/functions/flowcontrol/Stop-Function.ps1",
+   "verdict": "T",
+   "second": "T",
+   "definerLine": 2
+  },
+  {
+   "row": 169,
+   "corpus": "dbatools",
+   "caller": "public/Set-DbaNetworkConfiguration.ps1",
+   "line": 163,
+   "name": "New-Object",
+   "definer": "tests/Copy-DbaPolicyManagement.Tests.ps1",
+   "verdict": "F",
+   "second": "F",
+   "why": "New-Object is the cmdlet or program; the target is a test-local stub inside a block",
+   "definerLine": 104
+  },
+  {
+   "row": 170,
+   "corpus": "dbatools",
+   "caller": "public/Set-DbaNetworkConfiguration.ps1",
+   "line": 318,
+   "name": "Stop-Function",
+   "definer": "private/functions/flowcontrol/Stop-Function.ps1",
+   "verdict": "T",
+   "second": "T",
+   "definerLine": 2
+  },
+  {
+   "row": 171,
+   "corpus": "dbatools",
+   "caller": "public/Set-DbaStartupParameter.ps1",
+   "line": 448,
+   "name": "Invoke-ManagedComputerCommand",
+   "definer": "private/functions/Invoke-ManagedComputerCommand.ps1",
+   "verdict": "T",
+   "second": "T",
+   "definerLine": 1
+  },
+  {
+   "row": 172,
+   "corpus": "dbatools",
+   "caller": "public/Show-DbaDbList.ps1",
+   "line": 90,
+   "name": "Stop-Function",
+   "definer": "private/functions/flowcontrol/Stop-Function.ps1",
+   "verdict": "T",
+   "second": "T",
+   "definerLine": 2
+  },
+  {
+   "row": 173,
+   "corpus": "dbatools",
+   "caller": "public/Start-DbaXESession.ps1",
+   "line": 156,
+   "name": "Stop-Function",
+   "definer": "private/functions/flowcontrol/Stop-Function.ps1",
+   "verdict": "T",
+   "second": "T",
+   "definerLine": 2
+  },
+  {
+   "row": 174,
+   "corpus": "dbatools",
+   "caller": "public/Stop-DbaEndpoint.ps1",
+   "line": 95,
+   "name": "Test-Bound",
+   "definer": "private/functions/flowcontrol/Test-Bound.ps1",
+   "verdict": "T",
+   "second": "T",
+   "definerLine": 1
+  },
+  {
+   "row": 175,
+   "corpus": "dbatools",
+   "caller": "public/Stop-DbaPfDataCollectorSet.ps1",
+   "line": 115,
+   "name": "Test-Bound",
+   "definer": "private/functions/flowcontrol/Test-Bound.ps1",
+   "verdict": "T",
+   "second": "T",
+   "definerLine": 1
+  },
+  {
+   "row": 176,
+   "corpus": "dbatools",
+   "caller": "public/Test-DbaDbDataGeneratorConfig.ps1",
+   "line": 75,
+   "name": "Test-Path",
+   "definer": "tests/Export-DbaInstance.Tests.ps1",
+   "verdict": "F",
+   "second": "F",
+   "why": "Test-Path is the cmdlet or program; the target is a test-local stub inside a block",
+   "definerLine": 60
+  },
+  {
+   "row": 177,
+   "corpus": "dbatools",
+   "caller": "public/Test-DbaReplLatency.ps1",
+   "line": 137,
+   "name": "New-Object",
+   "definer": "tests/Copy-DbaPolicyManagement.Tests.ps1",
+   "verdict": "F",
+   "second": "F",
+   "why": "New-Object is the cmdlet or program; the target is a test-local stub inside a block",
+   "definerLine": 104
+  },
+  {
+   "row": 178,
+   "corpus": "dbatools",
+   "caller": "public/Update-DbaInstance.ps1",
+   "line": 435,
+   "name": "Copy-Item",
+   "definer": "tests/Export-DbaInstance.Tests.ps1",
+   "verdict": "F",
+   "second": "F",
+   "why": "Copy-Item is the cmdlet or program; the target is a test-local stub inside a block",
+   "definerLine": 289
+  },
+  {
+   "row": 179,
+   "corpus": "dbatools",
+   "caller": "public/Update-DbaInstance.ps1",
+   "line": 539,
+   "name": "Invoke-Command2",
+   "definer": "private/functions/Invoke-Command2.ps1",
+   "verdict": "T",
+   "second": "T",
+   "definerLine": 1
+  },
+  {
+   "row": 180,
+   "corpus": "dbatools",
+   "caller": "public/Write-DbaDbTableData.ps1",
+   "line": 448,
+   "name": "Get-ObjectNameParts",
+   "definer": "private/functions/Get-ObjectNameParts.ps1",
+   "verdict": "T",
+   "second": "T",
+   "definerLine": 1
+  },
+  {
+   "row": 181,
+   "corpus": "dbatools",
+   "caller": "tests/Add-DbaAgReplica.Tests.ps1",
+   "line": 107,
+   "name": "Get-DbaAgReplica",
+   "definer": "public/Get-DbaAgReplica.ps1",
+   "verdict": "T",
+   "second": "T",
+   "definerLine": 1
+  },
+  {
+   "row": 182,
+   "corpus": "dbatools",
+   "caller": "tests/Add-DbaRegServerGroup.Tests.ps1",
+   "line": 119,
+   "name": "Connect-DbaInstance",
+   "definer": "public/Connect-DbaInstance.ps1",
+   "verdict": "T",
+   "second": "T",
+   "definerLine": 1
+  },
+  {
+   "row": 183,
+   "corpus": "dbatools",
+   "caller": "tests/appveyor.common.Tests.ps1",
+   "line": 76,
+   "name": "Test-Path",
+   "definer": "tests/Export-DbaInstance.Tests.ps1",
+   "verdict": "F",
+   "second": "F",
+   "why": "Test-Path is the cmdlet or program; the target is a test-local stub inside a block",
+   "definerLine": 60
+  },
+  {
+   "row": 184,
+   "corpus": "dbatools",
+   "caller": "tests/Backup-DbaComputerCertificate.Tests.ps1",
+   "line": 46,
+   "name": "Add-DbaComputerCertificate",
+   "definer": "public/Add-DbaComputerCertificate.ps1",
+   "verdict": "T",
+   "second": "T",
+   "definerLine": 1
+  },
+  {
+   "row": 185,
+   "corpus": "dbatools",
+   "caller": "tests/Backup-DbaDbCertificate.Tests.ps1",
+   "line": 70,
+   "name": "Remove-Item",
+   "definer": "tests/Export-DbaInstance.Tests.ps1",
+   "verdict": "F",
+   "second": "F",
+   "why": "Remove-Item is the cmdlet or program; the target is a test-local stub inside a block",
+   "definerLine": 301
+  },
+  {
+   "row": 186,
+   "corpus": "dbatools",
+   "caller": "tests/Compare-DbaDbSchema.Tests.ps1",
+   "line": 200,
+   "name": "New-Object",
+   "definer": "tests/Copy-DbaPolicyManagement.Tests.ps1",
+   "verdict": "F",
+   "second": "F",
+   "why": "New-Object is the cmdlet or program; the target is a test-local stub inside a block",
+   "definerLine": 104
+  },
+  {
+   "row": 187,
+   "corpus": "dbatools",
+   "caller": "tests/Copy-DbaXESessionTemplate.Tests.ps1",
+   "line": 46,
+   "name": "Get-ChildItem",
+   "definer": "tests/Export-DbaInstance.Tests.ps1",
+   "verdict": "F",
+   "second": "F",
+   "why": "Get-ChildItem is the cmdlet or program; the target is a test-local stub inside a block",
+   "definerLine": 311
+  },
+  {
+   "row": 188,
+   "corpus": "dbatools",
+   "caller": "tests/Export-DbaDacPackage.Tests.ps1",
+   "line": 97,
+   "name": "Remove-Item",
+   "definer": "tests/Export-DbaInstance.Tests.ps1",
+   "verdict": "F",
+   "second": "F",
+   "why": "Remove-Item is the cmdlet or program; the target is a test-local stub inside a block",
+   "definerLine": 301
+  },
+  {
+   "row": 189,
+   "corpus": "dbatools",
+   "caller": "tests/Export-DbaDiagnosticQuery.Tests.ps1",
+   "line": 46,
+   "name": "Remove-Item",
+   "definer": "tests/Export-DbaInstance.Tests.ps1",
+   "verdict": "F",
+   "second": "F",
+   "why": "Remove-Item is the cmdlet or program; the target is a test-local stub inside a block",
+   "definerLine": 301
+  },
+  {
+   "row": 190,
+   "corpus": "dbatools",
+   "caller": "tests/Export-DbaExecutionPlan.Tests.ps1",
+   "line": 95,
+   "name": "Get-ChildItem",
+   "definer": "tests/Export-DbaInstance.Tests.ps1",
+   "verdict": "F",
+   "second": "F",
+   "why": "Get-ChildItem is the cmdlet or program; the target is a test-local stub inside a block",
+   "definerLine": 311
+  },
+  {
+   "row": 191,
+   "corpus": "dbatools",
+   "caller": "tests/Export-DbaInstance.Tests.ps1",
+   "line": 520,
+   "name": "Get-DbaRegServer",
+   "definer": "public/Get-DbaRegServer.ps1",
+   "verdict": "T",
+   "second": "T",
+   "definerLine": 1
+  },
+  {
+   "row": 192,
+   "corpus": "dbatools",
+   "caller": "tests/Export-DbaPfDataCollectorSetTemplate.Tests.ps1",
+   "line": 44,
+   "name": "Get-DbaPfDataCollectorSet",
+   "definer": "public/Get-DbaPfDataCollectorSet.ps1",
+   "verdict": "T",
+   "second": "T",
+   "definerLine": 1
+  },
+  {
+   "row": 193,
+   "corpus": "dbatools",
+   "caller": "tests/Export-DbaScript.Tests.ps1",
+   "line": 35,
+   "name": "New-Object",
+   "definer": "tests/Copy-DbaPolicyManagement.Tests.ps1",
+   "verdict": "F",
+   "second": "F",
+   "why": "New-Object is the cmdlet or program; the target is a test-local stub inside a block",
+   "definerLine": 104
+  },
+  {
+   "row": 194,
+   "corpus": "dbatools",
+   "caller": "tests/Export-DbaUser.Tests.ps1",
+   "line": 199,
+   "name": "Remove-Item",
+   "definer": "tests/Export-DbaInstance.Tests.ps1",
+   "verdict": "F",
+   "second": "F",
+   "why": "Remove-Item is the cmdlet or program; the target is a test-local stub inside a block",
+   "definerLine": 301
+  },
+  {
+   "row": 195,
+   "corpus": "dbatools",
+   "caller": "tests/Get-DbaDbQueryStoreOption.Tests.ps1",
+   "line": 31,
+   "name": "Disconnect-DbaInstance",
+   "definer": "public/Disconnect-DbaInstance.ps1",
+   "verdict": "T",
+   "second": "T",
+   "definerLine": 1
+  },
+  {
+   "row": 196,
+   "corpus": "dbatools",
+   "caller": "tests/Get-DbaDbSpace.Tests.ps1",
+   "line": 46,
+   "name": "Backup-DbaDatabase",
+   "definer": "public/Backup-DbaDatabase.ps1",
+   "verdict": "T",
+   "second": "T",
+   "definerLine": 1
+  },
+  {
+   "row": 197,
+   "corpus": "dbatools",
+   "caller": "tests/Get-DbaNetworkConfiguration.Tests.ps1",
+   "line": 129,
+   "name": "Remove-DbaComputerCertificate",
+   "definer": "public/Remove-DbaComputerCertificate.ps1",
+   "verdict": "T",
+   "second": "T",
+   "definerLine": 1
+  },
+  {
+   "row": 198,
+   "corpus": "dbatools",
+   "caller": "tests/Get-DbaPermission.Tests.ps1",
+   "line": 40,
+   "name": "New-DbaLogin",
+   "definer": "public/New-DbaLogin.ps1",
+   "verdict": "T",
+   "second": "T",
+   "definerLine": 1
+  },
+  {
+   "row": 199,
+   "corpus": "dbatools",
+   "caller": "tests/Get-DbaStartupProcedure.Tests.ps1",
+   "line": 29,
+   "name": "Connect-DbaInstance",
+   "definer": "public/Connect-DbaInstance.ps1",
+   "verdict": "T",
+   "second": "T",
+   "definerLine": 1
+  },
+  {
+   "row": 200,
+   "corpus": "dbatools",
+   "caller": "tests/Get-XpDirTreeRestoreFile.Tests.ps1",
+   "line": 19,
+   "name": "Get-XpDirTreeRestoreFile",
+   "definer": "private/functions/Get-XpDirTreeRestoreFile.ps1",
+   "verdict": "T",
+   "second": "T",
+   "definerLine": 1
+  },
+  {
+   "row": 201,
+   "corpus": "dbatools",
+   "caller": "tests/Install-DbaMultiTool.Tests.ps1",
+   "line": 85,
+   "name": "Connect-DbaInstance",
+   "definer": "public/Connect-DbaInstance.ps1",
+   "verdict": "T",
+   "second": "T",
+   "definerLine": 1
+  },
+  {
+   "row": 202,
+   "corpus": "dbatools",
+   "caller": "tests/Invoke-DbaDbDecryptObject.Hardening.Tests.ps1",
+   "line": 45,
+   "name": "New-Object",
+   "definer": "tests/Copy-DbaPolicyManagement.Tests.ps1",
+   "verdict": "F",
+   "second": "F",
+   "why": "New-Object is the cmdlet or program; the target is a test-local stub inside a block",
+   "definerLine": 104
+  },
+  {
+   "row": 203,
+   "corpus": "dbatools",
+   "caller": "tests/Invoke-DbaDbLogShipRecovery.Tests.ps1",
+   "line": 83,
+   "name": "Invoke-DbaDbLogShipRecovery",
+   "definer": "public/Invoke-DbaDbLogShipRecovery.ps1",
+   "verdict": "T",
+   "second": "T",
+   "definerLine": 1
+  },
+  {
+   "row": 204,
+   "corpus": "dbatools",
+   "caller": "tests/Measure-DbaDiskSpaceRequirement.Tests.ps1",
+   "line": 86,
+   "name": "New-Object",
+   "definer": "tests/Copy-DbaPolicyManagement.Tests.ps1",
+   "verdict": "F",
+   "second": "F",
+   "why": "New-Object is the cmdlet or program; the target is a test-local stub inside a block",
+   "definerLine": 104
+  },
+  {
+   "row": 205,
+   "corpus": "dbatools",
+   "caller": "tests/New-DbaDbDataGeneratorConfig.Tests.ps1",
+   "line": 91,
+   "name": "New-DbaDbDataGeneratorConfig",
+   "definer": "public/New-DbaDbDataGeneratorConfig.ps1",
+   "verdict": "T",
+   "second": "T",
+   "definerLine": 1
+  },
+  {
+   "row": 206,
+   "corpus": "dbatools",
+   "caller": "tests/Remove-DbaDbMirror.Tests.ps1",
+   "line": 38,
+   "name": "New-DbaDatabase",
+   "definer": "public/New-DbaDatabase.ps1",
+   "verdict": "T",
+   "second": "T",
+   "definerLine": 1
+  },
+  {
+   "row": 207,
+   "corpus": "dbatools",
+   "caller": "tests/Remove-DbaDbView.Tests.ps1",
+   "line": 32,
+   "name": "Stop-DbaProcess",
+   "definer": "public/Stop-DbaProcess.ps1",
+   "verdict": "T",
+   "second": "T",
+   "definerLine": 1
+  },
+  {
+   "row": 208,
+   "corpus": "dbatools",
+   "caller": "tests/Restore-DbaDbCertificate.Tests.ps1",
+   "line": 47,
+   "name": "Backup-DbaDbCertificate",
+   "definer": "public/Backup-DbaDbCertificate.ps1",
+   "verdict": "T",
+   "second": "T",
+   "definerLine": 1
+  },
+  {
+   "row": 209,
+   "corpus": "dbatools",
+   "caller": "tests/Set-DbaDbSchema.Tests.ps1",
+   "line": 111,
+   "name": "Set-DbaDbSchema",
+   "definer": "public/Set-DbaDbSchema.ps1",
+   "verdict": "T",
+   "second": "T",
+   "definerLine": 1
+  },
+  {
+   "row": 210,
+   "corpus": "dbatools",
+   "caller": "tests/Set-DbaPrivilege.Tests.ps1",
+   "line": 72,
+   "name": "Remove-Item",
+   "definer": "tests/Export-DbaInstance.Tests.ps1",
+   "verdict": "F",
+   "second": "F",
+   "why": "Remove-Item is the cmdlet or program; the target is a test-local stub inside a block",
+   "definerLine": 301
+  },
+  {
+   "row": 211,
+   "corpus": "dbatools",
+   "caller": "tests/Start-DbaMigration.Tests.ps1",
+   "line": 790,
+   "name": "New-Object",
+   "definer": "tests/Copy-DbaPolicyManagement.Tests.ps1",
+   "verdict": "F",
+   "second": "F",
+   "why": "New-Object is the cmdlet or program; the target is a test-local stub inside a block",
+   "definerLine": 104
+  },
+  {
+   "row": 212,
+   "corpus": "dbatools",
+   "caller": "tests/Start-DbaMigration.Tests.ps1",
+   "line": 61,
+   "name": "Test-Path",
+   "definer": "tests/Export-DbaInstance.Tests.ps1",
+   "verdict": "F",
+   "second": "F",
+   "why": "Test-Path is the cmdlet or program; the target is a test-local stub inside a block",
+   "definerLine": 60
+  },
+  {
+   "row": 213,
+   "corpus": "dbatools",
+   "caller": "tests/Test-DbaLastBackup.Tests.ps1",
+   "line": 464,
+   "name": "Get-ChildItem",
+   "definer": "tests/Export-DbaInstance.Tests.ps1",
+   "verdict": "F",
+   "second": "F",
+   "why": "Get-ChildItem is the cmdlet or program; the target is a test-local stub inside a block",
+   "definerLine": 311
+  },
+  {
+   "row": 214,
+   "corpus": "dbatools",
+   "caller": "tests/Update-DbaInstance.Tests.ps1",
+   "line": 106,
+   "name": "New-Object",
+   "definer": "tests/Copy-DbaPolicyManagement.Tests.ps1",
+   "verdict": "F",
+   "second": "F",
+   "why": "New-Object is the cmdlet or program; the target is a test-local stub inside a block",
+   "definerLine": 104
+  },
+  {
+   "row": 215,
+   "corpus": "shop",
+   "caller": "Scripts/Deploy.ps1",
+   "line": 10,
+   "name": "Invoke-ShopQuery",
+   "definer": "Scripts/Modules/ShopTools.psm1",
+   "verdict": "T",
+   "second": "T",
+   "definerLine": 1
+  },
+  {
+   "row": 216,
+   "corpus": "tsqlt",
+   "caller": "Build/tSQLt_Build/CreateAssemblyGenerator.ps1",
+   "line": 90,
+   "name": "Log-Output",
+   "definer": "Build/CommonFunctionsAndMethods.psm1",
+   "verdict": "T",
+   "second": "T",
+   "definerLine": 16
+  },
+  {
+   "row": 217,
+   "corpus": "tsqlt",
+   "caller": "Build/tSQLt_BuildCLR.ps1",
+   "line": 13,
+   "name": "Remove-DirectoryQuietly",
+   "definer": "Build/CommonFunctionsAndMethods.psm1",
+   "verdict": "T",
+   "second": "T",
+   "definerLine": 174
+  },
+  {
+   "row": 218,
+   "corpus": "tsqlt",
+   "caller": "Build/tSQLt_BuildDacpac.ps1",
+   "line": 37,
+   "name": "Invoke-SqlFile",
+   "definer": "Build/CommonFunctionsAndMethods.psm1",
+   "verdict": "T",
+   "second": "T",
+   "definerLine": 18
+  },
+  {
+   "row": 219,
+   "corpus": "tsqlt",
+   "caller": "Build/tSQLt_BuildDacpac.ps1",
+   "line": 25,
+   "name": "Remove-DirectoryQuietly",
+   "definer": "Build/CommonFunctionsAndMethods.psm1",
+   "verdict": "T",
+   "second": "T",
+   "definerLine": 174
+  },
+  {
+   "row": 220,
+   "corpus": "tsqlt",
+   "caller": "Build/tSQLt_BuildPackage.ps1",
+   "line": 43,
+   "name": "Remove-DirectoryQuietly",
+   "definer": "Build/CommonFunctionsAndMethods.psm1",
+   "verdict": "T",
+   "second": "T",
+   "definerLine": 174
+  },
+  {
+   "row": 221,
+   "corpus": "tsqlt",
+   "caller": "Build/tSQLt_Validate.ps1",
+   "line": 53,
+   "name": "Log-Output",
+   "definer": "Build/CommonFunctionsAndMethods.psm1",
+   "verdict": "T",
+   "second": "T",
+   "definerLine": 16
+  },
+  {
+   "row": 222,
+   "corpus": "tsqlt",
+   "caller": "Build/tSQLt_ValidateRuntSQLtTests.ps1",
+   "line": 1,
+   "name": "Log-Output",
+   "definer": "Build/CommonFunctionsAndMethods.psm1",
+   "verdict": "T",
+   "second": "T",
+   "definerLine": 16
+  }
+ ]
+}

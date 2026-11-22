@@ -9,7 +9,6 @@
     },
     "packages/engine/src/live-docs/adapters/c.ts": {
       "node:fs": [
-        "promises.stat",
         "readdirSync",
         "statSync"
       ],
@@ -37,9 +36,6 @@
     "packages/engine/src/live-docs/adapters/csharp.ts": {
       "glob": [
         "glob"
-      ],
-      "node:fs": [
-        "promises.stat"
       ],
       "node:path": [
         "join",
@@ -78,9 +74,6 @@
       "glob": [
         "glob"
       ],
-      "node:fs": [
-        "promises.stat"
-      ],
       "node:path": [
         "dirname",
         "join",
@@ -114,9 +107,6 @@
       "glob": [
         "glob"
       ],
-      "node:fs": [
-        "promises.stat"
-      ],
       "node:path": [
         "join",
         "relative"
@@ -124,7 +114,6 @@
     },
     "packages/engine/src/live-docs/adapters/json.ts": {
       "node:fs": [
-        "readFileSync",
         "statSync"
       ],
       "node:path": [
@@ -206,8 +195,7 @@
         "glob"
       ],
       "node:fs": [
-        "promises.access",
-        "promises.stat"
+        "promises.access"
       ],
       "node:path": [
         "basename",
@@ -358,21 +346,17 @@
         "nextTick"
       ]
     },
+    "packages/engine/src/tooling/nodeHost.ts": {
+      "node:fs": [
+        "promises.open",
+        "promises.readFile"
+      ]
+    },
     "packages/engine/src/tooling/pathUtils.ts": {
       "node:path": [
-        "isAbsolute",
         "relative",
         "resolve",
         "sep"
-      ],
-      "node:url": [
-        "fileURLToPath",
-        "pathToFileURL"
-      ]
-    },
-    "packages/engine/src/tooling/sourceText.ts": {
-      "node:fs": [
-        "promises.readFile"
       ]
     },
     "packages/generator/src/generator.ts": {
@@ -381,7 +365,6 @@
       ],
       "node:fs/promises": [
         "mkdir",
-        "open",
         "readFile",
         "readdir",
         "rm",
@@ -415,17 +398,16 @@
       "lstatSync",
       "promises.access",
       "promises.mkdir",
+      "promises.open",
       "promises.readFile",
       "promises.stat",
       "promises.writeFile",
-      "readFileSync",
       "readdir",
       "readdirSync",
       "statSync"
     ],
     "node:fs/promises": [
       "mkdir",
-      "open",
       "readFile",
       "readdir",
       "rm",
@@ -452,10 +434,6 @@
     "node:process": [
       "env",
       "nextTick"
-    ],
-    "node:url": [
-      "fileURLToPath",
-      "pathToFileURL"
     ]
   },
   "hostedByNode": {},

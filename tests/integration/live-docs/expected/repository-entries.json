@@ -49,6 +49,12 @@
     "packages/generator/tsconfig.json": [
       "tooling"
     ],
+    "packages/stored-form/package.json": [
+      "tooling"
+    ],
+    "packages/stored-form/tsconfig.json": [
+      "tooling"
+    ],
     "scripts/contact-sheet/contact-sheet.ts": [
       "command contact:sheet of package.json"
     ],

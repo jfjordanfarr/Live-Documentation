@@ -1,0 +1,92 @@
+pairs 86
+   3  cref in a section the oracle's preprocessor symbols leave inactive; compiler binds through code: False
+   1  cref naming the target's type, resolved elsewhere; compiler binds through code: False
+  66  cref, resolved to the target; compiler binds through code: False
+  16  cref, resolved to the target; compiler binds through code: True
+
+cref, resolved to the target	-	DNN Platform/Controls/CountryListBox/SeekCountryException.cs	DNN Platform/Controls/CountryListBox/CountryLookup.cs	see CountryLookup.SeekCountry
+cref, resolved to the target	-	DNN Platform/DotNetNuke.Abstractions/Pages/PageTag.cs	DNN Platform/DotNetNuke.Abstractions/Pages/PagePriority.cs	see PagePriority
+cref, resolved to the target	-	DNN Platform/DotNetNuke.Log4net/log4net/Core/IFixingRequired.cs	DNN Platform/DotNetNuke.Log4net/log4net/Core/LoggingEvent.cs	see LoggingEvent.Fix
+cref, resolved to the target	-	DNN Platform/DotNetNuke.Log4net/log4net/Core/LoggerManager.cs	DNN Platform/DotNetNuke.Log4net/log4net/Core/Level.cs	see Level.Debug
+cref, resolved to the target	-	DNN Platform/DotNetNuke.Log4net/log4net/Filter/FilterDecision.cs	DNN Platform/DotNetNuke.Log4net/log4net/Filter/IFilter.cs	see IFilter.Decide
+cref, resolved to the target	-	DNN Platform/DotNetNuke.Log4net/log4net/ILog.cs	DNN Platform/DotNetNuke.Log4net/log4net/Core/Level.cs	see Level.Debug
+cref, resolved to the target	code	DNN Platform/DotNetNuke.Log4net/log4net/Layout/Pattern/DatePatternConverter.cs	DNN Platform/DotNetNuke.Log4net/log4net/Util/PatternConverter.cs	see log4net.Util.PatternConverter.Option
+cref, resolved to the target	code	DNN Platform/DotNetNuke.Log4net/log4net/Layout/Pattern/FileLocationPatternConverter.cs	DNN Platform/DotNetNuke.Log4net/log4net/Core/LocationInfo.cs	see LocationInfo.FileName
+cref, resolved to the target	code	DNN Platform/DotNetNuke.Log4net/log4net/Layout/Pattern/FullLocationPatternConverter.cs	DNN Platform/DotNetNuke.Log4net/log4net/Core/LocationInfo.cs	see LocationInfo.FullInfo
+cref, resolved to the target	code	DNN Platform/DotNetNuke.Log4net/log4net/Layout/Pattern/LevelPatternConverter.cs	DNN Platform/DotNetNuke.Log4net/log4net/Core/Level.cs	see Level.DisplayName
+cref, resolved to the target	code	DNN Platform/DotNetNuke.Log4net/log4net/Layout/Pattern/LineLocationPatternConverter.cs	DNN Platform/DotNetNuke.Log4net/log4net/Core/LocationInfo.cs	see LocationInfo.LineNumber
+cref, resolved to the target	code	DNN Platform/DotNetNuke.Log4net/log4net/Layout/Pattern/MethodLocationPatternConverter.cs	DNN Platform/DotNetNuke.Log4net/log4net/Core/LocationInfo.cs	see LocationInfo.MethodName
+cref, resolved to the target	code	DNN Platform/DotNetNuke.Log4net/log4net/Layout/Pattern/NamedPatternConverter.cs	DNN Platform/DotNetNuke.Log4net/log4net/Util/PatternConverter.cs	see PatternConverter.Option
+cref in a section the oracle's preprocessor symbols leave inactive	-	DNN Platform/DotNetNuke.Log4net/log4net/Layout/Pattern/StackTraceDetailPatternConverter.cs	DNN Platform/DotNetNuke.Log4net/log4net/Core/LocationInfo.cs	LocationInfo
+cref in a section the oracle's preprocessor symbols leave inactive	-	DNN Platform/DotNetNuke.Log4net/log4net/Layout/Pattern/StackTracePatternConverter.cs	DNN Platform/DotNetNuke.Log4net/log4net/Core/LocationInfo.cs	LocationInfo
+cref, resolved to the target	code	DNN Platform/DotNetNuke.Log4net/log4net/Layout/Pattern/TypeNamePatternConverter.cs	DNN Platform/DotNetNuke.Log4net/log4net/Core/LocationInfo.cs	see LocationInfo.ClassName
+cref, resolved to the target	-	DNN Platform/DotNetNuke.Log4net/log4net/Layout/PatternLayout.cs	DNN Platform/DotNetNuke.Log4net/log4net/GlobalContext.cs	see GlobalContext.Properties
+cref, resolved to the target	-	DNN Platform/DotNetNuke.Log4net/log4net/Layout/PatternLayout.cs	DNN Platform/DotNetNuke.Log4net/log4net/ThreadContext.cs	see ThreadContext.Properties
+cref, resolved to the target	-	DNN Platform/DotNetNuke.Log4net/log4net/LogManager.cs	DNN Platform/DotNetNuke.Log4net/log4net/Core/Level.cs	see Level.Debug
+cref, resolved to the target	-	DNN Platform/DotNetNuke.Log4net/log4net/Repository/Hierarchy/Hierarchy.cs	DNN Platform/DotNetNuke.Log4net/log4net/Repository/ILoggerRepository.cs	see ILoggerRepository
+cref in a section the oracle's preprocessor symbols leave inactive	-	DNN Platform/DotNetNuke.Log4net/log4net/Util/ILogExtensions.cs	DNN Platform/DotNetNuke.Log4net/log4net/Core/Level.cs	Level
+cref, resolved to the target	-	DNN Platform/DotNetNuke.Log4net/log4net/Util/PatternString.cs	DNN Platform/DotNetNuke.Log4net/log4net/GlobalContext.cs	see GlobalContext.Properties
+cref, resolved to the target	-	DNN Platform/DotNetNuke.Log4net/log4net/Util/PatternString.cs	DNN Platform/DotNetNuke.Log4net/log4net/ThreadContext.cs	see ThreadContext.Properties
+cref, resolved to the target	code	DNN Platform/DotNetNuke.Log4net/log4net/Util/PatternStringConverters/NewLinePatternConverter.cs	DNN Platform/DotNetNuke.Log4net/log4net/Util/PatternConverter.cs	see PatternConverter.Option
+cref, resolved to the target	-	DNN Platform/DotNetNuke.Maintenance/Telerik/Removal/Steps/RequiredAttribute.cs	DNN Platform/DotNetNuke.Maintenance/Telerik/Removal/Steps/IStep.cs	see IStep.Execute
+cref, resolved to the target	-	DNN Platform/DotNetNuke.Web.Client/Controls/DnnCssInclude.cs	DNN Platform/DotNetNuke.Abstractions/ClientResources/ILinkResource.cs	inheritdoc ILinkResource.Media
+cref, resolved to the target	code	DNN Platform/DotNetNuke.Web.Client/Controls/DnnJsInclude.cs	DNN Platform/DotNetNuke.Abstractions/ClientResources/IScriptResource.cs	inheritdoc IScriptResource.Async
+cref, resolved to the target	-	DNN Platform/DotNetNuke.Web.Mvc/MvcHostControl.cs	DNN Platform/Library/UI/Modules/ISettingsControl.cs	see ISettingsControl.LoadSettings
+cref, resolved to the target	-	DNN Platform/DotNetNuke.Web/Api/ITabAndModuleInfoProvider.cs	DNN Platform/Library/Common/Utilities/Null.cs	see Null.NullInteger
+cref, resolved to the target	-	DNN Platform/DotNetNuke.Web/Api/Internal/Auth/DigestAuthentication.cs	DNN Platform/DotNetNuke.Web/Api/Auth/AuthMessageHandlerBase.cs	see AuthMessageHandlerBase.AuthScheme
+cref, resolved to the target	-	DNN Platform/DotNetNuke.Web/UI/WebControls/ItemListServicesOptions.cs	DNN Platform/Library/Common/Utilities/Null.cs	see Null.NullInteger
+cref, resolved to the target	-	DNN Platform/Library/Application/DotNetNukeContext.cs	DNN Platform/Library/UI/Containers/Container.cs	seealso DotNetNuke.UI.Containers.Container.OnInit
+cref, resolved to the target	-	DNN Platform/Library/Application/DotNetNukeContext.cs	DNN Platform/Library/UI/Skins/Skin.cs	seealso DotNetNuke.UI.Skins.Skin.OnInit
+cref, resolved to the target	-	DNN Platform/Library/Common/Utilities/CacheItemArgs.cs	DNN Platform/Library/Entities/Host/Host.cs	see Host.PerformanceSetting
+cref, resolved to the target	-	DNN Platform/Library/ComponentModel/DataAnnotations/CacheableAttribute.cs	DNN Platform/DotNetNuke.Abstractions/Application/IHostSettings.cs	see IHostSettings.PerformanceSetting
+cref, resolved to the target	-	DNN Platform/Library/Entities/Content/Workflow/IWorkflowEngine.cs	DNN Platform/Library/Entities/Content/Workflow/Exceptions/WorkflowConcurrencyException.cs	exception DotNetNuke.Entities.Content.Workflow.Exceptions.WorkflowConcurrencyException
+cref, resolved to the target	-	DNN Platform/Library/Entities/Content/Workflow/IWorkflowEngine.cs	DNN Platform/Library/Entities/Content/Workflow/Exceptions/WorkflowInvalidOperationException.cs	exception DotNetNuke.Entities.Content.Workflow.Exceptions.WorkflowInvalidOperationException
+cref, resolved to the target	-	DNN Platform/Library/Entities/Content/Workflow/IWorkflowEngine.cs	DNN Platform/Library/Entities/Content/Workflow/Exceptions/WorkflowSecurityException.cs	exception DotNetNuke.Entities.Content.Workflow.Exceptions.WorkflowSecurityException
+cref, resolved to the target	-	DNN Platform/Library/Entities/Content/Workflow/IWorkflowManager.cs	DNN Platform/Library/Entities/Content/Workflow/Exceptions/WorkflowInvalidOperationException.cs	exception DotNetNuke.Entities.Content.Workflow.Exceptions.WorkflowInvalidOperationException
+cref, resolved to the target	-	DNN Platform/Library/Entities/Content/Workflow/IWorkflowManager.cs	DNN Platform/Library/Entities/Content/Workflow/Exceptions/WorkflowNameAlreadyExistsException.cs	exception DotNetNuke.Entities.Content.Workflow.Exceptions.WorkflowNameAlreadyExistsException
+cref, resolved to the target	-	DNN Platform/Library/Entities/Content/Workflow/IWorkflowStateManager.cs	DNN Platform/Library/Entities/Content/Workflow/Exceptions/WorkflowDoesNotExistException.cs	exception DotNetNuke.Entities.Content.Workflow.Exceptions.WorkflowDoesNotExistException
+cref, resolved to the target	-	DNN Platform/Library/Entities/Content/Workflow/IWorkflowStateManager.cs	DNN Platform/Library/Entities/Content/Workflow/Exceptions/WorkflowInvalidOperationException.cs	exception DotNetNuke.Entities.Content.Workflow.Exceptions.WorkflowInvalidOperationException
+cref, resolved to the target	-	DNN Platform/Library/Entities/Content/Workflow/IWorkflowStateManager.cs	DNN Platform/Library/Entities/Content/Workflow/Exceptions/WorkflowStateNameAlreadyExistsException.cs	exception DotNetNuke.Entities.Content.Workflow.Exceptions.WorkflowStateNameAlreadyExistsException
+cref, resolved to the target	-	DNN Platform/Library/Entities/Modules/IModuleController.cs	DNN Platform/Library/Entities/Modules/Definitions/ModuleDefinitionInfo.cs	see ModuleDefinitionInfo.DefinitionName
+cref, resolved to the target	-	DNN Platform/Library/Entities/Portals/Templates/PortalTemplateModuleAction.cs	DNN Platform/DotNetNuke.Abstractions/Portals/Templates/PortalTemplateModuleAction.cs	inheritdoc DotNetNuke.Abstractions.Portals.Templates.PortalTemplateModuleAction
+cref, resolved to the target	-	DNN Platform/Library/Entities/Urls/BrowserTypes.cs	DNN Platform/DotNetNuke.Abstractions/Urls/BrowserTypes.cs	inheritdoc Abstractions.Urls.BrowserTypes
+cref, resolved to the target	-	DNN Platform/Library/Entities/Users/IUserController.cs	DNN Platform/DotNetNuke.Abstractions/Users/IUserInfo.cs	see IUserInfo.UserID
+cref, resolved to the target	-	DNN Platform/Library/Entities/Users/IUserController.cs	DNN Platform/Library/Common/Globals.cs	see Globals.USERNAME_UNALLOWED_ASCII
+cref, resolved to the target	-	DNN Platform/Library/Entities/Users/IUserController.cs	DNN Platform/Library/Common/Utilities/Null.cs	see Null.NullInteger
+cref, resolved to the target	-	DNN Platform/Library/Framework/JavaScriptLibraries/CommonJS.cs	DNN Platform/Library/Framework/JavaScriptLibraries/JavaScriptLibrary.cs	see JavaScriptLibrary.LibraryName
+cref, resolved to the target	code	DNN Platform/Library/Obsolete/EventLogController.cs	DNN Platform/DotNetNuke.Abstractions/Logging/IEventLogConfigService.cs	inheritdoc IEventLogConfigService.AddLogTypeConfigInfo
+cref, resolved to the target	code	DNN Platform/Library/Obsolete/EventLogController.cs	DNN Platform/DotNetNuke.Abstractions/Logging/IEventLogService.cs	inheritdoc IEventLogService.ClearLog
+cref, resolved to the target	code	DNN Platform/Library/Obsolete/EventLogController.cs	DNN Platform/Library/Services/Log/EventLog/ILogController.cs	inheritdoc ILogController.GetLogTypeConfigInfo
+cref, resolved to the target	-	DNN Platform/Library/Security/Membership/MembershipProvider.cs	DNN Platform/Library/Entities/Users/IUserController.cs	inheritdoc IUserController.GetUserByDisplayname
+cref, resolved to the target	-	DNN Platform/Library/Services/Cryptography/CryptographyProvider.cs	DNN Platform/DotNetNuke.Abstractions/Security/ICryptographyProvider.cs	inheritdoc DotNetNuke.Abstractions.Security.ICryptographyProvider.DecryptParameter
+cref, resolved to the target	-	DNN Platform/Library/Services/FileSystem/Internal/Wrappers/IIconController.cs	DNN Platform/Library/Entities/Icons/IconController.cs	see DotNetNuke.Entities.Icons.IconController.DefaultIconSize
+cref, resolved to the target	-	DNN Platform/Library/Services/Mail/OAuth/ISmtpOAuthProvider.cs	DNN Platform/Library/Common/Utilities/Null.cs	see Null.NullInteger
+cref, resolved to the target	-	DNN Platform/Library/Services/Scheduling/SchedulingProvider.cs	DNN Platform/DotNetNuke.Abstractions/Application/SchedulerMode.cs	inheritdoc Abstractions.Application.SchedulerMode
+cref, resolved to the target	-	DNN Platform/Library/UI/Modules/ModuleControlFactory.cs	DNN Platform/Library/UI/Modules/IModuleControlPipeline.cs	inheritdoc IModuleControlPipeline
+cref, resolved to the target	-	DNN Platform/Library/UI/WebControls/PropertyEditor/GroupByMode.cs	DNN Platform/Library/UI/WebControls/PropertyEditor/PropertyEditorControl.cs	see DotNetNuke.UI.WebControls.PropertyEditorControl
+cref, resolved to the target	-	DNN Platform/Library/UI/WebControls/PropertyEditor/LabelMode.cs	DNN Platform/Library/UI/WebControls/PropertyEditor/PropertyEditorControl.cs	see DotNetNuke.UI.WebControls.PropertyEditorControl
+cref, resolved to the target	-	DNN Platform/Library/UI/WebControls/PropertyEditor/ListBoundField.cs	DNN Platform/Library/UI/WebControls/PropertyEditor/PropertyEditorControl.cs	see DotNetNuke.UI.WebControls.PropertyEditorControl
+cref, resolved to the target	-	DNN Platform/Library/UI/WebControls/PropertyEditor/PropertyEditorMode.cs	DNN Platform/Library/UI/WebControls/PropertyEditor/PropertyEditorControl.cs	see DotNetNuke.UI.WebControls.PropertyEditorControl
+cref, resolved to the target	-	DNN Platform/Library/UI/WebControls/PropertyEditor/PropertySortType.cs	DNN Platform/Library/UI/WebControls/PropertyEditor/PropertyAttributes/SortOrderAttribute.cs	see DotNetNuke.UI.WebControls.SortOrderAttribute
+cref, resolved to the target	-	DNN Platform/Library/UI/WebControls/PropertyEditor/PropertySortType.cs	DNN Platform/Library/UI/WebControls/PropertyEditor/PropertyEditorControl.cs	see DotNetNuke.UI.WebControls.PropertyEditorControl
+cref, resolved to the target	code	DNN Platform/Modules/CoreMessaging/Services/MessagingServiceController.cs	DNN Platform/Library/Services/Social/Messaging/Internal/Views/MessageBoxView.cs	see DotNetNuke.Services.Social.Messaging.Internal.Views.MessageBoxView
+cref, resolved to the target	code	DNN Platform/Modules/CoreMessaging/Services/MessagingServiceController.cs	DNN Platform/Library/Services/Social/Messaging/Internal/Views/MessageThreadsView.cs	see DotNetNuke.Services.Social.Messaging.Internal.Views.MessageThreadsView
+cref, resolved to the target	-	DNN Platform/Modules/Journal/Components/FeatureController.cs	DNN Platform/Library/Entities/Modules/IPortable.cs	inheritdoc IPortable.ExportModule
+cref, resolved to the target	-	DNN Platform/Modules/Journal/Components/FeatureController.cs	DNN Platform/Library/Entities/Modules/IUpgradeable.cs	inheritdoc IUpgradeable.UpgradeModule
+cref, resolved to the target	-	DNN Platform/Providers/ClientCapabilityProviders/Provider.AspNetCCP/AspNetClientCapability.cs	DNN Platform/Library/Services/ClientCapability/IClientCapability.cs	see DotNetNuke.Services.ClientCapability.IClientCapability
+cref, resolved to the target	-	DNN Platform/Providers/ClientCapabilityProviders/Provider.AspNetCCP/AspNetClientCapabilityProvider.cs	DNN Platform/Library/Services/ClientCapability/IClientCapabilityProvider.cs	see DotNetNuke.Services.ClientCapability.IClientCapabilityProvider
+cref, resolved to the target	code	DNN Platform/Syndication/RSS/GenericRssChannel.cs	DNN Platform/Syndication/RSS/RssElementBase.cs	inheritdoc RssElementBase.Attributes
+cref, resolved to the target	-	DNN Platform/Website/admin/Skins/DnnJsInclude.ascx.cs	DNN Platform/DotNetNuke.Abstractions/ClientResources/IScriptResource.cs	inheritdoc IScriptResource.Async
+cref naming the target's type, resolved elsewhere	-	DNN Platform/Website/admin/Skins/Meta.ascx.cs	DNN Platform/Website/admin/Skins/Meta.ascx.designer.cs	see Meta.HttpEquiv
+cref, resolved to the target	-	Dnn.AdminExperience/Dnn.PersonaBar.Extensions/Components/Prompt/IModulesController.cs	Dnn.AdminExperience/Library/Dnn.PersonaBar.Library/Controllers/IModulesController.cs	inheritdoc Dnn.PersonaBar.Library.Controllers.IModulesController
+cref, resolved to the target	-	Dnn.AdminExperience/Dnn.PersonaBar.Extensions/Components/Prompt/Models/Command.cs	DNN Platform/Library/Prompt/Command.cs	inheritdoc DotNetNuke.Prompt.Command
+cref, resolved to the target	-	Dnn.AdminExperience/Dnn.PersonaBar.Extensions/Components/Prompt/Models/CommandHelp.cs	DNN Platform/Library/Prompt/Output/CommandHelp.cs	inheritdoc DotNetNuke.Prompt.CommandHelp
+cref, resolved to the target	-	Dnn.AdminExperience/Dnn.PersonaBar.Extensions/Components/Prompt/Models/CommandOption.cs	DNN Platform/Library/Prompt/Output/CommandOption.cs	inheritdoc DotNetNuke.Prompt.CommandOption
+cref, resolved to the target	-	Dnn.AdminExperience/Dnn.PersonaBar.Extensions/Components/Prompt/ModulesController.cs	Dnn.AdminExperience/Library/Dnn.PersonaBar.Library/Controllers/ModulesController.cs	inheritdoc Dnn.PersonaBar.Library.Controllers.ModulesController
+cref, resolved to the target	-	Dnn.AdminExperience/Dnn.PersonaBar.Extensions/Components/Prompt/Repositories/CommandRepository.cs	DNN Platform/Library/Prompt/CommandRepository.cs	inheritdoc DotNetNuke.Prompt.CommandRepository
+cref, resolved to the target	-	Dnn.AdminExperience/Dnn.PersonaBar.Extensions/Components/Prompt/Repositories/ICommandRepository.cs	DNN Platform/DotNetNuke.Abstractions/Prompt/ICommandRepository.cs	inheritdoc DotNetNuke.Abstractions.Prompt.ICommandRepository
+cref, resolved to the target	-	Dnn.AdminExperience/Dnn.PersonaBar.Extensions/Components/SiteSettings/AllowedExtensionsHelper.cs	DNN Platform/Library/Common/Globals.cs	see DotNetNuke.Common.Globals.ImageFileTypes
+cref, resolved to the target	-	Dnn.AdminExperience/Dnn.PersonaBar.Extensions/Components/Themes/ParseType.cs	DNN Platform/Library/UI/Skins/SkinFileProcessor.cs	see SkinParser.Localized
+cref, resolved to the target	-	Dnn.AdminExperience/Dnn.PersonaBar.Extensions/Components/Users/Prompt/Utilities.cs	Dnn.AdminExperience/Dnn.PersonaBar.Extensions/Components/Users/IUserValidator.cs	inheritdoc IUserValidator.ValidateUser
+cref, resolved to the target	-	Dnn.AdminExperience/Library/Dnn.PersonaBar.Library/Helper/PortalHelper.cs	Dnn.AdminExperience/Library/Dnn.PersonaBar.Library/Helper/IContentVerifier.cs	inheritdoc IContentVerifier.IsContentExistsForRequestedPortal
+cref, resolved to the target	-	Dnn.AdminExperience/Library/Dnn.PersonaBar.UI/Services/TabsController.cs	DNN Platform/Library/Entities/Tabs/TabInfo.cs	see TabInfo.HasChildren

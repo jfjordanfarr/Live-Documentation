@@ -1,0 +1,33 @@
+repo-first-commit-measured-00.png	0.6 s	Listing Files… (63)	0 files, 0 references · 0 of 0 files shown · 0 groups, 0 alone
+repo-first-commit-measured-01.png	1.9 s	Listing Files… (305)	0 files, 0 references · 0 of 0 files shown · 0 groups, 0 alone
+repo-first-commit-measured-02.png	2.9 s	Listing Files… (746)	0 files, 0 references · 0 of 0 files shown · 0 groups, 0 alone
+repo-first-commit-measured-03.png	3.9 s	Listing Files… (1,176)	0 files, 0 references · 0 of 0 files shown · 0 groups, 0 alone
+repo-first-commit-measured-04.png	4.9 s	Reading File Text… (0/1,297)	0 files, 0 references · 0 of 0 files shown · 0 groups, 0 alone
+repo-first-commit-measured-05.png	5.9 s	Reading File Text… (0/1,297)	0 files, 0 references · 0 of 0 files shown · 0 groups, 0 alone
+repo-first-commit-measured-06.png	6.9 s	Reading File Text… (0/1,297)	0 files, 0 references · 0 of 0 files shown · 0 groups, 0 alone
+repo-first-commit-measured-07.png	7.9 s	Reading File Text… (0/1,297)	0 files, 0 references · 0 of 0 files shown · 0 groups, 0 alone
+repo-first-commit-measured-08.png	8.9 s	Reading File Text… (0/1,297)	0 files, 0 references · 0 of 0 files shown · 0 groups, 0 alone
+repo-first-commit-measured-09.png	9.9 s	Reading File Text… (77/1,297)	77 files, 108 references · 29 of 77 files shown · 10 groups, 19 alone
+repo-first-commit-measured-10.png	10.9 s	Reading File Text… (186/1,297)	183 files, 408 references · 47 of 183 files shown · 24 groups, 23 alone
+repo-first-commit-measured-11.png	11.9 s	Reading File Text… (294/1,297)	291 files, 1,104 references · 59 of 291 files shown · 29 groups, 30 alone
+repo-first-commit-measured-12.png	12.9 s	Reading File Text… (403/1,297)	399 files, 1,530 references · 73 of 399 files shown · 28 groups, 45 alone
+repo-first-commit-measured-13.png	13.9 s	Reading File Text… (509/1,297)	509 files, 2,022 references · 64 of 509 files shown · 32 groups, 32 alone
+repo-first-commit-measured-14.png	14.9 s	Reading File Text… (618/1,297)	608 files, 3,038 references · 67 of 608 files shown · 34 groups, 33 alone
+repo-first-commit-measured-15.png	15.9 s	Reading File Text… (724/1,297)	724 files, 4,097 references · 68 of 692 files shown · 34 groups, 34 alone
+repo-first-commit-measured-16.png	16.9 s	Reading File Text… (836/1,297)	809 files, 4,531 references · 90 of 808 files shown · 40 groups, 50 alone
+repo-first-commit-measured-17.png	17.9 s	Reading File Text… (943/1,297)	858 files, 5,050 references · 89 of 857 files shown · 41 groups, 48 alone
+repo-first-commit-measured-18.png	18.9 s	Reading File Text… (1,052/1,297)	949 files, 5,967 references · 90 of 948 files shown · 41 groups, 49 alone
+repo-first-commit-measured-19.png	19.9 s	Reading File Text… (1,159/1,297)	1,079 files, 6,978 references · 96 of 1,065 files shown · 42 groups, 54 alone
+repo-first-commit-measured-20.png	20.9 s	Reading File Text… (1,261/1,297)	1,261 files, 7,744 references · 96 of 1,065 files shown · 42 groups, 54 alone
+repo-first-commit-measured-21.png	21.9 s	Reading File Text… (1,261/1,297)	1,261 files, 7,744 references · 128 of 1,247 files shown · 47 groups, 81 alone
+repo-first-commit-measured-22.png	22.9 s	Reading File Text… (1,261/1,297)	1,261 files, 7,744 references · 128 of 1,247 files shown · 47 groups, 81 alone
+repo-first-commit-measured-23.png	23.9 s	(no sign)	1,297 files, 7,899 references, 1,355 dependencies outside the scan · 132 of 1,283 files shown · 47 groups, 85 alone
+frames at no scan	200	median 28 ms	worst 683 ms	over 100 ms: 4 frames, 1547 ms
+frames at waiting	401	median 17 ms	worst 356 ms	over 100 ms: 3 frames, 678 ms
+frames at 0+	64	median 24 ms	worst 168 ms	over 100 ms: 1 frames, 168 ms
+frames at 200+	71	median 26 ms	worst 56 ms	over 100 ms: 0 frames, 0 ms
+frames at 400+	63	median 24 ms	worst 60 ms	over 100 ms: 0 frames, 0 ms
+frames at 600+	59	median 22 ms	worst 114 ms	over 100 ms: 2 frames, 227 ms
+frames at 800+	64	median 30 ms	worst 316 ms	over 100 ms: 3 frames, 674 ms
+frames at 1000+	40	median 31 ms	worst 439 ms	over 100 ms: 1 frames, 439 ms
+frames at 1200+	54	median 29 ms	worst 613 ms	over 100 ms: 2 frames, 762 ms

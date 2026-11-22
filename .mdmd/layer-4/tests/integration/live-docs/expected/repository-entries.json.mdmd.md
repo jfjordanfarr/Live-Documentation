@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: `tests/integration/live-docs/expected/repository-entries.json`
-- Generated At: 2026-11-21T19:48:49.269Z
+- Generated At: 2026-11-22T03:11:44.649Z
 
 ## Authored
 ### Purpose
@@ -68,6 +68,12 @@ The hand's reading of this repository's own entry points, with the reasons as th
 - Type: key
 
 #### `entries:packages/generator/tsconfig.json` {#symbol-entriespackagesgeneratortsconfigjson}
+- Type: key
+
+#### `entries:packages/stored-form/package.json` {#symbol-entriespackagesstored-formpackagejson}
+- Type: key
+
+#### `entries:packages/stored-form/tsconfig.json` {#symbol-entriespackagesstored-formtsconfigjson}
 - Type: key
 
 #### `entries:scripts/contact-sheet/contact-sheet.ts` {#symbol-entriesscriptscontact-sheetcontact-sheetts}

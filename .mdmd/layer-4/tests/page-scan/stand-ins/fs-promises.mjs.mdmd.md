@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: `tests/page-scan/stand-ins/fs-promises.mjs`
-- Generated At: 2026-11-21T03:40:56.687Z
+- Generated At: 2026-11-22T01:36:30.597Z
 
 ## Authored
 ### Purpose
@@ -17,10 +17,6 @@ Stands in for `node:fs/promises`: the same functions as `promises` of the stand-
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `mkdir` {#symbol-mkdir}
-- Type: const
-- Source: [source](../../../../../tests/page-scan/stand-ins/fs-promises.mjs#L5)
-
-#### `open` {#symbol-open}
 - Type: const
 - Source: [source](../../../../../tests/page-scan/stand-ins/fs-promises.mjs#L5)
 

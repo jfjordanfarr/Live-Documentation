@@ -33,7 +33,6 @@ export const STAND_INS = {
   fs: "fs.mjs",
   "fs/promises": "fs-promises.mjs",
   path: "path.mjs",
-  url: "url.mjs",
   process: "process.mjs",
   child_process: "child_process.mjs",
   glob: "glob.mjs"

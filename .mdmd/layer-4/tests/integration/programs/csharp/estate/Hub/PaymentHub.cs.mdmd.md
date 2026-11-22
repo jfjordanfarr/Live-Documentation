@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `tests/integration/programs/csharp/estate/Hub/PaymentHub.cs`
-- Generated At: 2026-11-19T21:10:26.629Z
+- Generated At: 2026-11-22T01:24:27.188Z
 
 ## Authored
 ### Purpose
@@ -18,22 +18,25 @@ The on-prem WCF hub: it does no payment work itself, but picks the payment servi
 ### Public Symbols
 #### `PaymentHub` {#symbol-paymenthub}
 - Type: class
-- Source: [source](../../../../../../../../tests/integration/programs/csharp/estate/Hub/PaymentHub.cs#L13)
+- Source: [source](../../../../../../../../tests/integration/programs/csharp/estate/Hub/PaymentHub.cs#L14)
 - Implements: [`IPaymentHub`](../Contracts/IPaymentHub.cs.mdmd.md#symbol-ipaymenthub)
 
 ##### `PaymentHub` — Summary
 The on-prem WCF hub. It does no payment work itself: it picks the payment service
 for the request's workload and environment and forwards the operation.
 
+##### `PaymentHub` — Links
+- `IPaymentService.Post(PaymentRequest)`
+
 #### `PostPayment` {#symbol-postpayment}
 - Type: method
-- Source: [source](../../../../../../../../tests/integration/programs/csharp/estate/Hub/PaymentHub.cs#L15)
+- Source: [source](../../../../../../../../tests/integration/programs/csharp/estate/Hub/PaymentHub.cs#L16)
 - Returns: [`PaymentResult`](../Contracts/PaymentResult.cs.mdmd.md#symbol-paymentresult)
 - Parameters: `request`: [`PaymentRequest`](../Contracts/PaymentRequest.cs.mdmd.md#symbol-paymentrequest)
 
 #### `GetPayment` {#symbol-getpayment}
 - Type: method
-- Source: [source](../../../../../../../../tests/integration/programs/csharp/estate/Hub/PaymentHub.cs#L20)
+- Source: [source](../../../../../../../../tests/integration/programs/csharp/estate/Hub/PaymentHub.cs#L21)
 - Returns: [`PaymentResult`](../Contracts/PaymentResult.cs.mdmd.md#symbol-paymentresult)
 - Parameters: `query`: [`PaymentQuery`](../Contracts/PaymentQuery.cs.mdmd.md#symbol-paymentquery)
 <!-- LIVE-DOC:END Public Symbols -->

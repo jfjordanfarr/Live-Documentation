@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: `tests/page-scan/node-needs.json`
-- Generated At: 2026-11-21T04:17:33.557Z
+- Generated At: 2026-11-22T02:30:00.455Z
 
 ## Authored
 ### Purpose
@@ -47,9 +47,6 @@ The committed list of what of Node the scanning page's bundle needs: by engine a
 #### `engine:packages/engine/src/live-docs/adapters/csharp.ts:glob` {#symbol-enginepackagesenginesrclive-docsadapterscsharptsglob}
 - Type: key
 
-#### `engine:packages/engine/src/live-docs/adapters/csharp.ts:node:fs` {#symbol-enginepackagesenginesrclive-docsadapterscsharptsnodefs}
-- Type: key
-
 #### `engine:packages/engine/src/live-docs/adapters/csharp.ts:node:path` {#symbol-enginepackagesenginesrclive-docsadapterscsharptsnodepath}
 - Type: key
 
@@ -86,9 +83,6 @@ The committed list of what of Node the scanning page's bundle needs: by engine a
 #### `engine:packages/engine/src/live-docs/adapters/go.ts:glob` {#symbol-enginepackagesenginesrclive-docsadaptersgotsglob}
 - Type: key
 
-#### `engine:packages/engine/src/live-docs/adapters/go.ts:node:fs` {#symbol-enginepackagesenginesrclive-docsadaptersgotsnodefs}
-- Type: key
-
 #### `engine:packages/engine/src/live-docs/adapters/go.ts:node:path` {#symbol-enginepackagesenginesrclive-docsadaptersgotsnodepath}
 - Type: key
 
@@ -117,9 +111,6 @@ The committed list of what of Node the scanning page's bundle needs: by engine a
 - Type: key
 
 #### `engine:packages/engine/src/live-docs/adapters/java.ts:glob` {#symbol-enginepackagesenginesrclive-docsadaptersjavatsglob}
-- Type: key
-
-#### `engine:packages/engine/src/live-docs/adapters/java.ts:node:fs` {#symbol-enginepackagesenginesrclive-docsadaptersjavatsnodefs}
 - Type: key
 
 #### `engine:packages/engine/src/live-docs/adapters/java.ts:node:path` {#symbol-enginepackagesenginesrclive-docsadaptersjavatsnodepath}
@@ -308,19 +299,16 @@ The committed list of what of Node the scanning page's bundle needs: by engine a
 #### `engine:packages/engine/src/tooling/gitIgnored.ts:node:process` {#symbol-enginepackagesenginesrctoolinggitignoredtsnodeprocess}
 - Type: key
 
+#### `engine:packages/engine/src/tooling/nodeHost.ts` {#symbol-enginepackagesenginesrctoolingnodehostts}
+- Type: key
+
+#### `engine:packages/engine/src/tooling/nodeHost.ts:node:fs` {#symbol-enginepackagesenginesrctoolingnodehosttsnodefs}
+- Type: key
+
 #### `engine:packages/engine/src/tooling/pathUtils.ts` {#symbol-enginepackagesenginesrctoolingpathutilsts}
 - Type: key
 
 #### `engine:packages/engine/src/tooling/pathUtils.ts:node:path` {#symbol-enginepackagesenginesrctoolingpathutilstsnodepath}
-- Type: key
-
-#### `engine:packages/engine/src/tooling/pathUtils.ts:node:url` {#symbol-enginepackagesenginesrctoolingpathutilstsnodeurl}
-- Type: key
-
-#### `engine:packages/engine/src/tooling/sourceText.ts` {#symbol-enginepackagesenginesrctoolingsourcetextts}
-- Type: key
-
-#### `engine:packages/engine/src/tooling/sourceText.ts:node:fs` {#symbol-enginepackagesenginesrctoolingsourcetexttsnodefs}
 - Type: key
 
 #### `engine:packages/generator/src/generator.ts` {#symbol-enginepackagesgeneratorsrcgeneratorts}
@@ -357,9 +345,6 @@ The committed list of what of Node the scanning page's bundle needs: by engine a
 - Type: key
 
 #### `standIns:node:process` {#symbol-standinsnodeprocess}
-- Type: key
-
-#### `standIns:node:url` {#symbol-standinsnodeurl}
 - Type: key
 
 #### `hostedByNode` {#symbol-hostedbynode}

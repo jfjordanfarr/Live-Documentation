@@ -204,7 +204,7 @@ export const pomAdapter: LanguageAdapter = {
   extensions: [],
   fileNames:  [POM_XML],
   async analyze(input): Promise<SourceAnalysisResult | null> {
-    const document = readXmlElements(await readSourceText(input.absolutePath));
+    const document = readXmlElements(await readSourceText(input.absolutePath, input.fileIndex));
     // The document is read by an explicit stack; `descendantsNamed` recurses, so a document nested deeper than a fresh
     // process could walk marks the process (`processMark.ts`).
     nestingBeyondDepth(document, (element) => element.children, TREE_DEPTH);

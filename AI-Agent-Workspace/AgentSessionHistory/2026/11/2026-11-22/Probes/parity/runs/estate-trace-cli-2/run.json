@@ -1,0 +1,90 @@
+{
+  "task": "estate-trace",
+  "arm": "cli",
+  "source": "estate",
+  "base": "/tmp/claude-1000/-workspaces-Live-Documentation/8edd198a-ddfc-4db4-98d3-afb50c64b8a7/scratchpad/parity/base/estate-cli",
+  "words": "This folder holds our payments system. When someone submits a payment on the web page, what happens to it? Name each piece of the system it passes through, in order, until it is stored.",
+  "model": "claude-sonnet-5-5",
+  "effort": "default",
+  "maxTurns": 80,
+  "maxMinutes": 20,
+  "systemPrompt": "You are at a shell, in a folder that holds a copy of someone's code. Through your one tool you can run commands. The command `live-docs` is installed. They have sent you a message about the code. Do what they ask, then reply to them in plain words. Your reply is all they will read.",
+  "startedAt": "2026-11-22T01:45:23.340Z",
+  "finishedAt": "2026-11-22T01:45:40.970Z",
+  "exitCode": 0,
+  "outcome": "success",
+  "wallMs": 17620,
+  "apiMs": 10839,
+  "turns": 5,
+  "commands": 4,
+  "commandsNamingLiveDocs": 2,
+  "commandsOutsideFolder": [
+    "grep -rniE \"usp_PostPayment|ORACLE_CENTRAL|GatewayBaseUrl|name=\\\"PaymentHub\\\"|PaymentService\\.|\\[Http(Post|Get)|Route\\(\" --include=*.cs --include=*.config --include=*.sql --include=*.js --include=*.aspx . | grep -v -E \"/(obj|bin)/\" | head -40"
+  ],
+  "usage": {
+    "input": 10,
+    "cacheWrite": 6357,
+    "cacheRead": 20226,
+    "output": 1198
+  },
+  "costUsd": 0.0394506,
+  "modelUsage": {
+    "claude-sonnet-5-5": {
+      "inputTokens": 10,
+      "outputTokens": 1198,
+      "cacheReadInputTokens": 20226,
+      "cacheCreationInputTokens": 6357,
+      "webSearchRequests": 0,
+      "costUSD": 0.0394506,
+      "contextWindow": 1000000,
+      "maxOutputTokens": 128000,
+      "thinkingTokens": 29,
+      "cacheCreationEphemeral5mInputTokens": 0,
+      "cacheCreationEphemeral1hInputTokens": 6357,
+      "canonicalModel": "claude-sonnet-5-5",
+      "provider": "firstParty",
+      "costBasis": "list"
+    }
+  },
+  "init": {
+    "cwd": "/tmp/session-6K6DrE/code",
+    "model": "claude-sonnet-5-5",
+    "permissionMode": "dontAsk",
+    "tools": [
+      "Bash"
+    ],
+    "mcp_servers": [],
+    "slash_commands": [],
+    "skills": [],
+    "agents": [
+      "claude",
+      "Explore",
+      "general-purpose",
+      "Plan",
+      "statusline-setup",
+      "web-fetch"
+    ],
+    "plugins": [
+      {
+        "name": "cc-plugin-agents-md",
+        "path": "builtin",
+        "source": "cc-plugin-agents-md@builtin"
+      },
+      {
+        "name": "cc-plugin-telemetry",
+        "path": "builtin",
+        "source": "cc-plugin-telemetry@builtin"
+      },
+      {
+        "name": "cc-plugin-privacy",
+        "path": "builtin",
+        "source": "cc-plugin-privacy@builtin"
+      },
+      {
+        "name": "cc-plugin-plugin-authoring",
+        "path": "builtin",
+        "source": "cc-plugin-plugin-authoring@builtin"
+      }
+    ]
+  }
+}

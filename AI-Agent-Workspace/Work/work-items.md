@@ -4,6 +4,7 @@ state: open
 milestone: process
 order: 90
 opened: 2026-11-20
+value: none            # how we work
 ---
 # The work items themselves
 

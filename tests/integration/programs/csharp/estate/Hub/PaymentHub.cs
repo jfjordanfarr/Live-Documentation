@@ -9,6 +9,7 @@ namespace Estate.Hub
     /// The on-prem WCF hub. It does no payment work itself: it picks the payment service
     /// for the request's workload and environment and forwards the operation.
     /// </summary>
+    /// <seealso cref="IPaymentService.Post(PaymentRequest)"/>
     [ServiceBehavior(InstanceContextMode = InstanceContextMode.PerCall)]
     public class PaymentHub : IPaymentHub
     {

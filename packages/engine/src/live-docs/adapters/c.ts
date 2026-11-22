@@ -30,13 +30,13 @@
  * The program's entry point is a definition of `main`, `wmain`, `WinMain` or
  * `wWinMain` with a body, in a file that is not a header.
  */
-import { promises as fs, readdirSync, statSync } from "node:fs";
+import { readdirSync, statSync } from "node:fs";
 import path from "node:path";
 
 import { cSyntax } from "../../languages";
 import { compareText } from "../../tooling/compareText";
 import { normalizeWorkspacePath } from "../../tooling/pathUtils";
-import { readSourceText, throwIfMachineFailure } from "../../tooling/sourceText";
+import { readSourceText, type SourceReads, throwIfMachineFailure } from "../../tooling/sourceText";
 import type {
   DependencyEntry,
   PublicSymbolEntry,
@@ -603,12 +603,12 @@ function capitalize(value: string): string {
 }
 
 // ---------------------------------------------------------------------------
-// Per-file facts, cached by modification time
+// Per-file facts, kept for the run
 // ---------------------------------------------------------------------------
 
 // Kept for one generation, the run its file index names, with `listingCache` below: a run with another index, or
 // none, begins with nothing, so a process that generates commit after commit in one folder never reads another's.
-const factsCache = new Map<string, { mtimeMs: number; facts: FileFacts }>();
+const factsCache = new Map<string, FileFacts>();
 let factsRun: WorkspaceFileIndex | undefined;
 function beginRun(fileIndex: WorkspaceFileIndex | undefined): void {
   if (fileIndex === undefined || fileIndex !== factsRun) {
@@ -622,12 +622,11 @@ async function extractFacts(content: string, absolutePath: string): Promise<File
   return readTree("cpp", content, (root) => new FileExtractor(isCppFile(absolutePath)).extract(root));
 }
 
-async function fileFacts(absolutePath: string): Promise<FileFacts> {
-  const stats = await fs.stat(absolutePath);
+async function fileFacts(absolutePath: string, reads: SourceReads | undefined): Promise<FileFacts> {
   const cached = factsCache.get(absolutePath);
-  if (cached && cached.mtimeMs === stats.mtimeMs) return cached.facts;
-  const facts = await extractFacts(await readSourceText(absolutePath), absolutePath);
-  factsCache.set(absolutePath, { mtimeMs: stats.mtimeMs, facts });
+  if (cached) return cached;
+  const facts = await extractFacts(await readSourceText(absolutePath, reads), absolutePath);
+  factsCache.set(absolutePath, facts);
   return facts;
 }
 
@@ -789,10 +788,10 @@ function toSymbols(facts: FileFacts): PublicSymbolEntry[] {
 }
 
 /** The names the file uses that the header declares at file scope. */
-async function usedNames(facts: FileFacts, headerPath: string): Promise<string[]> {
+async function usedNames(facts: FileFacts, headerPath: string, reads: SourceReads | undefined): Promise<string[]> {
   let header: FileFacts;
   try {
-    header = await fileFacts(headerPath);
+    header = await fileFacts(headerPath, reads);
   } catch (error) {
     throwIfMachineFailure(error);
     return [];
@@ -804,7 +803,7 @@ async function usedNames(facts: FileFacts, headerPath: string): Promise<string[]
   return Array.from(names).sort();
 }
 
-async function toDependencies(facts: FileFacts, absolutePath: string, workspaceRoot: string, strategy: IncludeStrategy): Promise<DependencyEntry[]> {
+async function toDependencies(facts: FileFacts, absolutePath: string, workspaceRoot: string, strategy: IncludeStrategy, reads: SourceReads | undefined): Promise<DependencyEntry[]> {
   const dependencies = new Map<string, DependencyEntry>();
   for (const include of facts.includes) {
     const resolvedPath = include.system
@@ -815,7 +814,7 @@ async function toDependencies(facts: FileFacts, absolutePath: string, workspaceR
     dependencies.set(key, {
       specifier: include.specifier,
       resolvedPath,
-      symbols: resolvedPath ? await usedNames(facts, path.join(workspaceRoot, resolvedPath)) : [],
+      symbols: resolvedPath ? await usedNames(facts, path.join(workspaceRoot, resolvedPath), reads) : [],
       kind: "import"
     });
   }
@@ -826,12 +825,12 @@ async function toDependencies(facts: FileFacts, absolutePath: string, workspaceR
  * Analyzes one C or C++ file from its text, without the generator: its
  * symbols, its includes resolved under the strategy, and its program entry.
  */
-export async function analyzeCSource(options: { content: string; absolutePath: string; workspaceRoot: string; strategy?: IncludeStrategy }): Promise<SourceAnalysisResult> {
+export async function analyzeCSource(options: { content: string; absolutePath: string; workspaceRoot: string; strategy?: IncludeStrategy; fileIndex?: SourceReads }): Promise<SourceAnalysisResult> {
   const strategy = options.strategy ?? DEFAULT_INCLUDE_STRATEGY;
   const facts = await extractFacts(options.content, options.absolutePath);
   const result: SourceAnalysisResult = {
     symbols: toSymbols(facts),
-    dependencies: await toDependencies(facts, options.absolutePath, options.workspaceRoot, strategy)
+    dependencies: await toDependencies(facts, options.absolutePath, options.workspaceRoot, strategy, options.fileIndex)
   };
   if (facts.program && PROGRAM_FILE_EXTENSIONS.has(path.extname(options.absolutePath).toLowerCase())) {
     result.program = facts.program;
@@ -845,7 +844,7 @@ export const cAdapter: LanguageAdapter = {
   extensions: cSyntax.extensions,
   async analyze({ absolutePath, workspaceRoot, fileIndex }): Promise<SourceAnalysisResult | null> {
     beginRun(fileIndex);
-    const content = await readSourceText(absolutePath);
-    return analyzeCSource({ content, absolutePath, workspaceRoot });
+    const content = await readSourceText(absolutePath, fileIndex);
+    return analyzeCSource({ content, absolutePath, workspaceRoot, fileIndex });
   }
 };

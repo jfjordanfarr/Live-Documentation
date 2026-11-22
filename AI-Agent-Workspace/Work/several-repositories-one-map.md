@@ -4,6 +4,8 @@ state: open
 milestone: december-showing
 order: 50
 opened: 2026-11-20
+value: A person can see it
+also: The map does not lie
 ---
 # Several repositories on one map
 

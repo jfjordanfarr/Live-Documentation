@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/engine/src/live-docs/adapters/json.ts`
-- Generated At: 2026-11-21T04:08:23.445Z
+- Generated At: 2026-11-22T01:36:19.573Z
 
 ## Authored
 ### Purpose
@@ -40,7 +40,7 @@ Polyglot language adapter for JSON files: file-path references in configuration 
 ### Public Symbols
 #### `collectKeyPaths` {#symbol-collectkeypaths}
 - Type: function
-- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/json.ts#L578)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/json.ts#L606)
 
 ##### `collectKeyPaths` — Summary
 Every key path in a JSON document, joined with `:` the way `IConfiguration` addresses
@@ -48,7 +48,7 @@ nested settings (`Hangfire:Queue`). Arrays are not descended into.
 
 #### `jsonAdapter` {#symbol-jsonadapter}
 - Type: const
-- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/json.ts#L592)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/json.ts#L620)
 - Returns: [`LanguageAdapter`](./index.ts.mdmd.md#symbol-languageadapter)
 
 ##### `jsonAdapter` — Summary
@@ -57,7 +57,7 @@ Language adapter for JSON and JSONC files. Publishes key paths as public symbols
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
-- `node:fs` - `readFileSync`, `statSync`
+- `node:fs` - `statSync`
 - `node:path` - `path`
 - [`index.LanguageAdapter`](./index.ts.mdmd.md#symbol-languageadapter) (type-only)
 - [`index.WorkspaceFileIndex`](./index.ts.mdmd.md#symbol-workspacefileindex) (type-only)
@@ -79,7 +79,8 @@ Language adapter for JSON and JSONC files. Publishes key paths as public symbols
 - [`processMark.nestingBeyondDepth`](../processMark.ts.mdmd.md#symbol-nestingbeyonddepth)
 - [`compareText`](../../tooling/compareText.ts.mdmd.md#symbol-comparetext)
 - [`pathUtils.normalizeWorkspacePath`](../../tooling/pathUtils.ts.mdmd.md#symbol-normalizeworkspacepath)
-- [`sourceText.decodeSourceText`](../../tooling/sourceText.ts.mdmd.md#symbol-decodesourcetext)
+- [`sourceText.SourceReads`](../../tooling/sourceText.ts.mdmd.md#symbol-sourcereads)
+- [`sourceText.readSourceReading`](../../tooling/sourceText.ts.mdmd.md#symbol-readsourcereading)
 - [`sourceText.readSourceText`](../../tooling/sourceText.ts.mdmd.md#symbol-readsourcetext)
 - [`sourceText.throwIfMachineFailure`](../../tooling/sourceText.ts.mdmd.md#symbol-throwifmachinefailure)
 - `typescript` - `ts`

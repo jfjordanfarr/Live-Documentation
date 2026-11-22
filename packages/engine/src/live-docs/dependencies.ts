@@ -14,7 +14,7 @@ import ts from "typescript";
 
 import { compareText } from "../tooling/compareText";
 import { normalizeWorkspacePath } from "../tooling/pathUtils";
-import { readSourceText, throwIfMachineFailure } from "../tooling/sourceText";
+import { readSourceText, type SourceReads, throwIfMachineFailure } from "../tooling/sourceText";
 import { MODULE_RESOLUTION_EXTENSIONS, SUPPORTED_SCRIPT_EXTENSIONS } from "./coreConstants";
 import type {
   DependencyEntry,
@@ -444,6 +444,8 @@ export async function augmentWithReExportedSymbols(params: {
   workspaceRoot: string;
   dependencies: DependencyEntry[];
   existingSymbols: PublicSymbolEntry[];
+  /** The run's reads, so that a provider behind `export *` is read through the run's one read of it. */
+  reads?: SourceReads;
 }): Promise<{ symbols: PublicSymbolEntry[]; reExports: ReExportedSymbolInfo[] }> {
   if (!params.dependencies.some((entry) => entry.reExportAll)) {
     return { symbols: params.existingSymbols, reExports: [] };
@@ -453,7 +455,8 @@ export async function augmentWithReExportedSymbols(params: {
     sourceAbsolute: params.sourceAbsolute,
     workspaceRoot: params.workspaceRoot,
     dependencies: params.dependencies,
-    existingSymbols: params.existingSymbols
+    existingSymbols: params.existingSymbols,
+    reads: params.reads
   });
 
   if (reExports.length === 0) {
@@ -472,6 +475,7 @@ async function collectReExportStarSymbols(params: {
   workspaceRoot: string;
   dependencies: DependencyEntry[];
   existingSymbols: PublicSymbolEntry[];
+  reads?: SourceReads;
 }): Promise<ReExportedSymbolInfo[]> {
   const results: ReExportedSymbolInfo[] = [];
   const seen = new Set(params.existingSymbols.map((entry) => entry.name));
@@ -486,7 +490,8 @@ async function collectReExportStarSymbols(params: {
       absolutePath: targetAbsolute,
       workspaceRoot: params.workspaceRoot,
       cache,
-      stack
+      stack,
+      reads: params.reads
     });
 
     if (!exportedSymbols.length) {
@@ -517,6 +522,7 @@ async function gatherExportedSymbolsFromFile(params: {
   workspaceRoot: string;
   cache: Map<string, PublicSymbolEntry[]>;
   stack: Set<string>;
+  reads?: SourceReads;
 }): Promise<PublicSymbolEntry[]> {
   const normalized = path.resolve(params.absolutePath);
 
@@ -539,7 +545,7 @@ async function gatherExportedSymbolsFromFile(params: {
 
   let content: string;
   try {
-    content = await readSourceText(normalized);
+    content = await readSourceText(normalized, params.reads);
   } catch (error) {
     // A file that cannot be read is read as exporting nothing, but a failure of the machine's (too many open files, a
     // file Windows holds) is no property of the file and is thrown, so that no summary is made with it (`processMark.ts`).
@@ -579,7 +585,8 @@ async function gatherExportedSymbolsFromFile(params: {
       absolutePath: childAbsolute,
       workspaceRoot: params.workspaceRoot,
       cache: params.cache,
-      stack: params.stack
+      stack: params.stack,
+      reads: params.reads
     });
 
     for (const entry of nested) {

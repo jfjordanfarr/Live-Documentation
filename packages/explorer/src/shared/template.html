@@ -439,6 +439,21 @@
               <span>Reveal Frames</span><input type="range" id="tuning-force-reveal-frames" min="1" max="240" step="1" value="60" />
               <output id="tuning-force-reveal-frames-value">60</output>
             </label>
+            <label class="tuning-slider">
+              <span>Scan Growth</span>
+              <select id="tuning-force-scan-growth">
+                <option value="off" selected>Off</option>
+                <option value="path">Path order</option>
+                <option value="first-commit">First-commit order</option>
+              </select>
+            </label>
+            <label class="tuning-slider">
+              <span>Scan Pace</span>
+              <select id="tuning-force-scan-pace">
+                <option value="measured" selected>As measured</option>
+                <option value="slower">Four times slower</option>
+              </select>
+            </label>
           </details>
           <details class="tuning-subsection" open>
             <summary class="subsection-label">Forces</summary>

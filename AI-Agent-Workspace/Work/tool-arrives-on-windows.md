@@ -4,6 +4,8 @@ state: active
 milestone: december-showing
 order: 30
 opened: 2026-11-20
+value: It meets you where you are
+also: It is yours; As simple as possible, and no simpler
 ---
 # The tool arrives as a page and as a command line, from one engine
 

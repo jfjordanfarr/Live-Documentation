@@ -1,0 +1,11 @@
+## 1
+live-docs --help
+
+## 2
+live-docs inspect --help
+
+## 3
+grep -rn "markdown" <folder>/packages --include=*.ts --include=*.tsx --include=*.js --include=*.json -l --exclude-dir=node_modules | head -50
+
+## 4
+live-docs inspect --from packages/explorer/src/client/markdown.ts --reachable --direction inbound

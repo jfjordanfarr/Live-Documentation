@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `scripts/oracle/fixture.ts`
-- Generated At: 2026-11-19T21:10:19.356Z
+- Generated At: 2026-11-22T03:01:21.308Z
 
 ## Authored
 ### Purpose
@@ -17,16 +17,23 @@ Copies a sample program to a temporary directory and lists its files, leaving ou
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
+#### `NOT_FIXTURE` {#symbol-not_fixture}
+- Type: const
+- Source: [source](../../../../scripts/oracle/fixture.ts#L11)
+
+##### `NOT_FIXTURE` — Summary
+What is never part of a fixture: build outputs, and its own `expected/` directory.
+
 #### `copyFixture` {#symbol-copyfixture}
 - Type: function
-- Source: [source](../../../../scripts/oracle/fixture.ts#L13)
+- Source: [source](../../../../scripts/oracle/fixture.ts#L14)
 
 ##### `copyFixture` — Summary
 Copies the fixture, minus build outputs and its own `expected/` directory, to a fresh temporary directory.
 
 #### `listFixtureFiles` {#symbol-listfixturefiles}
 - Type: function
-- Source: [source](../../../../scripts/oracle/fixture.ts#L23)
+- Source: [source](../../../../scripts/oracle/fixture.ts#L24)
 
 ##### `listFixtureFiles` — Summary
 Every file of the fixture as a POSIX path relative to its root, minus build outputs and `expected/`.

@@ -44,6 +44,7 @@
       "Default"
     ]
   },
+  "crefs": [],
   "sources": {
     "WebForms.csproj": "c346678da9b7f775375bc848d3f5166558e872a7dd95af502e6a48ac407a65a3",
     "src/App_Code/Globals.cs": "fa710d092b71ce12299a8d0b475d3d7797dbd3ed32de0f24bdb29f2b92529811",

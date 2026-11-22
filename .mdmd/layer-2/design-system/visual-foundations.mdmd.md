@@ -748,6 +748,16 @@ Each motion takes its band's one value, and one unit (ms).
 - **Checked by.** `forceGraphScope.test.ts`, the closed-directory specs ("veil"), and the design audit.
 - **Status.** Holds.
 
+**Rule: what a 3D picture cannot afford to draw it veils, the least important first, and a veil says how many files it hides.** A *veil* is a body drawn as one milky ball with none of its files. A picture draws at most 1,024 files within its skins; past that the bodies farthest from what was asked about are veiled first. Among bodies as far, a directory shell goes before a whole group, the largest shell first; whole groups, the ones a picture shows only by their seed, go the smallest first, so that the main body of a repository keeps its files in sight. A veiled group's name ends with the count of its files, as a shell's does.
+
+- **Why.**
+  - Owner, 2026-11-22, shown this repository opening with its largest group, 707 of its files, as the one blank ball of the picture, which the largest-first order of 2026-11-07 gave whenever nothing was asked: "Oh man I know that annoys the heck out of me." And of veiling the smallest first: "Hey if we can remediate and make the picture even more truthful I am stoked!"
+  - Principle: *the map does not lie*; what is left out is said, here by the veil and its count.
+  - Measured, 2026-11-22, on this repository with nothing asked ([the matched pictures](../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-22/Screenshots/veil-order/README.md)): the old order drew 446 files within skins and hid 706 behind one veil; the new draws 1,024 and hides 128 behind 32; a frame while the camera turns took no longer, on the graphics card (45 ms against 47) or with WebGL in software and the processor slowed four times (247 ms against 305, about four frames a second either way).
+- **Where.** `views/forceGraphShells.ts` (`DRAWN_FILES`, `pictureVeils`, `veiledUnits`); `views/forceGraphView.ts` (the bodies handed to `pictureVeils`, and a veiled group's name).
+- **Checked by.** `views/forceGraphShells.test.ts` ("veils whole groups the smallest first …"); `tests/e2e/force-graph-wrappers.spec.ts` ("the skin shows within each wrapped group every file it holds …": the main body's files drawn, the veiled groups each one veiled ball, a veiled group's name saying its count).
+- **Status.** Holds since 2026-11-22. The same measurement found that the budget itself bought no frames at this repository's size, where drawing every file (1,152) veiled nothing and took no longer; whether 1,024 should be raised, or not applied to the start, needs a picture of a few thousand files on a slow machine and is open with the owner. The shells' order beside a pin, the largest first, is as it was.
+
 **Rule: never by colour alone (redundant encoding).**
 
 - **The rule.** Any fact told by hue is also told by a second channel wherever a person is expected to read it.

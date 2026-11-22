@@ -460,6 +460,24 @@
       "GatewayClient"
     ]
   },
+  "crefs": [
+    {
+      "from": "Hub/PaymentHub.cs",
+      "line": 12,
+      "element": "seealso",
+      "written": "IPaymentService.Post(PaymentRequest)",
+      "outcome": "resolved",
+      "resolved": [
+        {
+          "kind": "Method",
+          "symbol": "Estate.Contracts.IPaymentService.Post(Estate.Contracts.PaymentRequest)",
+          "files": [
+            "Contracts/IPaymentService.cs"
+          ]
+        }
+      ]
+    }
+  ],
   "sources": {
     "Contracts/Contracts.csproj": "8524ba9a0dc91d371ae14d8362728f16b1fb37fcaca3d10fa8f19f526bb00bde",
     "Contracts/IPaymentHub.cs": "7141808880806ac08593fc639c36e32cd730319b888479b1a54a7ecc69e0efa3",
@@ -472,7 +490,7 @@
     "Gateway/GatewaySettings.cs": "30b760438be76f414b4a5ebc83632676e27da160cc86a693b0f1c594dc18adcb",
     "Gateway/Wcf/HubProxy.cs": "171a642079d45bd0bbed5af7c4219c11905024744641a98b8271e74cc8dc1a30",
     "Hub/Hub.csproj": "b3e99dd58998dea50b6f6f53dd3f28882c3d5ad2ebc4cff844d85e4482e89343",
-    "Hub/PaymentHub.cs": "73683dd671f13c8d8697d0afe3ac2464d8bff6ec23e2b873be2a36d08e66dde4",
+    "Hub/PaymentHub.cs": "866d374130cdb84bb5e5525ab358686b9850c48c4a33f4add60db2eaf41520c1",
     "Hub/ServiceRouting.cs": "f5e21ffeef6e276a388f1f1c64d330ac60e991fe1890a6c2b3855ff69fa86776",
     "PaymentService/Data/Payment.cs": "982cac8d6b7ffdba149ee0049f14bb6983d53aeae2dcc469050dbb3bc82e472b",
     "PaymentService/Data/PaymentsContext.cs": "ab074d5f5eec4468fb1e07b125563242b89f9d0a2aad6193bb54c9189e9afe44",

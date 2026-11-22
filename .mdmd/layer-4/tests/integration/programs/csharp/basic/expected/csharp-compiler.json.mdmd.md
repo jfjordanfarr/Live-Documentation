@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `tests/integration/programs/csharp/basic/expected/csharp-compiler.json`
-- Generated At: 2026-11-21T07:25:48.277Z
+- Generated At: 2026-11-22T01:24:27.140Z
 
 ## Authored
 ### Purpose
@@ -53,6 +53,9 @@ The C# compiler's binding of the `basic` C# sample, written by `npm run oracle:c
 - Type: key
 
 #### `declared:src/Diagnostics/Services/ReportService.cs` {#symbol-declaredsrcdiagnosticsservicesreportservicecs}
+- Type: key
+
+#### `crefs` {#symbol-crefs}
 - Type: key
 
 #### `sources` {#symbol-sources}

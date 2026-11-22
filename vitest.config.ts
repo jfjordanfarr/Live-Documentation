@@ -16,7 +16,11 @@ const serialUnitFiles = [
   "packages/generator/src/history/generatorIdentity.test.ts",
   // 200 names held to the reference CommonMark parser: 3.3 s alone, past five seconds under the same load. The
   // property is not trimmed and the bound not raised; the suite runs alone.
-  "packages/engine/src/live-docs/document.fuzz.test.ts"
+  "packages/engine/src/live-docs/document.fuzz.test.ts",
+  // The stored form's suites: going on from four cuts of a scan of 773 files took 4.3 s at a load of 39, and 6.0 s
+  // beside the fuzzer (2026-11-22); the fuzzer holds two 256 MiB buffers and a worker for 22 s. All cases remain.
+  "packages/stored-form/test/storedForm.test.ts",
+  "packages/stored-form/test/storedForm.fuzz.test.ts"
 ];
 
 const toPosix = (value: string): string => value.split(path.sep).join("/");
@@ -58,6 +62,7 @@ export default defineConfig({
             "packages/engine/src/**/*.test.ts",
             "packages/generator/src/**/*.test.ts",
             "packages/explorer/src/**/*.test.ts",
+            "packages/stored-form/test/**/*.test.ts",
             "scripts/**/*.test.ts",
             "tests/integration/slopcop/**/*.test.ts",
             "tests/e2e/**/*.test.ts"

@@ -22,13 +22,12 @@
  * `package main`.
  */
 import { glob } from "glob";
-import { promises as fs } from "node:fs";
 import path from "node:path";
 
 import { goSyntax } from "../../languages";
 import { compareText } from "../../tooling/compareText";
 import { normalizeWorkspacePath } from "../../tooling/pathUtils";
-import { readSourceText, throwIfMachineFailure } from "../../tooling/sourceText";
+import { readSourceText, type SourceReads, throwIfMachineFailure } from "../../tooling/sourceText";
 import type { DependencyEntry, PublicSymbolEntry, SourceAnalysisResult, SymbolDocumentation, TypeReference } from "../core";
 import type { ProgramEntry } from "../coreTypes";
 import type { LanguageAdapter, WorkspaceFileIndex } from "./index";
@@ -420,25 +419,24 @@ class FileExtractor {
 }
 
 // ---------------------------------------------------------------------------
-// Per-file facts, cached by modification time
+// Per-file facts, kept for the run
 // ---------------------------------------------------------------------------
 
 // Kept for one generation, the run its file index names: a run with another index, or none, begins with nothing, so
 // a process that generates commit after commit in one folder never reads a fact of another commit.
-const factsCache = new Map<string, { mtimeMs: number; facts: FileFacts }>();
+const factsCache = new Map<string, FileFacts>();
 let factsRun: WorkspaceFileIndex | undefined;
 function beginRun(fileIndex: WorkspaceFileIndex | undefined): void {
   if (fileIndex === undefined || fileIndex !== factsRun) factsCache.clear();
   factsRun = fileIndex;
 }
 
-async function fileFacts(absolutePath: string): Promise<FileFacts> {
-  const stats  = await fs.stat(absolutePath);
+async function fileFacts(absolutePath: string, reads: SourceReads | undefined): Promise<FileFacts> {
   const cached = factsCache.get(absolutePath);
-  if (cached && cached.mtimeMs === stats.mtimeMs) return cached.facts;
-  const content = await readSourceText(absolutePath);
+  if (cached) return cached;
+  const content = await readSourceText(absolutePath, reads);
   const facts   = await readTree("go", content, (root) => new FileExtractor().extract(root));
-  factsCache.set(absolutePath, { mtimeMs: stats.mtimeMs, facts });
+  factsCache.set(absolutePath, facts);
   return facts;
 }
 
@@ -468,7 +466,7 @@ async function buildPackageTable(workspaceRoot: string, fileIndex: WorkspaceFile
   for (const file of await listGoFiles(workspaceRoot, fileIndex)) {
     let facts: FileFacts;
     try {
-      facts = await fileFacts(path.join(workspaceRoot, file));
+      facts = await fileFacts(path.join(workspaceRoot, file), fileIndex);
     } catch (error) {
       throwIfMachineFailure(error);
       continue;
@@ -498,11 +496,11 @@ interface GoModule {
 }
 
 /** The module the file belongs to: the nearest `go.mod` above it, inside the workspace. */
-async function moduleOf(absolutePath: string, workspaceRoot: string): Promise<GoModule | undefined> {
+async function moduleOf(absolutePath: string, workspaceRoot: string, reads: SourceReads | undefined): Promise<GoModule | undefined> {
   let directory = path.dirname(absolutePath);
   while (directory.startsWith(workspaceRoot)) {
     try {
-      const content = await readSourceText(path.join(directory, "go.mod"));
+      const content = await readSourceText(path.join(directory, "go.mod"), reads);
       const match   = /^module\s+(\S+)/mu.exec(content);
       if (match) return { path: match[1], root: normalizeWorkspacePath(path.relative(workspaceRoot, directory)) || "." };
     } catch (error) {
@@ -567,7 +565,7 @@ function isStandardLibrary(importPath: string): boolean {
   return !importPath.split("/")[0].includes(".");
 }
 
-async function toDependencies(facts: FileFacts, thisFile: string, absolutePath: string, workspaceRoot: string, table: PackageTable): Promise<DependencyEntry[]> {
+async function toDependencies(facts: FileFacts, thisFile: string, absolutePath: string, workspaceRoot: string, table: PackageTable, reads: SourceReads | undefined): Promise<DependencyEntry[]> {
   const byTarget = new Map<string, Set<string>>();
   const link = (file: string, symbol?: string): void => {
     if (file === thisFile) return;
@@ -576,7 +574,7 @@ async function toDependencies(facts: FileFacts, thisFile: string, absolutePath: 
     byTarget.set(file, symbols);
   };
 
-  const module   = await moduleOf(absolutePath, workspaceRoot);
+  const module   = await moduleOf(absolutePath, workspaceRoot, reads);
   const bindings = new Map<string, Binding>();
   const dotImports: Binding[] = [];
   const external: DependencyEntry[] = [];
@@ -637,12 +635,12 @@ export const goAdapter: LanguageAdapter = {
   extensions: [".go"],
   async analyze({ absolutePath, workspaceRoot, fileIndex }): Promise<SourceAnalysisResult | null> {
     beginRun(fileIndex);
-    const facts    = await fileFacts(absolutePath);
+    const facts    = await fileFacts(absolutePath, fileIndex);
     const table    = await packageTable(workspaceRoot, fileIndex);
     const thisFile = normalizeWorkspacePath(path.relative(workspaceRoot, absolutePath));
     const result: SourceAnalysisResult = {
       symbols:      toSymbols(facts),
-      dependencies: await toDependencies(facts, thisFile, absolutePath, workspaceRoot, table)
+      dependencies: await toDependencies(facts, thisFile, absolutePath, workspaceRoot, table, fileIndex)
     };
     const program = toProgram(facts);
     if (program) result.program = program;

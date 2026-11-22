@@ -473,6 +473,15 @@ export interface MotionSource<N extends SpatialNode> {
 const PART_FLOOR = 256;
 
 /**
+ * The most whole ticks one paced call takes while a hand holds a sphere (2026-11-22), within the call's budget: the
+ * owner asked for the forces to be live "when I'm clicking and dragging an item and swinging the graph around with me".
+ * One tick a frame is the motion's pace at sixty frames a second; this repository's pinned picture gave a frame every 64
+ * to 88 ms under a drag on a graphics card and some 290 ms on a slowed machine, four to eighteen frames' worth, so the picture came
+ * after the hand that many times slower than it settles. Eight is a starting value for the owner's hand to judge.
+ */
+export const HAND_TICKS = 8;
+
+/**
  * D3's simulation drives the ticks, this force does all the moving (2026-10-21). Each tick it reads the spheres where they
  * stand, since the carry of a change and a hand move them between ticks, holds every sphere D3 has fixed (`fx`, a hand's
  * drag), steps the damped motion through the field at the source's strength, writes the positions back and zeroes D3's
@@ -523,14 +532,16 @@ export function motionForce<N extends SpatialNode>(source: MotionSource<N>): Mot
     motion ??= build();
     const x = motion.positions;
     const fixed = new Set<number>();
-    let moved = false;
+    // Spheres moved from outside since the last call: by the carry of a change, or by a hand that holds them (`fx`).
+    let moved = false, carriedByHand = false;
     nodes.forEach((node, i) => {
       const a = 3 * i;
       const at = [node.fx ?? node.x ?? 0, node.fy ?? node.y ?? 0, node.fz ?? node.z ?? 0];
-      if (node.fx != null || node.fy != null || node.fz != null) fixed.add(i);
-      for (let k = 0; k < 3; k++) if (x[a + k] !== at[k]) { x[a + k] = at[k]; moved = true; }
+      const held = node.fx != null || node.fy != null || node.fz != null;
+      if (held) fixed.add(i);
+      for (let k = 0; k < 3; k++) if (x[a + k] !== at[k]) { x[a + k] = at[k]; if (held) carriedByHand = true; else moved = true; }
     });
-    if (moved) motion.refresh();
+    if (moved || carriedByHand) motion.refresh();
     if (begin) {
       holding = begin === "hold";
       if (holding) motion.anchorHere(); else motion.release();
@@ -549,7 +560,12 @@ export function motionForce<N extends SpatialNode>(source: MotionSource<N>): Mot
       // part reaches through as many of a tick's substeps as the budget holds, never past the tick's end. Every sphere
       // then takes the path it took when a frame drew one substep, in fewer frames: held to one evaluation, a stiff
       // picture whose tick takes several substeps took as many frames as substeps, however little of the frame they
-      // used, and this repository's grown group took 5,535 frames to rest (2026-11-19).
+      // used, and this repository's grown group took 5,535 frames to rest (2026-11-19). A hand that carries its own
+      // sphere is no such arrival (2026-11-22): it moves at every frame for as long as the drag lasts, and held to one
+      // evaluation for it, a call only read the forces again and the picture trailed the hand a substep a frame or
+      // less, which the owner met as a graph that had stopped simulating where they most wanted it live ("when I'm
+      // clicking and dragging an item and swinging the graph around with me"). While a hand moves, a call reaches as
+      // far as the budget holds, and what is tied to the sphere follows it.
       const count = motion.field.count, entering = arrived || moved || !(source.readyToAnchor?.() ?? true);
       arrived = false;
       if (!(part <= count)) part = count;
@@ -561,6 +577,16 @@ export function motionForce<N extends SpatialNode>(source: MotionSource<N>): Mot
       if (entering) part = Math.max(PART_FLOOR, Math.min(count, Math.round(part * budget / took)));
       reach = Math.max(PART_FLOOR, Math.round(motion.evaluated * budget / took));
       evaluations += motion.evaluated / count;
+      // While a hand holds a sphere the call goes on, a whole tick after another, for as long as the budget holds and
+      // no further than `HAND_TICKS`: a picture that takes long to draw gave the motion one tick to each slow frame, and
+      // what was tied to the dragged sphere came after the hand at a few ticks a second.
+      if (fixed.size && !entering) {
+        for (let whole = tick ? 1 : 0; whole < HAND_TICKS && performance.now() - started < budget;) {
+          const next = motion.advance(source.strength(), fixed, reach);
+          evaluations += motion.evaluated / count;
+          if (next) { tick = next; whole++; }
+        }
+      }
     }
     let changed = false;
     nodes.forEach((node, i) => {

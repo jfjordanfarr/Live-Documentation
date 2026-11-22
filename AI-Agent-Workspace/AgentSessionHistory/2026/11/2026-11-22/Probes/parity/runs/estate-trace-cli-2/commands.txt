@@ -1,0 +1,11 @@
+## 1
+live-docs --help; ls
+
+## 2
+cat README.md board.md | head -80; live-docs inspect --help; live-docs visualize --help
+
+## 3
+grep -rniE "usp_PostPayment|ORACLE_CENTRAL|GatewayBaseUrl|name=\"PaymentHub\"|PaymentService\.|\[Http(Post|Get)|Route\(" --include=*.cs --include=*.config --include=*.sql --include=*.js --include=*.aspx . | grep -v -E "/(obj|bin)/" | head -40
+
+## 4
+grep -rniE "usp_PostPayment|ORACLE_CENTRAL|GatewayBaseUrl|PaymentHub|PaymentService\.|HttpPost|Route\(" . --exclude-dir=obj --exclude-dir=bin | cut -c1-200 | head -40

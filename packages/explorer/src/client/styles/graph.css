@@ -128,6 +128,13 @@
 .force-graph-focus[aria-pressed="true"], .force-graph-label[aria-pressed="true"] { border-color: var(--state-selected); }
 .force-graph-focus[hidden], .force-graph-label[hidden] { display: none; }
 
+/*
+ * The scan trial's sign (2026-11-22): the owner's two lines of progress, at the map's top edge where the building line
+ * runs, in the quiet tone of a count; it takes no pointer, so that a sphere under it can still be pressed.
+ */
+.scan-progress { position: absolute; z-index: 4; left: 50%; top: 14px; transform: translateX(-50%); padding: 3px 8px; border-radius: 4px; background: rgba(var(--scene-label-ground-rgb), 0.909804); color: var(--text-secondary); font-size: 13px; font-variant-numeric: tabular-nums; white-space: nowrap; pointer-events: none; }
+.scan-progress[hidden] { display: none; }
+
 .force-graph-empty { position: absolute; left: 50%; top: 45%; transform: translate(-50%, -50%); max-width: min(440px, calc(100% - 40px)); display: grid; justify-items: center; gap: 12px; color: var(--text-secondary); font-size: 14px; text-align: center; }
 .force-graph-empty[hidden], .force-graph-empty button[hidden] { display: none; }
 .force-graph-empty button { max-width: 100%; padding: 7px 12px; border: 1px solid var(--state-selected); border-radius: 4px; background: var(--ground-surface); color: var(--state-selected); font: inherit; overflow-wrap: anywhere; cursor: pointer; }

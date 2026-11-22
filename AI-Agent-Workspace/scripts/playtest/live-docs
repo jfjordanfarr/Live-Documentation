@@ -1,0 +1,21 @@
+#!/usr/bin/env bash
+# The command a stranger's agent is given in the command-line arm of the blind tests (cli-playtest.mjs), 2026-11-22.
+# The tool has no installable command of its own yet: each command is an npm script of this checkout. This is the
+# smallest wrapper that offers them as one command on the path, run over the folder the caller stands in; it adds
+# no words of ours beyond the list of commands, and every command's own --help says the rest. Its existence is a
+# gap of the product, named in .mdmd/layer-2/parity.mdmd.md.
+set -euo pipefail
+checkout="$(cd "$(dirname "$(readlink -f "$0")")/../../.." && pwd)"
+commands="generate lint inspect history board visualize"
+if [[ $# -eq 0 || "$1" == "--help" || "$1" == "-h" || "$1" == "help" ]]; then
+  echo "usage: live-docs <command> [options]"
+  echo "commands: ${commands// /, }"
+  echo "live-docs <command> --help prints that command's options."
+  exit 0
+fi
+command="$1"; shift
+if [[ " $commands " != *" $command "* ]]; then
+  echo "live-docs: no command '$command'; commands: ${commands// /, }" >&2
+  exit 2
+fi
+exec npm --prefix "$checkout" run -s "live-docs:$command" -- "$@"
