@@ -95,8 +95,9 @@ async function declaredEntries(manifest: Record<string, unknown>, manifestAbsolu
     if (file && name) declare({ reason: "command", file, name });
   }
 
-  for (const target of packageModules(manifest)) {
-    const file = toSource(target);
+  for (const candidates of packageModules(manifest)) {
+    // The first of Node's candidates that is a file of the workspace, as Node takes the first that is a file on its disk.
+    const file = candidates.map(toSource).find((source) => source !== undefined);
     if (file) declare({ reason: "module", file });
   }
 
@@ -114,21 +115,35 @@ const NODE_CONDITIONS: ReadonlyArray<ReadonlySet<string>> = [
   new Set(["node", "node-addons", "require", "module-sync", "default"])
 ];
 
+/** The endings Node tries after a path a manifest's `main` names, and after `index`, in its order (`.js`, `.json`, `.node`). */
+const MAIN_ENDINGS = ["", ".js", ".json", ".node"] as const;
+
 /**
- * The files a package's own name loads, as Node resolves it: from `exports` when the manifest has it, for the subpath
- * `.` (a string, a list of fall-backs, or conditions, written under `.` or as the whole of `exports`), and then `main`
- * is not read, as Node does not read it; from `main` otherwise. One file for a program that imports the package and one
+ * The files a package's own name loads, as Node resolves it, each as the paths Node tries in its order, the first that
+ * is a file being the one: from `exports` when the manifest has it, for the subpath `.` (a string, a list of
+ * fall-backs, or conditions, written under `.` or as the whole of `exports`), one path, and then `main` is not read, as
+ * Node does not read it; otherwise by Node's legacy resolution of `main`: the path it names, then with `.js`, `.json`
+ * or `.node` after it, then its `index` with each of those, and last the package's own `index.js`, `index.json` or
+ * `index.node`, which is all there is to try without `main`. One list for a program that imports the package and one
  * for a program that requires it, when the two differ. A manifest whose `exports` names no `.`, only patterns such as
- * `./*`, has no file its name loads. Until 2026-11-22 only `main` was read, so a package that names its entry in
- * `exports` alone, as `packages/stored-form` does, had none.
+ * `./*`, has no file its name loads.
+ *
+ * Until 2026-11-22 only `main` was read, as written, so a package that names its entry in `exports` alone, as
+ * `packages/stored-form` does, had none, nor did one whose `main` leaves off its extension or names a folder, nor one
+ * with no `main`. Held to Node's own resolver over every package of this repository's `node_modules`
+ * (`tests/integration/live-docs/package-modules.oracle.test.ts`).
  */
-function packageModules(manifest: Record<string, unknown>): string[] {
+export function packageModules(manifest: Record<string, unknown>): string[][] {
   const exported = manifest.exports;
-  if (exported === undefined) return typeof manifest.main === "string" ? [manifest.main] : [];
+  if (exported === undefined) {
+    const main = typeof manifest.main === "string" && manifest.main !== "" ? manifest.main.replace(/\/+$/u, "") : undefined;
+    const fromMain = main === undefined ? [] : [...MAIN_ENDINGS.map((ending) => `${main}${ending}`), ...MAIN_ENDINGS.slice(1).map((ending) => `${main}/index${ending}`)];
+    return [[...fromMain, ...MAIN_ENDINGS.slice(1).map((ending) => `./index${ending}`)]];
+  }
   const keys = exported && typeof exported === "object" && !Array.isArray(exported) ? Object.keys(exported) : [];
   const dot = keys.length > 0 && keys.every((key) => key.startsWith(".")) ? (exported as Record<string, unknown>)["."] : exported;
   const targets = NODE_CONDITIONS.map((conditions) => exportTarget(dot, conditions)).filter((target): target is string => target !== undefined);
-  return Array.from(new Set(targets));
+  return Array.from(new Set(targets), (target) => [target]);
 }
 
 /**
