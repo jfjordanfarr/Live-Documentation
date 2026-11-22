@@ -1,0 +1,28 @@
+{
+ "wires": 114,
+ "tags": {
+  "path": 108,
+  "polygon": 6,
+  "shortWalkMs": 2138,
+  "shortPrepareMs": 4666,
+  "shortFallbacks": 6,
+  "shortSegments": 548,
+  "shortSamples": 40961,
+  "shortNumbersDiffering": 0,
+  "shortWorstDifferencePx": 0
+ },
+ "samples": 41057,
+ "inPageMs": 6340,
+ "outsideMs": 6034,
+ "outsideAskingMs": 8148,
+ "microsecondsAPointInPage": 154.4,
+ "microsecondsAPointOutside": 147,
+ "numbersDiffering": 0,
+ "lengthsDiffering": 0,
+ "mapElements": 25623,
+ "load": [
+  7.01,
+  16.5,
+  17.83
+ ]
+}

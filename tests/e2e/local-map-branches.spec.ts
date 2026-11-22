@@ -285,8 +285,12 @@ test("closing a retained file keeps only symbols needed elsewhere and removes it
 });
 
 test("a retained exploration threads skipped references through lanes: nothing over the top, nothing across a card, every wire forward", { tag: "@alone" }, async ({ page }) => {
-  // A retained picture of more than a hundred wires, every wire and lane read whole: 24 to 26 seconds on one worker
-  // (2026-10-19); the half minute is not its measure.
+  // A retained picture, every wire and lane read whole: 516 wires and 247,000 samples by 2026-11-22, where it was a
+  // little over a hundred wires on 2026-10-19 and the case took 24 to 26 seconds on one worker. By that November day the
+  // reading alone took 57 seconds on a shared machine and the case ran out its minute: seven tenths of the reading was
+  // the browser walking each wire from its start to every sample's point. The reading asks the same points of a short
+  // path for each segment since (`readPicture`), the same to the last digit; what it costs now, alone and at what load,
+  // is in that day's probe (Probes/instrument-and-look-cost). The minute is the case's limit, not its measure.
   test.setTimeout(60_000);
   await page.setViewportSize({ width: 1600, height: 1000 });
   const files = [
