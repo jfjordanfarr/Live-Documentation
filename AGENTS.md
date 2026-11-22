@@ -10,13 +10,14 @@ Who the owner is and how they work is in [owner.md](AI-Agent-Workspace/Memory/ow
 
 ## Design philosophy
 
-Live Documentation exists so that a person's understanding of their own software does not run away from them. Five values serve that; [the philosophy](.mdmd/layer-1/design-philosophy.mdmd.md) gives each its sources in the owner's words, what it has decided and what it costs.
+Live Documentation exists so that a person's understanding of their own software does not run away from them. Six values serve that; [the philosophy](.mdmd/layer-1/design-philosophy.mdmd.md) gives each its sources in the owner's words, what it has decided and what it costs.
 
 - **A person can see it.** Read at a glance and explored without getting lost, by someone who is not a software person; almost no words of our own.
 - **The map does not lie.** Nothing drawn that the code does not make; what was unread, left out or hidden is said; a suggestion is never a fact; nothing grades itself.
 - **It is yours.** Local-first: your machine, a copy you hold, your code read as text and never run, nothing sent anywhere; your word honoured, nothing done in silence, everything able to be taken back.
 - **It meets you where you are.** A weak machine, an unannotated codebase, a language we did not plan for; a person at the page, an agent at the command line, a pipeline unattended: each gets everything, in its own form.
 - **As simple as possible, and no simpler.** One source of facts, one engine, one way of doing each thing; a second implementation of one problem means the architecture is wrong.
+- **Do it the right way.** Whole and at its cause, in honest increments: no minimum version standing in for the thing, no workaround where a mend belongs, nothing swept aside; every mess is ours, whenever it began, in how we work and in what a person is handed.
 
 They pull against each other, and the design is found between them: when two conflict, bend each in turn, measure, choose the form that gives up least, and say which value paid. A rule below that serves none of them is a rule to question.
 

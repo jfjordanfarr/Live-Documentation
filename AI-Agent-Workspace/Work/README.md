@@ -85,7 +85,11 @@ Grouped by the value each issue serves first (the owner, 2026-11-22: "Sure! Meta
 
 No issue serves it first. [The tool arriving as a page and a command line](tool-arrives-on-windows.md) serves it second: one engine, read through one interface.
 
-**None of the five: a date, and how we work**
+**Do it the right way**
+
+No issue serves it first: every issue is held to it.
+
+**None of the six: a date, and how we work**
 
 | Order | Issue | State | What it rests on |
 | --- | --- | --- | --- |
