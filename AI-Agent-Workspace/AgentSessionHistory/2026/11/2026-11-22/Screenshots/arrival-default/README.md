@@ -233,6 +233,33 @@ Nothing was changed for this: not the case, and not the product, since a line th
 
 **The other two of `zoom-looks.spec.ts`.** "stepped, chosen by a link…" passes alone (6.0 s) now that its link says its arrival: the ladder's link carries a setting, and a link that carries one resets every lever it does not name. "a change of look moves the held parts…" passes alone unchanged (14.3 s): its link names the three looks, the default, which a link does not carry, so nothing was reset; it had failed in a hold the lane cut at its limit, and the load made that number.
 
+**The four other files that open links carrying settings**, each in a hold of its own: `local-map-directories.spec.ts` 14 passed, `return-cost.spec.ts` 3 passed, `tuning-reset.spec.ts` 3 passed, `descriptions-zoomed-out.spec.ts` 6 passed and 3 failed. Of the three:
+
+- *The link reset the arrival* (two): "the file's own line stands under its name…" and "with half the descriptions folded…" open a link that carries the trial's choice, so began pulled back and three presses further out, the cards without rows. Their link now says its arrival; both pass.
+- *Pinned to the room the names had* (one, not mended): "…cut in its middle at a seam (fallback)" counts nine names of one card cut in their middle with both ends kept and finds eight. Each cut's form is checked against its own room by the case's soft measures and none of those failed; the count is of a picture, and the names' mend narrowed the room it was counted in. Which name moved was not measured. Under Segoe UI's lines the count is still nine.
+
+`history-2d.spec.ts` passed whole, 6 cases.
+
+**The still picture's cases of this repository, after the names' mend.** The five-file Local Map, which had the six names, passes. Three still report names, nine in all, and a probe of each picture found the same names by the same amounts, every one cut with an ellipsis and its button titled with the whole name:
+
+| Picture | Name | Cut off by | How it is cut |
+| --- | --- | ---: | --- |
+| Five files, retained | `DEFAULT_LIVE_DOCUMENTATION_CONFIG` | 9 px | on two lines, wanting a third |
+| | `savedPicture (function)` | 9 px | on two lines, wanting a third |
+| Chain | `inferDefaultEntryNodeId` | 15 px | on one line, in a row that holds one |
+| | `backwardStrength (function)` | 13 px | on two lines, wanting a third |
+| | `Internals` (of `client/index.ts`) | 24 px | on one line |
+| Chain, retained | `inferDefaultEntryNodeId` | 33 px | on one line, in a row that holds one |
+| | `createWorldMapView` | 13 px | on two lines, wanting a third |
+| | `createPersistNavScheduler` | 54 px | on one line, in a row that holds one |
+| | `readPersistedNav` | 5 px | on one line, in a row that holds one |
+
+What each instrument says: the audit's cut-off check counts any text its clip hides, an ellipsis or not, so it counts all nine (for those on two lines, the clamped third line, one line's height on screen; for those on one, the width hidden). The names' case, which asks that a name be whole or cut with its ellipsis and titled, passes on all of them. The four on two lines are the mend's doing in the sense above (their room is their button's now); `inferDefaultEntryNodeId` on the chain is not, its room being bounded by More at its held size (239 of the 243 its button has). Pictures: [`DEFAULT_LIVE_DOCUMENTATION_CONFIG`](names--still-cut--five-retained--DEFAULT_LIVE_DOCUMENTATION_CONFIG.png), [`savedPicture`](names--still-cut--five-retained--savedPicture.png), [`inferDefaultEntryNodeId`](names--still-cut--chain--inferDefaultEntryNodeId.png), [`backwardStrength`](names--still-cut--chain--backwardStrength.png), [`createWorldMapView`](names--still-cut--chain-retained--createWorldMapView.png). Nothing in the instrument was changed.
+
+**The centre case, after the day's merge.** "Reading, Then Neighbours on `pathfind.ts` stops where names still read and centres the subject…" failed once on the merged build: the subject, shorter than the frame, stood 6.3 px below its centre. The case, written in the fourth milestone, asked for the centre whenever the card fits the frame; the rule moves the camera by the least that brings the subject's name inside the frame's padding, so a card between the frame's height and the frame less its paddings is not centred. The case now says the rule: centred where the name then stands inside the padding, else the name's top on the padding's edge. It passes alone. Which of the two it found on that run was not printed.
+
+**On the merged build, each in a hold of its own:** `zoom-looks.spec.ts` 10 of 11 (the platform font case red, above); the search bar's two and the five-click pin passed; the rule's cases passed, the centre case after its correction; `camera-intent.spec.ts` passed whole, its 29 cases in three parts (13 of the arrival, 13 others, the rule's 3). Other builders' work shared the machine through these holds, the lane keeping the browsers apart.
+
 ## Not done
 
 - The sweep: eight holds of twenty-five ran.

@@ -4,6 +4,7 @@ import { compressSnapshot, DEFAULT_SNAPSHOT } from "../../packages/explorer/src/
 import { PERSISTED_UI_KEY, PERSISTED_UI_VERSION } from "../../packages/explorer/src/client/persistence/local-storage";
 import type { ArrivalFraming, CameraFraming, CutCounted, StepFraming } from "../../packages/explorer/src/client/types";
 import { ARRIVAL_FLOOR_RATIO, ARRIVAL_REST_S } from "../../packages/explorer/src/client/views/localView/camera-intent";
+import { framePadding } from "../../packages/explorer/src/client/views/localView/layout-measure";
 import { choose } from "./search-bar";
 import { AT_READING_SIZE, loadGraph, localMapSettled } from "./still-picture";
 
@@ -154,11 +155,18 @@ test("Reading, Then Neighbours on pathfind.ts stops where names still read and c
   expect(end.k).toBeCloseTo(readingK * ARRIVAL_FLOOR_RATIO, 6);
   const frame = await frameOf(page), subject = (await boxOf(page, card(SUBJECT)))!;
   expect((subject.left + subject.right) / 2).toBeCloseTo((frame.left + frame.right) / 2, 0);
-  // Across, the subject is centred. Down, a card that fits the frame is centred and one taller than it is entered at its
-  // top, its name in the frame (2026-11-22: the frame an arrival ends on holds what was asked; until then a tall
-  // subject was centred down too, and its name stood above the view).
-  if (subject.bottom - subject.top <= frame.bottom - frame.top) expect((subject.top + subject.bottom) / 2).toBeCloseTo((frame.top + frame.bottom) / 2, 0);
-  else expect(inside(await boxOf(page, `${card(SUBJECT)} .node-title`), frame), "a tall subject's name is inside the frame").toBe(true);
+  // Across, the subject is centred. Down, it is centred where its name then stands inside the frame's padding; where it
+  // would not, the card as tall as the frame less its paddings or taller, the camera has moved by the least that brings
+  // the name inside, its top on the padding's edge (2026-11-22: the frame an arrival ends on holds what was asked; until
+  // then a tall subject was centred down too, and its name stood above the view). The case first asked only whether the
+  // card fits the frame, which says nothing of the band between the frame and its padding: after that day's merge
+  // pathfind.ts stood 6 px below the centre, shorter than the frame, and the case as first written failed on it.
+  const name = (await boxOf(page, `${card(SUBJECT)} .node-title`))!;
+  expect(inside(name, frame), "the subject's name is inside the frame").toBe(true);
+  const padding = framePadding({ width: frame.right - frame.left, height: frame.bottom - frame.top }).vertical;
+  const below = (subject.top + subject.bottom) / 2 - (frame.top + frame.bottom) / 2;
+  if (name.top - below >= frame.top + padding - 0.5) expect(below, "centred down").toBeCloseTo(0, 0);
+  else expect(Math.abs(name.top - (frame.top + padding)), "its name's top on the padding's edge").toBeLessThanOrEqual(1);
   await context.close();
 });
 
