@@ -63,7 +63,9 @@ Source inventory, maintained by the root agent. The October 31 session that ende
 - Probes of the day, each with a README:
   - [a probe page the owner opens from disk on Edge](2026-11-22/Probes/local-app/README.md), to learn whether a local copy can be launched like an app and be given its folders back, with the page itself, its check and two pictures;
   - [the author's word](2026-11-22/Probes/authors-word/README.md): the C# compiler's resolution of every documentation reference as an oracle, counted on DNN and mojoPortal, with three ways the facts could carry the relation and how each other language's own tool would be asked;
-  - [a blind reading of the owner's values](2026-11-22/Probes/design-philosophy-reading/README.md): every message the owner typed in the archive read by headless readers who had not seen the five values, 1,715 statements quoted word for word and linked, three groupings by a judge, and the comparison with the design philosophy.
+  - [a blind reading of the owner's values](2026-11-22/Probes/design-philosophy-reading/README.md): every message the owner typed in the archive read by headless readers who had not seen the five values, 1,715 statements quoted word for word and linked, three groupings by a judge, and the comparison with the design philosophy;
+  - [the stored form as one module](2026-11-22/Probes/stored-form-module/README.md): what was built, its measurements on three corpora against today's index, its fuzzer seen failing first, and SCIP read against our facts;
+  - [parity](2026-11-22/Probes/parity/README.md): what was run for each row of the table of the page against the command line, the pipeline's measurements, and 24 scored runs of agents given the files alone or the command line, each with its commands and its answer.
 
 ## November 21, session 1 — Claude Code, Fable 5.2
 
@@ -183,6 +185,8 @@ The evidence collections are [tap reading](2026-11-05/Screenshots/tap-reading/RE
 Each day's pictures of the built Explorer, as the index `Screenshots/README.md` listed them until 2026-11-18, when it was carried into the month inventories. The convention, and the owner's standing request behind it, are in [the archive's README](../../README.md#where-things-are). Newest first.
 
 ### 2026-11-22
+
+[The 3D map filling as a scan would](2026-11-22/Screenshots/scan-growth/README.md): a trial, off by default; strips of a frame a second in path order and in first-commit order at two paces, eight stills, and each frame's time.
 
 [The way down from the World Map, as it stands](2026-11-22/Screenshots/way-down/README.md): the estate's board, what "open hub" lands on, and the twelve-file route the Local Map already draws between a table and a page, arriving and after Fit.
 
