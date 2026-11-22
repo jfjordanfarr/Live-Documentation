@@ -6,7 +6,7 @@ import { captureFromPage } from "../../scripts/layout-lab/capture";
 import { baselineConfig, driftOf, evaluate, type CycleSearch, type CycleTerms } from "../../scripts/layout-lab/evaluate";
 import { loadBundleGraph, type ScopeRun } from "../../scripts/layout-lab/scopes";
 import { DECK_SCOPES } from "./scopes";
-import { AT_READING_SIZE, localMapSettled, localRetainUrl } from "./still-picture";
+import { AT_READING_SIZE, arriveAtReadingSize, localMapSettled, localRetainUrl } from "./still-picture";
 
 /**
  * The layout lab's model of the page, held to the page: a capture of each deck
@@ -17,7 +17,19 @@ import { AT_READING_SIZE, localMapSettled, localRetainUrl } from "./still-pictur
  * Pretext has disagreed with the browser on a text.
  */
 for (const run of DECK_SCOPES) {
-  test(`the layout lab reproduces the page to the pixel: ${run.bundle}, ${run.scopeName}`, { tag: run.bundle === "repository" && run.scopeName === "chain" ? "@alone" : [] }, async ({ page }) => {
+  // Both of the repository's scopes run alone: each one's own work fills its half minute, so beside another worker's
+  // case it runs out, as the five files did in the gate of 2026-11-22. Alone on one worker that day, on a machine two
+  // other builders shared, the five files passed three times in four (31.8 to 39.5 s as the runner counts them, 45.8 s
+  // the time it ran out) and the chain ran out three times in three (42.7 to 57.3 s), having passed the gate's alone
+  // pass in 36.7 s. The time is the lab's own layout of a picture that grows with the repository, and ran out with no
+  // call to the page pending. The tag gives the case the machine; it does not make its work shorter, and the half
+  // minute is the framework's default, which nobody chose for this work (open that day). The estate's take seconds.
+  test(`the layout lab reproduces the page to the pixel: ${run.bundle}, ${run.scopeName}`, { tag: run.bundle === "repository" ? "@alone" : [] }, async ({ page }) => {
+    // The capture's subject is the picture at reading size, as the lab lays it out; it reads half a second after the
+    // wires stand, which since 2026-11-22 is during the shipped arrival's rest, with the easing to another look still
+    // to come under it. Held at reading size, as this file's other cases are; this is for what the capture reads and
+    // was not seen to change the case's time.
+    await arriveAtReadingSize(page);
     await page.setViewportSize({ width: 1600, height: 1000 });
     await page.goto(localRetainUrl(run.base, run.scope));
     const capture = await captureFromPage(page, run);
