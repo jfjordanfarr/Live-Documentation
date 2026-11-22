@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: `packages/generator/src/history/computeHistory.test.ts`
-- Generated At: 2026-11-20T09:32:49.150Z
+- Generated At: 2026-11-22T07:12:57.001Z
 
 ## Authored
 ### Purpose
@@ -26,7 +26,7 @@ _No public symbols detected_
 - `node:os` - `os`
 - `node:path` - `path`
 - [`document.DEFAULT_AUTHORED_BLOCK`](../../../engine/src/live-docs/document.ts.mdmd.md#symbol-default_authored_block)
-- [`document.LiveDoc`](../../../engine/src/live-docs/document.ts.mdmd.md#symbol-livedoc)
+- [`document.LiveDoc`](../../../engine/src/live-docs/document.ts.mdmd.md#symbol-livedoc) (type-only)
 - [`graph.deriveLiveDocGraph`](../../../engine/src/live-docs/graph.ts.mdmd.md#symbol-derivelivedocgraph)
 - [`codec.Interner`](../../../engine/src/live-docs/history/codec.ts.mdmd.md#symbol-interner)
 - [`rows.rowsOfSummary`](../../../engine/src/live-docs/history/rows.ts.mdmd.md#symbol-rowsofsummary)
@@ -38,7 +38,7 @@ _No public symbols detected_
 - [`computeHistory.nextPoolRecord`](./computeHistory.ts.mdmd.md#symbol-nextpoolrecord)
 - [`computeHistory.poolSize`](./computeHistory.ts.mdmd.md#symbol-poolsize)
 - [`computeHistory.usableMachine`](./computeHistory.ts.mdmd.md#symbol-usablemachine)
-- [`headCheck.ReplayedMoment`](./headCheck.ts.mdmd.md#symbol-replayedmoment)
+- [`headCheck.ReplayedMoment`](./headCheck.ts.mdmd.md#symbol-replayedmoment) (type-only)
 - [`headCheck.headDifferences`](./headCheck.ts.mdmd.md#symbol-headdifferences)
 - [`headCheck.leftOutAtHead`](./headCheck.ts.mdmd.md#symbol-leftoutathead)
 - `vitest` - `describe`, `expect`, `it`

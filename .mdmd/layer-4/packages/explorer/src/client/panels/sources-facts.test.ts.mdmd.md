@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: `packages/explorer/src/client/panels/sources-facts.test.ts`
-- Generated At: 2026-11-19T21:10:13.792Z
+- Generated At: 2026-11-22T07:12:54.078Z
 
 ## Authored
 ### Purpose
@@ -22,7 +22,7 @@ _No public symbols detected_
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
-- [`sources-facts.SourcesFactsOptions`](./sources-facts.ts.mdmd.md#symbol-sourcesfactsoptions)
+- [`sources-facts.SourcesFactsOptions`](./sources-facts.ts.mdmd.md#symbol-sourcesfactsoptions) (type-only)
 - [`sources-facts.sourcesFacts`](./sources-facts.ts.mdmd.md#symbol-sourcesfacts-function)
 - [`sources-facts.symbolCount`](./sources-facts.ts.mdmd.md#symbol-symbolcount)
 - [`graph.explorerGraphOf`](../../shared/graph.ts.mdmd.md#symbol-explorergraphof)

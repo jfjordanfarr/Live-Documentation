@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/explorer/src/client/views/localView/directory-flow.ts`
-- Generated At: 2026-11-19T21:10:16.698Z
+- Generated At: 2026-11-22T07:12:55.917Z
 
 ## Authored
 ### Purpose
@@ -213,7 +213,7 @@ The rows at which the ranks wrap differently, from the tallest rank's down: each
 ### Dependencies
 - [`branch-scene.SceneMeasurer`](./branch-scene.ts.mdmd.md#symbol-scenemeasurer) (type-only)
 - [`directory-handle.HANDLE_STRIP`](./directory-handle.ts.mdmd.md#symbol-handle_strip)
-- [`directory-state.OpenDirectories`](./directory-state.ts.mdmd.md#symbol-opendirectories)
+- [`directory-state.OpenDirectories`](./directory-state.ts.mdmd.md#symbol-opendirectories) (type-only)
 - [`directory-state.under`](./directory-state.ts.mdmd.md#symbol-under)
 - [`types.LocalEdge`](./types.ts.mdmd.md#symbol-localedge) (type-only)
 - [`wire-gathering.NODE_HUB`](./wire-gathering.ts.mdmd.md#symbol-node_hub)

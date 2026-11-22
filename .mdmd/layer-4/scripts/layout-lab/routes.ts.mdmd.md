@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `scripts/layout-lab/routes.ts`
-- Generated At: 2026-11-19T21:10:18.860Z
+- Generated At: 2026-11-22T07:12:57.621Z
 
 ## Authored
 ### Purpose
@@ -86,14 +86,14 @@ The polyline's points every `step` along its length, from its start, and its end
 ### Dependencies
 - [`types.BezierTuning`](../../packages/explorer/src/client/types.ts.mdmd.md#symbol-beziertuning) (type-only)
 - [`branch-routing.LANE_MARGIN`](../../packages/explorer/src/client/views/localView/branch-routing.ts.mdmd.md#symbol-lane_margin)
-- [`branch-routing.Passage`](../../packages/explorer/src/client/views/localView/branch-routing.ts.mdmd.md#symbol-passage)
-- [`branch-routing.RoutePoint`](../../packages/explorer/src/client/views/localView/branch-routing.ts.mdmd.md#symbol-routepoint)
+- [`branch-routing.Passage`](../../packages/explorer/src/client/views/localView/branch-routing.ts.mdmd.md#symbol-passage) (type-only)
+- [`branch-routing.RoutePoint`](../../packages/explorer/src/client/views/localView/branch-routing.ts.mdmd.md#symbol-routepoint) (type-only)
 - [`branch-routing.curveTo`](../../packages/explorer/src/client/views/localView/branch-routing.ts.mdmd.md#symbol-curveto)
 - [`branch-routing.threadedRoute`](../../packages/explorer/src/client/views/localView/branch-routing.ts.mdmd.md#symbol-threadedroute)
 - [`branch-scene.Scene`](../../packages/explorer/src/client/views/localView/branch-scene.ts.mdmd.md#symbol-scene) (type-only)
-- [`branches.BranchGraph`](../../packages/explorer/src/client/views/localView/branches.ts.mdmd.md#symbol-branchgraph)
+- [`branches.BranchGraph`](../../packages/explorer/src/client/views/localView/branches.ts.mdmd.md#symbol-branchgraph) (type-only)
 - [`branches.edgeKey`](../../packages/explorer/src/client/views/localView/branches.ts.mdmd.md#symbol-edgekey)
 - [`Capture`](./capture.ts.mdmd.md#symbol-capture) (type-only)
 - [`card-model.CardMetrics`](./card-model.ts.mdmd.md#symbol-cardmetrics-interface) (type-only)
-- [`card-model.resolvePin`](./card-model.ts.mdmd.md#symbol-resolvepin) (type-only)
+- [`card-model.resolvePin`](./card-model.ts.mdmd.md#symbol-resolvepin)
 <!-- LIVE-DOC:END Dependencies -->

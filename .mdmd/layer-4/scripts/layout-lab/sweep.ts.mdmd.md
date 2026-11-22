@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `scripts/layout-lab/sweep.ts`
-- Generated At: 2026-11-19T21:10:18.988Z
+- Generated At: 2026-11-22T07:12:57.669Z
 
 ## Authored
 ### Purpose
@@ -117,6 +117,6 @@ The configurations no other beats on both the length and the crossing spots.
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
 - [`evaluate.LEVERS`](./evaluate.ts.mdmd.md#symbol-levers)
-- [`evaluate.LabConfig`](./evaluate.ts.mdmd.md#symbol-labconfig)
+- [`evaluate.LabConfig`](./evaluate.ts.mdmd.md#symbol-labconfig) (type-only)
 - [`Signals`](./signals.ts.mdmd.md#symbol-signals) (type-only)
 <!-- LIVE-DOC:END Dependencies -->

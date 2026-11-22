@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `scripts/live-docs/inspect/history.ts`
-- Generated At: 2026-11-22T02:17:41.680Z
+- Generated At: 2026-11-22T07:12:57.801Z
 
 ## Authored
 ### Purpose
@@ -134,11 +134,11 @@ A count with its noun, the plural given where adding an s does not make it ("dir
 - `node:fs` - `promises`
 - `node:path` - `path`
 - [`LiveDocumentationConfig`](../../../packages/engine/src/config/liveDocumentationConfig.ts.mdmd.md#symbol-livedocumentationconfig) (type-only)
-- [`format.CommitInfo`](../../../packages/engine/src/live-docs/history/format.ts.mdmd.md#symbol-commitinfo)
+- [`format.CommitInfo`](../../../packages/engine/src/live-docs/history/format.ts.mdmd.md#symbol-commitinfo) (type-only)
 - [`format.HISTORY_DIRECTORY`](../../../packages/engine/src/live-docs/history/format.ts.mdmd.md#symbol-history_directory)
 - [`format.HISTORY_FILE`](../../../packages/engine/src/live-docs/history/format.ts.mdmd.md#symbol-history_file)
 - [`format.HISTORY_FORMAT`](../../../packages/engine/src/live-docs/history/format.ts.mdmd.md#symbol-history_format)
-- [`format.HistorySequence`](../../../packages/engine/src/live-docs/history/format.ts.mdmd.md#symbol-historysequence)
+- [`format.HistorySequence`](../../../packages/engine/src/live-docs/history/format.ts.mdmd.md#symbol-historysequence) (type-only)
 - [`queries.changesBetween`](../../../packages/engine/src/live-docs/history/queries.ts.mdmd.md#symbol-changesbetween-function)
 - [`queries.entryMarked`](../../../packages/engine/src/live-docs/history/queries.ts.mdmd.md#symbol-entrymarked)
 - [`queries.fileOfShape`](../../../packages/engine/src/live-docs/history/queries.ts.mdmd.md#symbol-fileofshape)
@@ -148,12 +148,12 @@ A count with its noun, the plural given where adding an s does not make it ("dir
 - [`queries.stepsMatching`](../../../packages/engine/src/live-docs/history/queries.ts.mdmd.md#symbol-stepsmatching)
 - [`queries.symbolNamed`](../../../packages/engine/src/live-docs/history/queries.ts.mdmd.md#symbol-symbolnamed)
 - [`rows.RowLink`](../../../packages/engine/src/live-docs/history/rows.ts.mdmd.md#symbol-rowlink) (type-only)
-- [`sequence.Moment`](../../../packages/engine/src/live-docs/history/sequence.ts.mdmd.md#symbol-moment)
+- [`sequence.Moment`](../../../packages/engine/src/live-docs/history/sequence.ts.mdmd.md#symbol-moment) (type-only)
 - [`sequence.commitAt`](../../../packages/engine/src/live-docs/history/sequence.ts.mdmd.md#symbol-commitat)
 - [`sequence.momentAt`](../../../packages/engine/src/live-docs/history/sequence.ts.mdmd.md#symbol-momentat)
 - [`sequence.seek`](../../../packages/engine/src/live-docs/history/sequence.ts.mdmd.md#symbol-seek)
 - [`summary.sectionsOfDescription`](../../../packages/engine/src/live-docs/history/summary.ts.mdmd.md#symbol-sectionsofdescription)
-- [`words.WordsPart`](../../../packages/engine/src/live-docs/history/words.ts.mdmd.md#symbol-wordspart)
+- [`words.WordsPart`](../../../packages/engine/src/live-docs/history/words.ts.mdmd.md#symbol-wordspart) (type-only)
 - [`words.textInPart`](../../../packages/engine/src/live-docs/history/words.ts.mdmd.md#symbol-textinpart)
 - [`words.wordsOfFile`](../../../packages/engine/src/live-docs/history/words.ts.mdmd.md#symbol-wordsoffile-function)
 - [`words.wordsPartFile`](../../../packages/engine/src/live-docs/history/words.ts.mdmd.md#symbol-wordspartfile)

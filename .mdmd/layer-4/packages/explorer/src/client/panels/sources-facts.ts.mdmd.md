@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/explorer/src/client/panels/sources-facts.ts`
-- Generated At: 2026-11-22T06:30:49.700Z
+- Generated At: 2026-11-22T07:12:54.088Z
 
 ## Authored
 ### Purpose
@@ -114,12 +114,12 @@ How many symbols a list of files' classes holds in all.
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
-- [`document.Entry`](../../../../engine/src/live-docs/document.ts.mdmd.md#symbol-entry)
+- [`document.Entry`](../../../../engine/src/live-docs/document.ts.mdmd.md#symbol-entry) (type-only)
 - [`document.entryWords`](../../../../engine/src/live-docs/document.ts.mdmd.md#symbol-entrywords)
-- [`graph.GraphFile`](../../../../engine/src/live-docs/graph.ts.mdmd.md#symbol-graphfile)
-- [`graph.LiveDocGraph`](../../../../engine/src/live-docs/graph.ts.mdmd.md#symbol-livedocgraph)
+- [`graph.GraphFile`](../../../../engine/src/live-docs/graph.ts.mdmd.md#symbol-graphfile) (type-only)
+- [`graph.LiveDocGraph`](../../../../engine/src/live-docs/graph.ts.mdmd.md#symbol-livedocgraph) (type-only)
 - [`graph.fileAt`](../../../../engine/src/live-docs/graph.ts.mdmd.md#symbol-fileat)
-- [`pathfind.FileGroups`](../../../../engine/src/live-docs/pathfind.ts.mdmd.md#symbol-filegroups-interface)
+- [`pathfind.FileGroups`](../../../../engine/src/live-docs/pathfind.ts.mdmd.md#symbol-filegroups-interface) (type-only)
 - [`pathfind.fileGroups`](../../../../engine/src/live-docs/pathfind.ts.mdmd.md#symbol-filegroups-function)
 - [`pathfind.reachability`](../../../../engine/src/live-docs/pathfind.ts.mdmd.md#symbol-reachability-function)
 <!-- LIVE-DOC:END Dependencies -->

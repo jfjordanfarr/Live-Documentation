@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `tests/integration/programs/typescript/tidepool/src/creatures.ts`
-- Generated At: 2026-11-19T21:10:28.741Z
+- Generated At: 2026-11-22T07:13:00.645Z
 
 ## Authored
 ### Purpose
@@ -54,7 +54,7 @@ Feeding settles a creature's hunger.
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
-- [`Rng`](./rng.ts.mdmd.md#symbol-rng)
+- [`Rng`](./rng.ts.mdmd.md#symbol-rng) (type-only)
 - [`rng.between`](./rng.ts.mdmd.md#symbol-between)
 - [`tide.TideState`](./tide.ts.mdmd.md#symbol-tidestate) (type-only)
 <!-- LIVE-DOC:END Dependencies -->

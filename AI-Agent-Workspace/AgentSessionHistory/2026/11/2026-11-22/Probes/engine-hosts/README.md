@@ -168,3 +168,30 @@ Root's ruling, measured in the section above to move no fact of real code, is bu
 - **The history's case** (`tests/integration/live-docs/history-reading.test.ts`) moved in the same commit, its reason in it: the labels are now `../generated/api` and `../generated/types` as written, and the re-exports are none. The other 13 cases pass, the history's last step still equal to a checkout.
 - **What a doc says.** Nothing yet beside the label. The scan cannot tell a path it leaves out from a path that is not there until the leave-out function answers for paths the listing never entered (step 5). A word beside every unresolved relative import would change the docs of imports of missing files, which the ruling does not move.
 - **The page check**, after the commit that built this: green in all 51 folders (20 fixtures, 31 programs), with no differences. Every file is read once but the six docs the ledger already names, which are the sink's business (step 6).
+
+## 2026-11-22, eighth milestone: "type-only" by each name's written modifier
+
+The seventh milestone's handback found that `import { fileAt, type GraphFile }` wrote `GraphFile` without "(type-only)": the TypeScript reader read only a statement's modifier (`import type { … }`, `export type { … }`), and the composer took the first statement of a file's group for every line of it.
+
+**What the product means by the mark today**, read from everything that consumes it: the doc's qualifier, the graph's `typeOnly` on an edge, the history's rows and codec, the stored form, and the command line's history view (`inspect/history.ts`). Nothing that walks the graph reads it. Reach, a path, the unreachable and test-only lists, and the Explorer's drawing do not follow or fade a type-only edge. The mark is a fact observed from source, what the code writes. So the mend keeps that meaning and reads it per name: a name is type-only by its own `type` or its statement's, the compiler's own test (`ts.isTypeOnlyImportOrExportDeclaration`).
+
+[`type-only-names.mts`](type-only-names.mts) counts, for every dependency line a scan writes of a kept script file, the mark three ways. The first is as the tip marked it. The second is by the written modifiers, per name. The third adds what the compiler elides: a name the checker finds names only a type, written without the modifier. Taken from `3cd947724`.
+
+| Folder | Script files | Lines | Marked at the tip | Marked as written | Also elided by the compiler | Gained | Lost | Elided, not written | Re-exported symbols becoming types |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| this repository (its samples among them) | 809 | 7,359 | 890 | 1,682 | 1,695 | 798 | 6 | 13 | 22 |
+| typescript/basic | 5 | 5 | 0 | 0 | 2 | 0 | 0 | 2 | 0 |
+| typescript/layered | 6 | 9 | 0 | 0 | 5 | 0 | 0 | 5 | 0 |
+| typescript/rosetta | 8 | 27 | 3 | 3 | 9 | 0 | 0 | 6 | 0 |
+| typescript/tidepool | 24 | 62 | 8 | 14 | 14 | 6 | 0 | 0 | 0 |
+| DNN | 1,992 | 4,685 | 3 | 3 | 89 | 0 | 0 | 86 | 0 |
+| mojoportal | 1,142 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
+
+The other kept corpora (algo, azurestack, dbatools, tsqlt) hold no script file. The 13 of this repository that the compiler elides and no one wrote are all in the samples basic, layered and rosetta. This repository's own code writes every type import's modifier.
+
+- **The six lost** are value names the tip marked because a `import type { … }` of the same file came first: `compressed-url-state.ts`'s four names of `pin-state.ts`, `forceGraphWrappers.ts`'s `GROUP_WRAPPERS`, and `routes.ts`'s `resolvePin`. Each is a use at run time.
+- **The 22 symbols** are names re-exported by `export type { … }`. Their own `Type:` line read `unknown` and now reads `type (type-only)`, as a name written `export { type A }` already did.
+- **The whole comparison of this repository's docs** after the mend matches the measure exactly. 286 docs changed: 798 dependency lines gain the mark, 6 lose it, and 22 symbols become types. The only other changes are the source line numbers in the edited files' own docs (19) and each doc's time of generation.
+- **Downstream.** The graph's type-only edges are the lines: 798 more, 6 fewer. Reach, paths and the dead-code answer do not move, since nothing that walks the graph reads the mark.
+- **The oracle's case** is `tests/integration/live-docs/type-only-names.test.ts`. It runs over a made folder of every form and every file of `typescript/tidepool`, held to `ts.isTypeOnlyImportOrExportDeclaration`. Both cases fail against the reader of `3cd947724` and pass after.
+- **Not built, a question:** whether "type-only" should also mean what the compiler elides, a name written without the modifier that names only an interface or type alias. That would be a different fact (how the code behaves, not what it writes). It needs the target's kinds, which the symbol index holds for the workspace's own files. It would mark 13 more lines in this repository's samples and 86 in DNN.

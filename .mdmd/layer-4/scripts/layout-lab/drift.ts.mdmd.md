@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `scripts/layout-lab/drift.ts`
-- Generated At: 2026-11-19T21:10:18.576Z
+- Generated At: 2026-11-22T07:12:57.499Z
 
 ## Authored
 ### Purpose
@@ -25,7 +25,7 @@ The table gained an Approximation column on 2026-10-28, the repulsion's approxim
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `Placed` {#symbol-placed}
-- Type: unknown
+- Type: type (type-only)
 - Source: [source](../../../../scripts/layout-lab/drift.ts#L20)
 
 #### `DriftCycle` {#symbol-driftcycle}
@@ -107,11 +107,11 @@ A table a person reads: one row per setting, the extent's growth across the cycl
 ### Dependencies
 - [`types.ForceGraphTuning`](../../packages/explorer/src/client/types.ts.mdmd.md#symbol-forcegraphtuning) (type-only)
 - [`types.SpatialLayout`](../../packages/explorer/src/client/types.ts.mdmd.md#symbol-spatiallayout) (type-only)
-- [`forceGraphData.SpatialGraphNode`](../../packages/explorer/src/client/views/forceGraphData.ts.mdmd.md#symbol-spatialgraphnode)
+- [`forceGraphData.SpatialGraphNode`](../../packages/explorer/src/client/views/forceGraphData.ts.mdmd.md#symbol-spatialgraphnode) (type-only)
 - [`forceGraphData.spatialGraphOf`](../../packages/explorer/src/client/views/forceGraphData.ts.mdmd.md#symbol-spatialgraphof)
-- [`forceGraphLayout.Placed`](../../packages/explorer/src/client/views/forceGraphLayout.ts.mdmd.md#symbol-placed)
-- [`forceGraphLayout.SpatialLink`](../../packages/explorer/src/client/views/forceGraphLayout.ts.mdmd.md#symbol-spatiallink)
-- [`forceGraphLayout.SpatialNode`](../../packages/explorer/src/client/views/forceGraphLayout.ts.mdmd.md#symbol-spatialnode)
+- [`forceGraphLayout.Placed`](../../packages/explorer/src/client/views/forceGraphLayout.ts.mdmd.md#symbol-placed) (type-only)
+- [`forceGraphLayout.SpatialLink`](../../packages/explorer/src/client/views/forceGraphLayout.ts.mdmd.md#symbol-spatiallink) (type-only)
+- [`forceGraphLayout.SpatialNode`](../../packages/explorer/src/client/views/forceGraphLayout.ts.mdmd.md#symbol-spatialnode) (type-only)
 - [`forceGraphLayout.easeSpatialLayout`](../../packages/explorer/src/client/views/forceGraphLayout.ts.mdmd.md#symbol-easespatiallayout)
 - [`forceGraphLayout.placeNewSpheres`](../../packages/explorer/src/client/views/forceGraphLayout.ts.mdmd.md#symbol-placenewspheres)
 - [`types.ExplorerGraphPayload`](../../packages/explorer/src/shared/types.ts.mdmd.md#symbol-explorergraphpayload) (type-only)

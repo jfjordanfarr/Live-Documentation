@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/explorer/src/client/persistence/local-storage.ts`
-- Generated At: 2026-11-22T05:48:55.983Z
+- Generated At: 2026-11-22T07:12:54.303Z
 
 ## Authored
 ### Purpose
@@ -216,32 +216,32 @@ Inspecting a different file never replaces the remembered subject.
 - [`navigation.readPerspective`](./navigation.ts.mdmd.md#symbol-readperspective)
 - [`navigation.readSpatialLayout`](./navigation.ts.mdmd.md#symbol-readspatiallayout)
 - [`navigation.readView`](./navigation.ts.mdmd.md#symbol-readview)
-- [`reading-state.ReadingChoice`](../reading-state.ts.mdmd.md#symbol-readingchoice)
+- [`reading-state.ReadingChoice`](../reading-state.ts.mdmd.md#symbol-readingchoice) (type-only)
 - [`reading-state.readReadingChoices`](../reading-state.ts.mdmd.md#symbol-readreadingchoices)
 - [`types.ARRIVALS`](../types.ts.mdmd.md#symbol-arrivals)
 - [`types.ARRIVAL_WAITS`](../types.ts.mdmd.md#symbol-arrival_waits)
 - [`types.CHANGE_EMPHASES`](../types.ts.mdmd.md#symbol-change_emphases)
 - [`types.CUT_COUNTED`](../types.ts.mdmd.md#symbol-cut_counted)
-- [`types.ChangeEmphasis`](../types.ts.mdmd.md#symbol-changeemphasis)
+- [`types.ChangeEmphasis`](../types.ts.mdmd.md#symbol-changeemphasis) (type-only)
 - [`types.DIRECTION_MARKS`](../types.ts.mdmd.md#symbol-direction_marks)
-- [`types.DiscoveryTarget`](../types.ts.mdmd.md#symbol-discoverytarget)
-- [`types.ExplorerFilters`](../types.ts.mdmd.md#symbol-explorerfilters)
+- [`types.DiscoveryTarget`](../types.ts.mdmd.md#symbol-discoverytarget) (type-only)
+- [`types.ExplorerFilters`](../types.ts.mdmd.md#symbol-explorerfilters) (type-only)
 - [`types.FRAME_CHOICES`](../types.ts.mdmd.md#symbol-frame_choices)
 - [`types.FRAMINGS`](../types.ts.mdmd.md#symbol-framings)
 - [`types.HIDDEN_FILES_LOOKS`](../types.ts.mdmd.md#symbol-hidden_files_looks)
 - [`types.HISTORY_GRANULARITIES`](../types.ts.mdmd.md#symbol-history_granularities)
-- [`types.HistoryAxis`](../types.ts.mdmd.md#symbol-historyaxis)
-- [`types.HistoryGranularity`](../types.ts.mdmd.md#symbol-historygranularity)
-- [`types.InspectionTarget`](../types.ts.mdmd.md#symbol-inspectiontarget)
-- [`types.LocalMapPerspective`](../types.ts.mdmd.md#symbol-localmapperspective)
+- [`types.HistoryAxis`](../types.ts.mdmd.md#symbol-historyaxis) (type-only)
+- [`types.HistoryGranularity`](../types.ts.mdmd.md#symbol-historygranularity) (type-only)
+- [`types.InspectionTarget`](../types.ts.mdmd.md#symbol-inspectiontarget) (type-only)
+- [`types.LocalMapPerspective`](../types.ts.mdmd.md#symbol-localmapperspective) (type-only)
 - [`types.MAP_READS`](../types.ts.mdmd.md#symbol-map_reads)
 - [`types.MARBLE_CHOICES`](../types.ts.mdmd.md#symbol-marble_choices)
 - [`types.MIRROR_TURNS`](../types.ts.mdmd.md#symbol-mirror_turns)
 - [`types.STEPS`](../types.ts.mdmd.md#symbol-steps)
-- [`types.SpatialLayout`](../types.ts.mdmd.md#symbol-spatiallayout)
-- [`types.SymbolOrder`](../types.ts.mdmd.md#symbol-symbolorder)
-- [`types.TuningConfig`](../types.ts.mdmd.md#symbol-tuningconfig)
-- [`types.ViewName`](../types.ts.mdmd.md#symbol-viewname)
+- [`types.SpatialLayout`](../types.ts.mdmd.md#symbol-spatiallayout) (type-only)
+- [`types.SymbolOrder`](../types.ts.mdmd.md#symbol-symbolorder) (type-only)
+- [`types.TuningConfig`](../types.ts.mdmd.md#symbol-tuningconfig) (type-only)
+- [`types.ViewName`](../types.ts.mdmd.md#symbol-viewname) (type-only)
 - [`types.WAY_DOWNS`](../types.ts.mdmd.md#symbol-way_downs)
 - [`types.WIRE_ANSWERS`](../types.ts.mdmd.md#symbol-wire_answers)
 - [`cycle-order.DEFAULT_RETURN_COST`](../views/localView/cycle-order.ts.mdmd.md#symbol-default_return_cost)

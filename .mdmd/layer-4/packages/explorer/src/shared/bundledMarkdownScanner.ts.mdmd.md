@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/explorer/src/shared/bundledMarkdownScanner.ts`
-- Generated At: 2026-11-19T21:10:17.766Z
+- Generated At: 2026-11-22T07:12:56.892Z
 
 ## Authored
 ### Purpose
@@ -21,7 +21,7 @@ Bundles the documents the Live Docs link to (READMEs, design notes, specs, chat 
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `BundledMarkdownTreeNode` {#symbol-bundledmarkdowntreenode}
-- Type: unknown
+- Type: type (type-only)
 - Source: [source](../../../../../../packages/explorer/src/shared/bundledMarkdownScanner.ts#L17)
 
 #### `BundledMarkdownResult` {#symbol-bundledmarkdownresult}

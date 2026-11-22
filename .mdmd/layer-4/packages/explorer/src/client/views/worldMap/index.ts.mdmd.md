@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/explorer/src/client/views/worldMap/index.ts`
-- Generated At: 2026-11-22T02:00:46.878Z
+- Generated At: 2026-11-22T07:12:56.782Z
 
 ## Authored
 ### Purpose
@@ -17,7 +17,7 @@ The World Map view's door: reads the bundle's board text, refuses it with a note
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `OpenedThing` {#symbol-openedthing}
-- Type: unknown
+- Type: type (type-only)
 - Source: [source](../../../../../../../../packages/explorer/src/client/views/worldMap/index.ts#L14)
 
 #### `heldFiles` {#symbol-heldfiles}
@@ -55,10 +55,10 @@ Creates the World Map over the bundle's board, or a note saying the bundle has n
 - [`boardGraph.deriveBoardGraph`](../../../../../engine/src/live-docs/boardGraph.ts.mdmd.md#symbol-deriveboardgraph)
 - [`document.LiveDocSyntaxError`](../../../../../engine/src/live-docs/document.ts.mdmd.md#symbol-livedocsyntaxerror)
 - [`graph.LiveDocGraph`](../../../../../engine/src/live-docs/graph.ts.mdmd.md#symbol-livedocgraph) (type-only)
-- [`controller.OpenedThing`](./controller.ts.mdmd.md#symbol-openedthing)
-- [`controller.WorldMapApi`](./controller.ts.mdmd.md#symbol-worldmapapi)
+- [`controller.OpenedThing`](./controller.ts.mdmd.md#symbol-openedthing) (type-only)
+- [`controller.WorldMapApi`](./controller.ts.mdmd.md#symbol-worldmapapi) (type-only)
 - [`controller.WorldMapController`](./controller.ts.mdmd.md#symbol-worldmapcontroller)
-- [`controller.WorldMapOptions`](./controller.ts.mdmd.md#symbol-worldmapoptions)
+- [`controller.WorldMapOptions`](./controller.ts.mdmd.md#symbol-worldmapoptions) (type-only)
 - [`model.buildWorldModel`](./model.ts.mdmd.md#symbol-buildworldmodel)
 - [`way-down.heldFiles`](./way-down.ts.mdmd.md#symbol-heldfiles) (re-export)
 <!-- LIVE-DOC:END Dependencies -->

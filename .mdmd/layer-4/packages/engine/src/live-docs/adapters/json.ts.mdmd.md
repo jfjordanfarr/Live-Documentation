@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/engine/src/live-docs/adapters/json.ts`
-- Generated At: 2026-11-22T06:30:47.100Z
+- Generated At: 2026-11-22T07:12:52.145Z
 
 ## Authored
 ### Purpose
@@ -88,7 +88,7 @@ Language adapter for JSON and JSONC files. Publishes key paths as public symbols
 - `node:path` - `path`
 - [`index.LanguageAdapter`](./index.ts.mdmd.md#symbol-languageadapter) (type-only)
 - [`index.WorkspaceFileIndex`](./index.ts.mdmd.md#symbol-workspacefileindex) (type-only)
-- [`manifest.ManifestContext`](./manifest.ts.mdmd.md#symbol-manifestcontext-interface)
+- [`manifest.ManifestContext`](./manifest.ts.mdmd.md#symbol-manifestcontext-interface) (type-only)
 - [`manifest.ManifestDependencies`](./manifest.ts.mdmd.md#symbol-manifestdependencies)
 - [`manifest.manifestContext`](./manifest.ts.mdmd.md#symbol-manifestcontext-function)
 - [`manifest.packageSymbols`](./manifest.ts.mdmd.md#symbol-packagesymbols)
@@ -106,11 +106,11 @@ Language adapter for JSON and JSONC files. Publishes key paths as public symbols
 - [`processMark.nestingBeyondDepth`](../processMark.ts.mdmd.md#symbol-nestingbeyonddepth)
 - [`compareText`](../../tooling/compareText.ts.mdmd.md#symbol-comparetext)
 - [`pathUtils.normalizeWorkspacePath`](../../tooling/pathUtils.ts.mdmd.md#symbol-normalizeworkspacepath)
-- [`sourceText.SourceReads`](../../tooling/sourceText.ts.mdmd.md#symbol-sourcereads)
+- [`sourceText.SourceReads`](../../tooling/sourceText.ts.mdmd.md#symbol-sourcereads) (type-only)
 - [`sourceText.readSourceReading`](../../tooling/sourceText.ts.mdmd.md#symbol-readsourcereading)
 - [`sourceText.readSourceText`](../../tooling/sourceText.ts.mdmd.md#symbol-readsourcetext)
 - [`sourceText.throwIfMachineFailure`](../../tooling/sourceText.ts.mdmd.md#symbol-throwifmachinefailure)
-- [`workspaceProbes.ListedFiles`](../../tooling/workspaceProbes.ts.mdmd.md#symbol-listedfiles)
+- [`workspaceProbes.ListedFiles`](../../tooling/workspaceProbes.ts.mdmd.md#symbol-listedfiles) (type-only)
 - [`workspaceProbes.pathKind`](../../tooling/workspaceProbes.ts.mdmd.md#symbol-pathkind)
 - `typescript` - `ts`
 <!-- LIVE-DOC:END Dependencies -->

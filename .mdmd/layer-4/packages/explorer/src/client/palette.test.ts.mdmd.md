@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: `packages/explorer/src/client/palette.test.ts`
-- Generated At: 2026-11-19T21:10:13.678Z
+- Generated At: 2026-11-22T07:12:54.022Z
 
 ## Authored
 ### Purpose
@@ -30,7 +30,7 @@ _No public symbols detected_
 - [`palette.DEFAULT_PALETTE`](./palette.ts.mdmd.md#symbol-default_palette)
 - [`palette.PALETTES`](./palette.ts.mdmd.md#symbol-palettes)
 - [`palette.PROPOSED`](./palette.ts.mdmd.md#symbol-proposed)
-- [`Palette`](./palette.ts.mdmd.md#symbol-palette)
+- [`Palette`](./palette.ts.mdmd.md#symbol-palette) (type-only)
 - [`palette.TODAY`](./palette.ts.mdmd.md#symbol-today)
 - [`palette.VIVID_KINDS`](./palette.ts.mdmd.md#symbol-vivid_kinds)
 - [`palette.activePalette`](./palette.ts.mdmd.md#symbol-activepalette)
@@ -51,7 +51,7 @@ _No public symbols detected_
 - [`forceGraphAppearance.MARBLE_VEINS`](./views/forceGraphAppearance.ts.mdmd.md#symbol-marble_veins)
 - [`forceGraphAppearance.MARBLE_VERTEX`](./views/forceGraphAppearance.ts.mdmd.md#symbol-marble_vertex)
 - [`forceGraphAppearance.MARBLE_VERTEX_PARS`](./views/forceGraphAppearance.ts.mdmd.md#symbol-marble_vertex_pars)
-- [`forceGraphAppearance.SpatialKind`](./views/forceGraphAppearance.ts.mdmd.md#symbol-spatialkind)
+- [`forceGraphAppearance.SpatialKind`](./views/forceGraphAppearance.ts.mdmd.md#symbol-spatialkind) (type-only)
 - [`forceGraphAppearance.fileShares`](./views/forceGraphAppearance.ts.mdmd.md#symbol-fileshares)
 - [`forceGraphAppearance.marbleAmount`](./views/forceGraphAppearance.ts.mdmd.md#symbol-marbleamount)
 - [`forceGraphAppearance.marbleCounts`](./views/forceGraphAppearance.ts.mdmd.md#symbol-marblecounts-function)

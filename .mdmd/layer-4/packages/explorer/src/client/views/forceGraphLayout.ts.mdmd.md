@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/explorer/src/client/views/forceGraphLayout.ts`
-- Generated At: 2026-11-22T03:37:59.973Z
+- Generated At: 2026-11-22T07:12:54.753Z
 
 ## Authored
 ### Purpose
@@ -393,17 +393,17 @@ stand. Inputs are not mutated; the result says whether the picture came to rest,
 - `d3-force-3d` - `Force`, `SimulationNodeDatum`, `forceSimulation`
 - [`types.ForceGraphTuning`](../types.ts.mdmd.md#symbol-forcegraphtuning) (type-only)
 - [`types.SpatialLayout`](../types.ts.mdmd.md#symbol-spatiallayout) (type-only)
-- [`forceGraphPhysics.MotionSettings`](./forceGraphPhysics.ts.mdmd.md#symbol-motionsettings)
-- [`forceGraphPhysics.MotionTick`](./forceGraphPhysics.ts.mdmd.md#symbol-motiontick)
+- [`forceGraphPhysics.MotionSettings`](./forceGraphPhysics.ts.mdmd.md#symbol-motionsettings) (type-only)
+- [`forceGraphPhysics.MotionTick`](./forceGraphPhysics.ts.mdmd.md#symbol-motiontick) (type-only)
 - [`forceGraphPhysics.SpatialField`](./forceGraphPhysics.ts.mdmd.md#symbol-spatialfield)
 - [`forceGraphPhysics.SpatialMotion`](./forceGraphPhysics.ts.mdmd.md#symbol-spatialmotion)
 - [`forceGraphPhysics.diagonalOf`](./forceGraphPhysics.ts.mdmd.md#symbol-diagonalof)
 - [`forceGraphReveal.REVEAL`](./forceGraphReveal.ts.mdmd.md#symbol-reveal)
-- [`forceGraphReveal.RevealAttention`](./forceGraphReveal.ts.mdmd.md#symbol-revealattention)
-- [`forceGraphReveal.RevealSettings`](./forceGraphReveal.ts.mdmd.md#symbol-revealsettings)
+- [`forceGraphReveal.RevealAttention`](./forceGraphReveal.ts.mdmd.md#symbol-revealattention) (type-only)
+- [`forceGraphReveal.RevealSettings`](./forceGraphReveal.ts.mdmd.md#symbol-revealsettings) (type-only)
 - [`forceGraphReveal.nextRevealCount`](./forceGraphReveal.ts.mdmd.md#symbol-nextrevealcount)
 - [`forceGraphReveal.revealLayers`](./forceGraphReveal.ts.mdmd.md#symbol-reveallayers)
-- [`forceGraphScope.StartableNode`](./forceGraphScope.ts.mdmd.md#symbol-startablenode)
+- [`forceGraphScope.StartableNode`](./forceGraphScope.ts.mdmd.md#symbol-startablenode) (type-only)
 - [`forceGraphScope.spatialScope`](./forceGraphScope.ts.mdmd.md#symbol-spatialscope-function)
 - [`forceGraphScope.startHops`](./forceGraphScope.ts.mdmd.md#symbol-starthops)
 - [`forceGraphScope.startOf`](./forceGraphScope.ts.mdmd.md#symbol-startof)

@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: `tests/e2e/force-graph-shells.spec.ts`
-- Generated At: 2026-11-19T21:10:21.329Z
+- Generated At: 2026-11-22T07:12:58.607Z
 
 ## Authored
 ### Purpose
@@ -46,7 +46,7 @@ _No public symbols detected_
 - [`forceGraphScope.connectedNeighbours`](../../packages/explorer/src/client/views/forceGraphScope.ts.mdmd.md#symbol-connectedneighbours)
 - [`forceGraphScope.spatialScope`](../../packages/explorer/src/client/views/forceGraphScope.ts.mdmd.md#symbol-spatialscope-function)
 - [`forceGraphScope.withoutUnreachedSeeds`](../../packages/explorer/src/client/views/forceGraphScope.ts.mdmd.md#symbol-withoutunreachedseeds)
-- [`forceGraphShells.ShellPicture`](../../packages/explorer/src/client/views/forceGraphShells.ts.mdmd.md#symbol-shellpicture-interface)
+- [`forceGraphShells.ShellPicture`](../../packages/explorer/src/client/views/forceGraphShells.ts.mdmd.md#symbol-shellpicture-interface) (type-only)
 - [`forceGraphShells.shellPicture`](../../packages/explorer/src/client/views/forceGraphShells.ts.mdmd.md#symbol-shellpicture-function)
 - [`force-graph-observation.observeGraph`](./force-graph-observation.ts.mdmd.md#symbol-observegraph)
 - [`force-graph-observation.renderedNodes`](./force-graph-observation.ts.mdmd.md#symbol-renderednodes)

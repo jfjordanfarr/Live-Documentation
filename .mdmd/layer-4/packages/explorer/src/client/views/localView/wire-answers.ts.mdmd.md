@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/explorer/src/client/views/localView/wire-answers.ts`
-- Generated At: 2026-11-21T09:00:47.930Z
+- Generated At: 2026-11-22T07:12:56.343Z
 
 ## Authored
 ### Purpose
@@ -71,16 +71,16 @@ The wires' answers on one 2D map: the panel, and the pointer, the press and the 
 - [`symbol-highlight.clearSymbolHighlightDOM`](./symbol-highlight.ts.mdmd.md#symbol-clearsymbolhighlightdom)
 - [`symbol-highlight.lightConnections`](./symbol-highlight.ts.mdmd.md#symbol-lightconnections)
 - [`types.LocalEdge`](./types.ts.mdmd.md#symbol-localedge) (type-only)
-- [`wire-words.WireWords`](./wire-words.ts.mdmd.md#symbol-wirewords-interface)
+- [`wire-words.WireWords`](./wire-words.ts.mdmd.md#symbol-wirewords-interface) (type-only)
 - [`wire-words.headText`](./wire-words.ts.mdmd.md#symbol-headtext)
 - [`wire-words.listText`](./wire-words.ts.mdmd.md#symbol-listtext)
 - [`wire-words.referencesText`](./wire-words.ts.mdmd.md#symbol-referencestext)
 - [`wire-words.sentence`](./wire-words.ts.mdmd.md#symbol-sentence)
 - [`pointerRest.NO_REST`](../pointerRest.ts.mdmd.md#symbol-no_rest)
-- [`PointerRest`](../pointerRest.ts.mdmd.md#symbol-pointerrest)
+- [`PointerRest`](../pointerRest.ts.mdmd.md#symbol-pointerrest) (type-only)
 - [`pointerRest.restAt`](../pointerRest.ts.mdmd.md#symbol-restat)
 - [`pointerRest.restedOn`](../pointerRest.ts.mdmd.md#symbol-restedon)
 - [`pointerRest.restsAt`](../pointerRest.ts.mdmd.md#symbol-restsat)
-- [`layout.Avoid`](../worldMap/layout.ts.mdmd.md#symbol-avoid)
+- [`layout.Avoid`](../worldMap/layout.ts.mdmd.md#symbol-avoid) (type-only)
 - [`layout.panelBeside`](../worldMap/layout.ts.mdmd.md#symbol-panelbeside)
 <!-- LIVE-DOC:END Dependencies -->

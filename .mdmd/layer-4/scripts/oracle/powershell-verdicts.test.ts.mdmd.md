@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: `scripts/oracle/powershell-verdicts.test.ts`
-- Generated At: 2026-11-21T05:53:29.152Z
+- Generated At: 2026-11-22T07:12:57.997Z
 
 ## Authored
 ### Purpose
@@ -23,7 +23,7 @@ _No public symbols detected_
 ### Dependencies
 - `node:fs` - `readFileSync`
 - `node:path` - `path`
-- [`powershell-verdicts.HandVerdict`](./powershell-verdicts.ts.mdmd.md#symbol-handverdict)
+- [`powershell-verdicts.HandVerdict`](./powershell-verdicts.ts.mdmd.md#symbol-handverdict) (type-only)
 - [`powershell-verdicts.readVerdicts`](./powershell-verdicts.ts.mdmd.md#symbol-readverdicts)
 - [`powershell-verdicts.scoreVerdicts`](./powershell-verdicts.ts.mdmd.md#symbol-scoreverdicts)
 - `vitest` - `describe`, `expect`, `it`

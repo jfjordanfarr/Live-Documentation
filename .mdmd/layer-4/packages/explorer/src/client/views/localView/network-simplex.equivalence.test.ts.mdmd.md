@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: `packages/explorer/src/client/views/localView/network-simplex.equivalence.test.ts`
-- Generated At: 2026-11-19T22:40:12.363Z
+- Generated At: 2026-11-22T07:12:56.129Z
 
 ## Authored
 ### Purpose
@@ -26,8 +26,8 @@ _No public symbols detected_
 ### Dependencies
 - `node:fs` - `readFileSync`
 - `node:path` - `path`
-- [`network-simplex.Constraint`](./network-simplex.ts.mdmd.md#symbol-constraint)
-- [`network-simplex.Ranking`](./network-simplex.ts.mdmd.md#symbol-ranking)
+- [`network-simplex.Constraint`](./network-simplex.ts.mdmd.md#symbol-constraint) (type-only)
+- [`network-simplex.Ranking`](./network-simplex.ts.mdmd.md#symbol-ranking) (type-only)
 - [`network-simplex.rankByNetworkSimplex`](./network-simplex.ts.mdmd.md#symbol-rankbynetworksimplex)
 - `vitest` - `describe`, `expect`, `it`
 <!-- LIVE-DOC:END Dependencies -->

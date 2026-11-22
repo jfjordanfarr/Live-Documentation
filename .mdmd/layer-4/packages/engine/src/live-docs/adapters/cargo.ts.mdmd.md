@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/engine/src/live-docs/adapters/cargo.ts`
-- Generated At: 2026-11-19T21:10:09.189Z
+- Generated At: 2026-11-22T07:12:51.762Z
 
 ## Authored
 ### Purpose
@@ -33,7 +33,7 @@ Language adapter for Cargo manifests: the crate as a symbol, its dependencies, a
 ### Dependencies
 - `node:path` - `path`
 - [`index.LanguageAdapter`](./index.ts.mdmd.md#symbol-languageadapter) (type-only)
-- [`manifest.ManifestContext`](./manifest.ts.mdmd.md#symbol-manifestcontext-interface)
+- [`manifest.ManifestContext`](./manifest.ts.mdmd.md#symbol-manifestcontext-interface) (type-only)
 - [`manifest.ManifestDependencies`](./manifest.ts.mdmd.md#symbol-manifestdependencies)
 - [`manifest.manifestContext`](./manifest.ts.mdmd.md#symbol-manifestcontext-function)
 - [`manifest.manifestIn`](./manifest.ts.mdmd.md#symbol-manifestin)

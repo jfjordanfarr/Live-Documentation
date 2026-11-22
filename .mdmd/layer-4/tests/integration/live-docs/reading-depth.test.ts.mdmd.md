@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: `tests/integration/live-docs/reading-depth.test.ts`
-- Generated At: 2026-11-20T15:18:18.442Z
+- Generated At: 2026-11-22T07:13:00.009Z
 
 ## Authored
 ### Purpose
@@ -38,7 +38,7 @@ _No public symbols detected_
 - `node:path`
 - [`liveDocumentationConfig.normalizeLiveDocumentationConfig`](../../../packages/engine/src/config/liveDocumentationConfig.ts.mdmd.md#symbol-normalizelivedocumentationconfig)
 - [`pom.readXmlElements`](../../../packages/engine/src/live-docs/adapters/pom.ts.mdmd.md#symbol-readxmlelements)
-- [`treeSitter.SyntaxNode`](../../../packages/engine/src/live-docs/adapters/treeSitter.ts.mdmd.md#symbol-syntaxnode)
+- [`treeSitter.SyntaxNode`](../../../packages/engine/src/live-docs/adapters/treeSitter.ts.mdmd.md#symbol-syntaxnode) (type-only)
 - [`treeSitter.readTree`](../../../packages/engine/src/live-docs/adapters/treeSitter.ts.mdmd.md#symbol-readtree)
 - [`lens.summarizedConfiguration`](../../../packages/engine/src/live-docs/history/lens.ts.mdmd.md#symbol-summarizedconfiguration)
 - [`processMark.READING_DEPTH`](../../../packages/engine/src/live-docs/processMark.ts.mdmd.md#symbol-reading_depth)

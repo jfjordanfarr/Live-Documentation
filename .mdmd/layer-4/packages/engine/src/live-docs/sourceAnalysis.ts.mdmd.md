@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/engine/src/live-docs/sourceAnalysis.ts`
-- Generated At: 2026-11-22T06:30:48.788Z
+- Generated At: 2026-11-22T07:12:53.377Z
 
 ## Authored
 ### Purpose
@@ -55,7 +55,7 @@ if (analysis.symbols.length === 0) {
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
 - `node:path` - `path`
-- [`index.WorkspaceFileIndex`](./adapters/index.ts.mdmd.md#symbol-workspacefileindex)
+- [`index.WorkspaceFileIndex`](./adapters/index.ts.mdmd.md#symbol-workspacefileindex) (type-only)
 - [`index.analyzeWithLanguageAdapters`](./adapters/index.ts.mdmd.md#symbol-analyzewithlanguageadapters)
 - [`coreConstants.SUPPORTED_SCRIPT_EXTENSIONS`](./coreConstants.ts.mdmd.md#symbol-supported_script_extensions)
 - [`coreTypes.DependencyEntry`](./coreTypes.ts.mdmd.md#symbol-dependencyentry) (type-only)

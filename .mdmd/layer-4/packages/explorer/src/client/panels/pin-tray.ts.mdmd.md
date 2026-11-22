@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/explorer/src/client/panels/pin-tray.ts`
-- Generated At: 2026-11-21T09:00:28.991Z
+- Generated At: 2026-11-22T07:12:54.069Z
 
 ## Authored
 ### Purpose
@@ -52,8 +52,8 @@ gives the words, or null when the pin stands.
 - [`icon-button.MORE_ICON`](./icon-button.ts.mdmd.md#symbol-more_icon)
 - [`icon-button.iconButton`](./icon-button.ts.mdmd.md#symbol-iconbutton)
 - [`item-menu.ItemCommand`](./item-menu.ts.mdmd.md#symbol-itemcommand) (type-only)
-- [`retained-state.RetainedItem`](../views/retained-state.ts.mdmd.md#symbol-retaineditem)
-- [`retained-state.RetainedState`](../views/retained-state.ts.mdmd.md#symbol-retainedstate)
+- [`retained-state.RetainedItem`](../views/retained-state.ts.mdmd.md#symbol-retaineditem) (type-only)
+- [`retained-state.RetainedState`](../views/retained-state.ts.mdmd.md#symbol-retainedstate) (type-only)
 - [`retained-state.describeRetained`](../views/retained-state.ts.mdmd.md#symbol-describeretained)
 - [`retained-state.retainedItems`](../views/retained-state.ts.mdmd.md#symbol-retaineditems)
 - [`retained-state.retainedKey`](../views/retained-state.ts.mdmd.md#symbol-retainedkey)

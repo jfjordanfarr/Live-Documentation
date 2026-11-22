@@ -5,7 +5,7 @@
 - Archetype: test
 - Code Path: `tests/e2e/playwright.config.ts`
 - Entry: tooling
-- Generated At: 2026-11-19T21:10:23.552Z
+- Generated At: 2026-11-22T07:12:59.142Z
 
 ## Authored
 ### Purpose
@@ -46,6 +46,6 @@ Playwright configuration for the Explorer's browser suite: one Chromium worker o
 - [`local-storage.PERSISTED_UI_KEY`](../../packages/explorer/src/client/persistence/local-storage.ts.mdmd.md#symbol-persisted_ui_key)
 - [`local-storage.PERSISTED_UI_VERSION`](../../packages/explorer/src/client/persistence/local-storage.ts.mdmd.md#symbol-persisted_ui_version)
 - [`browser-launch.browserLaunchOptions`](./browser-launch.ts.mdmd.md#symbol-browserlaunchoptions)
-- [`served-build.ServerPort`](./served-build.ts.mdmd.md#symbol-serverport)
+- [`served-build.ServerPort`](./served-build.ts.mdmd.md#symbol-serverport) (type-only)
 - [`served-build.serverPortForThisRun`](./served-build.ts.mdmd.md#symbol-serverportforthisrun)
 <!-- LIVE-DOC:END Dependencies -->

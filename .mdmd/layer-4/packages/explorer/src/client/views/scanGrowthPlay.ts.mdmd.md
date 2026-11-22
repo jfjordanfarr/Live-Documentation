@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/explorer/src/client/views/scanGrowthPlay.ts`
-- Generated At: 2026-11-22T01:45:46.393Z
+- Generated At: 2026-11-22T07:12:56.602Z
 
 ## Authored
 ### Purpose
@@ -58,7 +58,7 @@ Make the play over a 3D view; nothing is drawn or fed until `play`.
 - [`announce`](../announce.ts.mdmd.md#symbol-announce)
 - [`types.ScanGrowth`](../types.ts.mdmd.md#symbol-scangrowth) (type-only)
 - [`types.ScanPace`](../types.ts.mdmd.md#symbol-scanpace) (type-only)
-- [`scanGrowth.ScanSchedule`](./scanGrowth.ts.mdmd.md#symbol-scanschedule-interface)
+- [`scanGrowth.ScanSchedule`](./scanGrowth.ts.mdmd.md#symbol-scanschedule-interface) (type-only)
 - [`scanGrowth.arrivedAt`](./scanGrowth.ts.mdmd.md#symbol-arrivedat)
 - [`scanGrowth.arrivedGraph`](./scanGrowth.ts.mdmd.md#symbol-arrivedgraph)
 - [`scanGrowth.firstCommitOrder`](./scanGrowth.ts.mdmd.md#symbol-firstcommitorder)

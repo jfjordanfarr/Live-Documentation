@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: `packages/explorer/src/client/reader-sections.test.ts`
-- Generated At: 2026-11-19T21:10:14.352Z
+- Generated At: 2026-11-22T07:12:54.341Z
 
 ## Authored
 ### Purpose
@@ -24,7 +24,7 @@ _No public symbols detected_
 - [`document.DEFAULT_AUTHORED_BLOCK`](../../../engine/src/live-docs/document.ts.mdmd.md#symbol-default_authored_block)
 - [`GitHubSlugger`](../../../engine/src/tooling/githubSlugger.ts.mdmd.md#symbol-githubslugger)
 - [`markdown.renderMarkdown`](./markdown.ts.mdmd.md#symbol-rendermarkdown)
-- [`reader-sections.AuthoredSection`](./reader-sections.ts.mdmd.md#symbol-authoredsection)
+- [`reader-sections.AuthoredSection`](./reader-sections.ts.mdmd.md#symbol-authoredsection) (type-only)
 - [`reader-sections.authoredSections`](./reader-sections.ts.mdmd.md#symbol-authoredsections)
 - [`reader-sections.readerOrder`](./reader-sections.ts.mdmd.md#symbol-readerorder-function)
 - `vitest` - `describe`, `expect`, `it`

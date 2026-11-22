@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/explorer/src/client/views/localView/mirror-motion.ts`
-- Generated At: 2026-11-22T05:48:58.410Z
+- Generated At: 2026-11-22T07:12:56.097Z
 
 ## Authored
 ### Purpose
@@ -61,7 +61,7 @@ Starts the motion; the picture is in its new state when `settle` has been called
 ### Dependencies
 - [`types.MirrorTurn`](../../types.ts.mdmd.md#symbol-mirrorturn) (type-only)
 - [`mirror-turn.MIRROR_TURN_MS`](./mirror-turn.ts.mdmd.md#symbol-mirror_turn_ms)
-- [`mirror-turn.MirrorAxis`](./mirror-turn.ts.mdmd.md#symbol-mirroraxis-interface)
+- [`mirror-turn.MirrorAxis`](./mirror-turn.ts.mdmd.md#symbol-mirroraxis-interface) (type-only)
 - [`mirror-turn.turnAngle`](./mirror-turn.ts.mdmd.md#symbol-turnangle)
 - [`mirror-turn.turnDistance`](./mirror-turn.ts.mdmd.md#symbol-turndistance)
 - [`mirror-turn.turnStrength`](./mirror-turn.ts.mdmd.md#symbol-turnstrength)

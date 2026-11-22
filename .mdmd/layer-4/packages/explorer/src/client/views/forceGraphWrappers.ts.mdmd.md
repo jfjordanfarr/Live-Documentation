@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/explorer/src/client/views/forceGraphWrappers.ts`
-- Generated At: 2026-11-19T21:10:15.633Z
+- Generated At: 2026-11-22T07:12:55.118Z
 
 ## Authored
 ### Purpose
@@ -164,7 +164,7 @@ How long a wrapper takes to burst open, and how much it grows as it does.
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
 - [`types.ForceGraphTuning`](../types.ts.mdmd.md#symbol-forcegraphtuning) (type-only)
-- [`types.GROUP_WRAPPERS`](../types.ts.mdmd.md#symbol-group_wrappers) (type-only)
+- [`types.GROUP_WRAPPERS`](../types.ts.mdmd.md#symbol-group_wrappers)
 - [`types.GroupWrappers`](../types.ts.mdmd.md#symbol-groupwrappers) (type-only)
 - [`forceGraphLayout.Placed`](./forceGraphLayout.ts.mdmd.md#symbol-placed) (type-only)
 - `three` - `Vector3`

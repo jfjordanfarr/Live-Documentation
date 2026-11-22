@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `scripts/oracle/powershell-wires.ts`
-- Generated At: 2026-11-21T05:36:10.228Z
+- Generated At: 2026-11-22T07:12:58.011Z
 
 ## Authored
 ### Purpose
@@ -115,9 +115,9 @@ The workspace the parser's record describes, with what loading reaches worked ou
 - `node:path` - `path`
 - [`liveDocumentationConfig.DEFAULT_LIVE_DOCUMENTATION_CONFIG`](../../packages/engine/src/config/liveDocumentationConfig.ts.mdmd.md#symbol-default_live_documentation_config)
 - [`archetype.resolveArchetype`](../../packages/engine/src/live-docs/archetype.ts.mdmd.md#symbol-resolvearchetype)
-- [`powershell-edges.PowerShellAst`](./powershell-edges.ts.mdmd.md#symbol-powershellast)
-- [`powershell-edges.PowerShellDataFileFacts`](./powershell-edges.ts.mdmd.md#symbol-powershelldatafilefacts)
-- [`powershell-edges.PowerShellScriptFacts`](./powershell-edges.ts.mdmd.md#symbol-powershellscriptfacts)
+- [`powershell-edges.PowerShellAst`](./powershell-edges.ts.mdmd.md#symbol-powershellast) (type-only)
+- [`powershell-edges.PowerShellDataFileFacts`](./powershell-edges.ts.mdmd.md#symbol-powershelldatafilefacts) (type-only)
+- [`powershell-edges.PowerShellScriptFacts`](./powershell-edges.ts.mdmd.md#symbol-powershellscriptfacts) (type-only)
 - [`powershell-edges.isDataFileFacts`](./powershell-edges.ts.mdmd.md#symbol-isdatafilefacts)
 - [`powershell-shipped.recorded`](./powershell-shipped.json.mdmd.md)
 <!-- LIVE-DOC:END Dependencies -->

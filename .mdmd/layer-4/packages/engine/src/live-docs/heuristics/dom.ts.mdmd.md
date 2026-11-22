@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/engine/src/live-docs/heuristics/dom.ts`
-- Generated At: 2026-11-22T05:03:58.987Z
+- Generated At: 2026-11-22T07:12:52.953Z
 
 ## Authored
 ### Purpose
@@ -42,10 +42,10 @@ the raw text).
 - [`aspnet.markupWithoutComments`](../adapters/aspnet.ts.mdmd.md#symbol-markupwithoutcomments)
 - [`core.DependencyEntry`](../core.ts.mdmd.md#symbol-dependencyentry) (type-only)
 - [`pathUtils.normalizeWorkspacePath`](../../tooling/pathUtils.ts.mdmd.md#symbol-normalizeworkspacepath)
-- [`sourceText.SourceReads`](../../tooling/sourceText.ts.mdmd.md#symbol-sourcereads)
+- [`sourceText.SourceReads`](../../tooling/sourceText.ts.mdmd.md#symbol-sourcereads) (type-only)
 - [`sourceText.readSourceText`](../../tooling/sourceText.ts.mdmd.md#symbol-readsourcetext)
 - [`sourceText.throwIfMachineFailure`](../../tooling/sourceText.ts.mdmd.md#symbol-throwifmachinefailure)
-- [`workspaceProbes.ListedFiles`](../../tooling/workspaceProbes.ts.mdmd.md#symbol-listedfiles)
+- [`workspaceProbes.ListedFiles`](../../tooling/workspaceProbes.ts.mdmd.md#symbol-listedfiles) (type-only)
 - [`workspaceProbes.folderChildren`](../../tooling/workspaceProbes.ts.mdmd.md#symbol-folderchildren)
 - `typescript` - `ts`
 <!-- LIVE-DOC:END Dependencies -->

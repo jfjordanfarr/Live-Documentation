@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: `packages/explorer/src/client/views/localView/branches.test.ts`
-- Generated At: 2026-11-19T21:10:16.153Z
+- Generated At: 2026-11-22T07:12:55.473Z
 
 ## Authored
 ### Purpose
@@ -28,7 +28,7 @@ _No public symbols detected_
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
-- [`document.LiveDoc`](../../../../../engine/src/live-docs/document.ts.mdmd.md#symbol-livedoc)
+- [`document.LiveDoc`](../../../../../engine/src/live-docs/document.ts.mdmd.md#symbol-livedoc) (type-only)
 - [`document.parseLiveDoc`](../../../../../engine/src/live-docs/document.ts.mdmd.md#symbol-parselivedoc)
 - [`document.renderLiveDoc`](../../../../../engine/src/live-docs/document.ts.mdmd.md#symbol-renderlivedoc)
 - [`graph.deriveLiveDocGraph`](../../../../../engine/src/live-docs/graph.ts.mdmd.md#symbol-derivelivedocgraph)

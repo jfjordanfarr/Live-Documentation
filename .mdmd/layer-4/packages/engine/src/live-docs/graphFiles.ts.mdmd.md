@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/engine/src/live-docs/graphFiles.ts`
-- Generated At: 2026-11-20T16:43:05.858Z
+- Generated At: 2026-11-22T07:12:52.944Z
 
 ## Authored
 ### Purpose
@@ -72,12 +72,12 @@ The workspace-relative path written.
 - [`boardGraph.folderOf`](./boardGraph.ts.mdmd.md#symbol-folderof)
 - [`document.LiveDocSyntaxError`](./document.ts.mdmd.md#symbol-livedocsyntaxerror)
 - [`document.parseLiveDoc`](./document.ts.mdmd.md#symbol-parselivedoc)
-- [`estateGraph.EstateScan`](./estateGraph.ts.mdmd.md#symbol-estatescan)
+- [`estateGraph.EstateScan`](./estateGraph.ts.mdmd.md#symbol-estatescan) (type-only)
 - [`estateGraph.contains`](./estateGraph.ts.mdmd.md#symbol-contains)
 - [`estateGraph.deriveEstateGraph`](./estateGraph.ts.mdmd.md#symbol-deriveestategraph)
-- [`graph.DocLocation`](./graph.ts.mdmd.md#symbol-doclocation)
+- [`graph.DocLocation`](./graph.ts.mdmd.md#symbol-doclocation) (type-only)
 - [`graph.GRAPH_INDEX_FILE`](./graph.ts.mdmd.md#symbol-graph_index_file)
-- [`graph.LiveDocGraph`](./graph.ts.mdmd.md#symbol-livedocgraph)
+- [`graph.LiveDocGraph`](./graph.ts.mdmd.md#symbol-livedocgraph) (type-only)
 - [`graph.deriveLiveDocGraph`](./graph.ts.mdmd.md#symbol-derivelivedocgraph)
 - [`sourceText.throwIfMachineFailure`](../tooling/sourceText.ts.mdmd.md#symbol-throwifmachinefailure)
 <!-- LIVE-DOC:END Dependencies -->

@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: `packages/engine/src/live-docs/history/words.test.ts`
-- Generated At: 2026-11-19T21:10:12.440Z
+- Generated At: 2026-11-22T07:12:53.262Z
 
 ## Authored
 ### Purpose
@@ -25,8 +25,8 @@ _No public symbols detected_
 - [`format.CommitInfo`](./format.ts.mdmd.md#symbol-commitinfo) (type-only)
 - [`format.HistoryLens`](./format.ts.mdmd.md#symbol-historylens) (type-only)
 - [`format.HistorySource`](./format.ts.mdmd.md#symbol-historysource) (type-only)
-- [`rows.FileRows`](./rows.ts.mdmd.md#symbol-filerows)
-- [`Rows`](./rows.ts.mdmd.md#symbol-rows)
+- [`rows.FileRows`](./rows.ts.mdmd.md#symbol-filerows) (type-only)
+- [`Rows`](./rows.ts.mdmd.md#symbol-rows) (type-only)
 - [`rows.emptyFileRows`](./rows.ts.mdmd.md#symbol-emptyfilerows)
 - [`sequence.SequenceBuilder`](./sequence.ts.mdmd.md#symbol-sequencebuilder)
 - [`Shape`](./shape.ts.mdmd.md#symbol-shape) (type-only)

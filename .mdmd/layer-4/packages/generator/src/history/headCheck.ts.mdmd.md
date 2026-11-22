@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/generator/src/history/headCheck.ts`
-- Generated At: 2026-11-22T05:46:15.794Z
+- Generated At: 2026-11-22T07:12:57.090Z
 
 ## Authored
 ### Purpose
@@ -100,18 +100,18 @@ Where a replayed moment differs from a graph derived from committed Live Docs, i
 - `node:path` - `path`
 - [`document.LiveDocSyntaxError`](../../../engine/src/live-docs/document.ts.mdmd.md#symbol-livedocsyntaxerror)
 - [`document.parseLiveDoc`](../../../engine/src/live-docs/document.ts.mdmd.md#symbol-parselivedoc)
-- [`graph.DocLocation`](../../../engine/src/live-docs/graph.ts.mdmd.md#symbol-doclocation)
-- [`graph.GraphFile`](../../../engine/src/live-docs/graph.ts.mdmd.md#symbol-graphfile)
-- [`graph.LiveDocGraph`](../../../engine/src/live-docs/graph.ts.mdmd.md#symbol-livedocgraph)
+- [`graph.DocLocation`](../../../engine/src/live-docs/graph.ts.mdmd.md#symbol-doclocation) (type-only)
+- [`graph.GraphFile`](../../../engine/src/live-docs/graph.ts.mdmd.md#symbol-graphfile) (type-only)
+- [`graph.LiveDocGraph`](../../../engine/src/live-docs/graph.ts.mdmd.md#symbol-livedocgraph) (type-only)
 - [`graph.deriveLiveDocGraph`](../../../engine/src/live-docs/graph.ts.mdmd.md#symbol-derivelivedocgraph)
 - [`graph.fileAt`](../../../engine/src/live-docs/graph.ts.mdmd.md#symbol-fileat)
 - [`graph.linkTarget`](../../../engine/src/live-docs/graph.ts.mdmd.md#symbol-linktarget-function)
 - [`git.followLink`](../../../engine/src/live-docs/history/git.ts.mdmd.md#symbol-followlink)
 - [`git.historyGit`](../../../engine/src/live-docs/history/git.ts.mdmd.md#symbol-historygit)
 - [`git.spawnHistoryGit`](../../../engine/src/live-docs/history/git.ts.mdmd.md#symbol-spawnhistorygit)
-- [`rows.FileRows`](../../../engine/src/live-docs/history/rows.ts.mdmd.md#symbol-filerows)
-- [`rows.RowLink`](../../../engine/src/live-docs/history/rows.ts.mdmd.md#symbol-rowlink)
-- [`Rows`](../../../engine/src/live-docs/history/rows.ts.mdmd.md#symbol-rows)
+- [`rows.FileRows`](../../../engine/src/live-docs/history/rows.ts.mdmd.md#symbol-filerows) (type-only)
+- [`rows.RowLink`](../../../engine/src/live-docs/history/rows.ts.mdmd.md#symbol-rowlink) (type-only)
+- [`Rows`](../../../engine/src/live-docs/history/rows.ts.mdmd.md#symbol-rows) (type-only)
 - [`rows.compareLinks`](../../../engine/src/live-docs/history/rows.ts.mdmd.md#symbol-comparelinks)
 - [`rows.linksOf`](../../../engine/src/live-docs/history/rows.ts.mdmd.md#symbol-linksof)
 - [`Shape`](../../../engine/src/live-docs/history/shape.ts.mdmd.md#symbol-shape) (type-only)

@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/engine/src/live-docs/compose.ts`
-- Generated At: 2026-11-22T02:42:17.571Z
+- Generated At: 2026-11-22T07:12:52.640Z
 
 ## Authored
 ### Purpose
@@ -87,7 +87,7 @@ its own even when a source-observed dependency names the same file.
 
 #### `composeCitedBy` {#symbol-composecitedby}
 - Type: function
-- Source: [source](../../../../../../packages/engine/src/live-docs/compose.ts#L806)
+- Source: [source](../../../../../../packages/engine/src/live-docs/compose.ts#L809)
 - Returns: [`CitedBy`](./document.ts.mdmd.md#symbol-citedby)[]
 
 ##### `composeCitedBy` — Summary
@@ -104,7 +104,7 @@ engine's rule, `citingDocuments`.
 
 #### `composeEntries` {#symbol-composeentries}
 - Type: function
-- Source: [source](../../../../../../packages/engine/src/live-docs/compose.ts#L841)
+- Source: [source](../../../../../../packages/engine/src/live-docs/compose.ts#L844)
 - Returns: [`Entry`](./document.ts.mdmd.md#symbol-entry)[]
 
 ##### `composeEntries` — Summary
@@ -134,7 +134,7 @@ no line here.
 
 #### `anchorReExports` {#symbol-anchorreexports}
 - Type: function
-- Source: [source](../../../../../../packages/engine/src/live-docs/compose.ts#L910)
+- Source: [source](../../../../../../packages/engine/src/live-docs/compose.ts#L913)
 
 ##### `anchorReExports` — Summary
 A file's re-exports in the order its doc writes them, by name, each with its anchor: its name's anchor, and where it
@@ -148,7 +148,7 @@ a re-export lands on the heading it names.
 
 #### `composeReExports` {#symbol-composereexports}
 - Type: function
-- Source: [source](../../../../../../packages/engine/src/live-docs/compose.ts#L921)
+- Source: [source](../../../../../../packages/engine/src/live-docs/compose.ts#L924)
 - Returns: [`ReExport`](./document.ts.mdmd.md#symbol-reexport)[]
 
 ##### `composeReExports` — Summary
@@ -179,15 +179,15 @@ uses that provider's actual indexed heading when the workspace index is present.
 - [`coreUtils.displayDependencyKey`](./coreUtils.ts.mdmd.md#symbol-displaydependencykey)
 - [`coreUtils.formatRelativePathFromDoc`](./coreUtils.ts.mdmd.md#symbol-formatrelativepathfromdoc)
 - [`coreUtils.toModuleLabel`](./coreUtils.ts.mdmd.md#symbol-tomodulelabel)
-- [`document.CitedBy`](./document.ts.mdmd.md#symbol-citedby)
-- [`document.Dependency`](./document.ts.mdmd.md#symbol-dependency)
-- [`document.DocSection`](./document.ts.mdmd.md#symbol-docsection)
-- [`document.Entry`](./document.ts.mdmd.md#symbol-entry)
+- [`document.CitedBy`](./document.ts.mdmd.md#symbol-citedby) (type-only)
+- [`document.Dependency`](./document.ts.mdmd.md#symbol-dependency) (type-only)
+- [`document.DocSection`](./document.ts.mdmd.md#symbol-docsection) (type-only)
+- [`document.Entry`](./document.ts.mdmd.md#symbol-entry) (type-only)
 - [`document.LINKS_SECTION`](./document.ts.mdmd.md#symbol-links_section)
-- [`document.ReExport`](./document.ts.mdmd.md#symbol-reexport)
-- [`document.ReferenceLine`](./document.ts.mdmd.md#symbol-referenceline)
-- [`document.SymbolBlock`](./document.ts.mdmd.md#symbol-symbolblock)
-- [`document.TypeRef`](./document.ts.mdmd.md#symbol-typeref)
+- [`document.ReExport`](./document.ts.mdmd.md#symbol-reexport) (type-only)
+- [`document.ReferenceLine`](./document.ts.mdmd.md#symbol-referenceline) (type-only)
+- [`document.SymbolBlock`](./document.ts.mdmd.md#symbol-symbolblock) (type-only)
+- [`document.TypeRef`](./document.ts.mdmd.md#symbol-typeref) (type-only)
 - [`document.documentationReferenceLine`](./document.ts.mdmd.md#symbol-documentationreferenceline)
 - [`document.encodeLinkPath`](./document.ts.mdmd.md#symbol-encodelinkpath)
 - [`document.symbolName`](./document.ts.mdmd.md#symbol-symbolname)

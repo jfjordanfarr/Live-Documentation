@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: `packages/explorer/src/client/views/worldMap/layout.test.ts`
-- Generated At: 2026-11-19T21:10:17.598Z
+- Generated At: 2026-11-22T07:12:56.801Z
 
 ## Authored
 ### Purpose
@@ -40,7 +40,7 @@ _No public symbols detected_
 - [`layout.unitsToPixels`](./layout.ts.mdmd.md#symbol-unitstopixels)
 - [`layout.wallOf`](./layout.ts.mdmd.md#symbol-wallof)
 - [`layout.wallPoint`](./layout.ts.mdmd.md#symbol-wallpoint)
-- [`projection.Point2`](./projection.ts.mdmd.md#symbol-point2)
+- [`projection.Point2`](./projection.ts.mdmd.md#symbol-point2) (type-only)
 - [`projection.REST_ELEVATION`](./projection.ts.mdmd.md#symbol-rest_elevation)
 - [`projection.TOP_DOWN`](./projection.ts.mdmd.md#symbol-top_down)
 - [`projection.pointInPolygon`](./projection.ts.mdmd.md#symbol-pointinpolygon)

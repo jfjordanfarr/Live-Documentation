@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/engine/src/live-docs/history/summary.ts`
-- Generated At: 2026-11-20T14:07:46.280Z
+- Generated At: 2026-11-22T07:12:53.223Z
 
 ## Authored
 ### Purpose
@@ -151,9 +151,9 @@ The name of a text in the store: the SHA-256 of its UTF-8 bytes, in hexadecimal.
 ### Dependencies
 - `node:crypto` - `createHash`
 - [`document.DocSection`](../document.ts.mdmd.md#symbol-docsection) (type-only)
-- [`graph.EdgeBasis`](../graph.ts.mdmd.md#symbol-edgebasis)
-- [`graph.GraphEdge`](../graph.ts.mdmd.md#symbol-graphedge)
-- [`graph.LiveDocGraph`](../graph.ts.mdmd.md#symbol-livedocgraph)
+- [`graph.EdgeBasis`](../graph.ts.mdmd.md#symbol-edgebasis) (type-only)
+- [`graph.GraphEdge`](../graph.ts.mdmd.md#symbol-graphedge) (type-only)
+- [`graph.LiveDocGraph`](../graph.ts.mdmd.md#symbol-livedocgraph) (type-only)
 - [`graph.linkTarget`](../graph.ts.mdmd.md#symbol-linktarget-function)
 <!-- LIVE-DOC:END Dependencies -->
 

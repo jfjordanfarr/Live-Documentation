@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/explorer/src/client/views/localView/branch-scene.ts`
-- Generated At: 2026-11-19T21:10:16.054Z
+- Generated At: 2026-11-22T07:12:55.383Z
 
 ## Authored
 ### Purpose
@@ -157,15 +157,15 @@ containing box is re-solved under the original placement constraints.
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
 - [`branch-order.Lane`](./branch-order.ts.mdmd.md#symbol-lane) (type-only)
-- [`branch-placement.BoundaryAlignment`](./branch-placement.ts.mdmd.md#symbol-boundaryalignment)
-- [`branch-placement.Placement`](./branch-placement.ts.mdmd.md#symbol-placement)
-- [`branch-placement.PlacementBand`](./branch-placement.ts.mdmd.md#symbol-placementband)
-- [`branch-placement.PlacementWire`](./branch-placement.ts.mdmd.md#symbol-placementwire)
-- [`branch-placement.StackEntry`](./branch-placement.ts.mdmd.md#symbol-stackentry)
+- [`branch-placement.BoundaryAlignment`](./branch-placement.ts.mdmd.md#symbol-boundaryalignment) (type-only)
+- [`branch-placement.Placement`](./branch-placement.ts.mdmd.md#symbol-placement) (type-only)
+- [`branch-placement.PlacementBand`](./branch-placement.ts.mdmd.md#symbol-placementband) (type-only)
+- [`branch-placement.PlacementWire`](./branch-placement.ts.mdmd.md#symbol-placementwire) (type-only)
+- [`branch-placement.StackEntry`](./branch-placement.ts.mdmd.md#symbol-stackentry) (type-only)
 - [`branch-placement.placeBranches`](./branch-placement.ts.mdmd.md#symbol-placebranches)
 - [`branch-routing.LANE_PADDING`](./branch-routing.ts.mdmd.md#symbol-lane_padding)
 - [`branch-routing.LANE_PITCH`](./branch-routing.ts.mdmd.md#symbol-lane_pitch)
-- [`branches.BranchGraph`](./branches.ts.mdmd.md#symbol-branchgraph)
+- [`branches.BranchGraph`](./branches.ts.mdmd.md#symbol-branchgraph) (type-only)
 - [`branches.edgeKey`](./branches.ts.mdmd.md#symbol-edgekey)
 - [`directory-bands.DirectoryBand`](./directory-bands.ts.mdmd.md#symbol-directoryband) (type-only)
 - [`directory-handle.stripColumns`](./directory-handle.ts.mdmd.md#symbol-stripcolumns)

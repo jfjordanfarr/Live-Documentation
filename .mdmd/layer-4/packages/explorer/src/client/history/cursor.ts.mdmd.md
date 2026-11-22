@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/explorer/src/client/history/cursor.ts`
-- Generated At: 2026-11-19T21:10:13.015Z
+- Generated At: 2026-11-22T07:12:53.702Z
 
 ## Authored
 ### Purpose
@@ -31,8 +31,8 @@ A cursor over a sequence: where it stands and the shape there.
 - [`queries.followChanges`](../../../../engine/src/live-docs/history/queries.ts.mdmd.md#symbol-followchanges)
 - [`sequence.changeAt`](../../../../engine/src/live-docs/history/sequence.ts.mdmd.md#symbol-changeat)
 - [`sequence.seek`](../../../../engine/src/live-docs/history/sequence.ts.mdmd.md#symbol-seek)
-- [`Shape`](../../../../engine/src/live-docs/history/shape.ts.mdmd.md#symbol-shape)
-- [`shape.ShapeChange`](../../../../engine/src/live-docs/history/shape.ts.mdmd.md#symbol-shapechange)
+- [`Shape`](../../../../engine/src/live-docs/history/shape.ts.mdmd.md#symbol-shape) (type-only)
+- [`shape.ShapeChange`](../../../../engine/src/live-docs/history/shape.ts.mdmd.md#symbol-shapechange) (type-only)
 - [`shape.applyChange`](../../../../engine/src/live-docs/history/shape.ts.mdmd.md#symbol-applychange)
 - [`rekey.Renames`](./rekey.ts.mdmd.md#symbol-renames) (type-only)
 <!-- LIVE-DOC:END Dependencies -->

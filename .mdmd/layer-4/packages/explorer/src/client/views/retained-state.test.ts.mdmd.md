@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: `packages/explorer/src/client/views/retained-state.test.ts`
-- Generated At: 2026-11-19T21:10:17.385Z
+- Generated At: 2026-11-22T07:12:56.559Z
 
 ## Authored
 ### Purpose
@@ -30,8 +30,8 @@ _No public symbols detected_
 - [`pin-state.EMPTY_PIN_SET`](./pin-state.ts.mdmd.md#symbol-empty_pin_set)
 - [`pin-state.addPin`](./pin-state.ts.mdmd.md#symbol-addpin)
 - [`pin-state.getVisibleConnections`](./pin-state.ts.mdmd.md#symbol-getvisibleconnections)
-- [`retained-state.RetainedItem`](./retained-state.ts.mdmd.md#symbol-retaineditem)
-- [`retained-state.RetainedState`](./retained-state.ts.mdmd.md#symbol-retainedstate)
+- [`retained-state.RetainedItem`](./retained-state.ts.mdmd.md#symbol-retaineditem) (type-only)
+- [`retained-state.RetainedState`](./retained-state.ts.mdmd.md#symbol-retainedstate) (type-only)
 - [`retained-state.clearRetainedDirectory`](./retained-state.ts.mdmd.md#symbol-clearretaineddirectory)
 - [`retained-state.othersReleasedWords`](./retained-state.ts.mdmd.md#symbol-othersreleasedwords)
 - [`retained-state.reconcileRetained`](./retained-state.ts.mdmd.md#symbol-reconcileretained)

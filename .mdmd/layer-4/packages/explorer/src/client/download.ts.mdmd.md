@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/explorer/src/client/download.ts`
-- Generated At: 2026-11-19T21:10:12.926Z
+- Generated At: 2026-11-22T07:12:53.677Z
 
 ## Authored
 ### Purpose
@@ -20,11 +20,11 @@ Collects the Live Docs, rendered back from the graph, and the bundled related ma
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `DownloadBundleType` {#symbol-downloadbundletype}
-- Type: unknown
+- Type: type (type-only)
 - Source: [source](../../../../../../packages/explorer/src/client/download.ts#L19)
 
 #### `DownloadFormat` {#symbol-downloadformat}
-- Type: unknown
+- Type: type (type-only)
 - Source: [source](../../../../../../packages/explorer/src/client/download.ts#L19)
 
 #### `DocEntry` {#symbol-docentry}

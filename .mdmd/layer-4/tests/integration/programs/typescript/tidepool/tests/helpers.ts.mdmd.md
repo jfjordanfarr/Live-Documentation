@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: `tests/integration/programs/typescript/tidepool/tests/helpers.ts`
-- Generated At: 2026-11-19T21:10:28.947Z
+- Generated At: 2026-11-22T07:13:00.691Z
 
 ## Authored
 ### Purpose
@@ -35,7 +35,7 @@ An empty pool on the test level, from a fixed seed.
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
-- [`pool.Level`](../src/pool.ts.mdmd.md#symbol-level)
+- [`pool.Level`](../src/pool.ts.mdmd.md#symbol-level) (type-only)
 - [`Pool`](../src/pool.ts.mdmd.md#symbol-pool)
 - [`rng.createRng`](../src/rng.ts.mdmd.md#symbol-createrng)
 <!-- LIVE-DOC:END Dependencies -->

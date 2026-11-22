@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: `packages/explorer/src/client/views/forceGraphLabels.test.ts`
-- Generated At: 2026-11-19T21:10:14.949Z
+- Generated At: 2026-11-22T07:12:54.666Z
 
 ## Authored
 ### Purpose
@@ -23,8 +23,8 @@ _No public symbols detected_
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
-- [`forceGraphLabels.SpatialLabel`](./forceGraphLabels.ts.mdmd.md#symbol-spatiallabel)
-- [`forceGraphLabels.SpatialLabelBody`](./forceGraphLabels.ts.mdmd.md#symbol-spatiallabelbody)
+- [`forceGraphLabels.SpatialLabel`](./forceGraphLabels.ts.mdmd.md#symbol-spatiallabel) (type-only)
+- [`forceGraphLabels.SpatialLabelBody`](./forceGraphLabels.ts.mdmd.md#symbol-spatiallabelbody) (type-only)
 - [`forceGraphLabels.placeSpatialLabels`](./forceGraphLabels.ts.mdmd.md#symbol-placespatiallabels)
 - `vitest` - `describe`, `expect`, `it`
 <!-- LIVE-DOC:END Dependencies -->

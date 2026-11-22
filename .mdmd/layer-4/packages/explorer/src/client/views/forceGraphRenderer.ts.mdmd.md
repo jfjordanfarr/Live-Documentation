@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/explorer/src/client/views/forceGraphRenderer.ts`
-- Generated At: 2026-11-19T21:10:15.231Z
+- Generated At: 2026-11-22T07:12:54.847Z
 
 ## Authored
 ### Purpose
@@ -63,10 +63,10 @@ A direct Three renderer with a bounded number of scene objects, irrespective of 
 ### Dependencies
 - [`palette.activePalette`](../palette.ts.mdmd.md#symbol-activepalette)
 - [`forceGraphAppearance.Marble`](./forceGraphAppearance.ts.mdmd.md#symbol-marble) (type-only)
-- [`forceGraphBatches.SpatialDrawLink`](./forceGraphBatches.ts.mdmd.md#symbol-spatialdrawlink)
-- [`forceGraphBatches.SpatialDrawStyle`](./forceGraphBatches.ts.mdmd.md#symbol-spatialdrawstyle)
-- [`forceGraphBatches.SpatialWrapperStyle`](./forceGraphBatches.ts.mdmd.md#symbol-spatialwrapperstyle)
-- [`forceGraphBatches.SpatialWrapperUnit`](./forceGraphBatches.ts.mdmd.md#symbol-spatialwrapperunit)
+- [`forceGraphBatches.SpatialDrawLink`](./forceGraphBatches.ts.mdmd.md#symbol-spatialdrawlink) (type-only)
+- [`forceGraphBatches.SpatialDrawStyle`](./forceGraphBatches.ts.mdmd.md#symbol-spatialdrawstyle) (type-only)
+- [`forceGraphBatches.SpatialWrapperStyle`](./forceGraphBatches.ts.mdmd.md#symbol-spatialwrapperstyle) (type-only)
+- [`forceGraphBatches.SpatialWrapperUnit`](./forceGraphBatches.ts.mdmd.md#symbol-spatialwrapperunit) (type-only)
 - [`forceGraphBatches.createSpatialBuffers`](./forceGraphBatches.ts.mdmd.md#symbol-createspatialbuffers)
 - [`forceGraphBatches.drawSpatialGraphOnChange`](./forceGraphBatches.ts.mdmd.md#symbol-drawspatialgraphonchange)
 - [`forceGraphCamera.CameraPoint`](./forceGraphCamera.ts.mdmd.md#symbol-camerapoint) (type-only)
@@ -74,7 +74,7 @@ A direct Three renderer with a bounded number of scene objects, irrespective of 
 - [`forceGraphLayout.SpatialNode`](./forceGraphLayout.ts.mdmd.md#symbol-spatialnode) (type-only)
 - [`forceGraphWrappers.GroupWrappers`](./forceGraphWrappers.ts.mdmd.md#symbol-groupwrappers) (type-only)
 - [`forceGraphWrappers.WrapperHull`](./forceGraphWrappers.ts.mdmd.md#symbol-wrapperhull-interface) (type-only)
-- [`perspectiveBodies.SceneBody`](./perspectiveBodies.ts.mdmd.md#symbol-scenebody)
+- [`perspectiveBodies.SceneBody`](./perspectiveBodies.ts.mdmd.md#symbol-scenebody) (type-only)
 - [`perspectiveBodies.projectSpatialBodies`](./perspectiveBodies.ts.mdmd.md#symbol-projectspatialbodies)
 - `three` - `AmbientLight`, `DirectionalLight`, `PerspectiveCamera`, `Plane`, `Raycaster`, `Scene`, `Vector2`, `Vector3`, `WebGLRenderer`
 - `three/addons/controls/TrackballControls.js` - `TrackballControls`

@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: `packages/explorer/src/client/views/localView/branch-search.test.ts`
-- Generated At: 2026-11-19T21:10:16.077Z
+- Generated At: 2026-11-22T07:12:55.407Z
 
 ## Authored
 ### Purpose
@@ -22,11 +22,11 @@ _No public symbols detected_
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
-- [`branch-restarts.StartCosts`](./branch-restarts.ts.mdmd.md#symbol-startcosts)
-- [`branch-restarts.StartSignals`](./branch-restarts.ts.mdmd.md#symbol-startsignals)
+- [`branch-restarts.StartCosts`](./branch-restarts.ts.mdmd.md#symbol-startcosts) (type-only)
+- [`branch-restarts.StartSignals`](./branch-restarts.ts.mdmd.md#symbol-startsignals) (type-only)
 - [`branch-restarts.scoreOf`](./branch-restarts.ts.mdmd.md#symbol-scoreof)
-- [`branch-search.CardRows`](./branch-search.ts.mdmd.md#symbol-cardrows)
-- [`branch-search.ResolvedPin`](./branch-search.ts.mdmd.md#symbol-resolvedpin)
+- [`branch-search.CardRows`](./branch-search.ts.mdmd.md#symbol-cardrows) (type-only)
+- [`branch-search.ResolvedPin`](./branch-search.ts.mdmd.md#symbol-resolvedpin) (type-only)
 - [`branch-search.beginSearch`](./branch-search.ts.mdmd.md#symbol-beginsearch)
 - [`branch-search.endpointKey`](./branch-search.ts.mdmd.md#symbol-endpointkey)
 - [`branch-search.judgeAlignment`](./branch-search.ts.mdmd.md#symbol-judgealignment)

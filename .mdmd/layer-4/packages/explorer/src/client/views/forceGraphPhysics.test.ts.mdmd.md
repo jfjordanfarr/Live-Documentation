@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: `packages/explorer/src/client/views/forceGraphPhysics.test.ts`
-- Generated At: 2026-11-19T21:10:15.161Z
+- Generated At: 2026-11-22T07:12:54.810Z
 
 ## Authored
 ### Purpose
@@ -38,10 +38,10 @@ _No public symbols detected_
 - [`forceGraphLayout.QUIET_TICKS`](./forceGraphLayout.ts.mdmd.md#symbol-quiet_ticks)
 - [`forceGraphLayout.STILL_FRACTION`](./forceGraphLayout.ts.mdmd.md#symbol-still_fraction)
 - [`forceGraphLayout.UNFOLDED_FRACTION`](./forceGraphLayout.ts.mdmd.md#symbol-unfolded_fraction)
-- [`forceGraphPhysics.FieldReading`](./forceGraphPhysics.ts.mdmd.md#symbol-fieldreading)
-- [`forceGraphPhysics.FieldSettings`](./forceGraphPhysics.ts.mdmd.md#symbol-fieldsettings)
-- [`forceGraphPhysics.FieldSpring`](./forceGraphPhysics.ts.mdmd.md#symbol-fieldspring)
-- [`forceGraphPhysics.MotionTick`](./forceGraphPhysics.ts.mdmd.md#symbol-motiontick)
+- [`forceGraphPhysics.FieldReading`](./forceGraphPhysics.ts.mdmd.md#symbol-fieldreading) (type-only)
+- [`forceGraphPhysics.FieldSettings`](./forceGraphPhysics.ts.mdmd.md#symbol-fieldsettings) (type-only)
+- [`forceGraphPhysics.FieldSpring`](./forceGraphPhysics.ts.mdmd.md#symbol-fieldspring) (type-only)
+- [`forceGraphPhysics.MotionTick`](./forceGraphPhysics.ts.mdmd.md#symbol-motiontick) (type-only)
 - [`forceGraphPhysics.SpatialField`](./forceGraphPhysics.ts.mdmd.md#symbol-spatialfield)
 - [`forceGraphPhysics.SpatialMotion`](./forceGraphPhysics.ts.mdmd.md#symbol-spatialmotion)
 - [`forceGraphPhysics.diagonalOf`](./forceGraphPhysics.ts.mdmd.md#symbol-diagonalof)

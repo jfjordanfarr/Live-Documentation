@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: `packages/explorer/src/client/persistence/compressed-url-state.test.ts`
-- Generated At: 2026-11-19T21:10:14.140Z
+- Generated At: 2026-11-22T07:12:54.245Z
 
 ## Authored
 ### Purpose
@@ -30,9 +30,9 @@ _No public symbols detected_
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
 - [`layout-presets.applyLayoutSettings`](../layout-presets.ts.mdmd.md#symbol-applylayoutsettings)
-- [`compressed-url-state.CompressedPayload`](./compressed-url-state.ts.mdmd.md#symbol-compressedpayload)
+- [`compressed-url-state.CompressedPayload`](./compressed-url-state.ts.mdmd.md#symbol-compressedpayload) (type-only)
 - [`compressed-url-state.DEFAULT_SNAPSHOT`](./compressed-url-state.ts.mdmd.md#symbol-default_snapshot)
-- [`compressed-url-state.UrlStateSnapshot`](./compressed-url-state.ts.mdmd.md#symbol-urlstatesnapshot)
+- [`compressed-url-state.UrlStateSnapshot`](./compressed-url-state.ts.mdmd.md#symbol-urlstatesnapshot) (type-only)
 - [`compressed-url-state.compressSnapshot`](./compressed-url-state.ts.mdmd.md#symbol-compresssnapshot)
 - [`compressed-url-state.decompressSnapshot`](./compressed-url-state.ts.mdmd.md#symbol-decompresssnapshot)
 - [`compressed-url-state.payloadToSnapshot`](./compressed-url-state.ts.mdmd.md#symbol-payloadtosnapshot)
@@ -41,7 +41,7 @@ _No public symbols detected_
 - [`local-storage.getDefaultTuning`](./local-storage.ts.mdmd.md#symbol-getdefaulttuning)
 - [`pin-state.EMPTY_PIN_SET`](../views/pin-state.ts.mdmd.md#symbol-empty_pin_set)
 - [`pin-state.INTERNAL_SYMBOL`](../views/pin-state.ts.mdmd.md#symbol-internal_symbol)
-- [`pin-state.PinSet`](../views/pin-state.ts.mdmd.md#symbol-pinset)
+- [`pin-state.PinSet`](../views/pin-state.ts.mdmd.md#symbol-pinset) (type-only)
 - [`pin-state.addPin`](../views/pin-state.ts.mdmd.md#symbol-addpin)
 - `vitest` - `describe`, `expect`, `it`
 <!-- LIVE-DOC:END Dependencies -->

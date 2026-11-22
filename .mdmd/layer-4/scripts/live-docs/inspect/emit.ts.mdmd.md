@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `scripts/live-docs/inspect/emit.ts`
-- Generated At: 2026-11-22T06:18:35.842Z
+- Generated At: 2026-11-22T07:12:57.778Z
 
 ## Authored
 ### Purpose
@@ -285,13 +285,13 @@ Emits results for a dual-direction symbol path search.
 - [`document.symbolName`](../../../packages/engine/src/live-docs/document.ts.mdmd.md#symbol-symbolname)
 - [`graph.GraphFile`](../../../packages/engine/src/live-docs/graph.ts.mdmd.md#symbol-graphfile) (type-only)
 - [`graph.LiveDocGraph`](../../../packages/engine/src/live-docs/graph.ts.mdmd.md#symbol-livedocgraph) (type-only)
-- [`pathfind.Direction`](../../../packages/engine/src/live-docs/pathfind.ts.mdmd.md#symbol-direction)
-- [`pathfind.FileGroups`](../../../packages/engine/src/live-docs/pathfind.ts.mdmd.md#symbol-filegroups-interface)
-- [`pathfind.OneWay`](../../../packages/engine/src/live-docs/pathfind.ts.mdmd.md#symbol-oneway)
-- [`pathfind.PathSearchResult`](../../../packages/engine/src/live-docs/pathfind.ts.mdmd.md#symbol-pathsearchresult)
-- [`pathfind.Reachability`](../../../packages/engine/src/live-docs/pathfind.ts.mdmd.md#symbol-reachability-interface)
-- [`pathfind.SymbolHop`](../../../packages/engine/src/live-docs/pathfind.ts.mdmd.md#symbol-symbolhop)
-- [`pathfind.SymbolPathSearchResult`](../../../packages/engine/src/live-docs/pathfind.ts.mdmd.md#symbol-symbolpathsearchresult)
-- [`pathfind.SymbolReference`](../../../packages/engine/src/live-docs/pathfind.ts.mdmd.md#symbol-symbolreference)
+- [`pathfind.Direction`](../../../packages/engine/src/live-docs/pathfind.ts.mdmd.md#symbol-direction) (type-only)
+- [`pathfind.FileGroups`](../../../packages/engine/src/live-docs/pathfind.ts.mdmd.md#symbol-filegroups-interface) (type-only)
+- [`pathfind.OneWay`](../../../packages/engine/src/live-docs/pathfind.ts.mdmd.md#symbol-oneway) (type-only)
+- [`pathfind.PathSearchResult`](../../../packages/engine/src/live-docs/pathfind.ts.mdmd.md#symbol-pathsearchresult) (type-only)
+- [`pathfind.Reachability`](../../../packages/engine/src/live-docs/pathfind.ts.mdmd.md#symbol-reachability-interface) (type-only)
+- [`pathfind.SymbolHop`](../../../packages/engine/src/live-docs/pathfind.ts.mdmd.md#symbol-symbolhop) (type-only)
+- [`pathfind.SymbolPathSearchResult`](../../../packages/engine/src/live-docs/pathfind.ts.mdmd.md#symbol-symbolpathsearchresult) (type-only)
+- [`pathfind.SymbolReference`](../../../packages/engine/src/live-docs/pathfind.ts.mdmd.md#symbol-symbolreference) (type-only)
 - [`resolve.resolveAnchorToSymbolName`](./resolve.ts.mdmd.md#symbol-resolveanchortosymbolname)
 <!-- LIVE-DOC:END Dependencies -->

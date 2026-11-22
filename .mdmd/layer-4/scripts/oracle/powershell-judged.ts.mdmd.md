@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `scripts/oracle/powershell-judged.ts`
-- Generated At: 2026-11-22T02:02:13.390Z
+- Generated At: 2026-11-22T07:12:57.988Z
 
 ## Authored
 ### Purpose
@@ -105,12 +105,12 @@ Writes a corpus's skeleton into a folder, one file for each kept, and returns th
 - `node:path` - `path`
 - `node:process` - `process`
 - [`powershell-compare.folderFiles`](./powershell-compare.ts.mdmd.md#symbol-folderfiles)
-- [`powershell-edges.PowerShellAst`](./powershell-edges.ts.mdmd.md#symbol-powershellast)
-- [`powershell-edges.PowerShellDataFileFacts`](./powershell-edges.ts.mdmd.md#symbol-powershelldatafilefacts)
-- [`powershell-edges.PowerShellScriptFacts`](./powershell-edges.ts.mdmd.md#symbol-powershellscriptfacts)
+- [`powershell-edges.PowerShellAst`](./powershell-edges.ts.mdmd.md#symbol-powershellast) (type-only)
+- [`powershell-edges.PowerShellDataFileFacts`](./powershell-edges.ts.mdmd.md#symbol-powershelldatafilefacts) (type-only)
+- [`powershell-edges.PowerShellScriptFacts`](./powershell-edges.ts.mdmd.md#symbol-powershellscriptfacts) (type-only)
 - [`powershell-edges.isDataFileFacts`](./powershell-edges.ts.mdmd.md#symbol-isdatafilefacts)
 - [`powershell-edges.parsePowerShellFixture`](./powershell-edges.ts.mdmd.md#symbol-parsepowershellfixture)
-- [`powershell-verdicts.HandVerdict`](./powershell-verdicts.ts.mdmd.md#symbol-handverdict)
+- [`powershell-verdicts.HandVerdict`](./powershell-verdicts.ts.mdmd.md#symbol-handverdict) (type-only)
 - [`powershell-verdicts.readVerdicts`](./powershell-verdicts.ts.mdmd.md#symbol-readverdicts)
 - [`powershell-wires.ParserWorkspace`](./powershell-wires.ts.mdmd.md#symbol-parserworkspace)
 - [`powershell-wires.callName`](./powershell-wires.ts.mdmd.md#symbol-callname)

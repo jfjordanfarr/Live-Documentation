@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/explorer/src/client/views/retained-state.ts`
-- Generated At: 2026-11-19T21:10:17.406Z
+- Generated At: 2026-11-22T07:12:56.577Z
 
 ## Authored
 ### Purpose
@@ -172,8 +172,8 @@ The words for an item; `nameOf` gives a file's name from its id.
 - [`types.DiscoveryTarget`](../types.ts.mdmd.md#symbol-discoverytarget) (type-only)
 - [`directory-state.under`](./localView/directory-state.ts.mdmd.md#symbol-under)
 - [`pin-state.EMPTY_PIN_SET`](./pin-state.ts.mdmd.md#symbol-empty_pin_set)
-- [`pin-state.PinEntry`](./pin-state.ts.mdmd.md#symbol-pinentry)
-- [`pin-state.PinSet`](./pin-state.ts.mdmd.md#symbol-pinset)
+- [`pin-state.PinEntry`](./pin-state.ts.mdmd.md#symbol-pinentry) (type-only)
+- [`pin-state.PinSet`](./pin-state.ts.mdmd.md#symbol-pinset) (type-only)
 - [`pin-state.addPin`](./pin-state.ts.mdmd.md#symbol-addpin)
 - [`pin-state.isSymbolPinned`](./pin-state.ts.mdmd.md#symbol-issymbolpinned)
 - [`pin-state.removePin`](./pin-state.ts.mdmd.md#symbol-removepin)

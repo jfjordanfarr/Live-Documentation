@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `scripts/live-docs/cli.ts`
-- Generated At: 2026-11-20T15:50:34.169Z
+- Generated At: 2026-11-22T07:12:57.704Z
 
 ## Authored
 ### Purpose
@@ -165,9 +165,9 @@ read all the same, by the engine's one parser of the file
 - `node:fs/promises` - `fs`
 - `node:path` - `path`
 - `node:process` - `process`
-- [`liveDocumentationConfig.LiveDocumentationConfigInput`](../../packages/engine/src/config/liveDocumentationConfig.ts.mdmd.md#symbol-livedocumentationconfiginput)
+- [`liveDocumentationConfig.LiveDocumentationConfigInput`](../../packages/engine/src/config/liveDocumentationConfig.ts.mdmd.md#symbol-livedocumentationconfiginput) (type-only)
 - [`liveDocumentationConfig.parseLiveDocumentationConfigBytes`](../../packages/engine/src/config/liveDocumentationConfig.ts.mdmd.md#symbol-parselivedocumentationconfigbytes)
-- [`gitIgnored.GitUnanswered`](../../packages/engine/src/tooling/gitIgnored.ts.mdmd.md#symbol-gitunanswered)
+- [`gitIgnored.GitUnanswered`](../../packages/engine/src/tooling/gitIgnored.ts.mdmd.md#symbol-gitunanswered) (type-only)
 - [`gitIgnored.gitIgnores`](../../packages/engine/src/tooling/gitIgnored.ts.mdmd.md#symbol-gitignores-function)
 - [`gitIgnored.liesInNoRepository`](../../packages/engine/src/tooling/gitIgnored.ts.mdmd.md#symbol-liesinnorepository)
 <!-- LIVE-DOC:END Dependencies -->

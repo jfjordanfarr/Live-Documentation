@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `tests/integration/programs/typescript/tidepool/src/game.ts`
-- Generated At: 2026-11-19T21:10:28.753Z
+- Generated At: 2026-11-22T07:13:00.650Z
 
 ## Authored
 ### Purpose
@@ -27,7 +27,7 @@ One game: a pool, the player's hand above it, and the clock.
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
 - [`input.Command`](./input.ts.mdmd.md#symbol-command) (type-only)
-- [`Pool`](./pool.ts.mdmd.md#symbol-pool)
+- [`Pool`](./pool.ts.mdmd.md#symbol-pool) (type-only)
 - [`pool.loadPool`](./pool.ts.mdmd.md#symbol-loadpool)
 - [`rng.createRng`](./rng.ts.mdmd.md#symbol-createrng)
 - [`score.scorePool`](./score.ts.mdmd.md#symbol-scorepool)

@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: `tests/e2e/world-map.spec.ts`
-- Generated At: 2026-11-19T21:10:24.677Z
+- Generated At: 2026-11-22T07:12:59.481Z
 
 ## Authored
 ### Purpose
@@ -28,7 +28,7 @@ _No public symbols detected_
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
 - `@playwright/test` - `Page`, `expect`, `test`
-- [`design-audit.TextBox`](./design-audit.ts.mdmd.md#symbol-textbox)
+- [`design-audit.TextBox`](./design-audit.ts.mdmd.md#symbol-textbox) (type-only)
 - [`design-audit.outlines`](./design-audit.ts.mdmd.md#symbol-outlines)
 - [`design-audit.textOverShapes`](./design-audit.ts.mdmd.md#symbol-textovershapes)
 - [`pointer-frames.framesDuring`](./pointer-frames.ts.mdmd.md#symbol-framesduring)

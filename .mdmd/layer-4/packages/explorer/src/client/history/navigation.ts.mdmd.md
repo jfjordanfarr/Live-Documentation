@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/explorer/src/client/history/navigation.ts`
-- Generated At: 2026-11-19T21:10:13.217Z
+- Generated At: 2026-11-22T07:12:53.759Z
 
 ## Authored
 ### Purpose
@@ -46,7 +46,7 @@ so that the coarse pair can carry the thumb past an end of the interval to the n
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
 - [`format.CommitInfo`](../../../../engine/src/live-docs/history/format.ts.mdmd.md#symbol-commitinfo) (type-only)
-- [`tick-model.TickModel`](./tick-model.ts.mdmd.md#symbol-tickmodel-interface)
-- [`tick-model.TickModelInput`](./tick-model.ts.mdmd.md#symbol-tickmodelinput)
+- [`tick-model.TickModel`](./tick-model.ts.mdmd.md#symbol-tickmodel-interface) (type-only)
+- [`tick-model.TickModelInput`](./tick-model.ts.mdmd.md#symbol-tickmodelinput) (type-only)
 - [`tick-model.tickModel`](./tick-model.ts.mdmd.md#symbol-tickmodel-function)
 <!-- LIVE-DOC:END Dependencies -->
