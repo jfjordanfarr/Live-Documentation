@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: `scripts/live-docs/inspect.ts`
 - Entry: command `live-docs:inspect` of [`package.json`](../../package.json.mdmd.md)
-- Generated At: 2026-11-22T02:17:41.609Z
+- Generated At: 2026-11-22T04:55:09.841Z
 
 ## Authored
 ### Purpose
@@ -35,6 +35,7 @@ _No public symbols detected_
 - [`LiveDocumentationConfig`](../../packages/engine/src/config/liveDocumentationConfig.ts.mdmd.md#symbol-livedocumentationconfig)
 - [`liveDocumentationConfig.normalizeLiveDocumentationConfig`](../../packages/engine/src/config/liveDocumentationConfig.ts.mdmd.md#symbol-normalizelivedocumentationconfig)
 - [`graph.GraphFile`](../../packages/engine/src/live-docs/graph.ts.mdmd.md#symbol-graphfile)
+- [`graph.LiveDocGraph`](../../packages/engine/src/live-docs/graph.ts.mdmd.md#symbol-livedocgraph)
 - [`graph.resolveDocLink`](../../packages/engine/src/live-docs/graph.ts.mdmd.md#symbol-resolvedoclink)
 - [`graphFiles.readLiveDocGraph`](../../packages/engine/src/live-docs/graphFiles.ts.mdmd.md#symbol-readlivedocgraph)
 - [`pathfind.Direction`](../../packages/engine/src/live-docs/pathfind.ts.mdmd.md#symbol-direction)
@@ -45,6 +46,7 @@ _No public symbols detected_
 - [`pathfind.reachability`](../../packages/engine/src/live-docs/pathfind.ts.mdmd.md#symbol-reachability-function)
 - [`pathfind.searchGraph`](../../packages/engine/src/live-docs/pathfind.ts.mdmd.md#symbol-searchgraph)
 - [`pathfind.searchSymbolPath`](../../packages/engine/src/live-docs/pathfind.ts.mdmd.md#symbol-searchsymbolpath)
+- [`pathfind.under`](../../packages/engine/src/live-docs/pathfind.ts.mdmd.md#symbol-under)
 - [`relatedDocs.relatedDocsOf`](../../packages/engine/src/live-docs/relatedDocs.ts.mdmd.md#symbol-relateddocsof)
 - [`cli.UsageError`](./cli.ts.mdmd.md#symbol-usageerror)
 - [`cli.endQuietlyWhenThePipeCloses`](./cli.ts.mdmd.md#symbol-endquietlywhenthepipecloses)

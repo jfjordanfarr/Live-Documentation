@@ -96,6 +96,24 @@ export function walk(
   return { hops, parents, stops };
 }
 
+/**
+ * The walk from one set of files to another, as a path between two ends is asked on either surface: an end is one
+ * file or every file under a directory (see {@link under}), and a file in both sets is not its own path, so the starts
+ * are never targets. The Explorer's path and the command line's both walk through here (2026-11-22).
+ */
+export function walkBetween(starts: Iterable<string>, targets: Iterable<string>, neighbours: Neighbours, maxDepth: number = Infinity): Walk {
+  const from = new Set(starts);
+  return walk(from, neighbours, maxDepth, new Set([...targets].filter((id) => !from.has(id))));
+}
+
+/**
+ * Whether a path is the directory or stands under it; the scan root, "", holds everything. The files a directory
+ * stands for as the end of a path, on the page and at the command line (moved here from the Explorer on 2026-11-22,
+ * so that both read one rule).
+ */
+export const under = (path: string, directory: string): boolean =>
+  directory === "" || path === directory || path.startsWith(`${directory}/`);
+
 /** The files from a start of the walk to a file it reached, the start first. */
 export function pathTo(found: Walk, id: string): string[] {
   const path: string[] = [];
@@ -309,23 +327,23 @@ export interface SymbolPathSearchResult {
  * an outbound search, the dependencies that resolved to no file.
  *
  * @param graph - The Live Doc graph
- * @param from - Source node code path
- * @param to - Target node code path
+ * @param from - Source node code path, or the files of a directory
+ * @param to - Target node code path, or the files of a directory
  * @param direction - "outbound" follows dependencies, "inbound" follows dependents
  * @param maxDepth - Maximum traversal depth
  * @returns Search result with path (if found), visited nodes, and frontier
  */
 export function searchGraph(
   graph: LiveDocGraph,
-  from: string,
-  to: string,
+  from: string | readonly string[],
+  to: string | readonly string[],
   direction: OneWay,
   maxDepth: number
 ): PathSearchResult {
-  const found = walk([from], (id) => getNeighbors(graph, id, direction), maxDepth, new Set([to]));
+  const found = walkBetween(typeof from === "string" ? [from] : from, typeof to === "string" ? [to] : to, (id) => getNeighbors(graph, id, direction), maxDepth);
   const visited = new Set(found.hops.keys());
   if (found.reached !== undefined) {
-    return { path: pathTo(found, to), visited, frontier: [] };
+    return { path: pathTo(found, found.reached), visited, frontier: [] };
   }
 
   const frontier: FrontierEntry[] = found.stops.map((stop) => ({

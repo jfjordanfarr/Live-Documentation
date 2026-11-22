@@ -171,3 +171,34 @@ describe("live-docs:inspect, an author's documentation reference", () => {
     }
   });
 });
+
+describe("live-docs:inspect, a directory as an end", () => {
+  // A directory stands for every file under it, by the engine's `under`, the rule the Explorer's path ends read.
+  it("is the end of a path: the nearest file under it answers, the route told as asked", () => {
+    const result = cli("inspect.ts", estate, ["--from", "Portal/Pages/Default.aspx", "--to", "PaymentService"]);
+    assert.strictEqual(result.status, 0, result.stderr);
+    assert.match(result.stdout.replace(/ \[[^\]]+\]/g, ""), /^Path from Portal\/Pages\/Default\.aspx to PaymentService\/App\.config, 8 hop\(s\): each file uses the next\.\n/u);
+  });
+
+  it("is the start of a path, with or without its closing slash and in any case", () => {
+    for (const typed of ["PaymentService", "PaymentService/", "paymentservice"]) {
+      const result = cli("inspect.ts", estate, ["--from", typed, "--to", "Hub/App.config"]);
+      assert.strictEqual(result.status, 0, `${typed}: ${result.stderr}`);
+      assert.match(result.stdout.replace(/ \[[^\]]+\]/g, ""), /^Path from PaymentService\/App\.config to Hub\/App\.config, 1 hop\(s\): each file is used by the next\.\n {2}1\. PaymentService\/App\.config is used by Hub\/App\.config\n$/u, typed);
+    }
+  });
+
+  it("is the start of a reach, its own files not listed", () => {
+    const result = JSON.parse(cli("inspect.ts", estate, ["--from", "PaymentService", "--reachable", "--json"]).stdout) as { from: { codePath: string }; reached: Array<{ files: Array<{ node: { codePath: string } }> }> };
+    assert.strictEqual(result.from.codePath, "PaymentService/");
+    const reached = result.reached[0].files.map((file) => file.node.codePath);
+    assert.ok(reached.includes("Contracts/IPaymentService.cs") && reached.includes("Database/SqlServer/dbo.Payment.sql"), reached.join(", "));
+    assert.ok(reached.every((file) => !file.startsWith("PaymentService/")), reached.join(", "));
+  });
+
+  it("alone, with neither --to nor --reachable, is refused in one line", () => {
+    const result = cli("inspect.ts", estate, ["--from", "PaymentService"]);
+    assert.strictEqual(result.status, 1);
+    assert.strictEqual(result.stderr, "PaymentService is a directory: give --to for a path from any of its files, or --reachable for what they reach.\n");
+  });
+});

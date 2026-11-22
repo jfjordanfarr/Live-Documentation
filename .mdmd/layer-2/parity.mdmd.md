@@ -23,7 +23,7 @@ A row says "yes" only where the command was run and seen to answer, on the estat
 | Entry points by reason, what they reach, what nothing reaches, what is not read, what only tests reach | `inspect --reachable` (`--json`) | yes |
 | The disconnected groups and the lone files | `inspect --groups` (`--json`) | yes |
 | "Reachable from" a file | `inspect --from <file> --reachable` | yes |
-| "Reachable from" a directory | none: a directory is not a `--from` | no: lacks part |
+| "Reachable from" a directory | `inspect --from <directory> --reachable`: what a path reaches from any of its files, its own not listed | yes |
 | The counts: files, links, references, dependencies outside the scan | `inspect --groups` counts files; no command totals links or references | no: lacks part |
 | Most used and most using files | none; the derived `index.json` holds each file's inbound and outbound, unranked | no: no command |
 | Symbols nothing references | none | no: no command |
@@ -44,7 +44,7 @@ A row says "yes" only where the command was run and seen to answer, on the estat
 | Find a directory, file or symbol by a few words | none; `grep` over the docs | no: no command |
 | The shortest path between two files, its hops in order | `inspect --from A --to B` | yes |
 | The path between two symbols | `inspect --from A#S --to B#T` | yes |
-| A path to or from a directory | refused: a directory is not a `--to` | no: lacks part |
+| A path to or from a directory | `inspect --from A --to <directory>` (or a directory as `--from`): the nearest file under it answers | yes |
 | A route asked against the direction of dependency, told as asked | `inspect --from A --to B` finds it either way and says each file uses, or is used by, the next; with `--direction` kept to one way, it gives the command for the other | yes |
 | **The reader** | | |
 | Purpose, symbols, dependencies, Notes | the file's Live Doc | yes, as files |
@@ -60,14 +60,14 @@ A row says "yes" only where the command was run and seen to answer, on the estat
 | **Only the command line, for now** | | |
 | (not drawn yet) The declarations a file's documentation names, and the files whose documentation names it: the author's word, never counted as a use | `inspect --from <file>`, after the neighbours, under headings of their own (`--json`: `documentation.names`, `documentation.namedBy`) | the command line's own |
 
-**Totals:** 32 rows; 20 with an equivalent (4 of them only as files or JSON), 11 gaps: 7 with no command, 4 where a command lacks part; and 1 the command line's own, which the page does not draw yet.
+**Totals:** 32 rows; 22 with an equivalent (4 of them only as files or JSON), 9 gaps: 7 with no command, 2 where a command lacks part; and 1 the command line's own, which the page does not draw yet.
 
 <!-- end of the parity table -->
 
 ## The gaps by cause
 
 - **No command exists** (7): most used; symbols nothing references; a folder and how its files connect; the pinned set's references; search by words; the authors of a step; an Explorer link for a view.
-- **A command exists and lacks part** (4): a directory as a start; a directory as an end; the totals of links and references; a path at a moment. Three more were mended on 2026-11-22: the reverse question, which became the answer itself when the owner chose that a route is told as asked; and a wire's files and a thing's files, which `board --files` lists.
+- **A command exists and lacks part** (2): the totals of links and references; a path at a moment. Five were mended on 2026-11-22: the reverse question, which became the answer itself when the owner chose that a route is told as asked; a wire's files and a thing's files, which `board --files` lists; and a directory as a path's start and end and as the start of a reach, by the engine's `under`, the rule the Explorer's path ends read, checked in the built page (Knowledge Sources: "PaymentService reaches 8 of the other 30 files.", as `inspect --from PaymentService --reachable` counts 8).
 - **Output not of a stable or bounded shape:** none now. Two were mended on 2026-11-22: `lint` printed its warnings in another order each run, and now reports in the order of the docs' paths; `inspect --from <file>` without `--to` or `--reachable` printed every terminal path whole (ten paths of up to eleven files for one estate file, limit 200), and now lists the file's direct neighbours, counted, at most 200 a way.
 - **Asks a question mid-run or needs a network:** none found. Every command finished with its input closed, opened no network connection under `strace`, and gave the same exit in a namespace with no network.
 - **Only a script of this repository** (3): every command is an npm script of this checkout, so a stranger's agent gets no command on its path and its `--help` begins `npm run live-docs:inspect --`; `live-docs:orphans` read `.mdmd/layer-4` whatever the folder's configuration said (mended on 2026-11-22: it reads the configuration's); the audits and link enforcement (`slopcop:*`, `docs:links:enforce`) are this repository's own checks.
