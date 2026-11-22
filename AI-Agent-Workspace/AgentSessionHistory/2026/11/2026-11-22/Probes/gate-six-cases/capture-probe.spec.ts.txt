@@ -1,0 +1,48 @@
+// Temporary probe, never committed here: the layout lab's capture as it was and as it stands, on one page back to
+// back, each timed, and what they read compared whole.
+import { expect, test } from "@playwright/test";
+import fs from "node:fs";
+
+import { captureFromPage } from "../../scripts/layout-lab/capture";
+import { captureFromPage as captureAsItWas } from "../../scripts/layout-lab/zz-capture-old";
+import { DECK_SCOPES } from "./scopes";
+import { arriveAtReadingSize, localRetainUrl } from "./still-picture";
+
+const OUT = process.env.GATE_PROBE_OUT ?? "/tmp";
+
+/** A value as JSON with every object's keys in order, so that two readings compare by what they hold. */
+const canonical = (value: unknown): string => JSON.stringify(value, (_key, each: unknown) =>
+  each && typeof each === "object" && !Array.isArray(each) ? Object.fromEntries(Object.entries(each as Record<string, unknown>).sort(([a], [b]) => (a < b ? -1 : a > b ? 1 : 0))) : each);
+
+test("probe: the lab's capture as it was and as it stands", async ({ page }) => {
+  test.setTimeout(290_000);
+  await arriveAtReadingSize(page);
+  await page.setViewportSize({ width: 1600, height: 1000 });
+  const found: unknown[] = [];
+  for (const run of DECK_SCOPES) {
+    await page.goto(localRetainUrl(run.base, run.scope));
+    await page.waitForSelector("#map-container .branch-mode", { timeout: 60_000 });
+    await page.waitForSelector("#map-connections .connection-path:not(.bundle-run)", { state: "attached", timeout: 60_000 });
+    const timed = async <T,>(work: () => Promise<T>): Promise<{ ms: number; value: T }> => {
+      const start = performance.now();
+      const value = await work();
+      return { ms: Math.round(performance.now() - start), value };
+    };
+    const load = (): number => Number(fs.readFileSync("/proc/loadavg", "utf8").split(" ")[0]);
+    const loadBefore = load();
+    const now1 = await timed(() => captureFromPage(page, run));
+    const was1 = await timed(() => captureAsItWas(page, run));
+    const now2 = await timed(() => captureFromPage(page, run));
+    const strip = ({ capturedAt: _at, ...rest }: Record<string, unknown>): Record<string, unknown> => rest;
+    const [a, b, c] = [now1, was1, now2].map(each => strip(each.value as unknown as Record<string, unknown>));
+    found.push({
+      scope: `${run.bundle}, ${run.scopeName}`, cards: Object.keys(now1.value.cards).length, load: [loadBefore, load()],
+      msAsItStands: [now1.ms, now2.ms], msAsItWas: was1.ms,
+      sameWhateverTheOrderOfKeys: canonical(a) === canonical(b), sameToTheLetter: JSON.stringify(a) === JSON.stringify(b),
+      standsAgreesWithItself: JSON.stringify(a) === JSON.stringify(c), fontsAsItWas: Object.keys(was1.value.fonts).length, fontsAsItStands: Object.keys(now1.value.fonts).length,
+      warnings: [now1.value.warnings.length, was1.value.warnings.length]
+    });
+    fs.writeFileSync(`${OUT}/capture.json`, JSON.stringify(found, null, 1));
+    expect(canonical(a), `${run.bundle}, ${run.scopeName}: the capture reads what it read`).toBe(canonical(b));
+  }
+});

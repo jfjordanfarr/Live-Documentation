@@ -348,15 +348,45 @@ function readCapture(page: Page): Promise<PageCapture & { titleChecks: TitleChec
           result.inline = serialized;
         }
       }
-      if (more) {
-        const hidden = more.hidden;
-        more.hidden = false;
-        result.more = { flow: flow(more), always: element.dataset.hasMore === "true" };
-        more.hidden = hidden;
-      }
+      if (more) result.more = { flow: shownFlows.get(more)!, always: element.dataset.hasMore === "true" };
       return result;
     };
-    const visibleFlow = (element: HTMLElement | null): ReadingFlow | undefined => element && !element.hidden && getComputedStyle(element).display !== "none" ? flow(element) : undefined;
+    const isVisible = (element: HTMLElement | null): element is HTMLElement => !!element && !element.hidden && getComputedStyle(element).display !== "none";
+    const visibleFlow = (element: HTMLElement | null): ReadingFlow | undefined => isVisible(element) ? flow(element) : undefined;
+    // A control that is read while shown: a reading block's "more" and a reading card's "read the whole file", each
+    // hidden where the text fits. Until 2026-11-22 each was shown, read and hidden again where the walk met it, and
+    // every such write made the next read recompute the whole map: on the repository's pictures of 114 and 132 cards
+    // the capture took 15 and 20 s of a case's half minute. Now the controls the walk will meet are found first, in
+    // its own order, all shown at once, each one's flow read, and all hidden again as they were, so the page pays
+    // for one change and not for one a control. A control's flow is its own styles and text, which another control's
+    // showing does not enter.
+    const shownFlows = new Map<HTMLElement, ReadingFlow>();
+    const cardsOf = (): HTMLElement[] => [...root.querySelectorAll<HTMLElement>(".local-column")].flatMap(wrapper => wrapper.querySelector<HTMLElement>(".node-card") ?? []);
+    {
+      const controls: HTMLButtonElement[] = [];
+      const meet = (element: HTMLElement): void => {
+        const more = element.classList.contains("local-reading-block") ? element.querySelector<HTMLButtonElement>(":scope > .local-reading-full") : null;
+        for (const child of element.children) if (child !== more && /^(block|flow-root|list-item)$/u.test(getComputedStyle(child).display)) meet(child as HTMLElement);
+        if (more) controls.push(more);
+      };
+      for (const card of cardsOf()) {
+        for (const row of card.querySelectorAll<HTMLElement>(":scope > .node-symbols > .symbol-grid > .symbol-row")) {
+          const reading = row.querySelector<HTMLElement>(".local-reading-block");
+          if (isVisible(reading)) meet(reading);
+        }
+        const purpose = card.querySelector<HTMLElement>(":scope > .local-reading-purpose");
+        if (isVisible(purpose)) meet(purpose);
+        const whole = card.classList.contains("local-reading-card") ? card.querySelector<HTMLButtonElement>(":scope > .local-reading-file-full") : null;
+        if (whole) controls.push(whole);
+      }
+      const hidden = controls.map(control => control.hidden);
+      for (const control of controls) control.hidden = false;
+      try {
+        for (const control of controls) shownFlows.set(control, flow(control));
+      } finally {
+        controls.forEach((control, i) => { control.hidden = hidden[i]; });
+      }
+    }
 
     const cards: Record<string, CardCapture> = {};
     const wrappers = [...root.querySelectorAll<HTMLElement>(".local-column")];
@@ -421,6 +451,28 @@ function readCapture(page: Page): Promise<PageCapture & { titleChecks: TitleChec
         height: Math.max(0, ...rects.map(rect => unit(rect.height / scale)))
       };
     };
+    // A chip's own box: a flex line stretches its shorter items, and at another width the TESTS label may stand on a
+    // line of its own rather than beside a taller test chip, so each is read aligned to its line's start. All of the
+    // picture's chips are aligned so at once, read, and given their alignment back (2026-11-22; until then one at a
+    // time, the page laid out again for each): a chip's own box does not depend on how its neighbours are aligned.
+    const chipBoxes = new Map<Element, ChipCapture>();
+    {
+      const chips = cardsOf().flatMap(card => {
+        const footer = card.querySelector<HTMLElement>(".local-reading-counts");
+        const tests = card.querySelector<HTMLElement>(":scope > .node-tests");
+        return [
+          ...(footer && getComputedStyle(footer).display !== "none" ? [...footer.children] : []),
+          ...(tests ? [tests.querySelector(".node-tests__label")!, ...tests.querySelectorAll(".node-tests__item, .node-tests__more")] : [])
+        ] as HTMLElement[];
+      });
+      const aligned = chips.map(item => item.style.alignSelf);
+      for (const item of chips) item.style.alignSelf = "flex-start";
+      for (const item of chips) {
+        const r = item.getBoundingClientRect();
+        chipBoxes.set(item, { width: unit(r.width / scale), height: unit(r.height / scale) });
+      }
+      chips.forEach((item, i) => { item.style.alignSelf = aligned[i]; });
+    }
     wrappers.forEach((wrapper, i) => {
       // A closed directory's box has a wrapper and no card; the scopes open no directory, and the model does not hold one.
       const card = wrapper.querySelector<HTMLElement>(".node-card");
@@ -480,15 +532,7 @@ function readCapture(page: Page): Promise<PageCapture & { titleChecks: TitleChec
           disclosureMarginTop: px(disclosureStyle.marginTop)
         };
       }
-      const chip = (element: Element): ChipCapture => {
-        // A flex line stretches its shorter items. Capture the intrinsic box, since at another width
-        // the TESTS label may stand on a line of its own rather than beside a taller test chip.
-        const item = element as HTMLElement, savedAlign = item.style.alignSelf;
-        item.style.alignSelf = "flex-start";
-        const r = item.getBoundingClientRect();
-        item.style.alignSelf = savedAlign;
-        return { width: unit(r.width / scale), height: unit(r.height / scale) };
-      };
+      const chip = (element: Element): ChipCapture => chipBoxes.get(element)!;
       const pins: Record<string, number> = {};
       const round = (value: number): number => Math.round(value + 1e-3);
       const wrapperRect = wrapper.getBoundingClientRect();
@@ -537,11 +581,7 @@ function readCapture(page: Page): Promise<PageCapture & { titleChecks: TitleChec
         overflow: (() => {
           const button = card.querySelector<HTMLButtonElement>(":scope > .local-reading-file-full");
           if (!button || !card.classList.contains("local-reading-card")) return undefined;
-          const hidden = button.hidden;
-          button.hidden = false;
-          const captured = flow(button);
-          button.hidden = hidden;
-          return captured;
+          return shownFlows.get(button)!;
         })(),
         directoryHidden: getComputedStyle(directory).display === "none",
         // The hub's centre as laid out, at the name's first line since 2026-11-19 (half way down a slot card before).

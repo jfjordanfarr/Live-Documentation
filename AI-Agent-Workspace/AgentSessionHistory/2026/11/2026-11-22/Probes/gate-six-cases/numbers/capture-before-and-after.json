@@ -1,0 +1,90 @@
+[
+ {
+  "scope": "repository, five files",
+  "cards": 114,
+  "load": [
+   5.79,
+   6.04
+  ],
+  "msAsItStands": [
+   6934,
+   6212
+  ],
+  "msAsItWas": 20783,
+  "sameWhateverTheOrderOfKeys": true,
+  "sameToTheLetter": false,
+  "standsAgreesWithItself": true,
+  "fontsAsItWas": 8,
+  "fontsAsItStands": 8,
+  "warnings": [
+   0,
+   0
+  ]
+ },
+ {
+  "scope": "repository, chain",
+  "cards": 132,
+  "load": [
+   5.8,
+   4.08
+  ],
+  "msAsItStands": [
+   6559,
+   5559
+  ],
+  "msAsItWas": 22038,
+  "sameWhateverTheOrderOfKeys": true,
+  "sameToTheLetter": false,
+  "standsAgreesWithItself": true,
+  "fontsAsItWas": 9,
+  "fontsAsItStands": 9,
+  "warnings": [
+   0,
+   0
+  ]
+ },
+ {
+  "scope": "estate, five files",
+  "cards": 20,
+  "load": [
+   4,
+   4
+  ],
+  "msAsItStands": [
+   1013,
+   835
+  ],
+  "msAsItWas": 1043,
+  "sameWhateverTheOrderOfKeys": true,
+  "sameToTheLetter": false,
+  "standsAgreesWithItself": true,
+  "fontsAsItWas": 7,
+  "fontsAsItStands": 7,
+  "warnings": [
+   0,
+   0
+  ]
+ },
+ {
+  "scope": "estate, chain",
+  "cards": 14,
+  "load": [
+   4,
+   4.08
+  ],
+  "msAsItStands": [
+   879,
+   790
+  ],
+  "msAsItWas": 858,
+  "sameWhateverTheOrderOfKeys": true,
+  "sameToTheLetter": false,
+  "standsAgreesWithItself": true,
+  "fontsAsItWas": 7,
+  "fontsAsItStands": 7,
+  "warnings": [
+   0,
+   0
+  ]
+ }
+]
