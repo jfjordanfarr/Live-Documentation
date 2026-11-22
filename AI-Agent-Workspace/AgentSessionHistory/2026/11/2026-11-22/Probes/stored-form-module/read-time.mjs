@@ -1,7 +1,7 @@
 // Probe of 2026-11-22 (not product code): the stored form's reads timed under bare Node, which runs the module's
 // TypeScript source unchanged, against today's index.json gzipped. No loader is counted in its time or memory.
 //
-//   node <this folder>/read-time.mjs stored <file.bin> | json <index.json.gz> | graph <file.bin>
+//   node <this folder>/read-time.mjs stored <file.bin> | json <index.json.gz> | graph <file.bin> | view <file.bin>
 //     prints the time to the first answer (what depends on the most depended-on file, by name), to the whole map, and
 //     the process's peak memory. `graph` also builds the graph; `stored` stops at every fact read and checked.
 //   node --cpu-prof --cpu-prof-dir <dir> <this folder>/read-time.mjs stored <file.bin>, then
@@ -16,8 +16,8 @@ const peak = () => Math.round(process.resourceUsage().maxRSS / 1024);
 const [mode, path] = process.argv.slice(2);
 const module = new URL("../../../../../../../packages/stored-form/src/storedForm.ts", import.meta.url);
 
-if (mode === "stored" || mode === "graph") {
-  const { graphOf, openScan, readScan } = await import(module.href);
+if (mode === "stored" || mode === "graph" || mode === "view") {
+  const { graphOf, graphViewOf, openScan, readScan } = await import(module.href);
   const start = process.hrtime.bigint();
   const bytes = new Uint8Array(readFileSync(path));
   const opened = await openScan(bytes);
@@ -30,7 +30,8 @@ if (mode === "stored" || mode === "graph") {
   const whole = await readScan(bytes);
   if (!whole.ok) throw new Error(whole.reason);
   const factsMs = ms(start);
-  const graph = mode === "graph" ? graphOf(whole.value) : undefined;
+  // `view`: the graph built only as asked, here for the most depended-on file alone, as a Local Map asks.
+  const graph = mode === "graph" ? graphOf(whole.value) : mode === "view" ? { files: { [scan.paths[hub]]: graphViewOf(whole.value).file(scan.paths[hub]) } } : undefined;
   console.log(JSON.stringify({ form: mode, dependents: answer.length, firstMs, factsMs, wholeMs: ms(start), files: whole.value.files.length, graphFiles: graph ? Object.keys(graph.files).length : undefined, peakMb: peak() }));
 } else if (mode === "json") {
   const start = process.hrtime.bigint();

@@ -1651,13 +1651,58 @@ function plainType(t: StoredType): Record<string, unknown> {
   return out;
 }
 
+/** The graph of a scan, each file's part built only when it is asked for. */
+export interface GraphView extends Location {
+  /** Every file's path, in path order. */
+  paths: readonly string[];
+  /** A file's part of the graph, built the first time it is asked for and kept; undefined for a path not scanned. */
+  file(path: string): GraphFile | undefined;
+}
+
 /**
- * The graph the facts describe. A link lands on a file when what it names was scanned: the edge then carries that
- * path and the anchor; a file's outbound wires are the scanned files its links land on, other than itself, and its
- * inbound wires the files whose links land on it.
+ * The graph the facts describe, by section 5 of the specification, each file's part built only when a consumer asks
+ * for it. What every file's part needs of the others, the files that land on it and the files whose documentation
+ * names it, is gathered first, in one pass over the targets alone; a file's edges, its symbols written plainly and the
+ * rest wait until it is asked for. A link lands on a file when what it names was scanned.
  */
-export function graphOf(scan: Scan): Graph {
+export function graphViewOf(scan: Scan): GraphView {
   const scanned = new Set(scan.files.map((f) => f.codePath));
+  const byPath = new Map(scan.files.map((f) => [f.codePath, f]));
+  const landingOn = (targets: (string | undefined)[], self: string): string[] => [...new Set(targets.filter((t): t is string => t !== undefined && t !== self && scanned.has(t)))].sort(comparePaths);
+  const inbound = new Map<string, string[]>();
+  const documentedBy = new Map<string, string[]>();
+  const push = (lists: Map<string, string[]>, key: string, value: string): void => {
+    const list = lists.get(key);
+    if (list) list.push(value);
+    else lists.set(key, [value]);
+  };
+  for (const f of scan.files) {
+    for (const to of landingOn(linkedTargets(f), f.codePath)) push(inbound, to, f.codePath);
+    const named = f.symbols.flatMap((s) => s.documentation.filter((d) => d.link !== undefined).map((d) => d.target));
+    for (const to of landingOn(named, f.codePath)) push(documentedBy, to, f.codePath);
+  }
+  const built = new Map<string, GraphFile>();
+  const { root, baseLayer, extension } = scan.head.location;
+  return {
+    root,
+    baseLayer,
+    extension,
+    paths: scan.files.map((f) => f.codePath),
+    file: (path) => {
+      const f = byPath.get(path);
+      if (f === undefined) return undefined;
+      let file = built.get(path);
+      if (file === undefined) {
+        file = graphFileOf(f, scan.head.location, scanned, inbound.get(path) ?? [], documentedBy.get(path));
+        built.set(path, file);
+      }
+      return file;
+    }
+  };
+}
+
+/** One file's part of the graph, given which paths were scanned and what the other files say of it. */
+function graphFileOf(f: StoredFile, location: Location, scanned: Set<string>, inbound: string[], documentedBy: string[] | undefined): GraphFile {
   const landing = (v: { link?: string; target?: string; anchor?: string }): Pick<GraphEdge, "link" | "to" | "toSymbol"> => {
     const out: Pick<GraphEdge, "link" | "to" | "toSymbol"> = { link: v.link };
     if (v.target !== undefined && scanned.has(v.target)) {
@@ -1666,76 +1711,77 @@ export function graphOf(scan: Scan): Graph {
     }
     return out;
   };
-  const files: Record<string, GraphFile> = {};
-  for (const f of scan.files) {
-    const edges: GraphEdge[] = [];
-    for (const d of f.dependencies) {
-      const edge: GraphEdge = { kind: d.qualifiers.includes("re-export") ? "re-export" : "import", label: d.label, ...(d.link !== undefined ? landing(d) : {}) };
-      if (d.qualifiers.includes("type-only")) edge.typeOnly = true;
-      const basis = d.qualifiers.find((q): q is "contract" | "configuration" => q === "contract" || q === "configuration");
-      if (basis) edge.basis = basis;
+  const edges: GraphEdge[] = [];
+  for (const d of f.dependencies) {
+    const edge: GraphEdge = { kind: d.qualifiers.includes("re-export") ? "re-export" : "import", label: d.label, ...(d.link !== undefined ? landing(d) : {}) };
+    if (d.qualifiers.includes("type-only")) edge.typeOnly = true;
+    const basis = d.qualifiers.find((q): q is "contract" | "configuration" => q === "contract" || q === "configuration");
+    if (basis) edge.basis = basis;
+    edges.push(edge);
+  }
+  for (const s of f.symbols) {
+    const push = (t: StoredType, kind: EdgeKind, parameter?: string): void => {
+      if (t.link === undefined) return;
+      const edge: GraphEdge = { kind, label: t.name, ...landing(t) };
+      if (s.slug !== undefined) edge.from = s.slug;
+      if (parameter !== undefined) edge.parameter = parameter;
       edges.push(edge);
-    }
-    for (const s of f.symbols) {
-      const push = (t: StoredType, kind: EdgeKind, parameter?: string): void => {
-        if (t.link === undefined) return;
-        const edge: GraphEdge = { kind, label: t.name, ...landing(t) };
-        if (s.slug !== undefined) edge.from = s.slug;
-        if (parameter !== undefined) edge.parameter = parameter;
-        edges.push(edge);
-      };
-      for (const r of s.references) {
-        if (r.role === "Parameters") {
-          for (const p of r.parameters) for (const t of p.types) push(t, "parameter", p.name);
-        } else {
-          for (const t of r.types) push(t, REFERENCE_KIND[r.role]);
-        }
-      }
-    }
-    const outbound = [...new Set(edges.map((e) => e.to).filter((to): to is string => to !== undefined && to !== f.codePath))].sort(comparePaths);
-    files[f.codePath] = {
-      codePath: f.codePath,
-      docPath: docPathOf(scan.head.location, f.codePath),
-      layer: f.layer,
-      archetype: f.archetype,
-      entries: f.entries,
-      generatedAt: f.generatedAt,
-      authored: f.authored,
-      symbols: f.symbols.map((s) => ({
-        name: s.name,
-        slug: s.slug,
-        kind: s.kind,
-        flags: s.flags,
-        references: s.references.map((r) => (r.role === "Parameters" ? { role: r.role, parameters: r.parameters.map((p) => ({ name: p.name, types: p.types.map(plainType) })) } : { role: r.role, types: r.types.map(plainType) })),
-        sections: s.sections,
-        source: s.source
-      })),
-      dependencies: f.dependencies.map((d) => (d.link !== undefined ? { label: d.label, link: d.link, qualifiers: d.qualifiers, ...(d.symbols ? { symbols: d.symbols } : {}) } : { label: d.label, qualifiers: d.qualifiers, ...(d.symbols ? { symbols: d.symbols } : {}) })),
-      citedBy: f.citedBy,
-      reExports: f.reExports,
-      edges,
-      outbound,
-      inbound: []
     };
-    // The documentation's references that land on a scanned file: a relation of its own, never an edge or a wire.
-    const documentation: DocumentationEdge[] = [];
-    for (const s of f.symbols) {
-      for (const d of s.documentation) {
-        if (d.link === undefined || d.target === undefined || !scanned.has(d.target)) continue;
-        const reference: DocumentationEdge = { label: d.name, link: d.link, to: d.target };
-        if (d.element !== undefined) reference.element = d.element;
-        if (d.anchor !== undefined) reference.toSymbol = d.anchor;
-        if (s.slug !== undefined) reference.from = s.slug;
-        documentation.push(reference);
+    for (const r of s.references) {
+      if (r.role === "Parameters") {
+        for (const p of r.parameters) for (const t of p.types) push(t, "parameter", p.name);
+      } else {
+        for (const t of r.types) push(t, REFERENCE_KIND[r.role]);
       }
     }
-    if (documentation.length > 0) files[f.codePath].documentation = documentation;
   }
-  for (const f of Object.values(files)) for (const to of f.outbound) files[to].inbound.push(f.codePath);
-  for (const f of Object.values(files)) {
-    const named = [...new Set((f.documentation ?? []).map((d) => d.to).filter((to) => to !== f.codePath))].sort(comparePaths);
-    for (const to of named) (files[to].documentedBy ??= []).push(f.codePath);
+  const outbound = [...new Set(edges.map((e) => e.to).filter((to): to is string => to !== undefined && to !== f.codePath))].sort(comparePaths);
+  const file: GraphFile = {
+    codePath: f.codePath,
+    docPath: docPathOf(location, f.codePath),
+    layer: f.layer,
+    archetype: f.archetype,
+    entries: f.entries,
+    generatedAt: f.generatedAt,
+    authored: f.authored,
+    symbols: f.symbols.map((s) => ({
+      name: s.name,
+      slug: s.slug,
+      kind: s.kind,
+      flags: s.flags,
+      references: s.references.map((r) => (r.role === "Parameters" ? { role: r.role, parameters: r.parameters.map((p) => ({ name: p.name, types: p.types.map(plainType) })) } : { role: r.role, types: r.types.map(plainType) })),
+      sections: s.sections,
+      source: s.source
+    })),
+    dependencies: f.dependencies.map((d) => (d.link !== undefined ? { label: d.label, link: d.link, qualifiers: d.qualifiers, ...(d.symbols ? { symbols: d.symbols } : {}) } : { label: d.label, qualifiers: d.qualifiers, ...(d.symbols ? { symbols: d.symbols } : {}) })),
+    citedBy: f.citedBy,
+    reExports: f.reExports,
+    edges,
+    outbound,
+    inbound
+  };
+  // The documentation's references that land on a scanned file: a relation of its own, never an edge or a wire.
+  const documentation: DocumentationEdge[] = [];
+  for (const s of f.symbols) {
+    for (const d of s.documentation) {
+      if (d.link === undefined || d.target === undefined || !scanned.has(d.target)) continue;
+      const reference: DocumentationEdge = { label: d.name, link: d.link, to: d.target };
+      if (d.element !== undefined) reference.element = d.element;
+      if (d.anchor !== undefined) reference.toSymbol = d.anchor;
+      if (s.slug !== undefined) reference.from = s.slug;
+      documentation.push(reference);
+    }
   }
-  const { root, baseLayer, extension } = scan.head.location;
+  if (documentation.length > 0) file.documentation = documentation;
+  if (documentedBy !== undefined) file.documentedBy = documentedBy;
+  return file;
+}
+
+/** The whole graph the facts describe, every file's part built: {@link graphViewOf} asked for each file in turn. */
+export function graphOf(scan: Scan): Graph {
+  const view = graphViewOf(scan);
+  const files: Record<string, GraphFile> = {};
+  for (const path of view.paths) files[path] = view.file(path)!;
+  const { root, baseLayer, extension } = view;
   return { root, baseLayer, extension, files };
 }
