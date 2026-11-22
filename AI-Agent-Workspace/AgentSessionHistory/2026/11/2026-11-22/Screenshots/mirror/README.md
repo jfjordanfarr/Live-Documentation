@@ -26,3 +26,7 @@ Not yet right, seen in these pictures:
   for what it takes, still point as they did. They borrow the map's rule, so in a mirrored picture they point against it.
 - The mirror counts as a changed Tuning setting (the summary's badge goes from 1 to 2), because that is where the choice
   is kept.
+
+The pairs and their numbers come from [`stills.mjs`](stills.mjs), kept here; its head says how to run it. It was last
+run whole before the directory line's mend, and for the opened directory alone after it; a third whole run was given up
+while the browser was held by another job.
