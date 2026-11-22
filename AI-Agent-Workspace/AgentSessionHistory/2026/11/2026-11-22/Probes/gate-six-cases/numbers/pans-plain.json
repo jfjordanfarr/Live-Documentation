@@ -1,0 +1,336 @@
+[
+ {
+  "at": "start",
+  "ctm": [
+   1.45,
+   1.45,
+   169.25,
+   -1023.07
+  ],
+  "map": {
+   "step": "0",
+   "looks": "three",
+   "look": "reading",
+   "lod": "reading",
+   "arrival": "resting",
+   "camera": "moving"
+  },
+  "root": {
+   "placementCost": "20578",
+   "placementOptimal": "true",
+   "orderStart": "seed 1",
+   "orderStarts": "3",
+   "orderScore": "106779",
+   "orderSignals": "{\"vertical\":20578,\"crossings\":93,\"height\":2348,\"width\":3604,\"churn\":0,\"unevenness\":1128,\"steps\":7,\"unlevel\":530}",
+   "layoutMs": "457",
+   "searchStatus": "capped",
+   "searchCycleTried": "0",
+   "searchCycleAdopted": "0",
+   "searchEndpoints": "drawn",
+   "searchCycleTrials": "[]",
+   "searchAlignmentTried": "0",
+   "searchAlignmentAdopted": "0",
+   "searchTried": "0",
+   "searchNext": "3",
+   "searchAdopted": "0",
+   "searchShown": "106779",
+   "searchBest": "106779"
+  },
+  "wires": 77,
+  "cards": 20
+ },
+ {
+  "at": "pan 180,0",
+  "made": {
+   "dx": 180,
+   "dy": 0
+  },
+  "ctm": [
+   1.45,
+   1.45,
+   349.25,
+   -1023.07
+  ],
+  "map": {
+   "step": "0",
+   "looks": "three",
+   "look": "reading",
+   "lod": "reading"
+  },
+  "root": {
+   "placementCost": "20578",
+   "placementOptimal": "true",
+   "orderStart": "seed 1",
+   "orderStarts": "3",
+   "orderScore": "106779",
+   "orderSignals": "{\"vertical\":20578,\"crossings\":93,\"height\":2348,\"width\":3604,\"churn\":0,\"unevenness\":1128,\"steps\":7,\"unlevel\":530}",
+   "layoutMs": "457",
+   "searchStatus": "capped",
+   "searchCycleTried": "0",
+   "searchCycleAdopted": "0",
+   "searchEndpoints": "drawn",
+   "searchCycleTrials": "[]",
+   "searchAlignmentTried": "0",
+   "searchAlignmentAdopted": "0",
+   "searchTried": "0",
+   "searchNext": "3",
+   "searchAdopted": "0",
+   "searchShown": "106779",
+   "searchBest": "106779"
+  },
+  "rootClass": "local-layout branch-mode local-placed",
+  "active": "BODY.local-map-active zoom-controls-active",
+  "cards": 20,
+  "pressed": [
+   "DIV.local-layout branch-mode local-placed# at 565,912"
+  ],
+  "wires": 77,
+  "changed": 0,
+  "examples": []
+ },
+ {
+  "at": "pan 0,140",
+  "made": {
+   "dx": 0,
+   "dy": 140
+  },
+  "ctm": [
+   1.45,
+   1.45,
+   349.25,
+   -883.07
+  ],
+  "map": {
+   "step": "0",
+   "looks": "three",
+   "look": "reading",
+   "lod": "reading"
+  },
+  "root": {
+   "placementCost": "20578",
+   "placementOptimal": "true",
+   "orderStart": "seed 1",
+   "orderStarts": "3",
+   "orderScore": "106779",
+   "orderSignals": "{\"vertical\":20578,\"crossings\":93,\"height\":2348,\"width\":3604,\"churn\":0,\"unevenness\":1128,\"steps\":7,\"unlevel\":530}",
+   "layoutMs": "457",
+   "searchStatus": "capped",
+   "searchCycleTried": "0",
+   "searchCycleAdopted": "0",
+   "searchEndpoints": "drawn",
+   "searchCycleTrials": "[]",
+   "searchAlignmentTried": "0",
+   "searchAlignmentAdopted": "0",
+   "searchTried": "0",
+   "searchNext": "3",
+   "searchAdopted": "0",
+   "searchShown": "106779",
+   "searchBest": "106779"
+  },
+  "rootClass": "local-layout branch-mode local-placed",
+  "active": "BODY.local-map-active zoom-controls-active",
+  "cards": 20,
+  "pressed": [
+   "DIV.local-layout branch-mode local-placed# at 349,816"
+  ],
+  "wires": 77,
+  "changed": 0,
+  "examples": []
+ },
+ {
+  "at": "pan -260,-60",
+  "made": {
+   "dx": -260,
+   "dy": -60
+  },
+  "ctm": [
+   1.45,
+   1.45,
+   89.25,
+   -943.07
+  ],
+  "map": {
+   "step": "0",
+   "looks": "three",
+   "look": "reading",
+   "lod": "reading"
+  },
+  "root": {
+   "placementCost": "20578",
+   "placementOptimal": "true",
+   "orderStart": "seed 1",
+   "orderStarts": "3",
+   "orderScore": "106779",
+   "orderSignals": "{\"vertical\":20578,\"crossings\":93,\"height\":2348,\"width\":3604,\"churn\":0,\"unevenness\":1128,\"steps\":7,\"unlevel\":530}",
+   "layoutMs": "457",
+   "searchStatus": "capped",
+   "searchCycleTried": "0",
+   "searchCycleAdopted": "0",
+   "searchEndpoints": "drawn",
+   "searchCycleTrials": "[]",
+   "searchAlignmentTried": "0",
+   "searchAlignmentAdopted": "0",
+   "searchTried": "0",
+   "searchNext": "3",
+   "searchAdopted": "0",
+   "searchShown": "106779",
+   "searchBest": "106779"
+  },
+  "rootClass": "local-layout branch-mode local-placed",
+  "active": "BODY.local-map-active zoom-controls-active",
+  "cards": 20,
+  "pressed": [
+   "DIV.local-layout branch-mode local-placed# at 757,912"
+  ],
+  "wires": 77,
+  "changed": 0,
+  "examples": []
+ },
+ {
+  "at": "pan 90,-200",
+  "made": {
+   "dx": 90,
+   "dy": -200
+  },
+  "ctm": [
+   1.45,
+   1.45,
+   179.25,
+   -1143.07
+  ],
+  "map": {
+   "step": "0",
+   "looks": "three",
+   "look": "reading",
+   "lod": "reading"
+  },
+  "root": {
+   "placementCost": "20578",
+   "placementOptimal": "true",
+   "orderStart": "seed 1",
+   "orderStarts": "3",
+   "orderScore": "106779",
+   "orderSignals": "{\"vertical\":20578,\"crossings\":93,\"height\":2348,\"width\":3604,\"churn\":0,\"unevenness\":1128,\"steps\":7,\"unlevel\":530}",
+   "layoutMs": "457",
+   "searchStatus": "capped",
+   "searchCycleTried": "0",
+   "searchCycleAdopted": "0",
+   "searchEndpoints": "drawn",
+   "searchCycleTrials": "[]",
+   "searchAlignmentTried": "0",
+   "searchAlignmentAdopted": "0",
+   "searchTried": "0",
+   "searchNext": "3",
+   "searchAdopted": "0",
+   "searchShown": "106779",
+   "searchBest": "106779"
+  },
+  "rootClass": "local-layout branch-mode local-placed",
+  "active": "BODY.local-map-active zoom-controls-active",
+  "cards": 20,
+  "pressed": [
+   "DIV.local-layout branch-mode local-placed# at 493,912"
+  ],
+  "wires": 77,
+  "changed": 0,
+  "examples": []
+ },
+ {
+  "at": "pan -120,160",
+  "made": {
+   "dx": -120,
+   "dy": 160
+  },
+  "ctm": [
+   1.45,
+   1.45,
+   59.25,
+   -983.07
+  ],
+  "map": {
+   "step": "0",
+   "looks": "three",
+   "look": "reading",
+   "lod": "reading"
+  },
+  "root": {
+   "placementCost": "20578",
+   "placementOptimal": "true",
+   "orderStart": "seed 1",
+   "orderStarts": "3",
+   "orderScore": "106779",
+   "orderSignals": "{\"vertical\":20578,\"crossings\":93,\"height\":2348,\"width\":3604,\"churn\":0,\"unevenness\":1128,\"steps\":7,\"unlevel\":530}",
+   "layoutMs": "457",
+   "searchStatus": "capped",
+   "searchCycleTried": "0",
+   "searchCycleAdopted": "0",
+   "searchEndpoints": "drawn",
+   "searchCycleTrials": "[]",
+   "searchAlignmentTried": "0",
+   "searchAlignmentAdopted": "0",
+   "searchTried": "0",
+   "searchNext": "3",
+   "searchAdopted": "0",
+   "searchShown": "106779",
+   "searchBest": "106779"
+  },
+  "rootClass": "local-layout branch-mode local-placed",
+  "active": "BODY.local-map-active zoom-controls-active",
+  "cards": 20,
+  "pressed": [
+   "DIV.local-layout branch-mode local-placed# at 589,816"
+  ],
+  "wires": 77,
+  "changed": 0,
+  "examples": []
+ },
+ {
+  "at": "pan 200,90",
+  "made": {
+   "dx": 200,
+   "dy": 90
+  },
+  "ctm": [
+   1.45,
+   1.45,
+   259.25,
+   -893.07
+  ],
+  "map": {
+   "step": "0",
+   "looks": "three",
+   "look": "reading",
+   "lod": "reading"
+  },
+  "root": {
+   "placementCost": "20578",
+   "placementOptimal": "true",
+   "orderStart": "seed 1",
+   "orderStarts": "3",
+   "orderScore": "106779",
+   "orderSignals": "{\"vertical\":20578,\"crossings\":93,\"height\":2348,\"width\":3604,\"churn\":0,\"unevenness\":1128,\"steps\":7,\"unlevel\":530}",
+   "layoutMs": "457",
+   "searchStatus": "capped",
+   "searchCycleTried": "0",
+   "searchCycleAdopted": "0",
+   "searchEndpoints": "drawn",
+   "searchCycleTrials": "[]",
+   "searchAlignmentTried": "0",
+   "searchAlignmentAdopted": "0",
+   "searchTried": "0",
+   "searchNext": "3",
+   "searchAdopted": "0",
+   "searchShown": "106779",
+   "searchBest": "106779"
+  },
+  "rootClass": "local-layout branch-mode local-placed",
+  "active": "BODY.local-map-active zoom-controls-active",
+  "cards": 20,
+  "pressed": [
+   "DIV.local-layout branch-mode local-placed# at 469,888"
+  ],
+  "wires": 77,
+  "changed": 0,
+  "examples": []
+ }
+]

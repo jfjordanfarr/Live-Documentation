@@ -1,0 +1,236 @@
+{
+ "beforeRead": {
+  "ctm": [
+   1,
+   1,
+   -19.5,
+   -2613
+  ],
+  "map": {
+   "step": "0",
+   "looks": "three",
+   "look": "reading",
+   "lod": "reading",
+   "arrival": "easing",
+   "camera": "moving"
+  },
+  "root": {
+   "placementCost": "1467361",
+   "placementOptimal": "true",
+   "orderStart": "ranked",
+   "orderStarts": "3",
+   "orderScore": "4916098",
+   "orderSignals": "{\"vertical\":1467361,\"crossings\":30950,\"height\":10811,\"width\":5194,\"churn\":0,\"unevenness\":27941,\"steps\":88,\"unlevel\":17597}",
+   "layoutMs": "3161",
+   "searchStatus": "capped",
+   "searchCycleTried": "0",
+   "searchCycleAdopted": "0",
+   "searchEndpoints": "drawn",
+   "searchCycleTrials": "[]",
+   "searchAlignmentTried": "0",
+   "searchAlignmentAdopted": "0",
+   "searchTried": "0",
+   "searchNext": "3",
+   "searchAdopted": "0",
+   "searchShown": "4916098",
+   "searchBest": "4916098"
+  },
+  "top": -2444,
+  "wires": 685
+ },
+ "afterRead": {
+  "ctm": [
+   0.33,
+   0.33,
+   612.35,
+   -621.95
+  ],
+  "map": {
+   "looks": "three",
+   "look": "connections",
+   "lod": "far",
+   "lookFrom": "reading"
+  },
+  "root": {
+   "placementCost": "1467361",
+   "placementOptimal": "true",
+   "orderStart": "ranked",
+   "orderStarts": "3",
+   "orderScore": "4916098",
+   "orderSignals": "{\"vertical\":1467361,\"crossings\":30950,\"height\":10811,\"width\":5194,\"churn\":0,\"unevenness\":27941,\"steps\":88,\"unlevel\":17597}",
+   "layoutMs": "3161",
+   "searchStatus": "capped",
+   "searchCycleTried": "0",
+   "searchCycleAdopted": "0",
+   "searchEndpoints": "drawn",
+   "searchCycleTrials": "[]",
+   "searchAlignmentTried": "0",
+   "searchAlignmentAdopted": "0",
+   "searchTried": "0",
+   "searchNext": "3",
+   "searchAdopted": "0",
+   "searchShown": "4916098",
+   "searchBest": "4916098"
+  },
+  "top": -565.3474731445312,
+  "wires": 685
+ },
+ "later": {
+  "ctm": [
+   0.33,
+   0.33,
+   612.35,
+   -621.95
+  ],
+  "map": {
+   "looks": "three",
+   "look": "connections",
+   "lod": "far",
+   "lookFrom": "reading"
+  },
+  "root": {
+   "placementCost": "1467361",
+   "placementOptimal": "true",
+   "orderStart": "ranked",
+   "orderStarts": "3",
+   "orderScore": "4916098",
+   "orderSignals": "{\"vertical\":1467361,\"crossings\":30950,\"height\":10811,\"width\":5194,\"churn\":0,\"unevenness\":27941,\"steps\":88,\"unlevel\":17597}",
+   "layoutMs": "3161",
+   "searchStatus": "capped",
+   "searchCycleTried": "0",
+   "searchCycleAdopted": "0",
+   "searchEndpoints": "drawn",
+   "searchCycleTrials": "[]",
+   "searchAlignmentTried": "0",
+   "searchAlignmentAdopted": "0",
+   "searchTried": "0",
+   "searchNext": "3",
+   "searchAdopted": "0",
+   "searchShown": "4916098",
+   "searchBest": "4916098"
+  },
+  "top": -565.3474731445312,
+  "wires": 685
+ },
+ "cardTopAtRead": -2286.697509765625,
+ "wiresRead": 518,
+ "overTheTop": 114,
+ "highestRead": [
+  {
+   "at": 101,
+   "key": "packages/engine/src/live-docs/graphFiles.ts|packages/engine/src/tooling/sourceText.ts||throwIfMachineFailure",
+   "kind": "route",
+   "stub": false,
+   "samples": 584,
+   "lengthPx": 4396.288323297747,
+   "top": -2171.698486328125
+  },
+  {
+   "at": 264,
+   "key": "packages/generator/src/generator.ts|packages/engine/src/tooling/sourceText.ts||throwIfMachineFailure",
+   "kind": "route",
+   "stub": false,
+   "samples": 564,
+   "lengthPx": 4239.002658082318,
+   "top": -2171.698486328125
+  },
+  {
+   "at": 281,
+   "key": "packages/generator/src/history/computeHistory.ts|packages/engine/src/tooling/sourceText.ts||throwIfMachineFailure",
+   "kind": "route",
+   "stub": false,
+   "samples": 683,
+   "lengthPx": 5140.640912444389,
+   "top": -2171.698486328125
+  },
+  {
+   "at": 88,
+   "key": "packages/engine/src/live-docs/graph.ts|packages/engine/src/tooling/markdownLinks.ts||linkPath",
+   "kind": "route",
+   "stub": false,
+   "samples": 455,
+   "lengthPx": 3420.2773135496245,
+   "top": -2124.56787109375
+  },
+  {
+   "at": 182,
+   "key": "packages/explorer/src/client/reader-links.ts|packages/engine/src/tooling/markdownLinks.ts||linkPath",
+   "kind": "route",
+   "stub": false,
+   "samples": 742,
+   "lengthPx": 5585.621390787332,
+   "top": -2124.56787109375
+  },
+  {
+   "at": 3,
+   "key": "packages/engine/src/live-docs/archetype.ts|packages/engine/src/config/liveDocumentationConfig.ts||LiveDocumentationConfig",
+   "kind": "route",
+   "stub": false,
+   "samples": 183,
+   "lengthPx": 1368.2373362750295,
+   "top": -1756.0050048828125
+  }
+ ],
+ "highestWalked": [
+  {
+   "key": "undefined|undefined|undefined|undefined",
+   "cls": "connection-path bundle-run",
+   "top": -521.005615234375,
+   "where": 0,
+   "box": -521.005615234375,
+   "display": "inline",
+   "dLength": 192,
+   "d": "M 1204.0000089999996 301.40402549999993 C 1296.0001539999996 301.40402549999993 1244.0000089999996 794.0000287499998 1336.0001539999996 794.0000287499998 L 1817.9998944999995 794.0000287499998"
+  },
+  {
+   "key": "packages/engine/src/live-docs/graphFiles.ts|packages/engine/src/tooling/sourceText.ts||throwIfMachineFailure",
+   "cls": "connection-path outbound",
+   "top": -521.005615234375,
+   "where": 0,
+   "box": -521.005615234375,
+   "display": "inline",
+   "dLength": 384,
+   "d": "M 1172.3280802499999 301.40402549999993 L 1204.0000089999996 301.40402549999993 C 1296.0001539999996 301.40402549999993 1244.0000089999996 794.0000287499998 1336.0001539999996 794.0000287499998 L 1817.9998944999995 794.0000287499998 C 1910.0000394999995 794.0000287499998 1857.9998944999995 4356.616152749999 1950.0000394999995 4356.616152749999 L 1981.4831572499993 4356.616152749999"
+  },
+  {
+   "key": "packages/generator/src/generator.ts|packages/engine/src/tooling/sourceText.ts||throwIfMachineFailure",
+   "cls": "connection-path outbound",
+   "top": -521.005615234375,
+   "where": 0,
+   "box": -521.005615234375,
+   "display": "inline",
+   "dLength": 539,
+   "d": "M 1172.3280802499999 301.40402549999993 L 1204.0000089999996 301.40402549999993 C 1296.0001539999996 301.40402549999993 1244.0000089999996 794.0000287499998 1336.0001539999996 794.0000287499998 L 1817.9998944999995 794.0000287499998 C 1910.0000394999995 794.0000287499998 1857.9998944999995 794.0000583749998 1950.0000394999995 794.0000583749998 L 2414.0000409999993 794.0000583749998 C 2506.0001859999993 794.0000583749998 2454.0000409999993 3604.6041742499992 2546.0001859999993 3604.6041742499992 L 2564.4901544999993 3604.6041742499992"
+  },
+  {
+   "key": "packages/generator/src/history/computeHistory.ts|packages/engine/src/tooling/sourceText.ts||throwIfMachineFailure",
+   "cls": "connection-path outbound",
+   "top": -521.005615234375,
+   "where": 0,
+   "box": -521.005615234375,
+   "display": "inline",
+   "dLength": 835,
+   "d": "M 1172.3280802499999 301.40402549999993 L 1204.0000089999996 301.40402549999993 C 1296.0001539999996 301.40402549999993 1244.0000089999996 794.0000287499998 1336.0001539999996 794.0000287499998 L 1817.9998944999995 794.0000287499998 C 1910.0000394999995 794.0000287499998 1857.9998944999995 794.0000583749998 1950.0000394999995 794.0000583749998 L 24 ... 000371249998 L 3112.0000449999993 794.0000371249998 C 3204.0001899999993 794.0000371249998 3152.0000449999993 855.0000636249997 3244.0001899999993 855.0000636249997 L 3750.000068499999 855.0000636249997 C 3842.000213499999 855.0000636249997 3790.000068499999 3249.604137749999 3882.000213499999 3249.604137749999 L 3913.490256749999 3249.604137749999"
+  },
+  {
+   "key": "packages/engine/src/live-docs/graph.ts|packages/engine/src/tooling/markdownLinks.ts||linkPath",
+   "cls": "connection-path outbound",
+   "top": -504.26068115234375,
+   "where": 0,
+   "box": -504.26068115234375,
+   "display": "inline",
+   "dLength": 223,
+   "d": "M 532.3140119999998 351.4040396249999 L 551.0000814999999 351.4040396249999 C 656.0001189999998 351.4040396249999 591.0000814999999 3902.604247499999 696.0001189999998 3902.604247499999 L 728.4970023749997 3902.604247499999"
+  },
+  {
+   "key": "packages/explorer/src/client/reader-links.ts|packages/engine/src/tooling/markdownLinks.ts||linkPath",
+   "cls": "connection-path outbound",
+   "top": -504.26068115234375,
+   "where": 0,
+   "box": -504.26068115234375,
+   "display": "inline",
+   "dLength": 376,
+   "d": "M 532.3140119999998 351.4040396249999 L 551.0000814999999 351.4040396249999 C 656.0001189999998 351.4040396249999 591.0000814999999 486.0000377499999 696.0001189999998 486.0000377499999 L 1204.0000089999996 486.0000377499999 C 1296.0001539999996 486.0000377499999 1244.0000089999996 5616.604261499999 1336.0001539999996 5616.604261499999 L 1367.4901972499997 5616.604261499999"
+  }
+ ]
+}

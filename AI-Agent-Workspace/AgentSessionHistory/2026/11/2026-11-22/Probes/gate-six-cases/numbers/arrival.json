@@ -1,0 +1,89 @@
+{
+ "resting": {
+  "ctm": [
+   1.45,
+   1.45,
+   169.25,
+   -1023.07
+  ],
+  "map": {
+   "step": "0",
+   "looks": "three",
+   "look": "reading",
+   "lod": "reading",
+   "arrival": "resting",
+   "camera": "moving"
+  },
+  "wires": 77
+ },
+ "eased": {
+  "ctm": [
+   0.49,
+   0.49,
+   675.56,
+   -16.73
+  ],
+  "map": {
+   "looks": "three",
+   "look": "connections",
+   "lod": "far",
+   "lookFrom": "reading"
+  },
+  "wires": 77
+ },
+ "changedByTheArrivalAlone": 65,
+ "examples": [
+  {
+   "key": "undefined|undefined|undefined|undefined#0",
+   "cls": "connection-path bundle-run",
+   "resting": "M 2741 311 C 2833 311 2781 204 2873 204 L 3161 204",
+   "eased": "M 2740.9996274137925 321.41592704741373 C 2832.999646724137 321.41592704741373 2780.9996274137925 203.99997420258615 2872.999646724137 203.99997420258615 L 3160.999654310344 203.99997420258615"
+  },
+  {
+   "key": "undefined|undefined|undefined|undefined#2",
+   "cls": "connection-path bundle-run",
+   "resting": "M 664 1098 C 730 1098 704 1393 770 1393 L 1077 1393",
+   "eased": "M 663.999945689655 1107.7337405818962 C 729.9998029310343 1107.7337405818962 703.999945689655 1392.9998540301722 769.9998029310343 1392.9998540301722 L 1076.9998129310343 1392.9998540301722"
+  }
+ ],
+ "pans": [
+  {
+   "pan": [
+    180,
+    0
+   ],
+   "ctm": [
+    0.49,
+    0.49,
+    855.56,
+    -16.73
+   ],
+   "map": {
+    "looks": "three",
+    "look": "connections",
+    "lod": "far",
+    "lookFrom": "reading"
+   },
+   "changedFromEased": 0
+  },
+  {
+   "pan": [
+    0,
+    140
+   ],
+   "ctm": [
+    0.49,
+    0.49,
+    855.56,
+    123.27
+   ],
+   "map": {
+    "looks": "three",
+    "look": "connections",
+    "lod": "far",
+    "lookFrom": "reading"
+   },
+   "changedFromEased": 0
+  }
+ ]
+}

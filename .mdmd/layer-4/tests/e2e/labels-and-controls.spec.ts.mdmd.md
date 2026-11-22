@@ -17,6 +17,8 @@ Since 2026-11-12 a case holds a card's connections outside the view to the contr
 
 Since Flow became Opened Directory's default on 2026-11-13 the connections control's case chooses the grid, in which every card counts all its connections and the keyboard's walk to `detailPanel.ts` was written, and a second case holds the same control's look in Flow, on the cards whose connections are not all drawn. A line's height is compared on the page's grid of 1/64 px, since in Flow the transformed boxes read 12.640609741 against 12.640625.
 
+Since 2026-11-22 the toolbar's case names both buttons of the first group in 2D, the fit and the mirror beside it; it had asked that group for its one button, and the mirror's merge that day made it two without the case being run until the day's gate.
+
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols

@@ -1,0 +1,255 @@
+// Temporary probe, never committed: what the deck's pans and the lanes case's top rule see on the merged day branch.
+import { test, type Page } from "@playwright/test";
+import fs from "node:fs";
+
+import { DECK_SCOPES } from "./scopes";
+import { compressSnapshot, DEFAULT_SNAPSHOT } from "../../packages/explorer/src/client/persistence/compressed-url-state";
+import { PERSISTED_UI_KEY, PERSISTED_UI_VERSION } from "../../packages/explorer/src/client/persistence/local-storage";
+import { AT_READING_SIZE, LOCAL_MAP, displayNames, dragBy, factsInScope, loadGraph, localMapStill, localRetainUrl, panIntoView, readPicture, runTour } from "./still-picture";
+
+const OUT = process.env.GATE_PROBE_OUT ?? "/tmp";
+test.use({ viewport: { width: 1600, height: 1000 } });
+
+const settle = async (page: Page): Promise<void> => {
+  await page.waitForSelector("#map-container .branch-mode", { timeout: 20_000 });
+  await page.waitForSelector("#map-connections .connection-path:not(.bundle-run)", { state: "attached", timeout: 10_000 });
+  await page.waitForTimeout(900);
+};
+
+const state = (page: Page) => page.evaluate(() => {
+  const shapes: Record<string, { d: string; cls: string }> = {};
+  const seen = new Map<string, number>();
+  for (const el of document.querySelectorAll<SVGElement>("#map-connections .connection-path")) {
+    const data = (el as unknown as HTMLElement).dataset;
+    const edge = `${data.sourceId}|${data.targetId}|${data.sourceSymbol}|${data.targetSymbol}`;
+    const index = seen.get(edge) ?? 0;
+    seen.set(edge, index + 1);
+    shapes[`${edge}#${index}`] = { d: el.getAttribute("d") ?? el.getAttribute("points") ?? "", cls: el.getAttribute("class") ?? "" };
+  }
+  const ctm = document.querySelector<SVGGraphicsElement>("#map-connections .connection-path")!.getScreenCTM()!;
+  const map = document.querySelector<HTMLElement>("#map-container")!;
+  const root = map.querySelector<HTMLElement>(".local-placed");
+  const active = document.activeElement;
+  return {
+    shapes,
+    ctm: [ctm.a, ctm.d, ctm.e, ctm.f].map(value => Math.round(value * 100) / 100),
+    map: { ...map.dataset }, root: root ? { ...root.dataset } : null, rootClass: root?.className ?? "",
+    active: active ? `${active.tagName}.${active.getAttribute("class") ?? ""}` : "",
+    cards: map.querySelectorAll(".node-card").length,
+    pressed: (window as unknown as { __pressed?: string[] }).__pressed ?? []
+  };
+});
+
+const relative = (text: string): string => {
+  const numbers = (text.match(/-?\d+(?:\.\d+)?/gu) ?? []).map(Number);
+  if (numbers.length < 2) return text;
+  const [x0, y0] = numbers;
+  return numbers.map((value, i) => Math.round((value - (i % 2 === 0 ? x0 : y0)) * 2) / 2).join(",");
+};
+
+for (const withTour of [true, false]) {
+  test(`probe: the estate's pans, ${withTour ? "after the tour" : "without the tour"}`, async ({ page }) => {
+    test.setTimeout(240_000);
+    const run = DECK_SCOPES[2];
+    const graph = await loadGraph(page, run.base);
+    const facts = factsInScope(graph, run.scope);
+    const names = displayNames(graph, graph.nodes.map(node => node.id));
+    await page.goto(localRetainUrl(run.base, run.scope));
+    await settle(page);
+    await page.evaluate(() => {
+      const pressed: string[] = [];
+      (window as unknown as { __pressed: string[] }).__pressed = pressed;
+      document.addEventListener("pointerdown", event => {
+        const target = event.target as Element;
+        pressed.push(`${target.tagName}.${target.getAttribute("class") ?? ""}#${target.id} at ${Math.round(event.clientX)},${Math.round(event.clientY)}`);
+      }, true);
+    });
+    const log: unknown[] = [];
+    await readPicture(page, LOCAL_MAP, names);
+    const first = await state(page);
+    log.push({ at: "start", ctm: first.ctm, map: first.map, root: first.root, wires: Object.keys(first.shapes).length, cards: first.cards });
+    if (withTour) {
+      const tour = await runTour(page, LOCAL_MAP, facts, names);
+      const after = await state(page);
+      log.push({ at: "after tour", tour: { ...tour, notes: tour.notes }, ctm: after.ctm, map: after.map, root: after.root, pressed: after.pressed, active: after.active,
+        changedByTour: Object.keys(first.shapes).filter(key => relative(first.shapes[key].d) !== relative(after.shapes[key]?.d ?? "")).length });
+    }
+    const before = await state(page);
+    const pans: Array<[number, number]> = [[180, 0], [0, 140], [-260, -60], [90, -200], [-120, 160], [200, 90]];
+    for (const [dx, dy] of pans) {
+      const pressedBefore = (await state(page)).pressed.length;
+      const made = await dragBy(page, LOCAL_MAP, dx, dy);
+      const now = await state(page);
+      const changed = Object.keys(before.shapes).filter(key => relative(before.shapes[key].d) !== relative(now.shapes[key]?.d ?? ""));
+      log.push({
+        at: `pan ${dx},${dy}`, made, ctm: now.ctm, map: now.map, root: now.root, rootClass: now.rootClass, active: now.active, cards: now.cards,
+        pressed: now.pressed.slice(pressedBefore), wires: Object.keys(now.shapes).length, changed: changed.length,
+        examples: changed.slice(0, 3).map(key => ({ key, cls: now.shapes[key]?.cls, before: before.shapes[key].d.slice(0, 400), after: (now.shapes[key]?.d ?? "").slice(0, 400), beforeLength: before.shapes[key].d.length, afterLength: (now.shapes[key]?.d ?? "").length }))
+      });
+    }
+    fs.writeFileSync(`${OUT}/pans-${withTour ? "tour" : "plain"}.json`, JSON.stringify(log, null, 1));
+  });
+}
+
+test("probe: the estate's routes across the arrival, with no pan at all", async ({ page }) => {
+  const run = DECK_SCOPES[2];
+  await page.goto(localRetainUrl(run.base, run.scope));
+  await settle(page);
+  const resting = await state(page);
+  await localMapStill(page);
+  await page.waitForTimeout(500);
+  const eased = await state(page);
+  const changed = Object.keys(resting.shapes).filter(key => relative(resting.shapes[key].d) !== relative(eased.shapes[key]?.d ?? ""));
+  const pans: unknown[] = [];
+  for (const [dx, dy] of [[180, 0], [0, 140]] as const) {
+    await dragBy(page, LOCAL_MAP, dx, dy);
+    const now = await state(page);
+    pans.push({ pan: [dx, dy], ctm: now.ctm, map: now.map, changedFromEased: Object.keys(eased.shapes).filter(key => relative(eased.shapes[key].d) !== relative(now.shapes[key]?.d ?? "")).length });
+  }
+  fs.writeFileSync(`${OUT}/arrival.json`, JSON.stringify({
+    resting: { ctm: resting.ctm, map: resting.map, wires: Object.keys(resting.shapes).length }, eased: { ctm: eased.ctm, map: eased.map, wires: Object.keys(eased.shapes).length },
+    changedByTheArrivalAlone: changed.length, examples: changed.slice(0, 2).map(key => ({ key, cls: eased.shapes[key]?.cls, resting: resting.shapes[key].d.slice(0, 300), eased: (eased.shapes[key]?.d ?? "").slice(0, 300) })), pans
+  }, null, 1));
+});
+
+test("probe: across the arrival's merge, what the page's hit test meets at a wire's samples", async ({ page }) => {
+  const run = DECK_SCOPES[2];
+  await page.goto(localRetainUrl(run.base, run.scope));
+  await settle(page);
+  await localMapStill(page);
+  const met = await page.evaluate(() => {
+    const frame = document.querySelector("#main")!.getBoundingClientRect();
+    const k = new DOMMatrix(getComputedStyle(document.querySelector("#map-viewport")!).transform).a;
+    const counts = { samples: 0, band: 0, card: 0, other: 0, nothing: 0, foreignCardUnderABand: 0 };
+    const wires = [...document.querySelectorAll<SVGPathElement>("#map-connections path.connection-path:not(.bundle-run)")].filter(wire => wire.dataset.sourceId && wire.dataset.targetId && getComputedStyle(wire).display !== "none");
+    const meet = (wire: SVGPathElement): void => {
+      const ctm = wire.getScreenCTM()!, length = wire.getTotalLength();
+      for (let at = 0; at <= length; at += 8) {
+        const p = wire.getPointAtLength(at).matrixTransform(ctm);
+        if (p.x < frame.left || p.x > frame.right || p.y < frame.top || p.y > frame.bottom) continue;
+        counts.samples += 1;
+        const all = document.elementsFromPoint(p.x, p.y);
+        const top = all[0];
+        if (!top) counts.nothing += 1;
+        else if (top.matches(".wire-band")) counts.band += 1;
+        else if (top.closest(".node-card")) counts.card += 1;
+        else counts.other += 1;
+        const under = all.find(element => !element.matches(".wire-band"))?.closest<HTMLElement>(".node-card");
+        if (top?.matches(".wire-band") && under && under.dataset.id !== wire.dataset.sourceId && under.dataset.id !== wire.dataset.targetId) counts.foreignCardUnderABand += 1;
+      }
+    };
+    for (const wire of wires) meet(wire);
+    const asDrawn = { ...counts };
+    // A made fault: a card that is neither end of a wire, stood across that wire's middle.
+    let made: unknown = null;
+    for (const wire of wires) {
+      const length = wire.getTotalLength();
+      const mid = wire.getPointAtLength(length / 2).matrixTransform(wire.getScreenCTM()!);
+      if (length < 200 || mid.x < frame.left + 250 || mid.x > frame.right - 250 || mid.y < frame.top + 200 || mid.y > frame.bottom - 200) continue;
+      const card = [...document.querySelectorAll<HTMLElement>("#map-container .node-card")].find(each => each.dataset.id !== wire.dataset.sourceId && each.dataset.id !== wire.dataset.targetId);
+      if (!card) continue;
+      const box = card.getBoundingClientRect();
+      card.style.transform = `translate(${(mid.x - (box.left + box.right) / 2) / k}px, ${(mid.y - (box.top + box.bottom) / 2) / k}px)`;
+      const all = document.elementsFromPoint(mid.x, mid.y);
+      const describe = (element: Element | undefined): string => (element ? `${element.tagName}.${element.getAttribute("class") ?? ""}` : "nothing");
+      made = { wire: `${wire.dataset.sourceId} -> ${wire.dataset.targetId}`, card: card.dataset.id, topmost: describe(all[0]), firstThatIsNoBand: describe(all.find(element => !element.matches(".wire-band"))),
+        itsCard: all.find(element => !element.matches(".wire-band"))?.closest<HTMLElement>(".node-card")?.dataset.id ?? null };
+      break;
+    }
+    return { scale: k, wires: wires.length, bands: document.querySelectorAll("#map-connections .wire-band").length, asDrawn, made };
+  });
+  fs.writeFileSync(`${OUT}/hit-test.json`, JSON.stringify(met, null, 1));
+});
+
+test("probe: the lanes case's highest wire", async ({ page }) => {
+  test.setTimeout(120_000);
+  const files = [
+    "packages/engine/src/live-docs/graph.ts",
+    "packages/engine/src/live-docs/document.ts",
+    "packages/engine/src/live-docs/graphFiles.ts",
+    "packages/explorer/src/shared/staticExplorerData.ts",
+    "packages/explorer/src/shared/staticBuilder.ts"
+  ];
+  await page.goto(localRetainUrl("/", files));
+  await page.waitForSelector("#map-container .branch-mode");
+  await page.waitForSelector("#map-connections .connection-path:not(.bundle-run)", { state: "attached" });
+  await page.waitForTimeout(900);
+  const graph = await loadGraph(page, "/");
+  const look = () => page.evaluate(() => {
+    const ctm = document.querySelector<SVGGraphicsElement>("#map-connections .connection-path")!.getScreenCTM()!;
+    const map = document.querySelector<HTMLElement>("#map-container")!;
+    const root = map.querySelector<HTMLElement>(".local-placed");
+    return {
+      ctm: [ctm.a, ctm.d, ctm.e, ctm.f].map(value => Math.round(value * 100) / 100), map: { ...map.dataset }, root: root ? { ...root.dataset } : null,
+      top: Math.min(...[...document.querySelectorAll<HTMLElement>("#map-container .node-card, #map-container .local-pass-through")].map(el => el.getBoundingClientRect().top)),
+      wires: document.querySelectorAll("#map-connections .connection-path").length
+    };
+  });
+  const beforeRead = await look();
+  const picture = await readPicture(page, LOCAL_MAP, displayNames(graph, graph.nodes.map(node => node.id)));
+  const afterRead = await look();
+  const tops = picture.wires.map((wire, at) => ({ at, key: wire.key, kind: wire.kind, stub: wire.stub, samples: wire.points.length / 2, lengthPx: wire.lengthPx,
+    top: wire.points.reduce((m, point, i) => (i % 2 === 1 && point < m ? point : m), Infinity) })).sort((a, b) => a.top - b.top);
+  const cardTop = Math.min(...picture.cards.map(card => card.box.y));
+  const over = tops.filter(wire => wire.top < afterRead.top - 1);
+  // The page's own account of the highest wires: every drawn wire's path, walked whole, in the page.
+  const walked = await page.evaluate(() => [...document.querySelectorAll<SVGGeometryElement>("#map-connections .connection-path")].map(el => {
+    const data = (el as unknown as HTMLElement).dataset;
+    const ctm = el.getScreenCTM()!;
+    let top = Infinity, where = 0;
+    if (typeof el.getTotalLength === "function") {
+      const length = el.getTotalLength();
+      for (let at = 0; at <= length; at += 8) { const y = el.getPointAtLength(at).matrixTransform(ctm).y; if (y < top) { top = y; where = at; } }
+    }
+    const d = el.getAttribute("d") ?? el.getAttribute("points") ?? "";
+    return { key: `${data.sourceId}|${data.targetId}|${data.sourceSymbol}|${data.targetSymbol}`, cls: el.getAttribute("class"), top, where, box: el.getBoundingClientRect().top, display: getComputedStyle(el).display, dLength: d.length, d: d.length > 700 ? `${d.slice(0, 350)} ... ${d.slice(-350)}` : d };
+  }).sort((a, b) => a.top - b.top).slice(0, 6));
+  await page.waitForTimeout(3000);
+  const later = await look();
+  fs.writeFileSync(`${OUT}/lanes.json`, JSON.stringify({ beforeRead, afterRead, later, cardTopAtRead: cardTop, wiresRead: picture.wires.length, overTheTop: over.length, highestRead: tops.slice(0, 6), highestWalked: walked }, null, 1));
+});
+
+test.describe("probe: the code span", () => {
+  test.use({ viewport: { width: 1440, height: 960 } });
+  test("probe: the code span outside its card", async ({ page }) => {
+    await page.addInitScript(({ key, value }) => localStorage.setItem(key, value), {
+      key: PERSISTED_UI_KEY, value: JSON.stringify({ version: PERSISTED_UI_VERSION, tuning: { localMap: { ...AT_READING_SIZE, searchStarts: 0, zoomLooks: "stepped" } } })
+    });
+    const subject = "tests/e2e/still-picture.ts";
+    await page.goto(`/?s=${compressSnapshot({ ...DEFAULT_SNAPSHOT, view: "map", perspective: "2d", selectedNodeId: subject })}`);
+    await page.locator(`.node-card[data-id="${subject}"]`).waitFor();
+    await localMapStill(page);
+    const found = await page.evaluate(() => {
+      const card = document.querySelector<HTMLElement>('#map-container .node-card[data-id="tests/e2e/local-map-path.spec.ts"]')!;
+      const box = card.getBoundingClientRect();
+      const edges = (r: DOMRect) => [r.left, r.top, r.right, r.bottom].map(value => Math.round(value * 10) / 10);
+      const chain = (el: Element): string[] => {
+        const out: string[] = [];
+        for (let at: Element | null = el; at && at !== card.parentElement; at = at.parentElement) {
+          const style = getComputedStyle(at);
+          out.push(`${at.tagName}.${at.getAttribute("class") ?? ""} display=${style.display} overflow=${style.overflow} clamp=${style.webkitLineClamp} visibility=${style.visibility} ws=${style.whiteSpace} wrap=${style.overflowWrap} box=${edges(at.getBoundingClientRect()).join(",")}`);
+        }
+        return out;
+      };
+      return {
+        card: edges(box), cardClass: card.className, lod: document.querySelector<HTMLElement>("#map-container")!.dataset.lod,
+        codes: [...card.querySelectorAll("code")].map(code => ({ text: code.textContent, box: edges(code.getBoundingClientRect()), rects: [...code.getClientRects()].map(edges), chain: chain(code) })),
+        prose: [...card.querySelectorAll(".local-reading-prose")].map(prose => ({ html: prose.innerHTML.slice(0, 1600), box: edges(prose.getBoundingClientRect()), scrollHeight: prose.scrollHeight, clientHeight: prose.clientHeight }))
+      };
+    });
+    fs.writeFileSync(`${OUT}/code.json`, JSON.stringify(found, null, 1));
+    const card = page.locator('#map-container .node-card[data-id="tests/e2e/local-map-path.spec.ts"]');
+    await panIntoView(page, card);
+    const box = (await card.boundingBox())!;
+    const drawn = await page.evaluate(() => {
+      const card = document.querySelector<HTMLElement>('#map-container .node-card[data-id="tests/e2e/local-map-path.spec.ts"]')!;
+      return [...card.querySelectorAll("code")].map(code => {
+        const r = code.getBoundingClientRect();
+        const over = document.elementFromPoint((r.left + r.right) / 2, (r.top + r.bottom) / 2);
+        return { text: code.textContent, box: [r.left, r.top, r.right, r.bottom].map(Math.round), cardBottom: Math.round(card.getBoundingClientRect().bottom), topmostThere: over ? `${over.tagName}.${over.getAttribute("class") ?? ""}#${over.id}` : null, isTheCode: over === code };
+      });
+    });
+    fs.writeFileSync(`${OUT}/code-drawn.json`, JSON.stringify(drawn, null, 1));
+    await page.screenshot({ path: `${OUT}/code-card.png`, clip: { x: Math.max(0, box.x - 30), y: Math.max(0, box.y - 30), width: Math.min(900, box.width + 60), height: Math.min(700, box.height + 140) } });
+  });
+});
