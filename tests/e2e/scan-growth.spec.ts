@@ -127,21 +127,31 @@ test("a press made while this repository's map fills pins the sphere pressed, an
   await watchScan(page);
   await page.goto(entry("/", "path"));
   await expect.poll(async () => Number(await map(page).getAttribute("data-scan-arrived") ?? 0), { timeout: 120_000, intervals: [50] }).toBeGreaterThan(60);
-  // The largest sphere standing over the bare canvas, pressed where it stands now.
-  const spheres = (await renderedNodes(page)).filter(sphere => sphere.depth > -1 && sphere.depth < 1).sort((a, b) => b.screenRadius - a.screenRadius);
-  const open = await page.evaluate(points => points.map(({ x, y }) => document.elementFromPoint(x, y) === document.querySelector("#graph-svg canvas")),
-    spheres.map(sphere => ({ x: sphere.x, y: sphere.y })));
-  const target = spheres.find((_, index) => open[index])!;
-  expect(target, "a sphere stands over the bare canvas while the map fills").toBeDefined();
-  await page.mouse.move(target.x, target.y);
-  await page.mouse.down(); await page.mouse.up();
-  await expect.poll(() => pins(page), { message: "the press pinned a sphere" }).toHaveLength(1);
+  // The largest sphere standing over the bare canvas, pressed where it stands now. The picture moves while it fills, so
+  // a sphere can slide from under the pointer between the reading and the press; such a press lands on nothing and
+  // pins nothing (it missed once in the suite's whole run of 2026-11-22), and a person presses again, as this does.
+  const stood = new Set<string>();
+  let presses = 0;
+  while (pins(page).length === 0 && presses < 6) {
+    const spheres = (await renderedNodes(page)).filter(sphere => sphere.depth > -1 && sphere.depth < 1).sort((a, b) => b.screenRadius - a.screenRadius);
+    const open = await page.evaluate(points => points.map(({ x, y }) => document.elementFromPoint(x, y) === document.querySelector("#graph-svg canvas")),
+      spheres.map(sphere => ({ x: sphere.x, y: sphere.y })));
+    const target = spheres.find((_, index) => open[index])!;
+    expect(target, "a sphere stands over the bare canvas while the map fills").toBeDefined();
+    for (const sphere of spheres) stood.add(sphere.id);
+    await page.mouse.move(target.x, target.y);
+    await page.mouse.down(); await page.mouse.up();
+    presses++;
+    await expect.poll(() => pins(page).length, { timeout: 1_500 }).toBe(1).catch(() => {});
+  }
+  test.info().annotations.push({ type: "presses", description: `${presses} before one landed on a sphere` });
+  expect(pins(page), "a press pinned a sphere").toHaveLength(1);
   const [pinned] = pins(page);
   const before = await scanLog(page);
   expect(before.at(-1)!.scan, "the scan is still under way when the pin stands").toBe("reading");
   expect(before.every(seen => seen.building === null), "the map did not say it was building, before the press or at it").toBe(true);
-  // What was pinned is a sphere that stood within the press's reach: the one read, or one that had slid under the pointer.
-  expect(spheres.map(sphere => sphere.id), "the pinned file was a sphere of the picture pressed").toContain(pinned);
+  // What was pinned is a sphere of the picture pressed, never something that was not there to press.
+  expect([...stood], "the pinned file was a sphere of the picture pressed").toContain(pinned);
   // The design audit over the sign while the map fills, a pin's name on screen: the sign's words are whole, and no
   // name stands on them or they on a name.
   const cut = await truncations(page, [".scan-progress"]);

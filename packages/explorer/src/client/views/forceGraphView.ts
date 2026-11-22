@@ -1645,7 +1645,8 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
     }
     pictureVeiled = pictureVeils([...wrapped].map(([id, key]) => {
       const shape = bodies.get(key)!.shape;
-      return { id, files: shape.files ?? 0, drawn: shape.units?.filter(unit => unit.kind === "file").length ?? 0, hop: bodyHop.get(id) };
+      // A whole group, shown only by its seed, is veiled the smallest first; a shell or a bubble the largest first.
+      return { id, files: shape.files ?? 0, drawn: shape.units?.filter(unit => unit.kind === "file").length ?? 0, hop: bodyHop.get(id), whole: !shells.has(id) && !cells.has(id) };
     }));
     const wanted = new Set(wrapped.values());
     bodyWork = bodyWork.filter(key => wanted.has(key)).sort((a, b) => (bodies.get(a)!.shape.files ?? 0) - (bodies.get(b)!.shape.files ?? 0) || (a < b ? -1 : a > b ? 1 : 0));
@@ -1876,6 +1877,12 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
     // A shell is named by its directory's last name and the files it holds (2026-11-05).
     for (const node of graphNodes) if (node.shellFiles !== undefined) labelNames.set(node.id, `${node.name} · ${node.shellFiles.toLocaleString("en-US")}`);
     for (const [id, name] of loneNames) labelNames.set(id, name);
+    // A group the picture's budget veils is named with the files its veil hides, as a shell is (2026-11-22): a veil is
+    // an honest sign only if it says how many.
+    for (const id of pictureVeiled) {
+      const files = scopeGroups.get(id);
+      if (files !== undefined && !shells.has(id) && !cells.has(id)) labelNames.set(id, `${labelNames.get(id) ?? id} · ${files.toLocaleString("en-US")}`);
+    }
     const changedNames = new Set(historyChanges?.changedFiles ?? []);
     const changedNodes = new Set(historyChanges?.changed ?? []);
     if (historyChanges && state.spatialLayout === "structure") {
