@@ -1,0 +1,12 @@
+{
+  "about": "The register of package-modules.oracle.test.ts: how many of the packages installed under this repository's node_modules (nested ones among them, links to the workspace's own packages aside) the reader of package.json and Node's own resolver agree on, and how many disagree by each cause. A count that moves fails the test. Measured 2026-11-22, Node 26.13.1, 281 packages; before the reader followed Node's resolution of main, 229 agreed.",
+  "causes": {
+    "a name of one of Node's own modules: Node loads its own": "punycode and string_decoder share their names with modules Node carries, and Node loads its own for the bare name; the reader names the package's own file, which is what the package's manifest says. Not a mend: within a workspace, the file is the package's entry.",
+    "a nested copy: Node's ESM resolver answers with the top-level copy's file": "Asked from the folder that holds a nested copy, and from inside the copy itself, Node's import.meta.resolve gives the file of the top-level copy of the same name, so the import side of the comparison asks about another package. The require side agrees for all six. Not established why; a question for the next reading of Node's resolver."
+  },
+  "counts": {
+    "agree": 273,
+    "a nested copy: Node's ESM resolver answers with the top-level copy's file": 6,
+    "a name of one of Node's own modules: Node loads its own": 2
+  }
+}

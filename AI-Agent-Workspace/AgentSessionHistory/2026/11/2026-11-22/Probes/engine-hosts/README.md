@@ -80,3 +80,34 @@ The whole of DNN was scanned four times under Node, one after another, each from
 ### This repository's probes, with its `node_modules` (root's fourth ruling)
 
 [`probes-in-place.mts`](probes-in-place.mts), which is `probes.mts` changed to scan in place as a dry run with the checkout's own configuration (nothing copied, nothing written), was run over this worktree with its installed `node_modules`. Of 15,452 probes, 2,866 were of a kept file, 2,238 of a folder of kept files, 8,504 of a path absent on the disk, 14 of the docs root, 10 outside the workspace, and 1,820 of a path on the disk outside the listing. **All 1,820 are `gitIgnored.ts` looking for a `.git` in each folder: discovery's. No reader's probe, the TypeScript resolution of `dependencies.ts` among them, reached `node_modules` or any other file outside the listing.** So answering the readers' probes from the listing should change no fact of this repository. The comparison of its whole docs and index before and after, which the ruling asks for, is to be made when the probes move.
+
+## 2026-11-22, last: the budget measured in a slowed page, and deleted
+
+Taken on the code after `f8ff639c4` with the budget still built, by [`page-budget.mjs`](page-budget.mjs). It drives the page check's own scanning page, built by `npm run e2e:bundles`, through the browser lane, one hold per run, under `taskset -c 0,1`, slowed four times by the browser's own throttle (`Emulation.setCPUThrottlingRate`, as the scan-in-a-tab probe of 2026-11-21 slowed it). The page was handed DNN's Library (1,413 files). The whole of DNN would not fit a hold of five minutes at that pace: under Node it takes two to four minutes unslowed. The budget was named on the page's input (`data-read-budget`, taken out again with the budget). Peak memory is the highest resident memory of the page's renderer (`VmHWM`). The Library's texts come to about 10 MB, so 16 MiB would have kept them all, and 4 MiB was run instead.
+
+| Run, in order | Load before → after | Scan | Renderer's peak | Reads |
+| --- | ---: | ---: | ---: | ---: |
+| keep everything | 4.9 → 4.3 | 57.1 s | 515 MB | 1,413 |
+| keep nothing | 4.3 → 3.3 | 51.9 s | 514 MB | 4,233 |
+| keep 4 MiB | 3.3 → 3.0 | 51.9 s | 509 MB | 3,239 |
+| keep everything | 2.9 → 14.2 | 122.2 s | 512 MB | 1,413 |
+| keep nothing | 12.4 → 6.7 | 68.5 s | 513 MB | 4,233 |
+
+The fourth and fifth ran while this builder's own lint and tests ran, which is the load they show. The peaks lie within 6 MB of one another, and the times follow the load. So the budget bought nothing in the page either. It was deleted, with the generator's `readBudget`, its default and its cases (root's ruling: delete it unless a budget wins). The copied head and the order of asks stay. `measure.mts`'s third argument and `page-budget.mjs`'s budget are left as they were run; the generator no longer reads them.
+
+One limit of this measure: the page check's page puts every file it is handed into its memory before the scan, so its host's reads cost no more than Node's did with the disk's cache warm. A page that reads each picked file only when the scan asks would make every second read cost, which favours keeping everything the more.
+
+## The manifest reader against every installed package
+
+`tests/integration/live-docs/package-modules.oracle.test.ts` asks Node's own resolver, `require.resolve` and `import.meta.resolve`, for the name of every package installed under this repository's `node_modules`, nested ones among them: 281 packages, Node 26.13.1. Each package's files are set beside those `packageModules` gives, both counted as files on the disk.
+
+| Cause | Before the mend | After |
+| --- | ---: | ---: |
+| agree | 229 | 273 |
+| no `exports` and no `main`: Node takes `index.js` | 24 | 0 |
+| `main` without its extension, or a folder: Node completes it | 11 | 0 |
+| `main` names no file: Node falls back to `index.js` | 8 | 0 |
+| a nested copy: Node's ESM resolver answers with the top-level copy's file | 6 | 6 |
+| a name of one of Node's own modules (`punycode`, `string_decoder`) | 2 | 2 |
+
+The first count also had seven it could not explain. Once files were counted as files on both sides, `@types/three` agreed (its `exports` name files that are not there), and the other six took the class of nested copies. The mend is Node's legacy resolution of `main`: the path it names, then with `.js`, `.json` or `.node`, then its `index` with each, then the package's own `index`. A `main` of `""` names nothing and falls through to `index`. Mixed keys in `exports` (subpaths beside conditions, which Node refuses) occur in no installed package. For the six nested copies, Node 26's `import.meta.resolve`, asked both from the folder that holds the copy and from inside the copy, gave the top-level copy's file of the same name (`eslint-visitor-keys` 5.0.1 under `eslint` resolved to 3.4.3's `lib/index.js`); why is not established. The register is `tests/integration/live-docs/expected/package-modules.json`.
