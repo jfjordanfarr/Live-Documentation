@@ -2,11 +2,12 @@
  * Runs the motion between a 2D picture as laid out and mirrored on the page: the turn, the slide or the cut that
  * Tuning's Mirror Turn chooses (a trial of 2026-11-22). The arithmetic is `mirror-turn.ts`; this is its DOM half.
  *
- * The turn and the slide are drawn by the stylesheet from one angle written on the map's layer each frame
- * (`--mirror-turn`, the rules under `data-turning` in `styles/local.css`): the content root and the wires' layer turn
- * about the upright axis through what holds still, each card and each directory's line turns back by the same angle
- * about its own middle so that it faces the viewer throughout, and at the edge-on instant the pins change sides. The
- * real cards and the real wires move: nothing is copied, and no wire is measured or rewritten until the motion ends.
+ * The turn and the slide are written once, as animations the browser runs with no script between frames: the content
+ * root and the wires' layer turn about the upright axis through what holds still, each card and each directory's line
+ * turns back by the same angle about its own middle so that it faces the viewer throughout, and at the edge-on instant
+ * the pins change sides (the stylesheet's rules under `data-turning` in `styles/local.css` keep the third dimension
+ * between them). The real cards and the real wires move: nothing is copied, and no wire is measured or rewritten
+ * until the motion ends.
  * The move between 2D and 3D (`perspectiveTransition.ts`) could not serve: it is a copy of the picture folded to file
  * tokens and moved between two drawings on a canvas, with no turning plane in it, and its copies alone take longer to
  * make than this motion lasts; its easing is the one thing shared.
@@ -15,13 +16,10 @@
  */
 
 import type { MirrorTurn } from "../../types";
-import { MIRROR_TURN_MS, turnAngle, turnDistance, turnStrength, type MirrorAxis } from "./mirror-turn";
+import { MIRROR_TURN_MS, turnDistance, turnKeyframes, type MirrorAxis } from "./mirror-turn";
 
 /** The attribute on the map's layer while the picture turns or slides, holding which; the stylesheet draws from it. */
 export const TURNING_ATTRIBUTE = "data-turning";
-
-/** The attribute on the place of the card that holds still while the picture turns. */
-export const HELD_ATTRIBUTE = "data-mirror-held";
 
 /** What a motion needs of the map, and what it gives back. */
 export interface MirrorMotionOptions {
@@ -67,24 +65,40 @@ export function runMirrorMotion(options: MirrorMotionOptions): MirrorMotion {
   return options.form === "cut" ? cut(options) : turn(options, options.form);
 }
 
-/** The cut: the picture fades out, changes while unseen, and fades in. Nothing travels. */
-function cut({ layer, settle, done, toMirrored }: MirrorMotionOptions): MirrorMotion {
-  let settled = false, running: Animation | null = null;
+/** Everything on the map that fades while the picture changes: every place but the held card's, and the wires. */
+const OTHERS = ".local-placed :is(.local-column, .local-directory-label, .local-pass-through)";
+
+/**
+ * The cut: everything but the held card fades out, the picture changes while they are unseen, and they fade in.
+ * Nothing travels, and the held card, which a mirror does not move, never leaves (the root, 2026-11-22: the first cut
+ * faded the whole layer and "blanks the whole map for two frames, the held card with it").
+ */
+function cut({ layer, overlay, held, settle, done, toMirrored }: MirrorMotionOptions): MirrorMotion {
+  let settled = false, running: Animation[] = [];
+  const heldPlace = held?.closest<HTMLElement>(".local-column") ?? null;
+  const fade = (from: number, to: number, fill: FillMode, then: () => void): void => {
+    // The directories' outlines change sides too and fade with the rest (the outline's own drawing, not the directory,
+    // which holds the held card): seen in the first strip of this cut, they stood through the fade and then jumped.
+    const faded = [...layer.querySelectorAll<Element>(`${OTHERS}, .local-placed .local-directory-band > .local-membrane`)].filter(place => place !== heldPlace);
+    running = [overlay, ...faded].map(element => element.animate([{ opacity: from }, { opacity: to }], { duration: MIRROR_TURN_MS / 3, easing: "ease-in-out", fill }));
+    running[0].onfinish = then;
+  };
+  const stop = (): void => {
+    for (const animation of running) { animation.onfinish = null; animation.cancel(); }
+    running = [];
+  };
   const finish = (): void => {
     if (settled) return;
     settled = true;
     settle();
   };
-  const fade = (from: number, to: number, then: () => void): void => {
-    running = layer.animate([{ opacity: from }, { opacity: to }], { duration: MIRROR_TURN_MS / 3, easing: "ease-in-out" });
-    running.onfinish = then;
-  };
-  fade(1, 0, () => { finish(); fade(0, 1, () => { running = null; done(); }); });
+  // Held at nothing until the picture has changed under them, so that no frame shows the change itself.
+  fade(1, 0, "forwards", () => { stop(); finish(); fade(0, 1, "none", () => { stop(); done(); }); });
   return {
     holdsWires: false,
     toMirrored,
     end() {
-      if (running) { running.onfinish = null; running.cancel(); running = null; }
+      stop();
       // Let go of before the picture rests: the rest may start the next motion, which must not be let go of in its place.
       done();
       finish();
@@ -92,47 +106,52 @@ function cut({ layer, settle, done, toMirrored }: MirrorMotionOptions): MirrorMo
   };
 }
 
-/** The turn and the slide: one angle on the layer each frame, the pins exchanged as the plane stands edge-on. */
+/**
+ * The turn and the slide: the whole motion written once, as animations the browser runs with no script between
+ * frames, and the pins exchanged as the plane stands edge-on. The first form wrote one angle on the layer each frame
+ * for the stylesheet to turn every card back from, and on 84 cards drew six frames in the motion's 620 ms
+ * (2026-11-22; the measurements are in the strips' record).
+ */
 function turn(options: MirrorMotionOptions, form: Exclude<MirrorTurn, "cut">): MirrorMotion {
   const { view, layer, overlay, axis, toMirrored } = options;
-  let frame = 0, exchanged = false, over = false;
+  let over = false;
   const motion = { holdsWires: true, toMirrored, end };
   // Drawn from the picture as laid out, whichever way it goes: at 180 degrees about this axis it is the mirrored one.
   options.cameraAcross(axis.laidOutX);
   layer.setAttribute(TURNING_ATTRIBUTE, form);
   layer.style.setProperty("--mirror-axis", `${axis.across}px`);
-  const draw = (progress: number): void => {
-    const angle = turnAngle(progress, form, toMirrored);
-    layer.style.setProperty("--mirror-turn", `${angle}deg`);
-    layer.style.setProperty("--mirror-fade", turnStrength(angle).toFixed(3));
-  };
-  draw(0);
-  const heldPlace = options.held?.closest<HTMLElement>(".local-column") ?? null;
-  heldPlace?.setAttribute(HELD_ATTRIBUTE, "");
   const wiresOrigin = overlay.style.transformOrigin;
   overlay.style.transformOrigin = `${options.rootEdgeInLayer + axis.across}px 0`;
   // The slide is flat: no viewer's distance, so nothing grows or shrinks as it crosses.
   view.style.perspective = form === "turn" ? `${turnDistance(options.reach, view.clientWidth)}px` : "none";
   view.style.perspectiveOrigin = `${options.holdAt - view.getBoundingClientRect().left}px 50%`;
-  const started = performance.now();
-  const step = (now: number): void => {
-    const progress = Math.min(1, (now - started) / MIRROR_TURN_MS);
-    if (!exchanged && progress >= 0.5) { exchanged = true; options.exchange(); }
-    draw(progress);
-    if (progress < 1) frame = requestAnimationFrame(step);
-    else end();
-  };
-  frame = requestAnimationFrame(step);
+  const frames = turnKeyframes(form, toMirrored);
+  const timing: KeyframeAnimationOptions = { duration: MIRROR_TURN_MS, easing: "linear", fill: "both" };
+  // The plane turns; what a person reads turns back against it by the same angle and fades as the plane stands
+  // edge-on; the held card turns back and keeps its strength; a lane, which holds no words, only fades.
+  const plane = frames.map(({ offset, angle }) => ({ offset, rotate: `y ${angle}deg` }));
+  const wires = frames.map(({ offset, angle, strength }) => ({ offset, rotate: `y ${angle}deg`, opacity: strength }));
+  const facing = frames.map(({ offset, angle, strength }) => ({ offset, rotate: `y ${-angle}deg`, opacity: strength }));
+  const holding = frames.map(({ offset, angle }) => ({ offset, rotate: `y ${-angle}deg` }));
+  const fading = frames.map(({ offset, strength }) => ({ offset, opacity: strength }));
+  const heldPlace = options.held?.closest<HTMLElement>(".local-column") ?? null;
+  const running: Animation[] = [];
+  const picture = layer.querySelector<HTMLElement>(".local-layout");
+  if (picture) running.push(picture.animate(plane, timing));
+  running.push(overlay.animate(wires, timing));
+  for (const place of layer.querySelectorAll<HTMLElement>(OTHERS)) {
+    running.push(place.animate(place === heldPlace ? holding : place.classList.contains("local-pass-through") ? fading : facing, timing));
+  }
+  const exchanging = window.setTimeout(() => options.exchange(), MIRROR_TURN_MS / 2);
+  running[0].onfinish = end;
   function end(): void {
     if (over) return;
     over = true;
-    cancelAnimationFrame(frame);
+    window.clearTimeout(exchanging);
+    for (const animation of running) { animation.onfinish = null; animation.cancel(); }
     motion.holdsWires = false;
     layer.removeAttribute(TURNING_ATTRIBUTE);
     layer.style.removeProperty("--mirror-axis");
-    layer.style.removeProperty("--mirror-turn");
-    layer.style.removeProperty("--mirror-fade");
-    heldPlace?.removeAttribute(HELD_ATTRIBUTE);
     overlay.style.transformOrigin = wiresOrigin;
     view.style.perspective = "";
     view.style.perspectiveOrigin = "";

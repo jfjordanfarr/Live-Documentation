@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/explorer/src/client/views/localView/mirror-turn.ts`
-- Generated At: 2026-11-22T05:48:58.423Z
+- Generated At: 2026-11-22T07:19:56.685Z
 
 ## Authored
 ### Purpose
@@ -73,6 +73,23 @@ How strongly everything but the held card is drawn at `angle` of the turn, from 
 as the plane stands edge-on every card is on one line, the ones swinging toward the viewer in front of the one that
 holds still, so they and the wires are faded for that moment and the held card alone keeps its strength. Seen
 2026-11-22 without it: the nearest card, grown by its nearness, covered the subject whole at the edge-on instant.
+
+#### `TurnKeyframe` {#symbol-turnkeyframe}
+- Type: interface
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/mirror-turn.ts#L76)
+
+##### `TurnKeyframe` — Summary
+One moment of the motion as the browser is given it: how far through, the plane's angle, and the others' strength.
+
+#### `turnKeyframes` {#symbol-turnkeyframes}
+- Type: function
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/mirror-turn.ts#L83)
+- Returns: [`TurnKeyframe`](#symbol-turnkeyframe)[]
+
+##### `turnKeyframes` — Summary
+The whole motion as keyframes, evenly spaced, the edge-on instant among them: the browser runs the turn from these
+without script, moving in a straight line between each two, so the plane, every card turned back against it and the
+fade stay together to the frame. Twenty steps follow the eased angle to within a third of a degree.
 <!-- LIVE-DOC:END Public Symbols -->
 
 <!-- LIVE-DOC:BEGIN Dependencies -->

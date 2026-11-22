@@ -143,18 +143,40 @@ test("the button is offered only where the picture has a left-to-right rule", as
  */
 async function watchMotion(page: Page): Promise<void> {
   await page.evaluate(() => {
-    const layer = document.getElementById("map-viewport")!, seen: string[] = [];
-    (window as unknown as { mirrorMotions: string[] }).mirrorMotions = seen;
-    const note = (): void => {
-      const form = layer.getAttribute("data-turning");
-      // The plane's own turning, as the page computes it, beside the form: a form named and nothing turned is no motion.
-      const turned = getComputedStyle(document.querySelector("#map-container .local-layout")!).rotate;
-      if (form && seen.at(-1) !== `${form}:${turned === "none" ? "flat" : "turned"}`) seen.push(`${form}:${turned === "none" ? "flat" : "turned"}`);
+    const layer = document.getElementById("map-viewport")!, picture = document.querySelector("#map-container .local-layout")!;
+    const held = document.querySelector("#map-container .node-card.local-focus");
+    const other = [...document.querySelectorAll("#map-container .node-card")].find(card => card !== held) ?? null;
+    const watch = { seen: [] as string[], heldFaintest: 1, otherFaintest: 1 };
+    (window as unknown as { mirrorWatch: typeof watch }).mirrorWatch = watch;
+    /** How strongly an element is drawn: its own opacity and every box's around it, as the page computes them now. */
+    const strength = (element: Element | null): number => {
+      let drawn = 1;
+      for (let at = element; at && at !== document.body; at = at.parentElement) drawn *= Number(getComputedStyle(at).opacity);
+      return drawn;
     };
-    new MutationObserver(note).observe(layer, { attributes: true, attributeFilter: ["data-turning", "style"] });
+    let form: string | null = null, turned = false;
+    const frame = (): void => {
+      const now = layer.getAttribute("data-turning");
+      if (now) {
+        form = now;
+        // The plane's own turning, as the page computes it: a form named and nothing turned is no motion.
+        const angle = Number(/(-?[\d.]+)deg/u.exec(getComputedStyle(picture).rotate)?.[1] ?? 0) % 180;
+        if (angle > 1 && angle < 179) turned = true;
+      } else if (form) {
+        watch.seen.push(`${form}:${turned ? "turned" : "flat"}`);
+        form = null;
+        turned = false;
+      }
+      if (held) watch.heldFaintest = Math.min(watch.heldFaintest, strength(held));
+      if (other) watch.otherFaintest = Math.min(watch.otherFaintest, strength(other));
+      requestAnimationFrame(frame);
+    };
+    requestAnimationFrame(frame);
   });
 }
-const motions = (page: Page): Promise<string[]> => page.evaluate(() => (window as unknown as { mirrorMotions: string[] }).mirrorMotions);
+interface MirrorWatch { seen: string[]; heldFaintest: number; otherFaintest: number }
+const watched = (page: Page): Promise<MirrorWatch> => page.evaluate(() => (window as unknown as { mirrorWatch: MirrorWatch }).mirrorWatch);
+const motions = async (page: Page): Promise<string[]> => (await watched(page)).seen;
 const seedTurn = async (page: Page, mirrorTurn: string): Promise<void> => void await page.addInitScript(({ key, value }) => localStorage.setItem(key, value),
   { key: PERSISTED_UI_KEY, value: JSON.stringify({ version: 2, tuning: { localMap: { searchStarts: 0, mirrorTurn } } }) });
 /** The picture at rest in one of its two states: no motion named, the layer and the button agreeing. */
@@ -175,6 +197,10 @@ test("by default the press turns the picture's plane, and the lever chooses the 
   await button(page).click();
   await atRest(page, true);
   expect(await motions(page)).toEqual(["turn:turned"]);
+  // As the plane stands edge-on everything but the held card is faded; the held card never is.
+  const strengths = await watched(page);
+  expect(strengths.heldFaintest).toBeGreaterThan(0.99);
+  expect(strengths.otherFaintest).toBeLessThan(0.5);
   // The turn ends where the cut would: the subject where it stood, every other card as far from it on the other side.
   const after = await middles(page);
   expect(Math.abs(after[SUBJECT].x - before[SUBJECT].x)).toBeLessThan(1);
@@ -229,3 +255,64 @@ test("a second press before the turn ends leaves the picture in one of its two s
   const again = await middles(page);
   for (const id of Object.keys(before)) expect(Math.abs(again[id].x - before[id].x), id).toBeLessThan(1);
 });
+
+test("the cut fades everything but the held card, which a mirror does not move and so never leaves", async ({ page }) => {
+  await seedTurn(page, "cut");
+  await page.goto(ADDRESS);
+  await localMapStill(page);
+  const before = await middles(page);
+  await watchMotion(page);
+  await button(page).click();
+  await atRest(page, true);
+  await page.waitForTimeout(500);
+  const cut = await watched(page);
+  expect(cut.seen).toEqual([]);
+  expect(cut.heldFaintest, "the held card keeps its strength throughout").toBeGreaterThan(0.99);
+  expect(cut.otherFaintest, "every other card is gone while the picture changes").toBeLessThan(0.2);
+  const after = await middles(page);
+  expect(Math.abs(after[SUBJECT].x - before[SUBJECT].x)).toBeLessThan(1);
+});
+
+/**
+ * The cut's signs at the edges (Tuning's Cut Counted) count what a step opened past each edge of the view. Mirroring
+ * the picture moves every one of those cards, so the signs are counted again as it comes to rest: read on
+ * `live-docs/history` opened from the engine's pathfinder, a directory no view holds whole at reading size.
+ */
+test("a step's cut is counted again when the picture is mirrored: the signs say what lies past each edge now", async ({ page }) => {
+  const subject = "packages/engine/src/live-docs/pathfind.ts", history = "packages/engine/src/live-docs/history";
+  await page.addInitScript(({ key, value }) => localStorage.setItem(key, value),
+    { key: PERSISTED_UI_KEY, value: JSON.stringify({ version: 2, tuning: { localMap: { searchStarts: 0, step: "least", cutCounted: "on" } } }) });
+  await page.goto(`/?view=local&node=${subject}`);
+  await localMapStill(page);
+  // Pressed by its own click: where the handle stands is not what is read here.
+  await page.getByRole("button", { name: `Open ${history}`, exact: true }).evaluate((handle: HTMLElement) => handle.click());
+  await expect(page.locator(`.local-directory-label[data-directory="${history}"]`)).toHaveCount(1, { timeout: 15_000 });
+  await localMapStill(page);
+  /** What the signs say beside what the page shows: the directory's cards past each edge, each once, at the edge it reaches farthest past. */
+  const read = () => page.evaluate(directory => {
+    const band = document.querySelector(`.local-directory-label[data-directory="${directory}"]`)!.closest(".local-directory-band")!;
+    const frame = document.querySelector(".map-cut-signs")!.getBoundingClientRect();
+    const shown: Record<string, number> = {};
+    for (const card of band.querySelectorAll<HTMLElement>(".node-card[data-id], .local-directory-closed[data-directory]")) {
+      const rect = card.getBoundingClientRect();
+      const beyond: Array<[string, number]> = [["left", frame.left - rect.left], ["right", rect.right - frame.right], ["top", frame.top - rect.top], ["bottom", rect.bottom - frame.bottom]];
+      const farthest = beyond.filter(([, by]) => by > 0.5).sort((a, b) => b[1] - a[1])[0];
+      if (farthest) shown[farthest[0]] = (shown[farthest[0]] ?? 0) + 1;
+    }
+    const said = Object.fromEntries([...document.querySelectorAll<HTMLElement>(".map-cut-sign:not([hidden])")].map(sign => [sign.dataset.edge!, Number(sign.textContent)]));
+    return { shown, said };
+  }, history);
+  const laidOut = await read();
+  expect(Object.keys(laidOut.said).length, "the opened directory goes on past an edge, and that is said").toBeGreaterThan(0);
+  expect(laidOut.said).toEqual(laidOut.shown);
+  await button(page).click();
+  await atRest(page, true);
+  const mirrored = await read();
+  expect(mirrored.said, "mirrored, the signs say where the cards lie now").toEqual(mirrored.shown);
+  expect(mirrored.shown, "and that is not where they lay").not.toEqual(laidOut.shown);
+  await button(page).click();
+  await atRest(page, false);
+  const back = await read();
+  expect(back.said).toEqual(back.shown);
+});
+

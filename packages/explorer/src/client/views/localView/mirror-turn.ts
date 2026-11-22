@@ -71,3 +71,19 @@ export function turnDistance(reach: number, viewWidth: number): number {
 export function turnStrength(angle: number): number {
   return 0.12 + 0.88 * Math.abs(Math.cos(angle * Math.PI / 180));
 }
+
+/** One moment of the motion as the browser is given it: how far through, the plane's angle, and the others' strength. */
+export interface TurnKeyframe { offset: number; angle: number; strength: number }
+
+/**
+ * The whole motion as keyframes, evenly spaced, the edge-on instant among them: the browser runs the turn from these
+ * without script, moving in a straight line between each two, so the plane, every card turned back against it and the
+ * fade stay together to the frame. Twenty steps follow the eased angle to within a third of a degree.
+ */
+export function turnKeyframes(form: Exclude<MirrorTurn, "cut">, toMirrored: boolean, steps = 20): TurnKeyframe[] {
+  const count = Math.max(2, 2 * Math.round(steps / 2));
+  return Array.from({ length: count + 1 }, (_, index) => {
+    const offset = index / count, angle = turnAngle(offset, form, toMirrored);
+    return { offset, angle, strength: turnStrength(angle) };
+  });
+}

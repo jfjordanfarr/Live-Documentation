@@ -1579,6 +1579,13 @@ export class LocalViewController implements LocalViewApi {
         writeReads(layer, reads);
         cameraAcross(mirrored ? axis.mirroredX : axis.laidOutX);
         this.measureLayoutExtents();
+        // What the last step opened has changed sides with everything else: its cards are measured again, or the
+        // cut's signs would go on counting where they lay (seen 2026-11-22: a sign at the right edge counting 32
+        // while the directory went on to the left).
+        if (this.cutStep) {
+          const opened = this.stepProduced(this.cutStep.step);
+          this.cutStep = opened ? { step: this.cutStep.step, cards: opened.cards } : null;
+        }
         this.updateMapTransform();
         this.drawConnections();
       },

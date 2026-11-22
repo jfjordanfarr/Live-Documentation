@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: `packages/explorer/src/client/views/localView/mirror-turn.test.ts`
-- Generated At: 2026-11-22T05:48:58.416Z
+- Generated At: 2026-11-22T07:19:56.656Z
 
 ## Authored
 ### Purpose
@@ -23,5 +23,7 @@ _No public symbols detected_
 ### Dependencies
 - [`mirror-turn.mirrorAxis`](./mirror-turn.ts.mdmd.md#symbol-mirroraxis-function)
 - [`mirror-turn.turnAngle`](./mirror-turn.ts.mdmd.md#symbol-turnangle)
+- [`mirror-turn.turnKeyframes`](./mirror-turn.ts.mdmd.md#symbol-turnkeyframes)
+- [`mirror-turn.turnStrength`](./mirror-turn.ts.mdmd.md#symbol-turnstrength)
 - `vitest` - `describe`, `expect`, `it`
 <!-- LIVE-DOC:END Dependencies -->
