@@ -8,6 +8,18 @@ Live Documentation turns source files into a map of what they expose and how the
 
 Who the owner is and how they work is in [owner.md](AI-Agent-Workspace/Memory/owner.md); what is decided, open and next in [direction.md](AI-Agent-Workspace/Memory/direction.md); unchosen ideas in [ideas.md](AI-Agent-Workspace/Memory/ideas.md). [The narrative](AI-Agent-Workspace/Memory/narrative.md) tells the workspace's story, and [the decisions log](.mdmd/layer-3/architectural-decisions.mdmd.md) explains consequential choices. Newer owner instructions supersede older ones. Historical certainty is evidence of what was said, not automatically a current decision.
 
+## Design philosophy
+
+Live Documentation exists so that a person's understanding of their own software does not run away from them. Five values serve that; [the philosophy](.mdmd/layer-1/design-philosophy.mdmd.md) gives each its sources in the owner's words, what it has decided and what it costs.
+
+- **A person can see it.** Read at a glance and explored without getting lost, by someone who is not a software person; almost no words of our own.
+- **The map does not lie.** Nothing drawn that the code does not make; what was unread, left out or hidden is said; a suggestion is never a fact; nothing grades itself.
+- **It is yours.** Local-first: your machine, a copy you hold, your code read as text and never run, nothing sent anywhere; your word honoured, nothing done in silence, everything able to be taken back.
+- **It meets you where you are.** A weak machine, an unannotated codebase, a language we did not plan for; a person at the page, an agent at the command line, a pipeline unattended: each gets everything, in its own form.
+- **As simple as possible, and no simpler.** One source of facts, one engine, one way of doing each thing; a second implementation of one problem means the architecture is wrong.
+
+They pull against each other, and the design is found between them: when two conflict, bend each in turn, measure, choose the form that gives up least, and say which value paid. A rule below that serves none of them is a rule to question.
+
 ## Working with the owner
 
 - **Lead developer.** You own the code: investigate, implement, verify, clean up. Debugging, equivalent refactors, justified dead-code removal and the higher-effort, clearly more correct solution need no approval. Every problem in this repository is ours, whenever it began.
