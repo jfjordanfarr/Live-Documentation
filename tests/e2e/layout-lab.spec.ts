@@ -17,14 +17,18 @@ import { AT_READING_SIZE, arriveAtReadingSize, localMapSettled, localRetainUrl }
  * Pretext has disagreed with the browser on a text.
  */
 for (const run of DECK_SCOPES) {
-  // Both of the repository's scopes run alone: each one's own work fills its half minute, so beside another worker's
-  // case it runs out, as the five files did in the gate of 2026-11-22. Alone on one worker that day, on a machine two
-  // other builders shared, the five files passed three times in four (31.8 to 39.5 s as the runner counts them, 45.8 s
-  // the time it ran out) and the chain ran out three times in three (42.7 to 57.3 s), having passed the gate's alone
-  // pass in 36.7 s. The time is the lab's own layout of a picture that grows with the repository, and ran out with no
-  // call to the page pending. The tag gives the case the machine; it does not make its work shorter, and the half
-  // minute is the framework's default, which nobody chose for this work (open that day). The estate's take seconds.
-  test(`the layout lab reproduces the page to the pixel: ${run.bundle}, ${run.scopeName}`, { tag: run.bundle === "repository" ? "@alone" : [] }, async ({ page }) => {
+  test(`the layout lab reproduces the page to the pixel: ${run.bundle}, ${run.scopeName}`, async ({ page }) => {
+    // The repository's two scopes are pictures of 114 and 132 cards, and their work is the page drawing one (5 to 6 s),
+    // the capture (6 to 7 s) and the lab laying it out in this process (7 to 9 s): 19 to 22 s, measured stretch by
+    // stretch on 2026-11-22 at a one-minute load of 4 to 6, two thirds of the framework's half minute and more, which
+    // nobody chose for this work. A minute is their budget: the work three times over, a guard against a hang and
+    // not their measure. Until that day the capture alone took 21 to 22 s of it (a write and a read for every
+    // control and chip of every card), the chain ran out its half minute alone three times in three, and both
+    // scopes ran alone (`@alone`), the chain since 2026-11-18; with the capture mended and the budget stated neither
+    // earns the tag, by the rule in `playwright.config.ts`: at two workers, beside the still-picture deck's cases on
+    // the same picture, each passed twice (22 to 29 s as the runner counts them). The estate's two take seconds on
+    // the default.
+    if (run.bundle === "repository") test.setTimeout(60_000);
     // The capture's subject is the picture at reading size, as the lab lays it out; it reads half a second after the
     // wires stand, which since 2026-11-22 is during the shipped arrival's rest, with the easing to another look still
     // to come under it. Held at reading size, as this file's other cases are; this is for what the capture reads and
