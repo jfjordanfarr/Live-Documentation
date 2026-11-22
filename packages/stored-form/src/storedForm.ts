@@ -1321,7 +1321,7 @@ export async function openScan(bytes: Uint8Array): Promise<Result<OpenedScan>> {
  * The reading both readers share: the quick open's checks, then each section inflated only when it is read, after the
  * checks on every section before it.
  */
-async function opening(bytes: Uint8Array): Promise<OpenedScan & { chunks: number; readChunk(k: number): Promise<StoredFile[]> }> {
+async function opening(bytes: Uint8Array): Promise<OpenedScan & { chunks: number; readChunk(k: number): Promise<StoredFile[]>; fileAt(i: number): StoredFile; forget(): void }> {
   {
     const { frames, cut } = hop(bytes);
     if (cut || frames[frames.length - 1]?.kind !== END) refuse("the file stops before its end: a stopped write, which `resumeFrom` can go on from");
@@ -1346,8 +1346,19 @@ async function opening(bytes: Uint8Array): Promise<OpenedScan & { chunks: number
     const checked: number[] = [];
     let stringsRead = 0;
     let met = 0;
-    const chunks = new Map<number, StoredFile[]>();
+    // The walk's state: each records section's inflated bytes, kept once checked, and the one section last decoded.
+    const kept: Uint8Array[] = [];
+    let last: { k: number; files: StoredFile[] } | undefined;
     let chunksRead = 0;
+    const decodeKept = (k: number): StoredFile[] => {
+      if (last?.k === k) return last.files;
+      const target = chunkFrames[k];
+      const first = k * CHUNK;
+      // Checked in the walk; decoded again here with every string already met.
+      const files = decodeChunk(kept[k], target.count, strings, strings.length, first > 0 ? paths[first - 1] : undefined, checked).files;
+      last = { k, files };
+      return files;
+    };
     const readChunk = async (k: number): Promise<StoredFile[]> => {
       // Every earlier section is read in order too, so that the strings' first-met numbering is checked as written.
       while (chunksRead <= k) {
@@ -1359,21 +1370,32 @@ async function opening(bytes: Uint8Array): Promise<OpenedScan & { chunks: number
           }
         }
         const first = chunksRead * CHUNK;
-        const decoded = decodeChunk(await rawOf_(target, "a section of records"), target.count, strings, met, first > 0 ? paths[first - 1] : undefined, checked);
+        const raw = await rawOf_(target, "a section of records");
+        const decoded = decodeChunk(raw, target.count, strings, met, first > 0 ? paths[first - 1] : undefined, checked);
         met = decoded.met;
         decoded.files.forEach((file, i) => {
           if (file.codePath !== paths[first + i]) refuse(`the paths name ${JSON.stringify(paths[first + i])} where the records hold ${JSON.stringify(file.codePath)}`);
           const wires = outboundOf(file, index);
           if (!equalLists(wires, outbound[first + i])) refuse(`the wires of ${JSON.stringify(file.codePath)} are not those its links name`);
         });
-        chunks.set(chunksRead, decoded.files);
+        kept.push(raw);
+        last = { k: chunksRead, files: decoded.files };
         chunksRead += 1;
       }
-      return chunks.get(k)!;
+      return decodeKept(k);
     };
     return {
       chunks: chunkFrames.length,
       readChunk,
+      // After the walk, nothing decoded is kept: what is held is the strings, the paths, the wires and the sections'
+      // inflated bytes.
+      forget: (): void => {
+        last = undefined;
+      },
+      fileAt: (i: number): StoredFile => {
+        if (Math.floor(i / CHUNK) >= chunksRead) throw new Error("a file asked before the walk reached it");
+        return decodeKept(Math.floor(i / CHUNK))[i % CHUNK];
+      },
       head,
       name: hex(name),
       paths,
@@ -1397,9 +1419,31 @@ function equalLists(a: readonly number[], b: readonly number[]): boolean {
 export async function readScan(bytes: Uint8Array): Promise<Result<Scan & { name: string }>> {
   return settle(async () => {
     const scan = await opening(bytes);
-    const files: StoredFile[] = [];
-    for (let k = 0; k < scan.chunks; k += 1) files.push(...(await scan.readChunk(k)));
-    return { head: scan.head, files, name: scan.name };
+    // The walk: every section read and checked in order, nothing of its facts kept.
+    for (let k = 0; k < scan.chunks; k += 1) await scan.readChunk(k);
+    scan.forget();
+    return { head: scan.head, files: lazyList(scan.paths.length, (i) => scan.fileAt(i)), name: scan.name };
+  });
+}
+
+/**
+ * A read-only list of `length` items, each made by `at` when it is read and not kept: an array to every reader of it
+ * (its length, its indexes, iteration, `map`, JSON), whose items are built only as they are asked for. An item read
+ * twice may be two equal objects, not one.
+ */
+function lazyList<T>(length: number, at: (i: number) => T): T[] {
+  const isIndex = (p: string | symbol): p is string => typeof p === "string" && /^(?:0|[1-9][0-9]*)$/u.test(p) && Number(p) < length;
+  const refuseWrite = (): boolean => {
+    throw new TypeError("a scan read back cannot be changed");
+  };
+  return new Proxy(new Array<T>(length), {
+    get: (target, p, receiver): unknown => (isIndex(p) ? at(Number(p)) : (Reflect.get(target, p, receiver) as unknown)),
+    has: (target, p) => isIndex(p) || Reflect.has(target, p),
+    ownKeys: () => [...Array.from({ length }, (_, i) => String(i)), "length"],
+    getOwnPropertyDescriptor: (target, p) => (isIndex(p) ? { value: at(Number(p)), writable: false, enumerable: true, configurable: true } : Reflect.getOwnPropertyDescriptor(target, p)),
+    set: refuseWrite,
+    defineProperty: refuseWrite,
+    deleteProperty: refuseWrite
   });
 }
 

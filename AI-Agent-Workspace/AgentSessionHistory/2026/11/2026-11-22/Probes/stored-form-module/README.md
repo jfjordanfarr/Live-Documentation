@@ -734,3 +734,90 @@ What it does not do as measured: bound the memory of one section. A section hold
 ### Commands the harness refused in the third leg
 
 One, by a safety check, not the worktree rule: a command whose `rm -f $S/*.ndjson` named a shell variable that would reach `/` were it empty. It was re-issued with `"${S:?}"` and no removals. Because the refused command had also held the `mkdir` of the scratch folder, the first try at making the stored files did nothing, and was run again.
+
+## Fifth milestone, fourth leg, 2026-11-22: the facts never built whole, and the fifteenth case green
+
+The root ruled on A:
+- **Design 1 is the format's answer, and is built.** A reader hands back a view.
+- **Design 2 is the page's own question**, for the work on the one page that scans.
+- **The inflation bound stays at 64.**
+
+### What the tab's worker showed, exactly, for the page's probe to start from
+
+From the third leg, with [`tab-worker.mjs`](tab-worker.mjs) in headless Chromium through the lane, on a page opened from disk (`file://`):
+- **Today's policy, `default-src 'none'; script-src 'sha256-<the page script's hash>'`.** `new Worker(URL.createObjectURL(new Blob([module text], { type: "text/javascript" })), { type: "module" })` is refused. The console said: "Creating a worker from 'blob:null/915249d3-4c03-4b79-ae0d-75bee030c849' violates the following Content Security Policy directive: "script-src 'sha256-2TxB17ZBBPagcYalo6ytC1YHxvrhrkR6gWUPrPVYp0s='". No…" (cut at 200 characters by the probe).
+- **The same policy with `; worker-src blob:` added.** The same call raised no exception, but the worker's `onerror` fired with an empty message, and the console held nothing. This was the same on DNN's page (3.06 MB) and on five times DNN's (8.64 MB).
+- **Not tried:**
+  - a classic worker, with the module's exports taken out;
+  - a worker from a `data:` URL;
+  - a page served over `http://` rather than opened from disk;
+  - reading the worker's own error from inside it.
+
+### The view, built
+
+- **The whole read is a walk.** `readScan` reads every section once, in order, with every check. It keeps:
+  - the string table, the paths and the wires;
+  - each records section's inflated bytes.
+  
+  It keeps no file's facts: the section it decoded last is let go when the walk ends.
+- **Its `files` is a view:** a read-only list whose items are decoded from their section's kept bytes when they are read, and not kept. To every reader of it, it is an array: its length, its indexes, iteration, `map`, `Array.isArray` and JSON all behave as on one. Writing to it is refused. An item read twice may be two equal objects, not one.
+- **The quick open** (`openScan`) now keeps only the section it last decoded, and decodes again from kept bytes a section asked for after the walk passed it.
+- **Specification:** section 6 now says what a reader promises:
+  - after the walk, memory is what the file inflates to;
+  - a file's facts are decoded when asked for, and what is held is what was asked for;
+  - **not yet:** a file's own lists are decoded whole when the file is asked for, so a million symbols' count still builds the million symbols. That is the next step of the view.
+  - The graph and the text are bounded by what they describe. A graph printed by a consumer is named as not bounded by the file's size: the second reading's fifth finding.
+
+**Result:**
+- **The review's fifteen cases all pass**, four still skipped for their reasons.
+- **Every other case of the package passes through the view unchanged**, the fuzzer's included.
+
+**On the three corpora, read through the view,** the graph still prints byte for byte as each `index.json`, and both round trips are exact:
+
+| Corpus | Files | Stored |
+| --- | ---: | ---: |
+| This repository | 1,336 | 1,125,314 B |
+| Estate | 41 | 7,872 B |
+| DNN | 10,777 | 2,238,800 B |
+
+**DNN, two runs at a load of 12 to 23:**
+
+| | First answer | Walk (facts read and checked) | The graph as asked | The whole graph | Peak |
+| --- | ---: | ---: | ---: | ---: | ---: |
+| | 162 to 194 ms | 1.18 to 1.48 s | 1.75 to 2.31 s | 1.88 to 2.10 s | 226 to 326 MB |
+
+The graph as asked now costs about 0.6 s more than the walk: its index pass reads every file through the view, so each file is decoded a second time. Gathering the inbound and documented-by numbers during the walk itself would remove that second decoding. It is not done.
+
+### The second reading's additions, done in this leg
+
+- **The end line's five forms** (its finding 2) are now cases: `[null, "end",3]`, a trailing space, `[null,"end", 3]`, `[ null,"end",3]` and `[null,"end",3.0]`. Each is refused. All five failed with the end line's check taken out, and passed when it was put back.
+- **The text's bound** (its finding 4) now has one reading: the text's own UTF-8 bytes, line breaks included (section 3.5, since the first leg).
+- **Nothing bounds a printed graph** (its finding 5) is named in section 6.
+- **Three passages that told a reader of blind readers were removed or made neutral:**
+  - section 3.5's Provenance, "Both blind readers stream the text and write it";
+  - section 3.2's naming of Python's and Go's inflaters;
+  - the new section 6's naming of the second reading.
+
+  The specification's opening lines, which the blind harness strips, still say what was read blind.
+
+### The unit project
+
+The first run of this leg failed 35 cases. Every one was the machine's, at a load of 35 with 1,749 processes:
+- 30 of the engine's discovery oracle, each a `git config` that failed without a word;
+- five five-second timeouts.
+
+Run alone at a load of 12, the discovery oracle passed 60 of 60 and the package's suite 23 of 23. **The whole project, run again at that load, passed whole:** 3,744 cases passed and 4 were skipped, in 246 files.
+
+### Not reached in the fourth leg
+
+- **A file's own lists, decoded as read.**
+- **The graph's index gathered during the walk.**
+- **The window and its case.**
+- **C and D.**
+- **The second reading's thirty-five questions, answered in the text.**
+- **G.**
+- **The page and bidirectional controls.**
+
+### Commands the harness refused in the fourth leg
+
+One: an empty heredoc left by mistake before a `grep`, refused as too complex to verify. It did not name git. The `grep` was run alone.

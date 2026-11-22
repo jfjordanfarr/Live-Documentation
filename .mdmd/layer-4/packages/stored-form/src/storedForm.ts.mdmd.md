@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: `packages/stored-form/src/storedForm.ts`
 - Entry: module of [`packages/stored-form/package.json`](../package.json.mdmd.md)
-- Generated At: 2026-11-22T05:38:30.573Z
+- Generated At: 2026-11-22T06:38:29.779Z
 
 ## Authored
 ### Purpose
@@ -236,21 +236,21 @@ section's header. What it has not read it has not checked: {@link readScan} read
 
 #### `readScan` {#symbol-readscan}
 - Type: function
-- Source: [source](../../../../../packages/stored-form/src/storedForm.ts#L1397)
+- Source: [source](../../../../../packages/stored-form/src/storedForm.ts#L1419)
 
 ##### `readScan` — Summary
 Reads and checks a whole scan: every section against its hash, every fact, and every derived section against what it derives from.
 
 #### `TEXT_FORMAT` {#symbol-text_format}
 - Type: const
-- Source: [source](../../../../../packages/stored-form/src/storedForm.ts#L1411)
+- Source: [source](../../../../../packages/stored-form/src/storedForm.ts#L1455)
 
 ##### `TEXT_FORMAT` — Summary
 The text form's first line names the layout: provisional, as {@link SIGNATURE} is.
 
 #### `textOfScan` {#symbol-textofscan}
 - Type: function
-- Source: [source](../../../../../packages/stored-form/src/storedForm.ts#L1503)
+- Source: [source](../../../../../packages/stored-form/src/storedForm.ts#L1547)
 - Parameters: `scan`: [`Scan`](#symbol-scan)
 
 ##### `textOfScan` — Summary
@@ -258,7 +258,7 @@ The text form of a scan: one fact a line, each line a JSON array, the head first
 
 #### `textOf` {#symbol-textof}
 - Type: function
-- Source: [source](../../../../../packages/stored-form/src/storedForm.ts#L1512)
+- Source: [source](../../../../../packages/stored-form/src/storedForm.ts#L1556)
 
 ##### `textOf` — Summary
 The text form of a stored scan's bytes: read and checked whole first, then written line by line and counted as it is
@@ -267,7 +267,7 @@ times, so a small file can have a very long text.
 
 #### `scanOfText` {#symbol-scanoftext}
 - Type: function
-- Source: [source](../../../../../packages/stored-form/src/storedForm.ts#L1525)
+- Source: [source](../../../../../packages/stored-form/src/storedForm.ts#L1569)
 - Returns: [`Result`](#symbol-result)
 
 ##### `scanOfText` — Summary
@@ -277,35 +277,35 @@ byte-order mark, decoded strictly; given a string, it is taken as those bytes de
 
 #### `bytesOfText` {#symbol-bytesoftext}
 - Type: function
-- Source: [source](../../../../../packages/stored-form/src/storedForm.ts#L1655)
+- Source: [source](../../../../../packages/stored-form/src/storedForm.ts#L1699)
 
 ##### `bytesOfText` — Summary
 Reads the text form and writes its layout: the bytes {@link textOf} came from, when it came from bytes.
 
 #### `EdgeKind` {#symbol-edgekind}
 - Type: type
-- Source: [source](../../../../../packages/stored-form/src/storedForm.ts#L1665)
+- Source: [source](../../../../../packages/stored-form/src/storedForm.ts#L1709)
 
 ##### `EdgeKind` — Summary
 How an edge arose.
 
 #### `GraphEdge` {#symbol-graphedge}
 - Type: interface
-- Source: [source](../../../../../packages/stored-form/src/storedForm.ts#L1668)
+- Source: [source](../../../../../packages/stored-form/src/storedForm.ts#L1712)
 
 ##### `GraphEdge` — Summary
 One reference a file makes, with the scanned file it lands on, if any.
 
 #### `GraphFile` {#symbol-graphfile}
 - Type: interface
-- Source: [source](../../../../../packages/stored-form/src/storedForm.ts#L1681)
+- Source: [source](../../../../../packages/stored-form/src/storedForm.ts#L1725)
 
 ##### `GraphFile` — Summary
 One file of the graph: its facts without what its links name, and its edges and wires.
 
 #### `DocumentationEdge` {#symbol-documentationedge}
 - Type: interface
-- Source: [source](../../../../../packages/stored-form/src/storedForm.ts#L1706)
+- Source: [source](../../../../../packages/stored-form/src/storedForm.ts#L1750)
 
 ##### `DocumentationEdge` — Summary
 One reference a symbol's documentation makes to a scanned file: the author's word that the two are related, which
@@ -313,7 +313,7 @@ is not a use, so that nothing that follows the edges or the wires follows it.
 
 #### `Graph` {#symbol-graph}
 - Type: interface
-- Source: [source](../../../../../packages/stored-form/src/storedForm.ts#L1716)
+- Source: [source](../../../../../packages/stored-form/src/storedForm.ts#L1760)
 - Extends: [`Location`](#symbol-location)
 
 ##### `Graph` — Summary
@@ -321,7 +321,7 @@ The graph of a scan: its location and every file keyed by path, in path order.
 
 #### `docPathOf` {#symbol-docpathof}
 - Type: function
-- Source: [source](../../../../../packages/stored-form/src/storedForm.ts#L1723)
+- Source: [source](../../../../../packages/stored-form/src/storedForm.ts#L1767)
 - Parameters: `location`: [`Location`](#symbol-location)
 
 ##### `docPathOf` — Summary
@@ -329,7 +329,7 @@ Where a file's document is: the location's root, its base layer, and the path wi
 
 #### `GraphView` {#symbol-graphview}
 - Type: interface
-- Source: [source](../../../../../packages/stored-form/src/storedForm.ts#L1736)
+- Source: [source](../../../../../packages/stored-form/src/storedForm.ts#L1780)
 - Extends: [`Location`](#symbol-location)
 
 ##### `GraphView` — Summary
@@ -337,7 +337,7 @@ The graph of a scan, each file's part built only when it is asked for.
 
 #### `graphViewOf` {#symbol-graphviewof}
 - Type: function
-- Source: [source](../../../../../packages/stored-form/src/storedForm.ts#L1749)
+- Source: [source](../../../../../packages/stored-form/src/storedForm.ts#L1793)
 - Returns: [`GraphView`](#symbol-graphview)
 - Parameters: `scan`: [`Scan`](#symbol-scan)
 
@@ -349,7 +349,7 @@ rest wait until it is asked for. A link lands on a file when what it names was s
 
 #### `graphOf` {#symbol-graphof}
 - Type: function
-- Source: [source](../../../../../packages/stored-form/src/storedForm.ts#L1878)
+- Source: [source](../../../../../packages/stored-form/src/storedForm.ts#L1922)
 - Returns: [`Graph`](#symbol-graph)
 - Parameters: `scan`: [`Scan`](#symbol-scan)
 

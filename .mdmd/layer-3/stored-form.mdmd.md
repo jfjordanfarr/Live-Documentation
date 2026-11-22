@@ -96,7 +96,7 @@ Each section is a frame. Its 45-byte header is:
 - the distance codes 30 and 31, and the length codes 286 and 287, which it reserves;
 - bits left over after the final block, in its last byte.
 
-One inflater may accept such a stream where another refuses it. A reader refuses whatever its inflater refuses. What the format guarantees is this: every section's uncompressed bytes are checked against their hash, and the hash names one content. So two correct readers can never be shown two different maps from one file. At worst, one shows the map and the other refuses the file. Whether the inflaters in use today (zlib, which Node, Chromium and Python use, and Go's `compress/flate`) split on any of these streams is unmeasured. No mutant of the fuzzer found such a split, and none was built to look for one. One stream with its last byte's high bit set was accepted by Node's zlib with the same output. Whether that bit was padding was not established.
+One inflater may accept such a stream where another refuses it. A reader refuses whatever its inflater refuses. What the format guarantees is this: every section's uncompressed bytes are checked against their hash, and the hash names one content. So two correct readers can never be shown two different maps from one file. At worst, one shows the map and the other refuses the file. Whether two widely used inflaters split on any of these streams is unmeasured. No mutant of the fuzzer found such a split, and none was built to look for one. One stream with its last byte's high bit set was accepted by Node's zlib with the same output. Whether that bit was padding was not established.
 
 ### 3.3 The order of frames
 
@@ -144,7 +144,7 @@ A mebibyte (MiB) is 1,048,576 bytes.
   - It must say that it refuses the text, not the file. Such a file is valid: a reader reads it, answers from it, gives its graph and its content's name. Only its text is not offered.
   - A reader that writes the text anyway is right too, and writes the same text.
   - So the text requires that a file whose text is within the bound be written as text. Past it, writing and refusing are both correct.
-  - (**Provenance:** the module's `textOf` writes line by line, counted as written, and refuses past the bound. Both blind readers stream the text and write it.)
+  - (**Provenance:** the module's `textOf` writes line by line, counted as written, and refuses past the bound.)
 - `storedLength` must not run past the file's end. A header that does is a cut, not a refusal, while reading an unfinished file.
 - Inflation stops the moment it would give more than `rawLength`, and refuses.
 
@@ -312,11 +312,23 @@ A reader takes any bytes at all and returns facts or a refusal that says why. It
 - a whole read that inflated every frame before checking any;
 - and about 2,000 bytes of a reader's objects for each byte of the file, against the 64 the bound reckons.
 
-The first four are mended. The fifth is not a fault of a loop: the bound counts bytes inflated, while what a reader builds from them costs some thirty times more. By the rule that a guarantee broken twice by different means is not mended again, two designs are being measured in its place:
-- the facts never built whole, answered from the inflated sections as asked;
-- a reader run inside a worker with a memory ceiling.
+The first four are mended. The fifth is not a fault of a loop: the bound counts bytes inflated, while what a reader builds from them costs some thirty times more. By the rule that a guarantee broken twice by different means is not mended again, two designs were measured in its place, and the first was chosen:
+- **the facts never built whole, answered from the inflated sections as asked** (chosen);
+- a reader run inside a worker with a memory ceiling. This contains a cost without lowering it, and is the page's own question, not the format's.
 
-Until one is chosen, a reader's cost is bounded by the file's size only for the inflation (section 3.5), not for what it builds.
+**What a reader promises, with the facts never built whole:**
+- **The walk.** The whole read walks every section once, in order, with every check below. It keeps:
+  - the string table, the paths and the wires;
+  - each records section's inflated bytes.
+  
+  It keeps no file's facts. So after the walk, its memory is what the file inflates to, bounded by section 3.5, and its time is the walk's, linear in what the file inflates to.
+- **A file's facts are decoded when they are asked for,** from their section's kept bytes, and are not kept. What a reader then holds is what was asked for.
+  - Asking for one file decodes its section, at most 256 files and 64 MiB of records. So one file can still cost much: a section's records may build some thirty bytes of a reader's objects for each byte.
+  - A file's own lists are not yet decoded lazily, so asking for a file of a million symbols builds its million symbols.
+- **The graph and the text are made from what is asked for, and are bounded by it.** A graph holds an edge for each dependency and linked type it is made from, and a text a line for each fact. Each costs a reader's objects, or bytes written, in proportion to the facts it describes.
+  - A small file can describe many facts that name long strings. The graph shares such a string; it does not copy it.
+  - A text, or a graph printed as text, writes the string once for every naming. The text's own bound (section 3.5) refuses past the bound.
+  - **A graph printed by a consumer is not bounded by the file's size** (for example, a file of 442 bytes whose graph, printed, holds a long label once for every edge). Printing it is the consumer's act, and a consumer printing a stranger's graph owes it the text's bound.
 
 A reader does, in this order:
 

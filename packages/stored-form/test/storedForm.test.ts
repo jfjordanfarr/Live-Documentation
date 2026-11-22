@@ -307,6 +307,22 @@ describe("the text form's bytes, as the specification states them", () => {
   });
 });
 
+describe("the text's end line", () => {
+  // The five forms the second blind reading of 2026-11-22 found the module accepting before the end line was written
+  // again and compared (its finding 2): each is the end line of a text of three files, written another way.
+  const head = everyFact().head;
+  const empty = (codePath: string): StoredFile => ({ codePath, layer: 4, entries: [], authored: "", symbols: [], dependencies: [] });
+  const text = textOfScan({ head, files: [empty("a"), empty("b"), empty("c")] });
+  for (const end of ['[null, "end",3]', '[null,"end",3] ', '[null,"end", 3]', '[ null,"end",3]', '[null,"end",3.0]']) {
+    it(`is refused written ${JSON.stringify(end)}`, () => {
+      const variant = text.replace('[null,"end",3]', end);
+      expect(variant).not.toBe(text);
+      const read = scanOfText(variant);
+      expect(read.ok ? "read" : read.reason).toMatch(/line \d+ is not written as the text form writes it|is not JSON/u);
+    });
+  }
+});
+
 describe("names an object's prototype answers", () => {
   it("are files like any other: __proto__, constructor, toString and hasOwnProperty are each in the graph, wired, and a path no file has answers nothing", async () => {
     const names = ["__proto__", "constructor", "hasOwnProperty", "toString"];
