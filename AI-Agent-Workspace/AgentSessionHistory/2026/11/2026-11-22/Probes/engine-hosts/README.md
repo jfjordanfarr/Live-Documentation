@@ -132,3 +132,39 @@ The ASP.NET, project and C# dependency readers named no file probe by then; the 
 ## The six nested copies: the oracle's question, not Node
 
 Node documents `import.meta.resolve`'s second argument, the parent to resolve from, as honoured only under `--experimental-import-meta-resolve`. Without the flag it is ignored, and the name resolves from the asking script. Asked from `node_modules/eslint/consumer.mjs`, `eslint-visitor-keys` resolved to the top-level copy's `lib/index.js` without the flag and to the nested copy's with it. The oracle now asks with the flag: the six agree, and 279 of 281 packages agree, the two left being `punycode` and `string_decoder`, named as Node's own modules.
+
+## 2026-11-22, sixth milestone: what a kept file imports from code a scan leaves out
+
+Taken from `bcd44843b`. [`left-out-imports.mts`](left-out-imports.mts) runs, for every script file a scan keeps, the engine's own `collectDependencies` and `augmentWithReExportedSymbols` twice. The first run is as at the tip, a file asked of the disk. The second is with the run's listing, a file the scan leaves out never read. It uses a copy of the engine to which [`listed-resolution.py`](listed-resolution.py) re-applies the move of `dependencies.ts` that was undone. Nothing is generated, so it ran in place over the read-only corpora.
+
+| Folder | Files kept | Script files | Files whose answer changes | An import of a left-out file | `export *` from one | `export { … }` from one | Through `node_modules` | Re-exported names no longer known |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| this repository, its `node_modules` installed | 1,337 | 798 | 0 | 0 | 0 | 0 | 0 | 0 |
+| the 31 sample programs | | 45 | 0 | 0 | 0 | 0 | 0 | 0 |
+| the fixtures | | 15 | 0 | 0 | 0 | 0 | 0 | 0 |
+| DNN | | 1,992 | 0 | 0 | 0 | 0 | 0 | 0 |
+| mojoportal | | 1,142 | 0 | 0 | 0 | 0 | 0 | 0 |
+| OrchardCore | | 1,511 | 0 | 0 | 0 | 0 | 0 | 0 |
+| nopCommerce | | 466 | 0 | 0 | 0 | 0 | 0 | 0 |
+
+Load 11 to 16. No kept file of any of the seven imports or re-exports from a file the listing does not hold and the disk does. "Through `node_modules`" is none by construction. The TypeScript resolution resolves no bare package name into `node_modules`, only the workspace's own aliases into its own folders, so an import of a package is already labelled as written. The one input found where the answer changes is the history's made case, `tests/integration/live-docs/history-reading.test.ts`. There a kept file imports and re-exports from an excluded folder, and its labels and re-exported names are what would change. The measure holds no surprise.
+
+The graph's keys were mended in the same milestone: a folder holding files named `__proto__`, `constructor`, `toString` and `hasOwnProperty` could not be mapped at all before (`tests/integration/live-docs/prototype-names.test.ts`).
+
+## 2026-11-22, sixth milestone: three findings of the independent review, mended
+
+[The review](../engine-review/README.md) found three things in this road's code.
+
+- **The manifest reader read seven shapes unlike Node** (`json.exports-held-by-node.test.ts`, 7 red). These were `exports: null` beside `main`; a `null`, an empty list and a list of one `null` under a matching condition; targets with `..`, one of them climbing out of the package; and `.` keys mixed with condition keys. `packageModules` and `exportTarget` now follow Node's `PACKAGE_EXPORTS_RESOLVE` and `PACKAGE_TARGET_RESOLVE` as written. A target is refused unless it is `./` followed by segments none of which is empty, `.`, `..` or `node_modules`. A `null` under a matching condition ends that side. A list of fall-backs passes over a refused item and answers with its last item's answer. Mixed keys, and keys that are array indices, are refused. The seven are green, and they join the made shapes of `json.exports.test.ts`.
+- **The host was asked again and again for `go.mod` files that are not there** (`go.module-probe.test.ts`, 1 red). On `go/depot` that was 32 asks for eight absent files. `moduleOf` now asks the listing what lies at each folder's `go.mod` before reading it. The JSON reader's read-ahead of a tsconfig does the same, since a `package.json` with no `tsconfig.json` beside it asked the host once in each pass.
+- **The page check counted no failed read.** The page's own host (`tree.read` in `tests/page-scan/stand-ins/fs.mjs`) now counts every ask, found or not, so "read once" holds for both. The stand-in for `node:fs` still counts only a read that finds its file, since its asks are the docs', the sink's. Seen red on `go/depot` from a copy of the code before the Go mend. The case failed on "read once" alone, naming `report/go.mod` and `stock/go.mod` asked 8 times each, `store/go.mod` 6, and `cmd/depot/go.mod`, `cmd/go.mod`, `internal/audit/go.mod`, `internal/go.mod` and `store/memory/go.mod` twice each: 32 asks for eight absent files, the review's count: 37 files asked 61 times. On the mended code (`a4493e8ce`), the full check passed in all 51 folders, with the differences ledger empty and every ask counted: 20 fixtures in 2.9 min and 31 programs in 2.1 min, each in a hold of its own. The Go depot's 29 files were asked 29 times.
+
+## 2026-11-22, seventh milestone: what a scan leaves out is never read
+
+Root's ruling, measured in the section above to move no fact of real code, is built. `dependencies.ts` resolves a relative import among the files the run's listing holds (`pathKind` in `tooling/workspaceProbes.ts`), its re-export walk too, and asks the disk for nothing: `node-needs.json` lost its `node:fs/promises` `stat`, the last probe of a reader. An import the listing holds no file for is labelled as the kept file wrote it, and a re-export of everything it offers names nothing.
+
+- **This repository's docs.** Regenerated after the move: 8 docs updated, 1 created, and each is the doc of a file this milestone edited (`dependencies.ts`, `sourceAnalysis.ts`, `json.ts`, `node-needs.json` and the Explorer's four lookups), with the new test's own. No other doc moved.
+- **The run's last lines** count the two cases, each line a reason with its count and, under `--verbose`, its files: "imports of a path where the scan keeps no file, left unread and labelled as written" and "re-exports of everything a path offers where the scan keeps no file, their names unknown". This repository has neither. A made workspace (an included `src/index.ts` that re-exports all of an excluded `generated/api.ts`, imports an excluded `generated/types.ts` and a `./missing` that is not there) gave 1 and 2.
+- **The history's case** (`tests/integration/live-docs/history-reading.test.ts`) moved in the same commit, its reason in it: the labels are now `../generated/api` and `../generated/types` as written, and the re-exports are none. The other 13 cases pass, the history's last step still equal to a checkout.
+- **What a doc says.** Nothing yet beside the label. The scan cannot tell a path it leaves out from a path that is not there until the leave-out function answers for paths the listing never entered (step 5). A word beside every unresolved relative import would change the docs of imports of missing files, which the ruling does not move.
+- **The page check**, after the commit that built this: green in all 51 folders (20 fixtures, 31 programs), with no differences. Every file is read once but the six docs the ledger already names, which are the sink's business (step 6).

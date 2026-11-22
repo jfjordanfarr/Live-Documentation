@@ -1,0 +1,142 @@
+browser-lane: mirror holds the lane (waited 0.0 s, cap 300 s)
+[
+ {
+  "rate": 1,
+  "form": "turn",
+  "runs": [
+   {
+    "direction": "to mirrored",
+    "frames": 5,
+    "ms": 1217,
+    "longest": 500,
+    "over50": 3
+   },
+   {
+    "direction": "back",
+    "frames": 6,
+    "ms": 1467,
+    "longest": 500,
+    "over50": 4
+   }
+  ],
+  "cards": 84,
+  "wires": 218,
+  "errors": []
+ },
+ {
+  "rate": 1,
+  "form": "slide",
+  "runs": [
+   {
+    "direction": "to mirrored",
+    "frames": 6,
+    "ms": 1500,
+    "longest": 450,
+    "over50": 4
+   },
+   {
+    "direction": "back",
+    "frames": 6,
+    "ms": 1317,
+    "longest": 467,
+    "over50": 4
+   }
+  ],
+  "cards": 84,
+  "wires": 218,
+  "errors": []
+ },
+ {
+  "rate": 1,
+  "form": "cut",
+  "runs": [
+   {
+    "direction": "to mirrored",
+    "frames": 25,
+    "ms": 1017,
+    "longest": 350,
+    "over50": 4
+   },
+   {
+    "direction": "back",
+    "frames": 27,
+    "ms": 733,
+    "longest": 183,
+    "over50": 1
+   }
+  ],
+  "cards": 84,
+  "wires": 218,
+  "errors": []
+ },
+ {
+  "rate": 4,
+  "form": "turn",
+  "runs": [
+   {
+    "direction": "to mirrored",
+    "frames": 4,
+    "ms": 5950,
+    "longest": 3200,
+    "over50": 2
+   },
+   {
+    "direction": "back",
+    "frames": 5,
+    "ms": 5300,
+    "longest": 2500,
+    "over50": 3
+   }
+  ],
+  "cards": 84,
+  "wires": 218,
+  "errors": []
+ },
+ {
+  "rate": 4,
+  "form": "slide",
+  "runs": [
+   {
+    "direction": "to mirrored",
+    "frames": 4,
+    "ms": 3183,
+    "longest": 2417,
+    "over50": 2
+   },
+   {
+    "direction": "back",
+    "frames": 5,
+    "ms": 4950,
+    "longest": 2567,
+    "over50": 3
+   }
+  ],
+  "cards": 84,
+  "wires": 218,
+  "errors": []
+ },
+ {
+  "rate": 4,
+  "form": "cut",
+  "runs": [
+   {
+    "direction": "to mirrored",
+    "frames": 22,
+    "ms": 3300,
+    "longest": 2183,
+    "over50": 5
+   },
+   {
+    "direction": "back",
+    "frames": 21,
+    "ms": 2883,
+    "longest": 1867,
+    "over50": 5
+   }
+  ],
+  "cards": 84,
+  "wires": 218,
+  "errors": []
+ }
+]
+browser-lane: released after 115.1 s, exit 0

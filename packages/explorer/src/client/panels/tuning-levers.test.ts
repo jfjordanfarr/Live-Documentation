@@ -28,7 +28,8 @@ describe("tuning help", () => {
     // Way Down the same day, before Arrival, the trial of a way down from the World Map that carries its question;
     // Scan Growth and Scan Pace the same day, the 3D map's trial of a picture that fills as a scan would, and Drag
     // the same day in its forces, the trial of what is tied to a dragged sphere swinging after it.
-    expect(ids.length).toBe(82);
+    // Mirror Turn the same day in the 2D layout group, the trial of how the picture moves when the mirror button is pressed.
+    expect(ids.length).toBe(83);
     expect(Object.keys(TUNING_HELP).sort()).toEqual([...ids].sort());
   });
 
@@ -84,7 +85,7 @@ describe("the template's initial tuning values", () => {
   it("equal the defaults in getDefaultTuning for every control", () => {
     const defaults = getDefaultTuning();
     const ids = templateControlIds();
-    expect(ids.length).toBe(82);
+    expect(ids.length).toBe(83);
     for (const id of ids) {
       const { group, key } = settingOf(id, defaults);
       const expected = (defaults[group] as unknown as Record<string, unknown>)[key];

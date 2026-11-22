@@ -532,6 +532,28 @@ function typeReferencesOf(node: SyntaxNode | null, role: TypeReference["role"], 
   return references;
 }
 
+/**
+ * A parameter list's parameters as written, each with its modifiers (`ref Calc`, `out Calc`, `this Calc`) and its type,
+ * which tell one overload from another. The grammar reads a `params` parameter not as a parameter but as the keyword,
+ * its array type and its name, each a child of the list; it is kept as `params` and the type.
+ */
+function declaredParameters(parameterList: SyntaxNode): string[] {
+  const parameters: string[] = [];
+  let params = false;
+  for (const child of parameterList.children) {
+    if (!child) continue;
+    if (child.type === "params") params = true;
+    else if (child.type === "parameter") {
+      const modifiers = child.namedChildren.filter((part) => part.type === "modifier").map((part) => part.text);
+      parameters.push([...modifiers, fieldText(child, "type")].join(" "));
+    } else if (params && child.isNamed) {
+      parameters.push(`params ${child.text.replace(/\s+/gu, "")}`);
+      params = false;
+    }
+  }
+  return parameters;
+}
+
 function parameterReferences(parameterList: SyntaxNode | null): TypeReference[] {
   const references: TypeReference[] = [];
   for (const parameter of parameterList?.namedChildren ?? []) {
@@ -737,7 +759,7 @@ class FileExtractor {
     const names: SyntaxNode[]        = [];
     let typeReferences: TypeReference[] = [];
     const parameterList  = node.type === "method_declaration" || node.type === "constructor_declaration" ? node.childForFieldName("parameters") : null;
-    const parameterTypes = parameterList?.namedChildren.filter((child) => child.type === "parameter").map((parameter) => fieldText(parameter, "type"));
+    const parameterTypes = parameterList ? declaredParameters(parameterList) : undefined;
 
     switch (node.type) {
       case "field_declaration":
@@ -1426,19 +1448,65 @@ const TYPE_KEYWORDS: Readonly<Record<string, string>> = {
 };
 
 /**
- * A parameter's type as the reader can compare it: the last segment of its name, without type arguments, array or
- * pointer marks, `?`, a modifier or `global::`, and a keyword as the framework's name (`int` is `Int32`). The reader
- * resolves no parameter's type, so two types of one simple name in different namespaces are alike to it.
+ * A parameter as the reader can compare it with a reference's, keeping what tells overloads apart as C# does: the
+ * passing modifier (`ref`, `out`, `in`, `ref readonly`), and the type's simple name with its type arguments, each read
+ * the same way, and its array marks with their rank, pointer marks and `?`, in order. `params`, `this` and `scoped`
+ * tell no overload apart, and a reference does not write them. A keyword is the framework's name (`int` is `Int32`).
+ * The reader resolves no parameter's type, so two types of one simple name in different namespaces are alike to it.
  */
-function parameterShape(written: string): string {
-  let text = written.replace(/\s+/gu, " ").trim().replace(/^(?:(?:ref|out|in|params|this|scoped|readonly)\s+)+/u, "").replace(/^global::/u, "");
-  for (let previous = ""; previous !== text; ) {
-    previous = text;
-    text = text.replace(/<[^<>]*>|\{[^{}]*\}/gu, "");
+function parameterShape(written: string, annotations = true): string {
+  const words = written.replace(/\s+/gu, " ").trim().split(" ");
+  const modifiers: string[] = [];
+  while (words.length > 1 && /^(?:ref|out|in|params|this|scoped|readonly)$/u.test(words[0])) modifiers.push(words.shift()!);
+  const passing = modifiers.filter((modifier) => modifier === "ref" || modifier === "out" || modifier === "in" || (modifier === "readonly" && modifiers.includes("ref")));
+  return [...passing, typeShape(words.join(""), annotations)].join(" ");
+}
+
+/** The framework's types C# writes by a keyword that are values, whose `?` makes another type (`int?` is `Nullable<int>`). */
+const VALUE_KEYWORDS = new Set(Object.values(TYPE_KEYWORDS).filter((name) => name !== "String" && name !== "Object"));
+
+/**
+ * A type as {@link parameterShape} compares it: `Lib.Pair{Lib.Calc}[]` is `Pair<Calc>[]`, `System.Int32*` is `Int32*`.
+ * Without `annotations`, a `?` is dropped but on a value the reader knows to be one: on a reference type it is a
+ * nullable annotation, which no overload is told apart by; on a struct it is another type, which the reader cannot tell.
+ */
+function typeShape(written: string, annotations = true): string {
+  const text = written.replace(/\s+/gu, "").replace(/^global::/u, "").replace(/\{/gu, "<").replace(/\}/gu, ">");
+  const marks = /(?:\[,*\]|\*|\?)*$/u.exec(text)?.[0] ?? "";
+  const base  = text.slice(0, text.length - marks.length);
+  let name = base;
+  let args = "";
+  if (base.endsWith(">")) {
+    let depth = 0;
+    for (let index = base.length - 1; index >= 0; index -= 1) {
+      if (base[index] === ">") depth += 1;
+      else if (base[index] === "<" && --depth === 0) {
+        name = base.slice(0, index);
+        args = `<${splitTypeArguments(base.slice(index + 1, -1)).map((argument) => typeShape(argument, annotations)).join(",")}>`;
+        break;
+      }
+    }
   }
-  text = text.replace(/[\s?*&]|\[[,\s]*\]/gu, "");
-  const last = text.slice(text.lastIndexOf(".") + 1);
-  return TYPE_KEYWORDS[last] ?? last;
+  const last   = name.slice(name.lastIndexOf(".") + 1);
+  const simple = TYPE_KEYWORDS[last] ?? last;
+  return `${simple}${args}${annotations || (VALUE_KEYWORDS.has(simple) && args === "") ? marks : marks.replace(/\?/gu, "")}`;
+}
+
+/** Type arguments split at the commas outside every bracket. */
+function splitTypeArguments(text: string): string[] {
+  const parts: string[] = [];
+  let depth = 0;
+  let start = 0;
+  for (let index = 0; index < text.length; index += 1) {
+    if ("<([".includes(text[index])) depth += 1;
+    else if (">)]".includes(text[index])) depth -= 1;
+    else if (depth === 0 && text[index] === ",") {
+      parts.push(text.slice(start, index));
+      start = index + 1;
+    }
+  }
+  parts.push(text.slice(start));
+  return parts;
 }
 
 /** A declaration a reference lands on: the member, where the file shows it as a symbol, else the type that declares it. */
@@ -1455,12 +1523,17 @@ function typeTarget(record: TypeRecord): SymbolDocumentationTarget {
 /**
  * The members of a type a reference names, by name, in the parts the type is declared in, else, where `inherited`, in
  * the nearest type it inherits from that declares the name, as C#'s member lookup goes. Where the reference writes a parameter list, the
- * overloads whose parameters match it, by number and by each type's simple name ({@link parameterShape}); where none
- * matches so, those of its number of parameters; where none has that number, none. A constructor is named `#ctor` or
- * by the type's own name; a name alone never finds one.
+ * overloads whose parameters match it, by number and by each one's shape ({@link parameterShape}), a `?` on a type not
+ * known to be a value counted only where no overload matches with it; where none matches, the overloads the type
+ * inherits; where none there either, none: a name no overload answers is left as text, as the compiler leaves it, and
+ * never linked to an overload that only looks alike ("a suggestion is never a fact"). A constructor is named `#ctor`
+ * or by the type's own name; a name alone never finds one.
  */
 function namedMembers(records: TypeRecord[], name: string, parameters: string[] | undefined, table: TypeTable, narrow: Narrow, constructors: boolean, inherited = true): SymbolDocumentationTarget[] {
-  const levels: TypeRecord[][] = [records, ...(inherited ? inheritedTypes(records, table).map((qualified) => narrow(table.byQualifiedName.get(qualified) ?? []) ?? []) : [])];
+  // A constructor is not inherited; a type that declares none has the one C# gives it, declared where the type is.
+  const constructor = constructors && (name === "#ctor" || records.some((record) => record.type.name === name));
+  if (constructor && parameters?.length === 0 && !records.some((record) => record.type.members.some((member) => member.kind === "constructor"))) return records.map(typeTarget);
+  const levels: TypeRecord[][] = [records, ...(inherited && !constructor ? inheritedTypes(records, table).map((qualified) => narrow(table.byQualifiedName.get(qualified) ?? []) ?? []) : [])];
   for (const level of levels) {
     const found: Array<{ record: TypeRecord; member: DeclaredMember }> = [];
     for (const record of level) {
@@ -1474,10 +1547,12 @@ function namedMembers(records: TypeRecord[], name: string, parameters: string[] 
     if (found.length === 0) continue;
     let chosen = found;
     if (parameters !== undefined) {
-      const shapes   = parameters.map(parameterShape);
       const counted  = found.filter(({ member }) => member.parameterTypes?.length === parameters.length);
-      const matching = counted.filter(({ member }) => member.parameterTypes!.every((type, index) => parameterShape(type) === shapes[index]));
-      chosen = matching.length > 0 ? matching : counted;
+      const matching = (annotations: boolean) => counted.filter(({ member }) => member.parameterTypes!.every((type, index) => parameterShape(type, annotations) === parameterShape(parameters[index], annotations)));
+      const exact    = matching(true);
+      chosen = exact.length > 0 ? exact : matching(false);
+      // A method group holds the overloads a type inherits too, so one no overload here has is looked for there.
+      if (chosen.length === 0) continue;
     }
     const targets = new Map<string, SymbolDocumentationTarget>();
     for (const { record, member } of chosen) {
@@ -1515,8 +1590,8 @@ function resolveReference(written: string, scope: Scope, facts: FileFacts, table
   const found = resolvePrefix(chain, scope, facts, table, narrow, name.segments.map((segment) => segment.arity));
   if (!found || found.records.length === 0) return [];
   if (found.rest.length === 0) {
-    const constructors = name.parameters !== undefined ? namedMembers(found.records, "#ctor", name.parameters, table, narrow, true) : [];
-    return constructors.length > 0 ? constructors : found.records.map(typeTarget);
+    // A type's name with a parameter list names its constructor, and only that: none that matches, nothing.
+    return name.parameters !== undefined ? namedMembers(found.records, "#ctor", name.parameters, table, narrow, true) : found.records.map(typeTarget);
   }
   return found.rest.length === 1 ? namedMembers(found.records, found.rest[0], name.parameters, table, narrow, true) : [];
 }

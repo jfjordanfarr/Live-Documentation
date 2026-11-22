@@ -26,7 +26,7 @@
 import path from "node:path";
 
 import { LiveDocSyntaxError, parseLiveDoc } from "@live-documentation/engine/live-docs/document";
-import { deriveLiveDocGraph, linkTarget, type DocLocation, type GraphFile, type LiveDocGraph } from "@live-documentation/engine/live-docs/graph";
+import { deriveLiveDocGraph, fileAt, linkTarget, type DocLocation, type GraphFile, type LiveDocGraph } from "@live-documentation/engine/live-docs/graph";
 import { followLink, historyGit, spawnHistoryGit } from "@live-documentation/engine/live-docs/history/git";
 import { compareLinks, linksOf, type FileRows, type RowLink, type Rows } from "@live-documentation/engine/live-docs/history/rows";
 import type { Shape } from "@live-documentation/engine/live-docs/history/shape";
@@ -165,7 +165,7 @@ export function headDifferences(replayed: ReplayedMoment, committed: LiveDocGrap
   const differences: string[] = [];
   const paths = new Set([...Object.keys(committed.files), ...replayed.rows.keys()].filter((file) => !notCompared.has(file)));
   for (const path of [...paths].sort(compare)) {
-    const file = committed.files[path];
+    const file = fileAt(committed.files, path);
     const rows = replayed.rows.get(path);
     if (file === undefined) {
       differences.push(`${path} is in the history's last step and no doc of it is committed`);

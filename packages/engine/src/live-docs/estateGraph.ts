@@ -24,7 +24,7 @@
 
 import { DOOR_KINDS } from "./board";
 import { symbolName } from "./document";
-import type { DocLocation, GraphEdge, GraphFile, LiveDocGraph } from "./graph";
+import { type DocLocation, type GraphEdge, type GraphFile, graphFilesByPath, type LiveDocGraph } from "./graph";
 import { ADDRESS_KIND, MANIFEST_KINDS, PROJECT_KINDS, ROUTE_KIND, SQL_OBJECT_KINDS, parseRouteSymbol, routesMatch, sqlNameMatches, sqlObjectName } from "./openings";
 
 // ============================================================================
@@ -76,7 +76,7 @@ export function deriveEstateGraph(scans: EstateScan[], location: DocLocation): L
     return scans[0].graph;
   }
 
-  const files: Record<string, GraphFile> = {};
+  const files = graphFilesByPath();
   const scanOf = new Map<string, number>();
   for (const [index, scan] of scans.entries()) {
     const prefixed = (p: string): string => (scan.folder ? `${scan.folder}/${p}` : p);
@@ -150,7 +150,7 @@ export function deriveEstateGraph(scans: EstateScan[], location: DocLocation): L
     file.inbound.sort(compare);
   }
 
-  const sorted: Record<string, GraphFile> = {};
+  const sorted = graphFilesByPath();
   for (const key of Object.keys(files).sort(compare)) {
     sorted[key] = files[key];
   }

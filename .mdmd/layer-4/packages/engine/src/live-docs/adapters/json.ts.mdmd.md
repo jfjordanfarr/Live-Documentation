@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/engine/src/live-docs/adapters/json.ts`
-- Generated At: 2026-11-22T05:03:57.996Z
+- Generated At: 2026-11-22T06:30:47.100Z
 
 ## Authored
 ### Purpose
@@ -35,6 +35,8 @@ Polyglot language adapter for JSON files: file-path references in configuration 
   `filesRunBy`'s remarks list the answers still known to be wrong, and a test pins each one.
 - Since 2026-11-21 the tsconfig beside a manifest is read with names taken as written (`useCaseSensitiveFileNames: true` in `compilerPaths`), where before the setting was asked of TypeScript's host on Node, `ts.sys`. Its answer differed between Windows and Linux for the same folder, and in a browser page, where TypeScript has no host, the read threw and the manifest was not mapped: the only difference [the check that the engine runs in a page](../../../../../tests/page-scan/differences.json.mdmd.md) found over every fixture ([the November 21 record, Turn 2](../../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-21/2026-11-21.1.record.md#turn-2)). The parse of every tsconfig in this repository and its fixtures gives the same `outDir` and `rootDir` under either setting, and so does a constructed one with capitals in its paths and its `extends`; a test holds the reader to one result with the host as it is, answering that names fold, and absent.
 - Since 2026-11-22 the files a package's own name loads are taken as Node takes them (`packageModules`): from `exports` when the manifest has it, for the subpath `.`, written as a string, a list of fall-backs, or conditions, and then `main` is not read, since Node does not read it; from `main` otherwise. The conditions read are those Node matches by default, for a program that imports the package and for one that requires it (`node`, `node-addons`, `import` or `require`, `module-sync`, `default`), and not `types`, which names declarations, nor a bundler's own. A manifest whose `exports` holds patterns alone, as the engine's and the Explorer's do, has no module entry. Before, `main` alone was read, so `packages/stored-form/src/storedForm.ts`, named only as `exports["."].default`, was no entry. `json.exports.test.ts` holds eleven shapes to Node's own resolver, asked both ways. Later the same day, held to Node over every package of this repository's `node_modules` (`tests/integration/live-docs/package-modules.oracle.test.ts`), the reader also follows Node's legacy resolution of `main`. It tries the path `main` names, then that path with `.js`, `.json` or `.node`, then its `index` with each, and last the package's own `index`. The first of these that the listing holds is the entry, so a package with no `main` and an `index.js` has that file as its module. 273 of 281 packages agree, where 229 did.
+- Later still on 2026-11-22, after an independent review found seven shapes no installed package holds read unlike Node, `packageModules` and `exportTarget` follow Node's documented algorithm step for step (`PACKAGE_EXPORTS_RESOLVE`, `PACKAGE_TARGET_RESOLVE`). `exports` is read only when neither `null` nor `undefined`. A `null`, an empty list or a list ending in `null` under a matching condition ends that side, with nothing exported. A target is refused unless it is `./` followed by segments none of which is empty, `.`, `..` or `node_modules`. A manifest mixing keys that begin with `.` with keys that do not, or holding a key that is an array index, is refused. All seven now agree, and so does every package of `node_modules` (279 of 281, the oracle asked properly).
+- The tsconfig the read-ahead wants is asked of the run's listing before it is read, so that a `package.json` with no `tsconfig.json` beside it asks the host nothing, where it asked once in each pass before (2026-11-22, with the page check counting failed reads).
 - Since 2026-11-22 the tsconfig is read through the run's reads, ahead of TypeScript's host, which must answer at once (`compilerPaths`; [the road to one engine for a page and a command line](../../../../../../layer-3/engine-and-hosts.mdmd.md#6-the-road), step 3).
 
 ## Generated
@@ -42,26 +44,31 @@ Polyglot language adapter for JSON files: file-path references in configuration 
 ### Public Symbols
 #### `packageModules` {#symbol-packagemodules}
 - Type: function
-- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/json.ts#L136)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/json.ts#L141)
 
 ##### `packageModules` — Summary
 The files a package's own name loads, as Node resolves it, each as the paths Node tries in its order, the first that
-is a file being the one: from `exports` when the manifest has it, for the subpath `.` (a string, a list of
-fall-backs, or conditions, written under `.` or as the whole of `exports`), one path, and then `main` is not read, as
-Node does not read it; otherwise by Node's legacy resolution of `main`: the path it names, then with `.js`, `.json`
-or `.node` after it, then its `index` with each of those, and last the package's own `index.js`, `index.json` or
-`index.node`, which is all there is to try without `main`. One list for a program that imports the package and one
-for a program that requires it, when the two differ. A manifest whose `exports` names no `.`, only patterns such as
-`./*`, has no file its name loads.
+is a file being the one. One list for a program that imports the package and one for a program that requires it,
+when the two differ.
 
-Until 2026-11-22 only `main` was read, as written, so a package that names its entry in `exports` alone, as
-`packages/stored-form` does, had none, nor did one whose `main` leaves off its extension or names a folder, nor one
-with no `main`. Held to Node's own resolver over every package of this repository's `node_modules`
-(`tests/integration/live-docs/package-modules.oracle.test.ts`).
+Node's resolution as its documentation writes it ("Resolution algorithm specification", `PACKAGE_EXPORTS_RESOLVE` and
+`PACKAGE_TARGET_RESOLVE`), step for step, so that a shape nobody thought of is answered as Node answers it:
+- `exports` is read when it is neither `null` nor `undefined`, and then `main` is not read; otherwise Node's legacy
+  resolution of `main`: the path it names, then with `.js`, `.json` or `.node` after it, then its `index` with each,
+  and last the package's own `index.js`, `index.json` or `index.node`, which is all there is to try without `main`.
+- `exports` that mixes keys beginning with `.` and keys that do not is refused, as Node refuses the manifest
+  (`ERR_INVALID_PACKAGE_CONFIG`); so is one with a key that is an array index.
+- The subpath `.` is `exports` itself when it is a string, a list, or conditions with no key beginning with `.`;
+  else its `.` key. A manifest whose `exports` names no `.`, only patterns such as `./*`, has no file its name loads.
+- A target is resolved by `exportTarget`; one that resolves to nothing, or that Node refuses, loads nothing.
+
+Until 2026-11-22 only `main` was read, as written. Held to Node's own resolver over every package of this
+repository's `node_modules` (`tests/integration/live-docs/package-modules.oracle.test.ts`) and over made shapes no
+installed package holds (`json.exports.test.ts`, the independent review's shapes among them).
 
 #### `collectKeyPaths` {#symbol-collectkeypaths}
 - Type: function
-- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/json.ts#L674)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/json.ts#L707)
 
 ##### `collectKeyPaths` — Summary
 Every key path in a JSON document, joined with `:` the way `IConfiguration` addresses
@@ -69,7 +76,7 @@ nested settings (`Hangfire:Queue`). Arrays are not descended into.
 
 #### `jsonAdapter` {#symbol-jsonadapter}
 - Type: const
-- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/json.ts#L688)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/json.ts#L721)
 - Returns: [`LanguageAdapter`](./index.ts.mdmd.md#symbol-languageadapter)
 
 ##### `jsonAdapter` — Summary

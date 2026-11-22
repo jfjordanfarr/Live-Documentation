@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/explorer/src/client/layout-presets.ts`
-- Generated At: 2026-11-22T05:54:17.859Z
+- Generated At: 2026-11-22T07:05:34.020Z
 
 ## Authored
 ### Purpose
@@ -122,7 +122,7 @@ holding its ground.
 
 #### `layoutSettingsOf` {#symbol-layoutsettingsof}
 - Type: function
-- Source: [source](../../../../../../packages/explorer/src/client/layout-presets.ts#L129)
+- Source: [source](../../../../../../packages/explorer/src/client/layout-presets.ts#L130)
 - Returns: [`LayoutSettings`](#symbol-layoutsettings)
 - Parameters: `tuning`: [`TuningConfig`](./types.ts.mdmd.md#symbol-tuningconfig)
 
@@ -131,7 +131,7 @@ Snapshot the controls that affect packing and spatial encodings, independent of 
 
 #### `applyLayoutSettings` {#symbol-applylayoutsettings}
 - Type: function
-- Source: [source](../../../../../../packages/explorer/src/client/layout-presets.ts#L144)
+- Source: [source](../../../../../../packages/explorer/src/client/layout-presets.ts#L145)
 - Returns: [`TuningConfig`](./types.ts.mdmd.md#symbol-tuningconfig)
 - Parameters: `tuning`: [`TuningConfig`](./types.ts.mdmd.md#symbol-tuningconfig); `settings`: [`LayoutSettings`](#symbol-layoutsettings)
 
@@ -165,6 +165,7 @@ picture). So a link made with the defaults shows them in a browser whose own tun
 - [`types.GROUP_WRAPPERS`](./types.ts.mdmd.md#symbol-group_wrappers)
 - [`types.HIDDEN_FILES_LOOKS`](./types.ts.mdmd.md#symbol-hidden_files_looks)
 - [`types.LocalMapTuning`](./types.ts.mdmd.md#symbol-localmaptuning)
+- [`types.MIRROR_TURNS`](./types.ts.mdmd.md#symbol-mirror_turns)
 - [`types.OVERVIEW_FILES`](./types.ts.mdmd.md#symbol-overview_files)
 - [`types.SCAN_GROWTHS`](./types.ts.mdmd.md#symbol-scan_growths)
 - [`types.SCAN_PACES`](./types.ts.mdmd.md#symbol-scan_paces)

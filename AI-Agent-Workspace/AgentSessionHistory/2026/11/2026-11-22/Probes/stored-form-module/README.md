@@ -499,3 +499,325 @@ All of these passed:
 ### Commands the harness refused in the fourth milestone
 
 None.
+
+## Fifth milestone, 2026-11-22, first leg: the review's plain faults mended, the text against the module, and the links measured
+
+I merged the day's tip (`46e13bf60`), then the reviewer's branch (`418c0b821`), both without conflict. [The review's record](../stored-form-review/README.md) and its test file were read whole first. The review's own words and cases were left as they were.
+
+### B. The plain faults, mended
+
+Each mend was checked against the reviewer's case, and no case was touched.
+- **1 and 2, the text export.** The text is now written line by line and counted as it is written, in UTF-8 bytes, line breaks included. Before each line is built, the bytes its path and names will take are counted, so no line is built past the bound. There is no spread call. The text's bound is now on the text itself (section 3.5), which ends both breaks.
+- **3, the graph's sorts.** Wires, inbound and documented-by are now file numbers sorted as numbers. Each target is looked up once by its path, so no path is compared twice.
+- **4, the whole read.** It now inflates each section only when it reads it, after the checks on every section before it. Each frame's count is also checked against what its raw length can hold, from the header alone and before anything is inflated: a string takes 1 byte, a record 7, a path 2, a file's wires 1. Section 2.1 lists these.
+- **6, the end line.** It is now written again and compared, as every other line is.
+- **7, names an object's prototype answers.** The graph's files are keyed in an object without a prototype. A new case holds that `__proto__`, `constructor`, `toString` and `hasOwnProperty` are files like any other, each wired, and that a path no file has answers nothing. It failed against the module before this mend and passes now.
+- **8, the section limit.** A text's facts are now sized into the sections the layout would hold, by its own grammar and compressed by nobody. Section 8's list of what makes a valid text names this.
+
+**The review's cases:** 13 of its 15 that failed now pass. The two still failing are A's:
+- the memory a byte of the file costs once its facts are built (finding 5);
+- the fuzzer reaching a section's grammar (finding 12, which is F).
+
+The three corpora were checked again after B. On each, the graph read back prints byte for byte as its `index.json`, and both round trips are exact:
+
+| Corpus | Files | Stored | `index.json` gzipped |
+| --- | ---: | ---: | ---: |
+| This repository | 1,336 | 1,125,106 B | 1,424,603 B |
+| Estate | 41 | 7,841 B | 10,526 B |
+| DNN | 10,777 | 2,238,231 B | 3,790,747 B |
+
+**What B4 costs.** At a load of 20, interleaved, DNN's facts took 3.2 to 3.3 s against JSON's 2.2 to 2.7 s. The last milestone's concurrent inflation had made them 553 to 595 ms against 600 to 664 ms on a quiet machine. Inflating strictly in order, as B4 asks, gives that lead back.
+- **Not yet measured:** the same on a quiet machine.
+- **A fork for the root:** a window of a few sections inflated ahead would bound the wasted work by a constant number of sections, and keep most of the concurrency.
+
+### E. The text against the module
+
+Section 5 now says **every dependency makes an edge**, with a link or not. One without a link has no `link` and no `to`. The section keeps a note of the earlier sentence and its cost: a reader built from it gave 6,576 fewer edges on DNN.
+
+The two text refusals that named the wrong line now name the right one:
+- a line not written as the text form writes it is named by its own number, not by the line after its block;
+- a line after the end line is named by its own number.
+
+### H. What was read blind
+
+The specification's opening paragraph now says which text was read blind, and when:
+- the text as it stood at 02:56 UTC;
+- not what came after: the documentation references, the extension's rule, and this day's later mends;
+- a second reading runs on the text of 04:40, and a third follows once the format rests.
+
+### A. The cost guarantee
+
+Section 6's sentence on cost is now marked in the text as not holding and under redesign. The marking names the review's five breaks, the four now mended, and the two designs to be measured. **Neither design is measured yet.**
+
+### C. A link and what it names: measured
+
+[`link-facts.ts`](link-facts.ts) measured every link field of the three corpora against the engine's rule, `linkTarget`, given the head's location:
+
+| Corpus | Links that carry a target | Stored equals the engine's rule | Given no target | Deriving every target | File with targets → without |
+| --- | ---: | ---: | ---: | ---: | --- |
+| This repository | 9,153 | 9,153 | 0 | 43 ms | 1,125,085 → 1,105,803 B (−1.7 %) |
+| Estate | 177 | 177 | 0 | 1 ms | 7,840 → 7,528 B (−4.0 %) |
+| DNN | 48,689 | 48,689 | 0 | 269 ms | 2,238,226 → 2,124,866 B (−5.1 %) |
+
+**What the agreement means:** the probe's sink makes its targets with that same rule, so the agreement holds by construction. What the numbers show is that every link derives. A real sink's agreement can be measured only once the two are wired.
+
+**What deriving costs.** 269 ms on DNN with the engine's functions as written, which build a document path for each link. Links repeat within a folder, so a cache by folder and link would cut it; that was not measured.
+
+**The fork, with its numbers:**
+- **Derive.** One fact in one place, and the file 1.7 to 5.1 % smaller. The rule (the markdown link rule's fragment, query and percent-decoding, the folding of `.` and `..`, the docs' prefix and the case-folded extension) goes into the module and the specification in full.
+- **Store both, and refuse a file where they differ.** The reader carries the same rule, and the file keeps the extra 1.7 to 5.1 %.
+
+Both need the rule in the reader, so the numbers favour deriving, as the root leans. It is not built yet: it changes the format, and is the next leg's first work.
+
+### D. What the link fields hold
+
+On the three corpora, the fields that carry a target hold only relative paths (8,142, 177, 45,122) and fragments of the document itself (1,011, 0, 3,567).
+- **No link field holds a scheme**, so every web link is in documentation lines, which are words. That confirms the root's expectation.
+- **The fields that carry no target hold relative paths and fragments too:** sources (3,917, 105, 39,086), cited-by, entries' declarers and symbols, and re-exports' origins.
+
+**The brief's rule cannot be taken as written.** "Nothing climbing above the docs' root" would refuse every source link and every cited-by link, since those climb out of the documents to the scanned folder's own files. The rule to state and measure is **nothing climbing above the scanned folder**, along with no scheme and no NUL. It has not yet been measured, nor refused anything.
+
+The page's handling of bidirectional controls in a name has not yet been looked at.
+
+### What held in this leg
+
+All of these passed:
+- `npm run lint` and `npm run build`;
+- the three audits and `docs:links:enforce`;
+- `live-docs:generate` and its `--check`.
+
+The whole unit project, run once: 3,737 cases passed and 4 were skipped. Two failed, both the review's, and both are expected:
+- finding 5, which waits on A;
+- finding 12, which is F.
+
+### Not reached in this leg
+
+- **C and D built:** the format's change.
+- **A's two designs, measured.**
+- **F:** the reviewer's raw fuzzer as the fuzzer's second stage, and cases for the 56 refusals that have none.
+- **G:** the Windows hazards.
+- **The review's finding 5**, which waits on A.
+
+### Commands the harness refused in this leg
+
+None.
+
+## Fifth milestone, second leg, 2026-11-22: the fuzzer reaches the grammar; inflating ahead measured
+
+The root ruled on the first leg's forks:
+- the link rule is mine: nothing climbing above the scanned folder, no scheme, no NUL;
+- inflating ahead is to be decided by a quiet measure of strict against a bounded window.
+
+### F. The fuzzer's second stage: the review's twelfth case is green
+
+The package's mutants (`test/fuzz/mutants.mjs`) now have a second stage, the review's raw-section fuzzer taken in. On every odd seed but a bomb's, one section's uncompressed bytes are changed in one of nine ways: a bit, a byte set, a byte put in or taken out, a number written longer, a count one off, two bytes swapped, a byte one off, a section cut. The file is set down again with every hash and the end right, so that the mutant reaches the section's grammar.
+
+Two more changes to the harness:
+- **The worker gains the review's oracle.** What a reader accepts and can write again is written again and read back. A different content name is a finding ("a second name").
+- **The harness goes on after a hang**, from the next seed, in a fresh worker. It used to stop at the first hang, and with the second stage the careless reader hung at seed 1, hiding every fault after it.
+
+**What the cases show:**
+- **The review's case "reaches the grammar of a section"** (at least a tenth of the mutants refused by a section's grammar) now passes. It failed before.
+- **The fuzzer's own cases pass.** The real reader returns facts or a refusal for all 800 mutants, within its bounds, with no second name. The careless reader is still found out in at least two ways.
+
+**The review's fifteen cases:** fourteen now pass. The one still failing is finding 5, the memory a byte of the file costs once its facts are built, which is A's.
+
+### B4. Inflating ahead, measured
+
+[`window.mjs`](window.mjs) writes a copy of the module with a window. The window inflates ahead, in order, only sections whose headers have passed every header-only check, and holds the raw bytes in flight within a constant. The probe times the whole read with and without it, interleaved, seven runs each. The machine was never quiet: other agents held its load at 11 to 17.
+
+| Median of 7 | Strict | 8 MiB window | Strict | 32 MiB window |
+| --- | ---: | ---: | ---: | ---: |
+| DNN, 10,777 files | 1,345 ms | 927 ms | 816 ms | 655 ms |
+| Five times DNN, 53,885 files | 2,395 ms | 2,241 ms | 2,847 ms | 2,336 ms |
+
+**Strict is not within the noise of the window.** It is 20 to 30 % slower on DNN in both pairs, and 6 to 18 % at five times. So by the ruling the window is to be built, and its waste stated as its constant: at most the window's raw bytes, inflated ahead of the section being checked.
+
+**Not built yet,** nor its case. A case that holds the bound needs a hostile file whose refusal comes only in its records, after valid paths and wires for every file the records declare. With sections of compressible bytes, the inflation bound refuses such a file before it reaches the records. The way I see: a file of a few incompressible 1 MiB records sections, the first refused, and a case holding that what is inflated ahead stays under the window's constant, measured as memory against the window. That is the next leg's first work, with the window set at 8 MiB unless the root prefers more speed for more memory.
+
+Five times DNN, written as facts arrive from disk for these measures, took 8.3 s at a 251 MB peak (6,427,108 bytes). DNN took 2.4 s at 206 MB (2,238,498 bytes).
+
+### What held in the second leg
+
+The whole unit project, run once: 3,738 cases passed and 4 were skipped. One failed, the review's fifth, which waits on A.
+
+Lint, the audits, `docs:links:enforce` and `live-docs:generate` passed too.
+
+### Not reached in the second leg
+
+- **The window built**, with its case.
+- **C built:** targets and anchors derived, the rule in the specification in full, and what caching by folder buys.
+- **D built:** the link rule measured, stated and refused.
+- **A's two designs**, measured on DNN and five times DNN, under Node and in a tab. They decide the review's fifth case.
+- **G:** the Windows hazards.
+- **What the page does with a name holding bidirectional controls.**
+
+### Commands the harness refused in the second leg
+
+None.
+
+## Fifth milestone, third leg, 2026-11-22: the two designs for a reader's cost, measured
+
+The root's order: measure A's two designs first, since they decide the review's last red case and whether a whole read survives. The window waits on that, and C, D and G follow. Nothing was built; these are measures.
+
+### What the consumers ask
+
+From the page's own code:
+- **The map** (the world map's model and controller) reads every file's paths, edges or wires, archetype and entries.
+- **The search** (`graph-search.ts`, `search-field.ts`) walks every file's symbols for their names.
+- **The reader's pane** (the detail panel, `sources-facts.ts`) reads one file's whole facts.
+- **The command line** asks one file's facts, or walks wires.
+
+So the page needs every file's paths, wires and symbol names, but one file's details at a time.
+
+### Under Node
+
+[`design-a.mjs`](design-a.mjs) runs each in a fresh process, at a load of 17 to 27:
+- **Design 1**, the facts never built whole, is a copy of the module whose quick open keeps only the section it last decoded, and decodes an asked section again.
+- **Design 2** is the whole read in a worker.
+
+| | DNN: time | DNN: peak | DNN: held after | 5× DNN: time | 5× DNN: peak | 5× DNN: held after |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: |
+| Today's whole read, every fact built and kept | 2.1 s | 238 MB | 87 MB | 4.5 s | 475 MB | 277 MB |
+| 1: validation walk, every check made, nothing kept but strings, paths and wires | 2.4 s | 226 MB | 47 MB | 4.3 s | 373 MB | 76 MB |
+| 1: one file asked after the walk (the hub's, 209 symbols) | 68 ms | | | 45 ms | | |
+| 1: a search walk, every symbol's name read, the matches kept | 2.9 s | 217 MB | 57 MB | 4.3 s | 371 MB | 74 MB |
+| 2: the scan cloned out of the worker | 3.7 s | 324 MB | 81 MB in the caller | 10.8 s | 827 MB | 368 MB in the caller |
+| 2: kept in the worker, one file asked by message | 1.9 s, then 8 ms an ask | 253 MB | 12 MB in the caller | 3.5 s, then 8 ms | 507 MB | 20 MB in the caller |
+| 2: the graph built in the worker and cloned out | 4.8 s | 371 MB | 101 MB in the caller | 11.5 s | 1,018 MB | 458 MB in the caller |
+
+### In a tab
+
+[`tab-worker.mjs`](tab-worker.mjs) builds a page holding DNN's stored form and the module's built script. The page starts a worker from a blob holding the module and hands it the bytes, transferred. One hold each.
+- **Under today's policy, a page cannot start a worker at all.** Chromium refuses the blob worker by the page's `script-src` hash: "Creating a worker from 'blob:null/…' violates the following Content Security Policy directive". So design 2 on the page needs the policy to grow a `worker-src`, which is a change to the page's security the owner must weigh.
+- **With `worker-src blob:` added, the module worker still failed**, with no message, on DNN and on five times. Why was not established in this leg: a module worker from a blob in a page opened from disk, or the worker inheriting the page's policy, are the first suspects.
+
+### What the numbers say
+
+**Design 1 cuts what a reader holds once it has read**, not its peak while reading:
+- held after: 87 → 47 MB on DNN, and 277 → 76 MB at five times DNN, 3.6 times less;
+- peak during the walk: 238 → 226 MB and 475 → 373 MB;
+- time: about the whole read's, since every check is still made;
+- one file is answered in 45 to 68 ms by decoding its section again.
+
+What it does not do as measured: bound the memory of one section. A section holds 256 files, and its records may be up to 64 MiB, so asking for one file can still build a great deal. **The review's fifth case** (one file of a million symbols, its `length` asked within 54 MB) **can be met only by design 1 carried into a file's own lists**: a file read back as a view whose `symbols` decodes a symbol when it is asked for.
+- No representation that builds the million symbols passes that case. V8's smallest object of a symbol's six fields is some 70 bytes, so a million is about 70 MB against the case's 54.
+- Design 2 cannot pass it either, since the case reads in-process.
+
+**Design 2 contains the cost; it does not reduce it:**
+- **Cloning across the boundary doubles both time and memory** (10.8 s and 827 MB at five times DNN, against 4.5 s and 475 MB). It is not a way to hand a page its facts.
+- **Kept in the worker and asked by message is cheap** (8 ms an ask, the caller holding 12 to 20 MB), but the worker holds the whole read as today (507 MB peak at five times).
+- What design 2 buys is a ceiling: a stranger's file that would take the machine's memory ends the worker, not the page.
+- On the page it needs a policy that allows a worker, which today's does not.
+
+**My recommendation, which is the root's guess, now measured:**
+- **Design 1 for memory.** The read gives back views, a file's lists decoded as asked. A validation walk checks the whole file once, keeping nothing but the string table, paths and wires. This is what makes the review's fifth case green.
+- **Design 2 as the page's protection,** but only by asking through messages, never by cloning. It also needs a policy change, so it is the owner's to weigh against the page's single hashed script.
+
+**Before building, a fork for the root and the owner:** design 1 changes what a reader returns. A `StoredFile` read back becomes a view and no longer a plain object, which every consumer of the module would read through. That is the API's shape for every later reader, and is worth a ruling before it is built.
+
+**The window (B4)** survives design 1, since its validation walk is still a whole read in order. It is to be built after the ruling, at 8 MiB, with its case.
+
+### Not reached in the third leg
+
+- **Design 1 built**, which needs the ruling above.
+- **The tab's worker under a `worker-src` policy**, debugged.
+- **The window and its case.**
+- **C, D and G**, and the page's bidirectional controls.
+- **The second blind reading's additions**, received during this leg and not yet begun:
+  - the end line's five variants as cases;
+  - one reading of the text's bound;
+  - nothing bounding the graph, to be named in A;
+  - its thirty-five questions answered in the text;
+  - the two Provenance sentences that tell a reader of blind readers, removed or moved.
+
+### Commands the harness refused in the third leg
+
+One, by a safety check, not the worktree rule: a command whose `rm -f $S/*.ndjson` named a shell variable that would reach `/` were it empty. It was re-issued with `"${S:?}"` and no removals. Because the refused command had also held the `mkdir` of the scratch folder, the first try at making the stored files did nothing, and was run again.
+
+## Fifth milestone, fourth leg, 2026-11-22: the facts never built whole, and the fifteenth case green
+
+The root ruled on A:
+- **Design 1 is the format's answer, and is built.** A reader hands back a view.
+- **Design 2 is the page's own question**, for the work on the one page that scans.
+- **The inflation bound stays at 64.**
+
+### What the tab's worker showed, exactly, for the page's probe to start from
+
+From the third leg, with [`tab-worker.mjs`](tab-worker.mjs) in headless Chromium through the lane, on a page opened from disk (`file://`):
+- **Today's policy, `default-src 'none'; script-src 'sha256-<the page script's hash>'`.** `new Worker(URL.createObjectURL(new Blob([module text], { type: "text/javascript" })), { type: "module" })` is refused. The console said: "Creating a worker from 'blob:null/915249d3-4c03-4b79-ae0d-75bee030c849' violates the following Content Security Policy directive: "script-src 'sha256-2TxB17ZBBPagcYalo6ytC1YHxvrhrkR6gWUPrPVYp0s='". No…" (cut at 200 characters by the probe).
+- **The same policy with `; worker-src blob:` added.** The same call raised no exception, but the worker's `onerror` fired with an empty message, and the console held nothing. This was the same on DNN's page (3.06 MB) and on five times DNN's (8.64 MB).
+- **Not tried:**
+  - a classic worker, with the module's exports taken out;
+  - a worker from a `data:` URL;
+  - a page served over `http://` rather than opened from disk;
+  - reading the worker's own error from inside it.
+
+### The view, built
+
+- **The whole read is a walk.** `readScan` reads every section once, in order, with every check. It keeps:
+  - the string table, the paths and the wires;
+  - each records section's inflated bytes.
+  
+  It keeps no file's facts: the section it decoded last is let go when the walk ends.
+- **Its `files` is a view:** a read-only list whose items are decoded from their section's kept bytes when they are read, and not kept. To every reader of it, it is an array: its length, its indexes, iteration, `map`, `Array.isArray` and JSON all behave as on one. Writing to it is refused. An item read twice may be two equal objects, not one.
+- **The quick open** (`openScan`) now keeps only the section it last decoded, and decodes again from kept bytes a section asked for after the walk passed it.
+- **Specification:** section 6 now says what a reader promises:
+  - after the walk, memory is what the file inflates to;
+  - a file's facts are decoded when asked for, and what is held is what was asked for;
+  - **not yet:** a file's own lists are decoded whole when the file is asked for, so a million symbols' count still builds the million symbols. That is the next step of the view.
+  - The graph and the text are bounded by what they describe. A graph printed by a consumer is named as not bounded by the file's size: the second reading's fifth finding.
+
+**Result:**
+- **The review's fifteen cases all pass**, four still skipped for their reasons.
+- **Every other case of the package passes through the view unchanged**, the fuzzer's included.
+
+**On the three corpora, read through the view,** the graph still prints byte for byte as each `index.json`, and both round trips are exact:
+
+| Corpus | Files | Stored |
+| --- | ---: | ---: |
+| This repository | 1,336 | 1,125,314 B |
+| Estate | 41 | 7,872 B |
+| DNN | 10,777 | 2,238,800 B |
+
+**DNN, two runs at a load of 12 to 23:**
+
+| | First answer | Walk (facts read and checked) | The graph as asked | The whole graph | Peak |
+| --- | ---: | ---: | ---: | ---: | ---: |
+| | 162 to 194 ms | 1.18 to 1.48 s | 1.75 to 2.31 s | 1.88 to 2.10 s | 226 to 326 MB |
+
+The graph as asked now costs about 0.6 s more than the walk: its index pass reads every file through the view, so each file is decoded a second time. Gathering the inbound and documented-by numbers during the walk itself would remove that second decoding. It is not done.
+
+### The second reading's additions, done in this leg
+
+- **The end line's five forms** (its finding 2) are now cases: `[null, "end",3]`, a trailing space, `[null,"end", 3]`, `[ null,"end",3]` and `[null,"end",3.0]`. Each is refused. All five failed with the end line's check taken out, and passed when it was put back.
+- **The text's bound** (its finding 4) now has one reading: the text's own UTF-8 bytes, line breaks included (section 3.5, since the first leg).
+- **Nothing bounds a printed graph** (its finding 5) is named in section 6.
+- **Three passages that told a reader of blind readers were removed or made neutral:**
+  - section 3.5's Provenance, "Both blind readers stream the text and write it";
+  - section 3.2's naming of Python's and Go's inflaters;
+  - the new section 6's naming of the second reading.
+
+  The specification's opening lines, which the blind harness strips, still say what was read blind.
+
+### The unit project
+
+The first run of this leg failed 35 cases. Every one was the machine's, at a load of 35 with 1,749 processes:
+- 30 of the engine's discovery oracle, each a `git config` that failed without a word;
+- five five-second timeouts.
+
+Run alone at a load of 12, the discovery oracle passed 60 of 60 and the package's suite 23 of 23. **The whole project, run again at that load, passed whole:** 3,744 cases passed and 4 were skipped, in 246 files.
+
+### Not reached in the fourth leg
+
+- **A file's own lists, decoded as read.**
+- **The graph's index gathered during the walk.**
+- **The window and its case.**
+- **C and D.**
+- **The second reading's thirty-five questions, answered in the text.**
+- **G.**
+- **The page and bidirectional controls.**
+
+### Commands the harness refused in the fourth leg
+
+One: an empty heredoc left by mistake before a `grep`, refused as too complex to verify. It did not name git. The `grep` was run alone.

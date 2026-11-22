@@ -35,6 +35,8 @@ import {
   type Frame,
   type LayoutExtents
 } from "./layout-measure";
+import { runMirrorMotion, type MirrorMotion } from "./mirror-motion";
+import { mirrorAxis } from "./mirror-turn";
 import { heldIndex, OVERVIEW_FILES_ATTRIBUTE, overviewFilesShown, rowsFrame } from "./overview-files";
 import {
   zoomByFactor as zoomByFactorFn,
@@ -400,6 +402,8 @@ export class LocalViewController implements LocalViewApi {
 
   /** The picture's bounds in the layer's pixels as last measured, which the edge signs and the settle read; null before a picture. */
   private contentBounds: Bounds | null = null;
+  /** The motion between the picture as laid out and mirrored, while one runs (mirror-motion.ts). */
+  private mirrorMotion: MirrorMotion | null = null;
   /** The fades at the frame's edges that say the picture continues past them. */
   private readonly edgeSigns: EdgeSigns;
   private readonly cutSigns: CutSigns;
@@ -861,6 +865,8 @@ export class LocalViewController implements LocalViewApi {
 
   /** Redraws all SVG connection lines between symbol anchors in the current subgraph. */
   drawConnections(): void {
+    // While the picture's plane turns, a measurement of the page is not the layout's: the wires wait for its rest.
+    if (this.mirrorMotion?.holdsWires) return;
     const backward = drawConnections({
       runtime: this.runtime,
       state: this.options.state,
@@ -1538,33 +1544,59 @@ export class LocalViewController implements LocalViewApi {
    * Writes which way the picture reads (the person's own setting, reading-direction.ts) on the map's layer, where the
    * stylesheet draws the reflection from. When it changes under a shown picture the card last acted on, else the
    * subject's, else the newest pin's, keeps its place and the others change sides round it; with none of them, the
-   * picture is reflected about the middle of the view, so that what was on screen stays on screen. The wires are drawn
-   * again at once, since they are laid out in the layout's own across and reflected with the cards.
+   * picture is reflected about the middle of the view, so that what was on screen stays on screen. How it moves there is
+   * Tuning's Mirror Turn (mirror-motion.ts), and a cut under reduced motion; the wires are drawn again as it comes to
+   * rest, since they are laid out in the layout's own across and reflected with the cards.
    */
   applyReads(): void {
     const layer = this.container.parentElement;
     if (!layer) return;
     const reads = this.options.state.tuning.appearance.reads, mirrored = isMirrored(reads);
+    // Asked again for what the motion under way is already going to: nothing to do. A press while the picture still
+    // moves: that motion ends at once where it was going, so that the picture is never left between its two states,
+    // and this change starts from there.
+    if (this.mirrorMotion?.toMirrored === mirrored) return;
+    this.mirrorMotion?.end();
+    // Coming to rest draws the wires, and the page, told their count, may ask for this again from inside that rest
+    // (found by the second press's browser case, 2026-11-22: the asking started a motion, and the press that had ended
+    // the first one started another over it from a picture already turning). Whatever motion stands now was started
+    // from the state wanted, so there is nothing more to do.
+    if (this.mirrorMotion) return;
     if (layer.hasAttribute(READS_ATTRIBUTE) === mirrored) return;
     const root = this.isShown() ? this.contentRoot : null;
+    if (!root) { writeReads(layer, reads); return; }
     const newest = this.pins.entries.at(-1)?.nodeId;
-    const held = !root ? null : this.actedOnElement()?.closest<HTMLElement>(".node-card")
+    const held = this.actedOnElement()?.closest<HTMLElement>(".node-card")
       ?? root.querySelector<HTMLElement>(".node-card.local-focus")
       ?? (newest ? root.querySelector<HTMLElement>(`.node-card[data-id="${CSS.escape(newest)}"]`) : null);
-    const middle = (rect: DOMRect): number => rect.left + rect.width / 2;
-    const before = held ? middle(held.getBoundingClientRect()) : null;
-    // With no card to hold: the line the root is reflected about, as the page shows it, which the change does not move.
-    const axis = root ? (mirrored ? root.getBoundingClientRect().left : root.getBoundingClientRect().right) : 0;
-    writeReads(layer, reads);
-    if (!root) return;
-    const frame = this.frameRect();
-    const shift = held && before !== null ? before - middle(held.getBoundingClientRect()) : 2 * (frame.left + frame.width / 2 - axis);
-    this.mapTransform = { ...this.mapTransform, x: this.mapTransform.x + shift };
-    if (this.mapInitialTransform) this.mapInitialTransform = { ...this.mapInitialTransform, x: this.mapInitialTransform.x + shift };
-    if (this.runtime.mapAnimationTarget) this.runtime.mapAnimationTarget = { ...this.runtime.mapAnimationTarget, x: this.runtime.mapAnimationTarget.x + shift };
-    this.measureLayoutExtents();
-    this.updateMapTransform();
-    this.drawConnections();
+    const frame = this.frameRect(), rootRect = root.getBoundingClientRect(), heldRect = held?.getBoundingClientRect();
+    const holdAt = heldRect ? heldRect.left + heldRect.width / 2 : frame.left + frame.width / 2;
+    // The layout's own edge on the page: the root's box lies to its right as laid out and to its left mirrored.
+    const rootEdge = mirrored ? rootRect.left : rootRect.right;
+    const axis = mirrorAxis(holdAt, rootEdge, this.mapTransform, !mirrored);
+    const cameraAcross = (x: number): void => {
+      const shift = x - this.mapTransform.x;
+      this.mapTransform = { ...this.mapTransform, x };
+      if (this.mapInitialTransform) this.mapInitialTransform = { ...this.mapInitialTransform, x: this.mapInitialTransform.x + shift };
+      if (this.runtime.mapAnimationTarget) this.runtime.mapAnimationTarget = { ...this.runtime.mapAnimationTarget, x: this.runtime.mapAnimationTarget.x + shift };
+      this.updateMapTransform();
+    };
+    this.mirrorMotion = runMirrorMotion({
+      form: prefersReducedMotion() ? "cut" : this.options.state.tuning.localMap.mirrorTurn,
+      toMirrored: mirrored, view: this.viewport, layer, overlay: this.overlay, held, holdAt, axis,
+      rootEdgeInLayer: (rootEdge - this.container.getBoundingClientRect().left) / (this.mapTransform.k || 1),
+      reach: Math.max(Math.abs(rootRect.left - holdAt), Math.abs(rootRect.right - holdAt)),
+      cameraAcross,
+      exchange: () => writeReads(layer, reads),
+      settle: () => {
+        writeReads(layer, reads);
+        cameraAcross(mirrored ? axis.mirroredX : axis.laidOutX);
+        this.measureLayoutExtents();
+        this.updateMapTransform();
+        this.drawConnections();
+      },
+      done: () => { this.mirrorMotion = null; }
+    });
   }
 
   /**

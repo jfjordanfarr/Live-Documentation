@@ -11,7 +11,7 @@ interface Finding {
   seed: number;
   kind: string;
   size: number;
-  outcome: "facts" | "refused" | "crash" | "unshaped" | "hang" | "worker died";
+  outcome: "facts" | "refused" | "crash" | "unshaped" | "a second name" | "hang" | "worker died";
   detail: string;
   held: number;
 }
@@ -37,8 +37,23 @@ async function bases(): Promise<Uint8Array[]> {
   return out;
 }
 
-/** Runs the reader at `readerUrl` over the mutants of seeds `from` to `to` in a worker it can stop. */
-function fuzz(readerUrl: string, baseFiles: Uint8Array[], bomb: Uint8Array, from: number, to: number): Promise<Finding[]> {
+/**
+ * Runs the reader at `readerUrl` over the mutants of seeds `from` to `to`, in a worker it can stop. A mutant that hangs
+ * or kills its worker is a finding, and the run goes on from the next seed in a fresh worker, so that one hang does not
+ * hide the mutants after it.
+ */
+async function fuzz(readerUrl: string, baseFiles: Uint8Array[], bomb: Uint8Array, from: number, to: number): Promise<Finding[]> {
+  const findings: Finding[] = [];
+  for (let next = from; next < to; ) {
+    const part = await fuzzOnce(readerUrl, baseFiles, bomb, next, to);
+    findings.push(...part);
+    const last = part[part.length - 1];
+    next = last === undefined ? to : last.outcome === "hang" || last.outcome === "worker died" ? last.seed + 1 : to;
+  }
+  return findings;
+}
+
+function fuzzOnce(readerUrl: string, baseFiles: Uint8Array[], bomb: Uint8Array, from: number, to: number): Promise<Finding[]> {
   return new Promise((resolve) => {
     const findings: Finding[] = [];
     let seed = from;

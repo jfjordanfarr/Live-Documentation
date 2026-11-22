@@ -1,0 +1,697 @@
+{
+ "suites": [
+  "test/storedForm.test.ts",
+  "test/storedForm.blind.test.ts"
+ ],
+ "sites": 91,
+ "unguarded": [
+  0,
+  1,
+  3,
+  4,
+  5,
+  6,
+  9,
+  11,
+  13,
+  16,
+  20,
+  21,
+  22,
+  23,
+  24,
+  25,
+  26,
+  29,
+  31,
+  32,
+  33,
+  36,
+  38,
+  39,
+  41,
+  42,
+  43,
+  45,
+  46,
+  49,
+  50,
+  51,
+  52,
+  53,
+  54,
+  56,
+  58,
+  61,
+  63,
+  64,
+  65,
+  68,
+  70,
+  71,
+  72,
+  73,
+  74,
+  75,
+  76,
+  77,
+  79,
+  80,
+  81,
+  84,
+  86,
+  90
+ ],
+ "results": [
+  {
+   "site": 0,
+   "line": 246,
+   "text": "if (!Number.isInteger(n) || n < 0 || n > MAX_U32) refuse(`a number the layout cannot hold: ${n}`);",
+   "failed": []
+  },
+  {
+   "site": 1,
+   "line": 293,
+   "text": "if (this.at >= this.b.length) refuse(`${this.what} ends early`);",
+   "failed": []
+  },
+  {
+   "site": 2,
+   "line": 305,
+   "text": "if (b === 0 && i > 0) refuse(`${this.what} holds a number written longer than it needs`);",
+   "failed": [
+    "refuses a file that is whole in shape but not in its one form"
+   ]
+  },
+  {
+   "site": 3,
+   "line": 306,
+   "text": "if (n > MAX_U32) refuse(`${this.what} holds a number past 2^32 - 1`);",
+   "failed": []
+  },
+  {
+   "site": 4,
+   "line": 311,
+   "text": "return refuse(`${this.what} holds a number longer than five bytes`);",
+   "failed": []
+  },
+  {
+   "site": 5,
+   "line": 317,
+   "text": "if (n * each > this.left) refuse(`${this.what} claims ${n} items in ${this.left} bytes`);",
+   "failed": []
+  },
+  {
+   "site": 6,
+   "line": 322,
+   "text": "if (n > this.left) refuse(`${this.what} claims ${n} bytes where ${this.left} are left`);",
+   "failed": []
+  },
+  {
+   "site": 7,
+   "line": 333,
+   "text": "if (this.left !== 0) refuse(`${this.what} has ${this.left} bytes after its last fact`);",
+   "failed": [
+    "refuses head-trailing-byte",
+    "refuses strings-trailing-byte",
+    "refuses paths-trailing",
+    "refuses wires-trailing",
+    "refuses wires-n0-with-first"
+   ]
+  },
+  {
+   "site": 8,
+   "line": 341,
+   "text": "return refuse(`${what} holds text that is not UTF-8`);",
+   "failed": [
+    "refuses a file that is whole in shape but not in its one form"
+   ]
+  },
+  {
+   "site": 9,
+   "line": 383,
+   "text": "refuse(`${what} inflates past the ${limit} bytes it declares`);",
+   "failed": []
+  },
+  {
+   "site": 10,
+   "line": 411,
+   "text": "return refuse(`${what} is not a whole raw deflate stream`);",
+   "failed": [
+    "refuses zlib-wrapped",
+    "refuses after-deflate-end"
+   ]
+  },
+  {
+   "site": 11,
+   "line": 416,
+   "text": "return refuse(`${what} is not a whole raw deflate stream`);",
+   "failed": []
+  },
+  {
+   "site": 12,
+   "line": 418,
+   "text": "if (out.length !== rawLength) refuse(`${what} inflates to ${out.length} bytes, not the ${rawLength} it declares`);",
+   "failed": [
+    "refuses inflates-fewer: a raw length one more than the stream gives"
+   ]
+  },
+  {
+   "site": 13,
+   "line": 427,
+   "text": "if (typeof s !== \"string\") refuse(`${what} is not text`);",
+   "failed": []
+  },
+  {
+   "site": 14,
+   "line": 428,
+   "text": "if (!s.isWellFormed()) refuse(`${what} holds a lone surrogate, which UTF-8 cannot carry`);",
+   "failed": [
+    "refuses facts it cannot hold as they are, and goes on with the next file"
+   ]
+  },
+  {
+   "site": 15,
+   "line": 443,
+   "text": "if (path === \"\" || isAbsolute(path)) refuse(`${what} ${JSON.stringify(path)} is not a relative path`);",
+   "failed": [
+    "refuses root-absolute",
+    "refuses facts it cannot hold as they are, and goes on with the next file"
+   ]
+  },
+  {
+   "site": 16,
+   "line": 448,
+   "text": "if (c === 0) refuse(`${what} ${JSON.stringify(path)} is not a relative path`);",
+   "failed": []
+  },
+  {
+   "site": 17,
+   "line": 452,
+   "text": "refuse(`${what} ${JSON.stringify(path)} is not a plain relative path`);",
+   "failed": [
+    "refuses root-trailing-slash",
+    "refuses facts it cannot hold as they are, and goes on with the next file"
+   ]
+  },
+  {
+   "site": 18,
+   "line": 461,
+   "text": "if (isAbsolute(link)) refuse(`${what} ${JSON.stringify(link)} names an absolute place`);",
+   "failed": [
+    "refuses facts it cannot hold as they are, and goes on with the next file"
+   ]
+  },
+  {
+   "site": 19,
+   "line": 472,
+   "text": "if (typeof n !== \"number\" || !Number.isInteger(n) || n < 0 || n > MAX_U32) refuse(`${what} is not a whole number from 0 to 2^32 - 1`);",
+   "failed": [
+    "refuses facts it cannot hold as they are, and goes on with the next file"
+   ]
+  },
+  {
+   "site": 20,
+   "line": 546,
+   "text": "if (reasonIndex < 0 || reasonIndex >= ENTRY_REASONS.length) refuse(`an entry's reason is not one the layout names`);",
+   "failed": []
+  },
+  {
+   "site": 21,
+   "line": 548,
+   "text": "if ((bits & 2) && !(bits & 1)) refuse(`an entry's symbol link without its symbol`);",
+   "failed": []
+  },
+  {
+   "site": 22,
+   "line": 561,
+   "text": "if ((bits & 2) && !(bits & 1)) refuse(`a target without a link`);",
+   "failed": []
+  },
+  {
+   "site": 23,
+   "line": 562,
+   "text": "if ((bits & 4) && !(bits & 2)) refuse(`an anchor without a target`);",
+   "failed": []
+  },
+  {
+   "site": 24,
+   "line": 591,
+   "text": "if (role < 0 || role >= ROLES.length) refuse(`a reference's role is not one the layout names`);",
+   "failed": []
+  },
+  {
+   "site": 25,
+   "line": 678,
+   "text": "if (!Array.isArray(items)) refuse(`${what} is not a list`);",
+   "failed": []
+  },
+  {
+   "site": 26,
+   "line": 745,
+   "text": "if (id > this.met || id >= this.strings.length) refuse(`a string numbered ${id} where the next new one is ${this.met}`);",
+   "failed": []
+  },
+  {
+   "site": 27,
+   "line": 778,
+   "text": "if ((n & ~defined) !== 0) refuse(`${what} sets a mark the layout does not define`);",
+   "failed": [
+    "refuses records-file-mark-bit-4"
+   ]
+  },
+  {
+   "site": 28,
+   "line": 828,
+   "text": "if (c === 0x2f || c === 0x5c || c === 0) refuse(\"the location's extension holds a slash, a backslash or a NUL\");",
+   "failed": [
+    "refuses extension-slash",
+    "holds no slash, backslash or NUL: a writer refuses them, and so does a reader"
+   ]
+  },
+  {
+   "site": 29,
+   "line": 841,
+   "text": "if (!Array.isArray(head.leftOut)) refuse(\"what was left out is not a list\");",
+   "failed": []
+  },
+  {
+   "site": 30,
+   "line": 854,
+   "text": "if (version !== LAYOUT_VERSION) refuse(`the layout's version is ${version}; this reader reads ${LAYOUT_VERSION}`);",
+   "failed": [
+    "refuses head-version-2"
+   ]
+  },
+  {
+   "site": 31,
+   "line": 896,
+   "text": "if (count * 2 > raw.length) refuse(`the paths claim ${count} paths in ${raw.length} bytes`);",
+   "failed": []
+  },
+  {
+   "site": 32,
+   "line": 905,
+   "text": "if (spent > budget) refuse(\"the paths are longer than the strings that hold them\");",
+   "failed": []
+  },
+  {
+   "site": 33,
+   "line": 906,
+   "text": "if (shared > previous) refuse(\"a path shares more with the one before it than that one holds\");",
+   "failed": []
+  },
+  {
+   "site": 34,
+   "line": 907,
+   "text": "if (shared < previous && rest.length > 0 && buffer[shared] === rest[0]) refuse(\"a path's shared beginning is written shorter than it is\");",
+   "failed": [
+    "refuses paths-not-longest-shared"
+   ]
+  },
+  {
+   "site": 35,
+   "line": 916,
+   "text": "if (paths.length > 0 && comparePaths(paths[paths.length - 1], p) >= 0) refuse(`the paths are not in order at ${JSON.stringify(p)}`);",
+   "failed": [
+    "refuses paths-repeat"
+   ]
+  },
+  {
+   "site": 36,
+   "line": 935,
+   "text": "if (count > raw.length) refuse(`the wires claim ${count} files in ${raw.length} bytes`);",
+   "failed": []
+  },
+  {
+   "site": 37,
+   "line": 942,
+   "text": "if (j >= count || j === i) refuse(`a wire of file ${i} names file ${j}`);",
+   "failed": [
+    "refuses wires-self"
+   ]
+  },
+  {
+   "site": 38,
+   "line": 966,
+   "text": "if (raw.length > MAX_SECTION) refuse(`a section of ${raw.length} bytes is past the layout's ${MAX_SECTION}`);",
+   "failed": []
+  },
+  {
+   "site": 39,
+   "line": 983,
+   "text": "if (bytes.length < SIGNATURE.length || !equalBytes(bytes.subarray(0, SIGNATURE.length), SIGNATURE)) refuse(\"these bytes do not begin with th",
+   "failed": []
+  },
+  {
+   "site": 40,
+   "line": 990,
+   "text": "if (kind < HEAD || kind > END) refuse(`a section of kind ${kind} at byte ${at}, which the layout does not define`);",
+   "failed": [
+    "refuses kind-7"
+   ]
+  },
+  {
+   "site": 41,
+   "line": 995,
+   "text": "if (rawLength > MAX_SECTION) refuse(`a section at byte ${at} declares ${rawLength} bytes, past the layout's ${MAX_SECTION}`);",
+   "failed": []
+  },
+  {
+   "site": 42,
+   "line": 996,
+   "text": "if (rawLength > storedLength * MAX_RATIO + RATIO_SLACK) refuse(`a section at byte ${at} declares ${rawLength} bytes from ${storedLength}, mo",
+   "failed": []
+  },
+  {
+   "site": 43,
+   "line": 999,
+   "text": "if (raw > inflationBound(bytes.length)) refuse(`the sections declare ${raw} bytes in all from a file of ${bytes.length}, past ${inflationBou",
+   "failed": []
+  },
+  {
+   "site": 44,
+   "line": 1004,
+   "text": "if (at !== bytes.length) refuse(`${bytes.length - at} bytes after the end`);",
+   "failed": [
+    "refuses a file that is whole in shape but not in its one form"
+   ]
+  },
+  {
+   "site": 45,
+   "line": 1013,
+   "text": "if (!equalBytes(await sha256(raw), f.hash)) refuse(`${what} does not match its hash`);",
+   "failed": []
+  },
+  {
+   "site": 46,
+   "line": 1022,
+   "text": "if (complete) refuse(\"there is no head\");",
+   "failed": []
+  },
+  {
+   "site": 47,
+   "line": 1025,
+   "text": "if (frames[0].kind !== HEAD || frames[0].count !== 0) refuse(\"the first section is not the head\");",
+   "failed": [
+    "refuses head-count-1"
+   ]
+  },
+  {
+   "site": 48,
+   "line": 1032,
+   "text": "if (f.count === 0) refuse(\"a section of no strings\");",
+   "failed": [
+    "refuses strings-count-0"
+   ]
+  },
+  {
+   "site": 49,
+   "line": 1033,
+   "text": "if (frames[i + 1] !== undefined && frames[i + 1].kind !== RECORDS) refuse(\"strings not followed by records\");",
+   "failed": []
+  },
+  {
+   "site": 50,
+   "line": 1035,
+   "text": "if (last !== CHUNK) refuse(`a section of ${last} records before the last`);",
+   "failed": []
+  },
+  {
+   "site": 51,
+   "line": 1036,
+   "text": "if (f.count === 0 || f.count > CHUNK) refuse(`a section of ${f.count} records`);",
+   "failed": []
+  },
+  {
+   "site": 52,
+   "line": 1043,
+   "text": "if (i < frames.length && frames[i].kind !== PATHS && frames[i].kind !== WIRES) refuse(`${KIND_NAMES[frames[i].kind]} where records or the pa",
+   "failed": []
+  },
+  {
+   "site": 53,
+   "line": 1047,
+   "text": "if (rest.length !== 3 || rest[0] !== PATHS || rest[1] !== WIRES || rest[2] !== END) refuse(\"the sections after the records are not the paths",
+   "failed": []
+  },
+  {
+   "site": 54,
+   "line": 1048,
+   "text": "if (frames[i].count !== files || frames[i + 1].count !== files) refuse(`the paths or wires count other than the ${files} files recorded`);",
+   "failed": []
+  },
+  {
+   "site": 55,
+   "line": 1049,
+   "text": "if (frames[i + 2].count !== frames.length - 1 || frames[i + 2].rawLength !== 32) refuse(\"the end does not count the sections before it\");",
+   "failed": [
+    "refuses end-count-wrong"
+   ]
+  },
+  {
+   "site": 56,
+   "line": 1125,
+   "text": "if (finished) refuse(\"the writer has finished\");",
+   "failed": []
+  },
+  {
+   "site": 57,
+   "line": 1136,
+   "text": "if (paths.length > 0 && comparePaths(paths[paths.length - 1], path) >= 0) refuse(`facts out of path order at ${JSON.stringify(path)}, after ",
+   "failed": [
+    "refuses facts it cannot hold as they are, and goes on with the next file",
+    "is what the writer, the reader and the text form keep"
+   ]
+  },
+  {
+   "site": 58,
+   "line": 1171,
+   "text": "if (raw > inflationBound(bytes.length)) refuse(`these facts inflate to ${raw} bytes from ${bytes.length}, past what a reader accepts`);",
+   "failed": []
+  },
+  {
+   "site": 59,
+   "line": 1193,
+   "text": "if (frames.some((f) => f.kind === END)) refuse(\"the write finished; there is nothing to go on from\");",
+   "failed": [
+    "goes on from a stopped write to the bytes an unstopped one writes"
+   ]
+  },
+  {
+   "site": 60,
+   "line": 1195,
+   "text": "if (frames.length === 0) refuse(\"not even the head was set down\");",
+   "failed": [
+    "goes on from a stopped write to the bytes an unstopped one writes"
+   ]
+  },
+  {
+   "site": 61,
+   "line": 1240,
+   "text": "if (count > raw.length) refuse(`a section of strings claims ${count} strings in ${raw.length} bytes`);",
+   "failed": []
+  },
+  {
+   "site": 62,
+   "line": 1248,
+   "text": "if (length[i] > 0 && (raw[at[i]] & 0xc0) === 0x80) refuse(\"a string begins in the middle of a character\");",
+   "failed": [
+    "refuses a file that is whole in shape but not in its one form"
+   ]
+  },
+  {
+   "site": 63,
+   "line": 1268,
+   "text": "if (seen.has(s)) refuse(`the string ${JSON.stringify(s.slice(0, 80))} is set down twice`);",
+   "failed": []
+  },
+  {
+   "site": 64,
+   "line": 1276,
+   "text": "if (count > raw.length) refuse(`a section of records claims ${count} files in ${raw.length} bytes`);",
+   "failed": []
+  },
+  {
+   "site": 65,
+   "line": 1281,
+   "text": "if (previous !== undefined && comparePaths(previous, file.codePath) >= 0) refuse(`the files are not in path order at ${JSON.stringify(file.c",
+   "failed": []
+  },
+  {
+   "site": 66,
+   "line": 1286,
+   "text": "if (decoding.met !== strings.length) refuse(`${strings.length - decoding.met} strings set down before a section of records are not met in it",
+   "failed": [
+    "refuses a file that is whole in shape but not in its one form"
+   ]
+  },
+  {
+   "site": 67,
+   "line": 1321,
+   "text": "if (cut || frames[frames.length - 1]?.kind !== END) refuse(\"the file stops before its end: a stopped write, which `resumeFrom` can go on fro",
+   "failed": [
+    "refuses a file that is whole in shape but not in its one form"
+   ]
+  },
+  {
+   "site": 68,
+   "line": 1335,
+   "text": "if (!equalBytes(endRaw, name)) refuse(\"the end does not name the sections before it\");",
+   "failed": []
+  },
+  {
+   "site": 69,
+   "line": 1368,
+   "text": "if (file.codePath !== paths[first + i]) refuse(`the paths name ${JSON.stringify(paths[first + i])} where the records hold ${JSON.stringify(f",
+   "failed": [
+    "refuses paths-differ-from-records"
+   ]
+  },
+  {
+   "site": 70,
+   "line": 1370,
+   "text": "if (!equalLists(wires, outbound[first + i])) refuse(`the wires of ${JSON.stringify(file.codePath)} are not those its links name`);",
+   "failed": []
+  },
+  {
+   "site": 71,
+   "line": 1388,
+   "text": "if (!Number.isInteger(i) || i < 0 || i >= paths.length) refuse(`there is no file ${i}`);",
+   "failed": []
+  },
+  {
+   "site": 72,
+   "line": 1467,
+   "text": "if (!scan.ok) refuse(scan.reason);",
+   "failed": []
+  },
+  {
+   "site": 73,
+   "line": 1472,
+   "text": "if (measuring.total > inflationBound(bytes.length)) refuse(`the text would hold ${measuring.total} bytes of names from a file of ${bytes.len",
+   "failed": []
+  },
+  {
+   "site": 74,
+   "line": 1492,
+   "text": "if (typeof text !== \"string\" || !text.endsWith(\"\\n\")) refuse(\"the text does not end with a line break\");",
+   "failed": []
+  },
+  {
+   "site": 75,
+   "line": 1496,
+   "text": "if (n >= lines.length) refuse(\"the text stops before its end line\");",
+   "failed": []
+  },
+  {
+   "site": 76,
+   "line": 1502,
+   "text": "return refuse(`line ${n} is not JSON`);",
+   "failed": []
+  },
+  {
+   "site": 77,
+   "line": 1504,
+   "text": "if (!Array.isArray(value)) refuse(`line ${n} is not a JSON array`);",
+   "failed": []
+  },
+  {
+   "site": 78,
+   "line": 1508,
+   "text": "if (raw !== written) refuse(`line ${n} is not written as the text form writes it: ${JSON.stringify(raw.slice(0, 120))}`);",
+   "failed": [
+    "refuses the text member-twice",
+    "has one text for one set of facts: a line written any other way is refused",
+    "refuses every other way of writing the same text",
+    "is UTF-8 without a byte-order mark, ending each line with LF"
+   ]
+  },
+  {
+   "site": 79,
+   "line": 1514,
+   "text": "if (location[0] !== null || location[1] !== \"location\" || location.length !== 5) refuse(\"the second line is not the location\");",
+   "failed": []
+  },
+  {
+   "site": 80,
+   "line": 1516,
+   "text": "if (scanner[0] !== null || scanner[1] !== \"scanner\" || scanner.length !== 3) refuse(\"the third line is not the scanner\");",
+   "failed": []
+  },
+  {
+   "site": 81,
+   "line": 1520,
+   "text": "if (row.length !== 5) refuse(`line ${n} is not a left-out line`);",
+   "failed": []
+  },
+  {
+   "site": 82,
+   "line": 1530,
+   "text": "if (typeof path !== \"string\" || row[1] !== \"file\" || row.length !== 5) refuse(`line ${n} is not a file's first line`);",
+   "failed": [
+    "refuses the text symbol-before-entry",
+    "refuses the text unknown-line"
+   ]
+  },
+  {
+   "site": 83,
+   "line": 1535,
+   "text": "if (row[0] !== path || row[1] !== \"authored\" || row.length !== 3) refuse(`line ${n} is not ${JSON.stringify(path)}'s authored words`);",
+   "failed": [
+    "refuses the text no-authored",
+    "refuses the text entry-before-authored"
+   ]
+  },
+  {
+   "site": 84,
+   "line": 1541,
+   "text": "if (row.length !== 3) refuse(`line ${n} is not one ${kind}`);",
+   "failed": []
+  },
+  {
+   "site": 85,
+   "line": 1551,
+   "text": "if (cited.length > 1) refuse(`${JSON.stringify(path)} has two cited-by lines`);",
+   "failed": [
+    "refuses the text two-cited-by"
+   ]
+  },
+  {
+   "site": 86,
+   "line": 1554,
+   "text": "if (reExports.length > 1) refuse(`${JSON.stringify(path)} has two re-exports lines`);",
+   "failed": []
+  },
+  {
+   "site": 87,
+   "line": 1559,
+   "text": "if (files.length > 0 && comparePaths(files[files.length - 1].codePath, path) >= 0) refuse(`the files are not in path order at ${JSON.stringi",
+   "failed": [
+    "is what the writer, the reader and the text form keep"
+   ]
+  },
+  {
+   "site": 88,
+   "line": 1562,
+   "text": "if (row.length !== 3 || row[2] !== files.length) refuse(`the end line does not count the ${files.length} files`);",
+   "failed": [
+    "has one text for one set of facts: a line written any other way is refused"
+   ]
+  },
+  {
+   "site": 89,
+   "line": 1563,
+   "text": "if (n !== lines.length) refuse(\"lines after the end line\");",
+   "failed": [
+    "has one text for one set of facts: a line written any other way is refused"
+   ]
+  },
+  {
+   "site": 90,
+   "line": 1569,
+   "text": "if (value === null) refuse(\"a null where a fact belongs\");",
+   "failed": []
+  }
+ ]
+}

@@ -397,6 +397,7 @@ Counted in the client source and the template on 2026-11-18: 236 `aria-` attribu
 **Rule: under `prefers-reduced-motion: reduce`, every animation that moves the picture ends at once at its destination, and every decorative animation stops; a still sign replaces a moving one.**
 - Why: WCAG 2.2 SC 2.3.3 Animation from Interactions (level AAA, adopted here because the product's motion is large and frequent: a whole map flies); vestibular disorders.
 - Where (holds): `views/perspectiveTransition.ts:90`, `:188`; `views/localView/controller.ts:1497`; `views/localView/branch-renderer.ts:435`; `views/localView/pan-zoom.ts:247`; `views/forceGraphView.ts` (6 places); CSS in `styles/shell.css:215`, `:451`, `styles/graph.css:121`, `styles/local.css:325`, `styles/reading.css:637`, `styles/world.css:153`.
+- The one fade in its place: the 2D picture mirrored (`views/localView/mirror-motion.ts`) changes behind a fade out and in, with no travel, checked by `tests/e2e/local-map-mirror.spec.ts` ("reduced motion takes the cut whatever the lever says").
 - Checked by: 11 cases across `tests/e2e/backward-cue.spec.ts`, `force-graph-focus.spec.ts`, `force-graph-building.spec.ts`, `local-map-motion.spec.ts` and four more.
 - Status: holds. The World Map's camera, turning, top-down and up, and the walkthrough, arrives at once since 2026-11-19 (`views/worldMap/controller.ts:1129-1131`), checked by `world-map.spec.ts` ("under reduced motion the camera arrives at once …"); before, it eased regardless.
 

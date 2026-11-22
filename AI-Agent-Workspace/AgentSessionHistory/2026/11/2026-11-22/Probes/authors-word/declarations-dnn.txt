@@ -1,0 +1,1177 @@
+The C# reader against Microsoft.CodeAnalysis.CSharp 4.12.0.0's binding, without framework references
+Folder: <copy of the corpus>/dnn
+Files: 3973 C# files in 82 projects; references read by MSBuild's evaluation for 48, by their XML elements for 34, which MSBuild could not evaluate here
+Names: 631719 simple names, 409254 bound
+References under a condition the default configuration does not meet: 0
+
+Documentation references (cref): 8849, resolved to nothing 2197 (a framework type among them, having no framework references), ambiguous 0, not taken by its grammar 396
+  C# file pairs they name: 1312; the compiler binds 1018 of them through code too, the author's word alone makes 294; the adapter's dependency lines draw 982
+  the reader's documentation relation: 1313 pairs, 1259 of them the compiler's
+  references compared declaration by declaration: 8032, agreeing 6889, parting 1143
+    310: the compiler reads no reference written so on that declaration: one in a section its preprocessor symbols leave inactive, which the reader reads as it reads every branch
+    7: the compiler resolves the reference to nothing, and the reader links it
+    36: the compiler resolves the reference to nothing: it writes a parameter's type the compilation, having no framework references, cannot bind
+    26: the compiler resolves the reference to nothing: the target's project is reached by the file's only through another project, which the compiler's compilation does not reference and the reader follows
+    616: the reader keeps no documentation where the reference stands: a declaration it shows no symbol for (an enum's member, a member that is not public, an operator, an indexer)
+    84: the reader lands on the type that holds the member the compiler names, the file showing no symbol for the member
+    27: the reader links another declaration than the compiler names
+    37: the reader reads the reference and resolves it to nothing
+
+Documentation references they part on: the reader keeps no documentation where the reference stands: a declaration it shows no symbol for (an enum's member, a member that is not public, an operator, an indexer) (616):
+  DNN Platform/Dnn.AuthServices.Jwt/Components/Common/Controllers/JwtController.cs:60 <see> JwtController
+  DNN Platform/DotNetNuke.Abstractions/Application/SchedulerMode.cs:20 <inheritdoc> TimerMethod
+  DNN Platform/DotNetNuke.Abstractions/Application/SchedulerMode.cs:29 <inheritdoc> RequestMethod
+  DNN Platform/DotNetNuke.Log4net/log4net/Appender/AdoNetAppender.cs:759 <see> IDbConnection.Close
+  DNN Platform/DotNetNuke.Log4net/log4net/Appender/AdoNetAppender.cs:794 <see> IDbConnection
+  DNN Platform/DotNetNuke.Log4net/log4net/Appender/AdoNetAppender.cs:815 <see> IDbConnection
+  DNN Platform/DotNetNuke.Log4net/log4net/Appender/AdoNetAppender.cs:1117 <see> IRawLayout
+  DNN Platform/DotNetNuke.Log4net/log4net/Appender/AppenderCollection.cs:221 <see> IAppender
+  DNN Platform/DotNetNuke.Log4net/log4net/Appender/AppenderCollection.cs:224 <exception> ArgumentOutOfRangeException
+  DNN Platform/DotNetNuke.Log4net/log4net/Appender/AppenderCollection.cs:227 <see> AppenderCollection.Count
+  DNN Platform/DotNetNuke.Log4net/log4net/Appender/AppenderCollection.cs:539 <exception> ArgumentOutOfRangeException
+  DNN Platform/DotNetNuke.Log4net/log4net/Appender/AppenderCollection.cs:542 <see> AppenderCollection.Count
+  DNN Platform/DotNetNuke.Log4net/log4net/Appender/AppenderCollection.cs:549 <exception> ArgumentOutOfRangeException
+  DNN Platform/DotNetNuke.Log4net/log4net/Appender/AppenderCollection.cs:552 <see> AppenderCollection.Count
+  DNN Platform/DotNetNuke.Log4net/log4net/Appender/AppenderSkeleton.cs:63 <see> Close
+  DNN Platform/DotNetNuke.Log4net/log4net/Appender/AppenderSkeleton.cs:770 <see> Layout
+  DNN Platform/DotNetNuke.Log4net/log4net/Appender/AppenderSkeleton.cs:778 <see> Name
+  DNN Platform/DotNetNuke.Log4net/log4net/Appender/AppenderSkeleton.cs:790 <see> Threshold
+  DNN Platform/DotNetNuke.Log4net/log4net/Appender/AppenderSkeleton.cs:803 <see> ErrorHandler
+  DNN Platform/DotNetNuke.Log4net/log4net/Appender/AppenderSkeleton.cs:816 <see> IFilter
+  DNN Platform/DotNetNuke.Log4net/log4net/Appender/AppenderSkeleton.cs:825 <see> IFilter
+  DNN Platform/DotNetNuke.Log4net/log4net/Appender/AppenderSkeleton.cs:833 <see> Close
+  DNN Platform/DotNetNuke.Log4net/log4net/Appender/BufferingAppenderSkeleton.cs:571 <see> DEFAULT_BUFFER_SIZE
+  DNN Platform/DotNetNuke.Log4net/log4net/Appender/BufferingAppenderSkeleton.cs:587 <see> Evaluator
+  DNN Platform/DotNetNuke.Log4net/log4net/Appender/BufferingAppenderSkeleton.cs:588 <see> m_lossy
+  DNN Platform/DotNetNuke.Log4net/log4net/Appender/BufferingAppenderSkeleton.cs:588 <see> Lossy
+  DNN Platform/DotNetNuke.Log4net/log4net/Appender/BufferingAppenderSkeleton.cs:599 <see> Evaluator
+  DNN Platform/DotNetNuke.Log4net/log4net/Appender/BufferingForwardingAppender.cs:252 <see> IAppenderAttachable
+  DNN Platform/DotNetNuke.Log4net/log4net/Appender/DebugAppender.cs:150 <see> System.Diagnostics.Debug
+  DNN Platform/DotNetNuke.Log4net/log4net/Appender/DebugAppender.cs:156 <see> ImmediateFlush
+  DNN Platform/DotNetNuke.Log4net/log4net/Appender/DebugAppender.cs:156 <see> System.Diagnostics.Debug.Flush
+  DNN Platform/DotNetNuke.Log4net/log4net/Appender/DebugAppender.cs:215 <see> ImmediateFlush
+  DNN Platform/DotNetNuke.Log4net/log4net/Appender/DebugAppender.cs:227 <see> Layout.PatternLayout
+  DNN Platform/DotNetNuke.Log4net/log4net/Appender/FileAppender.cs:44 <see> File
+  DNN Platform/DotNetNuke.Log4net/log4net/Appender/FileAppender.cs:48 <see> AppendToFile
+  DNN Platform/DotNetNuke.Log4net/log4net/Appender/FileAppender.cs:51 <see> Encoding
+  DNN Platform/DotNetNuke.Log4net/log4net/Appender/FileAppender.cs:54 <see> ILayout.Header
+  DNN Platform/DotNetNuke.Log4net/log4net/Appender/FileAppender.cs:54 <see> ILayout.Footer
+  DNN Platform/DotNetNuke.Log4net/log4net/Appender/FileAppender.cs:60 <see> ActivateOptions
+  DNN Platform/DotNetNuke.Log4net/log4net/Appender/FileAppender.cs:68 <see> FileAppender
+  DNN Platform/DotNetNuke.Log4net/log4net/Appender/FileAppender.cs:69 <see> LockingModel
+  DNN Platform/DotNetNuke.Log4net/log4net/Appender/FileAppender.cs:70 <see> FileAppender.ExclusiveLock
+  DNN Platform/DotNetNuke.Log4net/log4net/Appender/FileAppender.cs:73 <see> FileAppender.MinimalLock
+  DNN Platform/DotNetNuke.Log4net/log4net/Appender/FileAppender.cs:74 <see> FileAppender.InterProcessLock
+  DNN Platform/DotNetNuke.Log4net/log4net/Appender/FileAppender.cs:746 <see> AcquireLock
+  DNN Platform/DotNetNuke.Log4net/log4net/Appender/FileAppender.cs:748 <see> ReleaseLock
+  DNN Platform/DotNetNuke.Log4net/log4net/Appender/FileAppender.cs:748 <see> CloseFile
+  DNN Platform/DotNetNuke.Log4net/log4net/Appender/FileAppender.cs:1035 <see> FileAppender.LockingModel
+  DNN Platform/DotNetNuke.Log4net/log4net/Appender/FileAppender.cs:1045 <see> FileAppender.ExclusiveLock
+  DNN Platform/DotNetNuke.Log4net/log4net/Appender/FileAppender.cs:1045 <see> FileAppender.MinimalLock
+  DNN Platform/DotNetNuke.Log4net/log4net/Appender/FileAppender.cs:1045 <see> FileAppender.InterProcessLock
+  DNN Platform/DotNetNuke.Log4net/log4net/Appender/ForwardingAppender.cs:261 <see> IAppenderAttachable
+  DNN Platform/DotNetNuke.Log4net/log4net/Appender/LocalSyslogAppender.cs:395 <see> SyslogFacility.User
+  DNN Platform/DotNetNuke.Log4net/log4net/Appender/RemoteSyslogAppender.cs:423 <see> SyslogFacility.User
+  DNN Platform/DotNetNuke.Log4net/log4net/Appender/RollingFileAppender.cs:221 <see> RollingFileAppender.UniversalDateTime
+  DNN Platform/DotNetNuke.Log4net/log4net/Appender/RollingFileAppender.cs:224 <see> RollingFileAppender.IDateTime
+  DNN Platform/DotNetNuke.Log4net/log4net/Appender/RollingFileAppender.cs:232 <see> RollingFileAppender.LocalDateTime
+  DNN Platform/DotNetNuke.Log4net/log4net/Appender/RollingFileAppender.cs:1615 <see> IDateTime
+  DNN Platform/DotNetNuke.Log4net/log4net/Appender/TextWriterAppender.cs:408 <see> log4net.Util.QuietTextWriter
+  DNN Platform/DotNetNuke.Log4net/log4net/Appender/TextWriterAppender.cs:414 <see> TextWriter
+  DNN Platform/DotNetNuke.Log4net/log4net/Appender/TextWriterAppender.cs:420 <see> ImmediateFlush
+  DNN Platform/DotNetNuke.Log4net/log4net/Appender/TraceAppender.cs:170 <see> ImmediateFlush
+  DNN Platform/DotNetNuke.Log4net/log4net/Appender/UdpAppender.cs:481 <see> UdpClient
+  DNN Platform/DotNetNuke.Log4net/log4net/Appender/UdpAppender.cs:485 <see> UdpClient
+  DNN Platform/DotNetNuke.Log4net/log4net/Config/BasicConfigurator.cs:67 <see> BasicConfigurator
+  DNN Platform/DotNetNuke.Log4net/log4net/Config/BasicConfigurator.cs:84 <see> ConsoleAppender
+  DNN Platform/DotNetNuke.Log4net/log4net/Config/BasicConfigurator.cs:86 <see> PatternLayout
+  DNN Platform/DotNetNuke.Log4net/log4net/Config/BasicConfigurator.cs:87 <see> PatternLayout.DetailConversionPattern
+  DNN Platform/DotNetNuke.Log4net/log4net/Config/PluginAttribute.cs:53 <see> PluginAttribute
+  DNN Platform/DotNetNuke.Log4net/log4net/Config/PluginAttribute.cs:62 <see> System.Type
+  DNN Platform/DotNetNuke.Log4net/log4net/Config/XmlConfigurator.cs:53 <see> ILoggerRepository
+  DNN Platform/DotNetNuke.Log4net/log4net/Config/XmlConfigurator.cs:66 <see> Log4NetConfigurationSectionHandler
+  DNN Platform/DotNetNuke.Log4net/log4net/Config/XmlConfigurator.cs:167 <see> Log4NetConfigurationSectionHandler
+  DNN Platform/DotNetNuke.Log4net/log4net/Config/XmlConfigurator.cs:235 <see> System.Configuration.IgnoreSectionHandler
+  DNN Platform/DotNetNuke.Log4net/log4net/Config/XmlConfigurator.cs:321 <see> System.Net.WebRequest
+  DNN Platform/DotNetNuke.Log4net/log4net/Config/XmlConfigurator.cs:395 <see> ILoggerRepository
+  DNN Platform/DotNetNuke.Log4net/log4net/Config/XmlConfigurator.cs:415 <see> System.Configuration.IgnoreSectionHandler
+  DNN Platform/DotNetNuke.Log4net/log4net/Config/XmlConfigurator.cs:785 <see> FileSystemWatcher
+  DNN Platform/DotNetNuke.Log4net/log4net/Config/XmlConfigurator.cs:790 <see> M:Configure(FileInfo)
+  DNN Platform/DotNetNuke.Log4net/log4net/Config/XmlConfigurator.cs:812 <see> ILoggerRepository
+  DNN Platform/DotNetNuke.Log4net/log4net/Config/XmlConfigurator.cs:825 <see> FileSystemWatcher
+  DNN Platform/DotNetNuke.Log4net/log4net/Config/XmlConfigurator.cs:830 <see> M:Configure(FileInfo)
+  DNN Platform/DotNetNuke.Log4net/log4net/Config/XmlConfigurator.cs:893 <see> FileSystemWatcher
+  DNN Platform/DotNetNuke.Log4net/log4net/Config/XmlConfigurator.cs:897 <see> TimeoutMillis
+  DNN Platform/DotNetNuke.Log4net/log4net/Config/XmlConfigurator.cs:928 <see> ConfigureAndWatchHandler
+  DNN Platform/DotNetNuke.Log4net/log4net/Config/XmlConfigurator.cs:968 <see> ConfigureAndWatchHandler
+  DNN Platform/DotNetNuke.Log4net/log4net/Config/XmlConfigurator.cs:969 <see> FileSystemWatcher
+  DNN Platform/DotNetNuke.Log4net/log4net/Config/XmlConfigurator.cs:985 <see> ConfigureAndWatchHandler
+  DNN Platform/DotNetNuke.Log4net/log4net/Config/XmlConfigurator.cs:986 <see> FileSystemWatcher
+  DNN Platform/DotNetNuke.Log4net/log4net/Config/XmlConfigurator.cs:1032 <see> XmlElement
+  DNN Platform/DotNetNuke.Log4net/log4net/Config/XmlConfiguratorAttribute.cs:288 <see> FileInfo
+  DNN Platform/DotNetNuke.Log4net/log4net/Core/DefaultRepositorySelector.cs:547 <see> log4net.Config.RepositoryAttribute
+  DNN Platform/DotNetNuke.Log4net/log4net/Core/DefaultRepositorySelector.cs:550 <exception> ArgumentNullException
+  DNN Platform/DotNetNuke.Log4net/log4net/Core/DefaultRepositorySelector.cs:626 <see> log4net.Config.ConfiguratorAttribute
+  DNN Platform/DotNetNuke.Log4net/log4net/Core/DefaultRepositorySelector.cs:629 <exception> ArgumentNullException
+  DNN Platform/DotNetNuke.Log4net/log4net/Core/DefaultRepositorySelector.cs:781 <exception> ArgumentNullException
+  DNN Platform/DotNetNuke.Log4net/log4net/Core/DefaultRepositorySelector.cs:825 <exception> ArgumentNullException
+  DNN Platform/DotNetNuke.Log4net/log4net/Core/ExceptionEvaluator.cs:44 <see> ExceptionType
+  DNN Platform/DotNetNuke.Log4net/log4net/Core/IRepositorySelector.cs:48 <see> ILoggerRepository
+  DNN Platform/DotNetNuke.Log4net/log4net/Core/Level.cs:277 <see> Level
+  DNN Platform/DotNetNuke.Log4net/log4net/Core/LevelCollection.cs:190 <see> Level
+  DNN Platform/DotNetNuke.Log4net/log4net/Core/LevelCollection.cs:192 <exception> ArgumentOutOfRangeException
+  DNN Platform/DotNetNuke.Log4net/log4net/Core/LevelCollection.cs:195 <see> LevelCollection.Count
+  DNN Platform/DotNetNuke.Log4net/log4net/Core/LevelCollection.cs:463 <exception> ArgumentOutOfRangeException
+  DNN Platform/DotNetNuke.Log4net/log4net/Core/LevelCollection.cs:466 <see> LevelCollection.Count
+  DNN Platform/DotNetNuke.Log4net/log4net/Core/LevelCollection.cs:473 <exception> ArgumentOutOfRangeException
+  DNN Platform/DotNetNuke.Log4net/log4net/Core/LevelCollection.cs:476 <see> LevelCollection.Count
+  DNN Platform/DotNetNuke.Log4net/log4net/Core/LevelMap.cs:68 <see> Level
+  DNN Platform/DotNetNuke.Log4net/log4net/Core/LogException.cs:31 <see> ApplicationException
+  DNN Platform/DotNetNuke.Log4net/log4net/Core/LogException.cs:84 <see> SerializationInfo
+  DNN Platform/DotNetNuke.Log4net/log4net/Core/LogException.cs:85 <see> StreamingContext
+  DNN Platform/DotNetNuke.Log4net/log4net/Core/LogException.cs:88 <see> LogException
+  DNN Platform/DotNetNuke.Log4net/log4net/Core/LogImpl.cs:1168 <see> log4net.Repository.ILoggerRepository.ConfigurationChanged
+  DNN Platform/DotNetNuke.Log4net/log4net/Core/LoggerManager.cs:748 <see> AppDomain.DomainUnload
+  DNN Platform/DotNetNuke.Log4net/log4net/Core/LoggerManager.cs:749 <see> AppDomain
+  DNN Platform/DotNetNuke.Log4net/log4net/Core/LoggerManager.cs:756 <see> M:Shutdown()
+  DNN Platform/DotNetNuke.Log4net/log4net/Core/LoggerManager.cs:764 <see> AppDomain.ProcessExit
+  DNN Platform/DotNetNuke.Log4net/log4net/Core/LoggerManager.cs:765 <see> AppDomain
+  DNN Platform/DotNetNuke.Log4net/log4net/Core/LoggerManager.cs:772 <see> M:Shutdown()
+  DNN Platform/DotNetNuke.Log4net/log4net/Core/LoggingEvent.cs:217 <see> IFixingRequired
+  DNN Platform/DotNetNuke.Log4net/log4net/Core/LoggingEvent.cs:232 <see> Message
+  DNN Platform/DotNetNuke.Log4net/log4net/Core/LoggingEvent.cs:233 <see> ThreadName
+  DNN Platform/DotNetNuke.Log4net/log4net/Core/LoggingEvent.cs:234 <see> Exception
+  DNN Platform/DotNetNuke.Log4net/log4net/Core/LoggingEvent.cs:235 <see> Domain
+  DNN Platform/DotNetNuke.Log4net/log4net/Core/LoggingEvent.cs:236 <see> Properties
+  DNN Platform/DotNetNuke.Log4net/log4net/Core/LoggingEvent.cs:278 <see> LoggingEvent
+  DNN Platform/DotNetNuke.Log4net/log4net/Core/LoggingEvent.cs:290 <see> TimeStamp
+  DNN Platform/DotNetNuke.Log4net/log4net/Core/LoggingEvent.cs:290 <see> Level
+  DNN Platform/DotNetNuke.Log4net/log4net/Core/LoggingEvent.cs:290 <see> LoggerName
+  DNN Platform/DotNetNuke.Log4net/log4net/Core/LoggingEvent.cs:292 <see> M:FixVolatileData()
+  DNN Platform/DotNetNuke.Log4net/log4net/Core/LoggingEvent.cs:319 <see> LoggingEvent
+  DNN Platform/DotNetNuke.Log4net/log4net/Core/LoggingEvent.cs:334 <see> M:GetLoggingEventData(FixFlags)
+  DNN Platform/DotNetNuke.Log4net/log4net/Core/LoggingEvent.cs:335 <see> LoggingEventData
+  DNN Platform/DotNetNuke.Log4net/log4net/Core/LoggingEvent.cs:356 <see> LoggingEvent
+  DNN Platform/DotNetNuke.Log4net/log4net/Core/LoggingEvent.cs:370 <see> M:GetLoggingEventData(FixFlags)
+  DNN Platform/DotNetNuke.Log4net/log4net/Core/LoggingEvent.cs:371 <see> LoggingEventData
+  DNN Platform/DotNetNuke.Log4net/log4net/Core/LoggingEvent.cs:374 <see> Fix
+  DNN Platform/DotNetNuke.Log4net/log4net/Core/LoggingEvent.cs:374 <see> FixFlags.All
+  DNN Platform/DotNetNuke.Log4net/log4net/Core/LoggingEvent.cs:386 <see> LoggingEvent
+  DNN Platform/DotNetNuke.Log4net/log4net/Core/LoggingEvent.cs:397 <see> M:GetLoggingEventData(FixFlags)
+  DNN Platform/DotNetNuke.Log4net/log4net/Core/LoggingEvent.cs:398 <see> LoggingEventData
+  DNN Platform/DotNetNuke.Log4net/log4net/Core/LoggingEvent.cs:401 <see> Fix
+  DNN Platform/DotNetNuke.Log4net/log4net/Core/LoggingEvent.cs:401 <see> FixFlags.All
+  DNN Platform/DotNetNuke.Log4net/log4net/Core/LoggingEvent.cs:413 <see> SerializationInfo
+  DNN Platform/DotNetNuke.Log4net/log4net/Core/LoggingEvent.cs:414 <see> StreamingContext
+  DNN Platform/DotNetNuke.Log4net/log4net/Core/LoggingEvent.cs:417 <see> LoggingEvent
+  DNN Platform/DotNetNuke.Log4net/log4net/Core/LoggingEvent.cs:494 <see> Level
+  DNN Platform/DotNetNuke.Log4net/log4net/Core/LoggingEvent.cs:554 <see> LocationInfo
+  DNN Platform/DotNetNuke.Log4net/log4net/Core/LoggingEvent.cs:582 <see> RenderedMessage
+  DNN Platform/DotNetNuke.Log4net/log4net/Core/LoggingEvent.cs:605 <see> GetExceptionString
+  DNN Platform/DotNetNuke.Log4net/log4net/Core/LoggingEvent.cs:618 <see> ILoggerRepository
+  DNN Platform/DotNetNuke.Log4net/log4net/Core/LoggingEvent.cs:639 <see> ILoggerRepository.RendererMap
+  DNN Platform/DotNetNuke.Log4net/log4net/Core/LoggingEvent.cs:681 <see> RenderedMessage
+  DNN Platform/DotNetNuke.Log4net/log4net/Core/LoggingEvent.cs:972 <see> LookupProperty
+  DNN Platform/DotNetNuke.Log4net/log4net/Core/LoggingEvent.cs:973 <see> GetProperties
+  DNN Platform/DotNetNuke.Log4net/log4net/Core/LoggingEvent.cs:976 <see> Fix
+  DNN Platform/DotNetNuke.Log4net/log4net/Core/LoggingEvent.cs:1020 <see> SerializationInfo
+  DNN Platform/DotNetNuke.Log4net/log4net/Core/LoggingEvent.cs:1028 <see> M:FixVolatileData()
+  DNN Platform/DotNetNuke.Log4net/log4net/Core/LoggingEvent.cs:1029 <see> log4net.Appender.IAppender.DoAppend
+  DNN Platform/DotNetNuke.Log4net/log4net/Core/LoggingEvent.cs:1065 <see> LoggingEvent
+  DNN Platform/DotNetNuke.Log4net/log4net/Core/LoggingEvent.cs:1066 <see> LoggingEventData
+  DNN Platform/DotNetNuke.Log4net/log4net/Core/LoggingEvent.cs:1073 <see> FixFlags.Partial
+  DNN Platform/DotNetNuke.Log4net/log4net/Core/LoggingEvent.cs:1082 <see> LoggingEvent
+  DNN Platform/DotNetNuke.Log4net/log4net/Core/LoggingEvent.cs:1084 <see> LoggingEventData
+  DNN Platform/DotNetNuke.Log4net/log4net/Core/LoggingEvent.cs:1099 <see> ILoggerRepository.RendererMap
+  DNN Platform/DotNetNuke.Log4net/log4net/Core/LoggingEvent.cs:1106 <see> GetExceptionString
+  DNN Platform/DotNetNuke.Log4net/log4net/Core/LoggingEvent.cs:1117 <see> ILoggerRepository.RendererMap
+  DNN Platform/DotNetNuke.Log4net/log4net/Core/LoggingEvent.cs:1157 <see> LoggingEvent
+  DNN Platform/DotNetNuke.Log4net/log4net/Core/LoggingEvent.cs:1162 <see> M:FixVolatileData()
+  DNN Platform/DotNetNuke.Log4net/log4net/Core/LoggingEvent.cs:1168 <see> M:FixVolatileData(bool)
+  DNN Platform/DotNetNuke.Log4net/log4net/Core/LoggingEvent.cs:1186 <see> LoggingEvent
+  DNN Platform/DotNetNuke.Log4net/log4net/Core/LoggingEvent.cs:1191 <see> M:FixVolatileData()
+  DNN Platform/DotNetNuke.Log4net/log4net/Core/LoggingEvent.cs:1200 <see> LocationInformation
+  DNN Platform/DotNetNuke.Log4net/log4net/Core/LoggingEvent.cs:1201 <see> UserName
+  DNN Platform/DotNetNuke.Log4net/log4net/Core/LoggingEvent.cs:1221 <see> FixFlags
+  DNN Platform/DotNetNuke.Log4net/log4net/Core/LoggingEvent.cs:1402 <see> Properties
+  DNN Platform/DotNetNuke.Log4net/log4net/Core/LoggingEvent.cs:1409 <see> ThreadContext.Properties
+  DNN Platform/DotNetNuke.Log4net/log4net/Core/LoggingEvent.cs:1416 <see> GlobalContext.Properties
+  DNN Platform/DotNetNuke.Log4net/log4net/Core/LoggingEvent.cs:1439 <see> PropertiesDictionary
+  DNN Platform/DotNetNuke.Log4net/log4net/Core/LoggingEvent.cs:1442 <see> LookupProperty
+  DNN Platform/DotNetNuke.Log4net/log4net/DateFormatter/SimpleDateFormatter.cs:67 <see> DateTime
+  DNN Platform/DotNetNuke.Log4net/log4net/DateFormatter/SimpleDateFormatter.cs:71 <see> M:DateTime.ToString(string, IFormatProvider)
+  DNN Platform/DotNetNuke.Log4net/log4net/Filter/FilterSkeleton.cs:77 <see> Next
+  DNN Platform/DotNetNuke.Log4net/log4net/Filter/LevelMatchFilter.cs:46 <see> FilterDecision.Accept
+  DNN Platform/DotNetNuke.Log4net/log4net/Filter/LevelMatchFilter.cs:49 <see> Level
+  DNN Platform/DotNetNuke.Log4net/log4net/Filter/LevelRangeFilter.cs:45 <see> Level
+  DNN Platform/DotNetNuke.Log4net/log4net/Filter/LevelRangeFilter.cs:48 <see> Level
+  DNN Platform/DotNetNuke.Log4net/log4net/Filter/LevelRangeFilter.cs:51 <see> Level
+  DNN Platform/DotNetNuke.Log4net/log4net/Layout/LayoutSkeleton.cs:55 <see> Header
+  DNN Platform/DotNetNuke.Log4net/log4net/Layout/LayoutSkeleton.cs:63 <see> Footer
+  DNN Platform/DotNetNuke.Log4net/log4net/Layout/XMLLayoutBase.cs:206 <see> LoggingEvent
+  DNN Platform/DotNetNuke.Log4net/log4net/LogManager.cs:59 <see> LogManager
+  DNN Platform/DotNetNuke.Log4net/log4net/LogManager.cs:362 <see> Level.Debug
+  DNN Platform/DotNetNuke.Log4net/log4net/LogManager.cs:408 <see> ILoggerRepository
+  DNN Platform/DotNetNuke.Log4net/log4net/LogManager.cs:412 <see> M:Assembly.GetCallingAssembly()
+  DNN Platform/DotNetNuke.Log4net/log4net/LogManager.cs:455 <see> ILoggerRepository
+  DNN Platform/DotNetNuke.Log4net/log4net/LogManager.cs:459 <see> M:Assembly.GetCallingAssembly()
+  DNN Platform/DotNetNuke.Log4net/log4net/LogManager.cs:505 <see> ILoggerRepository
+  DNN Platform/DotNetNuke.Log4net/log4net/LogManager.cs:506 <see> M:GetRepository()
+  DNN Platform/DotNetNuke.Log4net/log4net/LogManager.cs:510 <see> Type
+  DNN Platform/DotNetNuke.Log4net/log4net/LogManager.cs:522 <see> Type
+  DNN Platform/DotNetNuke.Log4net/log4net/LogManager.cs:522 <see> ILoggerRepository
+  DNN Platform/DotNetNuke.Log4net/log4net/LogManager.cs:529 <see> M:GetRepository()
+  DNN Platform/DotNetNuke.Log4net/log4net/LogManager.cs:715 <see> ILoggerWrapper
+  DNN Platform/DotNetNuke.Log4net/log4net/LogManager.cs:725 <see> LogImpl
+  DNN Platform/DotNetNuke.Log4net/log4net/MDC.cs:52 <see> MDC
+  DNN Platform/DotNetNuke.Log4net/log4net/NDC.cs:70 <see> NDC
+  DNN Platform/DotNetNuke.Log4net/log4net/Plugin/PluginCollection.cs:196 <see> IPlugin
+  DNN Platform/DotNetNuke.Log4net/log4net/Plugin/PluginCollection.cs:201 <exception> ArgumentOutOfRangeException
+  DNN Platform/DotNetNuke.Log4net/log4net/Plugin/PluginCollection.cs:204 <see> PluginCollection.Count
+  DNN Platform/DotNetNuke.Log4net/log4net/Plugin/PluginCollection.cs:474 <exception> ArgumentOutOfRangeException
+  DNN Platform/DotNetNuke.Log4net/log4net/Plugin/PluginCollection.cs:477 <see> PluginCollection.Count
+  DNN Platform/DotNetNuke.Log4net/log4net/Plugin/PluginCollection.cs:484 <exception> ArgumentOutOfRangeException
+  DNN Platform/DotNetNuke.Log4net/log4net/Plugin/PluginCollection.cs:487 <see> PluginCollection.Count
+  DNN Platform/DotNetNuke.Log4net/log4net/Plugin/PluginMap.cs:53 <see> IPlugin
+  DNN Platform/DotNetNuke.Log4net/log4net/Repository/Hierarchy/Hierarchy.cs:54 <see> Logger
+  DNN Platform/DotNetNuke.Log4net/log4net/Repository/Hierarchy/Hierarchy.cs:496 <see> IAppenderAttachable
+  DNN Platform/DotNetNuke.Log4net/log4net/Repository/Hierarchy/Hierarchy.cs:516 <see> IAppenderAttachable
+  DNN Platform/DotNetNuke.Log4net/log4net/Repository/Hierarchy/Hierarchy.cs:854 <see> ProvisionNode
+  DNN Platform/DotNetNuke.Log4net/log4net/Repository/Hierarchy/Hierarchy.cs:854 <see> Logger
+  DNN Platform/DotNetNuke.Log4net/log4net/Repository/Hierarchy/Logger.cs:696 <see> IAppenderAttachable
+  DNN Platform/DotNetNuke.Log4net/log4net/Repository/Hierarchy/XmlHierarchyConfigurator.cs:823 <see> Type
+  DNN Platform/DotNetNuke.Log4net/log4net/Util/AppenderAttachedImpl.cs:150 <see> IAppender
+  DNN Platform/DotNetNuke.Log4net/log4net/Util/AppenderAttachedImpl.cs:151 <see> LoggingEvent
+  DNN Platform/DotNetNuke.Log4net/log4net/Util/AppenderAttachedImpl.cs:157 <see> IBulkAppender
+  DNN Platform/DotNetNuke.Log4net/log4net/Util/CompositeProperties.cs:62 <see> PropertiesDictionary
+  DNN Platform/DotNetNuke.Log4net/log4net/Util/EmptyCollection.cs:43 <see> EmptyCollection
+  DNN Platform/DotNetNuke.Log4net/log4net/Util/EmptyDictionary.cs:43 <see> EmptyDictionary
+  DNN Platform/DotNetNuke.Log4net/log4net/Util/EmptyDictionary.cs:141 <see> IEnumerator
+  DNN Platform/DotNetNuke.Log4net/log4net/Util/EmptyDictionary.cs:146 <see> NullEnumerator
+  DNN Platform/DotNetNuke.Log4net/log4net/Util/EmptyDictionary.cs:301 <see> InvalidOperationException
+  DNN Platform/DotNetNuke.Log4net/log4net/Util/LogicalThreadContextProperties.cs:191 <see> CallContext
+  DNN Platform/DotNetNuke.Log4net/log4net/Util/LogicalThreadContextProperties.cs:191 <see> CallContext.GetData
+  DNN Platform/DotNetNuke.Log4net/log4net/Util/LogicalThreadContextProperties.cs:212 <see> CallContext
+  DNN Platform/DotNetNuke.Log4net/log4net/Util/LogicalThreadContextProperties.cs:212 <see> CallContext.SetData
+  DNN Platform/DotNetNuke.Log4net/log4net/Util/LogicalThreadContextStack.cs:50 <see> log4net.Util.LogicalThreadContextStack
+  DNN Platform/DotNetNuke.Log4net/log4net/Util/LogicalThreadContextStack.cs:51 <see> log4net.Util.LogicalThreadContextProperties
+  DNN Platform/DotNetNuke.Log4net/log4net/Util/LogicalThreadContextStack.cs:56 <see> log4net.Util.LogicalThreadContextStacks
+  DNN Platform/DotNetNuke.Log4net/log4net/Util/LogicalThreadContextStack.cs:57 <see> log4net.Util.LogicalThreadContextStack
+  DNN Platform/DotNetNuke.Log4net/log4net/Util/LogicalThreadContextStack.cs:68 <see> LogicalThreadContextStack
+  DNN Platform/DotNetNuke.Log4net/log4net/Util/LogicalThreadContextStack.cs:88 <see> Push
+  DNN Platform/DotNetNuke.Log4net/log4net/Util/LogicalThreadContextStack.cs:89 <see> Pop
+  DNN Platform/DotNetNuke.Log4net/log4net/Util/LogicalThreadContextStack.cs:104 <see> IDisposable.Dispose
+  DNN Platform/DotNetNuke.Log4net/log4net/Util/LogicalThreadContextStack.cs:104 <see> IDisposable
+  DNN Platform/DotNetNuke.Log4net/log4net/Util/LogicalThreadContextStack.cs:105 <see> Push
+  DNN Platform/DotNetNuke.Log4net/log4net/Util/LogicalThreadContextStack.cs:142 <see> IDisposable
+  DNN Platform/DotNetNuke.Log4net/log4net/Util/LogicalThreadContextStack.cs:184 <see> LogicalThreadContextStack
+  DNN Platform/DotNetNuke.Log4net/log4net/Util/LogicalThreadContextStack.cs:189 <see> NDC
+  DNN Platform/DotNetNuke.Log4net/log4net/Util/LogicalThreadContextStack.cs:240 <see> StackFrame
+  DNN Platform/DotNetNuke.Log4net/log4net/Util/LogicalThreadContextStack.cs:289 <see> LogicalThreadContextStack.Push
+  DNN Platform/DotNetNuke.Log4net/log4net/Util/LogicalThreadContextStack.cs:292 <see> IDisposable
+  DNN Platform/DotNetNuke.Log4net/log4net/Util/LogicalThreadContextStack.cs:309 <see> AutoPopStackFrame
+  DNN Platform/DotNetNuke.Log4net/log4net/Util/NativeError.cs:45 <see> NativeError
+  DNN Platform/DotNetNuke.Log4net/log4net/Util/NativeError.cs:229 <see> M:Marshal.GetLastWin32Error()
+  DNN Platform/DotNetNuke.Log4net/log4net/Util/NullDictionaryEnumerator.cs:37 <see> NullDictionaryEnumerator
+  DNN Platform/DotNetNuke.Log4net/log4net/Util/NullDictionaryEnumerator.cs:160 <see> NullDictionaryEnumerator
+  DNN Platform/DotNetNuke.Log4net/log4net/Util/NullEnumerator.cs:37 <see> NullEnumerator
+  DNN Platform/DotNetNuke.Log4net/log4net/Util/NullEnumerator.cs:102 <see> NullEnumerator
+  DNN Platform/DotNetNuke.Log4net/log4net/Util/OptionConverter.cs:42 <see> OptionConverter
+  DNN Platform/DotNetNuke.Log4net/log4net/Util/OptionConverter.cs:125 <see> bool
+  DNN Platform/DotNetNuke.Log4net/log4net/Util/OptionConverter.cs:184 <see> long
+  DNN Platform/DotNetNuke.Log4net/log4net/Util/PatternString.cs:361 <see> PatternParser
+  DNN Platform/DotNetNuke.Log4net/log4net/Util/PropertiesDictionary.cs:47 <see> PropertiesDictionary
+  DNN Platform/DotNetNuke.Log4net/log4net/Util/PropertiesDictionary.cs:58 <see> PropertiesDictionary
+  DNN Platform/DotNetNuke.Log4net/log4net/Util/PropertiesDictionary.cs:67 <see> PropertiesDictionary
+  DNN Platform/DotNetNuke.Log4net/log4net/Util/PropertiesDictionary.cs:70 <see> SerializationInfo
+  DNN Platform/DotNetNuke.Log4net/log4net/Util/PropertiesDictionary.cs:71 <see> StreamingContext
+  DNN Platform/DotNetNuke.Log4net/log4net/Util/PropertiesDictionary.cs:112 <see> IDictionary.GetEnumerator
+  DNN Platform/DotNetNuke.Log4net/log4net/Util/PropertiesDictionary.cs:116 <see> IDictionaryEnumerator
+  DNN Platform/DotNetNuke.Log4net/log4net/Util/PropertiesDictionary.cs:124 <see> IDictionary.Remove
+  DNN Platform/DotNetNuke.Log4net/log4net/Util/PropertiesDictionary.cs:136 <see> IDictionary.Contains
+  DNN Platform/DotNetNuke.Log4net/log4net/Util/PropertiesDictionary.cs:160 <see> IDictionary.Add
+  DNN Platform/DotNetNuke.Log4net/log4net/Util/PropertiesDictionary.cs:165 <see> String
+  DNN Platform/DotNetNuke.Log4net/log4net/Util/PropertiesDictionary.cs:168 <exception> ArgumentException
+  DNN Platform/DotNetNuke.Log4net/log4net/Util/PropertiesDictionary.cs:179 <see> IDictionary.IsReadOnly
+  DNN Platform/DotNetNuke.Log4net/log4net/Util/PropertiesDictionary.cs:194 <see> IDictionary.this
+  DNN Platform/DotNetNuke.Log4net/log4net/Util/PropertiesDictionary.cs:200 <see> String
+  DNN Platform/DotNetNuke.Log4net/log4net/Util/PropertiesDictionary.cs:203 <exception> ArgumentException
+  DNN Platform/DotNetNuke.Log4net/log4net/Util/PropertiesDictionary.cs:225 <see> IDictionary.Values
+  DNN Platform/DotNetNuke.Log4net/log4net/Util/PropertiesDictionary.cs:231 <see> IDictionary.Keys
+  DNN Platform/DotNetNuke.Log4net/log4net/Util/PropertiesDictionary.cs:237 <see> IDictionary.IsFixedSize
+  DNN Platform/DotNetNuke.Log4net/log4net/Util/PropertiesDictionary.cs:243 <see> ICollection.CopyTo
+  DNN Platform/DotNetNuke.Log4net/log4net/Util/PropertiesDictionary.cs:251 <see> ICollection.IsSynchronized
+  DNN Platform/DotNetNuke.Log4net/log4net/Util/PropertiesDictionary.cs:257 <see> ICollection.SyncRoot
+  DNN Platform/DotNetNuke.Log4net/log4net/Util/PropertiesDictionary.cs:263 <see> IEnumerable.GetEnumerator
+  DNN Platform/DotNetNuke.Log4net/log4net/Util/ReadOnlyPropertiesDictionary.cs:56 <see> ReadOnlyPropertiesDictionary
+  DNN Platform/DotNetNuke.Log4net/log4net/Util/ReadOnlyPropertiesDictionary.cs:67 <see> ReadOnlyPropertiesDictionary
+  DNN Platform/DotNetNuke.Log4net/log4net/Util/ReadOnlyPropertiesDictionary.cs:80 <see> SerializationInfo
+  DNN Platform/DotNetNuke.Log4net/log4net/Util/ReadOnlyPropertiesDictionary.cs:81 <see> StreamingContext
+  DNN Platform/DotNetNuke.Log4net/log4net/Util/ReadOnlyPropertiesDictionary.cs:84 <see> ReadOnlyPropertiesDictionary
+  DNN Platform/DotNetNuke.Log4net/log4net/Util/ReadOnlyPropertiesDictionary.cs:158 <see> SerializationInfo
+  DNN Platform/DotNetNuke.Log4net/log4net/Util/ReadOnlyPropertiesDictionary.cs:208 <see> IDictionary.GetEnumerator
+  DNN Platform/DotNetNuke.Log4net/log4net/Util/ReadOnlyPropertiesDictionary.cs:214 <see> IDictionary.Remove
+  DNN Platform/DotNetNuke.Log4net/log4net/Util/ReadOnlyPropertiesDictionary.cs:221 <see> IDictionary.Contains
+  DNN Platform/DotNetNuke.Log4net/log4net/Util/ReadOnlyPropertiesDictionary.cs:235 <see> IDictionary.Add
+  DNN Platform/DotNetNuke.Log4net/log4net/Util/ReadOnlyPropertiesDictionary.cs:243 <see> IDictionary.IsReadOnly
+  DNN Platform/DotNetNuke.Log4net/log4net/Util/ReadOnlyPropertiesDictionary.cs:249 <see> IDictionary.this[object]
+  DNN Platform/DotNetNuke.Log4net/log4net/Util/ReadOnlyPropertiesDictionary.cs:267 <see> IDictionary.Values
+  DNN Platform/DotNetNuke.Log4net/log4net/Util/ReadOnlyPropertiesDictionary.cs:273 <see> IDictionary.Keys
+  DNN Platform/DotNetNuke.Log4net/log4net/Util/ReadOnlyPropertiesDictionary.cs:279 <see> IDictionary.IsFixedSize
+  DNN Platform/DotNetNuke.Log4net/log4net/Util/ReadOnlyPropertiesDictionary.cs:285 <see> ICollection.CopyTo
+  DNN Platform/DotNetNuke.Log4net/log4net/Util/ReadOnlyPropertiesDictionary.cs:293 <see> ICollection.IsSynchronized
+  DNN Platform/DotNetNuke.Log4net/log4net/Util/ReadOnlyPropertiesDictionary.cs:305 <see> ICollection.SyncRoot
+  DNN Platform/DotNetNuke.Log4net/log4net/Util/ReadOnlyPropertiesDictionary.cs:311 <see> IEnumerable.GetEnumerator
+  DNN Platform/DotNetNuke.Log4net/log4net/Util/SystemInfo.cs:626 <see> M:Type.GetType(string,bool)
+  DNN Platform/DotNetNuke.Log4net/log4net/Util/SystemStringFormat.cs:60 <see> System.String
+  DNN Platform/DotNetNuke.Log4net/log4net/Util/SystemStringFormat.cs:61 <see> System.Object
+  DNN Platform/DotNetNuke.Log4net/log4net/Util/SystemStringFormat.cs:64 <see> System.IFormatProvider
+  DNN Platform/DotNetNuke.Log4net/log4net/Util/Transform.cs:38 <see> Transform
+  DNN Platform/DotNetNuke.Log4net/log4net/Util/TypeConverters/ConversionNotSupportedException.cs:33 <see> ApplicationException
+  DNN Platform/DotNetNuke.Log4net/log4net/Util/TypeConverters/ConversionNotSupportedException.cs:94 <see> SerializationInfo
+  DNN Platform/DotNetNuke.Log4net/log4net/Util/TypeConverters/ConversionNotSupportedException.cs:95 <see> StreamingContext
+  DNN Platform/DotNetNuke.Log4net/log4net/Util/TypeConverters/ConversionNotSupportedException.cs:98 <see> ConversionNotSupportedException
+  DNN Platform/DotNetNuke.Log4net/log4net/Util/TypeConverters/ConverterRegistry.cs:54 <see> ConverterRegistry
+  DNN Platform/DotNetNuke.Log4net/log4net/Util/TypeConverters/ConverterRegistry.cs:244 <see> IConvertFrom
+  DNN Platform/DotNetNuke.Log4net/log4net/Util/TypeConverters/ConverterRegistry.cs:244 <see> IConvertTo
+  DNN Platform/DotNetNuke.Log4net/log4net/Util/TypeConverters/ConverterRegistry.cs:285 <see> Type
+  DNN Platform/DotNetNuke.Web/Api/Auth/AuthMessageHandlerBase.cs:120 <see> ForceSsl
+  DNN Platform/DotNetNuke.Web/Api/Internal/Auth/DigestAuthentication.cs:76 <see> DigestAuthMessageHandler
+  DNN Platform/DotNetNuke.Web/ConfigSection/MessageHandlersCollection.cs:18 <see> MessageHandlerEntry
+  DNN Platform/DotNetNuke.Web/UI/WebControls/DnnFilePicker.cs:520 <see> pnlRightDiv
+  DNN Platform/DotNetNuke.Web/UI/WebControls/Internal/DnnFormComboBoxItem.cs:26 <see> DnnFormComboBoxItem
+  DNN Platform/DotNetNuke.Web/UI/WebControls/Internal/DnnFormComboBoxItem.cs:33 <see> DnnFormComboBoxItem
+  DNN Platform/DotNetNuke.Web/UI/WebControls/UniformControlCollection.cs:60 <exception> System.ArgumentOutOfRangeException
+  DNN Platform/DotNetNuke.Web/UI/WebControls/UniformControlCollection.cs:60 <see> IList{T}
+  DNN Platform/DotNetNuke.Web/UI/WebControls/UniformControlCollection.cs:62 <exception> System.NotSupportedException
+  DNN Platform/DotNetNuke.Web/UI/WebControls/UniformControlCollection.cs:232 <see> System.Collections.IEnumerator
+  DNN Platform/Library/Collections/CollectionExtensions.cs:897 <exception> InvalidCastException
+  DNN Platform/Library/Collections/CollectionExtensions.cs:899 <see> IConvertible
+  DNN Platform/Library/Collections/CollectionExtensions.cs:941 <see> string
+  DNN Platform/Library/Collections/CollectionExtensions.cs:949 <see> KeyValuePair{TKey,TValue}
+  DNN Platform/Library/Collections/CollectionExtensions.cs:958 <see> KeyValuePair{TKey,TValue}
+  DNN Platform/Library/Collections/CollectionExtensions.cs:961 <see> NameValueCollection
+  DNN Platform/Library/Collections/CollectionExtensions.cs:970 <see> Dictionary{TKey,TValue}
+  DNN Platform/Library/Collections/CollectionExtensions.cs:973 <exception> ArgumentNullException
+  DNN Platform/Library/Collections/CollectionExtensions.cs:980 <see> Dictionary{TKey,TValue}
+  DNN Platform/Library/Collections/CollectionExtensions.cs:983 <exception> ArgumentNullException
+  DNN Platform/Library/Collections/CollectionExtensions.cs:990 <see> Dictionary{TKey,TValue}
+  DNN Platform/Library/Collections/CollectionExtensions.cs:994 <exception> ArgumentNullException
+  DNN Platform/Library/Collections/CollectionExtensions.cs:995 <exception> InvalidOperationException
+  DNN Platform/Library/Collections/GenericCollectionBase.cs:26 <exception> ArgumentOutOfRangeException
+  DNN Platform/Library/Collections/GenericCollectionBase.cs:26 <see> CollectionBase.Count
+  DNN Platform/Library/Collections/GenericCollectionBase.cs:36 <inheritdoc> ArrayList.Add
+  DNN Platform/Library/Collections/NaiveLockingList.cs:162 <see> NaiveLockingEnumerator
+  DNN Platform/Library/Collections/ReaderWriterLockStrategy.cs:47 <see> ReaderWriterLockStrategy
+  DNN Platform/Library/Collections/ReaderWriterSlimLock.cs:22 <see> ReaderWriterSlimLock
+  DNN Platform/Library/Collections/SharedDictionary.cs:43 <see> SharedDictionary{TKey, TValue}
+  DNN Platform/Library/Collections/SharedList.cs:39 <see> SharedList{T}
+  DNN Platform/Library/Common/Globals.cs:231 <inheritdoc> Abstractions.Application.PerformanceSettings.NoCaching
+  DNN Platform/Library/Common/Globals.cs:234 <inheritdoc> Abstractions.Application.PerformanceSettings.LightCaching
+  DNN Platform/Library/Common/Globals.cs:237 <inheritdoc> Abstractions.Application.PerformanceSettings.ModerateCaching
+  DNN Platform/Library/Common/Globals.cs:240 <inheritdoc> Abstractions.Application.PerformanceSettings.HeavyCaching
+  DNN Platform/Library/Common/Globals.cs:3658 <see> Globals.DependencyProvider
+  DNN Platform/Library/Common/Globals.cs:3660 <see> Globals
+  DNN Platform/Library/Entities/Controllers/HostController.cs:283 <see> Dictionary{TKey, TValue}
+  DNN Platform/Library/Entities/Modules/Settings/SettingsRepository.cs:137 <exception> InvalidCastException
+  DNN Platform/Library/Entities/Portals/Templates/PortalTemplateModuleAction.cs:10 <inheritdoc> Abstractions.Portals.Templates.PortalTemplateModuleAction.Ignore
+  DNN Platform/Library/Entities/Portals/Templates/PortalTemplateModuleAction.cs:13 <inheritdoc> Abstractions.Portals.Templates.PortalTemplateModuleAction.Merge
+  DNN Platform/Library/Entities/Portals/Templates/PortalTemplateModuleAction.cs:16 <inheritdoc> Abstractions.Portals.Templates.PortalTemplateModuleAction.Replace
+  DNN Platform/Library/Entities/Urls/ActionType.cs:17 <see> HttpStatusCode.Found
+  DNN Platform/Library/Entities/Urls/ActionType.cs:20 <see> HttpStatusCode.MovedPermanently
+  DNN Platform/Library/Entities/Urls/ActionType.cs:23 <see> HttpStatusCode.MovedPermanently
+  DNN Platform/Library/Entities/Urls/ActionType.cs:26 <see> HttpStatusCode.Found
+  DNN Platform/Library/Entities/Urls/ActionType.cs:29 <see> HttpStatusCode.NotFound
+  DNN Platform/Library/Entities/Urls/ActionType.cs:32 <see> HttpStatusCode.InternalServerError
+  DNN Platform/Library/Entities/Urls/BrowserTypes.cs:13 <inheritdoc> Abstractions.Urls.BrowserTypes.Normal
+  DNN Platform/Library/Entities/Urls/BrowserTypes.cs:16 <inheritdoc> Abstractions.Urls.BrowserTypes.Mobile
+  DNN Platform/Library/Entities/Urls/CustomUrlDictController.cs:105 <see> SharedDictionary{TKey,TValue}
+  DNN Platform/Library/Entities/Urls/DNNPageForwardType.cs:14 <see> HttpStatusCode.Found
+  DNN Platform/Library/Entities/Urls/DNNPageForwardType.cs:17 <see> HttpStatusCode.MovedPermanently
+  DNN Platform/Library/Entities/Urls/ExtensionUrlProviderController.cs:673 <see> List{T}
+  DNN Platform/Library/Entities/Urls/ExtensionUrlProviderController.cs:673 <see> ExtensionUrlProvider
+  DNN Platform/Library/Entities/Urls/RedirectTokens.cs:411 <see> List{T}
+  DNN Platform/Library/Entities/Urls/RedirectTokens.cs:497 <see> Dictionary{TKey,TValue}
+  DNN Platform/Library/Obsolete/EventLogController.cs:30 <inheritdoc> Abstractions.Logging.EventLogType.USER_CREATED
+  DNN Platform/Library/Obsolete/EventLogController.cs:33 <inheritdoc> Abstractions.Logging.EventLogType.USER_DELETED
+  DNN Platform/Library/Obsolete/EventLogController.cs:36 <inheritdoc> Abstractions.Logging.EventLogType.LOGIN_SUPERUSER
+  DNN Platform/Library/Obsolete/EventLogController.cs:39 <inheritdoc> Abstractions.Logging.EventLogType.LOGIN_SUCCESS
+  DNN Platform/Library/Obsolete/EventLogController.cs:42 <inheritdoc> Abstractions.Logging.EventLogType.LOGIN_FAILURE
+  DNN Platform/Library/Obsolete/EventLogController.cs:45 <inheritdoc> Abstractions.Logging.EventLogType.LOGIN_USERLOCKEDOUT
+  DNN Platform/Library/Obsolete/EventLogController.cs:48 <inheritdoc> Abstractions.Logging.EventLogType.LOGIN_USERNOTAPPROVED
+  DNN Platform/Library/Obsolete/EventLogController.cs:51 <inheritdoc> Abstractions.Logging.EventLogType.CACHE_REFRESHED
+  DNN Platform/Library/Obsolete/EventLogController.cs:54 <inheritdoc> Abstractions.Logging.EventLogType.PASSWORD_SENT_SUCCESS
+  DNN Platform/Library/Obsolete/EventLogController.cs:57 <inheritdoc> Abstractions.Logging.EventLogType.PASSWORD_SENT_FAILURE
+  DNN Platform/Library/Obsolete/EventLogController.cs:60 <inheritdoc> Abstractions.Logging.EventLogType.LOG_NOTIFICATION_FAILURE
+  DNN Platform/Library/Obsolete/EventLogController.cs:63 <inheritdoc> Abstractions.Logging.EventLogType.PORTAL_CREATED
+  DNN Platform/Library/Obsolete/EventLogController.cs:66 <inheritdoc> Abstractions.Logging.EventLogType.PORTAL_DELETED
+  DNN Platform/Library/Obsolete/EventLogController.cs:69 <inheritdoc> Abstractions.Logging.EventLogType.PORTALGROUP_CREATED
+  DNN Platform/Library/Obsolete/EventLogController.cs:72 <inheritdoc> Abstractions.Logging.EventLogType.PORTALGROUP_DELETED
+  DNN Platform/Library/Obsolete/EventLogController.cs:75 <inheritdoc> Abstractions.Logging.EventLogType.PORTAL_ADDEDTOPORTALGROUP
+  DNN Platform/Library/Obsolete/EventLogController.cs:78 <inheritdoc> Abstractions.Logging.EventLogType.PORTAL_REMOVEDFROMPORTALGROUP
+  DNN Platform/Library/Obsolete/EventLogController.cs:81 <inheritdoc> Abstractions.Logging.EventLogType.TAB_CREATED
+  DNN Platform/Library/Obsolete/EventLogController.cs:84 <inheritdoc> Abstractions.Logging.EventLogType.TAB_UPDATED
+  DNN Platform/Library/Obsolete/EventLogController.cs:87 <inheritdoc> Abstractions.Logging.EventLogType.TAB_DELETED
+  DNN Platform/Library/Obsolete/EventLogController.cs:90 <inheritdoc> Abstractions.Logging.EventLogType.TAB_SENT_TO_RECYCLE_BIN
+  DNN Platform/Library/Obsolete/EventLogController.cs:93 <inheritdoc> Abstractions.Logging.EventLogType.TAB_RESTORED
+  DNN Platform/Library/Obsolete/EventLogController.cs:96 <inheritdoc> Abstractions.Logging.EventLogType.USER_ROLE_CREATED
+  DNN Platform/Library/Obsolete/EventLogController.cs:99 <inheritdoc> Abstractions.Logging.EventLogType.USER_ROLE_DELETED
+  DNN Platform/Library/Obsolete/EventLogController.cs:102 <inheritdoc> Abstractions.Logging.EventLogType.USER_ROLE_UPDATED
+  DNN Platform/Library/Obsolete/EventLogController.cs:105 <inheritdoc> Abstractions.Logging.EventLogType.ROLE_CREATED
+  DNN Platform/Library/Obsolete/EventLogController.cs:108 <inheritdoc> Abstractions.Logging.EventLogType.ROLE_UPDATED
+  DNN Platform/Library/Obsolete/EventLogController.cs:111 <inheritdoc> Abstractions.Logging.EventLogType.ROLE_DELETED
+  DNN Platform/Library/Obsolete/EventLogController.cs:114 <inheritdoc> Abstractions.Logging.EventLogType.MODULE_CREATED
+  DNN Platform/Library/Obsolete/EventLogController.cs:117 <inheritdoc> Abstractions.Logging.EventLogType.MODULE_UPDATED
+  DNN Platform/Library/Obsolete/EventLogController.cs:120 <inheritdoc> Abstractions.Logging.EventLogType.MODULE_DELETED
+  DNN Platform/Library/Obsolete/EventLogController.cs:123 <inheritdoc> Abstractions.Logging.EventLogType.MODULE_SENT_TO_RECYCLE_BIN
+  DNN Platform/Library/Obsolete/EventLogController.cs:126 <inheritdoc> Abstractions.Logging.EventLogType.MODULE_RESTORED
+  DNN Platform/Library/Obsolete/EventLogController.cs:129 <inheritdoc> Abstractions.Logging.EventLogType.SCHEDULER_EVENT_STARTED
+  DNN Platform/Library/Obsolete/EventLogController.cs:132 <inheritdoc> Abstractions.Logging.EventLogType.SCHEDULER_EVENT_PROGRESSING
+  DNN Platform/Library/Obsolete/EventLogController.cs:135 <inheritdoc> Abstractions.Logging.EventLogType.SCHEDULER_EVENT_COMPLETED
+  DNN Platform/Library/Obsolete/EventLogController.cs:138 <inheritdoc> Abstractions.Logging.EventLogType.APPLICATION_START
+  DNN Platform/Library/Obsolete/EventLogController.cs:141 <inheritdoc> Abstractions.Logging.EventLogType.APPLICATION_END
+  DNN Platform/Library/Obsolete/EventLogController.cs:144 <inheritdoc> Abstractions.Logging.EventLogType.APPLICATION_SHUTTING_DOWN
+  DNN Platform/Library/Obsolete/EventLogController.cs:147 <inheritdoc> Abstractions.Logging.EventLogType.SCHEDULER_STARTED
+  DNN Platform/Library/Obsolete/EventLogController.cs:150 <inheritdoc> Abstractions.Logging.EventLogType.SCHEDULER_SHUTTING_DOWN
+  DNN Platform/Library/Obsolete/EventLogController.cs:153 <inheritdoc> Abstractions.Logging.EventLogType.SCHEDULER_STOPPED
+  DNN Platform/Library/Obsolete/EventLogController.cs:156 <inheritdoc> Abstractions.Logging.EventLogType.ADMIN_ALERT
+  DNN Platform/Library/Obsolete/EventLogController.cs:159 <inheritdoc> Abstractions.Logging.EventLogType.HOST_ALERT
+  DNN Platform/Library/Obsolete/EventLogController.cs:162 <inheritdoc> Abstractions.Logging.EventLogType.CACHE_REMOVED
+  DNN Platform/Library/Obsolete/EventLogController.cs:165 <inheritdoc> Abstractions.Logging.EventLogType.CACHE_EXPIRED
+  DNN Platform/Library/Obsolete/EventLogController.cs:168 <inheritdoc> Abstractions.Logging.EventLogType.CACHE_UNDERUSED
+  DNN Platform/Library/Obsolete/EventLogController.cs:171 <inheritdoc> Abstractions.Logging.EventLogType.CACHE_DEPENDENCYCHANGED
+  DNN Platform/Library/Obsolete/EventLogController.cs:174 <inheritdoc> Abstractions.Logging.EventLogType.CACHE_OVERFLOW
+  DNN Platform/Library/Obsolete/EventLogController.cs:177 <inheritdoc> Abstractions.Logging.EventLogType.CACHE_REFRESH
+  DNN Platform/Library/Obsolete/EventLogController.cs:180 <inheritdoc> Abstractions.Logging.EventLogType.LISTENTRY_CREATED
+  DNN Platform/Library/Obsolete/EventLogController.cs:183 <inheritdoc> Abstractions.Logging.EventLogType.LISTENTRY_UPDATED
+  DNN Platform/Library/Obsolete/EventLogController.cs:186 <inheritdoc> Abstractions.Logging.EventLogType.LISTENTRY_DELETED
+  DNN Platform/Library/Obsolete/EventLogController.cs:189 <inheritdoc> Abstractions.Logging.EventLogType.DESKTOPMODULE_CREATED
+  DNN Platform/Library/Obsolete/EventLogController.cs:192 <inheritdoc> Abstractions.Logging.EventLogType.DESKTOPMODULE_UPDATED
+  DNN Platform/Library/Obsolete/EventLogController.cs:195 <inheritdoc> Abstractions.Logging.EventLogType.DESKTOPMODULE_DELETED
+  DNN Platform/Library/Obsolete/EventLogController.cs:198 <inheritdoc> Abstractions.Logging.EventLogType.SKINCONTROL_CREATED
+  DNN Platform/Library/Obsolete/EventLogController.cs:201 <inheritdoc> Abstractions.Logging.EventLogType.SKINCONTROL_UPDATED
+  DNN Platform/Library/Obsolete/EventLogController.cs:204 <inheritdoc> Abstractions.Logging.EventLogType.SKINCONTROL_DELETED
+  DNN Platform/Library/Obsolete/EventLogController.cs:207 <inheritdoc> Abstractions.Logging.EventLogType.PORTALALIAS_CREATED
+  DNN Platform/Library/Obsolete/EventLogController.cs:210 <inheritdoc> Abstractions.Logging.EventLogType.PORTALALIAS_UPDATED
+  DNN Platform/Library/Obsolete/EventLogController.cs:213 <inheritdoc> Abstractions.Logging.EventLogType.PORTALALIAS_DELETED
+  DNN Platform/Library/Obsolete/EventLogController.cs:216 <inheritdoc> Abstractions.Logging.EventLogType.PROFILEPROPERTY_CREATED
+  DNN Platform/Library/Obsolete/EventLogController.cs:219 <inheritdoc> Abstractions.Logging.EventLogType.PROFILEPROPERTY_UPDATED
+  DNN Platform/Library/Obsolete/EventLogController.cs:222 <inheritdoc> Abstractions.Logging.EventLogType.PROFILEPROPERTY_DELETED
+  DNN Platform/Library/Obsolete/EventLogController.cs:225 <inheritdoc> Abstractions.Logging.EventLogType.USER_UPDATED
+  DNN Platform/Library/Obsolete/EventLogController.cs:228 <inheritdoc> Abstractions.Logging.EventLogType.DESKTOPMODULEPERMISSION_CREATED
+  DNN Platform/Library/Obsolete/EventLogController.cs:231 <inheritdoc> Abstractions.Logging.EventLogType.DESKTOPMODULEPERMISSION_UPDATED
+  DNN Platform/Library/Obsolete/EventLogController.cs:234 <inheritdoc> Abstractions.Logging.EventLogType.DESKTOPMODULEPERMISSION_DELETED
+  DNN Platform/Library/Obsolete/EventLogController.cs:237 <inheritdoc> Abstractions.Logging.EventLogType.PERMISSION_CREATED
+  DNN Platform/Library/Obsolete/EventLogController.cs:240 <inheritdoc> Abstractions.Logging.EventLogType.PERMISSION_UPDATED
+  DNN Platform/Library/Obsolete/EventLogController.cs:243 <inheritdoc> Abstractions.Logging.EventLogType.PERMISSION_DELETED
+  DNN Platform/Library/Obsolete/EventLogController.cs:246 <inheritdoc> Abstractions.Logging.EventLogType.TABPERMISSION_CREATED
+  DNN Platform/Library/Obsolete/EventLogController.cs:249 <inheritdoc> Abstractions.Logging.EventLogType.TABPERMISSION_UPDATED
+  DNN Platform/Library/Obsolete/EventLogController.cs:252 <inheritdoc> Abstractions.Logging.EventLogType.TABPERMISSION_DELETED
+  DNN Platform/Library/Obsolete/EventLogController.cs:255 <inheritdoc> Abstractions.Logging.EventLogType.AUTHENTICATION_CREATED
+  DNN Platform/Library/Obsolete/EventLogController.cs:258 <inheritdoc> Abstractions.Logging.EventLogType.AUTHENTICATION_UPDATED
+  DNN Platform/Library/Obsolete/EventLogController.cs:261 <inheritdoc> Abstractions.Logging.EventLogType.AUTHENTICATION_DELETED
+  DNN Platform/Library/Obsolete/EventLogController.cs:264 <inheritdoc> Abstractions.Logging.EventLogType.FILE_ADDED
+  DNN Platform/Library/Obsolete/EventLogController.cs:267 <inheritdoc> Abstractions.Logging.EventLogType.FILE_CHANGED
+  DNN Platform/Library/Obsolete/EventLogController.cs:270 <inheritdoc> Abstractions.Logging.EventLogType.FILE_DELETED
+  DNN Platform/Library/Obsolete/EventLogController.cs:273 <inheritdoc> Abstractions.Logging.EventLogType.FILE_DOWNLOADED
+  DNN Platform/Library/Obsolete/EventLogController.cs:276 <inheritdoc> Abstractions.Logging.EventLogType.FILE_MOVED
+  DNN Platform/Library/Obsolete/EventLogController.cs:279 <inheritdoc> Abstractions.Logging.EventLogType.FILE_OVERWRITTEN
+  DNN Platform/Library/Obsolete/EventLogController.cs:282 <inheritdoc> Abstractions.Logging.EventLogType.FILE_RENAMED
+  DNN Platform/Library/Obsolete/EventLogController.cs:285 <inheritdoc> Abstractions.Logging.EventLogType.FILE_METADATACHANGED
+  DNN Platform/Library/Obsolete/EventLogController.cs:288 <inheritdoc> Abstractions.Logging.EventLogType.FOLDER_CREATED
+  DNN Platform/Library/Obsolete/EventLogController.cs:291 <inheritdoc> Abstractions.Logging.EventLogType.FOLDER_UPDATED
+  DNN Platform/Library/Obsolete/EventLogController.cs:294 <inheritdoc> Abstractions.Logging.EventLogType.FOLDER_DELETED
+  DNN Platform/Library/Obsolete/EventLogController.cs:297 <inheritdoc> Abstractions.Logging.EventLogType.PACKAGE_CREATED
+  DNN Platform/Library/Obsolete/EventLogController.cs:300 <inheritdoc> Abstractions.Logging.EventLogType.PACKAGE_UPDATED
+  DNN Platform/Library/Obsolete/EventLogController.cs:303 <inheritdoc> Abstractions.Logging.EventLogType.PACKAGE_DELETED
+  DNN Platform/Library/Obsolete/EventLogController.cs:306 <inheritdoc> Abstractions.Logging.EventLogType.LANGUAGEPACK_CREATED
+  DNN Platform/Library/Obsolete/EventLogController.cs:309 <inheritdoc> Abstractions.Logging.EventLogType.LANGUAGEPACK_UPDATED
+  DNN Platform/Library/Obsolete/EventLogController.cs:312 <inheritdoc> Abstractions.Logging.EventLogType.LANGUAGEPACK_DELETED
+  DNN Platform/Library/Obsolete/EventLogController.cs:315 <inheritdoc> Abstractions.Logging.EventLogType.LANGUAGE_CREATED
+  DNN Platform/Library/Obsolete/EventLogController.cs:318 <inheritdoc> Abstractions.Logging.EventLogType.LANGUAGE_UPDATED
+  DNN Platform/Library/Obsolete/EventLogController.cs:321 <inheritdoc> Abstractions.Logging.EventLogType.LANGUAGE_DELETED
+  DNN Platform/Library/Obsolete/EventLogController.cs:324 <inheritdoc> Abstractions.Logging.EventLogType.LIBRARY_UPDATED
+  DNN Platform/Library/Obsolete/EventLogController.cs:327 <inheritdoc> Abstractions.Logging.EventLogType.SKINPACKAGE_CREATED
+  DNN Platform/Library/Obsolete/EventLogController.cs:330 <inheritdoc> Abstractions.Logging.EventLogType.SKINPACKAGE_UPDATED
+  DNN Platform/Library/Obsolete/EventLogController.cs:333 <inheritdoc> Abstractions.Logging.EventLogType.SKINPACKAGE_DELETED
+  DNN Platform/Library/Obsolete/EventLogController.cs:336 <inheritdoc> Abstractions.Logging.EventLogType.SCHEDULE_CREATED
+  DNN Platform/Library/Obsolete/EventLogController.cs:339 <inheritdoc> Abstractions.Logging.EventLogType.SCHEDULE_UPDATED
+  DNN Platform/Library/Obsolete/EventLogController.cs:342 <inheritdoc> Abstractions.Logging.EventLogType.SCHEDULE_DELETED
+  DNN Platform/Library/Obsolete/EventLogController.cs:345 <inheritdoc> Abstractions.Logging.EventLogType.HOST_SETTING_CREATED
+  DNN Platform/Library/Obsolete/EventLogController.cs:348 <inheritdoc> Abstractions.Logging.EventLogType.HOST_SETTING_UPDATED
+  DNN Platform/Library/Obsolete/EventLogController.cs:351 <inheritdoc> Abstractions.Logging.EventLogType.HOST_SETTING_DELETED
+  DNN Platform/Library/Obsolete/EventLogController.cs:354 <inheritdoc> Abstractions.Logging.EventLogType.PORTALDESKTOPMODULE_CREATED
+  DNN Platform/Library/Obsolete/EventLogController.cs:357 <inheritdoc> Abstractions.Logging.EventLogType.PORTALDESKTOPMODULE_UPDATED
+  DNN Platform/Library/Obsolete/EventLogController.cs:360 <inheritdoc> Abstractions.Logging.EventLogType.PORTALDESKTOPMODULE_DELETED
+  DNN Platform/Library/Obsolete/EventLogController.cs:363 <inheritdoc> Abstractions.Logging.EventLogType.TABMODULE_CREATED
+  DNN Platform/Library/Obsolete/EventLogController.cs:366 <inheritdoc> Abstractions.Logging.EventLogType.TABMODULE_UPDATED
+  DNN Platform/Library/Obsolete/EventLogController.cs:369 <inheritdoc> Abstractions.Logging.EventLogType.TABMODULE_DELETED
+  DNN Platform/Library/Obsolete/EventLogController.cs:372 <inheritdoc> Abstractions.Logging.EventLogType.TABMODULE_SETTING_CREATED
+  DNN Platform/Library/Obsolete/EventLogController.cs:375 <inheritdoc> Abstractions.Logging.EventLogType.TABMODULE_SETTING_UPDATED
+  DNN Platform/Library/Obsolete/EventLogController.cs:378 <inheritdoc> Abstractions.Logging.EventLogType.TABMODULE_SETTING_DELETED
+  DNN Platform/Library/Obsolete/EventLogController.cs:381 <inheritdoc> Abstractions.Logging.EventLogType.MODULE_SETTING_CREATED
+  DNN Platform/Library/Obsolete/EventLogController.cs:384 <inheritdoc> Abstractions.Logging.EventLogType.MODULE_SETTING_UPDATED
+  DNN Platform/Library/Obsolete/EventLogController.cs:387 <inheritdoc> Abstractions.Logging.EventLogType.MODULE_SETTING_DELETED
+  DNN Platform/Library/Obsolete/EventLogController.cs:390 <inheritdoc> Abstractions.Logging.EventLogType.PORTAL_SETTING_CREATED
+  DNN Platform/Library/Obsolete/EventLogController.cs:393 <inheritdoc> Abstractions.Logging.EventLogType.PORTAL_SETTING_UPDATED
+  DNN Platform/Library/Obsolete/EventLogController.cs:396 <inheritdoc> Abstractions.Logging.EventLogType.PORTAL_SETTING_DELETED
+  DNN Platform/Library/Obsolete/EventLogController.cs:399 <inheritdoc> Abstractions.Logging.EventLogType.PORTALINFO_CREATED
+  DNN Platform/Library/Obsolete/EventLogController.cs:402 <inheritdoc> Abstractions.Logging.EventLogType.PORTALINFO_UPDATED
+  DNN Platform/Library/Obsolete/EventLogController.cs:405 <inheritdoc> Abstractions.Logging.EventLogType.PORTALINFO_DELETED
+  DNN Platform/Library/Obsolete/EventLogController.cs:408 <inheritdoc> Abstractions.Logging.EventLogType.AUTHENTICATION_USER_CREATED
+  DNN Platform/Library/Obsolete/EventLogController.cs:411 <inheritdoc> Abstractions.Logging.EventLogType.AUTHENTICATION_USER_UPDATED
+  DNN Platform/Library/Obsolete/EventLogController.cs:414 <inheritdoc> Abstractions.Logging.EventLogType.AUTHENTICATION_USER_DELETED
+  DNN Platform/Library/Obsolete/EventLogController.cs:417 <inheritdoc> Abstractions.Logging.EventLogType.LANGUAGETOPORTAL_CREATED
+  DNN Platform/Library/Obsolete/EventLogController.cs:420 <inheritdoc> Abstractions.Logging.EventLogType.LANGUAGETOPORTAL_UPDATED
+  DNN Platform/Library/Obsolete/EventLogController.cs:423 <inheritdoc> Abstractions.Logging.EventLogType.LANGUAGETOPORTAL_DELETED
+  DNN Platform/Library/Obsolete/EventLogController.cs:426 <inheritdoc> Abstractions.Logging.EventLogType.TAB_ORDER_UPDATED
+  DNN Platform/Library/Obsolete/EventLogController.cs:429 <inheritdoc> Abstractions.Logging.EventLogType.TAB_SETTING_CREATED
+  DNN Platform/Library/Obsolete/EventLogController.cs:432 <inheritdoc> Abstractions.Logging.EventLogType.TAB_SETTING_UPDATED
+  DNN Platform/Library/Obsolete/EventLogController.cs:435 <inheritdoc> Abstractions.Logging.EventLogType.TAB_SETTING_DELETED
+  DNN Platform/Library/Obsolete/EventLogController.cs:438 <inheritdoc> Abstractions.Logging.EventLogType.HOST_SQL_EXECUTED
+  DNN Platform/Library/Obsolete/EventLogController.cs:441 <inheritdoc> Abstractions.Logging.EventLogType.USER_RESTORED
+  DNN Platform/Library/Obsolete/EventLogController.cs:444 <inheritdoc> Abstractions.Logging.EventLogType.USER_REMOVED
+  DNN Platform/Library/Obsolete/EventLogController.cs:447 <inheritdoc> Abstractions.Logging.EventLogType.USER_IMPERSONATED
+  DNN Platform/Library/Obsolete/EventLogController.cs:450 <inheritdoc> Abstractions.Logging.EventLogType.USERNAME_UPDATED
+  DNN Platform/Library/Obsolete/EventLogController.cs:453 <inheritdoc> Abstractions.Logging.EventLogType.IP_LOGIN_BANNED
+  DNN Platform/Library/Obsolete/EventLogController.cs:456 <inheritdoc> Abstractions.Logging.EventLogType.PAGE_NOT_FOUND_404
+  DNN Platform/Library/Obsolete/EventLogController.cs:459 <inheritdoc> Abstractions.Logging.EventLogType.TABURL_CREATED
+  DNN Platform/Library/Obsolete/EventLogController.cs:462 <inheritdoc> Abstractions.Logging.EventLogType.TABURL_UPDATED
+  DNN Platform/Library/Obsolete/EventLogController.cs:465 <inheritdoc> Abstractions.Logging.EventLogType.TABURL_DELETED
+  DNN Platform/Library/Obsolete/EventLogController.cs:468 <inheritdoc> Abstractions.Logging.EventLogType.SCRIPT_COLLISION
+  DNN Platform/Library/Obsolete/EventLogController.cs:471 <inheritdoc> Abstractions.Logging.EventLogType.POTENTIAL_PAYPAL_PAYMENT_FRAUD
+  DNN Platform/Library/Obsolete/EventLogController.cs:474 <inheritdoc> Abstractions.Logging.EventLogType.WEBSERVER_CREATED
+  DNN Platform/Library/Obsolete/EventLogController.cs:477 <inheritdoc> Abstractions.Logging.EventLogType.WEBSERVER_UPDATED
+  DNN Platform/Library/Obsolete/EventLogController.cs:480 <inheritdoc> Abstractions.Logging.EventLogType.WEBSERVER_DISABLED
+  DNN Platform/Library/Obsolete/EventLogController.cs:483 <inheritdoc> Abstractions.Logging.EventLogType.WEBSERVER_ENABLED
+  DNN Platform/Library/Obsolete/EventLogController.cs:486 <inheritdoc> Abstractions.Logging.EventLogType.WEBSERVER_PINGFAILED
+  DNN Platform/Library/Obsolete/EventLogController.cs:489 <inheritdoc> Abstractions.Logging.EventLogType.FOLDER_MOVED
+  DNN Platform/Library/Obsolete/EventLogController.cs:492 <inheritdoc> Abstractions.Logging.EventLogType.APITOKEN_AUTHENTICATION_FAILED
+  DNN Platform/Library/Obsolete/EventLogController.cs:495 <inheritdoc> Abstractions.Logging.EventLogType.APITOKEN_CREATED
+  DNN Platform/Library/Obsolete/EventLogController.cs:498 <inheritdoc> Abstractions.Logging.EventLogType.APITOKEN_DELETED
+  DNN Platform/Library/Obsolete/EventLogController.cs:501 <inheritdoc> Abstractions.Logging.EventLogType.APITOKEN_REVOKED
+  DNN Platform/Library/Obsolete/EventLogController.cs:504 <inheritdoc> Abstractions.Logging.EventLogType.PORTALPERMISSION_DELETED
+  DNN Platform/Library/Obsolete/EventLogController.cs:507 <inheritdoc> Abstractions.Logging.EventLogType.PORTALPERMISSION_CREATED
+  DNN Platform/Library/Obsolete/EventLogController.cs:510 <inheritdoc> Abstractions.Logging.EventLogType.PORTALPERMISSION_UPDATED
+  DNN Platform/Library/Security/PortalSecurity.cs:182 <see> DotNetNuke.Common.Lists.ListController
+  DNN Platform/Library/Security/PortalSecurity.cs:1048 <see> InputFilter
+  DNN Platform/Library/Security/PortalSecurity.cs:1091 <see> InputFilter
+  DNN Platform/Library/Security/PortalSecurity.cs:1101 <see> InputFilter
+  DNN Platform/Library/Security/PortalSecurity.cs:1112 <see> InputFilter
+  DNN Platform/Library/Security/PortalSecurity.cs:1122 <see> InputFilter
+  DNN Platform/Library/Security/PortalSecurity.cs:1131 <see> InputFilter
+  DNN Platform/Library/Services/Analytics/GoogleAnalyticsController.cs:69 <see> StreamReader
+  DNN Platform/Library/Services/Authentication/OAuth/HttpMethod.cs:9 <see> System.Net.Http.HttpMethod.Get
+  DNN Platform/Library/Services/Authentication/OAuth/HttpMethod.cs:12 <see> System.Net.Http.HttpMethod.Post
+  DNN Platform/Library/Services/Authentication/OAuth/HttpMethod.cs:15 <see> System.Net.Http.HttpMethod.Put
+  DNN Platform/Library/Services/Authentication/OAuth/HttpMethod.cs:18 <see> System.Net.Http.HttpMethod.Delete
+  DNN Platform/Library/Services/ClientCapability/FacebookRequestController.cs:157 <see> DateTime
+  DNN Platform/Library/Services/Exceptions/Exceptions.cs:414 <see> ThreadAbortException
+  DNN Platform/Library/Services/FileSystem/FolderController.cs:10 <see> StandardFolderProvider
+  DNN Platform/Library/Services/FileSystem/FolderController.cs:13 <see> SecureFolderProvider
+  DNN Platform/Library/Services/FileSystem/FolderController.cs:16 <see> DatabaseFolderProvider
+  DNN Platform/Library/Services/GeneratedImage/DiskImageStore.cs:41 <see> DiskImageStore
+  DNN Platform/Library/Services/Installer/Installers/AssemblyInstaller.cs:119 <see> AssemblyName
+  DNN Platform/Library/Services/Installer/Installers/AssemblyInstaller.cs:166 <see> XmlDocument
+  DNN Platform/Library/Services/Installer/TextEncoding.cs:11 <see> Encoding.UTF7
+  DNN Platform/Library/Services/Installer/TextEncoding.cs:14 <see> Encoding.UTF8
+  DNN Platform/Library/Services/Localization/Localization.cs:1997 <see> CultureInfo
+  DNN Platform/Library/Services/Log/EventLog/LoggingProvider.cs:18 <see> LogInfo
+  DNN Platform/Library/Services/Mail/SendTokenizedBulkEmail.cs:95 <see> SendTokenizedBulkEmail
+  DNN Platform/Library/Services/Mail/SendTokenizedBulkEmail.cs:585 <see> LanguageFilter
+  DNN Platform/Library/Services/Scheduling/SchedulingProvider.cs:96 <inheritdoc> Abstractions.Application.SchedulerMode.Disabled
+  DNN Platform/Library/Services/Scheduling/SchedulingProvider.cs:99 <inheritdoc> Abstractions.Application.SchedulerMode.TimerMethod
+  DNN Platform/Library/Services/Scheduling/SchedulingProvider.cs:102 <inheritdoc> Abstractions.Application.SchedulerMode.REQUEST_METHOD
+  DNN Platform/Library/Services/Syndication/RssHandler.cs:124 <see> GenericRssElement
+  DNN Platform/Library/UI/WebControls/PropertyEditor/PropertyEditorControl.cs:764 <see> System.Reflection.PropertyInfo
+  DNN Platform/Library/UI/WebControls/PropertyEditor/PropertySortType.cs:23 <see> DotNetNuke.UI.WebControls.SortOrderAttribute
+  DNN Platform/Modules/DnnExportImport/Components/Engines/ExportImportEngine.cs:793 <see> BasePortableService
+  DNN Platform/Modules/DnnExportImportLibrary/Repository/ExportImportRepository.cs:57 <see> ExportImportRepository
+  DNN Platform/Modules/HTML/Components/LocalizationHelper.cs:33 <see> Dictionary{TKey, TValue}
+  DNN Platform/Modules/HTML/Components/LocalizationHelper.cs:33 <see> Locale
+  DNN Platform/Modules/HTML/EditHtml.ascx.cs:691 <see> HtmlTextInfo
+  DNN Platform/Modules/HTML/EditHtml.ascx.cs:691 <see> HtmlTextInfo.ItemID
+  DNN Platform/Modules/HTML/EditHtml.ascx.cs:709 <see> HtmlTextInfo
+  DNN Platform/Modules/HtmlEditorManager/Presenters/ProviderConfigurationPresenter.cs:66 <see> EventArgs
+  DNN Platform/Modules/HtmlEditorManager/Presenters/ProviderConfigurationPresenter.cs:118 <see> EditorEventArgs
+  DNN Platform/Modules/HtmlEditorManager/Presenters/ProviderConfigurationPresenter.cs:128 <see> EditorEventArgs
+  DNN Platform/Providers/HtmlEditorProviders/DNNConnect.CKE/Browser/Browser.aspx.cs:2378 <see> System.EventArgs
+  DNN Platform/Providers/HtmlEditorProviders/DNNConnect.CKE/Browser/Browser.aspx.cs:2443 <see> EventArgs
+  DNN Platform/Providers/HtmlEditorProviders/DNNConnect.CKE/Browser/Browser.aspx.cs:2478 <see> EventArgs
+  DNN Platform/Providers/HtmlEditorProviders/DNNConnect.CKE/Browser/Browser.aspx.cs:2501 <see> EventArgs
+  DNN Platform/Providers/HtmlEditorProviders/DNNConnect.CKE/Browser/Browser.aspx.cs:2715 <see> EventArgs
+  DNN Platform/Providers/HtmlEditorProviders/DNNConnect.CKE/Browser/Browser.aspx.cs:2726 <see> EventArgs
+  DNN Platform/Providers/HtmlEditorProviders/DNNConnect.CKE/Browser/Browser.aspx.cs:2838 <see> System.Web.UI.WebControls.RepeaterCommandEventArgs
+  DNN Platform/Providers/HtmlEditorProviders/DNNConnect.CKE/Browser/Browser.aspx.cs:2874 <see> EventArgs
+  DNN Platform/Providers/HtmlEditorProviders/DNNConnect.CKE/Browser/Browser.aspx.cs:2900 <see> EventArgs
+  DNN Platform/Providers/HtmlEditorProviders/DNNConnect.CKE/CKEditorOptions.ascx.cs:525 <see> UploadSizeRoles
+  DNN Platform/Providers/HtmlEditorProviders/DNNConnect.CKE/CKEditorOptions.ascx.cs:1133 <see> RoleInfo
+  DNN Platform/Providers/HtmlEditorProviders/DNNConnect.CKE/CKEditorOptions.ascx.cs:1287 <see> ImageClickEventArgs
+  DNN Platform/Providers/HtmlEditorProviders/DNNConnect.CKE/CKEditorOptions.ascx.cs:1377 <see> ImageClickEventArgs
+  DNN Platform/Providers/HtmlEditorProviders/DNNConnect.CKE/CKEditorOptions.ascx.cs:1412 <see> ImageClickEventArgs
+  DNN Platform/Providers/HtmlEditorProviders/DNNConnect.CKE/CKEditorOptions.ascx.cs:1455 <see> ImageClickEventArgs
+  DNN Platform/Providers/HtmlEditorProviders/DNNConnect.CKE/CKEditorOptions.ascx.cs:1602 <see> RepeaterItemEventArgs
+  DNN Platform/Providers/HtmlEditorProviders/DNNConnect.CKE/CKEditorOptions.ascx.cs:2914 <see> EventArgs
+  DNN Platform/Providers/HtmlEditorProviders/DNNConnect.CKE/CKEditorOptions.ascx.cs:2941 <see> System.EventArgs
+  DNN Platform/Providers/HtmlEditorProviders/DNNConnect.CKE/CKEditorOptions.ascx.cs:2965 <see> System.EventArgs
+  DNN Platform/Providers/HtmlEditorProviders/DNNConnect.CKE/CKEditorOptions.ascx.cs:2989 <see> EventArgs
+  DNN Platform/Providers/HtmlEditorProviders/DNNConnect.CKE/CKEditorOptions.ascx.cs:3017 <see> EventArgs
+  DNN Platform/Providers/HtmlEditorProviders/DNNConnect.CKE/CKEditorOptions.ascx.cs:3036 <see> System.EventArgs
+  DNN Platform/Providers/HtmlEditorProviders/DNNConnect.CKE/CKEditorOptions.ascx.cs:3478 <see> UploadSizeRoles
+  DNN Platform/Providers/HtmlEditorProviders/DNNConnect.CKE/Controls/UrlControl.cs:253 <see> ArrayList
+  DNN Platform/Providers/HtmlEditorProviders/DNNConnect.CKE/Controls/UrlControl.cs:286 <see> EventArgs
+  DNN Platform/Providers/HtmlEditorProviders/DNNConnect.CKE/Controls/UrlControl.cs:305 <see> EventArgs
+  DNN Platform/Providers/HtmlEditorProviders/DNNConnect.CKE/Module/EditorConfigManager.ascx.cs:191 <see> EventArgs
+  DNN Platform/Providers/HtmlEditorProviders/DNNConnect.CKE/Module/EditorConfigManager.ascx.cs:225 <see> EventArgs
+  DNN Platform/Providers/HtmlEditorProviders/DNNConnect.CKE/Module/EditorConfigManager.ascx.cs:321 <see> Tabs
+  DNN Platform/Website/admin/Skins/Meta.ascx.cs:12 <see> Http
+  DNN Platform/Website/admin/Skins/Search.ascx.cs:540 <see> System.EventArgs
+  DNN Platform/Website/admin/Skins/Search.ascx.cs:541 <see> UseDropDownList
+  Dnn.AdminExperience/Dnn.PersonaBar.Extensions/Components/Themes/ParseType.cs:10 <see> SkinParser.Localized
+  Dnn.AdminExperience/Dnn.PersonaBar.Extensions/Components/Themes/ParseType.cs:13 <see> SkinParser.Portable
+  Dnn.AdminExperience/Dnn.PersonaBar.Extensions/Components/Themes/ThemesController.cs:31 <see> IThemesController
+  Dnn.AdminExperience/Dnn.PersonaBar.Extensions/Components/Themes/ThemesController.cs:377 <see> ThemeLevel
+  Dnn.AdminExperience/Dnn.PersonaBar.Extensions/Services/CommandController.cs:349 <see> ConsoleResultModel
+  Dnn.AdminExperience/Dnn.PersonaBar.Extensions/Services/LanguagesController.cs:790 <see> Hashtable
+  Dnn.AdminExperience/Dnn.PersonaBar.Extensions/Services/LanguagesController.cs:790 <see> Pair
+
+Documentation references they part on: the compiler resolves the reference to nothing, and the reader links it (7):
+  DNN Platform/DotNetNuke.Instrumentation/DnnLogger.cs:111 <see> log4net.ObjectRenderer.IObjectRenderer: the compiler nothing; the reader DNN Platform/DotNetNuke.Log4net/log4net/ObjectRenderer/IObjectRenderer.cs:37
+  DNN Platform/DotNetNuke.Instrumentation/DnnLogger.cs:183 <see> log4net.ObjectRenderer.IObjectRenderer: the compiler nothing; the reader DNN Platform/DotNetNuke.Log4net/log4net/ObjectRenderer/IObjectRenderer.cs:37
+  DNN Platform/DotNetNuke.Instrumentation/DnnLogger.cs:255 <see> log4net.ObjectRenderer.IObjectRenderer: the compiler nothing; the reader DNN Platform/DotNetNuke.Log4net/log4net/ObjectRenderer/IObjectRenderer.cs:37
+  DNN Platform/DotNetNuke.Instrumentation/DnnLogger.cs:346 <see> log4net.ObjectRenderer.IObjectRenderer: the compiler nothing; the reader DNN Platform/DotNetNuke.Log4net/log4net/ObjectRenderer/IObjectRenderer.cs:37
+  DNN Platform/DotNetNuke.Instrumentation/DnnLogger.cs:437 <see> log4net.ObjectRenderer.IObjectRenderer: the compiler nothing; the reader DNN Platform/DotNetNuke.Log4net/log4net/ObjectRenderer/IObjectRenderer.cs:37
+  DNN Platform/DotNetNuke.Log4net/log4net/Appender/IFlushable.cs:49 <see> RemotingAppender: the compiler nothing; the reader DNN Platform/DotNetNuke.Log4net/log4net/Appender/RemotingAppender.cs:80
+  DNN Platform/DotNetNuke.Log4net/log4net/Repository/ILoggerRepository.cs:66 <see> Hierarchy: the compiler nothing; the reader DNN Platform/DotNetNuke.Log4net/log4net/Repository/Hierarchy/Hierarchy.cs:119
+
+Documentation references they part on: the reader lands on the type that holds the member the compiler names, the file showing no symbol for the member (84):
+  DNN Platform/DotNetNuke.Instrumentation/SerilogController.cs:45 <see> InitializeSerilog(string): the compiler DNN Platform/DotNetNuke.Instrumentation/SerilogController.cs:67; the reader DNN Platform/DotNetNuke.Instrumentation/SerilogController.cs:18
+  DNN Platform/DotNetNuke.Log4net/log4net/Appender/LocalSyslogAppender.cs:211 <see> SyslogFacility.User: the compiler DNN Platform/DotNetNuke.Log4net/log4net/Appender/LocalSyslogAppender.cs:114; the reader DNN Platform/DotNetNuke.Log4net/log4net/Appender/LocalSyslogAppender.cs:108
+  DNN Platform/DotNetNuke.Log4net/log4net/Appender/RemoteSyslogAppender.cs:220 <see> SyslogFacility.User: the compiler DNN Platform/DotNetNuke.Log4net/log4net/Appender/RemoteSyslogAppender.cs:119; the reader DNN Platform/DotNetNuke.Log4net/log4net/Appender/RemoteSyslogAppender.cs:113
+  DNN Platform/DotNetNuke.Log4net/log4net/Appender/RollingFileAppender.cs:50 <see> RollingMode.Size: the compiler DNN Platform/DotNetNuke.Log4net/log4net/Appender/RollingFileAppender.cs:151; the reader DNN Platform/DotNetNuke.Log4net/log4net/Appender/RollingFileAppender.cs:133
+  DNN Platform/DotNetNuke.Log4net/log4net/Appender/RollingFileAppender.cs:52 <see> RollingMode.Date: the compiler DNN Platform/DotNetNuke.Log4net/log4net/Appender/RollingFileAppender.cs:154; the reader DNN Platform/DotNetNuke.Log4net/log4net/Appender/RollingFileAppender.cs:133
+  DNN Platform/DotNetNuke.Log4net/log4net/Appender/RollingFileAppender.cs:55 <see> RollingMode.Composite: the compiler DNN Platform/DotNetNuke.Log4net/log4net/Appender/RollingFileAppender.cs:157; the reader DNN Platform/DotNetNuke.Log4net/log4net/Appender/RollingFileAppender.cs:133
+  DNN Platform/DotNetNuke.Log4net/log4net/Appender/RollingFileAppender.cs:59 <see> RollingMode.Once: the compiler DNN Platform/DotNetNuke.Log4net/log4net/Appender/RollingFileAppender.cs:148; the reader DNN Platform/DotNetNuke.Log4net/log4net/Appender/RollingFileAppender.cs:133
+  DNN Platform/DotNetNuke.Log4net/log4net/Appender/RollingFileAppender.cs:403 <see> RollingMode.Composite: the compiler DNN Platform/DotNetNuke.Log4net/log4net/Appender/RollingFileAppender.cs:157; the reader DNN Platform/DotNetNuke.Log4net/log4net/Appender/RollingFileAppender.cs:133
+  DNN Platform/DotNetNuke.Log4net/log4net/Appender/RollingFileAppender.cs:406 <see> RollingMode.Once: the compiler DNN Platform/DotNetNuke.Log4net/log4net/Appender/RollingFileAppender.cs:148; the reader DNN Platform/DotNetNuke.Log4net/log4net/Appender/RollingFileAppender.cs:133
+  DNN Platform/DotNetNuke.Log4net/log4net/Core/TimeEvaluator.cs:44 <see> DEFAULT_INTERVAL: the compiler DNN Platform/DotNetNuke.Log4net/log4net/Core/TimeEvaluator.cs:42; the reader DNN Platform/DotNetNuke.Log4net/log4net/Core/TimeEvaluator.cs:33
+  DNN Platform/DotNetNuke.Log4net/log4net/Filter/DenyAllFilter.cs:50 <see> FilterDecision.Deny: the compiler DNN Platform/DotNetNuke.Log4net/log4net/Filter/FilterDecision.cs:41; the reader DNN Platform/DotNetNuke.Log4net/log4net/Filter/FilterDecision.cs:35
+  DNN Platform/DotNetNuke.Log4net/log4net/Filter/DenyAllFilter.cs:58 <see> FilterDecision.Accept: the compiler DNN Platform/DotNetNuke.Log4net/log4net/Filter/FilterDecision.cs:53; the reader DNN Platform/DotNetNuke.Log4net/log4net/Filter/FilterDecision.cs:35
+  DNN Platform/DotNetNuke.Log4net/log4net/Filter/FilterSkeleton.cs:46 <see> FilterDecision.Deny: the compiler DNN Platform/DotNetNuke.Log4net/log4net/Filter/FilterDecision.cs:41; the reader DNN Platform/DotNetNuke.Log4net/log4net/Filter/FilterDecision.cs:35
+  DNN Platform/DotNetNuke.Log4net/log4net/Filter/FilterSkeleton.cs:47 <see> FilterDecision.Neutral: the compiler DNN Platform/DotNetNuke.Log4net/log4net/Filter/FilterDecision.cs:47; the reader DNN Platform/DotNetNuke.Log4net/log4net/Filter/FilterDecision.cs:35
+  DNN Platform/DotNetNuke.Log4net/log4net/Filter/FilterSkeleton.cs:47 <see> FilterDecision.Accept: the compiler DNN Platform/DotNetNuke.Log4net/log4net/Filter/FilterDecision.cs:53; the reader DNN Platform/DotNetNuke.Log4net/log4net/Filter/FilterDecision.cs:35
+  DNN Platform/DotNetNuke.Log4net/log4net/Filter/FilterSkeleton.cs:113 <see> FilterDecision.Deny: the compiler DNN Platform/DotNetNuke.Log4net/log4net/Filter/FilterDecision.cs:41; the reader DNN Platform/DotNetNuke.Log4net/log4net/Filter/FilterDecision.cs:35
+  DNN Platform/DotNetNuke.Log4net/log4net/Filter/FilterSkeleton.cs:114 <see> FilterDecision.Neutral: the compiler DNN Platform/DotNetNuke.Log4net/log4net/Filter/FilterDecision.cs:47; the reader DNN Platform/DotNetNuke.Log4net/log4net/Filter/FilterDecision.cs:35
+  DNN Platform/DotNetNuke.Log4net/log4net/Filter/FilterSkeleton.cs:115 <see> FilterDecision.Accept: the compiler DNN Platform/DotNetNuke.Log4net/log4net/Filter/FilterDecision.cs:53; the reader DNN Platform/DotNetNuke.Log4net/log4net/Filter/FilterDecision.cs:35
+  DNN Platform/DotNetNuke.Log4net/log4net/Filter/IFilter.cs:45 <see> FilterDecision.Deny: the compiler DNN Platform/DotNetNuke.Log4net/log4net/Filter/FilterDecision.cs:41; the reader DNN Platform/DotNetNuke.Log4net/log4net/Filter/FilterDecision.cs:35
+  DNN Platform/DotNetNuke.Log4net/log4net/Filter/IFilter.cs:46 <see> FilterDecision.Neutral: the compiler DNN Platform/DotNetNuke.Log4net/log4net/Filter/FilterDecision.cs:47; the reader DNN Platform/DotNetNuke.Log4net/log4net/Filter/FilterDecision.cs:35
+  DNN Platform/DotNetNuke.Log4net/log4net/Filter/IFilter.cs:46 <see> FilterDecision.Accept: the compiler DNN Platform/DotNetNuke.Log4net/log4net/Filter/FilterDecision.cs:53; the reader DNN Platform/DotNetNuke.Log4net/log4net/Filter/FilterDecision.cs:35
+  DNN Platform/DotNetNuke.Log4net/log4net/Filter/IFilter.cs:76 <see> FilterDecision.Deny: the compiler DNN Platform/DotNetNuke.Log4net/log4net/Filter/FilterDecision.cs:41; the reader DNN Platform/DotNetNuke.Log4net/log4net/Filter/FilterDecision.cs:35
+  DNN Platform/DotNetNuke.Log4net/log4net/Filter/IFilter.cs:77 <see> FilterDecision.Neutral: the compiler DNN Platform/DotNetNuke.Log4net/log4net/Filter/FilterDecision.cs:47; the reader DNN Platform/DotNetNuke.Log4net/log4net/Filter/FilterDecision.cs:35
+  DNN Platform/DotNetNuke.Log4net/log4net/Filter/IFilter.cs:78 <see> FilterDecision.Accept: the compiler DNN Platform/DotNetNuke.Log4net/log4net/Filter/FilterDecision.cs:53; the reader DNN Platform/DotNetNuke.Log4net/log4net/Filter/FilterDecision.cs:35
+  DNN Platform/DotNetNuke.Log4net/log4net/Filter/LevelMatchFilter.cs:35 <see> FilterDecision.Accept: the compiler DNN Platform/DotNetNuke.Log4net/log4net/Filter/FilterDecision.cs:53; the reader DNN Platform/DotNetNuke.Log4net/log4net/Filter/FilterDecision.cs:35
+  DNN Platform/DotNetNuke.Log4net/log4net/Filter/LevelMatchFilter.cs:38 <see> FilterDecision.Deny: the compiler DNN Platform/DotNetNuke.Log4net/log4net/Filter/FilterDecision.cs:41; the reader DNN Platform/DotNetNuke.Log4net/log4net/Filter/FilterDecision.cs:35
+  DNN Platform/DotNetNuke.Log4net/log4net/Filter/LevelMatchFilter.cs:39 <see> FilterDecision.Neutral: the compiler DNN Platform/DotNetNuke.Log4net/log4net/Filter/FilterDecision.cs:47; the reader DNN Platform/DotNetNuke.Log4net/log4net/Filter/FilterDecision.cs:35
+  DNN Platform/DotNetNuke.Log4net/log4net/Filter/LevelMatchFilter.cs:57 <see> FilterDecision.Accept: the compiler DNN Platform/DotNetNuke.Log4net/log4net/Filter/FilterDecision.cs:53; the reader DNN Platform/DotNetNuke.Log4net/log4net/Filter/FilterDecision.cs:35
+  DNN Platform/DotNetNuke.Log4net/log4net/Filter/LevelMatchFilter.cs:63 <see> FilterDecision.Deny: the compiler DNN Platform/DotNetNuke.Log4net/log4net/Filter/FilterDecision.cs:41; the reader DNN Platform/DotNetNuke.Log4net/log4net/Filter/FilterDecision.cs:35
+  DNN Platform/DotNetNuke.Log4net/log4net/Filter/LevelMatchFilter.cs:97 <see> FilterDecision.Accept: the compiler DNN Platform/DotNetNuke.Log4net/log4net/Filter/FilterDecision.cs:53; the reader DNN Platform/DotNetNuke.Log4net/log4net/Filter/FilterDecision.cs:35
+  DNN Platform/DotNetNuke.Log4net/log4net/Filter/LevelMatchFilter.cs:98 <see> FilterDecision.Deny: the compiler DNN Platform/DotNetNuke.Log4net/log4net/Filter/FilterDecision.cs:41; the reader DNN Platform/DotNetNuke.Log4net/log4net/Filter/FilterDecision.cs:35
+  DNN Platform/DotNetNuke.Log4net/log4net/Filter/LevelMatchFilter.cs:99 <see> FilterDecision.Neutral: the compiler DNN Platform/DotNetNuke.Log4net/log4net/Filter/FilterDecision.cs:47; the reader DNN Platform/DotNetNuke.Log4net/log4net/Filter/FilterDecision.cs:35
+  DNN Platform/DotNetNuke.Log4net/log4net/Filter/LevelRangeFilter.cs:36 <see> FilterDecision.Accept: the compiler DNN Platform/DotNetNuke.Log4net/log4net/Filter/FilterDecision.cs:53; the reader DNN Platform/DotNetNuke.Log4net/log4net/Filter/FilterDecision.cs:35
+  DNN Platform/DotNetNuke.Log4net/log4net/Filter/LevelRangeFilter.cs:38 <see> FilterDecision.Deny: the compiler DNN Platform/DotNetNuke.Log4net/log4net/Filter/FilterDecision.cs:41; the reader DNN Platform/DotNetNuke.Log4net/log4net/Filter/FilterDecision.cs:35
+  DNN Platform/DotNetNuke.Log4net/log4net/Filter/LevelRangeFilter.cs:59 <see> FilterDecision.Accept: the compiler DNN Platform/DotNetNuke.Log4net/log4net/Filter/FilterDecision.cs:53; the reader DNN Platform/DotNetNuke.Log4net/log4net/Filter/FilterDecision.cs:35
+  DNN Platform/DotNetNuke.Log4net/log4net/Filter/LevelRangeFilter.cs:65 <see> FilterDecision.Neutral: the compiler DNN Platform/DotNetNuke.Log4net/log4net/Filter/FilterDecision.cs:47; the reader DNN Platform/DotNetNuke.Log4net/log4net/Filter/FilterDecision.cs:35
+  DNN Platform/DotNetNuke.Log4net/log4net/Filter/LevelRangeFilter.cs:111 <see> FilterDecision.Deny: the compiler DNN Platform/DotNetNuke.Log4net/log4net/Filter/FilterDecision.cs:41; the reader DNN Platform/DotNetNuke.Log4net/log4net/Filter/FilterDecision.cs:35
+  DNN Platform/DotNetNuke.Log4net/log4net/Filter/LevelRangeFilter.cs:114 <see> FilterDecision.Accept: the compiler DNN Platform/DotNetNuke.Log4net/log4net/Filter/FilterDecision.cs:53; the reader DNN Platform/DotNetNuke.Log4net/log4net/Filter/FilterDecision.cs:35
+  DNN Platform/DotNetNuke.Log4net/log4net/Filter/LevelRangeFilter.cs:115 <see> FilterDecision.Neutral: the compiler DNN Platform/DotNetNuke.Log4net/log4net/Filter/FilterDecision.cs:47; the reader DNN Platform/DotNetNuke.Log4net/log4net/Filter/FilterDecision.cs:35
+  DNN Platform/DotNetNuke.Log4net/log4net/Filter/LoggerMatchFilter.cs:36 <see> FilterDecision.Accept: the compiler DNN Platform/DotNetNuke.Log4net/log4net/Filter/FilterDecision.cs:53; the reader DNN Platform/DotNetNuke.Log4net/log4net/Filter/FilterDecision.cs:35
+  DNN Platform/DotNetNuke.Log4net/log4net/Filter/LoggerMatchFilter.cs:38 <see> FilterDecision.Deny: the compiler DNN Platform/DotNetNuke.Log4net/log4net/Filter/FilterDecision.cs:41; the reader DNN Platform/DotNetNuke.Log4net/log4net/Filter/FilterDecision.cs:35
+  DNN Platform/DotNetNuke.Log4net/log4net/Filter/LoggerMatchFilter.cs:55 <see> FilterDecision.Accept: the compiler DNN Platform/DotNetNuke.Log4net/log4net/Filter/FilterDecision.cs:53; the reader DNN Platform/DotNetNuke.Log4net/log4net/Filter/FilterDecision.cs:35
+  DNN Platform/DotNetNuke.Log4net/log4net/Filter/LoggerMatchFilter.cs:61 <see> FilterDecision.Deny: the compiler DNN Platform/DotNetNuke.Log4net/log4net/Filter/FilterDecision.cs:41; the reader DNN Platform/DotNetNuke.Log4net/log4net/Filter/FilterDecision.cs:35
+  DNN Platform/DotNetNuke.Log4net/log4net/Filter/LoggerMatchFilter.cs:98 <see> FilterDecision.Neutral: the compiler DNN Platform/DotNetNuke.Log4net/log4net/Filter/FilterDecision.cs:47; the reader DNN Platform/DotNetNuke.Log4net/log4net/Filter/FilterDecision.cs:35
+  DNN Platform/DotNetNuke.Log4net/log4net/Filter/LoggerMatchFilter.cs:101 <see> FilterDecision.Accept: the compiler DNN Platform/DotNetNuke.Log4net/log4net/Filter/FilterDecision.cs:53; the reader DNN Platform/DotNetNuke.Log4net/log4net/Filter/FilterDecision.cs:35
+  DNN Platform/DotNetNuke.Log4net/log4net/Filter/LoggerMatchFilter.cs:102 <see> FilterDecision.Deny: the compiler DNN Platform/DotNetNuke.Log4net/log4net/Filter/FilterDecision.cs:41; the reader DNN Platform/DotNetNuke.Log4net/log4net/Filter/FilterDecision.cs:35
+  DNN Platform/DotNetNuke.Log4net/log4net/Filter/PropertyFilter.cs:71 <see> FilterDecision.Neutral: the compiler DNN Platform/DotNetNuke.Log4net/log4net/Filter/FilterDecision.cs:47; the reader DNN Platform/DotNetNuke.Log4net/log4net/Filter/FilterDecision.cs:35
+  DNN Platform/DotNetNuke.Log4net/log4net/Filter/PropertyFilter.cs:74 <see> FilterDecision.Accept: the compiler DNN Platform/DotNetNuke.Log4net/log4net/Filter/FilterDecision.cs:53; the reader DNN Platform/DotNetNuke.Log4net/log4net/Filter/FilterDecision.cs:35
+  DNN Platform/DotNetNuke.Log4net/log4net/Filter/PropertyFilter.cs:75 <see> FilterDecision.Deny: the compiler DNN Platform/DotNetNuke.Log4net/log4net/Filter/FilterDecision.cs:41; the reader DNN Platform/DotNetNuke.Log4net/log4net/Filter/FilterDecision.cs:35
+  DNN Platform/DotNetNuke.Log4net/log4net/Filter/StringMatchFilter.cs:83 <see> FilterDecision.Accept: the compiler DNN Platform/DotNetNuke.Log4net/log4net/Filter/FilterDecision.cs:53; the reader DNN Platform/DotNetNuke.Log4net/log4net/Filter/FilterDecision.cs:35
+  DNN Platform/DotNetNuke.Log4net/log4net/Filter/StringMatchFilter.cs:89 <see> FilterDecision.Neutral: the compiler DNN Platform/DotNetNuke.Log4net/log4net/Filter/FilterDecision.cs:47; the reader DNN Platform/DotNetNuke.Log4net/log4net/Filter/FilterDecision.cs:35
+  DNN Platform/DotNetNuke.Log4net/log4net/Filter/StringMatchFilter.cs:147 <see> FilterDecision.Neutral: the compiler DNN Platform/DotNetNuke.Log4net/log4net/Filter/FilterDecision.cs:47; the reader DNN Platform/DotNetNuke.Log4net/log4net/Filter/FilterDecision.cs:35
+  DNN Platform/DotNetNuke.Log4net/log4net/Filter/StringMatchFilter.cs:150 <see> FilterDecision.Accept: the compiler DNN Platform/DotNetNuke.Log4net/log4net/Filter/FilterDecision.cs:53; the reader DNN Platform/DotNetNuke.Log4net/log4net/Filter/FilterDecision.cs:35
+  DNN Platform/DotNetNuke.Log4net/log4net/Filter/StringMatchFilter.cs:151 <see> FilterDecision.Deny: the compiler DNN Platform/DotNetNuke.Log4net/log4net/Filter/FilterDecision.cs:41; the reader DNN Platform/DotNetNuke.Log4net/log4net/Filter/FilterDecision.cs:35
+  DNN Platform/DotNetNuke.Log4net/log4net/Util/OnlyOnceErrorHandler.cs:192 <see> log4net.Core.ErrorCode.GenericFailure: the compiler DNN Platform/DotNetNuke.Log4net/log4net/Core/ErrorCode.cs:39; the reader DNN Platform/DotNetNuke.Log4net/log4net/Core/ErrorCode.cs:34
+  DNN Platform/DotNetNuke.Web/UI/WebControls/DnnFileEditControl.cs:27 <see> fileControl: the compiler DNN Platform/DotNetNuke.Web/UI/WebControls/DnnFileEditControl.cs:16; the reader DNN Platform/DotNetNuke.Web/UI/WebControls/DnnFileEditControl.cs:14
+  DNN Platform/DotNetNuke.Web/UI/WebControls/DnnFilePicker.cs:297 <see> FileControlMode.Normal: the compiler DNN Platform/DotNetNuke.Web/UI/WebControls/DnnFilePicker.cs:84; the reader DNN Platform/DotNetNuke.Web/UI/WebControls/DnnFilePicker.cs:81
+  DNN Platform/DotNetNuke.Web.Client/Controls/ClientResourceInclude.cs:23 <see> ClientDependencyType.Javascript: the compiler DNN Platform/DotNetNuke.Web.Client/Cdf/ClientDependencyType.cs:15; the reader DNN Platform/DotNetNuke.Web.Client/Cdf/ClientDependencyType.cs:10
+  DNN Platform/DotNetNuke.Web.Client/Controls/ClientResourceInclude.cs:23 <see> ClientDependencyType.Css: the compiler DNN Platform/DotNetNuke.Web.Client/Cdf/ClientDependencyType.cs:20; the reader DNN Platform/DotNetNuke.Web.Client/Cdf/ClientDependencyType.cs:10
+  DNN Platform/DotNetNuke.Web.Mvc/Helpers/DnnHelper.cs:268 <see> SpecificVersion.Latest: the compiler DNN Platform/Library/Framework/JavaScriptLibraries/SpecificVersion.cs:11; the reader DNN Platform/Library/Framework/JavaScriptLibraries/SpecificVersion.cs:8
+  DNN Platform/DotNetNuke.Web.Mvc/Helpers/DnnHelper.cs:269 <see> SpecificVersion.LatestMajor: the compiler DNN Platform/Library/Framework/JavaScriptLibraries/SpecificVersion.cs:14; the reader DNN Platform/Library/Framework/JavaScriptLibraries/SpecificVersion.cs:8
+  DNN Platform/DotNetNuke.Web.Mvc/Helpers/DnnHelper.cs:270 <see> SpecificVersion.LatestMinor: the compiler DNN Platform/Library/Framework/JavaScriptLibraries/SpecificVersion.cs:17; the reader DNN Platform/Library/Framework/JavaScriptLibraries/SpecificVersion.cs:8
+  DNN Platform/DotNetNuke.Web.Mvc/Helpers/DnnHelper.cs:271 <see> SpecificVersion.Exact: the compiler DNN Platform/Library/Framework/JavaScriptLibraries/SpecificVersion.cs:20; the reader DNN Platform/Library/Framework/JavaScriptLibraries/SpecificVersion.cs:8
+  DNN Platform/Library/Application/Application.cs:43 <see> Abstractions.Application.ReleaseMode.Stable: the compiler DNN Platform/DotNetNuke.Abstractions/Application/ReleaseMode.cs:35; the reader DNN Platform/DotNetNuke.Abstractions/Application/ReleaseMode.cs:20
+  DNN Platform/Library/Entities/Modules/DesktopModuleController.cs:96 <see> DataProvider: the compiler DNN Platform/Library/Entities/Modules/DesktopModuleController.cs:43; the reader DNN Platform/Library/Entities/Modules/DesktopModuleController.cs:40
+  DNN Platform/Library/Entities/Modules/DesktopModuleController.cs:107 <see> DataProvider: the compiler DNN Platform/Library/Entities/Modules/DesktopModuleController.cs:43; the reader DNN Platform/Library/Entities/Modules/DesktopModuleController.cs:40
+  DNN Platform/Library/Entities/Portals/PortalAliasExtensions.cs:56 <see> BrowserTypes.Normal: the compiler DNN Platform/Library/Entities/Urls/BrowserTypes.cs:14; the reader DNN Platform/Library/Entities/Urls/BrowserTypes.cs:11
+  DNN Platform/Library/Entities/Urls/RedirectTokens.cs:245 <see> ActionType.Continue: the compiler DNN Platform/Library/Entities/Urls/ActionType.cs:15; the reader DNN Platform/Library/Entities/Urls/ActionType.cs:9
+  DNN Platform/Library/Entities/Users/UserController.cs:389 <see> UserLoginStatus.LOGIN_INSECUREADMINPASSWORD: the compiler DNN Platform/Library/Security/Membership/UserLoginStatus.cs:29; the reader DNN Platform/Library/Security/Membership/UserLoginStatus.cs:9
+  DNN Platform/Library/Entities/Users/UserController.cs:390 <see> UserLoginStatus.LOGIN_INSECUREHOSTPASSWORD: the compiler DNN Platform/Library/Security/Membership/UserLoginStatus.cs:33; the reader DNN Platform/Library/Security/Membership/UserLoginStatus.cs:9
+  DNN Platform/Library/Framework/JavaScriptLibraries/IJavaScriptLibraryHelper.cs:41 <see> SpecificVersion.Latest: the compiler DNN Platform/Library/Framework/JavaScriptLibraries/SpecificVersion.cs:11; the reader DNN Platform/Library/Framework/JavaScriptLibraries/SpecificVersion.cs:8
+  DNN Platform/Library/Framework/JavaScriptLibraries/IJavaScriptLibraryHelper.cs:42 <see> SpecificVersion.LatestMajor: the compiler DNN Platform/Library/Framework/JavaScriptLibraries/SpecificVersion.cs:14; the reader DNN Platform/Library/Framework/JavaScriptLibraries/SpecificVersion.cs:8
+  DNN Platform/Library/Framework/JavaScriptLibraries/IJavaScriptLibraryHelper.cs:43 <see> SpecificVersion.LatestMinor: the compiler DNN Platform/Library/Framework/JavaScriptLibraries/SpecificVersion.cs:17; the reader DNN Platform/Library/Framework/JavaScriptLibraries/SpecificVersion.cs:8
+  DNN Platform/Library/Framework/JavaScriptLibraries/IJavaScriptLibraryHelper.cs:44 <see> SpecificVersion.Exact: the compiler DNN Platform/Library/Framework/JavaScriptLibraries/SpecificVersion.cs:20; the reader DNN Platform/Library/Framework/JavaScriptLibraries/SpecificVersion.cs:8
+  DNN Platform/Library/Framework/JavaScriptLibraries/JavaScript.cs:181 <see> SpecificVersion.Latest: the compiler DNN Platform/Library/Framework/JavaScriptLibraries/SpecificVersion.cs:11; the reader DNN Platform/Library/Framework/JavaScriptLibraries/SpecificVersion.cs:8
+  DNN Platform/Library/Framework/JavaScriptLibraries/JavaScript.cs:182 <see> SpecificVersion.LatestMajor: the compiler DNN Platform/Library/Framework/JavaScriptLibraries/SpecificVersion.cs:14; the reader DNN Platform/Library/Framework/JavaScriptLibraries/SpecificVersion.cs:8
+  DNN Platform/Library/Framework/JavaScriptLibraries/JavaScript.cs:183 <see> SpecificVersion.LatestMinor: the compiler DNN Platform/Library/Framework/JavaScriptLibraries/SpecificVersion.cs:17; the reader DNN Platform/Library/Framework/JavaScriptLibraries/SpecificVersion.cs:8
+  DNN Platform/Library/Framework/JavaScriptLibraries/JavaScript.cs:184 <see> SpecificVersion.Exact: the compiler DNN Platform/Library/Framework/JavaScriptLibraries/SpecificVersion.cs:20; the reader DNN Platform/Library/Framework/JavaScriptLibraries/SpecificVersion.cs:8
+  DNN Platform/Library/Framework/JavaScriptLibraries/JavaScript.cs:198 <see> SpecificVersion.Latest: the compiler DNN Platform/Library/Framework/JavaScriptLibraries/SpecificVersion.cs:11; the reader DNN Platform/Library/Framework/JavaScriptLibraries/SpecificVersion.cs:8
+  DNN Platform/Library/Framework/JavaScriptLibraries/JavaScript.cs:199 <see> SpecificVersion.LatestMajor: the compiler DNN Platform/Library/Framework/JavaScriptLibraries/SpecificVersion.cs:14; the reader DNN Platform/Library/Framework/JavaScriptLibraries/SpecificVersion.cs:8
+  DNN Platform/Library/Framework/JavaScriptLibraries/JavaScript.cs:200 <see> SpecificVersion.LatestMinor: the compiler DNN Platform/Library/Framework/JavaScriptLibraries/SpecificVersion.cs:17; the reader DNN Platform/Library/Framework/JavaScriptLibraries/SpecificVersion.cs:8
+  DNN Platform/Library/Framework/JavaScriptLibraries/JavaScript.cs:201 <see> SpecificVersion.Exact: the compiler DNN Platform/Library/Framework/JavaScriptLibraries/SpecificVersion.cs:20; the reader DNN Platform/Library/Framework/JavaScriptLibraries/SpecificVersion.cs:8
+  Dnn.AdminExperience/Dnn.PersonaBar.Extensions/Components/Security/AuditChecks.cs:119 <see> SeverityEnum.Unverified: the compiler Dnn.AdminExperience/Dnn.PersonaBar.Extensions/Components/Security/SeverityEnum.cs:22; the reader Dnn.AdminExperience/Dnn.PersonaBar.Extensions/Components/Security/SeverityEnum.cs:10
+  Dnn.AdminExperience/Dnn.PersonaBar.Extensions/Components/Security/Checks/BaseCheck.cs:77 <see> SeverityEnum.Unverified: the compiler Dnn.AdminExperience/Dnn.PersonaBar.Extensions/Components/Security/SeverityEnum.cs:22; the reader Dnn.AdminExperience/Dnn.PersonaBar.Extensions/Components/Security/SeverityEnum.cs:10
+
+Documentation references they part on: the reader reads the reference and resolves it to nothing (37):
+  DNN Platform/DotNetNuke.Log4net/log4net/Appender/BufferingAppenderSkeleton.cs:245 <see> LoggingEvent.Fix: the compiler DNN Platform/DotNetNuke.Log4net/log4net/Core/LoggingEvent.cs:1012; the reader nothing
+  DNN Platform/DotNetNuke.Log4net/log4net/Appender/MemoryAppender.cs:122 <see> LoggingEvent.Fix: the compiler DNN Platform/DotNetNuke.Log4net/log4net/Core/LoggingEvent.cs:1012; the reader nothing
+  DNN Platform/DotNetNuke.Log4net/log4net/Appender/RemoteSyslogAppender.cs:64 <see> LoggingEvent.Domain: the compiler DNN Platform/DotNetNuke.Log4net/log4net/Core/LoggingEvent.cs:946; the reader nothing
+  DNN Platform/DotNetNuke.Log4net/log4net/Appender/RemoteSyslogAppender.cs:207 <see> LoggingEvent.Domain: the compiler DNN Platform/DotNetNuke.Log4net/log4net/Core/LoggingEvent.cs:946; the reader nothing
+  DNN Platform/DotNetNuke.Log4net/log4net/Core/IFixingRequired.cs:37 <see> LoggingEvent.Fix: the compiler DNN Platform/DotNetNuke.Log4net/log4net/Core/LoggingEvent.cs:1012; the reader nothing
+  DNN Platform/DotNetNuke.Log4net/log4net/Core/LoggingEvent.cs:170 <see> LoggingEvent.Fix: the compiler DNN Platform/DotNetNuke.Log4net/log4net/Core/LoggingEvent.cs:1012; the reader nothing
+  DNN Platform/DotNetNuke.Log4net/log4net/Filter/LoggerMatchFilter.cs:34 <see> LoggingEvent.LoggerName: the compiler DNN Platform/DotNetNuke.Log4net/log4net/Core/LoggingEvent.cs:540; the reader nothing
+  DNN Platform/DotNetNuke.Log4net/log4net/Filter/LoggerMatchFilter.cs:73 <see> LoggingEvent.LoggerName: the compiler DNN Platform/DotNetNuke.Log4net/log4net/Core/LoggingEvent.cs:540; the reader nothing
+  DNN Platform/DotNetNuke.Log4net/log4net/Filter/LoggerMatchFilter.cs:96 <see> LoggingEvent.LoggerName: the compiler DNN Platform/DotNetNuke.Log4net/log4net/Core/LoggingEvent.cs:540; the reader nothing
+  DNN Platform/DotNetNuke.Log4net/log4net/Layout/Pattern/AppDomainPatternConverter.cs:34 <see> LoggingEvent.Domain: the compiler DNN Platform/DotNetNuke.Log4net/log4net/Core/LoggingEvent.cs:946; the reader nothing
+  DNN Platform/DotNetNuke.Log4net/log4net/Layout/Pattern/AppDomainPatternConverter.cs:48 <see> LoggingEvent.Domain: the compiler DNN Platform/DotNetNuke.Log4net/log4net/Core/LoggingEvent.cs:946; the reader nothing
+  DNN Platform/DotNetNuke.Log4net/log4net/Layout/Pattern/DatePatternConverter.cs:36 <see> LoggingEvent.TimeStamp: the compiler DNN Platform/DotNetNuke.Log4net/log4net/Core/LoggingEvent.cs:517; the reader nothing
+  DNN Platform/DotNetNuke.Log4net/log4net/Layout/Pattern/DatePatternConverter.cs:154 <see> LoggingEvent.TimeStamp: the compiler DNN Platform/DotNetNuke.Log4net/log4net/Core/LoggingEvent.cs:517; the reader nothing
+  DNN Platform/DotNetNuke.Log4net/log4net/Layout/Pattern/IdentityPatternConverter.cs:32 <see> LoggingEvent.Identity: the compiler DNN Platform/DotNetNuke.Log4net/log4net/Core/LoggingEvent.cs:888; the reader nothing
+  DNN Platform/DotNetNuke.Log4net/log4net/Layout/Pattern/IdentityPatternConverter.cs:46 <see> LoggingEvent.Identity: the compiler DNN Platform/DotNetNuke.Log4net/log4net/Core/LoggingEvent.cs:888; the reader nothing
+  DNN Platform/DotNetNuke.Log4net/log4net/Layout/Pattern/LevelPatternConverter.cs:32 <see> LoggingEvent.Level: the compiler DNN Platform/DotNetNuke.Log4net/log4net/Core/LoggingEvent.cs:503; the reader nothing
+  DNN Platform/DotNetNuke.Log4net/log4net/Layout/Pattern/LevelPatternConverter.cs:44 <see> LoggingEvent.Level: the compiler DNN Platform/DotNetNuke.Log4net/log4net/Core/LoggingEvent.cs:503; the reader nothing
+  DNN Platform/DotNetNuke.Log4net/log4net/Layout/Pattern/LoggerPatternConverter.cs:32 <see> LoggingEvent.LoggerName: the compiler DNN Platform/DotNetNuke.Log4net/log4net/Core/LoggingEvent.cs:540; the reader nothing
+  DNN Platform/DotNetNuke.Log4net/log4net/Layout/Pattern/LoggerPatternConverter.cs:43 <see> LoggingEvent.LoggerName: the compiler DNN Platform/DotNetNuke.Log4net/log4net/Core/LoggingEvent.cs:540; the reader nothing
+  DNN Platform/DotNetNuke.Log4net/log4net/Layout/Pattern/MessagePatternConverter.cs:32 <see> LoggingEvent.WriteRenderedMessage: the compiler DNN Platform/DotNetNuke.Log4net/log4net/Core/LoggingEvent.cs:688; the reader nothing
+  DNN Platform/DotNetNuke.Log4net/log4net/Layout/Pattern/MessagePatternConverter.cs:44 <see> LoggingEvent.WriteRenderedMessage: the compiler DNN Platform/DotNetNuke.Log4net/log4net/Core/LoggingEvent.cs:688; the reader nothing
+  DNN Platform/DotNetNuke.Log4net/log4net/Layout/Pattern/RelativeTimePatternConverter.cs:44 <see> LoggingEvent.TimeStamp: the compiler DNN Platform/DotNetNuke.Log4net/log4net/Core/LoggingEvent.cs:517; the reader nothing
+  DNN Platform/DotNetNuke.Log4net/log4net/Layout/Pattern/RelativeTimePatternConverter.cs:45 <see> LoggingEvent.StartTime: the compiler DNN Platform/DotNetNuke.Log4net/log4net/Core/LoggingEvent.cs:468; the reader nothing
+  DNN Platform/DotNetNuke.Log4net/log4net/Layout/Pattern/ThreadPatternConverter.cs:32 <see> LoggingEvent.ThreadName: the compiler DNN Platform/DotNetNuke.Log4net/log4net/Core/LoggingEvent.cs:725; the reader nothing
+  DNN Platform/DotNetNuke.Log4net/log4net/Layout/Pattern/ThreadPatternConverter.cs:43 <see> LoggingEvent.ThreadName: the compiler DNN Platform/DotNetNuke.Log4net/log4net/Core/LoggingEvent.cs:725; the reader nothing
+  DNN Platform/DotNetNuke.Log4net/log4net/Layout/Pattern/UtcDatePatternConverter.cs:38 <see> LoggingEvent.TimeStamp: the compiler DNN Platform/DotNetNuke.Log4net/log4net/Core/LoggingEvent.cs:517; the reader nothing
+  DNN Platform/DotNetNuke.Log4net/log4net/Layout/Pattern/UtcDatePatternConverter.cs:54 <see> LoggingEvent.TimeStamp: the compiler DNN Platform/DotNetNuke.Log4net/log4net/Core/LoggingEvent.cs:517; the reader nothing
+  DNN Platform/DotNetNuke.Log4net/log4net/Layout/PatternLayout.cs:433 <see> LoggingEvent.Properties: the compiler DNN Platform/DotNetNuke.Log4net/log4net/Core/LoggingEvent.cs:983; the reader nothing
+  DNN Platform/DotNetNuke.Log4net/log4net/Layout/RawTimeStampLayout.cs:44 <see> LoggingEvent.TimeStamp: the compiler DNN Platform/DotNetNuke.Log4net/log4net/Core/LoggingEvent.cs:517; the reader nothing
+  DNN Platform/DotNetNuke.Log4net/log4net/Layout/RawUtcTimeStampLayout.cs:44 <see> LoggingEvent.TimeStamp: the compiler DNN Platform/DotNetNuke.Log4net/log4net/Core/LoggingEvent.cs:517; the reader nothing
+  DNN Platform/DotNetNuke.Log4net/log4net/Layout/XMLLayout.cs:185 <see> XmlLayoutBase.FormatXml: the compiler DNN Platform/DotNetNuke.Log4net/log4net/Layout/XMLLayoutBase.cs:209; the reader nothing
+  DNN Platform/DotNetNuke.Log4net/log4net/Layout/XMLLayoutBase.cs:38 <see> FormatXml: the compiler DNN Platform/DotNetNuke.Log4net/log4net/Layout/XMLLayoutBase.cs:209; the reader nothing
+  DNN Platform/DotNetNuke.Log4net/log4net/Layout/XMLLayoutBase.cs:165 <see> FormatXml: the compiler DNN Platform/DotNetNuke.Log4net/log4net/Layout/XMLLayoutBase.cs:209; the reader nothing
+  DNN Platform/DotNetNuke.Log4net/log4net/Util/CompositeProperties.cs:32 <see> PropertiesDictionary: the compiler DNN Platform/DotNetNuke.Log4net/log4net/Util/PropertiesDictionary.cs:41; the reader nothing
+  DNN Platform/DotNetNuke.Log4net/log4net/Util/LogicalThreadContextProperties.cs:39 <see> PropertiesDictionary: the compiler DNN Platform/DotNetNuke.Log4net/log4net/Util/PropertiesDictionary.cs:41; the reader nothing
+  DNN Platform/DotNetNuke.Log4net/log4net/Util/ThreadContextProperties.cs:32 <see> PropertiesDictionary: the compiler DNN Platform/DotNetNuke.Log4net/log4net/Util/PropertiesDictionary.cs:41; the reader nothing
+  DNN Platform/Library/Services/Personalization/Personalization.cs:238 <see> Mode: the compiler DNN Platform/Library/Entities/Portals/PortalSettings.cs:98; the reader nothing
+
+Documentation references they part on: the reader links another declaration than the compiler names (27):
+  DNN Platform/DotNetNuke.Log4net/log4net/Core/CompactRepositorySelector.cs:123 <exception> LogException: the compiler DNN Platform/DotNetNuke.Log4net/log4net/Core/LogException.cs:44; the reader DNN Platform/DotNetNuke.Log4net/log4net/Core/LogException.cs:42
+  DNN Platform/DotNetNuke.Log4net/log4net/Core/CompactRepositorySelector.cs:209 <exception> LogException: the compiler DNN Platform/DotNetNuke.Log4net/log4net/Core/LogException.cs:44; the reader DNN Platform/DotNetNuke.Log4net/log4net/Core/LogException.cs:42
+  DNN Platform/DotNetNuke.Log4net/log4net/Core/DefaultRepositorySelector.cs:146 <see> LogException: the compiler DNN Platform/DotNetNuke.Log4net/log4net/Core/LogException.cs:44; the reader DNN Platform/DotNetNuke.Log4net/log4net/Core/LogException.cs:42
+  DNN Platform/DotNetNuke.Log4net/log4net/Core/DefaultRepositorySelector.cs:351 <exception> LogException: the compiler DNN Platform/DotNetNuke.Log4net/log4net/Core/LogException.cs:44; the reader DNN Platform/DotNetNuke.Log4net/log4net/Core/LogException.cs:42
+  DNN Platform/DotNetNuke.Log4net/log4net/Core/LogException.cs:50 <see> LogException: the compiler DNN Platform/DotNetNuke.Log4net/log4net/Core/LogException.cs:44; the reader DNN Platform/DotNetNuke.Log4net/log4net/Core/LogException.cs:42
+  DNN Platform/DotNetNuke.Log4net/log4net/Core/LogException.cs:61 <see> LogException: the compiler DNN Platform/DotNetNuke.Log4net/log4net/Core/LogException.cs:44; the reader DNN Platform/DotNetNuke.Log4net/log4net/Core/LogException.cs:42
+  DNN Platform/DotNetNuke.Log4net/log4net/Core/LogException.cs:74 <see> LogException: the compiler DNN Platform/DotNetNuke.Log4net/log4net/Core/LogException.cs:44; the reader DNN Platform/DotNetNuke.Log4net/log4net/Core/LogException.cs:42
+  DNN Platform/DotNetNuke.Log4net/log4net/Core/LoggerManager.cs:555 <exception> LogException: the compiler DNN Platform/DotNetNuke.Log4net/log4net/Core/LogException.cs:44; the reader DNN Platform/DotNetNuke.Log4net/log4net/Core/LogException.cs:42
+  DNN Platform/DotNetNuke.Log4net/log4net/Core/LoggerManager.cs:575 <exception> LogException: the compiler DNN Platform/DotNetNuke.Log4net/log4net/Core/LogException.cs:44; the reader DNN Platform/DotNetNuke.Log4net/log4net/Core/LogException.cs:42
+  DNN Platform/DotNetNuke.Log4net/log4net/Core/LoggerManager.cs:600 <exception> LogException: the compiler DNN Platform/DotNetNuke.Log4net/log4net/Core/LogException.cs:44; the reader DNN Platform/DotNetNuke.Log4net/log4net/Core/LogException.cs:42
+  DNN Platform/DotNetNuke.Log4net/log4net/Core/LoggerManager.cs:619 <exception> LogException: the compiler DNN Platform/DotNetNuke.Log4net/log4net/Core/LogException.cs:44; the reader DNN Platform/DotNetNuke.Log4net/log4net/Core/LogException.cs:42
+  DNN Platform/DotNetNuke.Log4net/log4net/LogManager.cs:555 <exception> LogException: the compiler DNN Platform/DotNetNuke.Log4net/log4net/Core/LogException.cs:44; the reader DNN Platform/DotNetNuke.Log4net/log4net/Core/LogException.cs:42
+  DNN Platform/DotNetNuke.Log4net/log4net/LogManager.cs:575 <exception> LogException: the compiler DNN Platform/DotNetNuke.Log4net/log4net/Core/LogException.cs:44; the reader DNN Platform/DotNetNuke.Log4net/log4net/Core/LogException.cs:42
+  DNN Platform/DotNetNuke.Log4net/log4net/LogManager.cs:596 <exception> LogException: the compiler DNN Platform/DotNetNuke.Log4net/log4net/Core/LogException.cs:44; the reader DNN Platform/DotNetNuke.Log4net/log4net/Core/LogException.cs:42
+  DNN Platform/DotNetNuke.Log4net/log4net/LogManager.cs:615 <exception> LogException: the compiler DNN Platform/DotNetNuke.Log4net/log4net/Core/LogException.cs:44; the reader DNN Platform/DotNetNuke.Log4net/log4net/Core/LogException.cs:42
+  DNN Platform/DotNetNuke.Log4net/log4net/Util/TypeConverters/BooleanConverter.cs:67 <exception> ConversionNotSupportedException: the compiler DNN Platform/DotNetNuke.Log4net/log4net/Util/TypeConverters/ConversionNotSupportedException.cs:46; the reader DNN Platform/DotNetNuke.Log4net/log4net/Util/TypeConverters/ConversionNotSupportedException.cs:44
+  DNN Platform/DotNetNuke.Log4net/log4net/Util/TypeConverters/ConversionNotSupportedException.cs:54 <see> ConversionNotSupportedException: the compiler DNN Platform/DotNetNuke.Log4net/log4net/Util/TypeConverters/ConversionNotSupportedException.cs:46; the reader DNN Platform/DotNetNuke.Log4net/log4net/Util/TypeConverters/ConversionNotSupportedException.cs:44
+  DNN Platform/DotNetNuke.Log4net/log4net/Util/TypeConverters/ConversionNotSupportedException.cs:67 <see> ConversionNotSupportedException: the compiler DNN Platform/DotNetNuke.Log4net/log4net/Util/TypeConverters/ConversionNotSupportedException.cs:46; the reader DNN Platform/DotNetNuke.Log4net/log4net/Util/TypeConverters/ConversionNotSupportedException.cs:44
+  DNN Platform/DotNetNuke.Log4net/log4net/Util/TypeConverters/ConversionNotSupportedException.cs:82 <see> ConversionNotSupportedException: the compiler DNN Platform/DotNetNuke.Log4net/log4net/Util/TypeConverters/ConversionNotSupportedException.cs:46; the reader DNN Platform/DotNetNuke.Log4net/log4net/Util/TypeConverters/ConversionNotSupportedException.cs:44
+  DNN Platform/DotNetNuke.Log4net/log4net/Util/TypeConverters/ConversionNotSupportedException.cs:108 <see> ConversionNotSupportedException: the compiler DNN Platform/DotNetNuke.Log4net/log4net/Util/TypeConverters/ConversionNotSupportedException.cs:46; the reader DNN Platform/DotNetNuke.Log4net/log4net/Util/TypeConverters/ConversionNotSupportedException.cs:44
+  DNN Platform/DotNetNuke.Log4net/log4net/Util/TypeConverters/ConversionNotSupportedException.cs:124 <see> ConversionNotSupportedException: the compiler DNN Platform/DotNetNuke.Log4net/log4net/Util/TypeConverters/ConversionNotSupportedException.cs:46; the reader DNN Platform/DotNetNuke.Log4net/log4net/Util/TypeConverters/ConversionNotSupportedException.cs:44
+  DNN Platform/DotNetNuke.Log4net/log4net/Util/TypeConverters/EncodingConverter.cs:68 <exception> ConversionNotSupportedException: the compiler DNN Platform/DotNetNuke.Log4net/log4net/Util/TypeConverters/ConversionNotSupportedException.cs:46; the reader DNN Platform/DotNetNuke.Log4net/log4net/Util/TypeConverters/ConversionNotSupportedException.cs:44
+  DNN Platform/DotNetNuke.Log4net/log4net/Util/TypeConverters/IPAddressConverter.cs:61 <exception> ConversionNotSupportedException: the compiler DNN Platform/DotNetNuke.Log4net/log4net/Util/TypeConverters/ConversionNotSupportedException.cs:46; the reader DNN Platform/DotNetNuke.Log4net/log4net/Util/TypeConverters/ConversionNotSupportedException.cs:44
+  DNN Platform/DotNetNuke.Log4net/log4net/Util/TypeConverters/PatternLayoutConverter.cs:68 <exception> ConversionNotSupportedException: the compiler DNN Platform/DotNetNuke.Log4net/log4net/Util/TypeConverters/ConversionNotSupportedException.cs:46; the reader DNN Platform/DotNetNuke.Log4net/log4net/Util/TypeConverters/ConversionNotSupportedException.cs:44
+  DNN Platform/DotNetNuke.Log4net/log4net/Util/TypeConverters/PatternStringConverter.cs:66 <exception> ConversionNotSupportedException: the compiler DNN Platform/DotNetNuke.Log4net/log4net/Util/TypeConverters/ConversionNotSupportedException.cs:46; the reader DNN Platform/DotNetNuke.Log4net/log4net/Util/TypeConverters/ConversionNotSupportedException.cs:44
+  DNN Platform/DotNetNuke.Log4net/log4net/Util/TypeConverters/PatternStringConverter.cs:105 <exception> ConversionNotSupportedException: the compiler DNN Platform/DotNetNuke.Log4net/log4net/Util/TypeConverters/ConversionNotSupportedException.cs:46; the reader DNN Platform/DotNetNuke.Log4net/log4net/Util/TypeConverters/ConversionNotSupportedException.cs:44
+  DNN Platform/DotNetNuke.Log4net/log4net/Util/TypeConverters/TypeConverter.cs:65 <exception> ConversionNotSupportedException: the compiler DNN Platform/DotNetNuke.Log4net/log4net/Util/TypeConverters/ConversionNotSupportedException.cs:46; the reader DNN Platform/DotNetNuke.Log4net/log4net/Util/TypeConverters/ConversionNotSupportedException.cs:44
+
+Documentation references they part on: the compiler resolves the reference to nothing: the target's project is reached by the file's only through another project, which the compiler's compilation does not reference and the reader follows (26):
+  DNN Platform/DotNetNuke.Maintenance/Telerik/Removal/Steps/DeleteFilesStep.cs:26 <see> IApplicationStatusInfo: the compiler nothing; the reader DNN Platform/DotNetNuke.Abstractions/Application/IApplicationStatusInfo.cs:12
+  DNN Platform/DotNetNuke.Maintenance/Telerik/Removal/Steps/InstallAvailablePackageStep.cs:30 <see> IApplicationStatusInfo: the compiler nothing; the reader DNN Platform/DotNetNuke.Abstractions/Application/IApplicationStatusInfo.cs:12
+  DNN Platform/DotNetNuke.Maintenance/Telerik/Removal/Steps/RemoveItemFromCollectionStep.cs:22 <see> IApplicationStatusInfo: the compiler nothing; the reader DNN Platform/DotNetNuke.Abstractions/Application/IApplicationStatusInfo.cs:12
+  DNN Platform/DotNetNuke.Maintenance/Telerik/Removal/Steps/RemoveTelerikBindingRedirectsStep.cs:22 <see> IApplicationStatusInfo: the compiler nothing; the reader DNN Platform/DotNetNuke.Abstractions/Application/IApplicationStatusInfo.cs:12
+  DNN Platform/DotNetNuke.Maintenance/Telerik/Removal/Steps/RemoveTelerikRewriterRulesStep.cs:23 <see> IApplicationStatusInfo: the compiler nothing; the reader DNN Platform/DotNetNuke.Abstractions/Application/IApplicationStatusInfo.cs:12
+  DNN Platform/DotNetNuke.Maintenance/Telerik/Removal/Steps/UninstallPackageStep.cs:29 <see> IApplicationStatusInfo: the compiler nothing; the reader DNN Platform/DotNetNuke.Abstractions/Application/IApplicationStatusInfo.cs:12
+  DNN Platform/DotNetNuke.Maintenance/Telerik/Removal/Steps/XmlStepBase.cs:24 <see> IApplicationStatusInfo: the compiler nothing; the reader DNN Platform/DotNetNuke.Abstractions/Application/IApplicationStatusInfo.cs:12
+  DNN Platform/DotNetNuke.Maintenance/Telerik/TelerikUtils.cs:41 <see> IApplicationStatusInfo: the compiler nothing; the reader DNN Platform/DotNetNuke.Abstractions/Application/IApplicationStatusInfo.cs:12
+  DNN Platform/DotNetNuke.Web.Client.ResourceManager/GenericResourceExtensions.cs:11 <see> IResource: the compiler nothing; the reader DNN Platform/DotNetNuke.Abstractions/ClientResources/IResource.cs:9
+  DNN Platform/DotNetNuke.Web.Client.ResourceManager/GenericResourceExtensions.cs:18 <see> IResource: the compiler nothing; the reader DNN Platform/DotNetNuke.Abstractions/ClientResources/IResource.cs:9
+  DNN Platform/DotNetNuke.Web.Client.ResourceManager/GenericResourceExtensions.cs:37 <see> IResource: the compiler nothing; the reader DNN Platform/DotNetNuke.Abstractions/ClientResources/IResource.cs:9
+  DNN Platform/DotNetNuke.Web.Client.ResourceManager/GenericResourceExtensions.cs:56 <see> IResource: the compiler nothing; the reader DNN Platform/DotNetNuke.Abstractions/ClientResources/IResource.cs:9
+  DNN Platform/DotNetNuke.Web.Client.ResourceManager/GenericResourceExtensions.cs:73 <see> IResource: the compiler nothing; the reader DNN Platform/DotNetNuke.Abstractions/ClientResources/IResource.cs:9
+  DNN Platform/DotNetNuke.Web.Client.ResourceManager/GenericResourceExtensions.cs:89 <see> IResource: the compiler nothing; the reader DNN Platform/DotNetNuke.Abstractions/ClientResources/IResource.cs:9
+  DNN Platform/DotNetNuke.Web.Client.ResourceManager/GenericResourceExtensions.cs:106 <see> IResource: the compiler nothing; the reader DNN Platform/DotNetNuke.Abstractions/ClientResources/IResource.cs:9
+  DNN Platform/DotNetNuke.Web.Client.ResourceManager/GenericResourceExtensions.cs:123 <see> IResource: the compiler nothing; the reader DNN Platform/DotNetNuke.Abstractions/ClientResources/IResource.cs:9
+  DNN Platform/DotNetNuke.Web.Client.ResourceManager/GenericResourceExtensions.cs:140 <see> IResource: the compiler nothing; the reader DNN Platform/DotNetNuke.Abstractions/ClientResources/IResource.cs:9
+  DNN Platform/DotNetNuke.Web.Client.ResourceManager/GenericResourceExtensions.cs:157 <see> IResource: the compiler nothing; the reader DNN Platform/DotNetNuke.Abstractions/ClientResources/IResource.cs:9
+  DNN Platform/DotNetNuke.Web.Client.ResourceManager/GenericResourceExtensions.cs:175 <see> IResource: the compiler nothing; the reader DNN Platform/DotNetNuke.Abstractions/ClientResources/IResource.cs:9
+  DNN Platform/DotNetNuke.Web.Client.ResourceManager/LinkResourceExtensions.cs:12 <see> ILinkResource: the compiler nothing; the reader DNN Platform/DotNetNuke.Abstractions/ClientResources/ILinkResource.cs:8
+  DNN Platform/DotNetNuke.Web.Client.ResourceManager/LinkResourceExtensions.cs:21 <see> IResource: the compiler nothing; the reader DNN Platform/DotNetNuke.Abstractions/ClientResources/IResource.cs:9
+  DNN Platform/DotNetNuke.Web.Client.ResourceManager/LinkResourceExtensions.cs:37 <see> IResource: the compiler nothing; the reader DNN Platform/DotNetNuke.Abstractions/ClientResources/IResource.cs:9
+  DNN Platform/DotNetNuke.Web.Client.ResourceManager/ScriptResourceExtensions.cs:12 <see> IScriptResource: the compiler nothing; the reader DNN Platform/DotNetNuke.Abstractions/ClientResources/IScriptResource.cs:7
+  DNN Platform/DotNetNuke.Web.Client.ResourceManager/ScriptResourceExtensions.cs:22 <see> IResource: the compiler nothing; the reader DNN Platform/DotNetNuke.Abstractions/ClientResources/IResource.cs:9
+  DNN Platform/DotNetNuke.Web.Client.ResourceManager/StylesheetResourceExtensions.cs:12 <see> IStylesheetResource: the compiler nothing; the reader DNN Platform/DotNetNuke.Abstractions/ClientResources/IStylesheetResource.cs:7
+  DNN Platform/DotNetNuke.Web.Client.ResourceManager/StylesheetResourceExtensions.cs:22 <see> IResource: the compiler nothing; the reader DNN Platform/DotNetNuke.Abstractions/ClientResources/IResource.cs:9
+
+Documentation references they part on: the compiler resolves the reference to nothing: it writes a parameter's type the compilation, having no framework references, cannot bind (36):
+  DNN Platform/Library/Entities/Controllers/HostController.cs:54 <inheritdoc> IHostSettingsService.GetBoolean(string): the compiler nothing; the reader DNN Platform/DotNetNuke.Abstractions/Application/IHostSettingsService.cs:34
+  DNN Platform/Library/Entities/Controllers/HostController.cs:60 <inheritdoc> IHostSettingsService.GetBoolean(string,bool): the compiler nothing; the reader DNN Platform/DotNetNuke.Abstractions/Application/IHostSettingsService.cs:41
+  DNN Platform/Library/Entities/Controllers/HostController.cs:94 <inheritdoc> IHostSettingsService.GetDouble(string): the compiler nothing; the reader DNN Platform/DotNetNuke.Abstractions/Application/IHostSettingsService.cs:47
+  DNN Platform/Library/Entities/Controllers/HostController.cs:100 <inheritdoc> IHostSettingsService.GetDouble(string,double): the compiler nothing; the reader DNN Platform/DotNetNuke.Abstractions/Application/IHostSettingsService.cs:54
+  DNN Platform/Library/Entities/Controllers/HostController.cs:114 <inheritdoc> IHostSettingsService.GetInteger(string): the compiler nothing; the reader DNN Platform/DotNetNuke.Abstractions/Application/IHostSettingsService.cs:66
+  DNN Platform/Library/Entities/Controllers/HostController.cs:120 <inheritdoc> IHostSettingsService.GetInteger(string,int): the compiler nothing; the reader DNN Platform/DotNetNuke.Abstractions/Application/IHostSettingsService.cs:73
+  DNN Platform/Library/Entities/Controllers/HostController.cs:165 <inheritdoc> IHostSettingsService.GetString(string): the compiler nothing; the reader DNN Platform/DotNetNuke.Abstractions/Application/IHostSettingsService.cs:87
+  DNN Platform/Library/Entities/Controllers/HostController.cs:171 <inheritdoc> IHostSettingsService.GetString(string,string): the compiler nothing; the reader DNN Platform/DotNetNuke.Abstractions/Application/IHostSettingsService.cs:94
+  DNN Platform/Library/Entities/Controllers/HostController.cs:246 <inheritdoc> IHostSettingsService.Update(string,string,bool): the compiler nothing; the reader DNN Platform/DotNetNuke.Abstractions/Application/IHostSettingsService.cs:122
+  DNN Platform/Library/Entities/Controllers/HostController.cs:252 <inheritdoc> IHostSettingsService.Update(string,string): the compiler nothing; the reader DNN Platform/DotNetNuke.Abstractions/Application/IHostSettingsService.cs:116
+  DNN Platform/Library/Modules/NavigationProvider.cs:1006 <inheritdoc> Instance(System.IServiceProvider,string): the compiler nothing; the reader DNN Platform/Library/Modules/NavigationProvider.cs:1013
+  DNN Platform/Library/Obsolete/EventLogController.cs:520 <inheritdoc> IEventLogger.AddLog(string,string,DotNetNuke.Abstractions.Logging.EventLogType): the compiler nothing; the reader DNN Platform/DotNetNuke.Abstractions/Logging/IEventLogger.cs:18
+  DNN Platform/Library/Obsolete/EventLogController.cs:525 <inheritdoc> IEventLogger.AddLog(string,string,DotNetNuke.Abstractions.Logging.EventLogType): the compiler nothing; the reader DNN Platform/DotNetNuke.Abstractions/Logging/IEventLogger.cs:18
+  DNN Platform/Library/Obsolete/EventLogController.cs:530 <inheritdoc> IEventLogger.AddLog(string,string,DotNetNuke.Abstractions.Logging.EventLogType): the compiler nothing; the reader DNN Platform/DotNetNuke.Abstractions/Logging/IEventLogger.cs:18
+  DNN Platform/Library/Obsolete/EventLogController.cs:535 <inheritdoc> IEventLogger.AddLog(string,string,DotNetNuke.Abstractions.Logging.EventLogType): the compiler nothing; the reader DNN Platform/DotNetNuke.Abstractions/Logging/IEventLogger.cs:18
+  DNN Platform/Library/Obsolete/EventLogController.cs:540 <inheritdoc> IEventLogger.AddLog(string,string,DotNetNuke.Abstractions.Logging.EventLogType): the compiler nothing; the reader DNN Platform/DotNetNuke.Abstractions/Logging/IEventLogger.cs:18
+  DNN Platform/Library/Obsolete/EventLogController.cs:545 <inheritdoc> IEventLogger.AddLog(string,string,DotNetNuke.Abstractions.Logging.EventLogType): the compiler nothing; the reader DNN Platform/DotNetNuke.Abstractions/Logging/IEventLogger.cs:18
+  DNN Platform/Library/Obsolete/EventLogController.cs:550 <inheritdoc> IEventLogger.AddLog(string,string,DotNetNuke.Abstractions.Logging.EventLogType): the compiler nothing; the reader DNN Platform/DotNetNuke.Abstractions/Logging/IEventLogger.cs:18
+  DNN Platform/Library/Obsolete/EventLogController.cs:555 <inheritdoc> IEventLogger.AddLog(string,string,DotNetNuke.Abstractions.Logging.EventLogType): the compiler nothing; the reader DNN Platform/DotNetNuke.Abstractions/Logging/IEventLogger.cs:18
+  DNN Platform/Library/Obsolete/EventLogController.cs:560 <inheritdoc> IEventLogger.AddLog(string,string,DotNetNuke.Abstractions.Logging.EventLogType): the compiler nothing; the reader DNN Platform/DotNetNuke.Abstractions/Logging/IEventLogger.cs:18
+  DNN Platform/Library/Obsolete/EventLogController.cs:565 <inheritdoc> IEventLogger.AddLog(string,string,DotNetNuke.Abstractions.Logging.EventLogType): the compiler nothing; the reader DNN Platform/DotNetNuke.Abstractions/Logging/IEventLogger.cs:18
+  DNN Platform/Library/Obsolete/EventLogController.cs:570 <inheritdoc> IEventLogger.AddLog(string,string,DotNetNuke.Abstractions.Logging.EventLogType): the compiler nothing; the reader DNN Platform/DotNetNuke.Abstractions/Logging/IEventLogger.cs:18
+  DNN Platform/Library/Obsolete/EventLogController.cs:575 <inheritdoc> IEventLogger.AddLog(string,string,DotNetNuke.Abstractions.Logging.EventLogType): the compiler nothing; the reader DNN Platform/DotNetNuke.Abstractions/Logging/IEventLogger.cs:18
+  DNN Platform/Library/Obsolete/EventLogController.cs:580 <inheritdoc> IEventLogger.AddLog(string,string,DotNetNuke.Abstractions.Logging.EventLogType): the compiler nothing; the reader DNN Platform/DotNetNuke.Abstractions/Logging/IEventLogger.cs:18
+  DNN Platform/Library/Obsolete/EventLogController.cs:585 <inheritdoc> IEventLogger.AddLog(string,string,DotNetNuke.Abstractions.Logging.EventLogType): the compiler nothing; the reader DNN Platform/DotNetNuke.Abstractions/Logging/IEventLogger.cs:18
+  DNN Platform/Library/Obsolete/EventLogController.cs:590 <inheritdoc> IEventLogConfigService.AddLogType(string,string): the compiler nothing; the reader DNN Platform/DotNetNuke.Abstractions/Logging/IEventLogConfigService.cs:18
+  DNN Platform/Library/Obsolete/EventLogController.cs:595 <inheritdoc> IEventLogConfigService.AddLogType(string,string): the compiler nothing; the reader DNN Platform/DotNetNuke.Abstractions/Logging/IEventLogConfigService.cs:18
+  DNN Platform/Library/Obsolete/HostController.cs:56 <inheritdoc> IHostSettingsService.Update(DotNetNuke.Abstractions.Settings.IConfigurationSetting,bool): the compiler nothing; the reader DNN Platform/DotNetNuke.Abstractions/Application/IHostSettingsService.cs:107
+  DNN Platform/Library/Obsolete/HostController.cs:61 <inheritdoc> IHostController.Update(System.Collections.Generic.Dictionary{string,string}): the compiler nothing; the reader DNN Platform/Library/Entities/Controllers/IHostController.cs:87
+  DNN Platform/Library/Obsolete/PortalAliasController.cs:68 <inheritdoc> IPortalAliasService.GetPortalAlias(string): the compiler nothing; the reader DNN Platform/DotNetNuke.Abstractions/Portals/IPortalAliasService.cs:43
+  DNN Platform/Library/Obsolete/SerializationController.cs:21 <inheritdoc> ISerializationManager.SerializeProperty{T}(T,System.Reflection.PropertyInfo): the compiler nothing; the reader DNN Platform/DotNetNuke.Abstractions/ISerializationManager.cs:35
+  DNN Platform/Library/Obsolete/SerializationController.cs:26 <inheritdoc> ISerializationManager.SerializeProperty{T}(T,System.Reflection.PropertyInfo,string): the compiler nothing; the reader DNN Platform/DotNetNuke.Abstractions/ISerializationManager.cs:44
+  DNN Platform/Library/Obsolete/SerializationController.cs:31 <inheritdoc> ISerializationManager.DeserializeProperty{T}(T,System.Reflection.PropertyInfo,string): the compiler nothing; the reader DNN Platform/DotNetNuke.Abstractions/ISerializationManager.cs:68
+  DNN Platform/Library/Obsolete/SerializationController.cs:36 <inheritdoc> ISerializationManager.DeserializeProperty{T}(T,System.Reflection.PropertyInfo,string,string): the compiler nothing; the reader DNN Platform/DotNetNuke.Abstractions/ISerializationManager.cs:79
+  DNN Platform/Library/Services/Authentication/AuthenticationLoginBase.cs:67 <inheritdoc> IUserRequestIPAddressController.GetUserRequestIPAddress(System.Web.HttpRequestBase): the compiler nothing; the reader DNN Platform/Library/Services/UserRequest/IUserRequestIPAddressController.cs:15
+  DotNetNuke.BulkInstall/DotNetNuke.BulkInstall.DeployClient/Encryptor.cs:11 <see> Crypto.Encrypt(System.IO.Stream,string): the compiler nothing; the reader DotNetNuke.BulkInstall/DotNetNuke.BulkInstall.Encryption/Crypto.cs:41
+
+Documentation references they part on: the compiler reads no reference written so on that declaration: one in a section its preprocessor symbols leave inactive, which the reader reads as it reads every branch (310):
+  DNN Platform/DotNetNuke.Log4net/log4net/Appender/AspNetTraceAppender.cs:67 AspNetTraceAppender: the reader DNN Platform/DotNetNuke.Log4net/log4net/Appender/AspNetTraceAppender.cs:57
+  DNN Platform/DotNetNuke.Log4net/log4net/Appender/AspNetTraceAppender.cs:127 LoggingEvent: the reader DNN Platform/DotNetNuke.Log4net/log4net/Core/LoggingEvent.cs:270
+  DNN Platform/DotNetNuke.Log4net/log4net/Appender/EventLogAppender.cs:90 LoggingEvent: the reader DNN Platform/DotNetNuke.Log4net/log4net/Core/LoggingEvent.cs:270
+  DNN Platform/DotNetNuke.Log4net/log4net/Appender/EventLogAppender.cs:100 EventLogAppender: the reader DNN Platform/DotNetNuke.Log4net/log4net/Appender/EventLogAppender.cs:90
+  DNN Platform/DotNetNuke.Log4net/log4net/Appender/EventLogAppender.cs:118 EventLogAppender: the reader DNN Platform/DotNetNuke.Log4net/log4net/Appender/EventLogAppender.cs:90
+  DNN Platform/DotNetNuke.Log4net/log4net/Appender/EventLogAppender.cs:118 ILayout: the reader DNN Platform/DotNetNuke.Log4net/log4net/Layout/ILayout.cs:43
+  DNN Platform/DotNetNuke.Log4net/log4net/Appender/EventLogAppender.cs:141 ApplicationName: the reader DNN Platform/DotNetNuke.Log4net/log4net/Appender/EventLogAppender.cs:157
+  DNN Platform/DotNetNuke.Log4net/log4net/Appender/EventLogAppender.cs:141 LogName: the reader DNN Platform/DotNetNuke.Log4net/log4net/Appender/EventLogAppender.cs:141
+  DNN Platform/DotNetNuke.Log4net/log4net/Appender/EventLogAppender.cs:192 Level2EventLogEntryType: the reader DNN Platform/DotNetNuke.Log4net/log4net/Appender/EventLogAppender.cs:563
+  DNN Platform/DotNetNuke.Log4net/log4net/Appender/EventLogAppender.cs:214 SecurityContext: the reader DNN Platform/DotNetNuke.Log4net/log4net/Appender/EventLogAppender.cs:214
+  DNN Platform/DotNetNuke.Log4net/log4net/Appender/EventLogAppender.cs:214 SecurityContextProvider.DefaultProvider: the reader DNN Platform/DotNetNuke.Log4net/log4net/Core/SecurityContextProvider.cs:82
+  DNN Platform/DotNetNuke.Log4net/log4net/Appender/EventLogAppender.cs:231 LoggingEvent: the reader DNN Platform/DotNetNuke.Log4net/log4net/Core/LoggingEvent.cs:270
+  DNN Platform/DotNetNuke.Log4net/log4net/Appender/EventLogAppender.cs:249 LoggingEvent: the reader DNN Platform/DotNetNuke.Log4net/log4net/Core/LoggingEvent.cs:270
+  DNN Platform/DotNetNuke.Log4net/log4net/Appender/EventLogAppender.cs:271 ActivateOptions: the reader DNN Platform/DotNetNuke.Log4net/log4net/Appender/EventLogAppender.cs:271
+  DNN Platform/DotNetNuke.Log4net/log4net/Appender/EventLogAppender.cs:271 IOptionHandler: the reader DNN Platform/DotNetNuke.Log4net/log4net/Core/IOptionHandler.cs:39
+  DNN Platform/DotNetNuke.Log4net/log4net/Appender/EventLogAppender.cs:373 ApplicationName: the reader DNN Platform/DotNetNuke.Log4net/log4net/Appender/EventLogAppender.cs:157
+  DNN Platform/DotNetNuke.Log4net/log4net/Appender/EventLogAppender.cs:492 Level: the reader DNN Platform/DotNetNuke.Log4net/log4net/Core/Level.cs:85
+  DNN Platform/DotNetNuke.Log4net/log4net/Appender/EventLogAppender.cs:576 EventLogEntryType: the reader DNN Platform/DotNetNuke.Log4net/log4net/Appender/EventLogAppender.cs:576
+  DNN Platform/DotNetNuke.Log4net/log4net/Appender/RemotingAppender.cs:80 IRemoteLoggingSink: the reader DNN Platform/DotNetNuke.Log4net/log4net/Appender/RemotingAppender.cs:276
+  DNN Platform/DotNetNuke.Log4net/log4net/Appender/RemotingAppender.cs:80 log4net.Core.LoggerManager.Shutdown: the reader DNN Platform/DotNetNuke.Log4net/log4net/Core/LoggerManager.cs:432
+  DNN Platform/DotNetNuke.Log4net/log4net/Appender/RemotingAppender.cs:80 RemotingAppender.Sink: the reader DNN Platform/DotNetNuke.Log4net/log4net/Appender/RemotingAppender.cs:106
+  DNN Platform/DotNetNuke.Log4net/log4net/Appender/RemotingAppender.cs:88 RemotingAppender: the reader DNN Platform/DotNetNuke.Log4net/log4net/Appender/RemotingAppender.cs:80
+  DNN Platform/DotNetNuke.Log4net/log4net/Appender/RemotingAppender.cs:106 IRemoteLoggingSink: the reader DNN Platform/DotNetNuke.Log4net/log4net/Appender/RemotingAppender.cs:276
+  DNN Platform/DotNetNuke.Log4net/log4net/Appender/RemotingAppender.cs:129 ActivateOptions: the reader DNN Platform/DotNetNuke.Log4net/log4net/Appender/RemotingAppender.cs:129
+  DNN Platform/DotNetNuke.Log4net/log4net/Appender/RemotingAppender.cs:129 IOptionHandler: the reader DNN Platform/DotNetNuke.Log4net/log4net/Core/IOptionHandler.cs:39
+  DNN Platform/DotNetNuke.Log4net/log4net/Appender/RemotingAppender.cs:276 LoggingEvent: the reader DNN Platform/DotNetNuke.Log4net/log4net/Core/LoggingEvent.cs:270
+  DNN Platform/DotNetNuke.Log4net/log4net/Appender/RemotingAppender.cs:276 RemotingAppender: the reader DNN Platform/DotNetNuke.Log4net/log4net/Appender/RemotingAppender.cs:80
+  DNN Platform/DotNetNuke.Log4net/log4net/Appender/SmtpAppender.cs:71 Authentication: the reader DNN Platform/DotNetNuke.Log4net/log4net/Appender/SmtpAppender.cs:229
+  DNN Platform/DotNetNuke.Log4net/log4net/Appender/SmtpAppender.cs:71 BufferingAppenderSkeleton.BufferSize: the reader DNN Platform/DotNetNuke.Log4net/log4net/Appender/BufferingAppenderSkeleton.cs:154
+  DNN Platform/DotNetNuke.Log4net/log4net/Appender/SmtpAppender.cs:71 Password: the reader DNN Platform/DotNetNuke.Log4net/log4net/Appender/SmtpAppender.cs:259
+  DNN Platform/DotNetNuke.Log4net/log4net/Appender/SmtpAppender.cs:71 Port: the reader DNN Platform/DotNetNuke.Log4net/log4net/Appender/SmtpAppender.cs:274
+  DNN Platform/DotNetNuke.Log4net/log4net/Appender/SmtpAppender.cs:71 SmtpAppender: the reader DNN Platform/DotNetNuke.Log4net/log4net/Appender/SmtpAppender.cs:71
+  DNN Platform/DotNetNuke.Log4net/log4net/Appender/SmtpAppender.cs:71 SmtpAuthentication.Basic: the reader DNN Platform/DotNetNuke.Log4net/log4net/Appender/SmtpAppender.cs:574
+  DNN Platform/DotNetNuke.Log4net/log4net/Appender/SmtpAppender.cs:71 SmtpAuthentication.Ntlm: the reader DNN Platform/DotNetNuke.Log4net/log4net/Appender/SmtpAppender.cs:574
+  DNN Platform/DotNetNuke.Log4net/log4net/Appender/SmtpAppender.cs:71 Username: the reader DNN Platform/DotNetNuke.Log4net/log4net/Appender/SmtpAppender.cs:244
+  DNN Platform/DotNetNuke.Log4net/log4net/Appender/SmtpAppender.cs:229 Password: the reader DNN Platform/DotNetNuke.Log4net/log4net/Appender/SmtpAppender.cs:259
+  DNN Platform/DotNetNuke.Log4net/log4net/Appender/SmtpAppender.cs:229 SmtpAuthentication.Basic: the reader DNN Platform/DotNetNuke.Log4net/log4net/Appender/SmtpAppender.cs:574
+  DNN Platform/DotNetNuke.Log4net/log4net/Appender/SmtpAppender.cs:229 SmtpAuthentication.None: the reader DNN Platform/DotNetNuke.Log4net/log4net/Appender/SmtpAppender.cs:574
+  DNN Platform/DotNetNuke.Log4net/log4net/Appender/SmtpAppender.cs:229 SmtpAuthentication.Ntlm: the reader DNN Platform/DotNetNuke.Log4net/log4net/Appender/SmtpAppender.cs:574
+  DNN Platform/DotNetNuke.Log4net/log4net/Appender/SmtpAppender.cs:229 Username: the reader DNN Platform/DotNetNuke.Log4net/log4net/Appender/SmtpAppender.cs:244
+  DNN Platform/DotNetNuke.Log4net/log4net/Appender/SmtpAppender.cs:244 Authentication: the reader DNN Platform/DotNetNuke.Log4net/log4net/Appender/SmtpAppender.cs:229
+  DNN Platform/DotNetNuke.Log4net/log4net/Appender/SmtpAppender.cs:244 Password: the reader DNN Platform/DotNetNuke.Log4net/log4net/Appender/SmtpAppender.cs:259
+  DNN Platform/DotNetNuke.Log4net/log4net/Appender/SmtpAppender.cs:244 SmtpAuthentication.Basic: the reader DNN Platform/DotNetNuke.Log4net/log4net/Appender/SmtpAppender.cs:574
+  DNN Platform/DotNetNuke.Log4net/log4net/Appender/SmtpAppender.cs:244 Username: the reader DNN Platform/DotNetNuke.Log4net/log4net/Appender/SmtpAppender.cs:244
+  DNN Platform/DotNetNuke.Log4net/log4net/Appender/SmtpAppender.cs:259 Authentication: the reader DNN Platform/DotNetNuke.Log4net/log4net/Appender/SmtpAppender.cs:229
+  DNN Platform/DotNetNuke.Log4net/log4net/Appender/SmtpAppender.cs:259 Password: the reader DNN Platform/DotNetNuke.Log4net/log4net/Appender/SmtpAppender.cs:259
+  DNN Platform/DotNetNuke.Log4net/log4net/Appender/SmtpAppender.cs:259 SmtpAuthentication.Basic: the reader DNN Platform/DotNetNuke.Log4net/log4net/Appender/SmtpAppender.cs:574
+  DNN Platform/DotNetNuke.Log4net/log4net/Appender/SmtpAppender.cs:259 Username: the reader DNN Platform/DotNetNuke.Log4net/log4net/Appender/SmtpAppender.cs:244
+  DNN Platform/DotNetNuke.Log4net/log4net/Appender/SmtpAppender.cs:574 SmtpAppender.Authentication: the reader DNN Platform/DotNetNuke.Log4net/log4net/Appender/SmtpAppender.cs:229
+  DNN Platform/DotNetNuke.Log4net/log4net/Config/DOMConfigurator.cs:49 ILoggerRepository: the reader DNN Platform/DotNetNuke.Log4net/log4net/Repository/ILoggerRepository.cs:75
+  DNN Platform/DotNetNuke.Log4net/log4net/Config/DOMConfigurator.cs:94 ILoggerRepository: the reader DNN Platform/DotNetNuke.Log4net/log4net/Repository/ILoggerRepository.cs:75
+  DNN Platform/DotNetNuke.Log4net/log4net/Config/DOMConfigurator.cs:130 ILoggerRepository: the reader DNN Platform/DotNetNuke.Log4net/log4net/Repository/ILoggerRepository.cs:75
+  DNN Platform/DotNetNuke.Log4net/log4net/Config/DOMConfigurator.cs:251 ILoggerRepository: the reader DNN Platform/DotNetNuke.Log4net/log4net/Repository/ILoggerRepository.cs:75
+  DNN Platform/DotNetNuke.Log4net/log4net/Config/DOMConfigurator.cs:277 ILoggerRepository: the reader DNN Platform/DotNetNuke.Log4net/log4net/Repository/ILoggerRepository.cs:75
+  DNN Platform/DotNetNuke.Log4net/log4net/Config/Log4NetConfigurationSectionHandler.cs:59 Log4NetConfigurationSectionHandler: the reader DNN Platform/DotNetNuke.Log4net/log4net/Config/Log4NetConfigurationSectionHandler.cs:51
+  DNN Platform/DotNetNuke.Log4net/log4net/Layout/Pattern/AspNetCachePatternConverter.cs:58 log4net.Util.PatternConverter.Option: the reader DNN Platform/DotNetNuke.Log4net/log4net/Util/PatternConverter.cs:96
+  DNN Platform/DotNetNuke.Log4net/log4net/Layout/Pattern/AspNetCachePatternConverter.cs:58 LoggingEvent: the reader DNN Platform/DotNetNuke.Log4net/log4net/Core/LoggingEvent.cs:270
+  DNN Platform/DotNetNuke.Log4net/log4net/Layout/Pattern/AspNetContextPatternConverter.cs:56 log4net.Util.PatternConverter.Option: the reader DNN Platform/DotNetNuke.Log4net/log4net/Util/PatternConverter.cs:96
+  DNN Platform/DotNetNuke.Log4net/log4net/Layout/Pattern/AspNetContextPatternConverter.cs:56 LoggingEvent: the reader DNN Platform/DotNetNuke.Log4net/log4net/Core/LoggingEvent.cs:270
+  DNN Platform/DotNetNuke.Log4net/log4net/Layout/Pattern/AspNetPatternConverter.cs:59 SystemInfo.NotAvailableText: the reader DNN Platform/DotNetNuke.Log4net/log4net/Util/SystemInfo.cs:418
+  DNN Platform/DotNetNuke.Log4net/log4net/Layout/Pattern/AspNetPatternConverter.cs:80 LoggingEvent: the reader DNN Platform/DotNetNuke.Log4net/log4net/Core/LoggingEvent.cs:270
+  DNN Platform/DotNetNuke.Log4net/log4net/Layout/Pattern/AspNetRequestPatternConverter.cs:57 log4net.Util.PatternConverter.Option: the reader DNN Platform/DotNetNuke.Log4net/log4net/Util/PatternConverter.cs:96
+  DNN Platform/DotNetNuke.Log4net/log4net/Layout/Pattern/AspNetRequestPatternConverter.cs:57 LoggingEvent: the reader DNN Platform/DotNetNuke.Log4net/log4net/Core/LoggingEvent.cs:270
+  DNN Platform/DotNetNuke.Log4net/log4net/Layout/Pattern/AspNetSessionPatternConverter.cs:58 log4net.Util.PatternConverter.Option: the reader DNN Platform/DotNetNuke.Log4net/log4net/Util/PatternConverter.cs:96
+  DNN Platform/DotNetNuke.Log4net/log4net/Layout/Pattern/AspNetSessionPatternConverter.cs:58 LoggingEvent: the reader DNN Platform/DotNetNuke.Log4net/log4net/Core/LoggingEvent.cs:270
+  DNN Platform/DotNetNuke.Log4net/log4net/Layout/Pattern/StackTracePatternConverter.cs:56 ActivateOptions: the reader DNN Platform/DotNetNuke.Log4net/log4net/Layout/Pattern/StackTracePatternConverter.cs:56
+  DNN Platform/DotNetNuke.Log4net/log4net/Layout/Pattern/StackTracePatternConverter.cs:56 IOptionHandler: the reader DNN Platform/DotNetNuke.Log4net/log4net/Core/IOptionHandler.cs:39
+  DNN Platform/DotNetNuke.Log4net/log4net/Plugin/RemoteLoggingServerPlugin.cs:48 IRemoteLoggingSink: the reader DNN Platform/DotNetNuke.Log4net/log4net/Appender/RemotingAppender.cs:276
+  DNN Platform/DotNetNuke.Log4net/log4net/Plugin/RemoteLoggingServerPlugin.cs:48 log4net.Appender.RemotingAppender: the reader DNN Platform/DotNetNuke.Log4net/log4net/Appender/RemotingAppender.cs:80
+  DNN Platform/DotNetNuke.Log4net/log4net/Plugin/RemoteLoggingServerPlugin.cs:48 SinkUri: the reader DNN Platform/DotNetNuke.Log4net/log4net/Plugin/RemoteLoggingServerPlugin.cs:87
+  DNN Platform/DotNetNuke.Log4net/log4net/Plugin/RemoteLoggingServerPlugin.cs:59 RemoteLoggingServerPlugin: the reader DNN Platform/DotNetNuke.Log4net/log4net/Plugin/RemoteLoggingServerPlugin.cs:48
+  DNN Platform/DotNetNuke.Log4net/log4net/Plugin/RemoteLoggingServerPlugin.cs:59 SinkUri: the reader DNN Platform/DotNetNuke.Log4net/log4net/Plugin/RemoteLoggingServerPlugin.cs:87
+  DNN Platform/DotNetNuke.Log4net/log4net/Plugin/RemoteLoggingServerPlugin.cs:72 RemoteLoggingServerPlugin: the reader DNN Platform/DotNetNuke.Log4net/log4net/Plugin/RemoteLoggingServerPlugin.cs:48
+  DNN Platform/DotNetNuke.Log4net/log4net/Plugin/RemoteLoggingServerPlugin.cs:72 SinkUri: the reader DNN Platform/DotNetNuke.Log4net/log4net/Plugin/RemoteLoggingServerPlugin.cs:87
+  DNN Platform/DotNetNuke.Log4net/log4net/Plugin/RemoteLoggingServerPlugin.cs:106 ILoggerRepository: the reader DNN Platform/DotNetNuke.Log4net/log4net/Repository/ILoggerRepository.cs:75
+  DNN Platform/DotNetNuke.Log4net/log4net/Plugin/RemoteLoggingServerPlugin.cs:159 LoggingEvent: the reader DNN Platform/DotNetNuke.Log4net/log4net/Core/LoggingEvent.cs:270
+  DNN Platform/DotNetNuke.Log4net/log4net/Plugin/RemoteLoggingServerPlugin.cs:169 ILoggerRepository: the reader DNN Platform/DotNetNuke.Log4net/log4net/Repository/ILoggerRepository.cs:75
+  DNN Platform/DotNetNuke.Log4net/log4net/Plugin/RemoteLoggingServerPlugin.cs:169 RemoteLoggingSinkImpl: the reader DNN Platform/DotNetNuke.Log4net/log4net/Plugin/RemoteLoggingServerPlugin.cs:159
+  DNN Platform/DotNetNuke.Log4net/log4net/Plugin/RemoteLoggingServerPlugin.cs:181 ILoggerRepository: the reader DNN Platform/DotNetNuke.Log4net/log4net/Repository/ILoggerRepository.cs:75
+  DNN Platform/DotNetNuke.Log4net/log4net/Util/ILogExtensions.cs:78 DebugExt(ILog,Func<object>,Exception): the reader DNN Platform/DotNetNuke.Log4net/log4net/Util/ILogExtensions.cs:110
+  DNN Platform/DotNetNuke.Log4net/log4net/Util/ILogExtensions.cs:78 ILog: the reader DNN Platform/DotNetNuke.Log4net/log4net/ILog.cs:67
+  DNN Platform/DotNetNuke.Log4net/log4net/Util/ILogExtensions.cs:78 ILog.Debug(object): the reader DNN Platform/DotNetNuke.Log4net/log4net/ILog.cs:92
+  DNN Platform/DotNetNuke.Log4net/log4net/Util/ILogExtensions.cs:78 ILog.IsDebugEnabled: the reader DNN Platform/DotNetNuke.Log4net/log4net/ILog.cs:841
+  DNN Platform/DotNetNuke.Log4net/log4net/Util/ILogExtensions.cs:78 Level.Debug: the reader DNN Platform/DotNetNuke.Log4net/log4net/Core/Level.cs:521
+  DNN Platform/DotNetNuke.Log4net/log4net/Util/ILogExtensions.cs:78 log4net.ObjectRenderer.IObjectRenderer: the reader DNN Platform/DotNetNuke.Log4net/log4net/ObjectRenderer/IObjectRenderer.cs:37
+  DNN Platform/DotNetNuke.Log4net/log4net/Util/ILogExtensions.cs:110 DebugExt(ILog, object): the reader DNN Platform/DotNetNuke.Log4net/log4net/Util/ILogExtensions.cs:151
+  DNN Platform/DotNetNuke.Log4net/log4net/Util/ILogExtensions.cs:110 ILog.Debug(object): the reader DNN Platform/DotNetNuke.Log4net/log4net/ILog.cs:92
+  DNN Platform/DotNetNuke.Log4net/log4net/Util/ILogExtensions.cs:110 ILog.IsDebugEnabled: the reader DNN Platform/DotNetNuke.Log4net/log4net/ILog.cs:841
+  DNN Platform/DotNetNuke.Log4net/log4net/Util/ILogExtensions.cs:110 Level.Debug: the reader DNN Platform/DotNetNuke.Log4net/log4net/Core/Level.cs:521
+  DNN Platform/DotNetNuke.Log4net/log4net/Util/ILogExtensions.cs:151 DebugExt(ILog,object,Exception): the reader DNN Platform/DotNetNuke.Log4net/log4net/Util/ILogExtensions.cs:183
+  DNN Platform/DotNetNuke.Log4net/log4net/Util/ILogExtensions.cs:151 ILog: the reader DNN Platform/DotNetNuke.Log4net/log4net/ILog.cs:67
+  DNN Platform/DotNetNuke.Log4net/log4net/Util/ILogExtensions.cs:151 ILog.Debug(object): the reader DNN Platform/DotNetNuke.Log4net/log4net/ILog.cs:92
+  DNN Platform/DotNetNuke.Log4net/log4net/Util/ILogExtensions.cs:151 ILog.IsDebugEnabled: the reader DNN Platform/DotNetNuke.Log4net/log4net/ILog.cs:841
+  DNN Platform/DotNetNuke.Log4net/log4net/Util/ILogExtensions.cs:151 Level.Debug: the reader DNN Platform/DotNetNuke.Log4net/log4net/Core/Level.cs:521
+  DNN Platform/DotNetNuke.Log4net/log4net/Util/ILogExtensions.cs:151 log4net.ObjectRenderer.IObjectRenderer: the reader DNN Platform/DotNetNuke.Log4net/log4net/ObjectRenderer/IObjectRenderer.cs:37
+  DNN Platform/DotNetNuke.Log4net/log4net/Util/ILogExtensions.cs:183 DebugExt(ILog, object): the reader DNN Platform/DotNetNuke.Log4net/log4net/Util/ILogExtensions.cs:151
+  DNN Platform/DotNetNuke.Log4net/log4net/Util/ILogExtensions.cs:183 ILog.Debug(object): the reader DNN Platform/DotNetNuke.Log4net/log4net/ILog.cs:92
+  DNN Platform/DotNetNuke.Log4net/log4net/Util/ILogExtensions.cs:183 ILog.IsDebugEnabled: the reader DNN Platform/DotNetNuke.Log4net/log4net/ILog.cs:841
+  DNN Platform/DotNetNuke.Log4net/log4net/Util/ILogExtensions.cs:183 Level.Debug: the reader DNN Platform/DotNetNuke.Log4net/log4net/Core/Level.cs:521
+  DNN Platform/DotNetNuke.Log4net/log4net/Util/ILogExtensions.cs:218 DebugExt(ILog,object,Exception): the reader DNN Platform/DotNetNuke.Log4net/log4net/Util/ILogExtensions.cs:183
+  DNN Platform/DotNetNuke.Log4net/log4net/Util/ILogExtensions.cs:218 ILog.Debug(object): the reader DNN Platform/DotNetNuke.Log4net/log4net/ILog.cs:92
+  DNN Platform/DotNetNuke.Log4net/log4net/Util/ILogExtensions.cs:218 ILog.IsDebugEnabled: the reader DNN Platform/DotNetNuke.Log4net/log4net/ILog.cs:841
+  DNN Platform/DotNetNuke.Log4net/log4net/Util/ILogExtensions.cs:218 Level.Debug: the reader DNN Platform/DotNetNuke.Log4net/log4net/Core/Level.cs:521
+  DNN Platform/DotNetNuke.Log4net/log4net/Util/ILogExtensions.cs:253 DebugExt(ILog,object,Exception): the reader DNN Platform/DotNetNuke.Log4net/log4net/Util/ILogExtensions.cs:183
+  DNN Platform/DotNetNuke.Log4net/log4net/Util/ILogExtensions.cs:253 ILog.Debug(object): the reader DNN Platform/DotNetNuke.Log4net/log4net/ILog.cs:92
+  DNN Platform/DotNetNuke.Log4net/log4net/Util/ILogExtensions.cs:253 ILog.IsDebugEnabled: the reader DNN Platform/DotNetNuke.Log4net/log4net/ILog.cs:841
+  DNN Platform/DotNetNuke.Log4net/log4net/Util/ILogExtensions.cs:253 Level.Debug: the reader DNN Platform/DotNetNuke.Log4net/log4net/Core/Level.cs:521
+  DNN Platform/DotNetNuke.Log4net/log4net/Util/ILogExtensions.cs:289 DebugExt(ILog,object,Exception): the reader DNN Platform/DotNetNuke.Log4net/log4net/Util/ILogExtensions.cs:183
+  DNN Platform/DotNetNuke.Log4net/log4net/Util/ILogExtensions.cs:289 ILog.Debug(object): the reader DNN Platform/DotNetNuke.Log4net/log4net/ILog.cs:92
+  DNN Platform/DotNetNuke.Log4net/log4net/Util/ILogExtensions.cs:289 ILog.IsDebugEnabled: the reader DNN Platform/DotNetNuke.Log4net/log4net/ILog.cs:841
+  DNN Platform/DotNetNuke.Log4net/log4net/Util/ILogExtensions.cs:289 Level.Debug: the reader DNN Platform/DotNetNuke.Log4net/log4net/Core/Level.cs:521
+  DNN Platform/DotNetNuke.Log4net/log4net/Util/ILogExtensions.cs:325 DebugExt(ILog,object,Exception): the reader DNN Platform/DotNetNuke.Log4net/log4net/Util/ILogExtensions.cs:183
+  DNN Platform/DotNetNuke.Log4net/log4net/Util/ILogExtensions.cs:325 ILog.Debug(object): the reader DNN Platform/DotNetNuke.Log4net/log4net/ILog.cs:92
+  DNN Platform/DotNetNuke.Log4net/log4net/Util/ILogExtensions.cs:325 ILog.IsDebugEnabled: the reader DNN Platform/DotNetNuke.Log4net/log4net/ILog.cs:841
+  DNN Platform/DotNetNuke.Log4net/log4net/Util/ILogExtensions.cs:325 Level.Debug: the reader DNN Platform/DotNetNuke.Log4net/log4net/Core/Level.cs:521
+  DNN Platform/DotNetNuke.Log4net/log4net/Util/ILogExtensions.cs:362 DebugExt(ILog,object,Exception): the reader DNN Platform/DotNetNuke.Log4net/log4net/Util/ILogExtensions.cs:183
+  DNN Platform/DotNetNuke.Log4net/log4net/Util/ILogExtensions.cs:362 ILog.Debug(object): the reader DNN Platform/DotNetNuke.Log4net/log4net/ILog.cs:92
+  DNN Platform/DotNetNuke.Log4net/log4net/Util/ILogExtensions.cs:362 ILog.IsDebugEnabled: the reader DNN Platform/DotNetNuke.Log4net/log4net/ILog.cs:841
+  DNN Platform/DotNetNuke.Log4net/log4net/Util/ILogExtensions.cs:362 Level.Debug: the reader DNN Platform/DotNetNuke.Log4net/log4net/Core/Level.cs:521
+  DNN Platform/DotNetNuke.Log4net/log4net/Util/ILogExtensions.cs:402 ILog: the reader DNN Platform/DotNetNuke.Log4net/log4net/ILog.cs:67
+  DNN Platform/DotNetNuke.Log4net/log4net/Util/ILogExtensions.cs:402 ILog.Info(object): the reader DNN Platform/DotNetNuke.Log4net/log4net/ILog.cs:233
+  DNN Platform/DotNetNuke.Log4net/log4net/Util/ILogExtensions.cs:402 ILog.IsInfoEnabled: the reader DNN Platform/DotNetNuke.Log4net/log4net/ILog.cs:853
+  DNN Platform/DotNetNuke.Log4net/log4net/Util/ILogExtensions.cs:402 InfoExt(ILog,Func<object>,Exception): the reader DNN Platform/DotNetNuke.Log4net/log4net/Util/ILogExtensions.cs:434
+  DNN Platform/DotNetNuke.Log4net/log4net/Util/ILogExtensions.cs:402 Level.Info: the reader DNN Platform/DotNetNuke.Log4net/log4net/Core/Level.cs:515
+  DNN Platform/DotNetNuke.Log4net/log4net/Util/ILogExtensions.cs:402 log4net.ObjectRenderer.IObjectRenderer: the reader DNN Platform/DotNetNuke.Log4net/log4net/ObjectRenderer/IObjectRenderer.cs:37
+  DNN Platform/DotNetNuke.Log4net/log4net/Util/ILogExtensions.cs:434 ILog.Info(object): the reader DNN Platform/DotNetNuke.Log4net/log4net/ILog.cs:233
+  DNN Platform/DotNetNuke.Log4net/log4net/Util/ILogExtensions.cs:434 ILog.IsInfoEnabled: the reader DNN Platform/DotNetNuke.Log4net/log4net/ILog.cs:853
+  DNN Platform/DotNetNuke.Log4net/log4net/Util/ILogExtensions.cs:434 InfoExt(ILog, object): the reader DNN Platform/DotNetNuke.Log4net/log4net/Util/ILogExtensions.cs:475
+  DNN Platform/DotNetNuke.Log4net/log4net/Util/ILogExtensions.cs:434 Level.Info: the reader DNN Platform/DotNetNuke.Log4net/log4net/Core/Level.cs:515
+  DNN Platform/DotNetNuke.Log4net/log4net/Util/ILogExtensions.cs:475 ILog: the reader DNN Platform/DotNetNuke.Log4net/log4net/ILog.cs:67
+  DNN Platform/DotNetNuke.Log4net/log4net/Util/ILogExtensions.cs:475 ILog.Info(object): the reader DNN Platform/DotNetNuke.Log4net/log4net/ILog.cs:233
+  DNN Platform/DotNetNuke.Log4net/log4net/Util/ILogExtensions.cs:475 ILog.IsInfoEnabled: the reader DNN Platform/DotNetNuke.Log4net/log4net/ILog.cs:853
+  DNN Platform/DotNetNuke.Log4net/log4net/Util/ILogExtensions.cs:475 InfoExt(ILog,object,Exception): the reader DNN Platform/DotNetNuke.Log4net/log4net/Util/ILogExtensions.cs:507
+  DNN Platform/DotNetNuke.Log4net/log4net/Util/ILogExtensions.cs:475 Level.Info: the reader DNN Platform/DotNetNuke.Log4net/log4net/Core/Level.cs:515
+  DNN Platform/DotNetNuke.Log4net/log4net/Util/ILogExtensions.cs:475 log4net.ObjectRenderer.IObjectRenderer: the reader DNN Platform/DotNetNuke.Log4net/log4net/ObjectRenderer/IObjectRenderer.cs:37
+  DNN Platform/DotNetNuke.Log4net/log4net/Util/ILogExtensions.cs:507 ILog.Info(object): the reader DNN Platform/DotNetNuke.Log4net/log4net/ILog.cs:233
+  DNN Platform/DotNetNuke.Log4net/log4net/Util/ILogExtensions.cs:507 ILog.IsInfoEnabled: the reader DNN Platform/DotNetNuke.Log4net/log4net/ILog.cs:853
+  DNN Platform/DotNetNuke.Log4net/log4net/Util/ILogExtensions.cs:507 InfoExt(ILog, object): the reader DNN Platform/DotNetNuke.Log4net/log4net/Util/ILogExtensions.cs:475
+  DNN Platform/DotNetNuke.Log4net/log4net/Util/ILogExtensions.cs:507 Level.Info: the reader DNN Platform/DotNetNuke.Log4net/log4net/Core/Level.cs:515
+  DNN Platform/DotNetNuke.Log4net/log4net/Util/ILogExtensions.cs:542 ILog.Info(object): the reader DNN Platform/DotNetNuke.Log4net/log4net/ILog.cs:233
+  DNN Platform/DotNetNuke.Log4net/log4net/Util/ILogExtensions.cs:542 ILog.IsInfoEnabled: the reader DNN Platform/DotNetNuke.Log4net/log4net/ILog.cs:853
+  DNN Platform/DotNetNuke.Log4net/log4net/Util/ILogExtensions.cs:542 InfoExt(ILog,object,Exception): the reader DNN Platform/DotNetNuke.Log4net/log4net/Util/ILogExtensions.cs:507
+  DNN Platform/DotNetNuke.Log4net/log4net/Util/ILogExtensions.cs:542 Level.Info: the reader DNN Platform/DotNetNuke.Log4net/log4net/Core/Level.cs:515
+  DNN Platform/DotNetNuke.Log4net/log4net/Util/ILogExtensions.cs:577 ILog.Info(object): the reader DNN Platform/DotNetNuke.Log4net/log4net/ILog.cs:233
+  DNN Platform/DotNetNuke.Log4net/log4net/Util/ILogExtensions.cs:577 ILog.IsInfoEnabled: the reader DNN Platform/DotNetNuke.Log4net/log4net/ILog.cs:853
+  DNN Platform/DotNetNuke.Log4net/log4net/Util/ILogExtensions.cs:577 InfoExt(ILog,object,Exception): the reader DNN Platform/DotNetNuke.Log4net/log4net/Util/ILogExtensions.cs:507
+  DNN Platform/DotNetNuke.Log4net/log4net/Util/ILogExtensions.cs:577 Level.Info: the reader DNN Platform/DotNetNuke.Log4net/log4net/Core/Level.cs:515
+  DNN Platform/DotNetNuke.Log4net/log4net/Util/ILogExtensions.cs:613 ILog.Info(object): the reader DNN Platform/DotNetNuke.Log4net/log4net/ILog.cs:233
+  DNN Platform/DotNetNuke.Log4net/log4net/Util/ILogExtensions.cs:613 ILog.IsInfoEnabled: the reader DNN Platform/DotNetNuke.Log4net/log4net/ILog.cs:853
+  DNN Platform/DotNetNuke.Log4net/log4net/Util/ILogExtensions.cs:613 InfoExt(ILog,object,Exception): the reader DNN Platform/DotNetNuke.Log4net/log4net/Util/ILogExtensions.cs:507
+  DNN Platform/DotNetNuke.Log4net/log4net/Util/ILogExtensions.cs:613 Level.Info: the reader DNN Platform/DotNetNuke.Log4net/log4net/Core/Level.cs:515
+  DNN Platform/DotNetNuke.Log4net/log4net/Util/ILogExtensions.cs:649 ILog.Info(object): the reader DNN Platform/DotNetNuke.Log4net/log4net/ILog.cs:233
+  DNN Platform/DotNetNuke.Log4net/log4net/Util/ILogExtensions.cs:649 ILog.IsInfoEnabled: the reader DNN Platform/DotNetNuke.Log4net/log4net/ILog.cs:853
+  DNN Platform/DotNetNuke.Log4net/log4net/Util/ILogExtensions.cs:649 InfoExt(ILog,object,Exception): the reader DNN Platform/DotNetNuke.Log4net/log4net/Util/ILogExtensions.cs:507
+  DNN Platform/DotNetNuke.Log4net/log4net/Util/ILogExtensions.cs:649 Level.Info: the reader DNN Platform/DotNetNuke.Log4net/log4net/Core/Level.cs:515
+  DNN Platform/DotNetNuke.Log4net/log4net/Util/ILogExtensions.cs:686 ILog.Info(object): the reader DNN Platform/DotNetNuke.Log4net/log4net/ILog.cs:233
+  DNN Platform/DotNetNuke.Log4net/log4net/Util/ILogExtensions.cs:686 ILog.IsInfoEnabled: the reader DNN Platform/DotNetNuke.Log4net/log4net/ILog.cs:853
+  DNN Platform/DotNetNuke.Log4net/log4net/Util/ILogExtensions.cs:686 InfoExt(ILog,object,Exception): the reader DNN Platform/DotNetNuke.Log4net/log4net/Util/ILogExtensions.cs:507
+  DNN Platform/DotNetNuke.Log4net/log4net/Util/ILogExtensions.cs:686 Level.Info: the reader DNN Platform/DotNetNuke.Log4net/log4net/Core/Level.cs:515
+  DNN Platform/DotNetNuke.Log4net/log4net/Util/ILogExtensions.cs:726 ILog: the reader DNN Platform/DotNetNuke.Log4net/log4net/ILog.cs:67
+  DNN Platform/DotNetNuke.Log4net/log4net/Util/ILogExtensions.cs:726 ILog.IsWarnEnabled: the reader DNN Platform/DotNetNuke.Log4net/log4net/ILog.cs:865
+  DNN Platform/DotNetNuke.Log4net/log4net/Util/ILogExtensions.cs:726 ILog.Warn(object): the reader DNN Platform/DotNetNuke.Log4net/log4net/ILog.cs:374
+  DNN Platform/DotNetNuke.Log4net/log4net/Util/ILogExtensions.cs:726 Level.Warn: the reader DNN Platform/DotNetNuke.Log4net/log4net/Core/Level.cs:503
+  DNN Platform/DotNetNuke.Log4net/log4net/Util/ILogExtensions.cs:726 log4net.ObjectRenderer.IObjectRenderer: the reader DNN Platform/DotNetNuke.Log4net/log4net/ObjectRenderer/IObjectRenderer.cs:37
+  DNN Platform/DotNetNuke.Log4net/log4net/Util/ILogExtensions.cs:726 WarnExt(ILog,Func<object>,Exception): the reader DNN Platform/DotNetNuke.Log4net/log4net/Util/ILogExtensions.cs:758
+  DNN Platform/DotNetNuke.Log4net/log4net/Util/ILogExtensions.cs:758 ILog.IsWarnEnabled: the reader DNN Platform/DotNetNuke.Log4net/log4net/ILog.cs:865
+  DNN Platform/DotNetNuke.Log4net/log4net/Util/ILogExtensions.cs:758 ILog.Warn(object): the reader DNN Platform/DotNetNuke.Log4net/log4net/ILog.cs:374
+  DNN Platform/DotNetNuke.Log4net/log4net/Util/ILogExtensions.cs:758 Level.Warn: the reader DNN Platform/DotNetNuke.Log4net/log4net/Core/Level.cs:503
+  DNN Platform/DotNetNuke.Log4net/log4net/Util/ILogExtensions.cs:758 WarnExt(ILog, object): the reader DNN Platform/DotNetNuke.Log4net/log4net/Util/ILogExtensions.cs:799
+  DNN Platform/DotNetNuke.Log4net/log4net/Util/ILogExtensions.cs:799 ILog: the reader DNN Platform/DotNetNuke.Log4net/log4net/ILog.cs:67
+  DNN Platform/DotNetNuke.Log4net/log4net/Util/ILogExtensions.cs:799 ILog.IsWarnEnabled: the reader DNN Platform/DotNetNuke.Log4net/log4net/ILog.cs:865
+  DNN Platform/DotNetNuke.Log4net/log4net/Util/ILogExtensions.cs:799 ILog.Warn(object): the reader DNN Platform/DotNetNuke.Log4net/log4net/ILog.cs:374
+  DNN Platform/DotNetNuke.Log4net/log4net/Util/ILogExtensions.cs:799 Level.Warn: the reader DNN Platform/DotNetNuke.Log4net/log4net/Core/Level.cs:503
+  DNN Platform/DotNetNuke.Log4net/log4net/Util/ILogExtensions.cs:799 log4net.ObjectRenderer.IObjectRenderer: the reader DNN Platform/DotNetNuke.Log4net/log4net/ObjectRenderer/IObjectRenderer.cs:37
+  DNN Platform/DotNetNuke.Log4net/log4net/Util/ILogExtensions.cs:799 WarnExt(ILog,object,Exception): the reader DNN Platform/DotNetNuke.Log4net/log4net/Util/ILogExtensions.cs:831
+  DNN Platform/DotNetNuke.Log4net/log4net/Util/ILogExtensions.cs:831 ILog.IsWarnEnabled: the reader DNN Platform/DotNetNuke.Log4net/log4net/ILog.cs:865
+  DNN Platform/DotNetNuke.Log4net/log4net/Util/ILogExtensions.cs:831 ILog.Warn(object): the reader DNN Platform/DotNetNuke.Log4net/log4net/ILog.cs:374
+  DNN Platform/DotNetNuke.Log4net/log4net/Util/ILogExtensions.cs:831 Level.Warn: the reader DNN Platform/DotNetNuke.Log4net/log4net/Core/Level.cs:503
+  DNN Platform/DotNetNuke.Log4net/log4net/Util/ILogExtensions.cs:831 WarnExt(ILog, object): the reader DNN Platform/DotNetNuke.Log4net/log4net/Util/ILogExtensions.cs:799
+  DNN Platform/DotNetNuke.Log4net/log4net/Util/ILogExtensions.cs:866 ILog.IsWarnEnabled: the reader DNN Platform/DotNetNuke.Log4net/log4net/ILog.cs:865
+  DNN Platform/DotNetNuke.Log4net/log4net/Util/ILogExtensions.cs:866 ILog.Warn(object): the reader DNN Platform/DotNetNuke.Log4net/log4net/ILog.cs:374
+  DNN Platform/DotNetNuke.Log4net/log4net/Util/ILogExtensions.cs:866 Level.Warn: the reader DNN Platform/DotNetNuke.Log4net/log4net/Core/Level.cs:503
+  DNN Platform/DotNetNuke.Log4net/log4net/Util/ILogExtensions.cs:866 WarnExt(ILog,object,Exception): the reader DNN Platform/DotNetNuke.Log4net/log4net/Util/ILogExtensions.cs:831
+  DNN Platform/DotNetNuke.Log4net/log4net/Util/ILogExtensions.cs:901 ILog.IsWarnEnabled: the reader DNN Platform/DotNetNuke.Log4net/log4net/ILog.cs:865
+  DNN Platform/DotNetNuke.Log4net/log4net/Util/ILogExtensions.cs:901 ILog.Warn(object): the reader DNN Platform/DotNetNuke.Log4net/log4net/ILog.cs:374
+  DNN Platform/DotNetNuke.Log4net/log4net/Util/ILogExtensions.cs:901 Level.Warn: the reader DNN Platform/DotNetNuke.Log4net/log4net/Core/Level.cs:503
+  DNN Platform/DotNetNuke.Log4net/log4net/Util/ILogExtensions.cs:901 WarnExt(ILog,object,Exception): the reader DNN Platform/DotNetNuke.Log4net/log4net/Util/ILogExtensions.cs:831
+  DNN Platform/DotNetNuke.Log4net/log4net/Util/ILogExtensions.cs:937 ILog.IsWarnEnabled: the reader DNN Platform/DotNetNuke.Log4net/log4net/ILog.cs:865
+  DNN Platform/DotNetNuke.Log4net/log4net/Util/ILogExtensions.cs:937 ILog.Warn(object): the reader DNN Platform/DotNetNuke.Log4net/log4net/ILog.cs:374
+  DNN Platform/DotNetNuke.Log4net/log4net/Util/ILogExtensions.cs:937 Level.Warn: the reader DNN Platform/DotNetNuke.Log4net/log4net/Core/Level.cs:503
+  DNN Platform/DotNetNuke.Log4net/log4net/Util/ILogExtensions.cs:937 WarnExt(ILog,object,Exception): the reader DNN Platform/DotNetNuke.Log4net/log4net/Util/ILogExtensions.cs:831
+  DNN Platform/DotNetNuke.Log4net/log4net/Util/ILogExtensions.cs:973 ILog.IsWarnEnabled: the reader DNN Platform/DotNetNuke.Log4net/log4net/ILog.cs:865
+  DNN Platform/DotNetNuke.Log4net/log4net/Util/ILogExtensions.cs:973 ILog.Warn(object): the reader DNN Platform/DotNetNuke.Log4net/log4net/ILog.cs:374
+  DNN Platform/DotNetNuke.Log4net/log4net/Util/ILogExtensions.cs:973 Level.Warn: the reader DNN Platform/DotNetNuke.Log4net/log4net/Core/Level.cs:503
+  DNN Platform/DotNetNuke.Log4net/log4net/Util/ILogExtensions.cs:973 WarnExt(ILog,object,Exception): the reader DNN Platform/DotNetNuke.Log4net/log4net/Util/ILogExtensions.cs:831
+  DNN Platform/DotNetNuke.Log4net/log4net/Util/ILogExtensions.cs:1010 ILog.IsWarnEnabled: the reader DNN Platform/DotNetNuke.Log4net/log4net/ILog.cs:865
+  DNN Platform/DotNetNuke.Log4net/log4net/Util/ILogExtensions.cs:1010 ILog.Warn(object): the reader DNN Platform/DotNetNuke.Log4net/log4net/ILog.cs:374
+  DNN Platform/DotNetNuke.Log4net/log4net/Util/ILogExtensions.cs:1010 Level.Warn: the reader DNN Platform/DotNetNuke.Log4net/log4net/Core/Level.cs:503
+  DNN Platform/DotNetNuke.Log4net/log4net/Util/ILogExtensions.cs:1010 WarnExt(ILog,object,Exception): the reader DNN Platform/DotNetNuke.Log4net/log4net/Util/ILogExtensions.cs:831
+  DNN Platform/DotNetNuke.Log4net/log4net/Util/ILogExtensions.cs:1050 ErrorExt(ILog,Func<object>,Exception): the reader DNN Platform/DotNetNuke.Log4net/log4net/Util/ILogExtensions.cs:1082
+  DNN Platform/DotNetNuke.Log4net/log4net/Util/ILogExtensions.cs:1050 ILog: the reader DNN Platform/DotNetNuke.Log4net/log4net/ILog.cs:67
+  DNN Platform/DotNetNuke.Log4net/log4net/Util/ILogExtensions.cs:1050 ILog.Error(object): the reader DNN Platform/DotNetNuke.Log4net/log4net/ILog.cs:515
+  DNN Platform/DotNetNuke.Log4net/log4net/Util/ILogExtensions.cs:1050 ILog.IsErrorEnabled: the reader DNN Platform/DotNetNuke.Log4net/log4net/ILog.cs:877
+  DNN Platform/DotNetNuke.Log4net/log4net/Util/ILogExtensions.cs:1050 Level.Error: the reader DNN Platform/DotNetNuke.Log4net/log4net/Core/Level.cs:497
+  DNN Platform/DotNetNuke.Log4net/log4net/Util/ILogExtensions.cs:1050 log4net.ObjectRenderer.IObjectRenderer: the reader DNN Platform/DotNetNuke.Log4net/log4net/ObjectRenderer/IObjectRenderer.cs:37
+  DNN Platform/DotNetNuke.Log4net/log4net/Util/ILogExtensions.cs:1082 ErrorExt(ILog, object): the reader DNN Platform/DotNetNuke.Log4net/log4net/Util/ILogExtensions.cs:1123
+  DNN Platform/DotNetNuke.Log4net/log4net/Util/ILogExtensions.cs:1082 ILog.Error(object): the reader DNN Platform/DotNetNuke.Log4net/log4net/ILog.cs:515
+  DNN Platform/DotNetNuke.Log4net/log4net/Util/ILogExtensions.cs:1082 ILog.IsErrorEnabled: the reader DNN Platform/DotNetNuke.Log4net/log4net/ILog.cs:877
+  DNN Platform/DotNetNuke.Log4net/log4net/Util/ILogExtensions.cs:1082 Level.Error: the reader DNN Platform/DotNetNuke.Log4net/log4net/Core/Level.cs:497
+  DNN Platform/DotNetNuke.Log4net/log4net/Util/ILogExtensions.cs:1123 ErrorExt(ILog,object,Exception): the reader DNN Platform/DotNetNuke.Log4net/log4net/Util/ILogExtensions.cs:1155
+  DNN Platform/DotNetNuke.Log4net/log4net/Util/ILogExtensions.cs:1123 ILog: the reader DNN Platform/DotNetNuke.Log4net/log4net/ILog.cs:67
+  DNN Platform/DotNetNuke.Log4net/log4net/Util/ILogExtensions.cs:1123 ILog.Error(object): the reader DNN Platform/DotNetNuke.Log4net/log4net/ILog.cs:515
+  DNN Platform/DotNetNuke.Log4net/log4net/Util/ILogExtensions.cs:1123 ILog.IsErrorEnabled: the reader DNN Platform/DotNetNuke.Log4net/log4net/ILog.cs:877
+  DNN Platform/DotNetNuke.Log4net/log4net/Util/ILogExtensions.cs:1123 Level.Error: the reader DNN Platform/DotNetNuke.Log4net/log4net/Core/Level.cs:497
+  DNN Platform/DotNetNuke.Log4net/log4net/Util/ILogExtensions.cs:1123 log4net.ObjectRenderer.IObjectRenderer: the reader DNN Platform/DotNetNuke.Log4net/log4net/ObjectRenderer/IObjectRenderer.cs:37
+  DNN Platform/DotNetNuke.Log4net/log4net/Util/ILogExtensions.cs:1155 ErrorExt(ILog, object): the reader DNN Platform/DotNetNuke.Log4net/log4net/Util/ILogExtensions.cs:1123
+  DNN Platform/DotNetNuke.Log4net/log4net/Util/ILogExtensions.cs:1155 ILog.Error(object): the reader DNN Platform/DotNetNuke.Log4net/log4net/ILog.cs:515
+  DNN Platform/DotNetNuke.Log4net/log4net/Util/ILogExtensions.cs:1155 ILog.IsErrorEnabled: the reader DNN Platform/DotNetNuke.Log4net/log4net/ILog.cs:877
+  DNN Platform/DotNetNuke.Log4net/log4net/Util/ILogExtensions.cs:1155 Level.Error: the reader DNN Platform/DotNetNuke.Log4net/log4net/Core/Level.cs:497
+  DNN Platform/DotNetNuke.Log4net/log4net/Util/ILogExtensions.cs:1190 ErrorExt(ILog,object,Exception): the reader DNN Platform/DotNetNuke.Log4net/log4net/Util/ILogExtensions.cs:1155
+  DNN Platform/DotNetNuke.Log4net/log4net/Util/ILogExtensions.cs:1190 ILog.Error(object): the reader DNN Platform/DotNetNuke.Log4net/log4net/ILog.cs:515
+  DNN Platform/DotNetNuke.Log4net/log4net/Util/ILogExtensions.cs:1190 ILog.IsErrorEnabled: the reader DNN Platform/DotNetNuke.Log4net/log4net/ILog.cs:877
+  DNN Platform/DotNetNuke.Log4net/log4net/Util/ILogExtensions.cs:1190 Level.Error: the reader DNN Platform/DotNetNuke.Log4net/log4net/Core/Level.cs:497
+  DNN Platform/DotNetNuke.Log4net/log4net/Util/ILogExtensions.cs:1225 ErrorExt(ILog,object,Exception): the reader DNN Platform/DotNetNuke.Log4net/log4net/Util/ILogExtensions.cs:1155
+  DNN Platform/DotNetNuke.Log4net/log4net/Util/ILogExtensions.cs:1225 ILog.Error(object): the reader DNN Platform/DotNetNuke.Log4net/log4net/ILog.cs:515
+  DNN Platform/DotNetNuke.Log4net/log4net/Util/ILogExtensions.cs:1225 ILog.IsErrorEnabled: the reader DNN Platform/DotNetNuke.Log4net/log4net/ILog.cs:877
+  DNN Platform/DotNetNuke.Log4net/log4net/Util/ILogExtensions.cs:1225 Level.Error: the reader DNN Platform/DotNetNuke.Log4net/log4net/Core/Level.cs:497
+  DNN Platform/DotNetNuke.Log4net/log4net/Util/ILogExtensions.cs:1261 ErrorExt(ILog,object,Exception): the reader DNN Platform/DotNetNuke.Log4net/log4net/Util/ILogExtensions.cs:1155
+  DNN Platform/DotNetNuke.Log4net/log4net/Util/ILogExtensions.cs:1261 ILog.Error(object): the reader DNN Platform/DotNetNuke.Log4net/log4net/ILog.cs:515
+  DNN Platform/DotNetNuke.Log4net/log4net/Util/ILogExtensions.cs:1261 ILog.IsErrorEnabled: the reader DNN Platform/DotNetNuke.Log4net/log4net/ILog.cs:877
+  DNN Platform/DotNetNuke.Log4net/log4net/Util/ILogExtensions.cs:1261 Level.Error: the reader DNN Platform/DotNetNuke.Log4net/log4net/Core/Level.cs:497
+  DNN Platform/DotNetNuke.Log4net/log4net/Util/ILogExtensions.cs:1297 ErrorExt(ILog,object,Exception): the reader DNN Platform/DotNetNuke.Log4net/log4net/Util/ILogExtensions.cs:1155
+  DNN Platform/DotNetNuke.Log4net/log4net/Util/ILogExtensions.cs:1297 ILog.Error(object): the reader DNN Platform/DotNetNuke.Log4net/log4net/ILog.cs:515
+  DNN Platform/DotNetNuke.Log4net/log4net/Util/ILogExtensions.cs:1297 ILog.IsErrorEnabled: the reader DNN Platform/DotNetNuke.Log4net/log4net/ILog.cs:877
+  DNN Platform/DotNetNuke.Log4net/log4net/Util/ILogExtensions.cs:1297 Level.Error: the reader DNN Platform/DotNetNuke.Log4net/log4net/Core/Level.cs:497
+  DNN Platform/DotNetNuke.Log4net/log4net/Util/ILogExtensions.cs:1334 ErrorExt(ILog,object,Exception): the reader DNN Platform/DotNetNuke.Log4net/log4net/Util/ILogExtensions.cs:1155
+  DNN Platform/DotNetNuke.Log4net/log4net/Util/ILogExtensions.cs:1334 ILog.Error(object): the reader DNN Platform/DotNetNuke.Log4net/log4net/ILog.cs:515
+  DNN Platform/DotNetNuke.Log4net/log4net/Util/ILogExtensions.cs:1334 ILog.IsErrorEnabled: the reader DNN Platform/DotNetNuke.Log4net/log4net/ILog.cs:877
+  DNN Platform/DotNetNuke.Log4net/log4net/Util/ILogExtensions.cs:1334 Level.Error: the reader DNN Platform/DotNetNuke.Log4net/log4net/Core/Level.cs:497
+  DNN Platform/DotNetNuke.Log4net/log4net/Util/ILogExtensions.cs:1374 FatalExt(ILog,Func<object>,Exception): the reader DNN Platform/DotNetNuke.Log4net/log4net/Util/ILogExtensions.cs:1406
+  DNN Platform/DotNetNuke.Log4net/log4net/Util/ILogExtensions.cs:1374 ILog: the reader DNN Platform/DotNetNuke.Log4net/log4net/ILog.cs:67
+  DNN Platform/DotNetNuke.Log4net/log4net/Util/ILogExtensions.cs:1374 ILog.Fatal(object): the reader DNN Platform/DotNetNuke.Log4net/log4net/ILog.cs:656
+  DNN Platform/DotNetNuke.Log4net/log4net/Util/ILogExtensions.cs:1374 ILog.IsFatalEnabled: the reader DNN Platform/DotNetNuke.Log4net/log4net/ILog.cs:889
+  DNN Platform/DotNetNuke.Log4net/log4net/Util/ILogExtensions.cs:1374 Level.Fatal: the reader DNN Platform/DotNetNuke.Log4net/log4net/Core/Level.cs:476
+  DNN Platform/DotNetNuke.Log4net/log4net/Util/ILogExtensions.cs:1374 log4net.ObjectRenderer.IObjectRenderer: the reader DNN Platform/DotNetNuke.Log4net/log4net/ObjectRenderer/IObjectRenderer.cs:37
+  DNN Platform/DotNetNuke.Log4net/log4net/Util/ILogExtensions.cs:1406 FatalExt(ILog, object): the reader DNN Platform/DotNetNuke.Log4net/log4net/Util/ILogExtensions.cs:1447
+  DNN Platform/DotNetNuke.Log4net/log4net/Util/ILogExtensions.cs:1406 ILog.Fatal(object): the reader DNN Platform/DotNetNuke.Log4net/log4net/ILog.cs:656
+  DNN Platform/DotNetNuke.Log4net/log4net/Util/ILogExtensions.cs:1406 ILog.IsFatalEnabled: the reader DNN Platform/DotNetNuke.Log4net/log4net/ILog.cs:889
+  DNN Platform/DotNetNuke.Log4net/log4net/Util/ILogExtensions.cs:1406 Level.Fatal: the reader DNN Platform/DotNetNuke.Log4net/log4net/Core/Level.cs:476
+  DNN Platform/DotNetNuke.Log4net/log4net/Util/ILogExtensions.cs:1447 FatalExt(ILog,object,Exception): the reader DNN Platform/DotNetNuke.Log4net/log4net/Util/ILogExtensions.cs:1479
+  DNN Platform/DotNetNuke.Log4net/log4net/Util/ILogExtensions.cs:1447 ILog: the reader DNN Platform/DotNetNuke.Log4net/log4net/ILog.cs:67
+  DNN Platform/DotNetNuke.Log4net/log4net/Util/ILogExtensions.cs:1447 ILog.Fatal(object): the reader DNN Platform/DotNetNuke.Log4net/log4net/ILog.cs:656
+  DNN Platform/DotNetNuke.Log4net/log4net/Util/ILogExtensions.cs:1447 ILog.IsFatalEnabled: the reader DNN Platform/DotNetNuke.Log4net/log4net/ILog.cs:889
+  DNN Platform/DotNetNuke.Log4net/log4net/Util/ILogExtensions.cs:1447 Level.Fatal: the reader DNN Platform/DotNetNuke.Log4net/log4net/Core/Level.cs:476
+  DNN Platform/DotNetNuke.Log4net/log4net/Util/ILogExtensions.cs:1447 log4net.ObjectRenderer.IObjectRenderer: the reader DNN Platform/DotNetNuke.Log4net/log4net/ObjectRenderer/IObjectRenderer.cs:37
+  DNN Platform/DotNetNuke.Log4net/log4net/Util/ILogExtensions.cs:1479 FatalExt(ILog, object): the reader DNN Platform/DotNetNuke.Log4net/log4net/Util/ILogExtensions.cs:1447
+  DNN Platform/DotNetNuke.Log4net/log4net/Util/ILogExtensions.cs:1479 ILog.Fatal(object): the reader DNN Platform/DotNetNuke.Log4net/log4net/ILog.cs:656
+  DNN Platform/DotNetNuke.Log4net/log4net/Util/ILogExtensions.cs:1479 ILog.IsFatalEnabled: the reader DNN Platform/DotNetNuke.Log4net/log4net/ILog.cs:889
+  DNN Platform/DotNetNuke.Log4net/log4net/Util/ILogExtensions.cs:1479 Level.Fatal: the reader DNN Platform/DotNetNuke.Log4net/log4net/Core/Level.cs:476
+  DNN Platform/DotNetNuke.Log4net/log4net/Util/ILogExtensions.cs:1514 FatalExt(ILog,object,Exception): the reader DNN Platform/DotNetNuke.Log4net/log4net/Util/ILogExtensions.cs:1479
+  DNN Platform/DotNetNuke.Log4net/log4net/Util/ILogExtensions.cs:1514 ILog.Fatal(object): the reader DNN Platform/DotNetNuke.Log4net/log4net/ILog.cs:656
+  DNN Platform/DotNetNuke.Log4net/log4net/Util/ILogExtensions.cs:1514 ILog.IsFatalEnabled: the reader DNN Platform/DotNetNuke.Log4net/log4net/ILog.cs:889
+  DNN Platform/DotNetNuke.Log4net/log4net/Util/ILogExtensions.cs:1514 Level.Fatal: the reader DNN Platform/DotNetNuke.Log4net/log4net/Core/Level.cs:476
+  DNN Platform/DotNetNuke.Log4net/log4net/Util/ILogExtensions.cs:1549 FatalExt(ILog,object,Exception): the reader DNN Platform/DotNetNuke.Log4net/log4net/Util/ILogExtensions.cs:1479
+  DNN Platform/DotNetNuke.Log4net/log4net/Util/ILogExtensions.cs:1549 ILog.Fatal(object): the reader DNN Platform/DotNetNuke.Log4net/log4net/ILog.cs:656
+  DNN Platform/DotNetNuke.Log4net/log4net/Util/ILogExtensions.cs:1549 ILog.IsFatalEnabled: the reader DNN Platform/DotNetNuke.Log4net/log4net/ILog.cs:889
+  DNN Platform/DotNetNuke.Log4net/log4net/Util/ILogExtensions.cs:1549 Level.Fatal: the reader DNN Platform/DotNetNuke.Log4net/log4net/Core/Level.cs:476
+  DNN Platform/DotNetNuke.Log4net/log4net/Util/ILogExtensions.cs:1585 FatalExt(ILog,object,Exception): the reader DNN Platform/DotNetNuke.Log4net/log4net/Util/ILogExtensions.cs:1479
+  DNN Platform/DotNetNuke.Log4net/log4net/Util/ILogExtensions.cs:1585 ILog.Fatal(object): the reader DNN Platform/DotNetNuke.Log4net/log4net/ILog.cs:656
+  DNN Platform/DotNetNuke.Log4net/log4net/Util/ILogExtensions.cs:1585 ILog.IsFatalEnabled: the reader DNN Platform/DotNetNuke.Log4net/log4net/ILog.cs:889
+  DNN Platform/DotNetNuke.Log4net/log4net/Util/ILogExtensions.cs:1585 Level.Fatal: the reader DNN Platform/DotNetNuke.Log4net/log4net/Core/Level.cs:476
+  DNN Platform/DotNetNuke.Log4net/log4net/Util/ILogExtensions.cs:1621 FatalExt(ILog,object,Exception): the reader DNN Platform/DotNetNuke.Log4net/log4net/Util/ILogExtensions.cs:1479
+  DNN Platform/DotNetNuke.Log4net/log4net/Util/ILogExtensions.cs:1621 ILog.Fatal(object): the reader DNN Platform/DotNetNuke.Log4net/log4net/ILog.cs:656
+  DNN Platform/DotNetNuke.Log4net/log4net/Util/ILogExtensions.cs:1621 ILog.IsFatalEnabled: the reader DNN Platform/DotNetNuke.Log4net/log4net/ILog.cs:889
+  DNN Platform/DotNetNuke.Log4net/log4net/Util/ILogExtensions.cs:1621 Level.Fatal: the reader DNN Platform/DotNetNuke.Log4net/log4net/Core/Level.cs:476
+  DNN Platform/DotNetNuke.Log4net/log4net/Util/ILogExtensions.cs:1658 FatalExt(ILog,object,Exception): the reader DNN Platform/DotNetNuke.Log4net/log4net/Util/ILogExtensions.cs:1479
+  DNN Platform/DotNetNuke.Log4net/log4net/Util/ILogExtensions.cs:1658 ILog.Fatal(object): the reader DNN Platform/DotNetNuke.Log4net/log4net/ILog.cs:656
+  DNN Platform/DotNetNuke.Log4net/log4net/Util/ILogExtensions.cs:1658 ILog.IsFatalEnabled: the reader DNN Platform/DotNetNuke.Log4net/log4net/ILog.cs:889
+  DNN Platform/DotNetNuke.Log4net/log4net/Util/ILogExtensions.cs:1658 Level.Fatal: the reader DNN Platform/DotNetNuke.Log4net/log4net/Core/Level.cs:476
+  DNN Platform/DotNetNuke.Log4net/log4net/Util/PatternStringConverters/AppSettingPatternConverter.cs:56 PatternConverter.Option: the reader DNN Platform/DotNetNuke.Log4net/log4net/Util/PatternConverter.cs:96
+  DNN Platform/DotNetNuke.Log4net/log4net/Util/PatternStringConverters/AppSettingPatternConverter.cs:93 log4net.Util.PatternConverter.Option: the reader DNN Platform/DotNetNuke.Log4net/log4net/Util/PatternConverter.cs:96
+  DNN Platform/DotNetNuke.Log4net/log4net/Util/PatternStringConverters/EnvironmentFolderPathPatternConverter.cs:40 log4net.Util.PatternConverter.Option: the reader DNN Platform/DotNetNuke.Log4net/log4net/Util/PatternConverter.cs:96
+  DNN Platform/DotNetNuke.Log4net/log4net/Util/PatternStringConverters/EnvironmentFolderPathPatternConverter.cs:55 log4net.Util.PatternConverter.Option: the reader DNN Platform/DotNetNuke.Log4net/log4net/Util/PatternConverter.cs:96
+  DNN Platform/DotNetNuke.Log4net/log4net/Util/WindowsSecurityContext.cs:51 Impersonate: the reader DNN Platform/DotNetNuke.Log4net/log4net/Util/WindowsSecurityContext.cs:223
+  DNN Platform/DotNetNuke.Log4net/log4net/Util/WindowsSecurityContext.cs:51 SecurityContext: the reader DNN Platform/DotNetNuke.Log4net/log4net/Core/SecurityContext.cs:34
+  DNN Platform/DotNetNuke.Log4net/log4net/Util/WindowsSecurityContext.cs:60 WindowsSecurityContext: the reader DNN Platform/DotNetNuke.Log4net/log4net/Util/WindowsSecurityContext.cs:51
+  DNN Platform/DotNetNuke.Log4net/log4net/Util/WindowsSecurityContext.cs:60 WindowsSecurityContext.Credentials: the reader DNN Platform/DotNetNuke.Log4net/log4net/Util/WindowsSecurityContext.cs:111
+  DNN Platform/DotNetNuke.Log4net/log4net/Util/WindowsSecurityContext.cs:111 DomainName: the reader DNN Platform/DotNetNuke.Log4net/log4net/Util/WindowsSecurityContext.cs:147
+  DNN Platform/DotNetNuke.Log4net/log4net/Util/WindowsSecurityContext.cs:111 ImpersonationMode: the reader DNN Platform/DotNetNuke.Log4net/log4net/Util/WindowsSecurityContext.cs:60
+  DNN Platform/DotNetNuke.Log4net/log4net/Util/WindowsSecurityContext.cs:111 ImpersonationMode.Process: the reader DNN Platform/DotNetNuke.Log4net/log4net/Util/WindowsSecurityContext.cs:60
+  DNN Platform/DotNetNuke.Log4net/log4net/Util/WindowsSecurityContext.cs:111 ImpersonationMode.User: the reader DNN Platform/DotNetNuke.Log4net/log4net/Util/WindowsSecurityContext.cs:60
+  DNN Platform/DotNetNuke.Log4net/log4net/Util/WindowsSecurityContext.cs:111 Password: the reader DNN Platform/DotNetNuke.Log4net/log4net/Util/WindowsSecurityContext.cs:163
+  DNN Platform/DotNetNuke.Log4net/log4net/Util/WindowsSecurityContext.cs:111 UserName: the reader DNN Platform/DotNetNuke.Log4net/log4net/Util/WindowsSecurityContext.cs:127
+  DNN Platform/DotNetNuke.Log4net/log4net/Util/WindowsSecurityContext.cs:127 Credentials: the reader DNN Platform/DotNetNuke.Log4net/log4net/Util/WindowsSecurityContext.cs:111
+  DNN Platform/DotNetNuke.Log4net/log4net/Util/WindowsSecurityContext.cs:127 ImpersonationMode.User: the reader DNN Platform/DotNetNuke.Log4net/log4net/Util/WindowsSecurityContext.cs:60
+  DNN Platform/DotNetNuke.Log4net/log4net/Util/WindowsSecurityContext.cs:147 Credentials: the reader DNN Platform/DotNetNuke.Log4net/log4net/Util/WindowsSecurityContext.cs:111
+  DNN Platform/DotNetNuke.Log4net/log4net/Util/WindowsSecurityContext.cs:147 DomainName: the reader DNN Platform/DotNetNuke.Log4net/log4net/Util/WindowsSecurityContext.cs:147
+  DNN Platform/DotNetNuke.Log4net/log4net/Util/WindowsSecurityContext.cs:147 ImpersonationMode.User: the reader DNN Platform/DotNetNuke.Log4net/log4net/Util/WindowsSecurityContext.cs:60
+  DNN Platform/DotNetNuke.Log4net/log4net/Util/WindowsSecurityContext.cs:163 Credentials: the reader DNN Platform/DotNetNuke.Log4net/log4net/Util/WindowsSecurityContext.cs:111
+  DNN Platform/DotNetNuke.Log4net/log4net/Util/WindowsSecurityContext.cs:163 DomainName: the reader DNN Platform/DotNetNuke.Log4net/log4net/Util/WindowsSecurityContext.cs:147
+  DNN Platform/DotNetNuke.Log4net/log4net/Util/WindowsSecurityContext.cs:163 ImpersonationMode.User: the reader DNN Platform/DotNetNuke.Log4net/log4net/Util/WindowsSecurityContext.cs:60
+  DNN Platform/DotNetNuke.Log4net/log4net/Util/WindowsSecurityContext.cs:163 UserName: the reader DNN Platform/DotNetNuke.Log4net/log4net/Util/WindowsSecurityContext.cs:127
+  DNN Platform/DotNetNuke.Log4net/log4net/Util/WindowsSecurityContext.cs:188 ActivateOptions: the reader DNN Platform/DotNetNuke.Log4net/log4net/Util/WindowsSecurityContext.cs:188
+  DNN Platform/DotNetNuke.Log4net/log4net/Util/WindowsSecurityContext.cs:188 DomainName: the reader DNN Platform/DotNetNuke.Log4net/log4net/Util/WindowsSecurityContext.cs:147
+  DNN Platform/DotNetNuke.Log4net/log4net/Util/WindowsSecurityContext.cs:188 IOptionHandler: the reader DNN Platform/DotNetNuke.Log4net/log4net/Core/IOptionHandler.cs:39
+  DNN Platform/DotNetNuke.Log4net/log4net/Util/WindowsSecurityContext.cs:188 Password: the reader DNN Platform/DotNetNuke.Log4net/log4net/Util/WindowsSecurityContext.cs:163
+  DNN Platform/DotNetNuke.Log4net/log4net/Util/WindowsSecurityContext.cs:188 UserName: the reader DNN Platform/DotNetNuke.Log4net/log4net/Util/WindowsSecurityContext.cs:127
+  DNN Platform/DotNetNuke.Log4net/log4net/Util/WindowsSecurityContext.cs:223 Credentials: the reader DNN Platform/DotNetNuke.Log4net/log4net/Util/WindowsSecurityContext.cs:111
+  DNN Platform/DotNetNuke.Log4net/log4net/Util/WindowsSecurityContext.cs:223 DomainName: the reader DNN Platform/DotNetNuke.Log4net/log4net/Util/WindowsSecurityContext.cs:147
+  DNN Platform/DotNetNuke.Log4net/log4net/Util/WindowsSecurityContext.cs:223 UserName: the reader DNN Platform/DotNetNuke.Log4net/log4net/Util/WindowsSecurityContext.cs:127

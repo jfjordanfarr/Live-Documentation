@@ -20,9 +20,9 @@
       "xmlReferences": []
     }
   ],
-  "files": 12,
-  "names": 29,
-  "bound": 26,
+  "files": 13,
+  "names": 50,
+  "bound": 46,
   "edges": [
     {
       "from": "App/Derived.cs",
@@ -79,6 +79,11 @@
       "Gadget",
       "Options"
     ],
+    "App/Overloads.cs": [
+      "Box",
+      "Mixer",
+      "MixerNotes"
+    ],
     "App/Runner.Text.cs": [
       "Runner",
       "Text"
@@ -98,6 +103,7 @@
     {
       "from": "App/Documented.cs",
       "line": 5,
+      "on": 13,
       "element": "see",
       "written": "Base",
       "outcome": "resolved",
@@ -107,13 +113,21 @@
           "symbol": "App.Base",
           "files": [
             "App/Base.cs"
-          ]
+          ],
+          "declarations": [
+            {
+              "file": "App/Base.cs",
+              "line": 3
+            }
+          ],
+          "holder": []
         }
       ]
     },
     {
       "from": "App/Documented.cs",
       "line": 5,
+      "on": 13,
       "element": "see",
       "written": "Base.Gadget",
       "outcome": "resolved",
@@ -123,6 +137,18 @@
           "symbol": "App.Base.Gadget",
           "files": [
             "App/Base.cs"
+          ],
+          "declarations": [
+            {
+              "file": "App/Base.cs",
+              "line": 7
+            }
+          ],
+          "holder": [
+            {
+              "file": "App/Base.cs",
+              "line": 3
+            }
           ]
         }
       ]
@@ -130,6 +156,7 @@
     {
       "from": "App/Documented.cs",
       "line": 5,
+      "on": 13,
       "element": "see",
       "written": "Base.Options",
       "outcome": "resolved",
@@ -139,13 +166,21 @@
           "symbol": "App.Base.Options",
           "files": [
             "App/Base.cs"
-          ]
+          ],
+          "declarations": [
+            {
+              "file": "App/Base.cs",
+              "line": 5
+            }
+          ],
+          "holder": []
         }
       ]
     },
     {
       "from": "App/Documented.cs",
       "line": 6,
+      "on": 13,
       "element": "see",
       "written": "Lib.Helper{T}",
       "outcome": "resolved",
@@ -155,13 +190,21 @@
           "symbol": "Lib.Helper<T>",
           "files": [
             "App/HelperOfT.cs"
-          ]
+          ],
+          "declarations": [
+            {
+              "file": "App/HelperOfT.cs",
+              "line": 3
+            }
+          ],
+          "holder": []
         }
       ]
     },
     {
       "from": "App/Documented.cs",
       "line": 6,
+      "on": 13,
       "element": "see",
       "written": "Lib.Helper",
       "outcome": "resolved",
@@ -171,13 +214,21 @@
           "symbol": "Lib.Helper",
           "files": [
             "App/Helper.cs"
-          ]
+          ],
+          "declarations": [
+            {
+              "file": "App/Helper.cs",
+              "line": 3
+            }
+          ],
+          "holder": []
         }
       ]
     },
     {
       "from": "App/Documented.cs",
       "line": 7,
+      "on": 13,
       "element": "see",
       "written": "Runner.Run(Runner.Count)",
       "outcome": "resolved",
@@ -187,6 +238,22 @@
           "symbol": "App.Runner.Run(App.Runner.Count)",
           "files": [
             "App/Runner.cs"
+          ],
+          "declarations": [
+            {
+              "file": "App/Runner.cs",
+              "line": 7
+            }
+          ],
+          "holder": [
+            {
+              "file": "App/Runner.Text.cs",
+              "line": 3
+            },
+            {
+              "file": "App/Runner.cs",
+              "line": 3
+            }
           ]
         }
       ]
@@ -194,6 +261,7 @@
     {
       "from": "App/Documented.cs",
       "line": 8,
+      "on": 13,
       "element": "seealso",
       "written": "Runner.Run(Runner.Text)",
       "outcome": "resolved",
@@ -203,6 +271,22 @@
           "symbol": "App.Runner.Run(App.Runner.Text)",
           "files": [
             "App/Runner.Text.cs"
+          ],
+          "declarations": [
+            {
+              "file": "App/Runner.Text.cs",
+              "line": 7
+            }
+          ],
+          "holder": [
+            {
+              "file": "App/Runner.Text.cs",
+              "line": 3
+            },
+            {
+              "file": "App/Runner.cs",
+              "line": 3
+            }
           ]
         }
       ]
@@ -210,6 +294,7 @@
     {
       "from": "App/Documented.cs",
       "line": 8,
+      "on": 13,
       "element": "see",
       "written": "Runner.Run",
       "outcome": "Ambiguous",
@@ -219,6 +304,22 @@
           "symbol": "App.Runner.Run(App.Runner.Count)",
           "files": [
             "App/Runner.cs"
+          ],
+          "declarations": [
+            {
+              "file": "App/Runner.cs",
+              "line": 7
+            }
+          ],
+          "holder": [
+            {
+              "file": "App/Runner.Text.cs",
+              "line": 3
+            },
+            {
+              "file": "App/Runner.cs",
+              "line": 3
+            }
           ]
         },
         {
@@ -226,6 +327,22 @@
           "symbol": "App.Runner.Run(App.Runner.Text)",
           "files": [
             "App/Runner.Text.cs"
+          ],
+          "declarations": [
+            {
+              "file": "App/Runner.Text.cs",
+              "line": 7
+            }
+          ],
+          "holder": [
+            {
+              "file": "App/Runner.Text.cs",
+              "line": 3
+            },
+            {
+              "file": "App/Runner.cs",
+              "line": 3
+            }
           ]
         }
       ]
@@ -233,6 +350,7 @@
     {
       "from": "App/Documented.cs",
       "line": 9,
+      "on": 13,
       "element": "see",
       "written": "App.Other",
       "outcome": "resolved",
@@ -242,13 +360,21 @@
           "symbol": "App.Other",
           "files": [
             "App/Other.cs"
-          ]
+          ],
+          "declarations": [
+            {
+              "file": "App/Other.cs",
+              "line": 1
+            }
+          ],
+          "holder": []
         }
       ]
     },
     {
       "from": "App/Documented.cs",
       "line": 10,
+      "on": 13,
       "element": "see",
       "written": "Missing",
       "outcome": "unresolved",
@@ -257,6 +383,7 @@
     {
       "from": "App/Documented.cs",
       "line": 12,
+      "on": 13,
       "element": "permission",
       "written": "Derived",
       "outcome": "resolved",
@@ -266,13 +393,21 @@
           "symbol": "App.Derived",
           "files": [
             "App/Derived.cs"
-          ]
+          ],
+          "declarations": [
+            {
+              "file": "App/Derived.cs",
+              "line": 5
+            }
+          ],
+          "holder": []
         }
       ]
     },
     {
       "from": "App/Documented.cs",
       "line": 15,
+      "on": 17,
       "element": "inheritdoc",
       "written": "Base.Gadget",
       "outcome": "resolved",
@@ -282,6 +417,18 @@
           "symbol": "App.Base.Gadget",
           "files": [
             "App/Base.cs"
+          ],
+          "declarations": [
+            {
+              "file": "App/Base.cs",
+              "line": 7
+            }
+          ],
+          "holder": [
+            {
+              "file": "App/Base.cs",
+              "line": 3
+            }
           ]
         }
       ]
@@ -289,9 +436,398 @@
     {
       "from": "App/Documented.cs",
       "line": 16,
+      "on": 17,
       "element": "exception",
       "written": "Lib.Thing",
       "outcome": "unresolved",
+      "resolved": []
+    },
+    {
+      "from": "App/Overloads.cs",
+      "line": 23,
+      "on": 24,
+      "element": "see",
+      "written": "Mixer",
+      "outcome": "resolved",
+      "resolved": [
+        {
+          "kind": "NamedType",
+          "symbol": "App.Mixer",
+          "files": [
+            "App/Overloads.cs"
+          ],
+          "declarations": [
+            {
+              "file": "App/Overloads.cs",
+              "line": 6
+            }
+          ],
+          "holder": []
+        }
+      ]
+    },
+    {
+      "from": "App/Overloads.cs",
+      "line": 28,
+      "on": 36,
+      "element": "see",
+      "written": "Mixer.Mix(Mixer[])",
+      "outcome": "resolved",
+      "resolved": [
+        {
+          "kind": "Method",
+          "symbol": "App.Mixer.Mix(App.Mixer[])",
+          "files": [
+            "App/Overloads.cs"
+          ],
+          "declarations": [
+            {
+              "file": "App/Overloads.cs",
+              "line": 10
+            }
+          ],
+          "holder": [
+            {
+              "file": "App/Overloads.cs",
+              "line": 6
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "from": "App/Overloads.cs",
+      "line": 28,
+      "on": 36,
+      "element": "see",
+      "written": "Mixer.Mix(ref Mixer)",
+      "outcome": "resolved",
+      "resolved": [
+        {
+          "kind": "Method",
+          "symbol": "App.Mixer.Mix(ref App.Mixer)",
+          "files": [
+            "App/Overloads.cs"
+          ],
+          "declarations": [
+            {
+              "file": "App/Overloads.cs",
+              "line": 11
+            }
+          ],
+          "holder": [
+            {
+              "file": "App/Overloads.cs",
+              "line": 6
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "from": "App/Overloads.cs",
+      "line": 28,
+      "on": 36,
+      "element": "see",
+      "written": "Mixer.Mix(Mixer, Mixer)",
+      "outcome": "resolved",
+      "resolved": [
+        {
+          "kind": "Method",
+          "symbol": "App.Mixer.Mix(App.Mixer, App.Mixer)",
+          "files": [
+            "App/Overloads.cs"
+          ],
+          "declarations": [
+            {
+              "file": "App/Overloads.cs",
+              "line": 12
+            }
+          ],
+          "holder": [
+            {
+              "file": "App/Overloads.cs",
+              "line": 6
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "from": "App/Overloads.cs",
+      "line": 29,
+      "on": 36,
+      "element": "see",
+      "written": "Mixer.Grid(Mixer[,])",
+      "outcome": "resolved",
+      "resolved": [
+        {
+          "kind": "Method",
+          "symbol": "App.Mixer.Grid(App.Mixer[*,*])",
+          "files": [
+            "App/Overloads.cs"
+          ],
+          "declarations": [
+            {
+              "file": "App/Overloads.cs",
+              "line": 13
+            }
+          ],
+          "holder": [
+            {
+              "file": "App/Overloads.cs",
+              "line": 6
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "from": "App/Overloads.cs",
+      "line": 29,
+      "on": 36,
+      "element": "see",
+      "written": "Mixer.Grid(Mixer[])",
+      "outcome": "resolved",
+      "resolved": [
+        {
+          "kind": "Method",
+          "symbol": "App.Mixer.Grid(App.Mixer[])",
+          "files": [
+            "App/Overloads.cs"
+          ],
+          "declarations": [
+            {
+              "file": "App/Overloads.cs",
+              "line": 14
+            }
+          ],
+          "holder": [
+            {
+              "file": "App/Overloads.cs",
+              "line": 6
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "from": "App/Overloads.cs",
+      "line": 30,
+      "on": 36,
+      "element": "see",
+      "written": "Mixer.Take(Box{Mixer})",
+      "outcome": "resolved",
+      "resolved": [
+        {
+          "kind": "Method",
+          "symbol": "App.Mixer.Take(App.Box<App.Mixer>)",
+          "files": [
+            "App/Overloads.cs"
+          ],
+          "declarations": [
+            {
+              "file": "App/Overloads.cs",
+              "line": 15
+            }
+          ],
+          "holder": [
+            {
+              "file": "App/Overloads.cs",
+              "line": 6
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "from": "App/Overloads.cs",
+      "line": 30,
+      "on": 36,
+      "element": "see",
+      "written": "Mixer.Take(Box{Box{Mixer}})",
+      "outcome": "resolved",
+      "resolved": [
+        {
+          "kind": "Method",
+          "symbol": "App.Mixer.Take(App.Box<App.Box<App.Mixer>>)",
+          "files": [
+            "App/Overloads.cs"
+          ],
+          "declarations": [
+            {
+              "file": "App/Overloads.cs",
+              "line": 16
+            }
+          ],
+          "holder": [
+            {
+              "file": "App/Overloads.cs",
+              "line": 6
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "from": "App/Overloads.cs",
+      "line": 31,
+      "on": 36,
+      "element": "see",
+      "written": "Mixer.Opt(Mixer, Mixer[])",
+      "outcome": "resolved",
+      "resolved": [
+        {
+          "kind": "Method",
+          "symbol": "App.Mixer.Opt(App.Mixer, params App.Mixer[])",
+          "files": [
+            "App/Overloads.cs"
+          ],
+          "declarations": [
+            {
+              "file": "App/Overloads.cs",
+              "line": 18
+            }
+          ],
+          "holder": [
+            {
+              "file": "App/Overloads.cs",
+              "line": 6
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "from": "App/Overloads.cs",
+      "line": 31,
+      "on": 36,
+      "element": "see",
+      "written": "Mixer.Out(out Mixer)",
+      "outcome": "resolved",
+      "resolved": [
+        {
+          "kind": "Method",
+          "symbol": "App.Mixer.Out(out App.Mixer)",
+          "files": [
+            "App/Overloads.cs"
+          ],
+          "declarations": [
+            {
+              "file": "App/Overloads.cs",
+              "line": 19
+            }
+          ],
+          "holder": [
+            {
+              "file": "App/Overloads.cs",
+              "line": 6
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "from": "App/Overloads.cs",
+      "line": 31,
+      "on": 36,
+      "element": "see",
+      "written": "Mixer.Out(Mixer)",
+      "outcome": "resolved",
+      "resolved": [
+        {
+          "kind": "Method",
+          "symbol": "App.Mixer.Out(App.Mixer)",
+          "files": [
+            "App/Overloads.cs"
+          ],
+          "declarations": [
+            {
+              "file": "App/Overloads.cs",
+              "line": 20
+            }
+          ],
+          "holder": [
+            {
+              "file": "App/Overloads.cs",
+              "line": 6
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "from": "App/Overloads.cs",
+      "line": 32,
+      "on": 36,
+      "element": "see",
+      "written": "Mixer.Mixer(Mixer)",
+      "outcome": "resolved",
+      "resolved": [
+        {
+          "kind": "Method",
+          "symbol": "App.Mixer.Mixer(App.Mixer)",
+          "files": [
+            "App/Overloads.cs"
+          ],
+          "declarations": [
+            {
+              "file": "App/Overloads.cs",
+              "line": 9
+            }
+          ],
+          "holder": [
+            {
+              "file": "App/Overloads.cs",
+              "line": 6
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "from": "App/Overloads.cs",
+      "line": 33,
+      "on": 36,
+      "element": "see",
+      "written": "Mixer.Mix(Box{Mixer})",
+      "outcome": "unresolved",
+      "resolved": []
+    },
+    {
+      "from": "App/Overloads.cs",
+      "line": 33,
+      "on": 36,
+      "element": "see",
+      "written": "Mixer.Mix(Mixer,)",
+      "outcome": "unresolved",
+      "resolved": []
+    },
+    {
+      "from": "App/Overloads.cs",
+      "line": 33,
+      "on": 36,
+      "element": "see",
+      "written": "Mixer.Out(ref Mixer)",
+      "outcome": "unresolved",
+      "resolved": []
+    },
+    {
+      "from": "App/Overloads.cs",
+      "line": 34,
+      "on": 36,
+      "element": "see",
+      "written": "Mixer.Mixer(Box{Mixer})",
+      "outcome": "unresolved",
+      "resolved": []
+    },
+    {
+      "from": "App/Overloads.cs",
+      "line": 34,
+      "on": 36,
+      "element": "see",
+      "written": "M::Mixer",
+      "outcome": "unparsed",
       "resolved": []
     }
   ],
@@ -306,6 +842,7 @@
     "App/HelperOfT.cs": "895ed8f11dc55644572d93a4269e2809b4ff2a1138ce02140708cc4f75a82f84",
     "App/MemberOverUsing.cs": "70c97ee8f94b7b14b118e72dfe023e22d519265ac7cf6e2eb28c3c7d1c74d3c7",
     "App/Other.cs": "15a3cc84c25f88b528ae762e702a561c484b8aad21994fcb729982eb1305adf0",
+    "App/Overloads.cs": "144d171d9f5228df7b90e809160e4bda70e55f7906b679795393a7ab60a51a4c",
     "App/Runner.Text.cs": "2ff6daf7b8698e963a3245aa81e8d8005425bb36c7ae259721f0290e77f6ebe7",
     "App/Runner.cs": "e1f77f45ea50b53d9d15ab010958ebc19554543c6beadbbe3b8aadc2ca791582",
     "App/Use.cs": "00a8bc374c736da127447737934b62d91e6b49d5f9f3554c4ff2678c0ed1c46c",

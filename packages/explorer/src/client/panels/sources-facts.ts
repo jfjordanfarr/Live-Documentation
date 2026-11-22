@@ -19,7 +19,7 @@
  */
 
 import { entryWords, type Entry } from "@live-documentation/engine/live-docs/document";
-import type { GraphFile, LiveDocGraph } from "@live-documentation/engine/live-docs/graph";
+import { fileAt, type GraphFile, type LiveDocGraph } from "@live-documentation/engine/live-docs/graph";
 import { fileGroups, reachability, type FileGroups } from "@live-documentation/engine/live-docs/pathfind";
 
 /** A name and how many of something it has. */
@@ -145,7 +145,7 @@ function counts(files: GraphFile[], keyOf: (file: GraphFile) => string): Count[]
   return [...map.entries()].map(([name, count]) => ({ name, count })).sort(byCountThenName);
 }
 
-const archetypeOf = (file: GraphFile): string => file.archetype ?? "implementation";
+const archetypeOf = (file: GraphFile | undefined): string => file?.archetype ?? "implementation";
 const directoryOf = (file: GraphFile): string => (file.codePath.includes("/") ? file.codePath.slice(0, file.codePath.indexOf("/")) : "");
 const extensionOf = (file: GraphFile): string => {
   const base = file.codePath.slice(file.codePath.lastIndexOf("/") + 1);
@@ -232,7 +232,7 @@ function sampleOf(path: string, sampleRoots: readonly string[]): string | undefi
 /** The engine's walk from the entry points, or from the files asked about, with each file's archetype for grouping. */
 function reachOf(graph: LiveDocGraph, from: readonly string[] | undefined, sampleRoots: readonly string[]): Reach {
   const result = reachability(graph, from);
-  const classed = (path: string): FileByArchetype => ({ path, archetype: archetypeOf(graph.files[path]) });
+  const classed = (path: string): FileByArchetype => ({ path, archetype: archetypeOf(fileAt(graph.files, path)) });
   return {
     from: result.from,
     starts: result.starts.map(start => {

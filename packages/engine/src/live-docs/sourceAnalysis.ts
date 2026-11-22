@@ -16,7 +16,7 @@ import { normalizeWorkspacePath } from "../tooling/pathUtils";
 import { readSourceText } from "../tooling/sourceText";
 import { analyzeWithLanguageAdapters, type WorkspaceFileIndex } from "./adapters";
 import { SUPPORTED_SCRIPT_EXTENSIONS } from "./coreConstants";
-import type { SourceAnalysisResult, PublicSymbolEntry, WorkspaceSymbolIndex } from "./coreTypes";
+import type { DependencyEntry, SourceAnalysisResult, SourceNotice, PublicSymbolEntry, WorkspaceSymbolIndex } from "./coreTypes";
 import {
   collectDependencies,
   mergeDependencyEntries,
@@ -103,7 +103,8 @@ export async function analyzeSourceFile(
   let dependencies = await collectDependencies({
     sourceFile,
     absolutePath,
-    workspaceRoot
+    workspaceRoot,
+    files: fileIndex
   });
 
   if (shouldInferDomDependencies(extension)) {
@@ -137,11 +138,32 @@ export async function analyzeSourceFile(
     reads: fileIndex
   });
 
+  const notices = unreadPathNotices(dependencies);
   return {
     symbols: sortSymbolsByLocation(symbols),
     dependencies,
-    reExportedSymbols: reExports.length > 0 ? reExports : undefined
+    reExportedSymbols: reExports.length > 0 ? reExports : undefined,
+    ...(notices.length > 0 ? { notices } : {})
   };
+}
+
+/** Why a relative import has no file: the scan keeps none at its path, left out or absent, and never reads one it does not keep. */
+const UNKEPT_IMPORT = "imports of a path where the scan keeps no file, left unread and labelled as written";
+/** Why a re-export of everything a path offers names nothing: what the scan does not keep is never read. */
+const UNKEPT_RE_EXPORT = "re-exports of everything a path offers where the scan keeps no file, their names unknown";
+
+/**
+ * The relative imports the run's listing holds no file for, each said once by its specifier, for the run to count at its
+ * end (2026-11-22): what the scan leaves out is never read, so its names stay unknown and its label is the kept file's.
+ */
+function unreadPathNotices(dependencies: readonly DependencyEntry[]): SourceNotice[] {
+  const notices = new Map<string, SourceNotice>();
+  for (const dependency of dependencies) {
+    if (dependency.resolvedPath || dependency.basis || !dependency.specifier.startsWith(".")) continue;
+    const reason = dependency.reExportAll ? UNKEPT_RE_EXPORT : UNKEPT_IMPORT;
+    notices.set(`${reason}\u0000${dependency.specifier}`, { reason, subject: dependency.specifier });
+  }
+  return [...notices.values()];
 }
 
 // ============================================================================

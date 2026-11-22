@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: `tests/page-scan/node-needs.json`
-- Generated At: 2026-11-22T05:19:50.404Z
+- Generated At: 2026-11-22T06:30:58.744Z
 
 ## Authored
 ### Purpose
@@ -207,9 +207,6 @@ The committed list of what of Node the scanning page's bundle needs: by engine a
 - Type: key
 
 #### `engine:packages/engine/src/live-docs/dependencies.ts` {#symbol-enginepackagesenginesrclive-docsdependenciests}
-- Type: key
-
-#### `engine:packages/engine/src/live-docs/dependencies.ts:node:fs/promises` {#symbol-enginepackagesenginesrclive-docsdependenciestsnodefspromises}
 - Type: key
 
 #### `engine:packages/engine/src/live-docs/dependencies.ts:node:path` {#symbol-enginepackagesenginesrclive-docsdependenciestsnodepath}

@@ -229,9 +229,6 @@
       ]
     },
     "packages/engine/src/live-docs/dependencies.ts": {
-      "node:fs/promises": [
-        "stat"
-      ],
       "node:path": [
         "dirname",
         "extname",

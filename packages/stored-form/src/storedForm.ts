@@ -187,6 +187,8 @@ const PATHS = 4;
 const WIRES = 5;
 const END = 6;
 const FRAME_HEADER = 1 + 4 + 4 + 4 + 32;
+/** The fewest bytes a record takes: its path, layer and mark, and the counts of its entries, symbols and dependencies, and its authored words. */
+const MIN_RECORD = 7;
 const MAX_U32 = 0xffffffff;
 
 const ENTRY_REASONS: readonly EntryReason[] = ["program", "command", "module", "opening", "tooling", "declared"];
@@ -1030,10 +1032,12 @@ function checkOrder(frames: Frame[], complete: boolean): void {
     const f = frames[i];
     if (f.kind === STRINGS) {
       if (f.count === 0) refuse("a section of no strings");
+      if (f.count > f.rawLength) refuse(`a section of strings claims ${f.count} strings in ${f.rawLength} bytes`);
       if (frames[i + 1] !== undefined && frames[i + 1].kind !== RECORDS) refuse("strings not followed by records");
     } else {
       if (last !== CHUNK) refuse(`a section of ${last} records before the last`);
       if (f.count === 0 || f.count > CHUNK) refuse(`a section of ${f.count} records`);
+      if (f.count * MIN_RECORD > f.rawLength) refuse(`a section of records claims ${f.count} files in ${f.rawLength} bytes`);
       last = f.count;
       files += f.count;
     }
@@ -1046,6 +1050,8 @@ function checkOrder(frames: Frame[], complete: boolean): void {
   const rest = frames.slice(i).map((f) => f.kind);
   if (rest.length !== 3 || rest[0] !== PATHS || rest[1] !== WIRES || rest[2] !== END) refuse("the sections after the records are not the paths, the wires and the end");
   if (frames[i].count !== files || frames[i + 1].count !== files) refuse(`the paths or wires count other than the ${files} files recorded`);
+  if (files * 2 > frames[i].rawLength) refuse(`the paths claim ${files} paths in ${frames[i].rawLength} bytes`);
+  if (files > frames[i + 1].rawLength) refuse(`the wires claim ${files} files in ${frames[i + 1].rawLength} bytes`);
   if (frames[i + 2].count !== frames.length - 1 || frames[i + 2].rawLength !== 32) refuse("the end does not count the sections before it");
 }
 
@@ -1308,28 +1314,21 @@ export interface OpenedScan {
  * section's header. What it has not read it has not checked: {@link readScan} reads and checks the whole.
  */
 export async function openScan(bytes: Uint8Array): Promise<Result<OpenedScan>> {
-  return settle(async () => opening(bytes, false));
+  return settle(async () => opening(bytes));
 }
 
 /**
- * The reading both readers share. With `all`, every section is inflated and hashed at once, which the platform does on
- * its own threads, rather than each when it is first needed: the whole read's way.
+ * The reading both readers share: the quick open's checks, then each section inflated only when it is read, after the
+ * checks on every section before it.
  */
-async function opening(bytes: Uint8Array, all: boolean): Promise<OpenedScan & { chunks: number; readChunk(k: number): Promise<StoredFile[]> }> {
+async function opening(bytes: Uint8Array): Promise<OpenedScan & { chunks: number; readChunk(k: number): Promise<StoredFile[]>; fileAt(i: number): StoredFile; forget(): void }> {
   {
     const { frames, cut } = hop(bytes);
     if (cut || frames[frames.length - 1]?.kind !== END) refuse("the file stops before its end: a stopped write, which `resumeFrom` can go on from");
     checkOrder(frames, true);
-    const early = new Map<Frame, Promise<Uint8Array>>();
-    if (all) {
-      for (const f of frames) {
-        const pending = rawOf(bytes, f, KIND_NAMES[f.kind]);
-        // Marked as seen, so that a refusal found in one while another is read is not taken for an unhandled one.
-        pending.catch(() => undefined);
-        early.set(f, pending);
-      }
-    }
-    const rawOf_ = (f: Frame, what: string): Promise<Uint8Array> => early.get(f) ?? rawOf(bytes, f, what);
+    // Each section is inflated when it is read, after every check on the sections before it: a file refused by its
+    // tenth section costs ten sections' inflation, never the rest's.
+    const rawOf_ = (f: Frame, what: string): Promise<Uint8Array> => rawOf(bytes, f, what);
     const endRaw = await rawOf_(frames[frames.length - 1], "the end");
     const name = await nameOfFrames(frames.slice(0, -1));
     if (!equalBytes(endRaw, name)) refuse("the end does not name the sections before it");
@@ -1347,8 +1346,19 @@ async function opening(bytes: Uint8Array, all: boolean): Promise<OpenedScan & { 
     const checked: number[] = [];
     let stringsRead = 0;
     let met = 0;
-    const chunks = new Map<number, StoredFile[]>();
+    // The walk's state: each records section's inflated bytes, kept once checked, and the one section last decoded.
+    const kept: Uint8Array[] = [];
+    let last: { k: number; files: StoredFile[] } | undefined;
     let chunksRead = 0;
+    const decodeKept = (k: number): StoredFile[] => {
+      if (last?.k === k) return last.files;
+      const target = chunkFrames[k];
+      const first = k * CHUNK;
+      // Checked in the walk; decoded again here with every string already met.
+      const files = decodeChunk(kept[k], target.count, strings, strings.length, first > 0 ? paths[first - 1] : undefined, checked).files;
+      last = { k, files };
+      return files;
+    };
     const readChunk = async (k: number): Promise<StoredFile[]> => {
       // Every earlier section is read in order too, so that the strings' first-met numbering is checked as written.
       while (chunksRead <= k) {
@@ -1357,26 +1367,35 @@ async function opening(bytes: Uint8Array, all: boolean): Promise<OpenedScan & { 
           const f = frames[stringsRead];
           if (f.kind === STRINGS) {
             loadStrings(await rawOf_(f, "a section of strings"), f.count, strings, seen);
-            early.delete(f);
           }
         }
         const first = chunksRead * CHUNK;
-        const decoded = decodeChunk(await rawOf_(target, "a section of records"), target.count, strings, met, first > 0 ? paths[first - 1] : undefined, checked);
-        early.delete(target);
+        const raw = await rawOf_(target, "a section of records");
+        const decoded = decodeChunk(raw, target.count, strings, met, first > 0 ? paths[first - 1] : undefined, checked);
         met = decoded.met;
         decoded.files.forEach((file, i) => {
           if (file.codePath !== paths[first + i]) refuse(`the paths name ${JSON.stringify(paths[first + i])} where the records hold ${JSON.stringify(file.codePath)}`);
           const wires = outboundOf(file, index);
           if (!equalLists(wires, outbound[first + i])) refuse(`the wires of ${JSON.stringify(file.codePath)} are not those its links name`);
         });
-        chunks.set(chunksRead, decoded.files);
+        kept.push(raw);
+        last = { k: chunksRead, files: decoded.files };
         chunksRead += 1;
       }
-      return chunks.get(k)!;
+      return decodeKept(k);
     };
     return {
       chunks: chunkFrames.length,
       readChunk,
+      // After the walk, nothing decoded is kept: what is held is the strings, the paths, the wires and the sections'
+      // inflated bytes.
+      forget: (): void => {
+        last = undefined;
+      },
+      fileAt: (i: number): StoredFile => {
+        if (Math.floor(i / CHUNK) >= chunksRead) throw new Error("a file asked before the walk reached it");
+        return decodeKept(Math.floor(i / CHUNK))[i % CHUNK];
+      },
       head,
       name: hex(name),
       paths,
@@ -1399,10 +1418,32 @@ function equalLists(a: readonly number[], b: readonly number[]): boolean {
 /** Reads and checks a whole scan: every section against its hash, every fact, and every derived section against what it derives from. */
 export async function readScan(bytes: Uint8Array): Promise<Result<Scan & { name: string }>> {
   return settle(async () => {
-    const scan = await opening(bytes, true);
-    const files: StoredFile[] = [];
-    for (let k = 0; k < scan.chunks; k += 1) files.push(...(await scan.readChunk(k)));
-    return { head: scan.head, files, name: scan.name };
+    const scan = await opening(bytes);
+    // The walk: every section read and checked in order, nothing of its facts kept.
+    for (let k = 0; k < scan.chunks; k += 1) await scan.readChunk(k);
+    scan.forget();
+    return { head: scan.head, files: lazyList(scan.paths.length, (i) => scan.fileAt(i)), name: scan.name };
+  });
+}
+
+/**
+ * A read-only list of `length` items, each made by `at` when it is read and not kept: an array to every reader of it
+ * (its length, its indexes, iteration, `map`, JSON), whose items are built only as they are asked for. An item read
+ * twice may be two equal objects, not one.
+ */
+function lazyList<T>(length: number, at: (i: number) => T): T[] {
+  const isIndex = (p: string | symbol): p is string => typeof p === "string" && /^(?:0|[1-9][0-9]*)$/u.test(p) && Number(p) < length;
+  const refuseWrite = (): boolean => {
+    throw new TypeError("a scan read back cannot be changed");
+  };
+  return new Proxy(new Array<T>(length), {
+    get: (target, p, receiver): unknown => (isIndex(p) ? at(Number(p)) : (Reflect.get(target, p, receiver) as unknown)),
+    has: (target, p) => isIndex(p) || Reflect.has(target, p),
+    ownKeys: () => [...Array.from({ length }, (_, i) => String(i)), "length"],
+    getOwnPropertyDescriptor: (target, p) => (isIndex(p) ? { value: at(Number(p)), writable: false, enumerable: true, configurable: true } : Reflect.getOwnPropertyDescriptor(target, p)),
+    set: refuseWrite,
+    defineProperty: refuseWrite,
+    deleteProperty: refuseWrite
   });
 }
 
@@ -1422,55 +1463,101 @@ function typeText(t: StoredType): unknown {
   return { name: t.name, link: t.link, target: t.target, anchor: t.anchor, array: t.array, promise: t.promise };
 }
 
-function fileLines(f: StoredFile): string[] {
+function entryText(e: StoredEntry): unknown {
+  return { reason: e.reason, symbol: e.symbol && { name: e.symbol.name, link: e.symbol.link }, command: e.command, declarer: e.declarer && { label: e.declarer.label, link: e.declarer.link } };
+}
+
+function symbolText(s: StoredSymbol): unknown {
+  return {
+    name: s.name,
+    slug: s.slug,
+    kind: s.kind,
+    flags: s.flags,
+    source: s.source && { path: s.source.path, line: s.source.line },
+    references: s.references.map((r) => (r.role === "Parameters" ? { role: r.role, parameters: r.parameters.map((x) => ({ name: x.name, types: x.types.map(typeText) })) } : { role: r.role, types: r.types.map(typeText) })),
+    sections: s.sections.map((x) => ({ title: x.title, body: x.body })),
+    documentation: s.documentation.map((d) => ({ name: d.name, element: d.element, link: d.link, target: d.target, anchor: d.anchor }))
+  };
+}
+
+/**
+ * A file's lines, each with the least it can take, in UTF-8 bytes, counted before it is built: its path and every
+ * name it writes. A writer that keeps a bound checks the least before building a line, so that no line is built past
+ * the bound, then counts the line it built.
+ */
+function* fileLineMakers(f: StoredFile): Generator<{ least: number; make: () => string }> {
   const p = f.codePath;
-  const out = [line([p, "file", f.layer, f.archetype ?? null, f.generatedAt ?? null]), line([p, "authored", f.authored])];
-  for (const e of f.entries) out.push(line([p, "entry", { reason: e.reason, symbol: e.symbol && { name: e.symbol.name, link: e.symbol.link }, command: e.command, declarer: e.declarer && { label: e.declarer.label, link: e.declarer.link } }]));
-  for (const s of f.symbols) {
-    out.push(
-      line([
-        p,
-        "symbol",
-        {
-          name: s.name,
-          slug: s.slug,
-          kind: s.kind,
-          flags: s.flags,
-          source: s.source && { path: s.source.path, line: s.source.line },
-          references: s.references.map((r) => (r.role === "Parameters" ? { role: r.role, parameters: r.parameters.map((x) => ({ name: x.name, types: x.types.map(typeText) })) } : { role: r.role, types: r.types.map(typeText) })),
-          sections: s.sections.map((x) => ({ title: x.title, body: x.body })),
-          documentation: s.documentation.map((d) => ({ name: d.name, element: d.element, link: d.link, target: d.target, anchor: d.anchor }))
-        }
-      ])
-    );
-  }
-  for (const d of f.dependencies) out.push(line([p, "dependency", { label: d.label, link: d.link, target: d.target, anchor: d.anchor, symbols: d.symbols, qualifiers: d.qualifiers }]));
-  if (f.citedBy) out.push(line([p, "cited-by", f.citedBy.map((c) => ({ label: c.label, link: c.link }))]));
-  if (f.reExports) out.push(line([p, "re-exports", f.reExports.map((r) => ({ name: r.name, slug: r.slug, from: r.from && { label: r.from.label, link: r.from.link }, flags: r.flags }))]));
+  const pathBytes = utf8Length(p);
+  const names = (walk: (c: Codec) => unknown): number => {
+    const measuring = new Measuring();
+    walk(measuring);
+    return pathBytes + measuring.total;
+  };
+  yield { least: pathBytes + utf8Length(f.archetype ?? "") + utf8Length(f.generatedAt ?? ""), make: () => line([p, "file", f.layer, f.archetype ?? null, f.generatedAt ?? null]) };
+  yield { least: pathBytes + utf8Length(f.authored), make: () => line([p, "authored", f.authored]) };
+  for (const e of f.entries) yield { least: names((c) => walkEntry(c, e)), make: () => line([p, "entry", entryText(e)]) };
+  for (const sym of f.symbols) yield { least: names((c) => walkSymbol(c, sym)), make: () => line([p, "symbol", symbolText(sym)]) };
+  for (const d of f.dependencies) yield { least: names((c) => walkDependency(c, d)), make: () => line([p, "dependency", { label: d.label, link: d.link, target: d.target, anchor: d.anchor, symbols: d.symbols, qualifiers: d.qualifiers }]) };
+  const cited = f.citedBy;
+  if (cited) yield { least: names((c) => cited.forEach((x) => [c.str(x.label, ""), c.str(x.link, "")])), make: () => line([p, "cited-by", cited.map((x) => ({ label: x.label, link: x.link }))]) };
+  const reExports = f.reExports;
+  if (reExports) yield { least: names((c) => reExports.forEach((r) => walkReExport(c, r))), make: () => line([p, "re-exports", reExports.map((r) => ({ name: r.name, slug: r.slug, from: r.from && { label: r.from.label, link: r.from.link }, flags: r.flags }))]) };
+}
+
+function fileLines(f: StoredFile): string[] {
+  const out: string[] = [];
+  for (const l of fileLineMakers(f)) out.push(l.make());
   return out;
+}
+
+function headLines(head: ScanHead): string[] {
+  const { location, scanner, leftOut } = head;
+  const out = [line([null, "format", TEXT_FORMAT, LAYOUT_VERSION]), line([null, "location", location.root, location.baseLayer, location.extension]), line([null, "scanner", scanner])];
+  for (const l of leftOut) out.push(line([null, "left-out", l.reason, l.count, l.detail]));
+  return out;
+}
+
+const endLine = (files: number): string => line([null, "end", files]);
+
+/**
+ * Writes the text, line by line. With a `limit`, counts every UTF-8 byte as it is written, line breaks included, and
+ * refuses the text the moment it would pass the limit; each line's least is checked before the line is built.
+ */
+function writeText(scan: Scan, limit?: number): string {
+  const parts: string[] = [];
+  let written = 0;
+  const past = (): never => refuse(`the text of this file is longer than ${limit} bytes, the most a reader writes for a file of its size; the file itself is valid`);
+  const add = (text: string): void => {
+    written += utf8Length(text) + 1;
+    if (limit !== undefined && written > limit) past();
+    parts.push(text);
+  };
+  for (const l of headLines(scan.head)) add(l);
+  for (const f of scan.files) {
+    for (const l of fileLineMakers(f)) {
+      if (limit !== undefined && written + l.least > limit) past();
+      add(l.make());
+    }
+  }
+  add(endLine(scan.files.length));
+  return `${parts.join("\n")}\n`;
 }
 
 /** The text form of a scan: one fact a line, each line a JSON array, the head first and the end last. */
 export function textOfScan(scan: Scan): string {
-  const { location, scanner, leftOut } = scan.head;
-  const lines = [line([null, "format", TEXT_FORMAT, LAYOUT_VERSION]), line([null, "location", location.root, location.baseLayer, location.extension]), line([null, "scanner", scanner])];
-  for (const l of leftOut) lines.push(line([null, "left-out", l.reason, l.count, l.detail]));
-  for (const f of scan.files) lines.push(...fileLines(f));
-  lines.push(line([null, "end", scan.files.length]));
-  return `${lines.join("\n")}\n`;
+  return writeText(scan);
 }
 
-/** The text form of a stored scan's bytes: read and checked whole first. */
+/**
+ * The text form of a stored scan's bytes: read and checked whole first, then written line by line and counted as it is
+ * written. A text longer than the file's inflation bound is refused (section 3.5): a name held once can be written many
+ * times, so a small file can have a very long text.
+ */
 export async function textOf(bytes: Uint8Array): Promise<Result<string>> {
   return settle(async () => {
     const scan = await readScan(bytes);
     if (!scan.ok) refuse(scan.reason);
-    // A string is held once and named many times; written out, each naming is a copy. The copies are counted first,
-    // so that a small file naming one long string a million times is refused rather than written.
-    const measuring = new Measuring();
-    for (const file of scan.value.files) walkFile(measuring, file);
-    if (measuring.total > inflationBound(bytes.length)) refuse(`the text would hold ${measuring.total} bytes of names from a file of ${bytes.length} bytes, past ${inflationBound(bytes.length)}`);
-    return textOfScan(scan.value);
+    return writeText(scan.value, inflationBound(bytes.length));
   });
 }
 
@@ -1504,12 +1591,14 @@ function parseText(text: string): Scan {
     if (!Array.isArray(value)) refuse(`line ${n} is not a JSON array`);
     return value;
   };
-  const expectSame = (raw: string, written: string): void => {
-    if (raw !== written) refuse(`line ${n} is not written as the text form writes it: ${JSON.stringify(raw.slice(0, 120))}`);
+  // The lines from `first` (counted from 0) must be exactly `written`; a refusal names the first line that differs.
+  const expectSame = (first: number, written: string[]): void => {
+    written.forEach((w, k) => {
+      if (lines[first + k] !== w) refuse(`line ${first + k + 1} is not written as the text form writes it: ${JSON.stringify((lines[first + k] ?? "").slice(0, 120))}`);
+    });
   };
-  const format = next();
-  expectSame(lines[0], line([null, "format", TEXT_FORMAT, LAYOUT_VERSION]));
-  void format;
+  next();
+  expectSame(0, [line([null, "format", TEXT_FORMAT, LAYOUT_VERSION])]);
   const location = next();
   if (location[0] !== null || location[1] !== "location" || location.length !== 5) refuse("the second line is not the location");
   const scanner = next();
@@ -1522,7 +1611,7 @@ function parseText(text: string): Scan {
     row = next();
   }
   headBytes(head);
-  expectSame(lines.slice(0, n - 1).join("\n"), textOfScan({ head, files: [] }).split("\n").slice(0, n - 1).join("\n"));
+  expectSame(0, headLines(head));
   const files: StoredFile[] = [];
   while (!(row[0] === null && row[1] === "end")) {
     const start = n - 1;
@@ -1555,13 +1644,49 @@ function parseText(text: string): Scan {
     if (reExports.length === 1) file.reExports = fromJson(reExports[0]) as StoredFile["reExports"];
     // The file's facts must be what the layout can hold, and its lines exactly those the text form writes for them.
     const held = walkFile(new Encoding(new Map(), []), file);
-    expectSame(lines.slice(start, n - 1).join("\n"), fileLines(held).join("\n"));
+    expectSame(start, fileLines(held));
     if (files.length > 0 && comparePaths(files[files.length - 1].codePath, path) >= 0) refuse(`the files are not in path order at ${JSON.stringify(path)}`);
     files.push(held);
   }
-  if (row.length !== 3 || row[2] !== files.length) refuse(`the end line does not count the ${files.length} files`);
-  if (n !== lines.length) refuse("lines after the end line");
-  return { head, files };
+  if (row.length !== 3 || row[2] !== files.length) refuse(`line ${n}, the end line, does not count the ${files.length} files`);
+  expectSame(n - 1, [endLine(files.length)]);
+  if (n !== lines.length) refuse(`line ${n + 1} comes after the end line`);
+  const scan = { head, files };
+  checkSections(scan);
+  return scan;
+}
+
+/**
+ * Refuses facts whose layout would hold a section past {@link MAX_SECTION}: the strings first met in each group of
+ * files, the group's records, the paths and the wires, each sized as the writer sets it down. Their sizes depend on the
+ * facts alone, not on any compressor, so a text holding such facts is no valid file's text.
+ */
+function checkSections(scan: Scan): void {
+  const ids = new Map<string, number>();
+  const index = new Map(scan.files.map((f, i) => [f.codePath, i]));
+  const tooLarge = (what: string, size: number): void => {
+    if (size > MAX_SECTION) refuse(`these facts would set down ${what} of ${size} bytes, past the layout's ${MAX_SECTION}`);
+  };
+  let fresh: string[] = [];
+  let records = 0;
+  let files = 0;
+  const outbound: number[][] = [];
+  scan.files.forEach((f, i) => {
+    const encoding = new Encoding(ids, fresh);
+    walkFile(encoding, f);
+    records += encoding.out.length;
+    files += 1;
+    outbound.push(outboundOf(f, index));
+    if (files === CHUNK || i === scan.files.length - 1) {
+      tooLarge("a section of strings", stringsBytes(fresh).length);
+      tooLarge("a section of records", records);
+      fresh = [];
+      records = 0;
+      files = 0;
+    }
+  });
+  tooLarge("the paths", pathsBytes(scan.files.map((f) => f.codePath)).length);
+  tooLarge("the wires", wiresBytes(outbound).length);
 }
 
 /** A parsed JSON value with its members' absence kept: `null` never stands for a fact, so it is refused. */
@@ -1666,9 +1791,10 @@ export interface GraphView extends Location {
  * rest wait until it is asked for. A link lands on a file when what it names was scanned.
  */
 export function graphViewOf(scan: Scan): GraphView {
-  const scanned = new Set(scan.files.map((f) => f.codePath));
+  const paths = scan.files.map((f) => f.codePath);
+  const index = new Map(paths.map((path, i) => [path, i]));
   const byPath = new Map(scan.files.map((f) => [f.codePath, f]));
-  const landingOn = (targets: (string | undefined)[], self: string): string[] => [...new Set(targets.filter((t): t is string => t !== undefined && t !== self && scanned.has(t)))].sort(comparePaths);
+  const landingOn = (targets: (string | undefined)[], self: string): string[] => numbered(targets, self, index).map((i) => paths[i]);
   const inbound = new Map<string, string[]>();
   const documentedBy = new Map<string, string[]>();
   const push = (lists: Map<string, string[]>, key: string, value: string): void => {
@@ -1687,13 +1813,13 @@ export function graphViewOf(scan: Scan): GraphView {
     root,
     baseLayer,
     extension,
-    paths: scan.files.map((f) => f.codePath),
+    paths,
     file: (path) => {
       const f = byPath.get(path);
       if (f === undefined) return undefined;
       let file = built.get(path);
       if (file === undefined) {
-        file = graphFileOf(f, scan.head.location, scanned, inbound.get(path) ?? [], documentedBy.get(path));
+        file = graphFileOf(f, scan.head.location, index, paths, inbound.get(path) ?? [], documentedBy.get(path));
         built.set(path, file);
       }
       return file;
@@ -1701,8 +1827,23 @@ export function graphViewOf(scan: Scan): GraphView {
   };
 }
 
-/** One file's part of the graph, given which paths were scanned and what the other files say of it. */
-function graphFileOf(f: StoredFile, location: Location, scanned: Set<string>, inbound: string[], documentedBy: string[] | undefined): GraphFile {
+/**
+ * The scanned files the targets name, other than `self`, each once, as numbers in path order: each target is looked
+ * up once by its path, and only numbers are compared, so that a long shared beginning is never walked twice.
+ */
+function numbered(targets: (string | undefined)[], self: string, index: Map<string, number>): number[] {
+  const own = index.get(self);
+  const set = new Set<number>();
+  for (const t of targets) {
+    const i = t === undefined ? undefined : index.get(t);
+    if (i !== undefined && i !== own) set.add(i);
+  }
+  return [...set].sort((a, b) => a - b);
+}
+
+/** One file's part of the graph, given the scan's paths by number and what the other files say of it. */
+function graphFileOf(f: StoredFile, location: Location, index: Map<string, number>, paths: readonly string[], inbound: string[], documentedBy: string[] | undefined): GraphFile {
+  const scanned = index;
   const landing = (v: { link?: string; target?: string; anchor?: string }): Pick<GraphEdge, "link" | "to" | "toSymbol"> => {
     const out: Pick<GraphEdge, "link" | "to" | "toSymbol"> = { link: v.link };
     if (v.target !== undefined && scanned.has(v.target)) {
@@ -1735,7 +1876,7 @@ function graphFileOf(f: StoredFile, location: Location, scanned: Set<string>, in
       }
     }
   }
-  const outbound = [...new Set(edges.map((e) => e.to).filter((to): to is string => to !== undefined && to !== f.codePath))].sort(comparePaths);
+  const outbound = numbered(edges.map((e) => e.to), f.codePath, index).map((i) => paths[i]);
   const file: GraphFile = {
     codePath: f.codePath,
     docPath: docPathOf(location, f.codePath),
@@ -1780,7 +1921,9 @@ function graphFileOf(f: StoredFile, location: Location, scanned: Set<string>, in
 /** The whole graph the facts describe, every file's part built: {@link graphViewOf} asked for each file in turn. */
 export function graphOf(scan: Scan): Graph {
   const view = graphViewOf(scan);
-  const files: Record<string, GraphFile> = {};
+  // No prototype, so that a file named `__proto__`, `constructor` or `toString` is a file like any other, and a path
+  // no file has answers nothing.
+  const files = Object.create(null) as Record<string, GraphFile>;
   for (const path of view.paths) files[path] = view.file(path)!;
   const { root, baseLayer, extension } = view;
   return { root, baseLayer, extension, files };

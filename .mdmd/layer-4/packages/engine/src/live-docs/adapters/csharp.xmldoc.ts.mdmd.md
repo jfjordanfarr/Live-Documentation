@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/engine/src/live-docs/adapters/csharp.xmldoc.ts`
-- Generated At: 2026-11-22T02:45:06.933Z
+- Generated At: 2026-11-22T06:21:01.321Z
 
 ## Authored
 ### Purpose
@@ -129,16 +129,23 @@ nothing the compiler resolves, so its text is kept as a link of no kind (`unknow
 ##### `extractLinkTags` — Returns
 Array of deduplicated, sorted links
 
+#### `crefLinkTarget` {#symbol-creflinktarget}
+- Type: function
+- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/csharp.xmldoc.ts#L319)
+
+##### `crefLinkTarget` — Summary
+A `cref` as a symbol's Links list writes it: a documentation ID as written, any other name as {@link normalizeCrefTarget} gives it.
+
 #### `CrefName (interface)` {#symbol-crefname-interface}
 - Type: interface
-- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/csharp.xmldoc.ts#L319)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/csharp.xmldoc.ts#L325)
 
 ##### `CrefName (interface)` — Summary
 A documentation reference's name as C# reads it: its dotted segments, and the parameter list a member's reference writes.
 
 #### `crefName (function)` {#symbol-crefname-function}
 - Type: function
-- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/csharp.xmldoc.ts#L351)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/csharp.xmldoc.ts#L357)
 - Returns: [`CrefName`](#symbol-crefname-interface)
 
 ##### `crefName (function)` — Summary
@@ -150,7 +157,7 @@ reader declares no such member to resolve it to.
 
 #### `extractRawDocFragments` {#symbol-extractrawdocfragments}
 - Type: function
-- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/csharp.xmldoc.ts#L377)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/csharp.xmldoc.ts#L383)
 
 ##### `extractRawDocFragments` — Summary
 Extracts raw documentation fragments like <inheritdoc> and <include>.
@@ -163,7 +170,7 @@ Array of raw tag strings
 
 #### `detectUnsupportedTags` {#symbol-detectunsupportedtags}
 - Type: function
-- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/csharp.xmldoc.ts#L401)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/csharp.xmldoc.ts#L407)
 
 ##### `detectUnsupportedTags` — Summary
 Detects XML tags that are not in the recognized set.
@@ -176,7 +183,7 @@ Array of unrecognized tag names
 
 #### `parseXmlAttributes` {#symbol-parsexmlattributes}
 - Type: function
-- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/csharp.xmldoc.ts#L424)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/csharp.xmldoc.ts#L430)
 
 ##### `parseXmlAttributes` — Summary
 Parses XML attributes from a tag fragment.
@@ -189,7 +196,7 @@ Object mapping attribute names to values
 
 #### `normalizeXmlText` {#symbol-normalizexmltext}
 - Type: function
-- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/csharp.xmldoc.ts#L441)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/csharp.xmldoc.ts#L447)
 
 ##### `normalizeXmlText` — Summary
 Normalizes XML documentation text into readable plain text.
@@ -203,7 +210,7 @@ Cleaned, normalized text
 
 #### `decodeXmlEntities` {#symbol-decodexmlentities}
 - Type: function
-- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/csharp.xmldoc.ts#L516)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/csharp.xmldoc.ts#L522)
 
 ##### `decodeXmlEntities` — Summary
 Decodes common XML entities to their character equivalents.
@@ -216,7 +223,7 @@ Decoded string
 
 #### `normalizeCrefTarget` {#symbol-normalizecreftarget}
 - Type: function
-- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/csharp.xmldoc.ts#L532)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/csharp.xmldoc.ts#L538)
 
 ##### `normalizeCrefTarget` — Summary
 Normalizes a cref target by stripping prefixes and converting syntax.
@@ -229,7 +236,7 @@ Normalized reference (e.g., "MyNamespace.MyClass")
 
 #### `renderCrefText` {#symbol-rendercreftext}
 - Type: function
-- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/csharp.xmldoc.ts#L556)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/csharp.xmldoc.ts#L563)
 
 ##### `renderCrefText` — Summary
 Renders a cref target as display text, optionally with custom inner text.
@@ -243,7 +250,7 @@ Formatted reference text
 
 #### `hasStructuredContent` {#symbol-hasstructuredcontent}
 - Type: function
-- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/csharp.xmldoc.ts#L571)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/csharp.xmldoc.ts#L578)
 - Parameters: `doc`: [`SymbolDocumentation`](../coreTypes.ts.mdmd.md#symbol-symboldocumentation)
 
 ##### `hasStructuredContent` — Summary
