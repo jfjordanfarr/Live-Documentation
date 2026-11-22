@@ -45,15 +45,24 @@ test("a retained picture reads the same as the instrument read it, to the number
 
 /**
  * A made fault, since no picture the suite draws has one: a card that is neither end of a wire, stood across it.
- * Since 2026-11-22 every wire has a band along its route, an undrawn stroke that takes the pointer, in a layer above
- * the cards; the reading asked the page for its topmost element at each of a wire's samples and was handed the wire's
- * own band at 5,914 of 5,976 of them, so that it could not see a card across a wire and "no wire crosses a card it
- * does not end at" could not fail. A returning connection's lace takes the pointer itself, and had hidden a card
- * under it the same way since it was made. Stands the card, at once, across the first of the wires the selector names
- * that has a point in the frame on open ground, and says which wire and card, or why each was refused.
+ * For some hours of 2026-11-22 every wire had a band along its route that took the pointer, an undrawn stroke in the
+ * wires' layer above the cards; the reading asked the page for its topmost element at each of a wire's samples and
+ * was handed the wire's own band at 5,914 of 5,976 of them, so that it could not see a card across a wire and "no
+ * wire crosses a card it does not end at" could not fail. A returning connection's lace takes the pointer itself,
+ * and had hidden a card under it the same way since it was made. Stands the card, at once, across the first of the
+ * wires the selector names that has a point in the frame on open ground, and says which wire and card, or why each
+ * was refused.
+ *
+ * `stroke` makes the fault the bands were, by the case's own hand: an undrawn stroke along the wire, in the wires' own
+ * drawing, that takes the pointer. The page's bands have taken no pointer since that evening (the wire under the
+ * pointer is found by its route, `wire-reach.ts`), so no part of the page as it ships stands between a route and a
+ * card any longer, and a case that waited for the page to put one there would pass for no reason or fail for one
+ * that is not the reading's. The reading's rule is that it looks past the wires' drawing by where a thing stands,
+ * whatever the page puts there next; the made stroke is such a thing, and `strokeOnTop` says that the page's own hit
+ * test is handed it at the point where the card stands.
  */
-async function standACardAcross(page: Page, wires: string, clear: number): Promise<{ ends: string[]; card: string; bandThere: boolean; refused: string[] }> {
-  return page.evaluate(({ wires, clear }) => {
+async function standACardAcross(page: Page, wires: string, clear: number, stroke = false): Promise<{ ends: string[]; card: string; strokeOnTop: boolean; refused: string[] }> {
+  return page.evaluate(({ wires, clear, stroke }) => {
     const frame = document.querySelector("#main")!.getBoundingClientRect();
     const k = new DOMMatrix(getComputedStyle(document.querySelector("#map-viewport")!).transform).a;
     const cards = [...document.querySelectorAll<HTMLElement>("#map-container .node-card")];
@@ -87,10 +96,18 @@ async function standACardAcross(page: Page, wires: string, clear: number): Promi
         card.style.transform = "";
         continue;
       }
-      return { ends: [sourceId, targetId], card: card.dataset.id!, bandThere: there.some(element => element.matches("#map-connections .wire-band")), refused };
+      let strokeOnTop = false;
+      if (stroke) {
+        const made = document.createElementNS("http://www.w3.org/2000/svg", "path");
+        made.setAttribute("d", wire.getAttribute("d") ?? "");
+        made.setAttribute("style", "fill:none;stroke:transparent;stroke-width:12px;pointer-events:stroke");
+        wire.parentNode!.append(made);
+        strokeOnTop = document.elementFromPoint(middle.x, middle.y) === made;
+      }
+      return { ends: [sourceId, targetId], card: card.dataset.id!, strokeOnTop, refused };
     }
-    return { ends: [] as string[], card: "", bandThere: false, refused };
-  }, { wires, clear });
+    return { ends: [] as string[], card: "", strokeOnTop: false, refused };
+  }, { wires, clear, stroke });
 }
 
 /** Both readings see the made card across the made wire (its laces alone, where the wire is a returning connection), and agree to the number. */
@@ -108,17 +125,31 @@ async function expectBothSee(page: Page, made: { ends: string[]; card: string },
   expect(JSON.stringify(now)).toBe(JSON.stringify(reference));
 }
 
-test("a card stood across a wire's middle is read as covering it, the wire's own band running there", async ({ page }) => {
-  // At reading size, where a stretch of a wire and a whole card fit the frame together; the arrival is not this case's subject.
+/** The estate's retained picture at reading size, where a stretch of a wire and a whole card fit the frame together; the arrival is not these cases' subject. */
+async function openRetained(page: Page): Promise<void> {
   await arriveAtReadingSize(page);
   await page.goto(localRetainUrl(BASE, ["PaymentService/PaymentService.cs", "Portal/Services/GatewayClient.cs", "Hub/App.config", "Gateway/Wcf/HubProxy.cs"]));
   await page.waitForSelector("#map-container .branch-mode");
   await page.waitForSelector("#map-connections .connection-path:not(.bundle-run)", { state: "attached" });
   await localMapSettled(page);
   await page.waitForTimeout(600);
+}
+
+// The page as it ships: nothing of a route takes the pointer, and the card is what the hit test meets. This holds the
+// law's plain sight; it would pass on a reading that asked only for the topmost element, so it does not hold the rule.
+test("a card stood across a wire is read as covering it", async ({ page }) => {
+  await openRetained(page);
   const made = await standACardAcross(page, "#map-connections path.connection-path:not(.bundle-run)", 16);
   expect(made.card, `a route with a point in the frame, and a card that is neither of its ends: ${made.refused.join("; ")}`).not.toBe("");
-  expect(made.bandThere, "the wire's band runs where the card now stands").toBe(true);
+  await expectBothSee(page, made, false);
+});
+
+// The rule: with a stroke of the wires' own drawing taking the pointer over the card, made here, the card is still seen.
+test("a card stood across a wire is read as covering it though a made stroke of the wires' own drawing takes the pointer there", async ({ page }) => {
+  await openRetained(page);
+  const made = await standACardAcross(page, "#map-connections path.connection-path:not(.bundle-run)", 16, true);
+  expect(made.card, `a route with a point in the frame, and a card that is neither of its ends: ${made.refused.join("; ")}`).not.toBe("");
+  expect(made.strokeOnTop, "the page's hit test is handed the made stroke where the card stands").toBe(true);
   await expectBothSee(page, made, false);
 });
 
