@@ -67,7 +67,7 @@ Three faults of the camera were found and mended on the way, each the code falli
 
 ### The way down from the World Map keeps the request in view
 - state: active
-- holds: looked at by root on 2026-11-22 and alternatives set down below, none built; a trial of the second, third and fourth is with a builder
+- holds: a trial lever, Way Down, merged into the day branch on 2026-11-22 (`837c52c76`), the default unchanged: a thing opens with the files that carry its wires pinned, a wire as its two files, a chain as the Local Map's path between two things' folders, the board's pin kept for the way back. With it, as a default, the owner's decision of that day: a path is answered whichever way it runs and told from the end asked from. Waits for the owner's eye on the lever; root's findings on the route's pictures (the first card cut under the toolbar, two hops of one name, two sizes of arrival) go with the route drawn from its start, below
 - evidence: [four pictures of the way down as it stands](../AgentSessionHistory/2026/11/2026-11-22/Screenshots/way-down/README.md)
 
 No tester pressed a card's "open". The one that went to the Local Map found the estate's six folders closed, with dots inside and no line between them ([the picture](../AgentSessionHistory/2026/11/2026-11-21/Probes/blind-playtests/estate-trace-haiku-default-look-only/shots/005-click.png)), said it "doesn't show the request path", and turned back. The request, plain on the World Map, is not drawn at the scale a person lands on below it.
@@ -92,7 +92,7 @@ What each costs: the second to fourth put a link on the board's panels where the
 
 ### The 2D map mirrored at a press, and a route drawn from its start
 - state: active
-- holds: with a builder since 03:49 UTC on 2026-11-22; nothing merged
+- holds: the button and the mirrored picture at rest merged into the day branch on 2026-11-22 (`1c14415bc`): one attribute reflects the picture and one new module carries the wires across, the layout's modules untouched; [ten matched pictures](../AgentSessionHistory/2026/11/2026-11-22/Screenshots/mirror/README.md), each a true mirror with its subject held to the pixel. With the builder: the choice kept as the frame is kept, the type badges mirrored, its cases seen failing, browser cases, the far looks, then the turn in three forms. Not sent: a route drawn from its start
 - evidence: the owner's three messages of that day ([Turn 6](../AgentSessionHistory/2026/11/2026-11-22/2026-11-22.1.record.md#turn-6), [Turn 7](../AgentSessionHistory/2026/11/2026-11-22/2026-11-22.1.record.md#turn-7), [Turn 8](../AgentSessionHistory/2026/11/2026-11-22/2026-11-22.1.record.md#turn-8))
 
 Asked whether a route told against the drawing should also be drawn that way round, the owner chose more than root had offered: "I think a mirroring button in the 2D local map will actually be very useful. I could imagine swapping all the time. Yeah and if we can respect routes with that, I think that's a win." What root's own proposal had left broken, and this mends: the list above the map running page to table over a picture running table to page; and the estate's board, which runs portal to sqlserver from left to right, turned round on the way down (the third finding of the task above).

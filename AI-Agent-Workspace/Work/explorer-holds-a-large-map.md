@@ -21,8 +21,8 @@ also: A person can see it
 
 
 ### The 3D start veils the repository's largest group
-- state: open
-- holds: a question for the owner's eye, with a picture; nothing built
+- state: active
+- holds: mended for this repository on the day branch of 2026-11-22 at the owner's word ("annoys the heck out of me"): the budget is 2,048 drawn files and nothing is veiled here, with or without a pin; the order is farthest first, the largest among the equally far, the start's main body kept to the last (`4d9ebbfae`; smallest-first, tried the same morning, left a ring of 26 pale balls round a pin and was withdrawn). **Open at DNN's size:** its main body alone holds more files than the budget and is veiled whole, in a picture of 3,313 spheres that says little ([the pictures](../AgentSessionHistory/2026/11/2026-11-22/Screenshots/budget-frames/README.md)); no order mends that, only a larger budget for that body or a body drawn in part. The budget's measure on a weak machine got two runs of eight
 - evidence: [the picture and its cause](../AgentSessionHistory/2026/11/2026-11-21/Screenshots/archipelago-veiled/README.md)
 
 A picture draws at most 1,024 files within its skins (2026-11-07), veiling past that the bodies farthest from what was asked, the largest first. With nothing asked every group is equally far, so the largest is veiled first. On 2026-11-21 this repository's groups passed the budget (1,137 files beside their seeds, where 1,016 stood two days before) and its main body, 696 of 1,279 files, opens as one veiled bubble while every small group shows its files. Alternatives, none built: as now; with nothing asked, veil the smallest groups first so the main body stays drawn; a larger budget, measured on the weakest machine the tool is to serve. Root's lean is the second, as a trial lever with matched pictures.
