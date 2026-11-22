@@ -21,7 +21,9 @@ const ESTATE = "/samples/estate/index.html?view=world";
 
 async function visit(browser: Browser, wayDown: WayDown, site = ESTATE): Promise<{ page: Page; close: () => Promise<void> }> {
   const context = await browser.newContext({ viewport: { width: 1280, height: 800 }, deviceScaleFactor: 1 });
-  await context.addInitScript(({ key, value }) => { if (!localStorage.getItem(key)) localStorage.setItem(key, value); }, {
+  // Written at every load, over the suite's own seed, which says nothing of Way Down: written only where no value
+  // stood, the lever stayed at its default and every case of the trial failed (the first run of this file).
+  await context.addInitScript(({ key, value }) => localStorage.setItem(key, value), {
     key: PERSISTED_UI_KEY, value: JSON.stringify({ version: PERSISTED_UI_VERSION, tuning: { localMap: { searchStarts: 0, wayDown } } })
   });
   const page = await context.newPage();
@@ -176,12 +178,14 @@ test.describe("The way down from the World Map", () => {
       const snapshot = currentSnapshot(page);
       expect([...snapshot.openDirectories]).toEqual(["Database/SqlServer"]);
       expect(snapshot.destination).toEqual({ kind: "directory", directory: "Portal" });
-      // Cold, it draws the same path and says the same of it.
-      const cold = await page.context().newPage();
+      // Cold, in a browser whose own tuning says nothing of Way Down, the link draws the same path and says the same of
+      // it: the lever rides among the link's layout settings.
+      const elsewhere = await browser.newContext({ viewport: { width: 1280, height: 800 }, deviceScaleFactor: 1 });
+      const cold = await elsewhere.newPage();
       await cold.goto(page.url());
       await expect(cold.locator("#pathfind-status")).toHaveText(await status.textContent() ?? "");
       expect(await cold.locator("#pathfind-path .pathfind-path-hop").evaluateAll(buttons => buttons.map(button => button.getAttribute("title")!))).toEqual(hops);
-      await cold.close();
+      await elsewhere.close();
       // Back returns to the board with the thing the question started from still pinned.
       await page.goBack();
       await expect(page.locator("#view-world")).toHaveClass(/active/);
