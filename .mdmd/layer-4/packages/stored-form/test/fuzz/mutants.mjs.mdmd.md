@@ -1,10 +1,10 @@
-# `packages/stored-form/src/fuzz/mutants.mjs`
+# `packages/stored-form/test/fuzz/mutants.mjs`
 
 ## Metadata
 - Layer: 4
-- Archetype: implementation
-- Code Path: `packages/stored-form/src/fuzz/mutants.mjs`
-- Generated At: 2026-11-22T01:36:47.574Z
+- Archetype: test
+- Code Path: `packages/stored-form/test/fuzz/mutants.mjs`
+- Generated At: 2026-11-22T02:13:56.288Z
 
 ## Authored
 ### Purpose
@@ -18,14 +18,14 @@ Plain JavaScript that imports nothing, loaded by the fuzzer's worker as it stand
 ### Public Symbols
 #### `random` {#symbol-random}
 - Type: function
-- Source: [source](../../../../../../packages/stored-form/src/fuzz/mutants.mjs#L5)
+- Source: [source](../../../../../../packages/stored-form/test/fuzz/mutants.mjs#L5)
 
 ##### `random` — Summary
 A small deterministic generator of numbers from a seed (mulberry32).
 
 #### `mutant` {#symbol-mutant}
 - Type: function
-- Source: [source](../../../../../../packages/stored-form/src/fuzz/mutants.mjs#L37)
+- Source: [source](../../../../../../packages/stored-form/test/fuzz/mutants.mjs#L37)
 
 ##### `mutant` — Summary
 One mutant of `base`, by the seed: a few bits flipped, a cut, a length or count that lies, bytes put in or taken out,

@@ -5,14 +5,14 @@
 - Archetype: implementation
 - Code Path: `packages/stored-form/tsconfig.json`
 - Entry: tooling
-- Generated At: 2026-11-22T01:31:13.860Z
+- Generated At: 2026-11-22T02:13:56.361Z
 
 ## Authored
 ### Purpose
 Builds the stored form to ECMAScript modules against the browser's library and no Node types (`types: []`), so that the type-check itself refuses any use of a Node-only interface: the module must run unchanged in Node 26 and in a page.
 
 ### Notes
-It does not extend the repository's base configuration, which keys the history's cache: a change here moves no key. Tests and the fuzzer's harness are left out of the build.
+It does not extend the repository's base configuration, which keys the history's cache: a change here moves no key. It builds `src/` alone, which holds only the module; the tests, the fuzzer and their scans live in `test/` (since 2026-11-22).
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
@@ -60,9 +60,6 @@ It does not extend the repository's base configuration, which keys the history's
 - Type: key
 
 #### `include` {#symbol-include}
-- Type: key
-
-#### `exclude` {#symbol-exclude}
 - Type: key
 <!-- LIVE-DOC:END Public Symbols -->
 

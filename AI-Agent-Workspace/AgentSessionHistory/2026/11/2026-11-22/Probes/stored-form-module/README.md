@@ -1,6 +1,6 @@
 # The stored form as one module: what was built and measured
 
-_Historical record of 2026-11-22, by a builder for the root, on `day/2026-11-22` from `8bc5736cd`. First milestone. It adds a package nothing else uses yet, and decides none of the forks at its end._
+_Historical record of 2026-11-22, by a builder for the root, on `day/2026-11-22` from `8bc5736cd`. The first milestone adds a package nothing else uses yet, and decides none of the forks at its end. The second milestone, below under its own heading, carries out the root's rulings on them. Links to the tests point to `test/`, where the second milestone moved them._
 
 ## What was asked
 
@@ -88,8 +88,8 @@ Not measured: a browser tab, which was not reached in this milestone; five times
 
 ## The tests, and what each proves
 
-In [`storedForm.test.ts`](../../../../../../../packages/stored-form/src/storedForm.test.ts), nine cases, all passing:
-- **Every fact read back.** A made scan holds every field the layout has, each mark set and unset somewhere ([`testScans.ts`](../../../../../../../packages/stored-form/src/testScans.ts)).
+In [`storedForm.test.ts`](../../../../../../../packages/stored-form/test/storedForm.test.ts), nine cases, all passing:
+- **Every fact read back.** A made scan holds every field the layout has, each mark set and unset somewhere ([`testScans.ts`](../../../../../../../packages/stored-form/test/testScans.ts)).
 - **One byte stream three ways.** Written as facts arrive, in the pieces handed on, and all at once, over three groups of records.
 - **Text both ways without loss**, on four scans, an empty one among them.
 - **One text for one set of facts.** Nine variants of a valid text are each refused: a space, `4.0`, members reordered and an unknown member, `false` for an absent mark, an escaped letter, a missing final line break, a wrong count, a line after the end, and a path repeated.
@@ -99,17 +99,17 @@ In [`storedForm.test.ts`](../../../../../../../packages/stored-form/src/storedFo
 - **Whole in shape, not in form.** Frames are set down again with their own hashes, so that each mutation reaches the check it is for. A string set down twice, a string never named, a number written longer than it needs, wires the links do not give, a byte after the end, a cut, and a flipped byte are each refused.
 - **The module imports nothing.** Its source holds no `import`, `require(`, `process.`, `window.`, `document.`, `eval(` or `new Function`.
 
-In [`storedForm.fuzz.test.ts`](../../../../../../../packages/stored-form/src/storedForm.fuzz.test.ts), the standing fuzzer:
-- **800 mutants of two valid files** (3 files, and 300 files across two groups). Each is made from its seed alone by [`mutants.mjs`](../../../../../../../packages/stored-form/src/fuzz/mutants.mjs), in eight kinds: bits flipped, a cut, a count or length that lies, bytes put in, bytes taken out, frames doubled or swapped, noise after the signature, and a bomb.
+In [`storedForm.fuzz.test.ts`](../../../../../../../packages/stored-form/test/storedForm.fuzz.test.ts), the standing fuzzer:
+- **800 mutants of two valid files** (3 files, and 300 files across two groups). Each is made from its seed alone by [`mutants.mjs`](../../../../../../../packages/stored-form/test/fuzz/mutants.mjs), in eight kinds: bits flipped, a cut, a count or length that lies, bytes put in, bytes taken out, frames doubled or swapped, noise after the signature, and a bomb.
   - The bomb is a section whose body is a real raw deflate stream of 256 MiB of zeros, about 256 KB stored. Its header claims the original length, or nearly 4 GiB.
-- Each mutant is read by `readScan`, `resumeFrom` and, where facts came back, `textOf`, in a worker ([`worker.mjs`](../../../../../../../packages/stored-form/src/fuzz/worker.mjs)). The test stops the worker at ten seconds without an answer.
+- Each mutant is read by `readScan`, `resumeFrom` and, where facts came back, `textOf`, in a worker ([`worker.mjs`](../../../../../../../packages/stored-form/test/fuzz/worker.mjs)). The test stops the worker at ten seconds without an answer.
 - The memory each read holds over the worker at rest (heap, ArrayBuffers and external memory, sampled every millisecond and at each await) must stay under 48 MiB plus 64 bytes per byte of input.
 - **Result:**
   - 790 refused and 10 read as facts. The 10 are the frame swaps that swapped a frame with itself, so the file was unchanged.
   - No crash, no hang, and no answer that was not facts or a refusal.
   - The most any read held was 12.0 MB, a quarter of its bound.
   - 22 s for the whole case on this machine.
-- **Shown red first.** The same case, run once against [a deliberately careless reader](../../../../../../../packages/stored-form/src/fuzz/careless.mjs) that trusts every declared count and length and inflates without a limit, failed:
+- **Shown red first.** The same case, run once against [a deliberately careless reader](../../../../../../../packages/stored-form/test/fuzz/careless.mjs) that trusts every declared count and length and inflates without a limit, failed:
   - it hung at seed 67, so 68 findings were received where 800 were expected;
   - over seeds 0 to 19 it crashed on cuts, noise, bytes put in and a lying stored length;
   - it held 1,558 and 1,559 MB on the two bombs;
@@ -178,3 +178,136 @@ Two commands were refused as too complex to verify that they stay in the worktre
 - an inline Python script.
 
 Each was rewritten as a file written with the file tools, then run by a plain command.
+
+## Second milestone, 2026-11-22: the root's rulings, and the read brought level with JSON's
+
+The root merged the first milestone as `e8320edb5` and ruled on its forks:
+- SCIP is not adopted.
+- The content is canonical; the compressed bytes are not.
+- The link rule is carried and not checked.
+- Quick open and whole read both stay. Which a host uses is the wiring's; a file from someone else gets a whole read first.
+
+Three rulings asked for work, and each was done as follows.
+
+### Path order is UTF-8 byte order
+
+- **Why:** a reader in Rust, Go or Python sorts bytes, and so do git's trees. The root: a format "useful to more than one project" must not lean on how JavaScript compares strings.
+- **What changed:**
+  - `comparePaths` is exported and compares UTF-16 units with one correction: at the first unit that differs, a surrogate sorts after any other unit. That is code point order, which is UTF-8 byte order.
+  - Section 2.3 of the specification is rewritten, and section 7.1 says the engine's sink will sort by this comparator, so there is one comparator at the wiring.
+  - `scan-of-graph.ts` sorts by it.
+- **Red first.** Three cases were written before the comparator changed, and all three failed. The first case's failure was "expected 1 to be -1". They are:
+  - `dir/\u{E000}.ts` before `dir/\u{1F600}.ts`, the two orders differing;
+  - 20,000 pairs drawn from every range of code points, each held to `Buffer.compare` of the two UTF-8 encodings;
+  - the writer, the reader and the text form keeping that order and refusing the other.
+- **The three corpora:** none holds a path with a character from U+E000 up (counted: 0 of 1,303, 0 of 41, 0 of 10,777). So their order is unchanged. The graph read back still prints byte for byte as each `index.json`, and every round trip is the same, measured again on all three after the change.
+
+### The text form's bytes are stated by the specification
+
+- **The rules:** section 8.1 now states exactly what is written:
+  - the seven short escapes;
+  - `\u00` and two lowercase hexadecimal digits for the other controls up to U+001F;
+  - everything else literally in UTF-8, by name: `/`, U+007F, the C1 controls, U+2028, U+2029, U+FEFF, and code points above U+FFFF, never as surrogate escapes;
+  - numbers in decimal with no sign, point, exponent or leading zero;
+  - no whitespace;
+  - UTF-8 without a byte-order mark, LF line ends.
+  It says these are what ECMAScript's `JSON.stringify` writes, so that a reader in another language need not know it.
+- **`scanOfText` and `bytesOfText` now also take bytes**, decoded strictly.
+- **Four cases**, each expectation written by hand from the rule, not by a JSON library:
+  - 21 characters, each written as the rule says;
+  - three numbers;
+  - eleven other ways of writing the same text, each refused: `\u0008`, `\/`, `\u007f`, ` `, `é`, a surrogate pair, uppercase hex, `"`, `4e0`, `4.0`, a space;
+  - a byte-order mark, a byte of FF, and CR LF, each refused.
+- **Red first.** The module's writer was swapped for one that escapes U+2028 and writes uppercase hex. Two of the four cases failed, then the writer was restored.
+- **Other leans on JavaScript found and rewritten:**
+  - **Strings (section 2.2)** were defined as "no lone surrogate", a UTF-16 notion. They are now sequences of Unicode scalar values, decoded strictly by the Unicode Standard's table 3-7. A byte-order mark inside a string is kept as part of it, and equality is of bytes, with no normalization.
+  - **Paths' checks (section 2.4)** leaned on regular expressions. They now name the ASCII letters, the case folding of `file:`, and U+0000 by code point. The code checks them in one pass, by character code.
+  - **The text export's bound** counted UTF-16 units. It now counts UTF-8 bytes.
+  - **The graph (section 5)** was "exactly those of `deriveLiveDocGraph`". The text is now the authority.
+    - It says that `toSymbol` comes only with `to` and an anchor.
+    - It says that "holds `type-only`" means one qualifier exactly equal.
+    - It says that `basis` is the first matching qualifier in their order.
+    - Outbound and inbound are in byte order.
+    - The order of an object's members is not a fact.
+  - **The limits (section 3.5)** now give MiB in bytes, and say that the total is the sum of every frame's raw length, the end's included, checked as headers are hopped.
+  - **The counts (section 2.1)** now say which sooner refusals a reader may make (3 bytes a left-out entry, 2 a path, and a frame's count against its raw length), and that none changes which files are accepted.
+  - **The document path (section 4.1)** is now stated as a join, not as `docPathOf`.
+
+### `testScans.ts` out of what ships
+
+The tests, the fuzzer and `testScans.ts` moved to `packages/stored-form/test/`, and `src/` holds only the module. The build includes `src/` alone, so `dist/` holds only `storedForm.js` and its declarations. The unit include is `packages/stored-form/test/**/*.test.ts`. Their Live Docs were moved with them, which kept the authored words.
+
+**The package's two suites now run in `unit-serial`.** Going on from four cuts took 4.3 s at a load of 39 and 6.0 s beside the fuzzer, against the five-second deadline. Every case remains, and the deadline is not raised, as the repository does for its other heavy suites.
+
+### Measured in the second milestone
+
+A shared machine at a load of 15 to 47, far above the first milestone's 8. **Every time below is therefore inflated, and is compared only with what was run beside it, interleaved.** Reads are under bare Node 26 running the module's TypeScript source unchanged ([`read-time.mjs`](read-time.mjs)), so no loader is counted. A bare Node process peaks at 42 MB.
+
+**Written as facts arrive, from disk** ([`stream.ts`](stream.ts)). One line per file is read and handed to the writer, and each piece is appended to the file as it is set down. Peaks include about 70 MB of `tsx`.
+
+| | Time | Peak | Bytes |
+| --- | ---: | ---: | --- |
+| DNN, 10,777 files, three runs | 2.8 to 3.8 s | 194 to 203 MB | 2,167,449, byte for byte the file written all at once |
+| Five times DNN, 53,885 files | 9.4 s | 254 MB | 6,180,769 |
+
+The research's streaming press measured 2.3 s and 188 MB at DNN, and 7.5 s and 255 MB at five times.
+
+**The whole read, profiled on DNN.** Before the mends, the profile's self time by function was:
+- 14 % decoding strings one call at a time;
+- 11 % checking paths: a split and two regular expressions for every target, though the same strings repeat;
+- 11 % idle, waiting on inflates and hashes run one after another;
+- 7.5 % collecting garbage.
+
+Then three mends, none dropping a check:
+1. **Every section is inflated and hashed at once**, on the platform's own threads, before decoding in order.
+2. **Each distinct string is checked as a path or a link once**, by its number, rather than at every naming.
+3. **A strings section is decoded in one strict call.**
+   - A string that begins with a continuation byte is refused. Joined, no sequence can then cross from one string into the next, so strict decoding of the whole means each string is valid.
+   - A new case shows a character split across two strings (`C3` and `A9`) refused, as is a byte of `FF`.
+   - The paths are built in one reused buffer.
+
+A first try at a fast path for short ASCII strings was slower, because building a string from spread bytes is slow, and was replaced.
+
+**DNN, interleaved runs at a load of about 33:**
+
+| | First answer | Facts read and checked | Facts and the graph | Peak |
+| --- | ---: | ---: | ---: | ---: |
+| Before the mends | 0.24 to 0.28 s | 1.85 to 2.40 s | not run | 223 to 225 MB |
+| After | 0.17 to 0.24 s | **1.33 to 1.49 s** | 1.75 to 1.81 s | 233 to 292 MB |
+| `index.json.gz`: inflate and parse, the graph already in it | (all of it first) | | **1.45 to 1.59 s** | 383 to 385 MB |
+
+- **The facts, every check made, now read in about JSON's time or less**, about 35 % sooner than before the mends.
+- **The read's peak rose by 10 to 65 MB**, since every section's uncompressed bytes are now held at once until each is read: 8.9 MB of them at DNN, plus the platform's buffers for inflating them together. It is still about two thirds of JSON's.
+- **Building the graph costs a further 0.35 s or so.** The whole map with the graph is about 15 to 20 % slower than parsing JSON that already holds it.
+- **What is left is chiefly the check against a string stored twice.** It hashes every string into a set: about 120 ms for 109,000 strings at this load, measured alone. That is the price of one form for one set of facts, and it stays.
+- The graph could be built only when a consumer asks for it, edges by file; that was not tried.
+
+**Five times DNN**, 53,885 files: the research's construction, each copy's links naming only its own copy. The JSON baseline is `graphOf` printed as the generator prints it ([`index-of.mjs`](index-of.mjs)).
+
+| | Stored form | `index.json` gzipped |
+| --- | ---: | ---: |
+| On disk | **6.18 MB** | 18.29 MB (compact: 15.43 MB) |
+| First answer | **0.37 to 0.50 s** | 6.0 to 6.6 s, all of it first |
+| Facts read and checked | 2.9 to 3.5 s | |
+| Facts and the graph | 4.4 to 4.5 s | 6.0 to 6.6 s |
+| Peak | **533 to 669 MB** | **1,730 MB** |
+
+At fifty thousand files the stored form is a third of the gzipped index. It answers a first question twelve to sixteen times sooner, and its whole map, graph included, comes sooner than JSON's, in under 40 % of the memory.
+
+### The whole unit project, run once
+
+`npm run test:unit`, both the `unit` and `unit-serial` projects, at a load of 16 to 47: 3,619 of 3,620 cases passed, across 238 files.
+- **The one that failed** is `generatorIdentity.test.ts`, "names as roots every package the two packages load without declaring it". It timed out at 5.3 s, and took 8.2 s alone at a load of 15.
+- **It is not this change.** It reads only the engine's and the generator's sources, which this work does not touch. The configuration already records it as 1.7 s alone and past five seconds at loads of 20 to 40.
+- Its deadline was left as it is.
+
+### Still unfinished
+
+- **The browser tab through the lane.** It was not reached in this milestone.
+- **Building the graph lazily**, to close the last gap with JSON.
+- **The configuration-values audit.**
+- **Which left-out reasons the scanner reports.**
+
+### Commands the harness refused this milestone
+
+None.

@@ -3,7 +3,7 @@
 // stored form's graph can be held against the engine's graph, which resolved the same links itself.
 import { linkTarget, type LiveDocGraph } from "@live-documentation/engine/live-docs/graph";
 
-import type { Scan, StoredFile, StoredType } from "../../../../../../../packages/stored-form/src/storedForm";
+import { comparePaths, type Scan, type StoredFile, type StoredType } from "../../../../../../../packages/stored-form/src/storedForm";
 
 /** The scan a graph's files describe, each link given the path and anchor it names. */
 export function scanOfGraph(graph: LiveDocGraph, scanner: string): Scan {
@@ -39,5 +39,7 @@ export function scanOfGraph(graph: LiveDocGraph, scanner: string): Scan {
       ...(file.reExports !== undefined ? { reExports: file.reExports } : {})
     });
   }
+  // Handed over in the stored form's order, the order of UTF-8 bytes, which the engine's sink will use too.
+  files.sort((a, b) => comparePaths(a.codePath, b.codePath));
   return { head: { location, scanner, leftOut: [] }, files };
 }

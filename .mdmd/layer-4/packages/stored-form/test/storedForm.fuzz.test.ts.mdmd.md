@@ -1,10 +1,10 @@
-# `packages/stored-form/src/storedForm.fuzz.test.ts`
+# `packages/stored-form/test/storedForm.fuzz.test.ts`
 
 ## Metadata
 - Layer: 4
 - Archetype: test
-- Code Path: `packages/stored-form/src/storedForm.fuzz.test.ts`
-- Generated At: 2026-11-22T01:36:47.583Z
+- Code Path: `packages/stored-form/test/storedForm.fuzz.test.ts`
+- Generated At: 2026-11-22T02:13:56.305Z
 
 ## Authored
 ### Purpose
@@ -24,7 +24,7 @@ _No public symbols detected_
 - `node:url` - `pathToFileURL`
 - `node:worker_threads` - `Worker`
 - `node:zlib` - `constants`, `deflateRawSync`
-- [`storedForm.writeScan`](./storedForm.ts.mdmd.md#symbol-writescan)
+- [`storedForm.writeScan`](../src/storedForm.ts.mdmd.md#symbol-writescan)
 - [`testScans.everyFact`](./testScans.ts.mdmd.md#symbol-everyfact)
 - [`testScans.seededScan`](./testScans.ts.mdmd.md#symbol-seededscan)
 - `vitest` - `describe`, `expect`, `it`

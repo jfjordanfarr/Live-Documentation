@@ -19,23 +19,44 @@ The owner's words that govern it (2026-11-21): of binary stored and text exporte
 - **u8** is one byte. **u32** is four bytes, little-endian, unsigned.
 - **varint** is an unsigned number from 0 to 2^32 − 1, seven bits a byte, least significant group first, the high bit set on every byte but the last (LEB128). It is at most five bytes, and it is written in its shortest form: a last byte of 0 after any earlier byte is refused, as is a value above 2^32 − 1 and a sixth byte.
 - A **count** is a varint that says how many items follow. Every item takes at least one byte, so a count larger than the bytes left in its section is refused before anything is made for it.
+  - A reader may refuse sooner where it knows an item takes more: a left-out entry takes at least 3 bytes, and a path in the paths section at least 2.
+  - A frame's `count` may likewise be refused when it exceeds its section's raw length: strings, records and wires take at least 1 byte each, paths 2.
+  - None of these changes which files are accepted. Each refuses only what would run out of bytes anyway.
 - A **mark** is a varint whose bits say which optional fields follow. A bit the layout does not define for that mark is refused.
 
 ### 2.2 Strings
 
-Every string is UTF-8, well formed: a reader decodes it strictly and refuses any byte sequence that is not UTF-8, including encoded surrogates. A writer refuses a string holding a lone surrogate, which UTF-8 cannot carry. No string is ever interpreted by the layout (section 9).
+A **string** is a sequence of Unicode scalar values: code points from U+0000 to U+10FFFF, other than the surrogates U+D800 to U+DFFF. It is stored as UTF-8 (RFC 3629).
 
+- **A reader decodes strictly.** It refuses any byte sequence that is not well-formed UTF-8 by the Unicode Standard's table of well-formed byte sequences (chapter 3, table 3-7): an overlong form, an encoded surrogate (`ED A0 80` to `ED BF BF`), a code point above U+10FFFF, a byte that cannot begin or continue a sequence, and a sequence cut short. A byte-order mark is not removed: U+FEFF at the start of a string is part of the string.
+- **A writer refuses a string it cannot store as UTF-8.** In a language whose strings are UTF-16, that is a string holding an unpaired surrogate.
+- **Two strings are equal when their UTF-8 bytes are equal.** No normalization is applied: `é` as one code point and as `e` with a combining accent are two strings.
+- No string is ever interpreted by the layout (section 9).
+
+Two ways a string appears:
 - **text** (in the head and the strings section): a varint byte length, then that many bytes.
 - **sid** (in records): a varint, the number of a string in the scan's string table (section 4.2).
 
 ### 2.3 Path order
 
-Files are kept in **path order**: by the UTF-16 code units of their paths, compared as JavaScript compares strings. This is not the order of UTF-8 bytes. They differ where a path holds a character above U+FFFF and another holds one from U+E000 to U+FFFF. A second reader in another language must compare UTF-16 code units. Two paths may differ only by case; the layout does not refuse them, though Windows cannot hold both.
+Files are kept in **path order**: by the bytes of their paths' UTF-8, compared byte by byte as unsigned numbers, a path that is a prefix of another coming first.
+- This is the order of their code points, and the order a reader in any language gets by comparing bytes, as git orders the names in a tree.
+- A reader whose strings are UTF-16 does not get it by comparing code units. A code point above U+FFFF is a pair of units from U+D800 to U+DFFF, which compare below the single units from U+E000 to U+FFFF. Where the first units that differ are one such pair's and one unit from U+E000 up, the pair's path comes after. The module's `comparePaths` does this.
+- Every other sort in this specification is by this order too: the wires' files (by number, which is this order), a file's outbound and inbound paths.
+- Two paths may differ only by case. The layout does not refuse them, though Windows cannot hold both.
 
 ### 2.4 Paths and links
 
-- A **path** is a file's place in the scanned folder, with `/` between segments. It is not empty. It does not begin with `/` or `\`, and does not begin with a drive (`C:`) or a file URL (`file:`). It holds no NUL character. No segment is empty, `.` or `..`. A reader refuses anything else wherever a path is kept: a file's path, and what a link names.
-- A **link** is written as the document wrote it, relative to that document. It may climb with `..`, but it may not name an absolute place: a link that begins with `/` or `\`, with a drive, or with `file:` is refused.
+The checks below compare characters as ASCII: `A` to `Z` and `a` to `z` are the letters, and case is folded only where it says so.
+
+- A **path** is a file's place in the scanned folder, with `/` (U+002F) between segments. A reader refuses anything else wherever a path is kept, both a file's path and what a link names. A path:
+  - is not empty;
+  - does not begin with `/` or `\` (U+005C);
+  - does not begin with an ASCII letter followed by `:` (a drive, as `C:`);
+  - does not begin with `file:` in any mix of ASCII case;
+  - holds no U+0000;
+  - has no segment, between slashes, that is empty, `.` or `..`.
+- A **link** is written as the document wrote it, relative to that document. It may climb with `..`, but it may not name an absolute place. A link is refused when it begins with `/` or `\`, with a letter and `:`, or with `file:` in any case.
 - A **folder** of the location (`root`, `baseLayer`) is empty or a path.
 
 ## 3. The file
@@ -86,9 +107,11 @@ head  ( strings? records )*  paths  wires  end
 
 These are checked before anything is allocated or inflated. Each, when broken, is a refusal that says which.
 
-- A section's `rawLength` is at most 64 MiB (`MAX_SECTION`). A writer refuses facts that would need more.
+A mebibyte (MiB) is 1,048,576 bytes.
+
+- A section's `rawLength` is at most 64 MiB, 67,108,864 bytes (`MAX_SECTION`). A writer refuses facts that would need more.
 - A section's `rawLength` is at most `1032 × storedLength + 1024`, the most raw deflate can give.
-- **All the sections together inflate to at most `64 × (file length) + 1 MiB`.** This is the bound that makes what reading costs proportional to the file's size. Every fact a reader builds takes at least one uncompressed byte, so memory is bounded by the file's size. Real scans inflate about four to five times (section 11). A writer refuses to finish a file that would break it.
+- **All the sections together inflate to at most `64 × (file length in bytes) + 1,048,576`.** That is the sum of the `rawLength` of every frame, the end's included, checked as each header is hopped. This is the bound that makes what reading costs proportional to the file's size. Every fact a reader builds takes at least one uncompressed byte, so memory is bounded by the file's size. Real scans inflate about four to five times (section 11). A writer refuses to finish a file that would break it.
 - `storedLength` must not run past the file's end. A header that does is a cut, not a refusal, while reading an unfinished file.
 - Inflation stops the moment it would give more than `rawLength`, and refuses.
 
@@ -102,7 +125,7 @@ leftOut:count × ( reason:text  number:varint  detail:text )
 ```
 
 - `root` and `baseLayer` are folders (section 2.4). `extension` holds no `/`.
-- A file's document is at `root/baseLayer/<path><extension>`, the empty folders left out. For example, `.mdmd/layer-4/src/a.ts.mdmd.md`. The layout keeps the location so that the graph can give each file its document's path. A reader refuses a version other than the one it reads.
+- A file's **document path** is `root`, `baseLayer` and the file's path followed by `extension`, joined by `/`, with an empty folder and its `/` left out. For example, `.mdmd/layer-4/src/a.ts.mdmd.md`. The layout keeps the location so that the graph can give each file its document's path. A reader refuses a version other than the one it reads.
 
 ### 4.2 Strings
 
@@ -191,20 +214,21 @@ The content's name, 32 bytes (section 3.4).
 
 ## 5. The graph
 
-The graph is what the facts say about connection. A reader that gives one gives it by these rules, which are exactly those of `deriveLiveDocGraph` in this repository's engine.
+The graph is what the facts say about connection. A reader that gives one gives it by the rules below. They are the rules of `deriveLiveDocGraph` in this repository's engine, but this text is the authority.
 
-- **Each file's document** is at `docPathOf(location, path)` (section 4.1).
+- **Each file's document** is at its document path (section 4.1).
 - **The links that make edges**, in order: each dependency with a link, then, for each symbol in order, each reference in order. For a Parameters reference, each parameter's types; otherwise its types. A type makes an edge only when it has a link.
 - **An edge** carries:
   - `kind`: `re-export` for a dependency whose qualifiers hold `re-export`, otherwise `import`. For a type, its role: `returns`, `extends`, `implements`, `constraint`, or `parameter`.
   - `label`: the dependency's label or the type's name.
   - `link`, when there is one.
-  - **`to` and `toSymbol`, when the link's target is a scanned file**: the target and the anchor.
+  - **`to`, when the link's target is the path of a file of the scan**: that path. Then also `toSymbol`, the anchor, when the link has one.
   - For a type, `from`: the symbol's slug, when it has one. For a parameter, `parameter`: its name.
-  - For a dependency, `typeOnly` when its qualifiers hold `type-only`, and `basis` when they hold `contract` or `configuration` (the first of the two).
-- **Outbound** is the sorted set of every edge's `to` other than the file's own. **Inbound** is turned around from outbound, as in section 4.5.
+  - For a dependency, `typeOnly` (true) when one of its qualifiers is exactly `type-only`. And `basis`: the first of its qualifiers, in their order, that is exactly `contract` or `configuration`, when there is one.
+  - A field the rules do not give is absent.
+- **Outbound** is the set of every edge's `to` other than the file's own path, each once, in path order (section 2.3). **Inbound** is turned around from outbound, as in section 4.5, in path order.
 
-The module's `graphOf` gives the graph with each object's keys in the order this repository's `index.json` prints them. On this repository's own graph, the graph read back from the layout prints byte for byte as the `index.json` it was made from (section 11).
+The order of an object's members is not a fact. The module's `graphOf` gives them in the order this repository's `index.json` prints them, so that the two can be compared byte for byte. On this repository's own graph, the graph read back from the layout prints byte for byte as the `index.json` it was made from (section 11).
 
 ## 6. Reading
 
@@ -253,7 +277,7 @@ At the finish it sets down:
 
 Every frame is handed to the host as it is set down, the signature first. The pieces in order are the file, so a host can append them to a file or keep them in a page's storage.
 
-**The order of arrival.** The engine owes the writer files in path order. A host whose readers finish out of order holds the early ones back until their turn: the research measured that a wait of about five hundred files costs 20 to 55 MB.
+**The order of arrival.** The engine owes the writer files in path order, the order of UTF-8 bytes (section 2.3). When the two are wired, the engine's sink sorts by the module's comparator, so that there is one comparator. A host whose readers finish out of order holds the early ones back until their turn: the research measured that a wait of about five hundred files costs 20 to 55 MB.
 
 ### 7.2 Going on from a stop
 
@@ -267,7 +291,7 @@ The finished file is byte for byte the one an unstopped write gives, with the sa
 
 ## 8. The text form
 
-One fact a line. Each line is a JSON array written by JSON's own stringifying rules, with no space and with members in the order shown, and each line ends with an LF, the last one included. Members whose value is absent are left out of objects. In the layout, an absent value and an empty list are kept apart, and the text keeps them apart the same way: a missing line, or a line holding `[]`.
+One fact a line. The text is UTF-8 with no byte-order mark, and decoded strictly as section 2.2 decodes a string. Every line ends with LF (U+000A), the last one included, and no line holds a CR. Each line is one JSON value (RFC 8259) written in exactly one way, given in section 8.1. Members whose value is absent are left out of objects. In the layout, an absent value and an empty list are kept apart, and the text keeps them apart the same way: a missing line, or a line holding `[]`.
 
 ```
 [null,"format","fact-pack",1]                        provisional name; the layout's version
@@ -288,7 +312,49 @@ then for each file, in path order:
 ```
 
 - `array` and `promise` are written `true` when set and left out when not.
-- A reader of the text refuses any line that is not exactly the line written for what it says: another order of members, a space, `4.0` for `4`, `A` for `A`, `false` for an absent mark, an unknown member, a missing end line, or anything after it. So one set of facts has one text.
+- A reader of the text refuses any line that is not exactly the line written for what it says, so that one set of facts has one text. Refused, for example:
+  - another order of members, or a member the line does not have;
+  - a space anywhere outside a string;
+  - `4.0` or `4e0` for `4`;
+  - `A` for `A`;
+  - `false` for an absent mark;
+  - a missing end line, or anything after it.
+- A reader may parse each line with any JSON parser, then write the line again by section 8.1 and compare the bytes. A parser that keeps the last of two members with one name is safe this way, since the line written again has one.
+
+### 8.1 How each value is written
+
+Only these forms are written, and no other is accepted.
+
+- **Arrays and objects:** `[` and `]`, `{` and `}`, members separated by `,` alone. An object's member is its name as a string, `:`, and its value. There is no whitespace between any two tokens.
+- **`null`** and **`true`** as those four letters. `false` is never written.
+- **A number** is a whole number from 0 to 2^32 − 1, written in decimal ASCII digits:
+  - no sign;
+  - no leading zero, except `0` itself;
+  - no decimal point and no exponent.
+- **A string** is `"`, then each code point of the string in order, then `"`. Each code point is written thus:
+
+  | Code point | Written as |
+  | --- | --- |
+  | U+0022 `"` | `\"` |
+  | U+005C `\` | `\\` |
+  | U+0008 | `\b` |
+  | U+0009 | `\t` |
+  | U+000A | `\n` |
+  | U+000C | `\f` |
+  | U+000D | `\r` |
+  | every other code point from U+0000 to U+001F | `\u00` then two lowercase hexadecimal digits, for example `\u0000`, `\u000b`, `\u001f` |
+  | every other code point | itself, in UTF-8 |
+
+  "Every other code point" includes:
+  - `/`, which is never written `\/`;
+  - U+007F and the C1 controls U+0080 to U+009F;
+  - U+2028 and U+2029, which are written literally although some JavaScript engines would not have read them so before 2019;
+  - U+FEFF;
+  - every code point above U+FFFF, which is written as its four UTF-8 bytes and never as a pair of `\u` surrogate escapes.
+
+  No other escape is written: no `\u` escape of a printable character, and no uppercase hexadecimal.
+
+These are the forms ECMAScript's `JSON.stringify` writes for well-formed strings and whole numbers, which is how the module writes them. They are stated here as rules so that a reader in another language need not know that.
 - The text holds no derived fact: no edges, no wires, no document paths. Those are the graph's.
 - `grep '"target":"src/b.ts"'` finds every link that names `src/b.ts`, which is "what depends on it" by its links. `diff` of two texts is the change in the facts.
 

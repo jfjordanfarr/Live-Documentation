@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/stored-form/src/storedForm.ts`
-- Generated At: 2026-11-22T01:43:42.664Z
+- Generated At: 2026-11-22T02:13:56.266Z
 
 ## Authored
 ### Purpose
@@ -162,28 +162,31 @@ Why bytes or text were refused, or facts could not be stored. Thrown inside; ret
 
 #### `comparePaths` {#symbol-comparepaths}
 - Type: function
-- Source: [source](../../../../../packages/stored-form/src/storedForm.ts#L449)
+- Source: [source](../../../../../packages/stored-form/src/storedForm.ts#L467)
 
 ##### `comparePaths` — Summary
-The order paths are kept in: by UTF-16 code units, as JavaScript compares strings.
+The order paths are kept in: by their UTF-8 bytes, which is the order of their code points, and the order a reader in
+any language gets by comparing bytes (as git orders a tree). Computed on UTF-16 units without encoding: at the first
+unit that differs, a surrogate (a code point above U+FFFF) sorts after every other unit, which it does not by value
+alone against U+E000 to U+FFFF. Strings are well formed, so a surrogate here is always half of a pair.
 
 #### `ResumeState` {#symbol-resumestate}
 - Type: interface
-- Source: [source](../../../../../packages/stored-form/src/storedForm.ts#L937)
+- Source: [source](../../../../../packages/stored-form/src/storedForm.ts#L1028)
 
 ##### `ResumeState` — Summary
 What a writer needs to go on from a stopped write: found by {@link resumeFrom}.
 
 #### `Writer` {#symbol-writer}
 - Type: interface
-- Source: [source](../../../../../packages/stored-form/src/storedForm.ts#L949)
+- Source: [source](../../../../../packages/stored-form/src/storedForm.ts#L1040)
 
 ##### `Writer` — Summary
 A writer of one scan, handed its files one at a time in path order.
 
 #### `createWriter` {#symbol-createwriter}
 - Type: function
-- Source: [source](../../../../../packages/stored-form/src/storedForm.ts#L963)
+- Source: [source](../../../../../packages/stored-form/src/storedForm.ts#L1054)
 - Returns: [`Writer`](#symbol-writer)
 - Parameters: `head`: [`ScanHead`](#symbol-scanhead)
 
@@ -194,7 +197,7 @@ a host can keep it as it goes (a file appended to, a store in the page); the pie
 
 #### `writeScan` {#symbol-writescan}
 - Type: function
-- Source: [source](../../../../../packages/stored-form/src/storedForm.ts#L1054)
+- Source: [source](../../../../../packages/stored-form/src/storedForm.ts#L1145)
 - Parameters: `scan`: [`Scan`](#symbol-scan)
 
 ##### `writeScan` — Summary
@@ -202,7 +205,7 @@ Writes a whole scan at once: the same bytes as its files handed to {@link create
 
 #### `resumeFrom` {#symbol-resumefrom}
 - Type: function
-- Source: [source](../../../../../packages/stored-form/src/storedForm.ts#L1066)
+- Source: [source](../../../../../packages/stored-form/src/storedForm.ts#L1157)
 
 ##### `resumeFrom` — Summary
 What a stopped write left whole: every frame up to the last full section of records, the strings, paths and targets
@@ -210,14 +213,14 @@ it holds, and so where a writer goes on. A file already finished is refused, as 
 
 #### `OpenedScan` {#symbol-openedscan}
 - Type: interface
-- Source: [source](../../../../../packages/stored-form/src/storedForm.ts#L1134)
+- Source: [source](../../../../../packages/stored-form/src/storedForm.ts#L1258)
 
 ##### `OpenedScan` — Summary
 A scan opened for questions: the paths and the wires read, each file's facts read when asked for.
 
 #### `openScan` {#symbol-openscan}
 - Type: function
-- Source: [source](../../../../../packages/stored-form/src/storedForm.ts#L1153)
+- Source: [source](../../../../../packages/stored-form/src/storedForm.ts#L1277)
 
 ##### `openScan` — Summary
 Opens a finished scan by reading its head, its paths and its wires, each checked against its hash, and every
@@ -225,21 +228,21 @@ section's header. What it has not read it has not checked: {@link readScan} read
 
 #### `readScan` {#symbol-readscan}
 - Type: function
-- Source: [source](../../../../../packages/stored-form/src/storedForm.ts#L1218)
+- Source: [source](../../../../../packages/stored-form/src/storedForm.ts#L1367)
 
 ##### `readScan` — Summary
 Reads and checks a whole scan: every section against its hash, every fact, and every derived section against what it derives from.
 
 #### `TEXT_FORMAT` {#symbol-text_format}
 - Type: const
-- Source: [source](../../../../../packages/stored-form/src/storedForm.ts#L1238)
+- Source: [source](../../../../../packages/stored-form/src/storedForm.ts#L1381)
 
 ##### `TEXT_FORMAT` — Summary
 The text form's first line names the layout: provisional, as {@link SIGNATURE} is.
 
 #### `textOfScan` {#symbol-textofscan}
 - Type: function
-- Source: [source](../../../../../packages/stored-form/src/storedForm.ts#L1277)
+- Source: [source](../../../../../packages/stored-form/src/storedForm.ts#L1420)
 - Parameters: `scan`: [`Scan`](#symbol-scan)
 
 ##### `textOfScan` — Summary
@@ -247,51 +250,52 @@ The text form of a scan: one fact a line, each line a JSON array, the head first
 
 #### `textOf` {#symbol-textof}
 - Type: function
-- Source: [source](../../../../../packages/stored-form/src/storedForm.ts#L1287)
+- Source: [source](../../../../../packages/stored-form/src/storedForm.ts#L1430)
 
 ##### `textOf` — Summary
 The text form of a stored scan's bytes: read and checked whole first.
 
 #### `scanOfText` {#symbol-scanoftext}
 - Type: function
-- Source: [source](../../../../../packages/stored-form/src/storedForm.ts#L1304)
+- Source: [source](../../../../../packages/stored-form/src/storedForm.ts#L1448)
 - Returns: [`Result`](#symbol-result)
 
 ##### `scanOfText` — Summary
 Reads the text form back into a scan. Each line must be exactly the line {@link textOfScan} writes for what it
-says, so that one set of facts has one text, as it has one layout.
+says, so that one set of facts has one text, as it has one layout. Given bytes, they must be UTF-8 without a
+byte-order mark, decoded strictly; given a string, it is taken as those bytes decoded.
 
 #### `bytesOfText` {#symbol-bytesoftext}
 - Type: function
-- Source: [source](../../../../../packages/stored-form/src/storedForm.ts#L1396)
+- Source: [source](../../../../../packages/stored-form/src/storedForm.ts#L1540)
 
 ##### `bytesOfText` — Summary
 Reads the text form and writes its layout: the bytes {@link textOf} came from, when it came from bytes.
 
 #### `EdgeKind` {#symbol-edgekind}
 - Type: type
-- Source: [source](../../../../../packages/stored-form/src/storedForm.ts#L1406)
+- Source: [source](../../../../../packages/stored-form/src/storedForm.ts#L1550)
 
 ##### `EdgeKind` — Summary
 How an edge arose.
 
 #### `GraphEdge` {#symbol-graphedge}
 - Type: interface
-- Source: [source](../../../../../packages/stored-form/src/storedForm.ts#L1409)
+- Source: [source](../../../../../packages/stored-form/src/storedForm.ts#L1553)
 
 ##### `GraphEdge` — Summary
 One reference a file makes, with the scanned file it lands on, if any.
 
 #### `GraphFile` {#symbol-graphfile}
 - Type: interface
-- Source: [source](../../../../../packages/stored-form/src/storedForm.ts#L1422)
+- Source: [source](../../../../../packages/stored-form/src/storedForm.ts#L1566)
 
 ##### `GraphFile` — Summary
 One file of the graph: its facts without what its links name, and its edges and wires.
 
 #### `Graph` {#symbol-graph}
 - Type: interface
-- Source: [source](../../../../../packages/stored-form/src/storedForm.ts#L1440)
+- Source: [source](../../../../../packages/stored-form/src/storedForm.ts#L1584)
 - Extends: [`Location`](#symbol-location)
 
 ##### `Graph` — Summary
@@ -299,7 +303,7 @@ The graph of a scan: its location and every file keyed by path, in path order.
 
 #### `docPathOf` {#symbol-docpathof}
 - Type: function
-- Source: [source](../../../../../packages/stored-form/src/storedForm.ts#L1447)
+- Source: [source](../../../../../packages/stored-form/src/storedForm.ts#L1591)
 - Parameters: `location`: [`Location`](#symbol-location)
 
 ##### `docPathOf` — Summary
@@ -307,7 +311,7 @@ Where a file's document is: the location's root, its base layer, and the path wi
 
 #### `graphOf` {#symbol-graphof}
 - Type: function
-- Source: [source](../../../../../packages/stored-form/src/storedForm.ts#L1464)
+- Source: [source](../../../../../packages/stored-form/src/storedForm.ts#L1608)
 - Returns: [`Graph`](#symbol-graph)
 - Parameters: `scan`: [`Scan`](#symbol-scan)
 

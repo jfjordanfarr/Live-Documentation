@@ -3,7 +3,7 @@ import { Worker } from "node:worker_threads";
 import { constants, deflateRawSync } from "node:zlib";
 import { describe, expect, it } from "vitest";
 
-import { writeScan } from "./storedForm";
+import { writeScan } from "../src/storedForm";
 import { everyFact, seededScan } from "./testScans";
 
 /** What became of one mutant. */
@@ -81,7 +81,7 @@ describe("the stored form's reader, against mutants of valid files", () => {
   it(
     "returns facts or a refusal for every mutant, in bounded time and memory",
     async () => {
-      const findings = await fuzz(pathToFileURL(`${__dirname}/storedForm.ts`).href, await bases(), bombOf(), 0, 800);
+      const findings = await fuzz(pathToFileURL(`${__dirname}/../src/storedForm.ts`).href, await bases(), bombOf(), 0, 800);
       expect(findings.length).toBe(800);
       expect(faults(findings)).toEqual([]);
       // Every kind of mutation was made, and most were refused: the fuzzer reached the reader's checks.

@@ -8,7 +8,7 @@
  * @module
  */
 
-import type { Scan, StoredFile, StoredType } from "./storedForm";
+import type { Scan, StoredFile, StoredType } from "../src/storedForm";
 
 /** A scan of three files that holds every field the layout has, each mark set and unset somewhere. */
 export function everyFact(): Scan {

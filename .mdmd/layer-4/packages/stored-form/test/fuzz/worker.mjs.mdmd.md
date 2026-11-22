@@ -1,10 +1,10 @@
-# `packages/stored-form/src/fuzz/worker.mjs`
+# `packages/stored-form/test/fuzz/worker.mjs`
 
 ## Metadata
 - Layer: 4
-- Archetype: implementation
-- Code Path: `packages/stored-form/src/fuzz/worker.mjs`
-- Generated At: 2026-11-22T01:36:47.578Z
+- Archetype: test
+- Code Path: `packages/stored-form/test/fuzz/worker.mjs`
+- Generated At: 2026-11-22T02:13:56.297Z
 
 ## Authored
 ### Purpose
