@@ -1,0 +1,19 @@
+npx tsx flow-pins.mts, run from the repository root at e0b057f06 after npm run e2e:bundles, 2026-11-23:
+
+| Directory | Pins | Moved today | Real conflicts | Column needed | Loose joined | Within reach |
+| --- | --- | --- | --- | --- | --- | --- |
+| `packages/explorer/src/client/views/localView` | 94 | 38 | 0 | 3 | 0 | 91 |
+| `packages/explorer/src/client` | 25 | 16 | 0 | 10 | 3 | 13 |
+| `packages/explorer/src/client/views` | 57 | 26 | 13 | 1 | 0 | 43 |
+| `scripts` | 11 | 0 | 0 | 0 | 3 | 8 |
+| `scripts/live-docs` | 20 | 14 | 0 | 13 | 6 | 7 |
+| `packages/engine/src/live-docs` | 42 | 8 | 8 | 0 | 0 | 34 |
+| All | 249 | 102 | 21 | 27 | 12 | 196 |
+
+Real conflicts, the first few:
+- packages/explorer/src/client/views: pin forceGraphData.ts brings packages/explorer/src/client/types.ts, which must stand right of column 5 and left of column 1
+- packages/explorer/src/client/views: pin forceGraphEmphasis.ts brings packages/explorer/src/client/types.ts, which must stand right of column 5 and left of column 1
+- packages/explorer/src/client/views: pin forceGraphLayout.test.ts brings packages/explorer/src/client/types.ts, which must stand right of column 5 and left of column 1
+- packages/explorer/src/client/views: pin forceGraphLayout.ts brings packages/explorer/src/client/types.ts, which must stand right of column 5 and left of column 1
+- packages/explorer/src/client/views: pin forceGraphScope.ts brings packages/explorer/src/client/types.ts, which must stand right of column 5 and left of column 1
+- packages/explorer/src/client/views: pin forceGraphShells.ts brings packages/explorer/src/client/types.ts, which must stand right of column 5 and left of column 1
