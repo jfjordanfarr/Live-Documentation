@@ -59,7 +59,9 @@ Source inventory, maintained by the root agent. The October 31 session that ende
 
 ## November 22, session 1 — Claude Code, Fable 5.2
 
-- [Maintained root record](2026-11-22/2026-11-22.1.record.md): opened by the owner at 00:46 UTC on November 22 (7:46 PM on November 21 by their clock), eight minutes after the November 21 chat's closing message, as "the 11/22/26 dev day". Begins with the startup read and the close of the November 21 chat (its closing message from its log, its summary, the narrative, this inventory, Memory and the work items brought level, its finished worktrees and scratch removed). On the branch `day/2026-11-22`. In progress; no summary yet.
+- [Maintained root record](2026-11-22/2026-11-22.1.record.md): opened by the owner at 00:46 UTC on November 22 (7:46 PM on November 21 by their clock), eight minutes after the November 21 chat's closing message, as "the 11/22/26 dev day". Begins with the startup read and the close of the November 21 chat (its closing message from its log, its summary, the narrative, this inventory, Memory and the work items brought level, its finished worktrees and scratch removed). On the branch `day/2026-11-22`. Twenty-one owner turns; one root throughout, its context compacted six times, twice by the harness; stopped from 07:41 to 13:42 UTC on November 22 by the account's usage limit. The owner asked for the close at 00:19 UTC on November 23, with `main` not moved; root's closing message is to be filed by the next session.
+- [Linked summary](Summarized/2026-11-22.1.SUMMARIZED.md): written by the session's root on November 23 at the owner's word to close, from the whole record as the owner's editor attached it to their last turn. A sixth value, a mirror button, an engine that reads each file once, a stored form built, broken by review and rebuilt as a view, and a landing that stopped twice at the browser's whole suite; nothing of the day on `main`.
+- Harness export, `2026-11-22/2026-11-22-134013-let-us-begin-the-112226-dev-day-no-summary-has.txt`: exported by the owner from the Claude Code extension's UI, first at 13:40 UTC on November 22 (the time in its name; 562,374 bytes then) and saved again under the same name. **Untracked at the session's close, and the owner's to commit, so it is not linked here.** As it stood at 00:19:28 UTC on November 23: **859,536 bytes**, SHA-256 **`4070b2b4ba6a9029ad40f1680d0b23cd3610dbeb384bcb037bcf0c655f913a50`**, 16,294 lines of terminal text, 26 of them at the owner's prompt mark. It begins with Turn 1 and ends at the owner's `/compact` before Turn 21; it holds Turns 1 to 13 and 16 to 20 and four `/compact` commands of the owner's. **It does not hold Turns 14 and 15** nor the stretch from root's reply to Turn 13 to the evening, cut where the harness compacted the idle chat at 18:09 UTC; the record holds both turns from the session's log. Searched for words of each turn by the session's root, not read as prose. The next session records the size and hash of what is committed.
 - Probes of the day, each with a README:
   - [a probe page the owner opens from disk on Edge](2026-11-22/Probes/local-app/README.md), to learn whether a local copy can be launched like an app and be given its folders back, with the page itself, its check and two pictures;
   - [the author's word](2026-11-22/Probes/authors-word/README.md): the C# compiler's resolution of every documentation reference as an oracle, counted on DNN and mojoPortal, with three ways the facts could carry the relation and how each other language's own tool would be asked;
@@ -68,7 +70,15 @@ Source inventory, maintained by the root agent. The October 31 session that ende
   - [parity](2026-11-22/Probes/parity/README.md): what was run for each row of the table of the page against the command line, the pipeline's measurements, and 24 scored runs of agents given the files alone or the command line, each with its commands and its answer;
   - [the hand reading of 222 PowerShell wires as a test](2026-11-22/Probes/powershell-extract/README.md): the extract of four public repositories and what it keeps, the reader's count against the judges, four readings of every row set side by side, and PowerShell's own answer on small files of the builder's;
   - [the engine reading through its host](2026-11-22/Probes/engine-hosts/README.md): reads for each file, time and peak memory before and after on DNN, the probes a scan makes counted by what a listing could answer, with the scripts that measured them;
-  - [the stored form read by two strangers](2026-11-22/Probes/stored-form-second-reader/README.md): a reader in Python and one in Go, each written from the specification alone by a headless run in a sandbox, set beside the module on files they had not seen, with their programs, their questions and every disagreement classed.
+  - [the stored form read by two strangers](2026-11-22/Probes/stored-form-second-reader/README.md): a reader in Python and one in Go, each written from the specification alone by a headless run in a sandbox, set beside the module on files they had not seen, with their programs, their questions and every disagreement classed;
+  - [the stored form, reviewed by someone who did not build it](2026-11-22/Probes/stored-form-review/README.md): one guarantee broken five ways, with the failing cases and what was tried and held;
+  - [the engine's independent review](2026-11-22/Probes/engine-review/README.md): the day's changes to how the product reads code attacked by inputs, in four passes;
+  - [the still-picture instrument's cost, and a change of look at the day's start and end](2026-11-22/Probes/instrument-and-look-cost/README.md);
+  - [two browser cases that failed on the day's tip, parted from the day's merges](2026-11-22/Probes/lanes-and-first-picture/README.md);
+  - [six cases the first landing failed, and which was wrong in each, the page or what read it](2026-11-22/Probes/gate-six-cases/README.md);
+  - [why the hidden-map case ran out of time](2026-11-22/Probes/hidden-map-search/README.md): the same search measured on two days' code and two days' pictures;
+  - [the second landing's three 3D failures](2026-11-22/Probes/landing2-3d/README.md): the settle's trace, the press's cause, and the press and first frame on the day before's build against the day's;
+  - [the landing's four stages as one script](2026-11-22/Probes/landing/README.md), with the logs and failed cases of the two runs that stopped, kept for the next dev day's landing.
 
 ## November 21, session 1 — Claude Code, Fable 5.2
 
@@ -188,6 +198,14 @@ The evidence collections are [tap reading](2026-11-05/Screenshots/tap-reading/RE
 Each day's pictures of the built Explorer, as the index `Screenshots/README.md` listed them until 2026-11-18, when it was carried into the month inventories. The convention, and the owner's standing request behind it, are in [the archive's README](../../README.md#where-things-are). Newest first.
 
 ### 2026-11-22
+
+[The README's pictures](../../../Gallery/README.md): kept in the Gallery and not here, since one command retakes them: a lead picture and eighteen rows of languages and frameworks, taken on November 22 and 23 as the shipped arrival leaves each subject, faults included.
+
+[The default arrival, and a wire's words entered](2026-11-22/Screenshots/arrival-default/README.md): the arrival the owner chose through its milestones, with the numbers of the press of 3D and of a view put away without being drawn.
+
+[The mirrored 2D Local Map](2026-11-22/Screenshots/mirror/README.md): matched pairs at rest, each mirrored picture the true mirror of its pair, then the turn, the slide and the cut as strips.
+
+[Which bodies a pinned 3D picture veils](2026-11-22/Screenshots/veil-order-pinned/README.md): three matched pictures round a pin. [Tuning's Drag](2026-11-22/Screenshots/drag-swings/README.md): holding its ground beside swinging. [Where the budget of files drawn buys frames](2026-11-22/Screenshots/budget-frames/README.md): DNN at two budgets, unfinished.
 
 [The 3D start's veil, three ways](2026-11-22/Screenshots/veil-order/README.md): this repository with nothing asked under the rule as it was, with the smallest groups veiled first, and with nothing veiled at twice the budget, each at rest and turned twice, with frame times on a card and on a slowed machine.
 

@@ -1,0 +1,33 @@
+  5 failed
+    [chromium] › tests/e2e/force-graph-discovery.spec.ts:70:5 › with nothing asked about, the connections layout starts at the archipelago, every group's seed and nothing grown; a click on a seed pins it and grows its group, the other seeds dimmed
+    [chromium] › tests/e2e/force-graph-focus.spec.ts:131:5 › a focused URL centers its node, direct clicks pin it, and More opens its details
+    [chromium] › tests/e2e/force-graph-focus.spec.ts:262:5 › the 2D and 3D presses return at once, and the transition still folds the cards, peels the membranes and carries the names
+    [chromium] › tests/e2e/overview-files.spec.ts:348:7 › a pin made while files only is showing gives, back at reading size, the cards, rows, pins and wires the same pin gives made at reading size: a whole-file pin, from the card's More
+    [chromium] › tests/e2e/still-picture-reference.spec.ts:111:5 › a card stood across a wire's middle is read as covering it, the wire's own band running there
+  7 skipped
+  726 passed (55.6m)
+
+Browser suite, second pass: the cases that need the machine to themselves, one worker
+The server at http://localhost:34405 serves this checkout's dist/explorer, and its bundles were built together.
+WebGL in this run is drawn by: ANGLE (Microsoft Corporation, D3D12 (NVIDIA GeForce RTX 3090), OpenGL ES 3.1)
+
+Running 3 tests using 1 worker
+(node:1411848) [THREE_CJS_DEPRECATED] DeprecationWarning: `require("three")` is deprecated and will be removed.
+Replace `const THREE = require("three")` with `import * as THREE from "three"`.
+(Use `node --trace-deprecation ...` to show where the warning was created)
+
+  ✓  1 [chromium] › tests/e2e/history-scrubber.spec.ts:399:5 › a deleted file can be found, read and shared in its own lifetime, and remains absent on return to today @alone (22.9s)
+  ✓  2 [chromium] › tests/e2e/history-scrubber.spec.ts:726:5 › the address carries the commit and the authors toggle, a link to a moment opens on it, and leaving 3D returns the picture to today @alone (24.1s)
+  ✓  3 [chromium] › tests/e2e/local-map-branches.spec.ts:288:5 › a retained exploration threads skipped references through lanes: nothing over the top, nothing across a card, every wire forward @alone (29.6s)
+
+  3 passed (1.3m)
+browser-lane: released after 3422.9 s, exit 1
+
+The five again, each alone at one worker (21:48 to 21:50 UTC):
+  4 failed
+    [chromium] › tests/e2e/force-graph-discovery.spec.ts:70:5 › with nothing asked about, the connections layout starts at the archipelago, every group's seed and nothing grown; a click on a seed pins it and grows its group, the other seeds dimmed
+    [chromium] › tests/e2e/force-graph-focus.spec.ts:262:5 › the 2D and 3D presses return at once, and the transition still folds the cards, peels the membranes and carries the names
+    [chromium] › tests/e2e/overview-files.spec.ts:348:7 › a pin made while files only is showing gives, back at reading size, the cards, rows, pins and wires the same pin gives made at reading size: a whole-file pin, from the card's More
+    [chromium] › tests/e2e/still-picture-reference.spec.ts:111:5 › a card stood across a wire's middle is read as covering it, the wire's own band running there
+  1 passed (1.7m)
+browser-lane: released after 101.2 s, exit 1

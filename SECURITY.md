@@ -59,6 +59,8 @@ npm ls --parseable --all --omit=dev | node -e "for (const dir of require('fs').r
 npm audit
 ```
 
+Installing from a clone, as the README does, also installs the development dependencies, and two of those run install scripts on every platform. `tree-sitter-cli` (`node install.js`) downloads the tree-sitter command-line binary for your platform from `github.com/tree-sitter/tree-sitter/releases`; it is used only by `packages/engine/grammars/powershell/build.sh`, to rebuild the PowerShell grammar this repository commits. `unrs-resolver`, which the linter's import resolver depends on, runs `napi-postinstall unrs-resolver <version> check`, which checks that its native binding is present. The lockfile also marks `fsevents`, installed only on macOS, as having an install script; it was not examined here. Leave `--omit=dev` out of the command above to list them all, and `npm ci --ignore-scripts` skips them all.
+
 Dependabot monitors the lockfile for known vulnerabilities.
 
 ## Reporting a vulnerability

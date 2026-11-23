@@ -1,0 +1,31 @@
+  24 failed
+    [chromium] › tests/e2e/card-ladder-boxes.spec.ts:367:5 › on this repository's still picture, every press out keeps each held part inside its box and names at one size
+    [chromium] › tests/e2e/card-ladder-boxes.spec.ts:444:5 › a picture drawn at any zoom lays out every card, row and pin as the picture drawn at reading scale
+    [chromium] › tests/e2e/card-ladder-boxes.spec.ts:469:5 › in the three looks too, a picture drawn at any zoom lays out every card, row and pin as the picture drawn at reading scale
+    [chromium] › tests/e2e/card-ladder-boxes.spec.ts:491:5 › walking back in from the last step, every press shows the band, the step and the picture it showed on the way out
+    [chromium] › tests/e2e/card-reading.spec.ts:60:7 › taps on Walk and walk open and fold each description with a still name and per-state geometry under click anchoring
+    [chromium] › tests/e2e/card-reading.spec.ts:60:7 › taps on Walk and walk open and fold each description with a still name and per-state geometry under hover anchoring
+    [chromium] › tests/e2e/card-reading.spec.ts:227:5 › tapping Walk and walk opens each, folding both restores the same picture, and the file's name opens and folds everything
+    [chromium] › tests/e2e/card-reading.spec.ts:267:5 › the portrait reading frame returns from overview and follows a phone resize without shrinking text
+    [chromium] › tests/e2e/force-graph-focus.spec.ts:262:5 › the 2D and 3D presses return at once, and the transition still folds the cards, peels the membranes and carries the names
+    [chromium] › tests/e2e/force-graph-focus.spec.ts:371:5 › manual pan survives a 2D and 3D round trip without restarting the settled layout
+    [chromium] › tests/e2e/history-emphasis.spec.ts:471:7 › inside veils › a change inside a veiled bubble lights that bubble and none of its veiled siblings
+    [chromium] › tests/e2e/history-emphasis.spec.ts:488:7 › inside veils › a body veiled whole lights for a change in it, and the body beside it does not
+    [chromium] › tests/e2e/labels-and-controls.spec.ts:107:5 › the toolbar's groups stand parted by rules, each choice group with one choice on, and the 3D canvas carries no hint
+    [chromium] › tests/e2e/layout-lab.spec.ts:20:7 › the layout lab reproduces the page to the pixel: repository, five files
+    [chromium] › tests/e2e/local-map-learning.spec.ts:175:7 › phone reading › touch taps retain command activation and a stationary card hold opens its actions
+    [chromium] › tests/e2e/local-map-overview.spec.ts:74:5 › the overview band joins each pair of files by one wire each way, hub to hub, and coming back in restores the wires
+    [chromium] › tests/e2e/local-map-packing.spec.ts:32:7 › packing, advanced edits, export and sharing remain coherent across representations: packages/generator/src/generator.ts
+    [chromium] › tests/e2e/local-map-packing.spec.ts:32:7 › packing, advanced edits, export and sharing remain coherent across representations: Contracts/IPaymentService.cs
+    [chromium] › tests/e2e/local-map-packing.spec.ts:107:5 › packing changes keep the selected file in place through 2D and 3D motion
+    [chromium] › tests/e2e/local-map-pins.spec.ts:188:5 › ancestor disclosure stays readable after zooming and opens an ancestor without changing file pins
+    [chromium] › tests/e2e/local-map-tone.spec.ts:55:5 › a card's text stands in three tones, names leading the prose, each legible against the card
+    [chromium] › tests/e2e/overview-files.spec.ts:348:7 › a pin made while files only is showing gives, back at reading size, the cards, rows, pins and wires the same pin gives made at reading size: a whole-file pin, from the card's More
+    [chromium] › tests/e2e/still-picture.spec.ts:374:9 › still pictures of the estate, five files › Local Map, retained
+    [chromium] › tests/e2e/wire-answers.spec.ts:302:7 › Wire Answers › the arrow keys go the way they point on the page, in a picture as laid out and in one mirrored
+  7 skipped
+  699 passed (1.0h)
+  2 failed
+    [chromium] › tests/e2e/local-map-branches.spec.ts:287:5 › a retained exploration threads skipped references through lanes: nothing over the top, nothing across a card, every wire forward @alone
+    [chromium] › tests/e2e/local-map-hidden.spec.ts:51:5 › the search pauses while another view is shown, and a return to the unchanged picture keeps it and resumes the search @alone
+  3 passed (3.1m)

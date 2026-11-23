@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `tests/integration/programs/compiler-differences.json`
-- Generated At: 2026-11-21T05:42:36.183Z
+- Generated At: 2026-11-23T00:34:57.561Z
 
 ## Authored
 ### Purpose
@@ -30,3 +30,8 @@ The ledger of every difference between the readers and the compiler on the sampl
 ### Dependencies
 _No dependencies documented yet_
 <!-- LIVE-DOC:END Dependencies -->
+
+<!-- LIVE-DOC:BEGIN Cited By -->
+### Cited By
+- [`README.md`](../../../../../README.md)
+<!-- LIVE-DOC:END Cited By -->
