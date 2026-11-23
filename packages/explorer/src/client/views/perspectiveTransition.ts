@@ -472,14 +472,21 @@ function* visualCopySteps(root: HTMLElement, deep = true, seen?: Box, anchor?: T
   // display:none contributes neither layout nor pixels to this frozen picture. Do not expand an invisible subtree.
   // visibility:hidden and opacity:0 still occupy layout, so they retain the full copy below.
   if (style.display === "none") { copy.style.cssText = "display:none"; return copy; }
-  // Read the native length once and preserve every computed property in one parsed declaration block.
+  // Read the native length once and preserve every computed property in one parsed declaration block. A custom property
+  // is left out, since nothing a copy draws reads one: every property that used it is copied with its value already
+  // worked out, and a copy keeps no class, so no stylesheet rule or pseudo-element draws on it. Copied, the 323 of each
+  // element's 795 made working out the copies' style, which the transition's first frame waits for, cost more than twice
+  // as much; without them the layer is the same pixel for pixel (2026-11-23, Probes/first-frame). One thing does read
+  // them and is owed: a copy keeps its original's `animation-name`, and the `local-look-*` keyframes read custom
+  // properties, so a copy made within 160 ms of a change of the map's look replays that animation from their fallbacks.
   const length = style.length;
-  const declarations = new Array<string>(length);
+  const declarations: string[] = [];
   for (let property = 0; property < length; property++) {
     const name = style.item(property);
+    if (name.startsWith("--")) continue;
     // A card is copied from the view shown or the view held, neither of them inert since 2026-11-22, but behind the modal
     // reader every view is; the copy is of the picture as it was pressed, live, and stands in a layer that is inert itself.
-    declarations[property] = `${name}: ${name === "interactivity" ? "auto" : style.getPropertyValue(name)};`;
+    declarations.push(`${name}: ${name === "interactivity" ? "auto" : style.getPropertyValue(name)};`);
   }
   copy.style.cssText = declarations.join("");
   if (root instanceof HTMLCanvasElement && copy instanceof HTMLCanvasElement) copy.getContext("2d")?.drawImage(root, 0, 0);

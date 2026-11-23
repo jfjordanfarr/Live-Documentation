@@ -1,0 +1,72 @@
+// Summarize a Chromium trace between probe:transition-start (or probe:press) and probe:first-frame on the renderer main thread.
+import fs from "node:fs";
+
+const file = process.argv[2];
+const from = process.argv[3] ?? "probe:transition-start";
+const raw = JSON.parse(fs.readFileSync(file, "utf8"));
+const events = Array.isArray(raw) ? raw : raw.traceEvents;
+const threadNames = new Map();
+for (const e of events) if (e.ph === "M" && e.name === "thread_name") threadNames.set(`${e.pid}:${e.tid}`, e.args.name);
+const mark = name => events.find(e => e.name === name && e.cat?.includes("user_timing"));
+const start = mark(from), first = mark("probe:first-frame"), press = mark("probe:press");
+if (!start || !first) { console.log("marks missing", !!start, !!first); process.exit(1); }
+const key = `${start.pid}:${start.tid}`;
+const t0 = start.ts, t1 = process.argv[4] ? start.ts + Number(process.argv[4]) * 1000 : first.ts, tp = press?.ts ?? t0;
+console.log(`${file.split("/").pop()}: ${from} -> first-frame ${((t1 - t0) / 1000).toFixed(1)} ms (press -> start ${((t0 - tp) / 1000).toFixed(1)})`);
+const main = events.filter(e => `${e.pid}:${e.tid}` === key && e.ph === "X" && e.ts + (e.dur ?? 0) > t0 && e.ts < t1)
+  .sort((a, b) => a.ts - b.ts || b.dur - a.dur);
+// Self time by name, nesting by containment.
+const stack = [], self = new Map(), detail = [];
+for (const e of main) {
+  while (stack.length && stack.at(-1).ts + stack.at(-1).dur <= e.ts) stack.pop();
+  const clipped = Math.min(e.ts + e.dur, t1) - Math.max(e.ts, t0);
+  if (stack.length) { const p = stack.at(-1); p.childTime = (p.childTime ?? 0) + clipped; }
+  e.clipped = clipped; e.depth = stack.length; stack.push(e);
+}
+for (const e of main) self.set(e.name, (self.get(e.name) ?? 0) + e.clipped - (e.childTime ?? 0));
+console.log("self time by event (ms):", [...self].sort((a, b) => b[1] - a[1]).slice(0, 14).map(([n, t]) => `${n} ${(t / 1000).toFixed(1)}`).join("; "));
+const interesting = new Set(["RunTask", "FunctionCall", "EvaluateScript", "UpdateLayoutTree", "Layout", "Paint", "PrePaint", "Layerize", "UpdateLayer", "CompositeLayers", "Commit", "BeginMainThreadFrame", "FireAnimationFrame", "TimerFire", "HitTest", "ParseAuthorStyleSheet", "MajorGC", "MinorGC", "V8.GC_SCAVENGER", "BlinkGC.AtomicPhase", "ScheduleStyleRecalculation", "InvalidateLayout", "v8.callFunction", "RecalculateStyles", "UpdateLayerTree", "Document::updateStyle", "ProxyMain::BeginMainFrame", "ThreadControllerImpl::RunTask", "ThreadPool_RunTask", "v8.run", "ThreadProxy::BeginMainFrame"]);
+for (const e of main) {
+  if (e.dur < Number(process.argv[5] ?? 2) * 1000 || !(interesting.has(e.name) || process.argv[6] === "all")) continue;
+  const a = e.args ?? {};
+  const info = e.name === "UpdateLayoutTree" ? ` elements=${a.elementCount}` : e.name === "Layout" ? ` dirty=${a.beginData?.dirtyObjects} total=${a.beginData?.totalObjects}` : e.name === "FunctionCall" ? ` ${a.data?.functionName ?? ""} ${a.data?.url?.split("/").pop() ?? ""}:${a.data?.lineNumber}:${a.data?.columnNumber}` : "";
+  const st = a.beginData?.stackTrace?.[0] ?? a.data?.stackTrace?.[0];
+  const where = st ? ` at ${st.functionName}@${st.url?.split("/").pop()}:${st.lineNumber}:${st.columnNumber}` : "";
+  console.log(`${"  ".repeat(e.depth)}+${((e.ts - t0) / 1000).toFixed(1)} ${e.name} ${(e.dur / 1000).toFixed(1)}ms${info}${where}`);
+}
+// CPU profile: self time by function between the marks.
+const profiles = new Map();
+for (const e of events) {
+  if (e.name === "Profile" && `${e.pid}` === `${start.pid}`) profiles.set(e.id, { start: e.args.data.startTime, nodes: new Map(), samples: [], deltas: [] });
+}
+for (const e of events) {
+  if (e.name !== "ProfileChunk" || !profiles.has(e.id)) continue;
+  const p = profiles.get(e.id), d = e.args.data;
+  for (const n of d.cpuProfile?.nodes ?? []) p.nodes.set(n.id, n);
+  p.samples.push(...(d.cpuProfile?.samples ?? [])); p.deltas.push(...(d.timeDeltas ?? []));
+}
+const fn = new Map();
+for (const p of profiles.values()) {
+  let t = p.start;
+  for (let i = 0; i < p.samples.length; i++) {
+    t += p.deltas[i];
+    if (t < t0 || t > t1) continue;
+    const dt = (p.deltas[i + 1] ?? 0);
+    const n = p.nodes.get(p.samples[i]);
+    if (!n) continue;
+    const cf = n.callFrame;
+    const k = `${cf.functionName || "(anon)"} ${cf.url?.split("/").pop() ?? ""}:${cf.lineNumber}:${cf.columnNumber}`;
+    fn.set(k, (fn.get(k) ?? 0) + dt);
+  }
+}
+console.log("profile self (ms):", [...fn].sort((a, b) => b[1] - a[1]).slice(0, 14).map(([n, t]) => `${n} ${(t / 1000).toFixed(1)}`).join("; "));
+// Other threads busy in the interval (compositor, raster, GPU).
+const busy = new Map();
+for (const e of events) {
+  if (e.ph !== "X" || `${e.pid}:${e.tid}` === key || !e.dur) continue;
+  if (e.ts + e.dur <= t0 || e.ts >= t1) continue;
+  if (!["ThreadControllerImpl::RunTask", "RunTask", "TaskGraphRunner::RunTask"].includes(e.name)) continue;
+  const name = `${threadNames.get(`${e.pid}:${e.tid}`) ?? e.tid}`;
+  busy.set(name, (busy.get(name) ?? 0) + Math.min(e.ts + e.dur, t1) - Math.max(e.ts, t0));
+}
+console.log("other threads' tasks (ms):", [...busy].sort((a, b) => b[1] - a[1]).slice(0, 8).map(([n, t]) => `${n} ${(t / 1000).toFixed(1)}`).join("; "));

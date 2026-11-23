@@ -50,7 +50,7 @@ test("hover isolates within retained files, and a row of a whole file narrows th
   await expect(page.locator('.local-directory-band[data-directory="tests/integration/programs/typescript/rosetta/src"]')).toBeVisible();
 });
 
-test("perspective copies preserve every computed SVG declaration without live identifiers or hooks", async ({ page }) => {
+test("perspective copies preserve every computed SVG declaration but custom properties, without live identifiers or hooks", async ({ page }) => {
   await page.goto(`/?view=local&node=${ROOT}helpers.ts`);
   // At rest, so that the reading and the copy see the map at one band: the card ladder declares some of a card's custom
   // properties only from the middle band out (--title-room-h, --title-scale), and the arrival passes through the middle
@@ -62,6 +62,9 @@ test("perspective copies preserve every computed SVG declaration without live id
     source.id = "transition-source-marker";
     source.setAttribute("data-transition-source", "marker");
     source.setAttribute("onclick", "void 0");
+    // A value that holds the punctuation of a declaration block, on a property a copy carries; and a custom property,
+    // which a copy does not carry (below).
+    source.style.fontFamily = '"left;right:still"';
     source.style.setProperty("--snapshot-punctuation", '"left;right:still"');
     source.style.strokeDasharray = "1px, 2px";
     const computed = getComputedStyle(source);
@@ -70,13 +73,15 @@ test("perspective copies preserve every computed SVG declaration without live id
     // Normalize all declarations through CSSOM, as the original freeze did. Computed aliases can change spelling
     // when assigned (for example app-region), so comparing raw computed strings would report false differences.
     for (const name of names) reference.style.setProperty(name, computed.getPropertyValue(name));
-    // The card ladder writes the map's zoom state as custom properties on the map at each of its steps (2026-11-05;
-    // stepped since 2026-11-06), and every element inherits them; they are the map's state at the moment of a reading,
-    // not the SVG's own declarations, so the copy is compared without them.
-    const zoomState = new Set(["--text-scale", "--control-scale", "--name-growth", "--name-scale", "--node-control-scale"]);
-    return Object.fromEntries(names.filter(name => !zoomState.has(name)).map(name => [name, reference.style.getPropertyValue(name)]));
+    // A copy carries no custom property since 2026-11-23: nothing it draws reads one (every property that used one is
+    // copied with its value worked out, and a copy keeps no class for a stylesheet's rule or a pseudo-element to draw
+    // on), and the 323 of each element's 795 made the style the transition's first frame waits for cost more than
+    // twice as much, with the layer the same pixel for pixel without them (Probes/first-frame of that day). Until then
+    // this case asked for every custom property but the five of the map's zoom state.
+    return Object.fromEntries(names.filter(name => !name.startsWith("--")).map(name => [name, reference.style.getPropertyValue(name)]));
   });
-  expect(expected["--snapshot-punctuation"]).toBe('"left;right:still"');
+  expect(expected["font-family"]).toBe('"left;right:still"');
+  expect(Object.keys(expected).length, "the computed declarations a copy is compared by").toBeGreaterThan(300);
   await page.getByRole("button", { name: "3D", exact: true }).click();
   const bridge = page.locator(".perspective-transition[data-graph-files]");
   await expect(bridge).toBeVisible();
@@ -84,6 +89,8 @@ test("perspective copies preserve every computed SVG declaration without live id
   const actual = await ghost.locator('button[aria-label="Pin helpers.ts"] svg path').evaluate((element, names) =>
     Object.fromEntries(names.map(name => [name, (element as SVGElement).style.getPropertyValue(name)])), Object.keys(expected));
   expect(actual).toEqual(expected);
+  expect(await ghost.locator('button[aria-label="Pin helpers.ts"] svg path').evaluate(element => Array.from((element as SVGElement).style).filter(name => name.startsWith("--"))),
+    "the custom properties a copy carries").toEqual([]);
   await expect(bridge).toHaveAttribute("aria-hidden", "true");
   await expect(bridge).toHaveAttribute("inert", "");
   await expect(bridge.locator("[id], [data-transition-source], [onclick]")).toHaveCount(0);

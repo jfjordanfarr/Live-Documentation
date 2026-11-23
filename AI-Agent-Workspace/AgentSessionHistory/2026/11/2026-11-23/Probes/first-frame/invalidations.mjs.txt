@@ -1,0 +1,17 @@
+// Print the scheduled invalidations (not inline style ones) between two offsets from probe:transition-start, with their stack.
+import fs from "node:fs";
+const [file, fromMs = "-500", toMs = "800"] = process.argv.slice(2);
+const raw = JSON.parse(fs.readFileSync(file, "utf8"));
+const events = Array.isArray(raw) ? raw : raw.traceEvents;
+const start = events.find(e => e.name === "probe:transition-start" && e.cat?.includes("user_timing"));
+const first = events.filter(e => e.name === "probe:first-frame" && e.cat?.includes("user_timing")).map(e => Math.round((e.ts - start.ts) / 1000));
+console.log("first-frame at", first);
+for (const e of events) {
+  if (e.name !== "ScheduleStyleInvalidationTracking" && e.name !== "StyleRecalcInvalidationTracking") continue;
+  const at = (e.ts - start.ts) / 1000;
+  if (at < Number(fromMs) || at > Number(toMs)) continue;
+  const d = e.args?.data ?? {};
+  if (d.changedAttribute === "style" || d.reason === "Inline CSS style declaration was mutated" || d.reason === "Related style rule") continue;
+  const st = (d.stackTrace ?? []).slice(0, 4).map(f => `${f.functionName}@${f.lineNumber}:${f.columnNumber}`).join(" < ");
+  console.log(`+${at.toFixed(1)} ${e.name} ${d.nodeName} reason=${d.reason ?? ""} class=${d.changedClass ?? ""} attr=${d.changedAttribute ?? ""} pseudo=${d.changedPseudo ?? ""} id=${d.changedId ?? ""} set=${JSON.stringify(d.invalidationSet ?? d.invalidationList ?? "").slice(0, 160)} ${st}`);
+}
