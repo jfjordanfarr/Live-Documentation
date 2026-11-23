@@ -1,0 +1,75 @@
+// What a pin of one file does to the columns of an opened directory's own cards at Flow, measured on the pure modules
+// with no browser: each directory below opened alone, each of its files pinned whole in turn (`retainFile`), and the
+// flow input's ranked columns compared with the same directory's unpinned. Run from the repository root, after
+// `npm run e2e:bundles` (it reads dist/explorer/explorer-data.json), as an ES module under tsx:
+//   npx tsx <this file, saved with the extension .mts>
+// It counts, per directory:
+//   moved today     pins after which at least one of the directory's own ranked cards stands in another column;
+//   real conflicts  pins that bring in a card from outside which uses an own card in column c and is used by an own card
+//                   in column c or left of it: no column holds it while the own cards keep theirs;
+//   column needed   pins with no real conflict that bring in a card whose only place is between two neighbouring own
+//                   columns, so that a column must be inserted (shifting the numbers of the columns right of it);
+//   loose joined    pins after which a file of the directory that no line joined before is joined only to a card
+//                   from outside, so that it leaves the block of line-less files for the ranked columns;
+//   within reach    pins with none of the last three.
+// The incoming cards' windows are read against the own cards only; links between two incoming cards are not counted.
+import fs from "node:fs";
+import path from "node:path";
+
+const ROOT = process.cwd();
+const load = (file: string) => import(path.join(ROOT, file));
+const { explorerGraphOf } = await load("packages/explorer/src/shared/graph.ts");
+const { exploreBranches } = await load("packages/explorer/src/client/views/localView/branches.ts");
+const { retainFile, EMPTY_PIN_SET } = await load("packages/explorer/src/client/views/pin-state.ts");
+
+const bundle = JSON.parse(fs.readFileSync(path.join(ROOT, "dist/explorer/explorer-data.json"), "utf8"));
+const graph = explorerGraphOf(bundle.graph);
+const include = (node: { archetype?: string }) => (node.archetype ?? "").toLowerCase() !== "asset";
+const directoryOf = (id: string) => id.slice(0, Math.max(0, id.lastIndexOf("/")));
+const columnOf = (columns: readonly (readonly string[])[]) => new Map(columns.flatMap((column, index) => column.map(id => [id, index] as const)));
+const DIRECTORIES = [
+  "packages/explorer/src/client/views/localView", "packages/explorer/src/client", "packages/explorer/src/client/views",
+  "scripts", "scripts/live-docs", "packages/engine/src/live-docs"
+];
+
+const rows: string[] = [];
+const total = { pins: 0, moved: 0, conflict: 0, column: 0, joined: 0, reach: 0 };
+const examples: string[] = [];
+for (const directory of DIRECTORIES) {
+  const options = { openDirectories: new Set([directory]), directoryFlow: true };
+  const base = exploreBranches(null, graph, EMPTY_PIN_SET, include, options);
+  if (!base.arrangement) continue;
+  const own = columnOf(base.arrangement.ranked);
+  const loose = new Set<string>(base.arrangement.looseOf(directory));
+  const count = { pins: 0, moved: 0, conflict: 0, column: 0, joined: 0, reach: 0 };
+  for (const file of (graph.nodes as Array<{ id: string }>).map(node => node.id).filter(id => directoryOf(id) === directory).sort()) {
+    const pinned = exploreBranches(null, graph, retainFile(EMPTY_PIN_SET, file), include, options);
+    const after = columnOf(pinned.arrangement.ranked);
+    count.pins++;
+    if ([...own].some(([id, column]) => after.has(id) && after.get(id) !== column)) count.moved++;
+    const joined = [...loose].some(id => after.has(id));
+    let conflict = false, column = false;
+    for (const incoming of [...after.keys()].filter(id => !own.has(id) && !loose.has(id))) {
+      let low = 0, high = Infinity;
+      for (const edge of pinned.subgraph.links) {
+        if (edge.sourceId === edge.targetId) continue;
+        if (edge.sourceId === incoming && own.has(edge.targetId)) low = Math.max(low, own.get(edge.targetId)! + 1);
+        if (edge.targetId === incoming && own.has(edge.sourceId)) high = Math.min(high, own.get(edge.sourceId)! - 1);
+      }
+      if (high < low - 1) { conflict = true; if (examples.length < 6) examples.push(`${directory}: pin ${file.slice(directory.length + 1)} brings ${incoming}, which must stand right of column ${low - 1} and left of column ${high + 1}`); }
+      else if (high === low - 1) column = true;
+    }
+    if (conflict) count.conflict++;
+    else if (column) count.column++;
+    if (joined) count.joined++;
+    if (!conflict && !column && !joined) count.reach++;
+  }
+  for (const key of Object.keys(total) as Array<keyof typeof total>) total[key] += count[key];
+  rows.push(`| \`${directory}\` | ${count.pins} | ${count.moved} | ${count.conflict} | ${count.column} | ${count.joined} | ${count.reach} |`);
+}
+console.log("| Directory | Pins | Moved today | Real conflicts | Column needed | Loose joined | Within reach |");
+console.log("| --- | --- | --- | --- | --- | --- | --- |");
+for (const row of rows) console.log(row);
+console.log(`| All | ${total.pins} | ${total.moved} | ${total.conflict} | ${total.column} | ${total.joined} | ${total.reach} |`);
+console.log("\nReal conflicts, the first few:");
+for (const example of examples) console.log(`- ${example}`);
