@@ -78,6 +78,15 @@ Three faults of the camera were found and mended on the way, each the code falli
 - **Cases on this repository's own picture.** Five of the 26 were reached because this repository changed that day. Two found real faults. Three were a limit or a frame the repository outgrew: the hidden map's search (moved to the estate), the lab's half minute (the capture mended, a budget stated), and `card-reading`'s Walk cases, whose window was made taller for `pathfind.ts`'s grown description and will be outgrown again; that last wants a made input.
 - **Not found:** why the phone's hold passed on the day before's `main`, the recording of the menu's loss of focus at a touch's release showing no listener of that day's work in it.
 
+**Faults a first visit shows, found by the README's pictures on 2026-11-22** ([the pictures and what was seen in each](../Gallery/README.md); taken by `AI-Agent-Workspace/Gallery/readme/capture.mts` as the shipped arrival leaves each sample, looked at by their builder and by root). Each is in a picture the README now shows, kept and not cropped away; the pictures are retaken by one command when each is mended:
+
+- **The frame an arrival ends on does not hold the neighbours where there is room for them.** The Java sample's picture cuts two directories at the top while the bottom third of the frame is empty; the PowerShell fixture's cuts cards at the left and the foot; a JSON file's column of seven users runs past the top and the foot.
+- **The look flips between near-equal scales.** The C sample ends in the connections look at a scale of 0.707 and the C++ sample in the reading look at 0.703, so one program reads as two different pictures, and the reading look at that scale cannot be read.
+- **Words break inside themselves on a narrow card:** "Internal / s" and "Intern / als"; "Process / orConfig" where the name has a seam two letters on.
+- **A count stands over the Internals row:** "+4 symbols", "+6 symbols", "+3 symbols", and "No public symbols" touching it.
+- **Less certain, seen at picture size only:** the second line of a two-line row name cut at its foot ("Processor Config" in C#, "Default Config" in Go).
+- **Samples the pictures lack:** PowerShell, HTML and CSS are pictured from this repository's own map, which moves; a served sample of the PowerShell rollout program and of the tidepool page would give them subjects of their own. No served sample holds an `.ascx`, a `.razor` or a `.slnx` file.
+
 ### The way down from the World Map keeps the request in view
 - state: active
 - holds: a trial lever, Way Down, merged into the day branch on 2026-11-22 (`837c52c76`), the default unchanged: a thing opens with the files that carry its wires pinned, a wire as its two files, a chain as the Local Map's path between two things' folders, the board's pin kept for the way back. With it, as a default, the owner's decision of that day: a path is answered whichever way it runs and told from the end asked from. Waits for the owner's eye on the lever; root's findings on the route's pictures (the first card cut under the toolbar, two hops of one name, two sizes of arrival) go with the route drawn from its start, below
