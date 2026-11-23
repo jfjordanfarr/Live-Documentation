@@ -1,0 +1,30 @@
+  1) [chromium] › tests/e2e/force-graph-discovery.spec.ts:70:5 › with nothing asked about, the connections layout starts at the archipelago, every group's seed and nothing grown; a click on a seed pins it and grows its group, the other seeds dimmed 
+    Error: the picture did not come to rest within 2700 substeps of its motion; after 2709 substeps, 1366 frames and 22.8 s it was still moving
+    expect(received).toBe(expected) // Object.is equality
+    Expected: true
+    Received: false
+       at force-graph-observation.ts:133
+      131 |   const seconds = (Date.now() - began) / 1000, rate = (frames / seconds).toFixed(2), took = seconds.toFixed(1);
+      132 |   console.log(`came to rest? ${bounds.label}: ${still ? "yes" : "no"}, ${substeps} substeps in ${frames} frames, ${took} s at ${rate} frames a second; bounds ${bounds.substeps} substeps, ${bounds.seconds} s`);
+    > 133 |   expect(still, `the picture did not come to rest within ${bounds.substeps} substeps of its motion; after ${substeps} substeps, ${frames} frames and ${took} s it was still moving`).toBe(true);
+          |                                                                                                                                                                                      ^
+      134 |   expect.soft(seconds, `the picture came to rest in ${substeps} substeps and ${frames} frames, which took ${took} s on this machine at ${rate} frames a second; the clock allows ${bounds.seconds} s. Slow, not broken`)
+      135 |     .toBeLessThanOrEqual(bounds.seconds);
+      136 | }
+        at cameToRest (/workspaces/Live-Documentation/tests/e2e/force-graph-observation.ts:133:182)
+        at /workspaces/Live-Documentation/tests/e2e/force-graph-discovery.spec.ts:113:3
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/force-graph-discovery-with-8f805-roup-the-other-seeds-dimmed-chromium/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+    Error Context: test-results/force-graph-discovery-with-8f805-roup-the-other-seeds-dimmed-chromium/error-context.md
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results/force-graph-discovery-with-8f805-roup-the-other-seeds-dimmed-chromium/trace.zip
+    Usage:
+        npx playwright show-trace test-results/force-graph-discovery-with-8f805-roup-the-other-seeds-dimmed-chromium/trace.zip
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+  1 failed
+    [chromium] › tests/e2e/force-graph-discovery.spec.ts:70:5 › with nothing asked about, the connections layout starts at the archipelago, every group's seed and nothing grown; a click on a seed pins it and grows its group, the other seeds dimmed 
+  7 skipped
+  740 passed (44.7m)
+Browser suite, second pass: the cases that need the machine to themselves, one worker
+  3 passed (1.1m)

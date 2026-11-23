@@ -71,3 +71,10 @@ What this says:
 **Measured before named.** The failure's picture shows the card at the pulled-back look, where a folded card has no room to write its count. A probe opened the case's link and read the count line every two seconds: with the link carrying the lever alone, the count is in the page and **not drawn** from the first reading on; with the link carrying the arrival held at reading size as well, it is drawn through all five readings. A link that carries any of the map's tuning carries all of it, so the lever alone in the link put the arrival back to the pull-back that ships, and the suite's stored setting that holds a case at reading size no longer applied. The case passed when its press came before the page had eased back, and failed when it came after. **The fault was the case's link, not the lever:** the link now carries the arrival with the lever, and the spec passed fifteen cases of fifteen in three runs at two workers.
 
 What it shows of the product is what the trial's record already says: at the pull-back a folded card writes no count, so the rows it folds are told nowhere. That is the fault to mend before Folded can be a default.
+
+## The seventh and eighth runs: the known red alone, and `main` moved a second time
+
+**Added the same day by the same root.**
+
+- **The seventh** ([stage log](run-7.stages.txt)) stopped at its first stage in 25 seconds, exit 1: root had added an import to the trial's spec and not regenerated, and the stage that levels the history refused a last step that was not the graph of the committed Live Docs. Regenerated and committed.
+- **The eighth** ([stage log](run-8.stages.txt), 17:30 to 18:23 UTC on `13c276af5`; [its one failed case as printed](run-8.failed.txt)): history, the gate without the browser and the bundles passed; the browser's whole suite gave **740 passed, 1 failed, 7 skipped by design** in 44.7 minutes, and its three cases that run alone passed. The one red is `force-graph-discovery.spec.ts:70`, the known one, its bound not raised. The working tree was left clean. By the rule, the day branch lands.
