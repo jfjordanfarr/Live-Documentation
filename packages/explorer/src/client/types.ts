@@ -188,6 +188,13 @@ export interface LocalMapTuning {
   /** How the 2D picture moves when the toolbar's mirror button is pressed (a trial of 2026-11-22, default the turn; mirror-turn.ts). */
   mirrorTurn: MirrorTurn;
   /**
+   * What a 2D card that draws every row does with the rows of symbols no reference of the graph touches (a trial of
+   * 2026-11-23, on the owner's "holy moly" before a column of unwired rows): "shown", the default, every row as since
+   * 2026-10-03; "dimmed", every row drawn and those faded; "folded", those not drawn and said in the card's "+N symbols",
+   * whose press shows them (unconnected-symbols.ts).
+   */
+  unconnected: UnconnectedRows;
+  /**
    * With the three looks, what the overview look draws (a trial for the owner's eye, 2026-11-13): "keep", the default,
    * every card at the size its rows give it, as at the closer looks; "files", every file card in the compact form an
    * opened directory's member has in Flow, one line for each pair of cards where one uses the other, laid out again for
@@ -567,6 +574,12 @@ export type MirrorTurn = "turn" | "slide" | "cut";
  * three quarters of a second, which the design system's motion rule records.
  */
 export const MIRROR_TURNS: readonly MirrorTurn[] = ["turn", "slide", "cut"];
+
+/** What a card that draws every row does with its unconnected symbols' rows: shows them, fades them, or folds them into its count (a trial, 2026-11-23). */
+export type UnconnectedRows = "shown" | "dimmed" | "folded";
+
+/** Every Unconnected choice, in the order the control offers them; the first, shown, is today's and the default until the owner has seen the others. */
+export const UNCONNECTED_ROWS: readonly UnconnectedRows[] = ["shown", "dimmed", "folded"];
 
 /**
  * Which way a 2D picture reads (2026-11-22): what offers first from the left, the rule since December 2025, or what

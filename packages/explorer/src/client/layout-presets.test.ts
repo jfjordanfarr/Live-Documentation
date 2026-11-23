@@ -278,6 +278,23 @@ describe("shared packing preferences", () => {
     expect(applyLayoutSettings(chosen, unsaid.layout).localMap.wayDown).toBe("alone");
   });
 
+  it("carries Unconnected only when it dims or folds, and reads its absence as shown (2026-11-23)", () => {
+    const plain = getDefaultTuning();
+    expect(plain.localMap.unconnected).toBe("shown");
+    expect(layoutSettingsOf(plain).localMap).not.toHaveProperty("unconnected");
+    expect(readLayoutSettings({ localMap: { unconnected: "shown" } })).toBeUndefined();
+    expect(readLayoutSettings({ localMap: { unconnected: "hidden" } })).toBeUndefined();
+    for (const choice of ["dimmed", "folded"] as const) {
+      const chosen = getDefaultTuning();
+      chosen.localMap.unconnected = choice;
+      const carried = decompressSnapshot(compressSnapshot({ ...DEFAULT_SNAPSHOT, layout: layoutSettingsOf(chosen) }));
+      expect(carried.layout?.localMap?.unconnected).toBe(choice);
+      expect(applyLayoutSettings(getDefaultTuning(), carried.layout).localMap.unconnected).toBe(choice);
+      const unsaid = decompressSnapshot(compressSnapshot({ ...DEFAULT_SNAPSHOT, layout: layoutSettingsOf(plain) }));
+      expect(applyLayoutSettings(chosen, unsaid.layout).localMap.unconnected).toBe("shown");
+    }
+  });
+
   it("opens a link in the three looks unless it says the ladder, which it carries only when chosen (2026-11-13)", () => {
     // The default is the three looks, and a link made with it does not write it.
     const three = getDefaultTuning();

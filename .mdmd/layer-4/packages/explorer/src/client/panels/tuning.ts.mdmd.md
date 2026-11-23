@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/explorer/src/client/panels/tuning.ts`
-- Generated At: 2026-11-22T07:12:54.190Z
+- Generated At: 2026-11-23T14:55:15.398Z
 
 ## Authored
 ### Purpose
@@ -88,7 +88,7 @@ Initialize the tuning panel with all slider and checkbox controls.
 
 #### `withholdThreeDLayout` {#symbol-withholdthreedlayout}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/panels/tuning.ts#L632)
+- Source: [source](../../../../../../../packages/explorer/src/client/panels/tuning.ts#L642)
 
 ##### `withholdThreeDLayout` — Summary
 Where the browser cannot draw 3D (2026-11-21), the 3D layout's group is not offered, as the 3D control is not: its
@@ -100,7 +100,7 @@ once, when the browser is known to refuse WebGL, which may be after the page's f
 
 #### `withholdFirstCommitOrder` {#symbol-withholdfirstcommitorder}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/panels/tuning.ts#L648)
+- Source: [source](../../../../../../../packages/explorer/src/client/panels/tuning.ts#L658)
 
 ##### `withholdFirstCommitOrder` — Summary
 Where the bundle carries no history (2026-11-22), the scan trial's first-commit order is not offered, since only a
@@ -142,6 +142,7 @@ description say why, as the 3D control does where the browser refuses WebGL. A s
 - [`types.SCAN_GROWTHS`](../types.ts.mdmd.md#symbol-scan_growths)
 - [`types.SCAN_PACES`](../types.ts.mdmd.md#symbol-scan_paces)
 - [`types.STEPS`](../types.ts.mdmd.md#symbol-steps)
+- [`types.UNCONNECTED_ROWS`](../types.ts.mdmd.md#symbol-unconnected_rows)
 - [`types.WAY_DOWNS`](../types.ts.mdmd.md#symbol-way_downs)
 - [`types.WIRE_ANSWERS`](../types.ts.mdmd.md#symbol-wire_answers)
 - [`template.export-layout-settings`](../../shared/template.html.mdmd.md#symbol-export-layout-settings)
@@ -202,6 +203,7 @@ description say why, as the 3D control does where the browser refuses WebGL. A s
 - [`template.tuning-stub-min`](../../shared/template.html.mdmd.md#symbol-tuning-stub-min)
 - [`template.tuning-symbol-order`](../../shared/template.html.mdmd.md#symbol-tuning-symbol-order)
 - [`template.tuning-text-resistance`](../../shared/template.html.mdmd.md#symbol-tuning-text-resistance)
+- [`template.tuning-unconnected`](../../shared/template.html.mdmd.md#symbol-tuning-unconnected)
 - [`template.tuning-vertical-offset`](../../shared/template.html.mdmd.md#symbol-tuning-vertical-offset)
 - [`template.tuning-way-down`](../../shared/template.html.mdmd.md#symbol-tuning-way-down)
 - [`template.tuning-wire-answers`](../../shared/template.html.mdmd.md#symbol-tuning-wire-answers)

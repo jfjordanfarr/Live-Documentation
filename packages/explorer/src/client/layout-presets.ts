@@ -1,4 +1,4 @@
-import { ARRIVAL_WAITS, ARRIVALS, CUT_COUNTED, DIRECTION_MARKS, MIRROR_TURNS, WAY_DOWNS, WIRE_ANSWERS, FRAMINGS, STEPS, BEYOND_HOPS, SCAN_GROWTHS, SCAN_PACES, DRAGS, CLOSED_CELL_COLOURS, CLOSED_DIRECTORY_LOOKS, CLOSED_DIRECTORY_SHAPES, DESCRIPTIONS_ZOOMED_OUT, DIRECTORY_LAYOUTS, GROUP_WRAPPERS, HIDDEN_FILES_LOOKS, OVERVIEW_FILES, ZOOM_LOOKS, type ForceGraphTuning, type LocalMapTuning, type TuningConfig } from "./types";
+import { ARRIVAL_WAITS, ARRIVALS, CUT_COUNTED, DIRECTION_MARKS, MIRROR_TURNS, UNCONNECTED_ROWS, WAY_DOWNS, WIRE_ANSWERS, FRAMINGS, STEPS, BEYOND_HOPS, SCAN_GROWTHS, SCAN_PACES, DRAGS, CLOSED_CELL_COLOURS, CLOSED_DIRECTORY_LOOKS, CLOSED_DIRECTORY_SHAPES, DESCRIPTIONS_ZOOMED_OUT, DIRECTORY_LAYOUTS, GROUP_WRAPPERS, HIDDEN_FILES_LOOKS, OVERVIEW_FILES, ZOOM_LOOKS, type ForceGraphTuning, type LocalMapTuning, type TuningConfig } from "./types";
 import { ARRIVAL_REST_S } from "./views/localView/camera-intent";
 
 /** One packing preference interpreted by both Local Map representations. */
@@ -9,7 +9,7 @@ type SpatialPacking = Pick<ForceGraphTuning, "linkGap" | "charge" | "collisionGa
 
 /** Portable numeric settings behind the presets and spatial encodings; older URLs may omit them. */
 export interface LayoutSettings {
-  localMap?: Partial<FlatPacking & Pick<LocalMapTuning, "returnCost" | "arrivalRest" | "zoomLooks" | "directoryLayout" | "closedDirectory" | "closedShape" | "closedCells" | "hiddenFiles" | "arrival" | "arrivalWaits" | "framing" | "step" | "cutCounted" | "wireAnswers" | "directionMarks" | "mirrorTurn" | "wayDown" | "overviewFiles" | "descriptionsZoomedOut">>;
+  localMap?: Partial<FlatPacking & Pick<LocalMapTuning, "returnCost" | "arrivalRest" | "zoomLooks" | "directoryLayout" | "closedDirectory" | "closedShape" | "closedCells" | "hiddenFiles" | "arrival" | "arrivalWaits" | "framing" | "step" | "cutCounted" | "wireAnswers" | "directionMarks" | "mirrorTurn" | "unconnected" | "wayDown" | "overviewFiles" | "descriptionsZoomedOut">>;
   forceGraph?: Partial<ForceGraphTuning>;
 }
 
@@ -70,7 +70,8 @@ export function applyLayoutPreset(tuning: TuningConfig, preset: LayoutPreset): T
  * attended and to on, and read the same way. And Framing (2026-11-19), only Follows Pins, its absence reading as By Hand.
  * Scan Growth and Scan Pace (2026-11-22, a trial of the 3D map): only an order of arrival and the slower pace are
  * carried, their absence reading as off and as measured; and Drag (the same day), only Swings, its absence reading as
- * holding its ground.
+ * holding its ground. Unconnected (2026-11-23, a trial of the 2D map) likewise: only Dimmed or Folded is carried, and its
+ * absence reads as Shown.
  */
 export function readLayoutSettings(value: unknown): LayoutSettings | undefined {
   if (!value || typeof value !== "object" || Array.isArray(value)) return undefined;
@@ -106,13 +107,14 @@ export function readLayoutSettings(value: unknown): LayoutSettings | undefined {
       const directionMarks = DIRECTION_MARKS.slice(1).find(choice => choice === (input as Record<string, unknown>).directionMarks);
       const wayDown = WAY_DOWNS.slice(1).find(choice => choice === (input as Record<string, unknown>).wayDown);
       const mirrorTurn = MIRROR_TURNS.slice(1).find(choice => choice === (input as Record<string, unknown>).mirrorTurn);
+      const unconnected = UNCONNECTED_ROWS.slice(1).find(choice => choice === (input as Record<string, unknown>).unconnected);
       const overviewFiles = OVERVIEW_FILES.slice(1).find(choice => choice === (input as Record<string, unknown>).overviewFiles);
       const descriptionsZoomedOut = DESCRIPTIONS_ZOOMED_OUT.slice(1).find(choice => choice === (input as Record<string, unknown>).descriptionsZoomedOut);
-      if (Object.keys(numbers).length || zoomLooks || directoryLayout || closedDirectory || closedShape || closedCells || hiddenFiles || arrival || arrivalWaits || framing || step || cutCounted || wireAnswers || directionMarks || wayDown || mirrorTurn || overviewFiles || descriptionsZoomedOut) {
+      if (Object.keys(numbers).length || zoomLooks || directoryLayout || closedDirectory || closedShape || closedCells || hiddenFiles || arrival || arrivalWaits || framing || step || cutCounted || wireAnswers || directionMarks || wayDown || mirrorTurn || unconnected || overviewFiles || descriptionsZoomedOut) {
         result.localMap = { ...numbers, ...(zoomLooks ? { zoomLooks } : null), ...(directoryLayout ? { directoryLayout } : null),
           ...(closedDirectory ? { closedDirectory } : null), ...(closedShape ? { closedShape } : null), ...(closedCells ? { closedCells } : null),
           ...(hiddenFiles ? { hiddenFiles } : null), ...(arrival ? { arrival } : null), ...(arrivalWaits ? { arrivalWaits } : null), ...(framing ? { framing } : null), ...(step ? { step } : null), ...(cutCounted ? { cutCounted } : null),
-          ...(wireAnswers ? { wireAnswers } : null), ...(directionMarks ? { directionMarks } : null), ...(wayDown ? { wayDown } : null), ...(mirrorTurn ? { mirrorTurn } : null),
+          ...(wireAnswers ? { wireAnswers } : null), ...(directionMarks ? { directionMarks } : null), ...(wayDown ? { wayDown } : null), ...(mirrorTurn ? { mirrorTurn } : null), ...(unconnected ? { unconnected } : null),
           ...(overviewFiles ? { overviewFiles } : null), ...(descriptionsZoomedOut ? { descriptionsZoomedOut } : null) };
       }
       continue;
@@ -149,7 +151,7 @@ export function layoutSettingsOf(tuning: TuningConfig): LayoutSettings {
 export function applyLayoutSettings(tuning: TuningConfig, settings: LayoutSettings | undefined): TuningConfig {
   const directory = settings?.localMap ? { directoryLayout: DIRECTORY_LAYOUTS[0] } : null;
   const looks = settings?.localMap ? { zoomLooks: ZOOM_LOOKS[0], overviewFiles: OVERVIEW_FILES[0] } : null;
-  const closed = settings?.localMap ? { closedDirectory: CLOSED_DIRECTORY_LOOKS[0], closedShape: CLOSED_DIRECTORY_SHAPES[0], closedCells: CLOSED_CELL_COLOURS[0], hiddenFiles: HIDDEN_FILES_LOOKS[0], arrival: ARRIVALS[0], arrivalWaits: ARRIVAL_WAITS[0], arrivalRest: ARRIVAL_REST_S, framing: FRAMINGS[0], step: STEPS[0], cutCounted: CUT_COUNTED[0], wireAnswers: WIRE_ANSWERS[0], directionMarks: DIRECTION_MARKS[0], wayDown: WAY_DOWNS[0], mirrorTurn: MIRROR_TURNS[0] } : null;
+  const closed = settings?.localMap ? { closedDirectory: CLOSED_DIRECTORY_LOOKS[0], closedShape: CLOSED_DIRECTORY_SHAPES[0], closedCells: CLOSED_CELL_COLOURS[0], hiddenFiles: HIDDEN_FILES_LOOKS[0], arrival: ARRIVALS[0], arrivalWaits: ARRIVAL_WAITS[0], arrivalRest: ARRIVAL_REST_S, framing: FRAMINGS[0], step: STEPS[0], cutCounted: CUT_COUNTED[0], wireAnswers: WIRE_ANSWERS[0], directionMarks: DIRECTION_MARKS[0], wayDown: WAY_DOWNS[0], mirrorTurn: MIRROR_TURNS[0], unconnected: UNCONNECTED_ROWS[0] } : null;
   // Descriptions Zoomed Out likewise (2026-11-13): only a value that keeps a line is written, and its absence reads as hidden.
   const descriptions = settings?.localMap ? { descriptionsZoomedOut: DESCRIPTIONS_ZOOMED_OUT[0] } : null;
   // Beyond the Hops likewise (2026-11-18): only the next step is written, and its absence reads as everything.
