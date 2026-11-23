@@ -11,7 +11,7 @@
 Holds which symbols count as unconnected (one used from another file, one that uses another file, one tied only within its file, one tied to nothing, a file with no symbols) and how each value of the Unconnected lever treats a row.
 
 ### Notes
-- Written 2026-11-23 with `unconnected-symbols.ts`, for the trial of that day ([the day's record](../../../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-23/2026-11-23.1.record.md)). The within-file tie is a bare type name of the file's own, as the Explorer's graph carries one, so that the case exercises the same path the card's laces take.
+- Written 2026-11-23 with `unconnected-symbols.ts`, for the trial of that day ([the day's record](../../../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-23/2026-11-23.1.record.md#turn-5)). The within-file tie is a bare type name of the file's own, as the Explorer's graph carries one, so that the case exercises the same path the card's laces take.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
