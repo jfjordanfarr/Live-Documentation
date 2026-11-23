@@ -655,6 +655,11 @@ A builder of its own worktree took the mend's tip `4ee8f124b`, merged the day br
 | 8 | `explorer-history`, `explorer-navigation`, `force-graph-directories`, `force-graph-exploration` | 23 passed | 3.3 min | 3.54 |
 | 9 | `force-graph-identity`, `force-graph-shells`, `history-2d` | 21 passed | 1.5 min | 3.24 |
 | 10 | `history-panel`, `history-scrubber` without its `@alone` cases | 27 passed, 4 failed | 2.5 min | 3.30 |
+| 11 | `local-map-branches` without its `@alone` case, `local-map-framing`, `local-map-keyboard`, `local-map-learning` | 26 passed | 1.9 min | 5.89 |
+| 12 | `local-map-mirror`, `local-map-packing`, `no-network` | 24 passed | 2.1 min | 4.16 |
+| 13 | `overview-files`, `return-cost`, `returning-connections`, `way-down`, `webgl-refused` | 36 passed | 2.0 min | 4.43 |
+
+**Not run in the time** (the round ended at 02:13 UTC): `world-map`; the four specs this builder's search added, which press the sidebar's items by name or switch 2D and 3D and were not on the list (`search-bar`, `pin-clicks`, `local-map-path`, `shell-accessibility`); the three `@alone` cases (`local-map-branches` one, `history-scrubber` two) at one worker; and `history-panel`'s four with a bundle that carries this repository's history. `history-emphasis` and `inventory-counts` press History, which opens a panel and is not a view, and were left out.
 
 **The first focus case passed** in the whole file's run (14.1 s), the case that failed six of eight yesterday with the mend.
 
