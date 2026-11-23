@@ -588,7 +588,7 @@ export function createSpatialBuffers<N extends SpatialNode, L extends SpatialDra
     };
     write(unitFiles, files); write(unitBalloons, balloons);
   };
-  /** The wrapper the ray meets first in the last picture uploaded, leaving out those bursting open (2026-11-05). */
+  /** The wrapper the ray meets first in the last picture uploaded, leaving out those bursting open (2026-11-05); `pickedAt` weighs it against the spheres. */
   const pickWrapper = (raycaster: Raycaster): { seed: string; distance: number } | null =>
     wrappers.visible ? wrapperAt(wrapperDrawn, raycaster.ray.origin, raycaster.ray.direction, seed => wrapperStyle.popping.has(seed)) : null;
   const pickNodeHit = (raycaster: Raycaster): { node: N; distance: number } | undefined => {
@@ -752,6 +752,21 @@ function screenWireEndpointsInFrustum(start: Vector4, end: Vector4, width: numbe
     }
   }
   return true;
+}
+
+/**
+ * What a press or a hover at a point of the 3D map takes, given the nearest sphere and the nearest wrapper the ray meets
+ * there: the sphere's node whenever the ray meets a sphere, nearer or farther than any skin, and the wrapper's seed only
+ * where it meets no sphere (the root's ruling of 2026-11-23, "what is seen is what is pressed"). A sphere is drawn as
+ * itself and seen through a translucent skin, so a sphere a person sees under the pointer can always be pressed; the
+ * files a shell holds are drawn as its cells, never as spheres, so a shell keeps the rest of its face. Until 2026-11-23 a
+ * skin met first took the point, and a file seen through a directory's shell could not be pressed there
+ * (AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-23/Probes/picking/README.md).
+ */
+export function pickedAt<N>(sphere: { node: N; distance: number } | undefined, wrapper: { seed: string; distance: number } | null,
+  nodeOf: (seed: string) => N | undefined): N | undefined {
+  if (sphere) return sphere.node;
+  return wrapper ? nodeOf(wrapper.seed) : undefined;
 }
 
 /** The palette's skin, its highlight, the cloud, a lit body's white and the hover's rim, as the wrappers' shader reads them. */

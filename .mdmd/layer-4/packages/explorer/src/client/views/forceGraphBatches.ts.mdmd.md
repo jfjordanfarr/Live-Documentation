@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/explorer/src/client/views/forceGraphBatches.ts`
-- Generated At: 2026-11-22T07:12:54.585Z
+- Generated At: 2026-11-23T02:16:50.184Z
 
 ## Authored
 ### Purpose
@@ -23,7 +23,7 @@ Picking reads uploaded matrices. A sphere query rejects nonintersecting bounding
 
 The draw guard compares explicit picture/appearance revisions with the camera, orbit target, projection, canvas and background. Camera values are compared at Float32 upload precision against the last draw, while revision counters retain full precision. Same-size canvas assignments and restored WebGL contexts invalidate the picture. A partial physics evaluation that has not changed positions does not cause a new draw. The view's reveal advances only after the preceding membership has reached the screen.
 
-Since 2026-11-05 the buffers hold one more scene object, the mesh of every [wrapped group](../../../../../../../.mdmd/layer-3/live-documentation-explorer.mdmd.md#competing-layout-preferences), drawn after the rings with no depth writes, double-sided, its vertices written each draw from the seeds' places, farthest group first, by `mergeWrappers`. One shader gives the three looks by uniforms (Skin, Cloud, Cloud with a rim for the hovered group); it has no time in it, so a still picture still draws once. `pickWrapper` finds the nearest wrapper a ray meets, leaving out one bursting open, and `pickNodeHit` gives a sphere's hit distance so the renderer can tell which is in front. While the choice is off and nothing is drawn, the wrappers' update writes nothing.
+Since 2026-11-05 the buffers hold one more scene object, the mesh of every [wrapped group](../../../../../../../.mdmd/layer-3/live-documentation-explorer.mdmd.md#competing-layout-preferences), drawn after the rings with no depth writes, double-sided, its vertices written each draw from the seeds' places, farthest group first, by `mergeWrappers`. One shader gives the three looks by uniforms (Skin, Cloud, Cloud with a rim for the hovered group); it has no time in it, so a still picture still draws once. `pickWrapper` finds the nearest wrapper a ray meets, leaving out one bursting open, and `pickNodeHit` gives a sphere's hit distance; until 2026-11-23 the renderer gave the point to whichever was in front. Since then `pickedAt` gives it to the sphere whenever the ray meets one, the wrapper only where it meets none, since a sphere is seen through a skin (the root's ruling "what is seen is what is pressed", after [a measurement](../../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-23/Probes/picking/README.md) of a shell's skin taking the actions of a file just pressed). While the choice is off and nothing is drawn, the wrappers' update writes nothing.
 
 Since 2026-11-06 the buffers hold two more scene objects, what the directory shells' skins show within them under the Skin look: a shell's own files as lit spheres in their colours, drawn with the spheres at the size a sphere draws but never past the room each keeps, and its subdirectories' balloons in the skin's own look (`wrapperShader`, instanced), drawn before the skins with no depth writes; a shell whose hull is not built yet is drawn as one balloon of its body in any look but Off. Their records (`spatialUnits`) and the skins' centres and radii (`ranges`) are kept on the meshes for the browser specs ([the evidence](../../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-06/Screenshots/shell-mesh/README.md)).
 
@@ -123,6 +123,20 @@ Draw when the camera or the caller's picture revision changes, leaving stationar
 
 ##### `screenWireIntersectsFrustum` — Summary
 Clip a unit wire's axis in homogeneous coordinates, projecting its compensated world width and round caps.
+
+#### `pickedAt` {#symbol-pickedat}
+- Type: function
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphBatches.ts#L766)
+- Returns: `N`
+
+##### `pickedAt` — Summary
+What a press or a hover at a point of the 3D map takes, given the nearest sphere and the nearest wrapper the ray meets
+there: the sphere's node whenever the ray meets a sphere, nearer or farther than any skin, and the wrapper's seed only
+where it meets no sphere (the root's ruling of 2026-11-23, "what is seen is what is pressed"). A sphere is drawn as
+itself and seen through a translucent skin, so a sphere a person sees under the pointer can always be pressed; the
+files a shell holds are drawn as its cells, never as spheres, so a shell keeps the rest of its face. Until 2026-11-23 a
+skin met first took the point, and a file seen through a directory's shell could not be pressed there
+(AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-23/Probes/picking/README.md).
 <!-- LIVE-DOC:END Public Symbols -->
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
