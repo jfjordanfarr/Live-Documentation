@@ -63,6 +63,7 @@ Source inventory, maintained by the root agent. The October 31 session that ende
 - Probes of the day, each with a README:
   - [why a directory shell takes the press from a sphere seen through it in the 3D map](2026-11-23/Probes/picking/README.md): the pointer's ray read against every drawn sphere and every triangle of the skins, the failing moment reproduced with the processor slowed, and what each of three pick rules would change on four pictures at rest.
   - [what fills the time before the change of perspective's first frame](2026-11-23/Probes/first-frame/README.md): Chromium's own trace of the press to the first frame each way, the cost of the copies' inline style counted by what each copy carries, a mend measured before and after, and the layer compared pixel for pixel with and without it.
+  - [the third landing](2026-11-23/Probes/landing/README.md): the four stages on the merged day branch, the two reds of the browser's suite, and the new one measured to its cause, a drag case that had been dragging a directory's shell since it was written.
 
 ## November 22, session 1 — Claude Code, Fable 5.2
 

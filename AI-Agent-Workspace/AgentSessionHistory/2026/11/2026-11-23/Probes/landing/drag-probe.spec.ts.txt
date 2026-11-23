@@ -1,0 +1,65 @@
+import { expect, test, type Page } from "@playwright/test";
+
+import { compressSnapshot, DEFAULT_SNAPSHOT } from "../../packages/explorer/src/client/persistence/compressed-url-state";
+import type { DragChoice } from "../../packages/explorer/src/client/types";
+import { observeGraph, renderedNodes } from "./force-graph-observation";
+import { loadGraph } from "./still-picture";
+
+/**
+ * A drag brings the simulation back (the owner, 2026-11-22: "I notice that the 3D graph stops simulating rather
+ * quickly. It's efficient, which is awesome, but the one place I would want that responsiveness back is when I'm
+ * clicking and dragging an item and swinging the graph around with me"). While a sphere is in a hand the forces run
+ * at the pace a settle runs at, so that what is tied to it follows the hand as it moves and not only once it stops;
+ * let go, the picture cools to rest as a settle does. On this repository's map with one file pinned, a picture stiff
+ * enough that a tick of its motion takes several substeps: there, until that day, a moving hand held the motion to one
+ * substep a frame, and a tied file trailed far behind it.
+ */
+test.use({ viewport: { width: 1440, height: 900 } });
+
+const PIN = "packages/engine/src/live-docs/graph.ts";
+/** The pinned picture, with Tuning's Drag as the address carries it: nothing for the default, which holds its ground. */
+const entry = (drag: DragChoice): string => `/?s=${compressSnapshot({ ...DEFAULT_SNAPSHOT, perspective: "3d", spatialLayout: "connections", pinSet: { entries: [{ nodeId: PIN, symbol: "*" }] },
+  ...(drag === "swings" ? { layout: { forceGraph: { drag } } } : {}) })}`;
+const map = (page: Page) => page.locator("#graph-svg");
+/**
+ * The share of its own way a tied file has come, at the median, when the hand arrives. Measured on 2026-11-22 with an
+ * instrument that made the same drag: about 0.3 on the build before the mend.
+ */
+const FOLLOWED = 0.6;
+
+type Places = Map<string, { x: number; y: number; z: number; sx: number; sy: number }>;
+const places = async (page: Page): Promise<Places> => new Map((await renderedNodes(page)).map(node => [node.id, { ...node.world, sx: node.x, sy: node.y }]));
+const moved = (from: Places, to: Places, id: string): number => {
+  const a = from.get(id)!, b = to.get(id)!;
+  return Math.hypot(b.x - a.x, b.y - a.y, b.z - a.z);
+};
+
+
+for (const drag of (process.env.DRAG_PROBE ?? "holds").split(",") as DragChoice[]) test(`drag probe (${drag})`, async ({ page }) => {
+  test.setTimeout(240_000);
+  await observeGraph(page);
+  await page.goto(entry(drag));
+  await expect(map(page)).toHaveAttribute("aria-busy", "false", { timeout: 120_000 });
+  const before = await places(page);
+  const at = before.get(PIN)!;
+  const taken = await page.evaluate(({ x, y }) => (window as unknown as { renderedGraph: { scene: { userData: { spatialPick(x: number, y: number): string | null } } } }).renderedGraph.scene.userData.spatialPick(x, y), { x: at.sx, y: at.sy });
+  await page.mouse.move(at.sx, at.sy);
+  await page.mouse.down();
+  const began = Date.now();
+  for (let step = 1; step <= 40; step++) await page.mouse.move(at.sx + step * 7, at.sy - step * 3);
+  const moves = Date.now() - began;
+  const carried = await places(page);
+  const hand = moved(before, carried, PIN);
+  await page.mouse.up();
+  const readings: number[] = [];
+  for (let sample = 0; sample < 6; sample++) { await page.waitForTimeout(250); readings.push(Math.round(moved(before, await places(page), PIN))); }
+  await expect(map(page)).toHaveAttribute("aria-busy", "false", { timeout: 120_000 });
+  const rested = await places(page);
+  const graph = await loadGraph(page, "/");
+  const idOf = (end: string | { id: string }): string => typeof end === "string" ? end : end.id;
+  const tied = new Set(graph.links.flatMap(link => idOf(link.source) === PIN ? [idOf(link.target)] : idOf(link.target) === PIN ? [idOf(link.source)] : []));
+  const neighbours = [...tied].filter(file => before.has(file));
+  const shares = neighbours.filter(file => moved(before, rested, file) > 10).map(file => moved(before, carried, file) / moved(before, rested, file)).sort((x, y) => x - y);
+  const substeps = shares.length ? shares[Math.floor(shares.length / 2)].toFixed(2) + " median of " + shares.length + " tied files moved, of " + neighbours.length + " drawn" : "no tied file moved";
+  console.log("DRAGPROBE " + JSON.stringify({ drag, pressTakes: taken, spheres: before.size, movesMs: moves, hand: Math.round(hand), rest: Math.round(moved(before, rested, PIN)), share: +(moved(before, rested, PIN) / hand).toFixed(3), after250msEach: readings, followed: substeps }));
+});

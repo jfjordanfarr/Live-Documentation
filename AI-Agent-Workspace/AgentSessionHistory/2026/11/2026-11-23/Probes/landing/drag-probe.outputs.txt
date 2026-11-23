@@ -1,0 +1,24 @@
+# The merged day branch at fce80bb52 (the new pick rule), five runs alone at one worker, 04:33 UTC
+DRAGPROBE {"drag":"holds","spheres":210,"movesMs":2860,"hand":650,"rest":317,"share":0.488,"after250msEach":[360,353,297,316,323,316],"substeps":null}
+DRAGPROBE {"drag":"holds","spheres":210,"movesMs":2868,"hand":650,"rest":318,"share":0.489,"after250msEach":[261,353,297,321,315,321],"substeps":null}
+DRAGPROBE {"drag":"holds","spheres":210,"movesMs":2781,"hand":650,"rest":318,"share":0.489,"after250msEach":[217,332,321,314,322,316],"substeps":null}
+DRAGPROBE {"drag":"holds","spheres":210,"movesMs":2818,"hand":650,"rest":318,"share":0.489,"after250msEach":[208,332,322,314,322,316],"substeps":null}
+DRAGPROBE {"drag":"holds","spheres":210,"movesMs":2788,"hand":650,"rest":318,"share":0.489,"after250msEach":[208,361,313,318,322,316],"substeps":null}
+# The verifier's worktree at b5d952eb3 (the put-away mend, the old pick rule), two runs
+DRAGPROBE {"drag":"holds","spheres":210,"movesMs":2881,"hand":122,"rest":106,"share":0.866,"after250msEach":[131,114,106,106,106,106],"substeps":null}
+DRAGPROBE {"drag":"holds","spheres":210,"movesMs":2847,"hand":122,"rest":106,"share":0.867,"after250msEach":[131,113,106,106,106,106],"substeps":null}
+# The picking builder's worktree at 7f44261b5 (the new pick rule, without the put-away mend), two runs
+DRAGPROBE {"drag":"holds","spheres":210,"movesMs":2766,"hand":650,"rest":318,"share":0.489,"after250msEach":[261,353,301,323,319,316],"substeps":null}
+DRAGPROBE {"drag":"holds","spheres":210,"movesMs":2708,"hand":650,"rest":318,"share":0.489,"after250msEach":[208,362,301,323,315,318],"substeps":null}
+# The first-frame builder's worktree at 0993e6cf0 (the mend and the first-frame candidate, the old pick rule), two runs
+DRAGPROBE {"drag":"holds","spheres":210,"movesMs":2935,"hand":122,"rest":106,"share":0.866,"after250msEach":[131,113,106,106,106,106],"substeps":null}
+DRAGPROBE {"drag":"holds","spheres":210,"movesMs":2909,"hand":122,"rest":106,"share":0.866,"after250msEach":[131,113,106,106,106,106],"substeps":null}
+# What the press takes, both Drag settings: the merged day branch (new rule)
+DRAGPROBE {"drag":"holds","pressTakes":"packages/engine/src/live-docs/graph.ts","spheres":210,"movesMs":2733,"hand":650,"rest":318,"share":0.489,"after250msEach":[217,332,321,314,322,317],"substeps":null}
+DRAGPROBE {"drag":"swings","pressTakes":"packages/engine/src/live-docs/graph.ts","spheres":210,"movesMs":2851,"hand":650,"rest":455,"share":0.7,"after250msEach":[446,479,446,455,456,455],"substeps":null}
+# What the press takes, both Drag settings: the verifier's worktree (old rule)
+DRAGPROBE {"drag":"holds","pressTakes":"shell:packages/explorer","spheres":210,"movesMs":2802,"hand":122,"rest":106,"share":0.866,"after250msEach":[131,113,106,106,106,106],"substeps":null}
+DRAGPROBE {"drag":"swings","pressTakes":"shell:packages/explorer","spheres":210,"movesMs":2840,"hand":237,"rest":204,"share":0.862,"after250msEach":[232,208,202,204,205,204],"substeps":null}
+# With how far the tied files had followed when the hand arrived: the merged day branch (new rule)
+DRAGPROBE {"drag":"holds","pressTakes":"packages/engine/src/live-docs/graph.ts","spheres":210,"movesMs":2760,"hand":650,"rest":318,"share":0.489,"after250msEach":[208,362,313,319,322,316],"followed":"1.13 median of 51 tied files moved, of 51 drawn"}
+DRAGPROBE {"drag":"swings","pressTakes":"packages/engine/src/live-docs/graph.ts","spheres":210,"movesMs":2847,"hand":650,"rest":455,"share":0.7,"after250msEach":[446,479,443,458,454,455],"followed":"1.16 median of 51 tied files moved, of 51 drawn"}
