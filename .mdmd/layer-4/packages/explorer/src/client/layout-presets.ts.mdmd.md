@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/explorer/src/client/layout-presets.ts`
-- Generated At: 2026-11-23T14:55:15.222Z
+- Generated At: 2026-11-23T16:13:09.328Z
 
 ## Authored
 ### Purpose
@@ -91,7 +91,7 @@ Return a fresh tuning record with both representations' packing set together.
 
 #### `readLayoutSettings` {#symbol-readlayoutsettings}
 - Type: function
-- Source: [source](../../../../../../packages/explorer/src/client/layout-presets.ts#L76)
+- Source: [source](../../../../../../packages/explorer/src/client/layout-presets.ts#L77)
 - Returns: [`LayoutSettings`](#symbol-layoutsettings)
 
 ##### `readLayoutSettings` — Summary
@@ -117,8 +117,9 @@ Map settings and says nothing of Arrival, made at reading size, now opens with t
 "reading" exists only from now on. Arrival Waits and Wire Answers changed their defaults the same day, to waiting while
 attended and to on, and read the same way. And Framing (2026-11-19), only Follows Pins, its absence reading as By Hand.
 Scan Growth and Scan Pace (2026-11-22, a trial of the 3D map): only an order of arrival and the slower pace are
-carried, their absence reading as off and as measured; and Drag (the same day), only Swings, its absence reading as
-holding its ground. Unconnected (2026-11-23, a trial of the 2D map) likewise: only Dimmed or Folded is carried, and its
+carried, their absence reading as off and as measured. Drag (the same day, a trial of the 3D map) carried only Swings
+until the owner chose it on 2026-11-23 and the lever went: a link or a saved tuning that still says either value
+opens, the value unread, since a drag swings whatever it says. Unconnected (2026-11-23, a trial of the 2D map) likewise: only Dimmed or Folded is carried, and its
 absence reads as Shown.
 
 #### `layoutSettingsOf` {#symbol-layoutsettingsof}
@@ -160,7 +161,6 @@ picture). So a link made with the defaults shows them in a browser whose own tun
 - [`types.DESCRIPTIONS_ZOOMED_OUT`](./types.ts.mdmd.md#symbol-descriptions_zoomed_out)
 - [`types.DIRECTION_MARKS`](./types.ts.mdmd.md#symbol-direction_marks)
 - [`types.DIRECTORY_LAYOUTS`](./types.ts.mdmd.md#symbol-directory_layouts)
-- [`types.DRAGS`](./types.ts.mdmd.md#symbol-drags)
 - [`types.FRAMINGS`](./types.ts.mdmd.md#symbol-framings)
 - [`types.ForceGraphTuning`](./types.ts.mdmd.md#symbol-forcegraphtuning) (type-only)
 - [`types.GROUP_WRAPPERS`](./types.ts.mdmd.md#symbol-group_wrappers)

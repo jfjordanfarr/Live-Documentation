@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/explorer/src/client/views/forceGraphLayout.ts`
-- Generated At: 2026-11-22T07:12:54.753Z
+- Generated At: 2026-11-23T16:13:09.693Z
 
 ## Authored
 ### Purpose
@@ -44,7 +44,7 @@ What the motion's rest means (2026-11-16). The owner keeps the browser cases tha
 
 A hand and the pacing (2026-11-22). The owner: "I notice that the 3D graph stops simulating rather quickly. It's efficient, which is awesome, but the one place I would want that responsiveness back is when I'm clicking and dragging an item and swinging the graph around with me." Two things held the picture back under a hand, both in `motionForce`'s paced call. A dragged sphere is moved from outside at every frame, and a call after such a move was held to one evaluation of the field, the rule that lets a newly entered piece be drawn first where it was placed; so a moving hand gave the motion one evaluation a frame, often only the reading of the forces again. Now only a sphere no hand holds counts as such a move. And a frame took at most one tick, while this repository's pinned picture gave a frame every 64 to 88 ms under a drag on a graphics card; while a hand holds a sphere a call now goes on through whole ticks for as long as its budget holds, up to `HAND_TICKS`, eight, a starting value for the owner's hand to judge. Nothing changes with no sphere in a hand, and the rest a release settles to is the field's as before. The unit test of the first was seen failing before the mend; the measurements of the same drag before and after are in [the drag's folder](../../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-22/Screenshots/drag-live/README.md).
 
-Tuning's Drag (2026-11-22, a trial for the owner's hand; the default holds its ground and is the motion as it was). At Swings, while a hand holds a sphere, `motionForce` brings the anchors of every sphere tied to it, by a pulling link or a chain of them (`tiedTo`, found once for a hold), to where those spheres stand at each call, so that the tether pulls them nowhere and they follow by their ties; nothing else is touched, and on release the picture is held from where it lies, as after any drag. Both unit assertions of the pacing were seen failing behind a temporary switch that restored the old pacing, then the first mend alone, before it was removed; and the browser case failed on the old pacing at its first assertion, the dragged sphere itself having come 23 units when the forty moves were done ([the two values side by side](../../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-22/Screenshots/drag-swings/README.md)).
+A drag swings what it holds (decided 2026-11-23; tried from 2026-11-22 as Tuning's Drag beside holding every sphere toward where it stood, and chosen by the owner: "I like \"Swings\" a little bettter", after which the lever went). While a hand holds a sphere, `motionForce` brings the anchors of every sphere tied to it, by a pulling link or a chain of them (`tiedTo`, found once for a hold), to where those spheres stand at each call, so that the tether pulls them nowhere and they follow by their ties; nothing else is touched, and on release the picture is held from where it lies, as after any drag. Both unit assertions of the pacing were seen failing behind a temporary switch that restored the old pacing, then the first mend alone, before it was removed; and the browser case failed on the old pacing at its first assertion, the dragged sphere itself having come 23 units when the forty moves were done ([the two values side by side](../../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-22/Screenshots/drag-swings/README.md)).
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
@@ -365,14 +365,14 @@ its last part (2026-10-28); the spheres are written back after every part, so th
 
 #### `EaseOptions` {#symbol-easeoptions}
 - Type: interface
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphLayout.ts#L663)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphLayout.ts#L667)
 
 ##### `EaseOptions` — Summary
 How a headless easing runs: its constant strength, how it begins, and the most ticks it may take.
 
 #### `easeSpatialLayout` {#symbol-easespatiallayout}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphLayout.ts#L688)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphLayout.ts#L692)
 - Parameters: `tuning`: [`ForceGraphTuning`](../types.ts.mdmd.md#symbol-forcegraphtuning); `layout`: [`SpatialLayout`](../types.ts.mdmd.md#symbol-spatiallayout); `_unnamed_`: [`EaseOptions`](#symbol-easeoptions)
 
 ##### `easeSpatialLayout` — Summary

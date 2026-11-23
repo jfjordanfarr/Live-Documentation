@@ -47,7 +47,8 @@ test("every tuning control explains what changing it does, as its tooltip and it
   // Drag joined the 3D forces the same day (the trial of what is tied to a dragged sphere swinging after it).
   // Mirror Turn joined the 2D layout group the same day (how the picture moves when the mirror button is pressed, a trial).
   // Unconnected joined it on 2026-11-23 (what a whole file's card does with the rows nothing connects to, a trial).
-  await expect(controls).toHaveCount(84);
+  // Drag left the 3D forces the same day: the owner chose Swings, which every drag now does.
+  await expect(controls).toHaveCount(83);
   const facts = await controls.evaluateAll(elements => elements.map(element => {
     const describedBy = element.getAttribute("aria-describedby") ?? "";
     const description = document.getElementById(describedBy);

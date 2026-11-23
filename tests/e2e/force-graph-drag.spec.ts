@@ -1,7 +1,6 @@
 import { expect, test, type Page } from "@playwright/test";
 
 import { compressSnapshot, DEFAULT_SNAPSHOT } from "../../packages/explorer/src/client/persistence/compressed-url-state";
-import type { DragChoice } from "../../packages/explorer/src/client/types";
 import { observeGraph, renderedNodes } from "./force-graph-observation";
 import { loadGraph } from "./still-picture";
 
@@ -13,13 +12,20 @@ import { loadGraph } from "./still-picture";
  * let go, the picture cools to rest as a settle does. On this repository's map with one file pinned, a picture stiff
  * enough that a tick of its motion takes several substeps: there, until that day, a moving hand held the motion to one
  * substep a frame, and a tied file trailed far behind it.
+ *
+ * And a drag swings what it holds (the owner, 2026-11-23, of the two ways Tuning's Drag offered: "I like \"Swings\" a
+ * little bettter"): the files tied to the held sphere let go of where they stood and follow it by their ties alone,
+ * while every other sphere is held toward where it stood. Since the same day's pick rule the hand takes the sphere
+ * itself, where the press had taken a directory shell in front of it. Measured that day: under the way not chosen,
+ * every file held toward where it stood, the sphere let go came back to 0.489 of the hand's way, against the bound of a
+ * half below, red in one whole run and passed in the next with nothing in the motion changed; swinging, it kept 0.70,
+ * and the tied files had come 1.16 of their final way when the hand arrived, against the bar of 0.6
+ * (`AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-23/Probes/landing/README.md`).
  */
 test.use({ viewport: { width: 1440, height: 900 } });
 
 const PIN = "packages/engine/src/live-docs/graph.ts";
-/** The pinned picture, with Tuning's Drag as the address carries it: nothing for the default, which holds its ground. */
-const entry = (drag: DragChoice): string => `/?s=${compressSnapshot({ ...DEFAULT_SNAPSHOT, perspective: "3d", spatialLayout: "connections", pinSet: { entries: [{ nodeId: PIN, symbol: "*" }] },
-  ...(drag === "swings" ? { layout: { forceGraph: { drag } } } : {}) })}`;
+const entry = `/?s=${compressSnapshot({ ...DEFAULT_SNAPSHOT, perspective: "3d", spatialLayout: "connections", pinSet: { entries: [{ nodeId: PIN, symbol: "*" }] } })}`;
 const map = (page: Page) => page.locator("#graph-svg");
 /**
  * The share of its own way a tied file has come, at the median, when the hand arrives. Measured on 2026-11-22 with an
@@ -34,15 +40,10 @@ const moved = (from: Places, to: Places, id: string): number => {
   return Math.hypot(b.x - a.x, b.y - a.y, b.z - a.z);
 };
 
-// Both values of Tuning's Drag (a trial of 2026-11-22): holding its ground, the default, where every sphere is held
-// toward where it stood, and Swings, where what is tied to the held sphere lets go of where it stood. What tells the two
-// apart, how far the shells come, differed by a tenth of the hand's way in one run each, too little to assert here; the
-// unit test of the motion holds the difference on a chain.
-for (const drag of ["holds", "swings"] as const) test(`files tied to a dragged sphere follow it while the hand still moves, and the map rests again once it is let go (Drag: ${drag})`, async ({ page }) => {
+test("files tied to a dragged sphere swing after it while the hand still moves, and the map rests again once it is let go", async ({ page }) => {
   test.setTimeout(240_000);
   await observeGraph(page);
-  await page.goto(entry(drag));
-  await expect(page.locator("#tuning-force-drag")).toHaveValue(drag);
+  await page.goto(entry);
   await expect(map(page)).toHaveAttribute("aria-busy", "false", { timeout: 120_000 });
   const graph = await loadGraph(page, "/");
   const id = (end: string | { id: string }): string => typeof end === "string" ? end : end.id;
@@ -67,12 +68,14 @@ for (const drag of ["holds", "swings"] as const) test(`files tied to a dragged s
   await page.mouse.up();
   await expect(map(page)).toHaveAttribute("aria-busy", "false", { timeout: 120_000 });
   const rested = await places(page);
-  expect(moved(before, rested, PIN), "the sphere rests near where the hand left it, not where it began").toBeGreaterThan(hand / 2);
-  // How far each tied file had come when the hand arrived, as a share of the way it goes in the end: the tether holds
-  // every file toward where it stood, so a tied file never goes the hand's whole way, and its own way is the measure.
+  const kept = moved(before, rested, PIN) / hand;
+  // How far each tied file had come when the hand arrived, as a share of the way it goes in the end: the picture's
+  // gravity and the rest of the map still act on a tied file, so its own way, not the hand's, is the measure.
   const shares = neighbours.filter(file => moved(before, rested, file) > 10).map(file => moved(before, carried, file) / moved(before, rested, file)).sort((a, b) => a - b);
-  expect(shares.length, "tied files that the drag moved in the end").toBeGreaterThan(3);
   const median = shares[Math.floor(shares.length / 2)];
+  console.log(`DRAG-READING ${JSON.stringify({ kept: Number(kept.toFixed(3)), median: median === undefined ? null : Number(median.toFixed(3)), tiedMoved: shares.length })}`);
+  expect(kept, "the sphere rests near where the hand left it, not where it began").toBeGreaterThan(1 / 2);
+  expect(shares.length, "tied files that the drag moved in the end").toBeGreaterThan(3);
   expect(median, `the tied files had come most of their way by the time the hand arrived (shares: ${shares.map(share => share.toFixed(2)).join(", ")})`).toBeGreaterThan(FOLLOWED);
   const settled = await places(page);
   for (const file of neighbours) expect(moved(rested, settled, file), `${file} is still at rest`).toBeLessThan(1e-6);

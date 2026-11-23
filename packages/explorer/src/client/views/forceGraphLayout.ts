@@ -567,11 +567,15 @@ export function motionForce<N extends SpatialNode>(source: MotionSource<N>): Mot
       if (holding) motion.anchorHere(); else motion.release();
       begin = null;
     }
-    // The Drag trial (2026-11-22, Tuning's Drag at Swings; the default holds its ground and does none of this): while a
-    // hand holds a sphere, the files and shells tied to it, by a pulling link or a chain of them, let go of where they
-    // stood. Their anchors are brought to where they stand at every call, so that the tether pulls them nowhere and they
-    // follow the hand by their ties alone; let go, the picture is held from where it lies, as after any drag.
-    if (fixed.size && holding && source.tuning().drag === "swings") {
+    // A drag swings what it holds (the owner, 2026-11-22: "the one place I would want that responsiveness back is when
+    // I'm clicking and dragging an item and swinging the graph around with me"). While a hand holds a sphere, the files
+    // and shells tied to it, by a pulling link or a chain of them, let go of where they stood: their anchors are brought
+    // to where they stand at every call, so that the tether pulls them nowhere and they follow the hand by their ties
+    // alone; let go, the picture is held from where it lies, as after any drag. Every other sphere is still held toward
+    // where it stood. Held toward where they stood too, the tied files came about half the hand's way and the sphere,
+    // let go, was pulled back by them; the two were tried side by side as Tuning's Drag, and the owner chose this one
+    // (2026-11-23: "I like \"Swings\" a little bettter"), so the lever went.
+    if (fixed.size && holding) {
       const anchor = motion.anchor;
       for (const i of tiedTo(fixed)) for (let k = 0; k < 3; k++) anchor[3 * i + k] = x[3 * i + k];
       motion.refresh();
