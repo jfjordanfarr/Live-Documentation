@@ -27,8 +27,8 @@ On exit 4, read `<log>.browser.out` for the list of failed cases. A landing land
 
 | Run | On | Stages | The browser stage |
 | --- | --- | --- | --- |
-| 1, 16:54 to 18:09 UTC ([log](run-1.log)) | `2d2f18f2b` | history, gate and bundles passed; browser failed | 699 passed, 24 failed, 7 skipped by design; of the 5 alone, 3 passed and 2 failed ([the failed cases](run-1.failed.txt)) |
-| 2, 20:40 to 21:47 UTC ([log](run-2.log)) | `a503db4d9` | history, gate and bundles passed; browser failed, exit 4 | 726 passed, 5 failed, 7 skipped by design; 3 of 3 alone ([the failed cases](run-2.failed.txt), with the five run again alone) |
+| 1, 16:54 to 18:09 UTC ([log](run-1.stages.txt)) | `2d2f18f2b` | history, gate and bundles passed; browser failed | 699 passed, 24 failed, 7 skipped by design; of the 5 alone, 3 passed and 2 failed ([the failed cases](run-1.failed.txt)) |
+| 2, 20:40 to 21:47 UTC ([log](run-2.stages.txt)) | `a503db4d9` | history, gate and bundles passed; browser failed, exit 4 | 726 passed, 5 failed, 7 skipped by design; 3 of 3 alone ([the failed cases](run-2.failed.txt), with the five run again alone) |
 
 The first run was started by an earlier form of the script whose line after it hid its exit; the form kept here is the second run's.
 
