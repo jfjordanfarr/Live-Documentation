@@ -477,8 +477,8 @@ function* visualCopySteps(root: HTMLElement, deep = true, seen?: Box, anchor?: T
   const declarations = new Array<string>(length);
   for (let property = 0; property < length; property++) {
     const name = style.item(property);
-    // A card copied in slices is read after its view was made inactive, and so inert; the copy is of the picture as it
-    // was pressed, live, and stands in a layer that is inert itself.
+    // A card is copied from the view shown or the view held, neither of them inert since 2026-11-22, but behind the modal
+    // reader every view is; the copy is of the picture as it was pressed, live, and stands in a layer that is inert itself.
     declarations[property] = `${name}: ${name === "interactivity" ? "auto" : style.getPropertyValue(name)};`;
   }
   copy.style.cssText = declarations.join("");
