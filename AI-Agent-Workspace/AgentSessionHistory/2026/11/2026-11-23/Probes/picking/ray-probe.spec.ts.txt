@@ -1,0 +1,176 @@
+import { test, expect, type Page } from "@playwright/test";
+
+import { compressSnapshot, DEFAULT_SNAPSHOT } from "../../packages/explorer/src/client/persistence/compressed-url-state";
+import { observeGraph, renderedNodes } from "./force-graph-observation";
+
+// PROBE, not a case: measures, frame by frame, what the ray at the pressed point meets.
+const GRAPH = "packages/engine/src/live-docs/graph.ts";
+
+async function pressedAt(page: Page, points: Array<{ x: number; y: number }>): Promise<Array<{ id: string | null; canvas: boolean }>> {
+  return page.evaluate(points => {
+    const { scene } = (window as unknown as { renderedGraph: { scene: { userData: { spatialPick(x: number, y: number): string | null } } } }).renderedGraph;
+    const canvas = document.querySelector("#graph-svg canvas");
+    return points.map(({ x, y }) => ({ id: scene.userData.spatialPick(x, y), canvas: document.elementFromPoint(x, y) === canvas }));
+  }, points);
+}
+
+async function hittablePoint(page: Page, id: string): Promise<{ x: number; y: number } | null> {
+  const target = (await renderedNodes(page)).find(node => node.id === id)!;
+  const directions = [[0, 0], ...Array.from({ length: 8 }, (_, i) => [Math.cos(i * Math.PI / 4), Math.sin(i * Math.PI / 4)])];
+  const candidates = [0, 0.5, 0.75].flatMap(scale => directions.map(([dx, dy]) =>
+    ({ x: target.x + dx * target.screenRadius * scale, y: target.y + dy * target.screenRadius * scale })));
+  const pressed = await pressedAt(page, candidates);
+  const index = pressed.findIndex(each => each.canvas && each.id === id);
+  return index < 0 ? null : candidates[index];
+}
+
+const TURN = { x: 90, y: 30 };
+async function backgroundPoint(page: Page): Promise<{ x: number; y: number }> {
+  const box = (await page.locator("#graph-svg canvas").boundingBox())!;
+  const candidates = [{ x: box.x + box.width / 2 + 200, y: box.y + box.height / 2 + 200 }];
+  for (let row = 1; row < 10; row++) for (let column = 1; column < 10; column++) candidates.push({ x: box.x + box.width * column / 10, y: box.y + box.height * row / 10 });
+  const around = ({ x, y }: { x: number; y: number }) => [{ x, y }, ...Array.from({ length: 8 }, (_, i) => ({ x: x + 8 * Math.cos(i * Math.PI / 4), y: y + 8 * Math.sin(i * Math.PI / 4) }))];
+  const probes = candidates.map(start => [...around(start), ...around({ x: start.x + TURN.x, y: start.y + TURN.y })]);
+  const pressed = await pressedAt(page, probes.flat());
+  const index = candidates.findIndex((_, i) => pressed.slice(i * 18, (i + 1) * 18).every(each => each.canvas && each.id === null));
+  if (index < 0) throw new Error("no background point");
+  return candidates[index];
+}
+async function uncover(page: Page, id: string): Promise<{ x: number; y: number }> {
+  for (let turn = 0; turn < 8; turn++) {
+    const point = await hittablePoint(page, id);
+    if (point) { console.log("UNCOVERED after turns", turn); return point; }
+    const { x, y } = await backgroundPoint(page);
+    await page.mouse.move(x, y); await page.mouse.down(); await page.mouse.move(x + TURN.x, y + TURN.y, { steps: 12 }); await page.mouse.up();
+    await page.waitForTimeout(600);
+  }
+  throw new Error("covered");
+}
+
+/** Install the in-page reader of the ray: every sphere and every skin it meets, with distances, at each drawn frame. */
+async function installRayReader(page: Page): Promise<void> {
+  await page.evaluate(() => {
+    type V = { x: number; y: number; z: number; clone(): V; set(x: number, y: number, z: number): V; unproject(c: unknown): V; sub(v: V): V; normalize(): V; applyMatrix4(m: unknown): V; distanceTo(v: V): number; project(c: unknown): V };
+    const w = window as unknown as Record<string, unknown> & { renderedGraph: { scene: { traverse(f: (o: unknown) => void): void; getObjectByName(n: string): unknown; userData: { spatialPick(x: number, y: number): string | null } }; camera: { position: V; matrixWorld: unknown } } };
+    w.readRay = (x: number, y: number, id: string) => {
+      const g = w.renderedGraph, canvas = document.querySelector("#graph-svg canvas")!, rect = canvas.getBoundingClientRect();
+      const ndcX = (x - rect.left) / rect.width * 2 - 1, ndcY = 1 - (y - rect.top) / rect.height * 2;
+      const origin = g.camera.position.clone();
+      const dir = g.camera.position.clone().set(ndcX, ndcY, 0.5).unproject(g.camera).sub(origin).normalize();
+      const spheres: Array<{ id: string; enter: number; exit: number; offAxis: number; radius: number; opacity: number }> = [];
+      g.scene.traverse(o => {
+        const mesh = o as { userData: { spatialBatch?: { kind: string; entries: Array<{ slot: number; enabled: boolean; data: { id: string } }> } }; count: number; getMatrixAt(i: number, m: unknown): void; matrixWorld: { clone(): { premultiply(m: unknown): { elements: number[] }; elements: number[] } }; geometry: { getAttribute(n: string): { getX(i: number): number } } };
+        const batch = mesh.userData.spatialBatch;
+        if (batch?.kind !== "nodes") return;
+        for (const entry of batch.entries) {
+          if (!entry.enabled || entry.slot >= mesh.count) continue;
+          const m = mesh.matrixWorld.clone(); mesh.getMatrixAt(entry.slot, m); m.premultiply(mesh.matrixWorld);
+          const e = m.elements, r = e[0], cx = e[12] - origin.x, cy = e[13] - origin.y, cz = e[14] - origin.z;
+          const along = cx * dir.x + cy * dir.y + cz * dir.z, off2 = cx * cx + cy * cy + cz * cz - along * along;
+          if (off2 > r * r && entry.data.id !== id) continue;
+          const half = Math.sqrt(Math.max(0, r * r - off2));
+          spheres.push({ id: entry.data.id, enter: along - half, exit: along + half, offAxis: Math.sqrt(Math.max(0, off2)), radius: r, opacity: mesh.geometry.getAttribute("spatialOpacity").getX(entry.slot) });
+        }
+      });
+      const wrapper = g.scene.getObjectByName("Spatial wrappers") as { visible: boolean; geometry: { getAttribute(n: string): { array: Float32Array; count: number }; getIndex(): { array: Uint32Array } | null; drawRange: { count: number } }; userData: { spatialWrappers: { look: string; ranges: Array<{ seed: string; x: number; y: number; z: number; radius: number; alpha: number }> } } };
+      const skins: Array<{ seed: string; hits: number[]; alpha: number; centreDistance: number; radius: number; eyeInside: boolean }> = [];
+      if (wrapper.visible) {
+        const pos = wrapper.geometry.getAttribute("position").array, grp = wrapper.geometry.getAttribute("wrapperGroup").array, idx = wrapper.geometry.getIndex()!.array;
+        const n = Math.min(idx.length, wrapper.geometry.drawRange.count);
+        const hitsBy = new Map<number, number[]>();
+        for (let i = 0; i < n; i += 3) {
+          const a = 3 * idx[i], b = 3 * idx[i + 1], c = 3 * idx[i + 2];
+          const e1x = pos[b] - pos[a], e1y = pos[b + 1] - pos[a + 1], e1z = pos[b + 2] - pos[a + 2];
+          const e2x = pos[c] - pos[a], e2y = pos[c + 1] - pos[a + 1], e2z = pos[c + 2] - pos[a + 2];
+          const px = dir.y * e2z - dir.z * e2y, py = dir.z * e2x - dir.x * e2z, pz = dir.x * e2y - dir.y * e2x;
+          const det = e1x * px + e1y * py + e1z * pz; if (Math.abs(det) < 1e-12) continue;
+          const inv = 1 / det, tx = origin.x - pos[a], ty = origin.y - pos[a + 1], tz = origin.z - pos[a + 2];
+          const u = (tx * px + ty * py + tz * pz) * inv; if (u < 0 || u > 1) continue;
+          const qx = ty * e1z - tz * e1y, qy = tz * e1x - tx * e1z, qz = tx * e1y - ty * e1x;
+          const v = (dir.x * qx + dir.y * qy + dir.z * qz) * inv; if (v < 0 || u + v > 1) continue;
+          const t = (e2x * qx + e2y * qy + e2z * qz) * inv; if (t <= 0) continue;
+          const group = grp[idx[i]]; const list = hitsBy.get(group) ?? []; list.push(t); hitsBy.set(group, list);
+        }
+        const ranges = wrapper.userData.spatialWrappers.ranges;
+        for (const [group, hits] of hitsBy) {
+          const range = ranges[group];
+          const d = Math.hypot(range.x - origin.x, range.y - origin.y, range.z - origin.z);
+          skins.push({ seed: range.seed, hits: hits.sort((p, q) => p - q), alpha: range.alpha, centreDistance: d, radius: range.radius, eyeInside: d < range.radius });
+        }
+      }
+      spheres.sort((p, q) => p.enter - q.enter); skins.sort((p, q) => p.hits[0] - q.hits[0]);
+      const container = document.getElementById("graph-svg")!, strip = document.querySelector<HTMLElement>(".force-graph-actions");
+      const cm = (g.camera.matrixWorld as { elements: number[] }).elements;
+      return { pick: g.scene.userData.spatialPick(x, y), bearing: [cm[8], cm[9], cm[10]].map(v => +v.toFixed(4)), frames: (window as unknown as { renderedFrames: number }).renderedFrames, spheres, skins, substeps: container.dataset.motionSubsteps, busy: container.getAttribute("aria-busy"),
+        offered: strip && !strip.hidden ? strip.dataset.nodeId ?? null : null, look: wrapper.userData.spatialWrappers.look };
+    };
+  });
+}
+
+test("PROBE the pressed sphere's ray while the picture settles", async ({ page }, info) => {
+  test.setTimeout(90_000);
+  await observeGraph(page);
+  if (process.env.PROBE_THROTTLE) { const cdp = await page.context().newCDPSession(page); await cdp.send("Emulation.setCPUThrottlingRate", { rate: Number(process.env.PROBE_THROTTLE) }); }
+  await page.goto(`/?view=local&mode=3d&node=${encodeURIComponent(GRAPH)}`);
+  await expect(page.locator(".force-graph-focus")).toHaveAttribute("data-node-id", GRAPH);
+  await expect(page.locator("#graph-svg")).not.toHaveAttribute("data-building", /.*/, { timeout: 30_000 });
+  await installRayReader(page);
+  const centre = (await renderedNodes(page)).find(node => node.id === GRAPH)!;
+  console.log("AT CENTRE", JSON.stringify(await page.evaluate(({ x, y, id }) => (window as unknown as { readRay(x: number, y: number, id: string): unknown }).readRay(x, y, id), { x: centre.x, y: centre.y, id: GRAPH })));
+  await page.screenshot({ path: info.outputPath("at-rest-of-building.png") });
+  const point = await uncover(page, GRAPH);
+  await page.mouse.click(point!.x, point!.y);
+  console.log("CLICKED at", JSON.stringify(point));
+  const readings: unknown[] = [];
+  let shot = false;
+  for (let i = 0; i < 60; i++) {
+    const r = await page.evaluate(({ x, y, id }) => (window as unknown as { readRay(x: number, y: number, id: string): { pick: string | null } }).readRay(x, y, id), { ...point!, id: GRAPH }) as { pick: string | null; busy: string | null };
+    readings.push(r);
+    if (r.pick !== GRAPH && !shot) { shot = true; await page.screenshot({ path: info.outputPath("wrong-pick.png") }); console.log("WRONG", i, JSON.stringify(r)); }
+    const prev = readings[readings.length - 2] as { pick: string | null; busy: string | null; offered?: string | null } | undefined;
+    const cur = r as unknown as { pick: string | null; busy: string | null; offered?: string | null };
+    if (i < 4 || !prev || prev.pick !== cur.pick || prev.busy !== cur.busy || prev.offered !== cur.offered) console.log("R", i, JSON.stringify(r));
+    await page.waitForTimeout(100);
+  }
+  if (!shot) await page.screenshot({ path: info.outputPath("no-wrong-pick.png") });
+  console.log("POINT", JSON.stringify(point));
+});
+
+const snap = (pin: string, hops: number): string => `?s=${compressSnapshot({ ...DEFAULT_SNAPSHOT, perspective: "3d", selectedNodeId: pin, pinSet: { entries: [{ nodeId: pin, symbol: "*" }] }, layout: { forceGraph: { hops } } } as typeof DEFAULT_SNAPSHOT)}`;
+const PICTURES: Array<[string, string]> = [
+  ["repository 3D start, graph.ts", `/?view=local&mode=3d&node=${encodeURIComponent(GRAPH)}`],
+  ["repository, graph.ts pinned, 1 hop", `/${snap(GRAPH, 1)}`],
+  ["repository, graph.ts pinned, 2 hops", `/${snap(GRAPH, 2)}`],
+  ["estate 3D start, PaymentService.cs", `/samples/estate/?view=local&mode=3d&node=${encodeURIComponent("PaymentService/PaymentService.cs")}`],
+  ["estate, PaymentService.cs pinned, 1 hop", `/samples/estate/${snap("PaymentService/PaymentService.cs", 1)}`],
+  ["estate, PaymentService.cs pinned, 2 hops", `/samples/estate/${snap("PaymentService/PaymentService.cs", 2)}`],
+];
+for (const [label, url] of PICTURES) test(`PROBE COST ${label}`, async ({ page }) => {
+  test.setTimeout(80_000);
+  await observeGraph(page);
+  await page.goto(url);
+  let rested = true;
+  try { await expect(page.locator("#graph-svg")).toHaveAttribute("aria-busy", "false", { timeout: 40_000 }); } catch { rested = false; }
+  await page.waitForTimeout(500);
+  await installRayReader(page);
+  const result = await page.evaluate(() => {
+    const read = (window as unknown as { readRay(x: number, y: number, id: string): { pick: string | null; spheres: Array<{ id: string; enter: number; offAxis: number; radius: number }>; skins: Array<{ seed: string; hits: number[] }> } }).readRay;
+    const rect = document.querySelector("#graph-svg canvas")!.getBoundingClientRect(), canvas = document.querySelector("#graph-svg canvas");
+    let points = 0, onSomething = 0, skinNow = 0, changedA = 0, readerAgrees = 0;
+    const pairs = new Map<string, number>();
+    for (let y = rect.top + 6; y < rect.bottom; y += 12) for (let x = rect.left + 6; x < rect.right; x += 12) {
+      if (document.elementFromPoint(x, y) !== canvas) continue;
+      points++;
+      const r = read(x, y, "\u0000");
+      const sphere = r.spheres.filter(s => s.offAxis <= s.radius)[0], skin = r.skins[0];
+      const now = skin && (!sphere || skin.hits[0] < sphere.enter) ? skin.seed : sphere?.id ?? null;
+      const a = sphere ? sphere.id : skin?.seed ?? null;
+      if (now === r.pick) readerAgrees++;
+      if (r.pick !== null) onSomething++;
+      if (r.pick?.startsWith("shell:") || (skin && now === skin.seed)) skinNow++;
+      if (a !== now) { changedA++; const key = `${now} -> ${a}`; pairs.set(key, (pairs.get(key) ?? 0) + 1); }
+    }
+    return { points, onSomething, skinNow, changedA, readerAgrees, pairs: [...pairs].sort((p, q) => q[1] - p[1]).slice(0, 12), substeps: document.getElementById("graph-svg")!.dataset.motionSubsteps };
+  });
+  console.log("COST", label, "rested", rested, JSON.stringify(result));
+});
