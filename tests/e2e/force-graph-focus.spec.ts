@@ -107,7 +107,10 @@ const bearing = (page: Page): Promise<number[]> => page.evaluate(() => {
   return [elements[8], elements[9], elements[10]];
 });
 
-/** Orbit the camera a little, as a person would, until the file's sphere shows past whatever stands in front of it. */
+/**
+ * Orbit the camera a little, as a person would, until the file's sphere shows past the nearer spheres that stand in front
+ * of it. Since 2026-11-23 a skin no longer covers a sphere seen through it (`pickedAt`), so only a nearer sphere can.
+ */
 async function uncover(page: Page, id: string): Promise<{ x: number; y: number }> {
   // A sphere is pressed or hovered once the map has built: while it builds, a press is dropped and nothing hovers (2026-11-15).
   await expect(page.locator("#graph-svg")).not.toHaveAttribute("data-building", /.*/, { timeout: 30_000 });
@@ -125,7 +128,7 @@ async function uncover(page: Page, id: string): Promise<{ x: number; y: number }
     const turned = Math.acos(Math.min(1, before[0] * after[0] + before[1] * after[1] + before[2] * after[2])) * 180 / Math.PI;
     expect(turned, `turn ${turn + 1} turned the camera rather than carrying a sphere`).toBeGreaterThan(5);
   }
-  throw new Error(`${id} stayed covered by nearer spheres or skins after eight turns of the camera`);
+  throw new Error(`${id} stayed covered by nearer spheres after eight turns of the camera`);
 }
 
 test("a focused URL centers its node, direct clicks pin it, and More opens its details", async ({ page }) => {
