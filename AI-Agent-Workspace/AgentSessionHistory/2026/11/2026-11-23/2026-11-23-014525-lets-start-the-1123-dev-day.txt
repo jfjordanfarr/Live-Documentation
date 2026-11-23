@@ -1,0 +1,2341 @@
+
+❯ <ide_selection>The user selected the lines 1 to 2478 from
+  /workspaces/Live-Documentation/AI-Agent-Workspace/AgentSessionHistory/2026/11
+  /2026-11-22/2026-11-22.1.record.md:
+  # November 22, 2026 — the November 21 dev day closed, and the day's work
+  ranked under the five values
+
+  ## Coverage
+
+  Agent-maintained record by Claude Code in the VS Code extension, model Fable
+  5.2 (`claude-fable-5-2`) as stated by the harness, recorded November 22,
+  2026, in the dev container on the working copy at
+  `/workspaces/Live-Documentation`. This is the root conversation, not a
+  harness export. Verbatim visible messages are fenced; work notes are authored
+  interpretation. Tool payloads, private reasoning and delegated conversations
+  are excluded. Final replies are captured only once delivered, normally at
+  the following turn. The session's log stands on the
+  `live-documentation-claude` volume, under
+  `projects/-workspaces-Live-Documentation/`, as
+  `8edd198a-ddfc-4db4-98d3-afb50c64b8a7.jsonl`.
+
+  **The dev day.** The owner opened this chat at 00:46 UTC on November 22,
+  which was 7:46 PM on November 21 by their clock, eight minutes after the
+  November 21 chat's closing message, and named it: "the 11/22/26 dev day".
+  This is `2026-11-22.1`, and everything it makes goes under this directory.
+
+  **The day's branch.** `day/2026-11-22`, cut from `main` at `76cd9914c` after
+  `main` was moved there by a fast-forward (the one commit it lacked was the
+  owner's own, their export of the November 21 chat).
+
+  **Startup coverage, complete before the reply to Turn 1.** Read in full, each
+  to its last line: `AGENTS.md`, as the harness supplies it; [the archive's
+  README](../../../README.md) (106 lines) and [the workspace's
+  README](../../../../README.md) (20 lines); `Memory/owner.md` (426 lines, in
+  four ranges); `Memory/direction.md` (443 lines, in seven ranges);
+  `Memory/ideas.md` (185 lines, in two ranges); `Memory/narrative.md` (431
+  lines, in six ranges); the five latest summaries, oldest to newest (November
+  15, 16 and 17, each in one read; November 18, 483 lines, in two ranges;
+  November 19, 260 lines, in one read); [the November 21
+  record](../2026-11-21/2026-11-21.1.record.md) whole, lines 1 to 3,930, as the
+  owner's editor attached it to their first message, and its closing message
+  from the session's log; [the
+  vision](../../../../../.mdmd/layer-1/vision.mdmd.md) (136 lines); [the design
+  philosophy](../../../../../.mdmd/layer-1/design-philosophy.mdmd.md) (136
+  lines); and [the work items' folder](../../../../Work/READM
+  ──── (2456 lines hidden) ────────────────────────────────────────────────────
+  nd three more finished branches whose worktrees were already gone.
+  `.claude/worktrees` went from 31 GB to 16 GB. Root's scratch: 171 entries to
+  9, what is left being the landing's outputs named in Resumption.
+  - **Checked at the close, each exit read:** the markdown audit, the asset
+  audit and the documentation links' check, each 0. **Since the second
+  landing's commit, `a503db4d9`, no file under `packages` or `scripts` has
+  changed;** five browser test files have (the mends of that landing's cases),
+  with the README, SECURITY.md, the guide, two `.mdmd` documents, the Gallery
+  and the records. **Not run on the day's last state:** the browser's whole
+  suite, which is the landing's last stage and the next dev day's work.
+
+  ### Work notes: the gate on the day's last state, and two generated docs it
+  brought level
+
+  Written at 00:44 UTC on November 23, by the clock.
+
+  - **The gate without the browser, run once by root on `33e00818f`,** 00:34:40
+  to 00:43:46 UTC at a load of 1, nothing beside it, its exit read from the
+  command itself: 0. The unit projects, 258 files, 3,830 cases passed and 4
+  skipped by design; the integration project, 44 files, 574 passed; lint, the
+  build, the three audits and the links, each clean.
+  - **It left two Live Docs changed in the working tree, and the fault is
+  root's.** The README written again at 00:06 UTC (`843d7db08`) links two
+  source files as its evidence, `tests/integration/live-docs/oracle.test.ts`
+  and `tests/integration/programs/compiler-differences.json`, and a Live Doc's
+  "Cited By" section is derived from the documents that link its file. Root ran
+  the markdown, asset and links audits on the README and not the regeneration,
+  so the two docs stood without their line for half an hour. The gate
+  regenerated them (one gains `README.md` under "Cited By", the other gains the
+  section), and they are committed with this note, as generated. Left as it
+  was, the next landing would have passed its four stages and then stopped on a
+  changed working tree, after an hour.
+  - **The guard:** a document that links a source file changes what the docs
+  derive. After editing the README, the guide or any `.mdmd` document, root
+  runs the regeneration and commits what it changes, as after a change to code.
+  - **The day branch's last state is therefore verified by everything but the
+  browser,** whose whole suite is the landing's last stage. The working tree
+  holds nothing but the owner's untracked export.
+
+
+  This may or may not be related to the current task.</ide_selection>
+
+❯ Let's start the 11/23 dev day.
+
+  We're still not on the main branch yet, and that's where I'd like to be
+  before pushing to github unless you believe it wise to do otherwise.
+
+● Starting the day with the startup read the guide asks for, then the landing.
+  First, where things stand on disk.
+
+  Read 3 files, ran 3 shell commands · 2 failed (ctrl+o to expand)
+
+● The startup read is large (Memory alone is about 1 MB), so I'm reading it in
+  ranges. Direction first, since it holds the day's order.
+
+  Read 9 files · 4 failed (ctrl+o to expand)
+
+● Startup read is complete (said in full in the reply). Now the state on disk
+  for the landing: the landing's script, the day's probe records, the kept
+  worktree and the workflows' triggers.
+
+  Read 2 files, listed 1 directory, ran 4 shell commands (ctrl+o to expand)
+
+● Startup read is done (all four Memory documents, the five summaries,
+  yesterday's record); I'm now cutting today's branch and sending builders at
+  the three things that block the landing.
+
+  Searched for 1 pattern, read 1 file, ran 1 shell command (ctrl+o to expand)
+
+● Sending three builders now: one for the 3D picking fault, one to verify the
+  put-away mend, one to measure the transition's first frame.
+
+● 3 background agents launched (↓ to manage)
+   ├ Mend 3D picking fault
+   ├ Verify put-away mend
+   └ Measure transition's first frame
+
+  Ran 8 shell commands · 1 failed (ctrl+o to expand)
+
+● Filing yesterday's closing message and opening today's record while the three
+  builders work.
+
+● Update(AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-22/2026-11-22.1.
+        record.md)
+  ⎿  Added 1 line, removed 1 line
+      2513 
+      2514  ### The session's end, noted by the next session
+      2515 
+      2516 -Written at 01:36 UTC on November 23, by the clock, by the roo
+           -t of [the November 23 record](../2026-11-23/2026-11-23.1.reco
+           -rd.md).                                                      
+      2516 +Written at 01:28 UTC on November 23, by the clock, by the roo
+           +t of [the November 23 record](../2026-11-23/2026-11-23.1.reco
+           +rd.md).                                                      
+      2517 
+      2518  - **No owner message followed the closing message in that cha
+            t.** The owner opened the next chat at 01:20:01 UTC on Novemb
+            er 23, thirty-five minutes after it, as "the 11/23 dev day".
+      2519  - **The owner committed their export themselves** (`f152fbb6e
+            `, 01:18:49 UTC, "Commit 11-22 dev day chat export"), saved o
+            nce more after the close: **871,695 bytes**, SHA-256 **`6d59d
+            85511e0bc5dcd627b4113e5bbc05afdc907a92e704c3c8176d55e3086c2`*
+            *, 16,529 lines. It ends with the closing message above. Not
+            read as prose by this root: its last 600 bytes were read, and
+             it was searched for words of Turns 14 and 15, which it still
+             does not hold. The state of 859,536 bytes that the summary d
+            escribes was not kept apart, so whether it is this file's exa
+            ct prefix was not checked.
+
+  Read 1 file (ctrl+o to expand)
+
+● Update(AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-22/2026-11-22.1.
+        record.md)
+  ⎿  Added 1 line, removed 1 line
+      17  - **State at 00:34 UTC on November 23: the dev day is closed, a
+          t the owner's word** ([Turn 21](#turn-21)). [Its summary](../Su
+          mmarized/2026-11-22.1.SUMMARIZED.md) is written, and the narrat
+          ive, the month's inventory, Memory and the work items are broug
+          ht level ([the note of the close](#work-notes-the-close-of-the-
+          dev-day)). The states this section held through the day stand i
+          n the work notes below, each under its hour; the section had gr
+          own far past a screen and is replaced whole here.
+      18  - **`main` did not move** and stands at `76cd9914c` (not pushed
+          ; `origin/main` at `370d1a51b`). The main checkout is on `day/2
+          026-11-22`, and nothing of the day is on `main`.
+      19  - **The next dev day begins with the landing,** in the order [d
+          irection's Next](../../../../Memory/direction.md#next) gives as
+           its first item: the 3D map's picking mended at its cause; the
+          mend of how a view is put away verified and merged from `worktr
+          ee-agent-ad47c0821418d756a` at `4ee8f124b` (its worktree is kep
+          t); the transition's first frame and the press measured to what
+           slowed them; root's own run of every touched spec on the merge
+          d state; then the four stages by [the landing's script](Probes/
+          landing/README.md). It lands on a whole pass or on the known re
+          d alone, `force-graph-discovery.spec.ts:70`.
+      20 -- **For the next session to file:** root's closing message, rea
+         -d from this session's log (`8edd198a-ddfc-4db4-98d3-afb50c64b8a
+         -7.jsonl`) and set under a heading of its own with a note of the
+         - session's end; and the size and hash of the owner's export onc
+         -e they have committed it (untracked at the close, theirs to com
+         -mit; as last seen it lacks Turns 14 and 15).                   
+      20 +- **Filed by the next session on November 23:** [root's closing
+         + message](#roots-closing-message-of-0045-utc-on-november-23-as-
+         +delivered), from this session's log, and [a note of the session
+         +'s end](#the-sessions-end-noted-by-the-next-session) with the s
+         +ize and hash of the owner's export as they committed it (`f152f
+         +bb6e`; it still lacks Turns 14 and 15). The work goes on in [th
+         +e November 23 record](../2026-11-23/2026-11-23.1.record.md).   
+      21  - **Open with the owner, none blocking:** the table that ends [
+          the summary](../Summarized/2026-11-22.1.SUMMARIZED.md#asked-of-
+          the-owner-and-not-answered). How root reports since [Turn 5](#t
+          urn-5): one gathered report at a stopping place, led by what th
+          ey can look at or must decide; questions in one short list, non
+          e put twice.
+      22  - **Left standing:** eleven worktrees (nine parked trials of No
+          vember 19, `landing` on `press-landing`, and the arrival's); in
+           this session's scratch folder, the second landing's script, lo
+          g, stage outputs, screenshots and traces and the first landing'
+          s browser output, kept until a landing passes; and in the Novem
+          ber 21 session's scratch, the `readers-builder-2` corpora. **Th
+          e owner's preview** on port 8999 serves the main checkout's `di
+          st/explorer`, last built at 20:50 UTC on November 22 by the sec
+          ond landing.
+      23  - **To guard against, root's:** the faults listed under [the su
+          mmary's outcomes](../Summarized/2026-11-22.1.SUMMARIZED.md#comm
+          its-and-outcomes), above all a reading of a failure's message t
+          aken for its cause before a builder has measured it, a spec not
+           run on the merged state before a landing, and a report for eac
+          h handback.
+
+● Update(AI-Agent-Workspace/AgentSessionHistory/2026/11/README.md)
+  ⎿  Added 1 line, removed 1 line
+      61 
+      62  - [Maintained root record](2026-11-22/2026-11-22.1.record.md):
+          opened by the owner at 00:46 UTC on November 22 (7:46 PM on Nov
+          ember 21 by their clock), eight minutes after the November 21 c
+          hat's closing message, as "the 11/22/26 dev day". Begins with t
+          he startup read and the close of the November 21 chat (its clos
+          ing message from its log, its summary, the narrative, this inve
+          ntory, Memory and the work items brought level, its finished wo
+          rktrees and scratch removed). On the branch `day/2026-11-22`. T
+          wenty-one owner turns; one root throughout, its context compact
+          ed six times, twice by the harness; stopped from 07:41 to 13:42
+           UTC on November 22 by the account's usage limit. The owner ask
+          ed for the close at 00:19 UTC on November 23, with `main` not m
+          oved; root's closing message is to be filed by the next session
+          .
+      63  - [Linked summary](Summarized/2026-11-22.1.SUMMARIZED.md): writ
+          ten by the session's root on November 23 at the owner's word to
+           close, from the whole record as the owner's editor attached it
+           to their last turn. A sixth value, a mirror button, an engine
+          that reads each file once, a stored form built, broken by revie
+          w and rebuilt as a view, and a landing that stopped twice at th
+          e browser's whole suite; nothing of the day on `main`.
+      64 -- Harness export, `2026-11-22/2026-11-22-134013-let-us-begin-th
+         -e-112226-dev-day-no-summary-has.txt`: exported by the owner fro
+         -m the Claude Code extension's UI, first at 13:40 UTC on Novembe
+         -r 22 (the time in its name; 562,374 bytes then) and saved again
+         - under the same name. **Untracked at the session's close, and t
+         -he owner's to commit, so it is not linked here.** As it stood a
+         -t 00:19:28 UTC on November 23: **859,536 bytes**, SHA-256 **`40
+         -70b2b4ba6a9029ad40f1680d0b23cd3610dbeb384bcb037bcf0c655f913a50`
+         -**, 16,294 lines of terminal text, 26 of them at the owner's pr
+         -ompt mark. It begins with Turn 1 and ends at the owner's `/comp
+         -act` before Turn 21; it holds Turns 1 to 13 and 16 to 20 and fo
+         -ur `/compact` commands of the owner's. **It does not hold Turns
+         - 14 and 15** nor the stretch from root's reply to Turn 13 to th
+         -e evening, cut where the harness compacted the idle chat at 18:
+         -09 UTC; the record holds both turns from the session's log. Sea
+         -rched for words of each turn by the session's root, not read as
+         - prose. The next session records the size and hash of what is c
+         -ommitted.                                                      
+      64 +- Harness export, `2026-11-22/2026-11-22-134013-let-us-begin-th
+         +e-112226-dev-day-no-summary-has.txt`: exported by the owner fro
+         +m the Claude Code extension's UI, first at 13:40 UTC on Novembe
+         +r 22 (the time in its name; 562,374 bytes then) and saved again
+         + under the same name. **Untracked at the session's close, and t
+         +he owner's to commit, so it is not linked here.** As it stood a
+         +t 00:19:28 UTC on November 23: **859,536 bytes**, SHA-256 **`40
+         +70b2b4ba6a9029ad40f1680d0b23cd3610dbeb384bcb037bcf0c655f913a50`
+         +**, 16,294 lines of terminal text, 26 of them at the owner's pr
+         +ompt mark. It begins with Turn 1 and ends at the owner's `/comp
+         +act` before Turn 21; it holds Turns 1 to 13 and 16 to 20 and fo
+         +ur `/compact` commands of the owner's. **It does not hold Turns
+         + 14 and 15** nor the stretch from root's reply to Turn 13 to th
+         +e evening, cut where the harness compacted the idle chat at 18:
+         +09 UTC; the record holds both turns from the session's log. Sea
+         +rched for words of each turn by the session's root, not read as
+         + prose. **Committed by the owner on November 23** (`f152fbb6e`,
+         + 01:18:49 UTC), saved once more after the close: [the export](2
+         +026-11-22/2026-11-22-134013-let-us-begin-the-112226-dev-day-no-
+         +summary-has.txt), **871,695 bytes**, SHA-256 **`6d59d85511e0bc5
+         +dcd627b4113e5bbc05afdc907a92e704c3c8176d55e3086c2`**, 16,529 li
+         +nes, ending with root's closing message of 00:45 UTC; it still 
+         +does not hold Turns 14 and 15. The next root read its last 600 
+         +bytes and searched it for those two turns; whether the earlier 
+         +state is its exact prefix was not checked, that state not havin
+         +g been kept apart. Root's closing message is in the record, [fr
+         +om the session's log](2026-11-22/2026-11-22.1.record.md#roots-c
+         +losing-message-of-0045-utc-on-november-23-as-delivered).       
+      65  - Probes of the day, each with a README:
+      66    - [a probe page the owner opens from disk on Edge](2026-11-22
+          /Probes/local-app/README.md), to learn whether a local copy can
+           be launched like an app and be given its folders back, with th
+          e page itself, its check and two pictures;
+      67    - [the author's word](2026-11-22/Probes/authors-word/README.m
+          d): the C# compiler's resolution of every documentation referen
+          ce as an oracle, counted on DNN and mojoPortal, with three ways
+           the facts could carry the relation and how each other language
+          's own tool would be asked;
+
+● Update(AI-Agent-Workspace/AgentSessionHistory/2026/11/Summarized/2026-11-22.1.
+        SUMMARIZED.md)
+  ⎿  Added 1 line
+      10    - **Reading coverage for this summary.** The record's lines 1
+           to 2,410, the whole of it as it stood before Turn 21, as the o
+          wner's editor attached it to that turn; the additions for Turn
+          21 are this author's own. This author also wrote the record thr
+          ough the day, but six compactions stand between its early hours
+           and this summary, so the summary is written from the record's
+          text and not from memory of the session.
+      11    - **Gaps the record states about itself.** Of root's short li
+          nes between tool calls, not every one is copied: of the eleven
+          between the reply to Turn 5 and Turn 6 one is printed, and of t
+          he sixty-three between the gathered report of 04:43 UTC and Tur
+          n 9 three are; the rest are counted and described. Notes root w
+          rote before a tool call several times did not reach the log as
+          messages and are counted as told to nobody: the reply to Turns
+          7 and 8 three times before it arrived at 03:58 UTC, three lines
+           at about 18:10 UTC, two at about 21:48 and one at about 23:30.
+           From 07:41 to 07:55 UTC the harness wrote seven times in root'
+          s place that the account's limit for the model was reached. The
+           record's Resumption section grew through the day well past the
+           screen the convention asks; it was replaced whole at the close
+          .
+      12  - The owner's export, `2026-11-22-134013-let-us-begin-the-11222
+          6-dev-day-no-summary-has.txt` in the day's folder, terminal tex
+          t from the Claude Code extension, first saved at 13:40 UTC on N
+          ovember 22 (562,374 bytes then, by the record) and saved again
+          under the same name. **Untracked at the close; it is the owner'
+          s to commit, as they committed the day before's.** As it stood
+          at 00:19:28 UTC on November 23: **859,536 bytes**, SHA-256 **`4
+          070b2b4ba6a9029ad40f1680d0b23cd3610dbeb384bcb037bcf0c655f913a50
+          `**, 16,294 lines. **Not read as prose:** this author listed it
+          s 26 lines at the owner's prompt mark and searched it for words
+           of each turn. It begins with Turn 1 and ends at the owner's `/
+          compact` before Turn 21. It holds Turns 1 to 13 and 16 to 20, f
+          our `/compact` commands of the owner's and the harness's notice
+           of its compaction at 21:47 UTC. **It does not hold Turns 14 an
+          d 15** (no line of either is found in it), nor the stretch from
+           root's reply to Turn 13 to the evening: what stood before the
+          harness's first compaction, at 18:09 UTC, is cut there, which i
+          s the loss the owner described in Turn 15. The record holds bot
+          h turns verbatim from the session's log. A later save may diffe
+          r.
+      13 +  - **Dated follow-up, November 23, by the next session.** The 
+         +owner saved the export once more after the close and committed 
+         +it themselves (`f152fbb6e`, 01:18:49 UTC): [the export](../2026
+         +-11-22/2026-11-22-134013-let-us-begin-the-112226-dev-day-no-sum
+         +mary-has.txt), 871,695 bytes, SHA-256 `6d59d85511e0bc5dcd627b41
+         +13e5bbc05afdc907a92e704c3c8176d55e3086c2`, 16,529 lines, ending
+         + with root's closing message of 00:45:06 UTC. It still does not
+         + hold Turns 14 and 15. That message is in the record, [recovere
+         +d from the session's log](../2026-11-22/2026-11-22.1.record.md#
+         +roots-closing-message-of-0045-utc-on-november-23-as-delivered),
+         + with [a note of the session's end](../2026-11-22/2026-11-22.1.
+         +record.md#the-sessions-end-noted-by-the-next-session).         
+      14  - The session's log, on the `live-documentation-claude` volume
+          (`8edd198a-ddfc-4db4-98d3-afb50c64b8a7.jsonl`), read only throu
+          gh [visible-messages.mjs](../../../../scripts/visible-messages.
+          mjs).
+      15  - Git verifies each commit named below as an ancestor of the da
+          y branch, `day/2026-11-22` (checked by script at the close). Fr
+          om the day's opening at `76cd9914c` to `195990789`, the commit
+          that records Turn 21: 270 commits, 142 on the branch's first-pa
+          rent line, 79 merges. **`main` did not move this day** and stan
+          ds at `76cd9914c`; root pushed nothing, and `origin/main` stand
+          s at `370d1a51b`, where it stood two dev days before.
+      16  - Evidence filed by the session: fifteen probe folders under [t
+          he day's Probes](../2026-11-22/Probes/), nine picture folders u
+          nder [its Screenshots](../2026-11-22/Screenshots/), and [the RE
+          ADME's pictures](../../../../Gallery/README.md) in the Gallery;
+           the month's inventory lists them.
+
+  Read 2 files, ran 1 shell command (ctrl+o to expand)
+
+● Write(AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-23/2026-11-23.1.r
+       ecord.md)
+  ⎿  Wrote 54 lines to AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-
+     11-23/2026-11-23.1.record.md
+      1 # November 23, 2026 — the day branch of November 22 brought towar
+        d `main`
+      2
+      3 ## Coverage
+      4
+      5 Agent-maintained record by Claude Code in the VS Code extension,
+        model Fable 5.2 (`claude-fable-5-2`) as stated by the harness, re
+        corded November 23, 2026, in the dev container on the working cop
+        y at `/workspaces/Live-Documentation`. This is the root conversat
+        ion, not a harness export. Verbatim visible messages are fenced;
+     … +50 lines (~11 KB) (ctrl+o to expand)
+
+● Recording the day's opening and checking the record's links; then the first
+  full reply.
+
+  Ran 2 shell commands · 1 failed (ctrl+o to expand)
+
+● Update(AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-23/2026-11-23.1.
+        record.md)
+  ⎿  Added 1 line, removed 1 line
+      39  Written at 01:30 UTC on November 23, by the clock.
+      40 
+      41  - **What the owner said.** Begin the dev day; and of pushing, t
+          hat they would like the work to be on `main` first, "unless you
+           believe it wise to do otherwise". It answers a line of yesterd
+          ay's closing message, that nothing is pushed and the day's comm
+          its "exist only on this machine".
+      42 -- **Root's answer on pushing, to be said in the reply.** Read f
+         -rom `.github/workflows/`: `ci.yml`, `codeql.yml` and `pages.yml
+         -` trigger on a push to `main` (CI and CodeQL on a pull request 
+         -too), and the audit on a schedule; a pushed day branch starts n
+         -one of them. So there are two separable things. *What is publis
+         -hed* (what `main` and the hosted site show) should wait for the
+         - landing, as they say: `main` at `76cd9914c` is a passed state,
+         - but it carries the old README that invites contributions, and 
+         -pushing it now and again after the landing would start the Page
+         -s build of the history twice. *What is backed up* need not wait
+         -: `git push origin day/2026-11-23` copies the three unpushed de
+         -v days (321 commits on `main`, 271 more on the day branch) to G
+         -itHub as a branch, visible there and building nothing. Since 20
+         -26-11-18 a push has been the working copy's only backup. Root r
+         -ecommends the branch pushed now and `main` after the landing; p
+         -ushing is the owner's.                                         
+      42 +- **Root's answer on pushing, to be said in the reply.** Read f
+         +rom `.github/workflows/`: `ci.yml`, `codeql.yml` and `pages.yml
+         +` trigger on a push to `main` (CI and CodeQL on a pull request 
+         +too), and the audit on a schedule; a pushed day branch starts n
+         +one of them. So there are two separable things. *What is publis
+         +hed* (what `main` and the hosted site show) should wait for the
+         + landing, as they say: `main` at `76cd9914c` is a passed state,
+         + but it carries the old README that invites contributions, and 
+         +pushing it now and again after the landing would start the Page
+         +s build of the history twice. *What is backed up* need not wait
+         +: `git push origin day/2026-11-23` copies the three unpushed de
+         +v days (321 commits from `origin/main` to `main`, 274 more from
+         + `main` to the day branch's tip) to GitHub as a branch, visible
+         + there and building nothing. Since 2026-11-18 a push has been t
+         +he working copy's only backup. Root recommends the branch pushe
+         +d now and `main` after the landing; pushing is the owner's.    
+      43  - **The handoff.** The November 22 chat's closing message (00:4
+          5:06 UTC, 2,368 characters) was copied from its log into [its r
+          ecord](../2026-11-22/2026-11-22.1.record.md#roots-closing-messa
+          ge-of-0045-utc-on-november-23-as-delivered), its length checked
+           against the log's count, with a note of the session's end. The
+           owner had committed their export themselves (`f152fbb6e`): 871
+          ,695 bytes, 16,529 lines, ending with that closing message and
+          still without Turns 14 and 15; its size and hash are in the mon
+          th's inventory and under the summary's Sources. That day's summ
+          ary and the narrative's chapter were written at its close and a
+          re complete; nothing of them was owed.
+      44  - **A fault of root's in the first ten minutes, corrected:** th
+          e note of the session's end was first written "at 01:36 UTC" fr
+          om root's sense of the hour, eight minutes ahead of the clock;
+          corrected to the clock's 01:28 before it was committed.
+      45  - **What the landing waits on,** from yesterday's record and th
+          e builders' own records, read before any brief was written:
+
+● Update(AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-23/2026-11-23.1.
+        record.md)
+  ⎿  Added 1 line, removed 1 line
+      46    1. *The 3D map's picking.* In sixteen readings the pointer st
+          ood inside the pressed sphere and, while the picture settled, a
+           press there would sometimes have taken the shell of `packages/
+          explorer`. The pick rule as written (`nodeAt` in `forceGraphRen
+          derer.ts`, 2026-11-05) gives the node of the closest wrapper "w
+          hen the ray meets a wrapper first". So root does not know wheth
+          er this is the rule working as written on a translucent skin th
+          at drifts between the eye and the sphere, or a picker reading a
+           picture that is not the one drawn. The two ask different mends
+          , and the first is a fork about what a press takes.
+      47    2. *The mend of how a view is put away* (`4ee8f124b`): built,
+           measured, four cases seen red, and lacking the design audit, `
+          force-graph-focus` whole on its final build and twenty-six spec
+           files.
+      48    3. *The transition's first frame,* at its bound of 400 ms wit
+          h the mend and without it (five runs alone with the mend: 342 t
+          o 418 ms to 3D, 350 to 414 to 2D), about 80 ms later than two d
+          ays ago, spread over the day and carried by no one merge. Nobod
+          y has yet said what fills the interval.
+      49 -- **Three builders sent at 01:26 UTC, each Opus, each in a work
+         -tree of its own,** the scope divided by files:                 
+      49 +- **Three builders sent at about 01:26 UTC** (root's line befor
+         +e the three launches is in the log at 01:25:30), **each Opus, e
+         +ach in a worktree of its own,** the scope divided by files:    
+      50    - *Picking* (high effort; from `f152fbb6e`). Told that five o
+          f root's readings of failure messages were wrong yesterday and
+          that every cause is a hypothesis: measure at the failing moment
+           the ray's distance to the sphere and to the wrapper, whether t
+          he sphere is a cell of that wrapper, and whether what is drawn
+          agrees with what the picker reads; reproduce it by a made situa
+          tion and not a race. If the rule is working as written, **bring
+           the fork back and build nothing**, with three alternatives cos
+          ted (what is seen is what is pressed, root's lean and unmeasure
+          d; attention holds on what a press took while the pointer has n
+          ot moved; as now, which root has said is not acceptable). It ma
+          y not touch `force-graph-focus.spec.ts`, whose first case is ri
+          ght and unchanged; its new browser case goes in a file of its o
+          wn on a sample that does not grow.
+      51    - *The mend verified* (high effort; from `4ee8f124b` merged w
+          ith `f152fbb6e`). The runs the mend lacks, in holds of five min
+          utes at two workers; every failure classed by evidence as the m
+          end's, a case that leaned on the old meaning of "visible", load
+          , or one of three known and not its own; no assertion loosened
+          and no limit raised; the Explorer design brought level with the
+           design system on how a view is held and put away.
+      52    - *The first frame measured* (extra-high effort; same base).
+          Changes no product file it commits but one candidate, in a comm
+          it of its own for root's review. To bring back a timeline of th
+          e interval from the browser's own trace, each cause named as a
+          line or a rule by the cost moving when it alone is taken away,
+          and the frames of the motion looked at before and after. Told w
+          hat would not count as a mend: a wait, or a deferral that moves
+           the same work past the measuring mark.
+
+● Update(AI-Agent-Workspace/AgentSessionHistory/2026/11/README.md)
+  ⎿  Added 4 lines
+      57  - [Linked summary](Summarized/2026-11-16.1.SUMMARIZED.md): writ
+          ten by the session's root from a full read of the record. One t
+          able of what each colour means, a second and a third palette, f
+          iles as marbles, and a trial of cells for what a drawn director
+          y hides; five full gates, none green, the last 478 of 488 brows
+          er cases with every red case a 3D case that was red or on its t
+          ime limit before.
+      58  - [The owner's screenshots](2026-11-16/2026-11-16.1.images/), k
+          ept as received and named by root for what each shows; the reco
+          rd lists them under the turns they came with.
+      59 
+      60 +## November 23, session 1 — Claude Code, Fable 5.2             
+      61 +                                                               
+      62 +- [Maintained root record](2026-11-23/2026-11-23.1.record.md): 
+         +opened by the owner at 01:20 UTC on November 23 (8:20 PM on Nov
+         +ember 22 by their clock), thirty-five minutes after the Novembe
+         +r 22 chat's closing message, as "the 11/23 dev day". Begins wit
+         +h the startup read, the filing of that closing message and of t
+         +he export's committed state, and the landing of the November 22
+         + day branch, which the owner wants on `main` before they push. 
+         +On the branch `day/2026-11-23`, cut from `day/2026-11-22` at `f
+         +152fbb6e`. Open; no summary yet.                               
+      63 +                                                               
+      64  ## November 22, session 1 — Claude Code, Fable 5.2
+      65 
+      66  - [Maintained root record](2026-11-22/2026-11-22.1.record.md):
+          opened by the owner at 00:46 UTC on November 22 (7:46 PM on Nov
+          ember 21 by their clock), eight minutes after the November 21 c
+          hat's closing message, as "the 11/22/26 dev day". Begins with t
+          he startup read and the close of the November 21 chat (its clos
+          ing message from its log, its summary, the narrative, this inve
+          ntory, Memory and the work items brought level, its finished wo
+          rktrees and scratch removed). On the branch `day/2026-11-22`. T
+          wenty-one owner turns; one root throughout, its context compact
+          ed six times, twice by the harness; stopped from 07:41 to 13:42
+           UTC on November 22 by the account's usage limit. The owner ask
+          ed for the close at 00:19 UTC on November 23, with `main` not m
+          oved; root's closing message is to be filed by the next session
+          .
+
+  Ran 3 shell commands (ctrl+o to expand)
+
+● Short answer on pushing: wait for main, as you said, but you can back
+  everything up right now without touching it. Three builders are already on the
+  three things the landing waits for.
+
+  Pushing
+
+  - What gets published should wait for the landing. main today still carries
+    the old README, and pushing it now and again after the landing would run the
+    Pages history build twice.
+  - A backup need not wait. Pushing the day branch as a branch copies all three
+    unpushed dev days to GitHub (321 commits on main, 275 more on the branch). I
+    checked the workflows: CI, CodeQL and Pages trigger only on main, so a
+    branch push builds and deploys nothing. The branch is publicly visible, as
+    everything will be after the landing anyway.
+
+  git push origin day/2026-11-23
+
+    I recommend it, because a push is this working copy's only backup. It is
+    yours to run; I push nothing.
+
+  What I read
+
+  Each to its last line: the guide, both READMEs, all four Memory documents, the
+  five summaries (November 17 to 22), yesterday's whole record with its closing
+  message, the vision, the work-items board, the landing's script and the
+  builders' records of yesterday's failures. Not read: the design philosophy,
+  the nine work items themselves, the design system, the Explorer design, and
+  your export as prose.
+
+  Yesterday's close needed little: its closing message is filed in its record
+  (AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-22/2026-11-22.1.record
+  .md#roots-closing-message-of-0045-utc-on-november-23-as-delivered), and your
+  committed export is inventoried. The export still lacks Turns 14 and 15, which
+  the record holds.
+
+  The landing, in order
+
+  1. The 3D picking fault. While a picture settles, pressing a sphere sometimes
+     gives you the bubble around a nearby directory instead. The pick rule since
+     November 5 says the nearest surface along your pointer wins, and a
+     translucent bubble drifting in front of a sphere you can still see is
+     "nearer". So this may be that rule working as written, or the picker
+     reading a different picture from the one drawn. The builder measures which
+     before mending anything. If it is the rule, it comes back to me as a fork
+     about what a press should take; my lean is "what you can see is what you
+     press", and you would get that as a ruling you can reverse.
+  2. The put-away mend (the 3D press from about 500 ms to about 300): being
+     verified by the design audit and every test file that switches views, which
+     it lacked last night.
+  3. The transition's first frame, sitting on its 400 ms limit: a third builder
+     is tracing what fills that time. It only measures and proposes; I rule on
+     the mend.
+  4. Then I merge, run every touched test file on the merged branch myself, and
+     run the four stages. Yesterday's two runs of those took 75 and 67 minutes.
+     It lands on a whole pass, or on the one known red alone (the slow 3D settle
+     that waits on your eye).
+
+  After the landing, three pieces can run side by side, since they own different
+  files:
+  - the engine's next step toward the page that scans, which the showing at your
+    work depends on most;
+  - the faults the README's pictures exposed, with the pictures retaken;
+  - the Flow and Directory trial from your notes yesterday.
+
+  Still open with you, none blocking
+
+  Each stands as stated until you say otherwise; where each was put is in
+  yesterday's summary (AI-Agent-Workspace/AgentSessionHistory/2026/11/Summarized
+  /2026-11-22.1.SUMMARIZED.md#asked-of-the-owner-and-not-answered).
+
+  ┌──────────────┬──────────────────────────────────────┬───────────────────┐
+  │     For      │               Question               │     Stands as     │
+  ├──────────────┼──────────────────────────────────────┼───────────────────┤
+  │ Your eye, in │                                      │ Least Pan (I      │
+  │  the preview │ Step default                         │ recommend With    │
+  │              │                                      │ Its Lines)        │
+  ├──────────────┼──────────────────────────────────────┼───────────────────┤
+  │              │                                      │ with the offering │
+  │              │ World Map's dashes                   │  (I recommend     │
+  │              │                                      │ with the request) │
+  ├──────────────┼──────────────────────────────────────┼───────────────────┤
+  │              │ A route's list wording               │ words between     │
+  │              │                                      │ each name         │
+  ├──────────────┼──────────────────────────────────────┼───────────────────┤
+  │              │                                      │ Holds Its Ground, │
+  │              │ 3D Drag                              │  until you try    │
+  │              │                                      │ Swings            │
+  ├──────────────┼──────────────────────────────────────┼───────────────────┤
+  │              │ Settle Hold, or a different rest     │ off; this decides │
+  │              │ rule                                 │  the one known    │
+  │              │                                      │ red test          │
+  ├──────────────┼──────────────────────────────────────┼───────────────────┤
+  │ A word       │ README rows whose pictures show      │ kept as taken     │
+  │              │ faults (Java, C++, PowerShell, JSON) │                   │
+  ├──────────────┼──────────────────────────────────────┼───────────────────┤
+  │              │ The vision's opening still says the  │ left until the    │
+  │              │ markdown files are everything        │ store's trial is  │
+  │              │                                      │ accepted          │
+  ├──────────────┼──────────────────────────────────────┼───────────────────┤
+  │              │ Your own answer to "why is this      │ my five stand in  │
+  │              │ unique"                              │ the README        │
+  ├──────────────┼──────────────────────────────────────┼───────────────────┤
+  │              │ Which file-to-file line in 3D's      │ I look at all     │
+  │              │ directory view is the "nightmare"    │ four              │
+  ├──────────────┼──────────────────────────────────────┼───────────────────┤
+  │              │ A link does not carry the mirror     │ my ruling         │
+  ├──────────────┼──────────────────────────────────────┼───────────────────┤
+  │ Your eye, on │ The arrival eases back while you     │                   │
+  │  a phone     │ tap; a tap near a card goes to the   │ as built          │
+  │              │ card                                 │                   │
+  ├──────────────┼──────────────────────────────────────┼───────────────────┤
+  │              │ What Chrome's question offers when   │                   │
+  │ Optional,    │ you press the remembered-folder      │ untried           │
+  │ your machine │ button; the Edge probe; the one-list │                   │
+  │              │  page                                │                   │
+  └──────────────┴──────────────────────────────────────┴───────────────────┘
+
+  Older lists (the November 19 packet, open/close/pin, the design system's
+  forks) are in direction
+  (AI-Agent-Workspace/Memory/direction.md#open-with-the-owner).
+
+  Your preview on port 8999 still shows yesterday's 20:50 UTC build; I'll say
+  before the landing rebuilds it. Today's record is here (AI-Agent-Workspace/Age
+  ntSessionHistory/2026/11/2026-11-23/2026-11-23.1.record.md). The next message
+  you get from me is the gathered report: either main has moved, or what stopped
+  it.
+
+● Agent "Verify put-away mend" is waiting on its own background work · 8m 5s
+
+  Searched for 1 pattern, ran 2 shell commands (ctrl+o to expand)
+● The first reply is delivered (checked in the log). All three builders are at
+  work and queued on the one browser; the notification just now was the put-away
+  verifier waiting on its own test runs, not a result. Nothing new to report
+  until a handback arrives.
+
+● Agent "Verify put-away mend" is waiting on its own background work · 9m 30s
+
+● Agent "Verify put-away mend" is waiting on its own background work · 13m 1s
+
+● Agent "Verify put-away mend" is waiting on its own background work · 17m 50s
+
+● The first reply is delivered (checked in the log). All three builders are at
+  work and queued on the one browser; the notification just now was the put-away
+  verifier waiting on its own test runs, not a result. Nothing new to report
+  until a handback arrives.
+
+● Agent "Verify put-away mend" is waiting on its own background work · 9m 30s
+
+● Agent "Verify put-away mend" is waiting on its own background work · 13m 1s
+
+● Agent "Verify put-away mend" is waiting on its own background work · 17m 50s
+
+❯ /compact
+  ⎿  Compacted
+  ⎿  Referenced file AI-Agent-Workspace/AgentSessionHistory/2026/11/README.md
+  ⎿  Read AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-23/2026-11-23.1
+     .record.md (54 lines)
+  ⎿  Referenced file AI-Agent-Workspace/AgentSessionHistory/2026/11/Summarized/2
+     026-11-22.1.SUMMARIZED.md
+  ⎿  Referenced file AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-22/2
+     026-11-22.1.record.md
+  ⎿  Referenced file ../../tmp/claude-1000/-workspaces-Live-Documentation/eb058c
+     9c-8bd5-455d-9ef9-76560750588e/scratchpad/arrival-default.mend.md
+
+● Task "Measure transition's first frame" still running in background
+
+● Task "Mend 3D picking fault" completed in background
+
+● Task "Verify put-away mend" completed in background
+
+› Message from general-purpose
+  ## Which hypothesis: the first one. The pick rule is doing what it says.
+
+  I reproduced the failure once and measured the moment it happened. The pressed
+  sphere was not drifting from under the pointer, and nothing was stale. What
+  moved was mostly the **camera**.
+
+  **How it was read.** At each reading the probe followed the ray from the
+  camera through the pointer's point. It checked every drawn sphere (as a true
+  sphere) and every triangle of the uploaded shell mesh, and recorded what the
+  ray met and how far along it. Alongside that it recorded:
+  - what the page's own picker (`spatialPick`, which is `nodeAt`) returned;
+  - the camera's direction, frames drawn, substeps and `aria-busy`;
+  - whose actions were offered.
+
+  **The probe agrees with the page's picker.** On a 12 px grid over six pictures
+  at rest it agreed at 4,530/4,530, 4,530/4,530, 4,545/4,547, 4,503/4,503,
+  4,503/4,503 and 4,500/4,502 points. The four that differ sit on sphere edges,
+  where the picker uses a faceted sphere and the probe a true one. It also
+  agreed at the failing moment. So hypothesis 2 (a stale or mismatched picture)
+  is ruled out. Spheres and shells are uploaded in the same `update` from the
+  same positions, and the picker uses the current camera for both.
+
+  **The failing moment.** In six plain runs (load 4.7) the ray met only graph.ts
+  from the click until rest. With the page's processor slowed 6x via CDP it
+  failed once in three; the other two never reached the start, because the focus
+  label did not show within 5 s. Distances are in the picture's units along the
+  ray. "Centre gap" is how far the ray passes from graph.ts's centre; its
+  radius is 10.01.
+
+  | Reading | graph.ts on the ray | Centre gap | Shell of `packages/explorer` |
+  Picker / offered | Substeps |
+  |---|---|---|---|---|---|
+  | At the click | 670.0–690.0 | 0.43 | not met | graph.ts / none | 319, busy |
+  | 72 frames later | 669.1–687.8 | 3.67 | **490.9–491.7** (just grazes the
+  edge) | shell / shell | 391, busy |
+  | At rest | 669.2–687.9 | 3.59 | 488.6–499.6 | shell / shell | 433, at rest |
+
+  - **The shell really is nearer.** graph.ts stands wholly behind the shell,
+  about 178 units further along the ray.
+  - **graph.ts is not inside that shell.** It lives in `packages/engine`; the
+  shell is `packages/explorer`'s. It is an ordinary sphere drawn behind the
+  skin, and the pointer stayed inside it throughout.
+  - **The camera kept turning.** The test case rotates the camera with a drag,
+  and the camera keeps coasting (damped) after the release. A slow page
+  stretches that over many frames. Between the click and the wrong reading, the
+  line of sight turned (-0.5068, 0.1689, 0.8453) → (-0.5313, 0.1771, 0.8285),
+  about 1.8°. It turns about a target near graph.ts, so graph.ts stays under the
+  pointer while the shell's edge sweeps in front. This fits yesterday's
+  readings and why it fails more under load.
+  - **It stays wrong at rest.**
+  - **The pinned sphere then fades.** Once the shell holds attention, graph.ts
+  drops to opacity 0.15 (from 0.75) under the pointer.
+  - **Screenshot** (`wrong-pick.png`): the shell has the hover rim and offers
+  its one action (Open). graph.ts's name sits just under the pointer, and its
+  faded sphere is at the skin's lower-left edge, where the skin is drawn
+  densest.
+  - **The same rule with no race.** In all 8 runs that got there, when the map
+  first finished building and you aim at graph.ts's centre, the ray enters the
+  shell at 259–365, leaves at 508–556, and only then meets graph.ts at 579–638.
+  The picker returns the shell, though graph.ts shows through the faint skin.
+  The test's `uncover` helper, which turns the camera until graph.ts can be
+  clicked, exists only because of this.
+
+  ## The fork, brought back and not decided
+
+  Picks changed, versus today, on a 12 px grid with each picture at rest:
+
+  | Picture | Points that hit something | Points under a skin today | **A
+  changes** |
+  |---|---|---|---|
+  | This repository's 3D start (same picture as graph.ts pinned at 1 hop) |
+  1,809 | 1,741 | **38**: all from the shell of `packages/explorer` to a sphere
+  behind it (`document.ts` 5, `boardGraph.ts` 4, `sources-facts.ts` 3,
+  `graph.ts` 2, …) |
+  | This repository, graph.ts pinned, 2 hops | 663 | 555 | **32**: from the
+  wrapped group of `compiler-edges.json` and the explorer shell to spheres
+  behind them |
+  | Estate start / pinned at 1 hop (same picture) | 140 | 87 | **0** |
+  | Estate, pinned, 2 hops | 62 | 2 | **0** |
+
+  - **A (what is seen is what is pressed):** changes 2–5% of the points that hit
+  something on this repository and none on the estate. A shell's own files are
+  drawn as cells, not spheres, so a full shell keeps its whole face. As a pure
+  rule it is one line: the nearest sphere hit if there is one, otherwise the
+  shell.
+    - **A narrower form to consider, "A under Skin only":** the two Cloud looks
+  draw a mist that hides what is behind it, so there the shell may rightly keep
+  the click. I did not measure it separately; every picture above used Skin, the
+  default.
+  - **B (attention holds):** changes nothing at rest, by definition. It would
+  fix this test, since the ray met graph.ts throughout. It does not fix graph.ts
+  being visible through the shell but not clickable when the map finishes
+  building.
+  - **C (as now):** the fault stands.
+
+  **My measurements favour A.** It is the only one that fixes both the moving
+  case and the still one, it changes 0–38 points out of about 4,500, and it is a
+  pure rule. B could be added to A later, but nothing measured here needs it.
+
+  ## What I changed
+
+  - **Branch `worktree-agent-a7cb91fb393dfd1f4`, tip `47f93b33a`**, one commit
+  on `f152fbb6e`. No product code, unit test, browser case or design document
+  changed. Building those waits on your ruling, so lint, unit tests, the listed
+  specs and `live-docs:generate` were not run: nothing they cover changed.
+  - The commit adds
+  `AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-23/Probes/picking/`,
+  containing:
+    - `README.md`, marked as historical evidence, with all the numbers above;
+    - `wrong-pick.png` and `build-end-graph-behind-shell.png`;
+    - `ray-probe.spec.ts.txt`, the probe's source, saved as text so it does not
+  join the suite;
+    - `run-six-plain.txt` and `run-slowed-sixfold.txt`, the raw outputs.
+  - The probe file `tests/e2e/force-graph-picking.spec.ts` was used for
+  measuring only and has been removed. `test-results/`, `reports/` and my
+  scratch folder are removed too.
+
+  ## Runs (all through the lane, one worker)
+
+  1. Probe, once: failed at its own start check (graph.ts was not uncovered
+  without turning). Load 5.3.
+  2. Probe with turning, once: passed. The pick stayed on graph.ts.
+  3. Probe ×6: 6 passed, none reproduced. Load 4.7; waited 169 s behind other
+  builders.
+  4. Probe ×3 slowed 6x, plus the six cost-measuring tests ×3: 19 passed, 2
+  failed at the start (the 5 s focus label under the slowing), 1 reproduced.
+  Load 1.9; waited 109 s for the lane; held it 219 s.
+
+  No command was refused, and I used no subagent.
+
+  ## Unfinished
+
+  - The browser case and the pure-rule unit test for whichever alternative you
+  choose.
+  - A test setup that does not rely on a race. On this repository's start at
+  rest, 38 points of a free sphere behind a shell already exist. The estate's
+  pictures have none at their default camera, so a test there needs a camera
+  turn or a different subject.
+  - "A under Skin only" against the Cloud looks.
+
+
+  Ran 2 shell commands (ctrl+o to expand)
+
+● Agent "Mend 3D picking fault" finished · 18m 42s
+
+● Agent "Verify put-away mend" is waiting on its own background work · 19m 42s
+
+  Read 2 files, ran 2 shell commands (ctrl+o to expand)
+
+❯ <ide_selection>The user selected the lines 1 to 694 from
+  /workspaces/Live-Documentation/AI-Agent-Workspace/AgentSessionHistory/2026/11
+  /2026-11-23/2026-11-23-014525-lets-start-the-1123-dev-day.txt:
+
+  ❯ <ide_selection>The user selected the lines 1 to 2478 from
+
+  /workspaces/Live-Documentation/AI-Agent-Workspace/AgentSessionHistory/2026/11
+    /2026-11-22/2026-11-22.1.record.md:
+    # November 22, 2026 — the November 21 dev day closed, and the day's work
+    ranked under the five values
+
+    ## Coverage
+
+    Agent-maintained record by Claude Code in the VS Code extension, model
+  Fable
+    5.2 (`claude-fable-5-2`) as stated by the harness, recorded November 22,
+    2026, in the dev container on the working copy at
+    `/workspaces/Live-Documentation`. This is the root conversation, not a
+    harness export. Verbatim visible messages are fenced; work notes are
+  authored
+    interpretation. Tool payloads, private reasoning and delegated
+  conversations
+    are excluded. Final replies are captured only once delivered, normally at
+    the following turn. The session's log stands on the
+    `live-documentation-claude` volume, under
+    `projects/-workspaces-Live-Documentation/`, as
+    `8edd198a-ddfc-4db4-98d3-afb50c64b8a7.jsonl`.
+
+    **The dev day.** The owner opened this chat at 00:46 UTC on November 22,
+    which was 7:46 PM on November 21 by their clock, eight minutes after the
+    November 21 chat's closing message, and named it: "the 11/22/26 dev day".
+    This is `2026-11-22.1`, and everything it makes goes under this directory.
+
+    **The day's branch.** `day/2026-11-22`, cut from `main` at `76cd9914c`
+  after
+    `main` was moved there by a fast-forward (the one commit it lacked was the
+    owner's own, their export of the November 21 chat).
+
+    **Startup coverage, complete before the reply to Turn 1.** Read in full,
+  each
+    to its last line: `AGENTS.md`, as the harness supplies it; [the archive's
+    README](../../../README.md) (106 lines) and [the workspace's
+    README](../../../../README.md) (20 lines); `Memory/owner.md` (426 lines, in
+    four ranges); `Memory/direction.md` (443 lines, in seven ranges);
+    `Memory/ideas.md` (185 lines, in two ranges); `Memory/narrative.md` (431
+    lines, in six ranges); the five latest summaries, oldest to newest
+  (November
+    15, 16 and 17, each in one read; November 18, 483 lines, in two ranges;
+    November 19, 260 lines, in one read); [the November 21
+    record](../2026-11-21/2026-11-21.1.record.md) whole, lines 1 to 3,930, as
+  the
+    owner's editor attached it to their first mes
+  ──── (651 lines hidden) ─────────────────────────────────────────────────────
+  own background work · 13m 1s
+
+  ● Agent "Verify put-away mend" is waiting on its own background work · 17m
+  50s
+
+  This may or may not be related to the current task.</ide_selection>
+  >A backup need not wait. Pushing the day branch as a branch copies all three
+  unpushed dev days to GitHub (321 commits on main, 275 more on the branch). I
+  checked the workflows: CI, CodeQL and Pages trigger only on main, so a branch
+  push builds and deploys nothing. The branch is publicly visible, as
+  everything will be after the landing anyway.
+
+  ```
+  node ➜ /workspaces/Live-Documentation (day/2026-11-23) $ git push origin
+  day/2026-11-23
+  Enumerating objects: 16275, done.
+  Counting objects: 100% (15720/15720), done.
+  Delta compression using up to 20 threads
+  Compressing objects: 100% (6778/6778), done.
+  Writing objects: 100% (14987/14987), 155.16 MiB | 4.29 MiB/s, done.
+  Total 14987 (delta 9242), reused 13667 (delta 8072), pack-reused 0 (from 0)
+  remote: Resolving deltas: 100% (9242/9242), completed with 385 local objects.
+  remote:
+  remote: Create a pull request for 'day/2026-11-23' on GitHub by visiting:
+  remote:
+  https://github.com/jfjordanfarr/Live-Documentation/pull/new/day/2026-11-23
+  remote:
+  To https://github.com/jfjordanfarr/Live-Documentation.git
+   * [new branch]          day/2026-11-23 -> day/2026-11-23
+  node ➜ /workspaces/Live-Documentation (day/2026-11-23) $
+  ```
+
+  >What Chrome's question offers when you press the remembered-folder button;
+  the Edge probe; the one-list page
+
+  ```
+  Local app probe 2, Nov 22, 2026, 8:41 PM: Chrome 157 on Windows; opened from
+  a file on disk; copy 1, launch 5.
+  1. Window: now a tab (display-mode browser, address bar true); launches 5 in
+  a tab, 1 in own window; you saw: own window, the browser's taskbar icon.
+  2. Folders: Chrome asked again, and gave the folder back without picking it
+  again. [on opening: prompt; now: granted; presses: 1]
+  3. Copies: 2 seen in this storage (copy 1 this one; copy 2); localStorage and
+  IndexedDB agree.
+  4. Listing: 1,585 files in 190 folders, 1.6 s (folder picker).
+  5. Save picker: saved; marked as downloaded: copy 1 not said, copy 2 yes.
+  ```
+
+  >Your eye, in the preview
+
+  I will wait to avoid contention for computational resources with the
+  builders.
+
+  >Your preview on port 8999
+
+  I have closed that terminal to give you all the computational resources  I
+  can relaunch whenever.
+
+  There is likely only enough usage left on this Claude Code subscription to
+  reach main stably. I'll have to use a different agent after that until
+  Thursday or so.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● The branch is pushed and the preview is closed, so I'm keeping to main, and
+  the picking measurement confirms the pick rule works as written. I'm sending
+  the builder back to build it. · summary
+  ⎿  Resuming agent a7cb91f
+
+  Made 1 scratchpad edit +53, read 1 file, ran 5 shell commands (ctrl+o to expand)
+
+● Agent "Verify put-away mend" is waiting on its own background work · 23m 14s
+
+● Recording your message and the picking ruling in the day's record, then
+  committing so another agent could pick up from the files.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Update(AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-22/Probes/local-
+        app/README.md)
+  ⎿  Added 8 lines
+      66 
+      67  **What it means.** A shortcut to the local file cannot carry th
+          e product's identity by the page's doing. What a Windows shortc
+          ut can carry is an icon it names itself, set by whoever writes
+          the shortcut; the installed form, which would bring an icon eve
+          rywhere, is the one the owner refused as the product's path on
+          2026-11-21, since it reaches out to a URL.
+      68 
+      69 +## The button pressed after a restart, 2026-11-23              
+      70 +                                                               
+      71 +**Dated follow-up, written by the root of the November 23 sessi
+         +on** from the result line the owner pasted in [Turn 2 of that d
+         +ay's record](../../../2026-11-23/2026-11-23.1.record.md#turn-2)
+         + (8:41 PM on November 22 by their clock, the first copy's fifth
+         + launch):                                                      
+      72 +                                                               
+      73 +> 2\. Folders: Chrome asked again, and gave the folder back wit
+         +hout picking it again. [on opening: prompt; now: granted; press
+         +es: 1]                                                         
+      74 +                                                               
+      75 +So the press that the section above left untried is made: after
+         + a restart, one press brings the browser's own question, and th
+         +e folder comes back with no picking again. A remembered folder 
+         +costs one press and one question. **Not seen:** what the questi
+         +on offered, this once or on every visit; the result line does n
+         +ot say and the owner was not asked again. The same line reports
+         + two copies seen in one storage with localStorage and IndexedDB
+         + agreeing (as the first run found), the folder listed (1,585 fi
+         +les in 190 folders) in 1.6 s, the save picker saving, the secon
+         +d copy marked as downloaded and the first "not said", and of si
+         +x launches five in a tab and one in a window of its own. The pr
+         +obe on Edge is still untried.                                  
+      76 +                                                               
+      77  ## A second copy of the page, for the two things left
+      78 
+      79  `probe.html` as committed after the run differs from the one th
+          e owner ran in two ways: it carries an icon of its own (two joi
+          ned dots, blue and green), and its results begin "Local app pro
+          be 2". Two things, about two minutes:
+
+  Made 1 scratchpad edit +15, ran 1 shell command (ctrl+o to expand)
+
+● Agent "Verify put-away mend" is waiting on its own background work · 23m 52s
+
+  Read 1 file, ran 2 shell commands · 1 failed (ctrl+o to expand)
+● Update(AI-Agent-Workspace/AgentSessionHistory/2026/11/README.md)
+  ⎿  Added 2 lines
+      60  ## November 23, session 1 — Claude Code, Fable 5.2
+      61 
+      62  - [Maintained root record](2026-11-23/2026-11-23.1.record.md):
+          opened by the owner at 01:20 UTC on November 23 (8:20 PM on Nov
+          ember 22 by their clock), thirty-five minutes after the Novembe
+          r 22 chat's closing message, as "the 11/23 dev day". Begins wit
+          h the startup read, the filing of that closing message and of t
+          he export's committed state, and the landing of the November 22
+           day branch, which the owner wants on `main` before they push.
+          On the branch `day/2026-11-23`, cut from `day/2026-11-22` at `f
+          152fbb6e`. Open; no summary yet.
+      63 +- Probes of the day, each with a README:                       
+      64 +  - [why a directory shell takes the press from a sphere seen t
+         +hrough it in the 3D map](2026-11-23/Probes/picking/README.md): 
+         +the pointer's ray read against every drawn sphere and every tri
+         +angle of the skins, the failing moment reproduced with the proc
+         +essor slowed, and what each of three pick rules would change on
+         + four pictures at rest.                                        
+      65 
+      66  ## November 22, session 1 — Claude Code, Fable 5.2
+      67 
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Noted on all four; nothing needs you right now.
+
+  - Push: the branch is on GitHub at 0bee0b274. Two commits have gone on since
+    (the picking measurement and the record), so push again whenever you like
+    with the same command.
+  - Usage: I've narrowed this session to the landing alone and will start
+    nothing after it. The record is committed after each step and written so a
+    different agent can pick the landing up from the files if this session stops
+    early.
+  - Your probe result: it settles the one press that was left untried. After a
+    restart, a remembered folder costs one press and Chrome's own question, with
+    no picking again. It's filed in the probe's record (AI-Agent-Workspace/Agen
+    tSessionHistory/2026/11/2026-11-22/Probes/local-app/README.md). The line
+    doesn't say whether Chrome offered "on every visit"; I'm not asking again.
+  - Preview: fine closed. The landing rebuilds its files; relaunch when you want
+    to look.
+
+  One ruling you can reverse, on the 3D picking fault. The builder measured it,
+  and the pick rule is working as written (its record (AI-Agent-Workspace/AgentS
+  essionHistory/2026/11/2026-11-23/Probes/picking/README.md)):
+
+  - What happened: the bubble around packages/explorer really was nearer along
+    the pointer's line than the sphere seen through it (491 units against 669),
+    so the press went to the bubble. In the failing test the camera was still
+    coasting after a drag, which swept the bubble's edge in front of a sphere
+    that had not moved.
+  - It also happens with nothing moving: as the map finishes building you can
+    see graph.ts through the bubble and cannot press it (picture
+    (AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-23/Probes/picking/bu
+    ild-end-graph-behind-shell.png)).
+  - The ruling: what you can see is what you press. A sphere takes the press
+    wherever the pointer is on it, even through a bubble's skin, and the bubble
+    takes it everywhere else. Designers call the area that answers a press a
+    thing's "hit target"; the rule is that a visible sphere's hit target is
+    never covered by something you see through.
+  - What it changes: 38 of 1,809 pressable points on this repository's 3D start,
+    and none on the estate sample.
+
+  The builder is building it now. The other two builders (verifying the put-away
+  mend, and measuring the transition's first frame) are still running. Next
+  from me is the gathered report: either main has moved, or what stopped it.
+
+● Agent "Verify put-away mend" is waiting on its own background work · 28m 29s
+
+● Agent "Verify put-away mend" is waiting on its own background work · 31m 53s
+
+● Agent "Verify put-away mend" is waiting on its own background work · 36m 37s
+
+› Message from general-purpose
+  ## What this round found
+
+  Worktree branch `worktree-agent-ad65cb34d5b97773f`, at `4ee8f124b` merged with
+  `f152fbb6e` (no conflicts). It has two commits:
+  - **`ebe5759f1`**: the candidate, on its own, labelled a candidate for your
+  review.
+  - **`5e7b37d29`**: the record, `AI-Agent-Workspace/AgentSessionHistory/2026/11
+  /2026-11-23/Probes/first-frame/README.md`. It is marked historical evidence.
+  Beside it are the readings as jsonl, plus the probe spec and the two trace
+  readers kept as `.txt`.
+
+  No command was refused. The probe spec, the run outputs and my scratch folder
+  are removed.
+
+  ### What the case measures, in the code's terms
+  - **Start:** `document.body.append(layer)` in `animatePerspective`
+  (`perspectiveTransition.ts:270`).
+  - **First frame:** the case's next `requestAnimationFrame` callback. That
+  callback runs before the frame's own style, layout and paint, so the case
+  counts the rest of the appending task.
+  - **That task** is the last copy slice's microtask, `capture.copied.then` in
+  `index.ts` 1430–1451: `animatePerspective`, then `releaseCover()` (line 1450).
+
+  ### Timeline
+  From Chromium traces (timeline, invalidation tracking, V8 sampler) on
+  graph.ts's picture: 14,810 map elements, layer of 1,077 (2D) and 1,079 (3D)
+  copies. Four traced presses each way, loads 3.6–6.5.
+
+  **To 3D**, from the append:
+
+  | ms from append | What | Cost, ms |
+  | --- | --- | --- |
+  | 0 | the append | — |
+  | 0 to 9–31 | `frame(start)` | 9–31 |
+  | then | `releaseCover` → `void getComputedStyle(root).opacity`
+  (`perspectiveTransition.ts:418`) forces `UpdateLayoutTree` of 1,085 elements |
+  **353, 293, 277, 379** |
+  | 299–427 | the case's first frame | — |
+  | in that frame | the 2D key's rAF (`spatial-legend.ts`: `checkVisibility` on
+  every cell, then `replaceChildren`) | 11–16 |
+  | that frame's style | 4 elements restyled; the time is in
+  `Document::updateStyleInvalidationIfNeeded` | **344, 272, 248, 294** |
+
+  So a person waits through **two** long frames on the way to 3D; the case
+  counts only the first.
+
+  **To 2D:** the same forced read, `UpdateLayoutTree` of 1,413 elements (the
+  copies plus about 336 `.symbol-row` elements matched by `:has` invalidation):
+  **347, 357, 299, 351** ms. Then normal 20–28 ms frames.
+
+  Nothing else of size is in the interval: canvas drawing under 30 ms, layout
+  7–8, paint 2–10. WebGL is drawn by the GPU here, not a software renderer.
+
+  ### Causes
+  1. **The copies' style, about 0.3 ms per copy.** `visualCopySteps` writes
+  every computed property inline: 795 per element on this map, **323 of them
+  custom properties**, which no copy reads (every value that used one is already
+  resolved, and the layer inherits the page's own).
+     - In-page measure, 1,000 copies with their style forced:
+
+       | Copies carry | ms per 1,000 |
+       | --- | --- |
+       | all declarations | 248, 201 |
+       | no custom properties | 90, 94 |
+       | none | 11, 16 |
+
+     - The forced read at line 418 is only where this cost is paid. The style is
+  owed before the first frame anyway, so removing the read would just move the
+  cost past the mark. I left it alone.
+  2. **On the way to 3D, a walk of the whole page set off by the key's write in
+  the first frame.** Any insertion or removal under `<body>` schedules the
+  page's `:has()` invalidation set on `<body>`. Invalidation tracking showed it
+  for the layer, the cover and the key's row.
+     - The rules involved: `.symbol-row` from `reading.css` 2/10/11;
+  `#main:has(...)` from `shell.css` 416–428;
+  `body:has(#map-container[data-lod="overview"])` from `local.css` 476, which
+  makes `<body>` an anchor.
+     - The trigger is the sixteenth milestone's key observer
+  (`spatial-legend.ts:145`): it empties the row once the map is put away.
+     - The cost is **not** the 320 rows the set matched, as I first read it.
+  Taking `.symbol-row` out of `:has` (1 run) left the second frame at 186 ms.
+  The candidate, which only shrinks each copy's declarations by 41%, shrank this
+  frame by 40%. So the walk pays per copy, in proportion to its inline
+  declarations. Which browser operation does that is not attributed.
+
+  ### Candidate `ebe5759f1`
+  In `visualCopySteps`'s loop (lines 475–484 at `4ee8f124b`), names starting
+  `--` are skipped and the declarations are pushed to a list instead of written
+  by index.
+
+  Measured with the before and after client scripts swapped turn about in one
+  hold, same data, the case's own instrument. Load 1.7–3.8, read before and
+  after each press (in `before-and-after.jsonl`). Repo, five runs each:
+
+  | Reading | Before | After |
+  | --- | --- | --- |
+  | First frame to 2D | 347, 314, 332, 310, 390 (median 332) | 181, 168, 179,
+  173, 168 (median 173) |
+  | First frame to 3D | 311, 295, 316, 312, 288 (median 311) | 178, 167, 169,
+  174, 158 (median 169) |
+  | Second frame to 3D | median 296 | 171–187 |
+  | Press of 2D less its render | 280–301 | 285–302 |
+  | Press of 3D | 251–271 | 263–281 |
+  | Copying to 2D | 2.70–2.87 s | 1.75–1.98 s |
+  | Copying to 3D | 2.22–2.45 s | 1.55–1.62 s |
+  | **Motion begins**, from the press, to 2D | 4,784 (median) | 3,608 (median) |
+  | **Motion begins** to 3D | 2,652 (median) | 1,776 (median) |
+  | Frames drawn during the transition, 2D | 41–48 | 54–57 |
+  | Frames drawn during the transition, 3D | 45–46 | 51–53 |
+
+  The longest gap after the second frame is unchanged (40–49 ms). The motion's
+  clock length is unchanged.
+
+  Estate, one run each (layer of 142–153 copies):
+
+  | Reading | Before (load 2.5) | After (load 1.7) |
+  | --- | --- | --- |
+  | First frame 2D / 3D | 48 / 54 | 28 / 56 |
+  | Motion begins 2D / 3D | 705 / 421 | 616 / 322 |
+
+  **Eye:** I did **not** take or look at frames as pictures. That hold was sixth
+  in the lane at the deadline and I withdrew it. What I have instead is the
+  frame clock:
+  - The motion's clock starts at the append and runs 1.4 s, so the first frame a
+  person sees was at about a quarter of the motion before (past the membranes'
+  0.3 s peel). With the candidate it is at about an eighth.
+  - On the way to 3D, the second frame jumps from about an eighth to a quarter,
+  where it used to jump from a quarter to a half.
+  - Whether the copies look the same is unchecked by eye. By the code, nothing
+  in a copy reads a custom property, and no e2e case reads one from the layer.
+
+  ### Secondary: the 136–155 ms after the press's handler
+  It is the copies' **second slice**, taking its full 100 ms budget
+  (`COPY_SLICE_MOST`) because the handler kept the page away more than 100 ms.
+  Its message was posted inside the handler, so it is queued ahead of the case's
+  own. Add the handler's microtasks (16 ms) and one frame (20 ms). What the
+  five merges added at the press: not looked for.
+
+  ### What would remove the rest (not built or measured, in my order)
+  1. **Stop the key's write while the map is put away** (`spatial-legend.ts`,
+  outside my files). This removes the trigger of the second stall.
+  2. **Remove the `<body>` and `#main` `:has()` anchors**: express them as a
+  class or attribute the page already knows.
+  3. **Copy only the declarations that differ** from a reference element's
+  computed style. The bare-copy measure says this could approach 11–16 ms per
+  1,000.
+
+  ### Not attributed or not done
+  - The browser operation behind the per-copy cost of the walk.
+  - The case itself was not run on the candidate. My before-hold was withdrawn
+  when the lane stood five deep. **Five runs of the case are owed before the
+  candidate is taken.**
+  - Frames by eye; the estate traced and at five runs.
+  - No unit or browser suites run. What did run: lint on the changed file
+  (clean), the Explorer type-check (clean), and `live-docs:generate` (no doc
+  changed).
+  - Day-growth scaling is a reading, not a measure: about 0.29 ms per copy
+  before, so more copies or more page tokens would add time. Neither was counted
+  on earlier builds.
+  - The probe's two estate runs failed after their readings were taken, on both
+  builds alike: after the return to 3D, the subject's name stood 30.9 px from
+  centre against the probe's 8. Noted, not followed.
+
+  I used no subagent.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Agent "Measure transition's first frame" finished · 38m 12s
+  ⎿  Resuming agent ad65cb3
+
+● The first-frame measurement has a cause and a candidate fix that cuts it from
+  about 320 ms to about 170 ms; I'm sending it back to confirm the fix changes
+  no pixels before adopting it. · summary
+
+  Ran 3 shell commands (ctrl+o to expand)
+
+● All three builders are working again, queued on the one browser:
+
+  - Picking: building the ruled pick rule with its tests.
+  - Put-away mend: still running the test files that switch views; no result
+    yet.
+  - First frame: the cause is found. Each element the transition copies carried
+    323 unused style properties, and styling them is most of the wait. Leaving
+    them out took the first frame from about 320 ms to about 170 ms, against the
+    400 ms limit. I haven't taken the mend yet; the builder is first proving it
+    changes no pixel of the transition and running the limit's own test five
+    times.
+
+  Next from me is the gathered report.
+
+● Agent "Verify put-away mend" is waiting on its own background work · 39m 49s
+
+● Agent "Verify put-away mend" is waiting on its own background work · 41m 10s
+
+● Agent "Verify put-away mend" is waiting on its own background work · 43m 13s
+
+› Message from general-purpose
+  ## The put-away mend: the wider runs on the merged state
+
+  **My verdict: the mend can be merged into the day branch.** Nothing I ran
+  shows a view left undrawn, unfocusable, unmeasured, or inert when it should
+  not be. The one open question is in the press case below, and it is a reading,
+  not a measure. Not every spec was run in the time; the list is at the end.
+
+  **Branch tip:** `b5d952eb3` on `worktree-agent-a4251ee95568c0f7d`. Everything
+  is committed and the working tree is clean.
+
+  ### Setup
+  - `git reset --hard 4ee8f124b`, then `git merge f152fbb6e`. **Nothing
+  conflicted.** It became the merge commit `a643f5c24`.
+  - `npm ci`, `npm run build` and `npm run live-docs:generate` ran cleanly;
+  regeneration changed nothing. Then `npm run e2e:bundles`.
+
+  ### Holds
+  All went through the lane, at `--workers=2` unless noted. Load is the
+  one-minute figure read when the hold ended; the waits were in the background,
+  so I could not read the start.
+
+  | Hold | Specs | Result | Time | Load |
+  | --- | --- | --- | --- | --- |
+  | 1 | `design-audit` | 12 passed | 5.4 s | 5.81 |
+  | 2 | `force-graph-focus` whole | 17 passed, 1 failed | 3.2 min | 2.28 |
+  | 3 | `local-map-hidden`, `labels-and-controls`, `inspection` | 24 passed |
+  1.4 min | 4.76 |
+  | 4 | the press case alone, `--repeat-each=4 --workers=1` | 2 passed, 2 failed
+  | 1.2 min | 4.95 |
+  | 5 | `perspective-zoom`, `spatial-legend` | 12 passed | 1.2 min | 5.02 |
+  | 6 | `bare-frame`, `backward-cue`, `card-reading` | 30 passed | 3.5 min |
+  6.10 (my lint, unit cases and type-check ran beside it) |
+  | 7 | `camera-intent` | 29 passed | 4.5 min | 3.56 |
+  | 8 | `explorer-history`, `explorer-navigation`, `force-graph-directories`,
+  `force-graph-exploration` | 23 passed | 3.3 min | 3.54 |
+  | 9 | `force-graph-identity`, `force-graph-shells`, `history-2d` | 21 passed |
+  1.5 min | 3.24 |
+  | 10 | `history-panel`, `history-scrubber` (no `@alone`) | 27 passed, 4 failed
+  | 2.5 min | 3.30 |
+  | 11 | `local-map-branches` (no `@alone`), `local-map-framing`,
+  `local-map-keyboard`, `local-map-learning` | 26 passed | 1.9 min | 5.89 |
+  | 12 | `local-map-mirror`, `local-map-packing`, `no-network` | 24 passed | 2.1
+  min | 4.16 |
+  | 13 | `overview-files`, `return-cost`, `returning-connections`, `way-down`,
+  `webgl-refused` | 36 passed | 2.0 min | 4.43 |
+
+  No hold was cut. The first focus case (line 131, known fault (a)) passed in
+  the whole file's run.
+
+  ### Failures and their classes
+
+  **1. The press case, "the 2D and 3D presses return at once…"**
+  - In the whole file it failed on something new: "the 3D transition folds the
+  cards", Received: false. Alone, one run failed on the 2D first frame (475 ms
+  against 400). Another failed on the 3D first frame (454 ms), and in that run
+  the fold was not seen either.
+  - The first-frame failures are known fault (b).
+  - I class the missed fold as **load or time**:
+    - The case asks whether any drawn frame shows a card at an opacity strictly
+  between 0 and 1.
+    - On the way to 3D the cards fold from 308 to 728 ms after the transition
+  starts (progress 0.22 to 0.52 of 1,400 ms, `perspectivePhases`), a window of
+  420 ms.
+    - The case's longest timer wait on the way to 3D was 748 and 847 ms in the
+  two runs that missed the fold, against 690 to 737 ms in the four that saw it.
+    - So no frame was drawn during the fold; the cards did fold.
+  - What this does not settle: I ran no build without the mend beside these, and
+  yesterday's readings never recorded the longest wait. Whether the mend
+  lengthens that gap is unknown. I changed neither the case nor the transition.
+
+  Readings, in ms:
+
+  | Run | Press of 3D (bound 500) | Press of 2D less its render | First frame to
+  2D | First frame to 3D | Longest wait to 3D | Fold seen |
+  | --- | --- | --- | --- | --- | --- | --- |
+  | Whole file | 339.3 | 311.8 | 339.5 | 338.0 | 748.3 | no |
+  | Alone 1 | 291.7 | 346.6 | 350.7 | 350.9 | 689.9 | yes |
+  | Alone 2 | 304.2 | 330.7 | 474.9 | 378.8 | 727.3 | yes |
+  | Alone 3 | 316.1 | 354.9 | 393.2 | 453.9 | 847.2 | no |
+  | Alone 4 | 272.8 | 336.0 | 374.3 | 369.0 | 737.4 | yes |
+
+  **2. Four reds in `history-panel.spec.ts`** (lines 137, 164, and 295 twice):
+  **not the mend's, and not about views**. All four stop at their first check,
+  "/ carries a history (… npm run live-docs:history computes it …)", Received:
+  undefined. The bundle was built without the repository's history ("History:
+  none" when it was built), because a fresh worktree has no history cache. I did
+  not run them again with a history.
+
+  ### What I changed
+  - **`perspectiveTransition.ts`: one comment only**, about lines 480 to 481
+  inside `visualCopySteps`. It used to say a card is copied after its view was
+  made inert; it now says the view shown and the view held are not inert, but
+  every view is behind the modal reader. No code changed. I did not touch
+  `changePerspective`.
+  - **The Explorer design**
+  (`.mdmd/layer-3/live-documentation-explorer.mdmd.md`) said nothing anywhere
+  about how a view is held or put away. It now has one bullet in its list of the
+  views, saying what the design system's rule says. The old statement "an
+  inactive view is laid out and drawn, only transparent" was not there.
+  - **The transition's Live Doc notes**
+  (`.mdmd/layer-4/.../perspectiveTransition.ts.mdmd.md`, in the authored part,
+  not a generated region) held that statement and the inert-copy claim. I kept
+  both as what was true then and added what is true since 2026-11-22.
+  - **The record:** a new section, "Seventeenth milestone, November 23", in
+  `AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-22/Screenshots/arrival
+  -default/README.md`, with every hold, its load and the readings.
+  - I saw nothing fail that needed mending, so I made no product mend and no
+  case seen red.
+
+  ### Checks beside the browser
+  All passed:
+  - `npm run lint` and `npm run build` were clean.
+  - Unit cases: 105 files, 1,342 passed.
+  - `live-docs:generate` regenerated nothing.
+  - `slopcop:markdown`: 0 broken links. `slopcop:assets`: 0 broken references.
+  `slopcop:symbols`: 0 issues.
+  - The record-links check over the two design documents: 5 links, 0 broken.
+
+  ### Commands refused, and my own mistakes
+  - **Refused:** one grep with backticks inside its pattern, which the harness
+  would not verify. I reran it as a plain pattern; nothing was wrapped in a
+  script.
+  - **Queue:** I briefly queued eleven holds at once, which would have held the
+  lane for most of an hour. I stopped eight of them while they were still
+  waiting, before any ran, and queued from then on two or three at a time.
+  - **Stale bundles:** my 01:33 comment edit made the bundles older than the
+  client, so two queued holds refused to start. I rebuilt the bundles and reran
+  them. Holds 1 and 2 ran on the 01:29 bundles, which differ only by that
+  comment.
+
+  ### Not run
+  - `world-map`.
+  - Four specs my own search found that are not on your list: `search-bar`,
+  `pin-clicks`, `local-map-path` (they press sidebar items by name, or 2D and
+  3D) and `shell-accessibility` (it checks the sidebar's buttons are visible).
+  - The three `@alone` cases at `--workers=1`: one in `local-map-branches`, two
+  in `history-scrubber`.
+  - `history-panel`'s four on a bundle built after `npm run live-docs:history`.
+  - I left out `history-emphasis` and `inventory-counts`: the "History" button
+  they press opens a panel, not a view.
+
+  ### What I would still want run
+  1. Those not-run holds.
+  2. The press case on the build before the mend (`87f4fb51f`), alone, recording
+  the longest wait. That would show whether the gap that hides the fold
+  predates the mend. The first-frame builder may already have this.
+
+  I made no scratch folder. Playwright's ignored `test-results/` output is left
+  in the worktree.
+
+  No subagent was used.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Agent "Verify put-away mend" finished · 45m 56s
+
+  Ran 3 shell commands (ctrl+o to expand)
+
+● The put-away mend came back verified and is merged into the day branch (the 3D
+  press now returns in about 300 ms against a 500 ms limit). Two builders
+  remain: the pick rule being built, and the first-frame mend being proved
+  against the picture. I'm waiting on them; then I merge, run the affected tests
+  on the merged branch, and start the four stages.
+
+› Message from general-purpose
+  ## Second milestone: rule A is built. A sphere seen through a skin now takes
+  the press.
+
+  **Branch tip: `7f44261b5`** on `worktree-agent-a7cb91fb393dfd1f4`. That is one
+  commit on top of `47f93b33a` (the measurement).
+
+  **The rule.** At any point of the 3D map, the press, hover, rest, touch and
+  drag-grab all take the nearest sphere the pointer's ray passes through, even
+  when a wrapper's skin is nearer the eye. A wrapped group or directory shell
+  takes the point only where the ray meets no sphere. A shell's own files are
+  drawn as cells, not spheres, so a shell keeps the rest of its face.
+
+  ### Cloud looks: A holds under every look
+  I put a sphere behind a shell under Cloud and under Cloud with the rim. The
+  setup: the estate on `PaymentService.cs`, camera placed beyond
+  `shell:Portal/Pages` on the line through the file. In both, the mist fills the
+  frame, and the file and every sphere behind the mist are plainly visible,
+  muted but whole, with their wires. So the rule does not depend on the look,
+  and nothing in it reads the look. The pictures are committed in
+  `Probes/picking/`: `cloud-behind-shell.png`, `cloud-rim-behind-shell.png`,
+  plus `skin-behind-shell-old-rule.png`.
+
+  ### What changed
+  - **The pure rule.** `pickedAt(sphere, wrapper, nodeOf)` is new in
+  `packages/explorer/src/client/views/forceGraphBatches.ts`. It returns the
+  sphere's node if the ray meets a sphere, else the wrapper's seed, else
+  nothing. Its doc comment gives the rule, today's date and the reason.
+  - **`nodeAt`.** In `forceGraphRenderer.ts` it now asks `pickedAt`. Its doc
+  comment is rewritten and replaces the 2026-11-05 sentence.
+  - **Every caller checked; there is one route.** All of these go through
+  `nodeAt`:
+    - the view's hover and rest (`pickPointer`, which a touch also uses);
+    - its press (the `pointerdown` press id);
+    - the renderer's drag grab;
+    - the test hook `spatialPick`.
+
+    `pickWrapper` and `pickNodeHit` have no other product callers, so nothing
+  needed bringing onto the rule.
+  - **Vitest.** `forceGraphBatches.test.ts` gains a describe block, "what a
+  press takes where a skin stands before a sphere (2026-11-23)", with two tests:
+    - the five cases you listed: sphere alone, wrapper alone, wrapper nearer
+  (sphere wins), sphere nearer, neither;
+    - a check through the real buffers: a shell drawn only as its skin, a file's
+  sphere behind it on the camera's axis (the sphere wins), and a point beside
+  it on the same skin (the shell).
+  - **`rayAt` and `RayReading`** are added to
+  `tests/e2e/force-graph-observation.ts`. They read what the ray meets from the
+  uploaded picture, independently of the picker, and also report the picker's
+  own answer.
+  - **New browser case `tests/e2e/force-graph-picking.spec.ts`.** It runs on the
+  estate at rest with no race: the camera is placed directly beyond the largest
+  shell, on the line through the subject's sphere. It checks:
+    - (a) at a point where the skin is met first and then the file: the picker
+  gives the file, a rest offers the file's actions, the file is no dimmer than
+  before, and a press pins it;
+    - (b) at a point on the same skin with no sphere behind: a rest offers the
+  shell's actions and a press pops the shell;
+    - (c) it fails if either point is not found, so it cannot pass empty.
+  - **Documents (same commit).**
+    - The design system gains a new rule in
+  `interaction-and-accessibility.mdmd.md`, "In 3D, what is seen under the
+  pointer is what is pressed", with its reason, where it lives and what checks
+  it. It had no rule on overlapping picks before.
+    - In `.mdmd/layer-3/live-documentation-explorer.mdmd.md` I touched only the
+  Group Wrappers paragraph (a ruling sentence with the measured counts) and the
+  Directory shells paragraph (one sentence).
+    - `live-docs:generate` was run and its output committed. The new spec's Live
+  Doc has an authored Purpose and Notes. I also updated one stale sentence in
+  the authored notes of `forceGraphBatches.ts`'s Live Doc.
+  - **The record.** `Probes/picking/README.md` has a second-milestone section
+  with the ruling, the Cloud decision, what was built, the red run and the run
+  table.
+
+  ### Seen red on the old rule
+  I put the old two lines back in `nodeAt` with the file tool, rebuilt the
+  bundles and ran the case alone (load 5.8). Then I restored the new rule and
+  rebuilt. The failure message:
+
+  > a press at (768.5, 397.2), where shell:Portal/Pages's skin is met at 19.0
+  and PaymentService/PaymentService.cs at 267.9, takes … Expected:
+  "PaymentService/PaymentService.cs" Received: "shell:Portal/Pages"
+
+  ### Runs on the new rule
+  Exits were read from each command. Every browser run was its own hold. Load
+  was 2.8 to 4.1 around the runs, and lane waits ran up to 555 s behind the
+  other builders.
+
+  | Run | Result |
+  |---|---|
+  | `npm run lint` | clean |
+  | `npm run build` | clean |
+  | `vitest --project unit packages/explorer` | 105 files, 1,344 passed |
+  | `force-graph-picking.spec.ts`, 1 worker | 1 passed (14.0 s) |
+  | `force-graph-focus.spec.ts` whole, 2 workers | 14 passed, 1 failed (see
+  below) |
+  | focus first case ("a focused URL centers its node …") ×3, 1 worker | 3
+  passed |
+  | `force-graph-shells.spec.ts` | 9 passed |
+  | `force-graph-directories.spec.ts` | 4 passed |
+  | `force-graph-exploration.spec.ts` + `force-graph-identity.spec.ts` | 14
+  passed |
+  | `force-graph-wrappers.spec.ts` + `force-graph-building.spec.ts` (the other
+  two specs found that click or hover where wrappers are drawn) | 8 passed |
+  | `force-graph-discovery.spec.ts` | 2 passed, 1 failed (see below) |
+
+  The two failures are the known ones:
+  - **Focus spec line 267** failed on its time bound: "the 3D press returned in
+  511 ms, the 2D map's render 46 ms", against 500. This is the bound another
+  builder is measuring; I changed nothing.
+  - **Discovery spec line 70** failed on the slow settle: 2,717 substeps against
+  2,700.
+
+  **No existing case relied on a skin taking the press over a sphere, so I
+  changed none.** `force-graph-focus.spec.ts` was not touched.
+
+  ### Other notes
+  - No command was refused, and I used no subagent.
+  - `test-results/`, `reports/` and my scratch folder `picking/` are removed.
+  The working tree is clean.
+  - I took the Cloud pictures before the rebuild, while the bundles still held
+  the old rule. The look depends only on the shader, so the rule does not affect
+  them.
+
+  ### Unfinished
+  - The focus spec's `uncover` helper and its comment are left for you, as you
+  said.
+  - I did not judge the hover rim's appearance on a shell where a sphere now
+  takes part of its face. Nothing was built for it.
+
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Agent "Mend 3D picking fault" finished · 38m 40s
+
+  Searched for 1 pattern, read 3 files, ran 2 shell commands (ctrl+o to expand)
+
+● Update(tests/e2e/force-graph-focus.spec.ts)
+  ⎿  Added 4 lines, removed 1 line
+      107    return [elements[8], elements[9], elements[10]];
+      108  });
+      109 
+      110 -/** Orbit the camera a little, as a person would, until the fi
+          -le's sphere shows past whatever stands in front of it. */     
+      110 +/**                                                           
+      111 + * Orbit the camera a little, as a person would, until the fil
+          +e's sphere shows past the nearer spheres that stand in front  
+      112 + * of it. Since 2026-11-23 a skin no longer covers a sphere se
+          +en through it (`pickedAt`), so a turn is seldom needed.       
+      113 + */                                                           
+      114  async function uncover(page: Page, id: string): Promise<{ x: n
+           umber; y: number }> {
+      115    // A sphere is pressed or hovered once the map has built: wh
+           ile it builds, a press is dropped and nothing hovers (2026-11-
+           15).
+      116    await expect(page.locator("#graph-svg")).not.toHaveAttribute
+           ("data-building", /.*/, { timeout: 30_000 });
+
+● Update(tests/e2e/force-graph-focus.spec.ts)
+  ⎿  Added 1 line, removed 1 line
+      128      const turned = Math.acos(Math.min(1, before[0] * after[0]
+           + before[1] * after[1] + before[2] * after[2])) * 180 / Math.P
+           I;
+      129      expect(turned, `turn ${turn + 1} turned the camera rather 
+           than carrying a sphere`).toBeGreaterThan(5);
+      130    }
+      131 -  throw new Error(`${id} stayed covered by nearer spheres or s
+          -kins after eight turns of the camera`);                       
+      131 +  throw new Error(`${id} stayed covered by nearer spheres afte
+          +r eight turns of the camera`);                                
+      132  }
+      133 
+      134  test("a focused URL centers its node, direct clicks pin it, an
+           d More opens its details", async ({ page }) => {
+
+● Update(tests/e2e/force-graph-focus.spec.ts)
+  ⎿  Added 1 line, removed 1 line
+      109 
+      110  /**
+      111   * Orbit the camera a little, as a person would, until the fil
+           e's sphere shows past the nearer spheres that stand in front
+      112 - * of it. Since 2026-11-23 a skin no longer covers a sphere se
+          -en through it (`pickedAt`), so a turn is seldom needed.       
+      112 + * of it. Since 2026-11-23 a skin no longer covers a sphere se
+          +en through it (`pickedAt`), so only a nearer sphere can.      
+      113   */
+      114  async function uncover(page: Page, id: string): Promise<{ x: n
+           umber; y: number }> {
+      115    // A sphere is pressed or hovered once the map has built: wh
+           ile it builds, a press is dropped and nothing hovers (2026-11-
+           15).
+
+  Ran 2 shell commands (ctrl+o to expand)
+
+● The pick rule is built and merged (a sphere seen through a bubble now takes
+  the press; its new test was seen failing on the old rule). I'm recording it,
+  then waiting only on the first-frame proof.
+
+  Made 1 scratchpad edit +36, ran 4 shell commands (ctrl+o to expand)
+
+● Two of the three pieces are now merged into the day branch: the put-away mend
+  and the pick rule. The last one, the first-frame mend, is still being proved
+  against the picture by its builder; its test runs are queued on the browser.
+  My own run of the affected tests on the merged branch is scripted and ready to
+  start as soon as that merge is in, and the four stages follow it.
+
+› Message from general-purpose
+  ## Verdict: the candidate is not ready to merge as it stands
+
+  The candidate (`ebe5759f1`, which stops copying custom properties into the
+  transition's copies) fails one existing case:
+  `tests/e2e/perspective-zoom.spec.ts:53`, "perspective copies preserve every
+  computed SVG declaration without live identifiers or hooks". That case was
+  written on 2026-10-20 (`708f0cfa3`) and requires every custom property to be
+  copied, so the candidate cannot pass it as written. I did not edit the case.
+  Everything else holds:
+  - the case that bounds the first frame passes 5 of 5, at 173–262 ms;
+  - every other spec that changes perspective passes;
+  - the layer is the same pixel for pixel, with two exceptions that are not
+  caused by the custom properties (one is unexplained, below).
+
+  **Tip:** `0993e6cf0` on `worktree-agent-ad65cb34d5b97773f`. Commits:
+  `ebe5759f1` (the candidate, unchanged), `5e7b37d29` (record), `0993e6cf0`
+  (this milestone's record). The record is `AI-Agent-Workspace/AgentSessionHisto
+  ry/2026/11/2026-11-23/Probes/first-frame/README.md`, with a new section
+  "Second milestone". No product file was changed this round, since neither (1)
+  nor (2) showed the candidate needs a mend.
+
+  ### 1. By the code
+  - **Copies lose their classes.** `visualCopySteps` strips `id`, `class`,
+  `tabindex`, `role`, `data-*` and `on*` from every copy.
+  - **No pseudo-element can be drawn on a copy, before or after the candidate.**
+  I read all 114 pseudo-element selectors in the ten stylesheets:
+    - 100 need a class or an id on the element itself.
+    - The other 14 draw on a tag (`summary`, `input`, `span`) but need an
+  ancestor class (`.sources-group`, `.history-step-dialog`, `.filter-toggle`,
+  `.tuning-slider`, `.sidebar-checkbox`, `.sidebar-details`) or a `data-`
+  attribute. Nothing in the layer has those.
+    - The browser's own pseudo-elements (markers, placeholders, scrollbars) read
+  no custom property.
+    - Side note, same on both builds: a card's test-backed halo is its
+  `::before`, so it is never in its copy.
+  - **`!important` rules:** two (`body.dragging *`, `.internals-anchor`);
+  neither reads a custom property through a copy.
+  - **Animations, the one exception.** A copy carries its original's
+  `animation-name`. The nine `local-look-*` keyframes (`reading.css` 742–748)
+  read custom properties set below the root (by `.local-slot-card` class rules,
+  by the map controller's `--look-zoom`, by `--foot-y`/`--foot-scale`).
+    - So with a press within 160 ms of a change of the map's look, a copy
+  replays that 160 ms animation from fallback values instead of its original's.
+    - Neither replay matches the map, and none was seen.
+    - `local-step-mark*` reads palette tokens that live on the page's root, so
+  copies still inherit them; `backward-rise` runs on controls that are never
+  copied.
+
+  ### 2. By the picture
+  - **Method:** the two builds' client scripts swapped turn about in one hold,
+  same data.
+  - **Freezing the motion:** `requestAnimationFrame` is wrapped before the
+  page's code runs, and the probe takes every frame request the transition
+  makes. To 3D, the layer stays as `frame(start)` drew it (progress 0). To 2D,
+  one frame is given at 1,399.5 of 1,400 ms, then held.
+  - **Determinism:** each page is brought to rest first. Each pair was taken
+  before / after / before-again, so the last pair shows run-to-run noise.
+  - **Pictures:**
+    - `graph.ts`: test-backed cards, open shells, gathered wires;
+    - `?dir=scripts`: 6 closed directories with cells of both kinds;
+    - the estate.
+
+  Differing pixels:
+
+  | Picture, direction | Before vs after | Before vs before-again |
+  | --- | --- | --- |
+  | `graph.ts` to 3D (682,730 px) | 0 | 0 |
+  | `graph.ts` to 2D (612,419 px) | 0 | 0 |
+  | `scripts` to 3D | 0 | 0 |
+  | `scripts` to 2D | 24 (up to 114 levels) in the first hold; 0 in a second |
+  0, 0 |
+  | estate to 3D | 0 | 0 |
+  | estate to 2D | 97, then 96 (≤ 2 levels) | 24, 24 (≤ 1 level) |
+
+  What I looked at:
+  - **Estate to 2D:** every differing pixel is in the layer's bottom three rows.
+  The page's 2D/3D button just below the layer was playing its 1.8 s
+  `backward-rise` glow, a different moment in each capture, and the glow reaches
+  over the edge. It is not the layer.
+  - **`scripts` to 2D, first hold (unexplained):** the `contact-sheet` closed
+  directory's More ("···") sat about 50 px further right in the after copy.
+    - It did not recur: once in 7 captures with the candidate, never in 13
+  without.
+    - In every later capture where I read it, the frozen copy's More was at 118
+  px.
+    - The original's More, sampled every 16–40 ms for 4 s from the press, sat at
+  118 px on both builds.
+    - Fresh copies made at the freeze, with and without custom properties, both
+  put it at 118 px. So the custom properties do not place it.
+    - What the one capture froze I did not find. It may be a passing state of
+  the label met earlier by the faster copying.
+  - **Committed pair:** `graph.ts` to 3D, `layer--graph-ts-to-3D--before.png`
+  and `--after.png` (byte-identical, 236,171 bytes each). Also committed: the
+  marked difference from the one `scripts` capture, all comparisons and captures
+  as jsonl, and the probe's text.
+
+  ### 3. Cases
+  **The first-frame case**, five runs at one worker in one hold, **5 passed**. I
+  read the load only twice, not beside each run: 2.45 just before the hold and
+  3.09 (the one-minute average spanning the five) as it ended.
+
+  | Run | First frame to 2D | First frame to 3D | Press of 2D less render |
+  Press of 3D |
+  | --- | --- | --- | --- | --- |
+  | 1 | 261.6 | 214.8 | 360.9 | 297.4 |
+  | 2 | 192.3 | 190.5 | 318.0 | 278.2 |
+  | 3 | 189.9 | 184.8 | 309.5 | 271.6 |
+  | 4 | 191.0 | 181.1 | 286.8 | 285.5 |
+  | 5 | 190.1 | 172.9 | 428.0 | 333.9 |
+
+  **`force-graph-focus.spec.ts` whole**, one worker: 17 passed, 1 failed — the
+  known red, the first case, with "the actions offered should be those of
+  packages/engine/src/live-docs/graph.ts; they are: "Actions for the shell of
+  packages/explorer" (shell:packages/explorer)… aria-busy is true; its motion
+  has run 409 substeps".
+
+  **The 22 other specs that press 2D or 3D**, each whole in its own hold, at two
+  workers (one for `local-map-branches` and `history-scrubber`, which have
+  `@alone` cases):
+  - **Failed:** `perspective-zoom` — 5 passed, 1 failed (line 53). Its 356
+  differing lines are all `--…` names, and no standard property differs.
+  - **Passed, every case:**
+    - spatial-legend 6, inspection 14, local-map-mirror 10, backward-cue 6,
+  card-reading 17;
+    - local-map-branches 11, history-2d 6, no-network 9, force-graph-directories
+  4, returning-connections 3, local-map-framing 7;
+    - explorer-navigation 8, local-map-packing 5, history-scrubber 17,
+  labels-and-controls 6, overview-files 10;
+    - force-graph-shells 9, camera-intent 29, webgl-refused 9,
+  force-graph-exploration 8, return-cost 3.
+
+  ### 4. Gate
+  - `npm run lint`: exit 0.
+  - `npm run build`: exit 0.
+  - **No Vitest file covers `perspectiveTransition.ts`:** `vitest related` on it
+  found no test files. I ran the Explorer's unit cases instead: 105 files,
+  1,342 passed.
+  - `npm run live-docs:generate` after removing the probe: exit 0, nothing
+  created or updated, so nothing to commit.
+
+  ### The decision for you
+  No version of the candidate can pass line 53 as written: it reads a path deep
+  inside a card, so every copy would have to carry the custom properties, and
+  that is the cost the candidate removes.
+  - **Restate the case (I recommend this).** The copy must hold every computed
+  declaration except custom properties. The punctuation check moves to a
+  property that draws (`font-family` or `content` can carry `;` and `:`). The
+  case's own comment already exempts five custom properties as "the map's
+  state…, not the SVG's own declarations", and the pictures show none of the
+  rest draw anything.
+  - **Keep the case and refuse the candidate.** The first frame then stays at
+  300–400 ms against its 400 ms bound.
+
+  ### Owed, and process notes
+  - **Owed:** the look-change replay (not covered by any case, not seen on
+  screen); what moved the More in that one capture.
+  - **Lane:** I withdrew 15 of my queued spec holds before they started, so the
+  `scripts` diagnosis could run first, then queued them again. All of them ran.
+  - No command was refused. The probe specs, `test-results/`, `reports/` and my
+  scratch folder are removed.
+  - I used no subagent.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Agent "Measure transition's first frame" finished · 1h 43m 17s
+  Ran 1 shell command (ctrl+o to expand)
+
+● The first-frame check shows the mend changes no pixels and the 400 ms test
+  passes, but an older test conflicts with it; I'm merging the mend, updating
+  that test to match, and rerunning the affected tests. · summary
+
+  Searched for 1 pattern, read 1 file (ctrl+o to expand)
+
+● Update(packages/explorer/src/client/views/perspectiveTransition.ts)
+  ⎿  Added 1 line, removed 7 lines
+      480    const declarations: string[] = [];
+      481    for (let property = 0; property < length; property++) {
+      482      const name = style.item(property);
+      483 -<<<<<<< HEAD                                                  
+      483 +    if (name.startsWith("--")) continue;                      
+      484      // A card is copied from the view shown or the view held, 
+           neither of them inert since 2026-11-22, but behind the modal
+      485      // reader every view is; the copy is of the picture as it 
+           was pressed, live, and stands in a layer that is inert itself.
+      486 -    declarations[property] = `${name}: ${name === "interactivi
+          -ty" ? "auto" : style.getPropertyValue(name)};`;               
+      487 -=======                                                       
+      488 -    if (name.startsWith("--")) continue;                      
+      489 -    // A card copied in slices is read after its view was made
+          - inactive, and so inert; the copy is of the picture as it     
+      490 -    // was pressed, live, and stands in a layer that is inert 
+          -itself.                                                       
+      486      declarations.push(`${name}: ${name === "interactivity" ? "
+           auto" : style.getPropertyValue(name)};`);
+      492 ->>>>>>> 0993e6cf0                                             
+      487    }
+      488    copy.style.cssText = declarations.join("");
+      489    if (root instanceof HTMLCanvasElement && copy instanceof HTM
+           LCanvasElement) copy.getContext("2d")?.drawImage(root, 0, 0);
+
+● Update(packages/explorer/src/client/views/perspectiveTransition.ts)
+  ⎿  Added 6 lines, removed 3 lines
+      473    // visibility:hidden and opacity:0 still occupy layout, so t
+           hey retain the full copy below.
+      474    if (style.display === "none") { copy.style.cssText = "displa
+           y:none"; return copy; }
+      475    // Read the native length once and preserve every computed p
+           roperty in one parsed declaration block. A custom property
+      476 -  // is left out: every property that used it is copied with i
+          -ts value already worked out, and the layer inherits the       
+      477 -  // page's own. Copied, the 323 of each element's 795 made wo
+          -rking out the copies' style, which the transition's first     
+      478 -  // frame waits for, cost more than twice as much (2026-11-23
+          -, Probes/first-frame).                                        
+      476 +  // is left out, since nothing a copy draws reads one: every 
+          +property that used it is copied with its value already        
+      477 +  // worked out, and a copy keeps no class, so no stylesheet r
+          +ule or pseudo-element draws on it. Copied, the 323 of each    
+      478 +  // element's 795 made working out the copies' style, which t
+          +he transition's first frame waits for, cost more than twice   
+      479 +  // as much; without them the layer is the same pixel for pix
+          +el (2026-11-23, Probes/first-frame). One thing does read      
+      480 +  // them and is owed: a copy keeps its original's `animation-
+          +name`, and the `local-look-*` keyframes read custom           
+      481 +  // properties, so a copy made within 160 ms of a change of t
+          +he map's look replays that animation from their fallbacks.    
+      482    const length = style.length;
+      483    const declarations: string[] = [];
+      484    for (let property = 0; property < length; property++) {
+
+  Searched for 1 pattern, read 1 file, ran 1 shell command (ctrl+o to expand)
+
+● Update(.mdmd/layer-4/packages/explorer/src/client/views/perspectiveTransition.
+        ts.mdmd.md)
+  ⎿  Added 1 line, removed 1 line
+      13  ### Notes
+      14  Keeps the source picture while the destination initializes. Cap
+          tures measured cards (copying those the frame shows), sampled n
+          ative SVG symbol curves and directory shells, each shell with t
+          he membrane's outline drawn inside it and its label (the outlin
+          e since 2026-10-06, when the directory's element stopped drawin
+          g itself). Curves gather by file pair as cards fold into named
+          points; only then do the points move to the native force projec
+          tion. Directory shells disappear from the scan root inward, and
+           return from the direct directories outward on the reverse jour
+          ney. Geometry and phases live in the pure companion module. Cop
+          ies are inert and carry no live control hooks; reduced-motion p
+          references bypass the animation. It computes no alternative gra
+          ph layout and changes no saved pins or canonical relationships.
+      15 
+      16 -Frozen appearance includes every computed property, including S
+         -VG styles and inherited custom properties. The copy reads the n
+         -ative property count once, obtains each name and value by index
+         -, and assigns one declaration block through `cssText`. Live sel
+         -ectors and control hooks are removed before that write, avoidin
+         -g serialization of the newly expanded style just to enumerate a
+         -ttributes. These choices reduce repeated CSSOM calls without gu
+         -essing which properties matter or changing the transition's geo
+         -metry. A `display:none` subtree stops at an inert hidden shell,
+         - since it contributes no layout or pixels to the snapshot. `vis
+         -ibility:hidden` and `opacity:0` still occupy layout and retain 
+         -the full copy.                                                 
+      16 +Frozen appearance includes every computed property, including S
+         +VG styles, and since 2026-11-23 no custom property: nothing a c
+         +opy draws reads one, since every property that used one is copi
+         +ed with its value worked out and a copy keeps no class for a st
+         +ylesheet's rule or a pseudo-element to draw on. Until then each
+         + copy carried its original's custom properties too, 323 of an e
+         +lement's 795 on this repository's map, and working out the styl
+         +e of a layer of about a thousand copies, which the transition's
+         + first frame waits for, took 277 to 379 ms; without them the fi
+         +rst frame came in 158 to 181 ms where it had taken 288 to 390, 
+         +and the layer was the same pixel for pixel on this repository's
+         + pictures and the estate's ([the measurement](../../../../../..
+         +/../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-23/P
+         +robes/first-frame/README.md)). One thing reads them and is owed
+         +: a copy keeps its original's `animation-name`, and the `local-
+         +look-*` keyframes read custom properties, so a copy made within
+         + 160 ms of a change of the map's look replays that animation fr
+         +om their fallbacks. The copy reads the native property count on
+         +ce, obtains each name and value by index, and assigns one decla
+         +ration block through `cssText`. Live selectors and control hook
+         +s are removed before that write, avoiding serialization of the 
+         +newly expanded style just to enumerate attributes. These choice
+         +s reduce repeated CSSOM calls without guessing which properties
+         + matter or changing the transition's geometry. A `display:none`
+         + subtree stops at an inert hidden shell, since it contributes n
+         +o layout or pixels to the snapshot. `visibility:hidden` and `op
+         +acity:0` still occupy layout and retain the full copy.         
+      17 
+      18  Since 2026-11-07 the switch costs the page's main thread a frac
+          tion of what it did: on this repository's picture pinned on one
+           file a press of 2D had blocked the page for about 10 s and a p
+          ress of 3D for about 15 s ([the switch-cost probe](../../../../
+          ../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11
+          -07/Probes/switch-cost/README.md), whose dated section has the
+          numbers before and after), the owner's standard being that the
+          browser must never ask whether to kill the page. Four causes we
+          nt. The hold copied the whole source surface, every computed pr
+          operty of every element; it now keeps the source surface itself
+           drawn over the destination (`perspective-held` in `local.css`)
+          , since an inactive view was then laid out and drawn, only tran
+          sparent (since 2026-11-22 a view put away is not drawn, and a h
+          eld view is drawn and is made inert only when its hold lets go,
+           `settleViews` in `dom.ts`; [the record](../../../../../../../A
+          I-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-22/Screen
+          shots/arrival-default/README.md#fifteenth-milestone-from-2245-u
+          tc-a-view-put-away-is-taken-out-of-drawing-before-it-is-made-in
+          ert)); on the way to 2D the copy had never been seen at all, th
+          e 2D map being ready at once and the cover going in the same ta
+          sk. The capture copied every card of the 2D map; it now copies
+          only the cards whose boxes meet the transition's frame (the des
+          tination's box), since a card is drawn only inside its own box
+          while it folds, shrinking toward its title, and has gone before
+           its token moves, so a card outside the frame was never seen; a
+          nd within a copied card, and within a directory's outline and l
+          abel, a block box the frame (grown by 64 px) does not meet is c
+          opied without its contents, keeping its declared size and so it
+          s place, since a pinned file's card of a hundred rows had cost
+          a third of a second for rows below the frame. A directory band
+          outside the frame stands in the layer as an empty box of its si
+          ze, keeping its identity and depth. The wires'  … [+2404 chars]
+      19 
+
+● Update(.mdmd/layer-4/packages/explorer/src/client/views/perspectiveTransition.
+        ts.mdmd.md)
+  ⎿  Added 1 line, removed 1 line
+      13  ### Notes
+      14  Keeps the source picture while the destination initializes. Cap
+          tures measured cards (copying those the frame shows), sampled n
+          ative SVG symbol curves and directory shells, each shell with t
+          he membrane's outline drawn inside it and its label (the outlin
+          e since 2026-10-06, when the directory's element stopped drawin
+          g itself). Curves gather by file pair as cards fold into named
+          points; only then do the points move to the native force projec
+          tion. Directory shells disappear from the scan root inward, and
+           return from the direct directories outward on the reverse jour
+          ney. Geometry and phases live in the pure companion module. Cop
+          ies are inert and carry no live control hooks; reduced-motion p
+          references bypass the animation. It computes no alternative gra
+          ph layout and changes no saved pins or canonical relationships.
+      15 
+      16 -Frozen appearance includes every computed property, including S
+         -VG styles, and since 2026-11-23 no custom property: nothing a c
+         -opy draws reads one, since every property that used one is copi
+         -ed with its value worked out and a copy keeps no class for a st
+         -ylesheet's rule or a pseudo-element to draw on. Until then each
+         - copy carried its original's custom properties too, 323 of an e
+         -lement's 795 on this repository's map, and working out the styl
+         -e of a layer of about a thousand copies, which the transition's
+         - first frame waits for, took 277 to 379 ms; without them the fi
+         -rst frame came in 158 to 181 ms where it had taken 288 to 390, 
+         -and the layer was the same pixel for pixel on this repository's
+         - pictures and the estate's ([the measurement](../../../../../..
+         -/../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-23/P
+         -robes/first-frame/README.md)). One thing reads them and is owed
+         -: a copy keeps its original's `animation-name`, and the `local-
+         -look-*` keyframes read custom properties, so a copy made within
+         - 160 ms of a change of the map's look replays that animation fr
+         -om their fallbacks. The copy reads the native property count on
+         -ce, obtains each name and value by index, and assigns one decla
+         -ration block through `cssText`. Live selectors and control hook
+         -s are removed before that write, avoiding serialization of the 
+         -newly expanded style just to enumerate attributes. These choice
+         -s reduce repeated CSSOM calls without guessing which properties
+         - matter or changing the transition's geometry. A `display:none`
+         - subtree stops at an inert hidden shell, since it contributes n
+         -o layout or pixels to the snapshot. `visibility:hidden` and `op
+         -acity:0` still occupy layout and retain the full copy.         
+      16 +Frozen appearance includes every computed property, including S
+         +VG styles, and since 2026-11-23 no custom property: nothing a c
+         +opy draws reads one, since every property that used one is copi
+         +ed with its value worked out and a copy keeps no class for a st
+         +ylesheet's rule or a pseudo-element to draw on. Until then each
+         + copy carried its original's custom properties too, 323 of an e
+         +lement's 795 on this repository's map, and working out the styl
+         +e of a layer of about a thousand copies, which the transition's
+         + first frame waits for, took 277 to 379 ms; without them the fi
+         +rst frame came in 158 to 181 ms where it had taken 288 to 390, 
+         +and the layer was the same pixel for pixel on this repository's
+         + pictures and the estate's, but for a glow of the page's own at
+         + the layer's edge and one capture in seven, not explained and n
+         +ot seen again, in which a closed directory's More stood displac
+         +ed ([the measurement](../../../../../../../AI-Agent-Workspace/A
+         +gentSessionHistory/2026/11/2026-11-23/Probes/first-frame/README
+         +.md)). One thing reads them and is owed: a copy keeps its origi
+         +nal's `animation-name`, and the `local-look-*` keyframes read c
+         +ustom properties, so a copy made within 160 ms of a change of t
+         +he map's look replays that animation from their fallbacks. The 
+         +copy reads the native property count once, obtains each name an
+         +d value by index, and assigns one declaration block through `cs
+         +sText`. Live selectors and control hooks are removed before tha
+         +t write, avoiding serialization of the newly expanded style jus
+         +t to enumerate attributes. These choices reduce repeated CSSOM 
+         +calls without guessing which properties matter or changing the 
+         +transition's geometry. A `display:none` subtree stops at an ine
+         +rt hidden shell, since it contributes no layout or pixels to th
+         +e snapshot. `visibility:hidden` and `opacity:0` still occupy la
+         +yout and retain the full copy.                                 
+      17 
+      18  Since 2026-11-07 the switch costs the page's main thread a frac
+          tion of what it did: on this repository's picture pinned on one
+           file a press of 2D had blocked the page for about 10 s and a p
+          ress of 3D for about 15 s ([the switch-cost probe](../../../../
+          ../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11
+          -07/Probes/switch-cost/README.md), whose dated section has the
+          numbers before and after), the owner's standard being that the
+          browser must never ask whether to kill the page. Four causes we
+          nt. The hold copied the whole source surface, every computed pr
+          operty of every element; it now keeps the source surface itself
+           drawn over the destination (`perspective-held` in `local.css`)
+          , since an inactive view was then laid out and drawn, only tran
+          sparent (since 2026-11-22 a view put away is not drawn, and a h
+          eld view is drawn and is made inert only when its hold lets go,
+           `settleViews` in `dom.ts`; [the record](../../../../../../../A
+          I-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-22/Screen
+          shots/arrival-default/README.md#fifteenth-milestone-from-2245-u
+          tc-a-view-put-away-is-taken-out-of-drawing-before-it-is-made-in
+          ert)); on the way to 2D the copy had never been seen at all, th
+          e 2D map being ready at once and the cover going in the same ta
+          sk. The capture copied every card of the 2D map; it now copies
+          only the cards whose boxes meet the transition's frame (the des
+          tination's box), since a card is drawn only inside its own box
+          while it folds, shrinking toward its title, and has gone before
+           its token moves, so a card outside the frame was never seen; a
+          nd within a copied card, and within a directory's outline and l
+          abel, a block box the frame (grown by 64 px) does not meet is c
+          opied without its contents, keeping its declared size and so it
+          s place, since a pinned file's card of a hundred rows had cost
+          a third of a second for rows below the frame. A directory band
+          outside the frame stands in the layer as an empty box of its si
+          ze, keeping its identity and depth. The wires'  … [+2404 chars]
+      19 
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Finishing the merge of the first-frame mend: looking at its pictures, then
+  committing and starting my test runs on the merged branch.
+
+  Read 2 files, ran 4 shell commands (ctrl+o to expand)
+
+● All three mends are merged; my own run of the affected test files on the
+  merged branch is going now in the background. I'm committing the record while
+  it runs.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Waiting on that run now. When it's read and clean, the four stages start; they
+  run about an hour with nothing beside them, and the next message is the
+  gathered report.
+
+● Background command "Build the merged branch and run the affected browser test
+  files, one lane hold each" completed (exit code 0)
+
+  Searched for 1 pattern, ran 6 shell commands (ctrl+o to expand)
+
+● The four stages are running. I'm checking one thing about how I launched them
+  (whether the harness would cut the command at ten minutes), so the run isn't
+  lost partway.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Checked: yesterday's hour-long landings were launched the same way and ran to
+  their end, so today's run is safe as launched.
+
+  Where things stand
+
+  - All three mends are merged into the day branch: the put-away mend, the pick
+    rule, and the first-frame mend.
+  - My own run of the affected test files on the merged branch passed whole:
+    seven lane holds, every exit 0. That includes the 3D pick test (eight runs
+    in all) and the press and first-frame test (six runs), which were the reds
+    that stopped yesterday's landing.
+  - The landing's four stages began at 03:26 UTC. Nothing runs beside them and
+    nothing is committed until they end.
+
+  One thing I changed that you can reverse: an older test required the
+  transition's copies to carry every custom style property, which is exactly
+  what the first-frame mend stops copying. The builder showed the transition's
+  picture is the same pixel for pixel without them, so I restated the test to
+  require that a copy carries none.
+
+  Next from me is the gathered report: main has moved, or what stopped it.
+
+● Background command "Run the landing's four stages: history, the gate without
+  the browser, the bundles, the whole browser suite" failed with exit code 4
+
+  Ran 5 shell commands (ctrl+o to expand)
+
+● The browser suite shows 735 passing and 2 failing: one is the known
+  slow-settle failure, and the other is a new 3D drag test that came to rest at
+  49% of the hand's distance instead of the required half. I'm measuring that
+  new failure now, since it blocks the landing. · summary
+
+  Ran 2 shell commands (ctrl+o to expand)
+
+● The drag result holds at 48.9% every run, so machine load isn't the cause;
+  something on today's branch pushed it under the test's threshold. I'm checking
+  whether that's a code change or the repository's map growing. · summary
+
+  Ran 2 shell commands (ctrl+o to expand)
+
+● The new red traces to the test's press at graph.ts grabbing the bubble in
+  front of the sphere it names, since before today's pick rule it never dragged
+  the sphere at all. I'm now reading the drag code to decide whether the fault
+  is in the product or in the test. · summary
+
+  Searched for 2 patterns, ran 3 shell commands (ctrl+o to expand)
+
+● Confirming the cause directly: I'm having the probe print which object the
+  press takes under the old rule and the new one, and how the Swings setting
+  behaves for comparison.
+
+  Ran 2 shell commands (ctrl+o to expand)
+
+● The drag test's press now resolves to graph.ts instead of the explorer bubble,
+  which confirms the cause. I'm filing the evidence and the record, and you'll
+  get the report with the one decision it leaves. · summary
+
+  Ran 2 shell commands (ctrl+o to expand)
+
+● Now the evidence README (source files named in code spans, not links, so no
+  Live Doc changes).
+
+● Write(AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-23/Probes/landing
+       /README.md)
+  ⎿  Wrote 51 lines to AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-
+     11-23/Probes/landing/README.md
+       1 # The third landing: two reds in the browser's whole suite, and
+         what the new one is
+       2
+       3 **Historical evidence, 2026-11-23.** Taken by the root of [the d
+         ay's record](../../2026-11-23.1.record.md) on the main checkout,
+          the day branch at `fce80bb52`, with the three rounds of the day
+          merged: how a view is put away, the 3D map's pick rule, and the
+          copies of the change of perspective. The four stages were run b
+         y [the landing's script](../../../2026-11-22/Probes/landing/READ
+         ME.md) as one command with nothing beside it. `main` did not mov
+     … +49 lines (~5 KB) (ctrl+o to expand)
+
+  Searched for 1 pattern, read 1 file, ran 3 shell commands (ctrl+o to expand)
+
+● Writing the last of the record (the resumption notes and Memory) so the state
+  is on disk, then the report.
+  Ran 5 shell commands (ctrl+o to expand)
+
+● main has not moved. The landing came down to one failing test, and whether to
+  land with it is your call.
+
+  The decision
+
+  ┌────────────────────────────────────────┬───────────────────┬───────────┐
+  │                Question                │     Stands as     │    I      │
+  │                                        │                   │ recommend │
+  ├────────────────────────────────────────┼───────────────────┼───────────┤
+  │ Move main now, with the 3D drag test   │ main stays at     │ Yes, move │
+  │ named as a second known failing test   │ 76cd9914c until   │  it       │
+  │ beside the slow-settle one?            │ you say           │           │
+  └────────────────────────────────────────┴───────────────────┴───────────┘
+
+  If yes, you can do it yourself without spending usage on me:
+
+  git fetch . day/2026-11-23:main
+  git push origin main day/2026-11-23
+
+  Either way, git push origin day/2026-11-23 backs up the 27 commits made since
+  your last push.
+
+  What happened
+
+  - The three things blocking the landing are mended, merged and passing:
+    - 3D picking: a sphere you can see through a bubble now takes the press.
+    - Put-away mend: the press of 3D returns in about 300 ms against its 500 ms
+      limit.
+    - Transition's first frame: about 170–260 ms against its 400 ms limit. The
+      cause was 323 unused style properties copied onto each element; the
+      transition's picture is the same without them, apart from one stray
+      capture noted below.
+  - The four stages: history, the gate and the bundles passed. The browser suite
+    gave 735 passed and 2 failed.
+  - Failure 1 is the known slow 3D settle, which waits on your eye.
+  - Failure 2 is new: the 3D drag test.
+    - I measured it before naming a cause. It gives the same result every run,
+      so it is not machine load.
+    - Since it was written on November 22, that test pressed at graph.ts and was
+      actually grabbing the bubble of packages/explorer in front of it. It
+      never dragged the sphere it names.
+    - With today's pick rule the press takes graph.ts itself, so the test now
+      measures a real drag for the first time.
+    - Under the default Drag setting (Holds Its Ground), a sphere you drag and
+      let go slides back to 49% of the way. The test requires more than half.
+      Under Swings it keeps 70%.
+    - The part that drag work was built for still holds: connected files keep up
+      with your hand.
+
+  I changed nothing to make it pass. The fix depends on what a released sphere
+  should do, which is the Drag question already waiting on your eye, now with
+  real numbers. Yesterday's statement that "the dragged sphere rests where the
+  hand left it" was very probably measured on a bubble's follower; I've put a
+  dated correction on that record.
+
+  That is why I recommend landing: nothing in today's code makes the drag behave
+  differently, and the test is failing because it is finally testing the right
+  object.
+
+  Two rulings you can reverse
+
+  - The pick rule: what you can see is what you press (told earlier).
+  - An older test restated: it required the transition's copies to carry every
+    custom style property, which is what the first-frame mend stops copying. It
+    now requires that they carry none.
+
+  When you relaunch the preview
+
+  The files on port 8999 are current as of the landing's build. This link
+  (http://localhost:8999/?view=local&mode=3d&node=packages%2Fengine%2Fsrc%2Flive
+  -docs%2Fgraph.ts) opens the 3D map on graph.ts. I have not opened it myself
+  since the build. Two things to try:
+  - Press graph.ts where the bubble covers it; it should now take the press.
+  - Drag it and let go, then switch Tuning → Drag to Swings and do it again.
+
+  For whoever picks this up next
+
+  - The day's record (AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-23/
+    2026-11-23.1.record.md) and the first Next item of direction
+    (AI-Agent-Workspace/Memory/direction.md) hold the state, the exact command
+    for the landing and the list of smaller things owed.
+  - The measurement of the drag test is in the landing's evidence (AI-Agent-Work
+    space/AgentSessionHistory/2026/11/2026-11-23/Probes/landing/README.md).
+  - The most noticeable thing owed: on this repository the 2D transition still
+    starts 3.6 seconds after the press (it was 4.8).
+  - One stray capture: in one of seven comparisons with the first-frame mend, a
+    closed folder's "···" button sat about 50 px off. It was not explained and
+    not seen again.
+  - Your export of this chat is untracked and yours to commit.
+  - The day's summary is not written; I have not started the close.
+
+❯ <ide_opened_file>The user opened the file
+  /workspaces/Live-Documentation/AI-Agent-Workspace/AgentSessionHistory/2026/11
+  /2026-11-23/2026-11-23-014525-lets-start-the-1123-dev-day.txt in the IDE.
+  This may or may not be related to the current task.</ide_opened_file>
+
+❯ Hi again. We need to get to main. That was the goal of the day. We need to
+  get to main. If that means leaving the test, okay. If that means fixing the
+  test, great. But we need to get to main.
