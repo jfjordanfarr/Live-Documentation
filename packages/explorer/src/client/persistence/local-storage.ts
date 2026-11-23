@@ -8,7 +8,7 @@
 import { LAYOUT_PRESETS, readLayoutSettings } from "../layout-presets";
 import { DEFAULT_PALETTE, isPaletteName } from "../palette";
 import { readReadingChoices, type ReadingChoice } from "../reading-state";
-import { ARRIVAL_WAITS, ARRIVALS, CUT_COUNTED, DIRECTION_MARKS, MAP_READS, MIRROR_TURNS, WAY_DOWNS, WIRE_ANSWERS, FRAMINGS, STEPS, CHANGE_EMPHASES, HIDDEN_FILES_LOOKS, FRAME_CHOICES, HISTORY_GRANULARITIES, MARBLE_CHOICES, type ChangeEmphasis, type DiscoveryTarget, type HistoryAxis, type HistoryGranularity, type InspectionTarget, type LocalMapPerspective, type ExplorerFilters, type SpatialLayout, type SymbolOrder, type TuningConfig, type ViewName } from "../types";
+import { ARRIVAL_WAITS, ARRIVALS, CUT_COUNTED, DIRECTION_MARKS, MAP_READS, MIRROR_TURNS, UNCONNECTED_ROWS, WAY_DOWNS, WIRE_ANSWERS, FRAMINGS, STEPS, CHANGE_EMPHASES, HIDDEN_FILES_LOOKS, FRAME_CHOICES, HISTORY_GRANULARITIES, MARBLE_CHOICES, type ChangeEmphasis, type DiscoveryTarget, type HistoryAxis, type HistoryGranularity, type InspectionTarget, type LocalMapPerspective, type ExplorerFilters, type SpatialLayout, type SymbolOrder, type TuningConfig, type ViewName } from "../types";
 import { ARRIVAL_REST_S } from "../views/localView/camera-intent";
 import { DEFAULT_RETURN_COST } from "../views/localView/cycle-order";
 import { readPerspective, readSpatialLayout, readView } from "./navigation";
@@ -85,6 +85,7 @@ export const getDefaultTuning = (): TuningConfig => ({
     directionMarks: DIRECTION_MARKS[0],
     wayDown: WAY_DOWNS[0],
     mirrorTurn: MIRROR_TURNS[0],
+    unconnected: UNCONNECTED_ROWS[0],
     overviewFiles: "files",
     descriptionsZoomedOut: "hidden",
     slotLines: 2,

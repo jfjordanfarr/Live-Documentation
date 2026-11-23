@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/explorer/src/client/layout-presets.ts`
-- Generated At: 2026-11-22T18:51:23.883Z
+- Generated At: 2026-11-23T14:55:15.222Z
 
 ## Authored
 ### Purpose
@@ -91,7 +91,7 @@ Return a fresh tuning record with both representations' packing set together.
 
 #### `readLayoutSettings` {#symbol-readlayoutsettings}
 - Type: function
-- Source: [source](../../../../../../packages/explorer/src/client/layout-presets.ts#L75)
+- Source: [source](../../../../../../packages/explorer/src/client/layout-presets.ts#L76)
 - Returns: [`LayoutSettings`](#symbol-layoutsettings)
 
 ##### `readLayoutSettings` — Summary
@@ -118,11 +118,12 @@ Map settings and says nothing of Arrival, made at reading size, now opens with t
 attended and to on, and read the same way. And Framing (2026-11-19), only Follows Pins, its absence reading as By Hand.
 Scan Growth and Scan Pace (2026-11-22, a trial of the 3D map): only an order of arrival and the slower pace are
 carried, their absence reading as off and as measured; and Drag (the same day), only Swings, its absence reading as
-holding its ground.
+holding its ground. Unconnected (2026-11-23, a trial of the 2D map) likewise: only Dimmed or Folded is carried, and its
+absence reads as Shown.
 
 #### `layoutSettingsOf` {#symbol-layoutsettingsof}
 - Type: function
-- Source: [source](../../../../../../packages/explorer/src/client/layout-presets.ts#L134)
+- Source: [source](../../../../../../packages/explorer/src/client/layout-presets.ts#L136)
 - Returns: [`LayoutSettings`](#symbol-layoutsettings)
 - Parameters: `tuning`: [`TuningConfig`](./types.ts.mdmd.md#symbol-tuningconfig)
 
@@ -131,7 +132,7 @@ Snapshot the controls that affect packing and spatial encodings, independent of 
 
 #### `applyLayoutSettings` {#symbol-applylayoutsettings}
 - Type: function
-- Source: [source](../../../../../../packages/explorer/src/client/layout-presets.ts#L149)
+- Source: [source](../../../../../../packages/explorer/src/client/layout-presets.ts#L151)
 - Returns: [`TuningConfig`](./types.ts.mdmd.md#symbol-tuningconfig)
 - Parameters: `tuning`: [`TuningConfig`](./types.ts.mdmd.md#symbol-tuningconfig); `settings`: [`LayoutSettings`](#symbol-layoutsettings)
 
@@ -171,6 +172,7 @@ picture). So a link made with the defaults shows them in a browser whose own tun
 - [`types.SCAN_PACES`](./types.ts.mdmd.md#symbol-scan_paces)
 - [`types.STEPS`](./types.ts.mdmd.md#symbol-steps)
 - [`types.TuningConfig`](./types.ts.mdmd.md#symbol-tuningconfig) (type-only)
+- [`types.UNCONNECTED_ROWS`](./types.ts.mdmd.md#symbol-unconnected_rows)
 - [`types.WAY_DOWNS`](./types.ts.mdmd.md#symbol-way_downs)
 - [`types.WIRE_ANSWERS`](./types.ts.mdmd.md#symbol-wire_answers)
 - [`types.ZOOM_LOOKS`](./types.ts.mdmd.md#symbol-zoom_looks)

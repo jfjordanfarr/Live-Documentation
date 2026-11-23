@@ -1,6 +1,6 @@
-import type { ExplorerNodePayload } from "../../../shared/types";
+import type { ExplorerGraphPayload, ExplorerNodePayload } from "../../../shared/types";
 import type { LocalMapTuning } from "../../types";
-import { EMPTY_PIN_SET } from "../pin-state";
+import { EMPTY_PIN_SET, isSymbolPinned } from "../pin-state";
 import { normalizeSymbolIdentifier } from "../symbolAnchors";
 import { alignmentCandidates } from "./branch-alignments";
 import { boxKeyOf, easeInOutCubic, scenePose, tweenPose, type Pose } from "./branch-motion";
@@ -23,6 +23,7 @@ import { OVERVIEW_FILES_ATTRIBUTE, OVERVIEW_LINES_ATTRIBUTE, type PictureSize } 
 import { connectionCount, returningConnections } from "./returning-connections";
 import { attendConnections, releaseConnections } from "./symbol-highlight";
 import type { LocalEdge } from "./types";
+import { unconnectedRow, unconnectedSymbols } from "./unconnected-symbols";
 import { hubLine, NODE_HUB } from "./wire-gathering";
 import { countOf } from "./word-seams";
 
@@ -272,15 +273,36 @@ function rowPresentation(controller: LocalViewController, exploration: Explorati
   const key = (id: string, symbol?: string): string => `${id}\0${normalizeSymbolIdentifier(symbol) ?? "__internals__"}`;
   for (const [id, rows] of exploration.relevantSymbols) for (const row of rows) connected.add(key(id, row));
   if (!path) for (const pin of controller.pins.entries) connected.add(key(pin.nodeId, pin.symbol));
+  const choice = state.tuning.localMap.unconnected;
+  const alone = choice === "shown" ? null : unconnectedOf(controller.graph);
+  const inspected = state.inspection?.kind === "file" ? state.inspection : null;
   return (id, symbol) => {
-    const all = controller.expandedCards.has(id) || (!path && (controller.reading?.showsAllRows(id) || controller.isPinned(id, "*") || id === state.selectedNode?.id));
+    const expanded = controller.expandedCards.has(id), wholeFile = !path && !!controller.reading?.showsAllRows(id);
+    // A card that draws every row because it is pinned whole or is the subject: what the Unconnected lever acts on.
+    const whole = !path && (controller.isPinned(id, "*") || id === state.selectedNode?.id);
+    const all = expanded || wholeFile || whole;
     const read = controller.reading?.showsRow(id, symbol ?? "__internals__");
     const joined = connected.has(key(id, symbol));
+    const name = normalizeSymbolIdentifier(symbol);
+    const unconnected = unconnectedRow(choice, {
+      unconnected: !!name && !!alone?.get(id)?.has(name),
+      wholeCard: whole,
+      asked: !!read || (!!symbol && isSymbolPinned(controller.pins, id, symbol)) || (inspected?.nodeId === id && normalizeSymbolIdentifier(inspected.symbol) === name),
+      revealed: expanded || wholeFile
+    });
     return {
-      hidden: !all && Boolean(path || !read) && Boolean(path || state.tuning.localMap.collapseOnPin) && !joined,
-      muted: !controller.isPinned(id, "*") && !read && !joined
+      hidden: unconnected === "folded" || (!all && Boolean(path || !read) && Boolean(path || state.tuning.localMap.collapseOnPin) && !joined),
+      muted: unconnected === "dimmed" || (!controller.isPinned(id, "*") && !read && !joined)
     };
   };
+}
+
+/** Each graph's unconnected symbols, worked out once for the graph the map shows (today's, or a moment of the history's). */
+const unconnectedByGraph = new WeakMap<ExplorerGraphPayload,ReadonlyMap<string, ReadonlySet<string>>>();
+function unconnectedOf(graph: ExplorerGraphPayload):ReadonlyMap<string, ReadonlySet<string>> {
+  let found = unconnectedByGraph.get(graph);
+  if (!found) unconnectedByGraph.set(graph, found = unconnectedSymbols(graph));
+  return found;
 }
 
 /**

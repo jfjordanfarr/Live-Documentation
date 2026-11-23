@@ -8,7 +8,7 @@
 import { applyMarbles, applyPalette } from "../dom";
 import { layoutSettingsOf } from "../layout-presets";
 import { DEFAULT_PALETTE, isPaletteName } from "../palette";
-import { ARRIVAL_WAITS, ARRIVALS, CUT_COUNTED, DIRECTION_MARKS, MIRROR_TURNS, WAY_DOWNS, WIRE_ANSWERS, FRAMINGS, STEPS, CHANGE_EMPHASES, CLOSED_CELL_COLOURS, CLOSED_DIRECTORY_LOOKS, CLOSED_DIRECTORY_SHAPES, DESCRIPTIONS_ZOOMED_OUT, DIRECTORY_LAYOUTS, GROUP_WRAPPERS, BEYOND_HOPS, SCAN_GROWTHS, SCAN_PACES, DRAGS, FRAME_CHOICES, HIDDEN_FILES_LOOKS, MARBLE_CHOICES, OVERVIEW_FILES, type ExplorerState, type FrameChoice } from "../types";
+import { ARRIVAL_WAITS, ARRIVALS, CUT_COUNTED, DIRECTION_MARKS, MIRROR_TURNS, UNCONNECTED_ROWS, WAY_DOWNS, WIRE_ANSWERS, FRAMINGS, STEPS, CHANGE_EMPHASES, CLOSED_CELL_COLOURS, CLOSED_DIRECTORY_LOOKS, CLOSED_DIRECTORY_SHAPES, DESCRIPTIONS_ZOOMED_OUT, DIRECTORY_LAYOUTS, GROUP_WRAPPERS, BEYOND_HOPS, SCAN_GROWTHS, SCAN_PACES, DRAGS, FRAME_CHOICES, HIDDEN_FILES_LOOKS, MARBLE_CHOICES, OVERVIEW_FILES, type ExplorerState, type FrameChoice } from "../types";
 import { TUNING_HELP, tuningHelpId } from "./tuning-levers";
 import { initTuningReset } from "./tuning-reset";
 
@@ -95,6 +95,7 @@ export function initTuningPanel(config: TuningPanelConfig): () => void {
   const directionMarksSelect = document.getElementById("tuning-direction-marks") as HTMLSelectElement | null;
   const wayDownSelect = document.getElementById("tuning-way-down") as HTMLSelectElement | null;
   const mirrorTurnSelect = document.getElementById("tuning-mirror-turn") as HTMLSelectElement | null;
+  const unconnectedSelect = document.getElementById("tuning-unconnected") as HTMLSelectElement | null;
   const paletteSelect = document.getElementById("tuning-palette") as HTMLSelectElement | null;
   const marblesSelect = document.getElementById("tuning-marbles") as HTMLSelectElement | null;
   const frameSelect = document.getElementById("tuning-frame") as HTMLSelectElement | null;
@@ -230,6 +231,7 @@ export function initTuningPanel(config: TuningPanelConfig): () => void {
     if (directionMarksSelect) directionMarksSelect.value = state.tuning.localMap.directionMarks;
     if (wayDownSelect) wayDownSelect.value = state.tuning.localMap.wayDown;
     if (mirrorTurnSelect) mirrorTurnSelect.value = state.tuning.localMap.mirrorTurn;
+    if (unconnectedSelect) unconnectedSelect.value = state.tuning.localMap.unconnected;
     if (paletteSelect) paletteSelect.value = state.tuning.appearance.palette;
     if (marblesSelect) marblesSelect.value = state.tuning.appearance.marbles;
     if (frameSelect) frameSelect.value = state.tuning.appearance.frame;
@@ -390,6 +392,14 @@ export function initTuningPanel(config: TuningPanelConfig): () => void {
     mirrorTurnSelect.addEventListener("change", () => {
       state.tuning.localMap.mirrorTurn = MIRROR_TURNS.find(choice => choice === mirrorTurnSelect.value) ?? MIRROR_TURNS[0];
       onTuningChange();
+    });
+  }
+  // What a card pinned whole does with its unconnected rows changes its height when they fold: the view re-renders.
+  if (unconnectedSelect) {
+    unconnectedSelect.addEventListener("change", () => {
+      state.tuning.localMap.unconnected = UNCONNECTED_ROWS.find(choice => choice === unconnectedSelect.value) ?? UNCONNECTED_ROWS[0];
+      onTuningChange();
+      if (state.view === "map" && state.perspective === "2d") onRender();
     });
   }
   // The way down changes no picture: the next way down from the World Map reads it, and the board's panels and bar with it.
