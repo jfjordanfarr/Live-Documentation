@@ -1,0 +1,261 @@
+// A probe of the transition's layer, pixel for pixel, with and without the candidate: never committed, removed before the handback.
+import { test, expect, type Page } from "@playwright/test";
+import fs from "node:fs";
+import path from "node:path";
+
+const SCRATCH = "/tmp/claude-1000/-workspaces-Live-Documentation/eb058c9c-8bd5-455d-9ef9-76560750588e/scratchpad/first-frame";
+const OUT = path.join(SCRATCH, "pixels");
+const SITE = path.resolve(__dirname, "../../dist/explorer");
+const PICTURES: Record<string, { base: string; id?: string }> = {
+  repo: { base: "/", id: "packages/engine/src/live-docs/graph.ts" },
+  estate: { base: "/samples/estate/", id: "PaymentService/PaymentService.cs" },
+  // This repository's scripts directory, whose directories are closed and drawn as cells of several kinds (spatial-legend.spec.ts).
+  scripts: { base: "/" }
+};
+
+/** Put a kept build's client in place, for the page and the estate's; the server serves files as they stand. */
+function useBuild(name: string): void {
+  for (const target of [path.join(SITE, "static"), path.join(SITE, "samples/estate/static")]) {
+    fs.copyFileSync(path.join(SCRATCH, `${name}-static`, "index.js"), path.join(target, "index.js"));
+  }
+}
+const load = (): string => fs.readFileSync("/proc/loadavg", "utf8").split(" ")[0];
+
+/**
+ * Hold the transition's clock still. The layer's own frame function asks for its next frame from inside itself, and the
+ * first request after the layer's append is its (it draws `frame(start)` at once and asks at its end). In "start" the
+ * layer stays as `frame(start)` drew it, at the motion's start; in "end" one frame is given at 1,399.5 ms of its 1,400,
+ * the motion's last moment before the layer goes, and the layer then stays as that frame drew it. Nothing else's frames
+ * are touched.
+ */
+async function holdTheClock(page: Page): Promise<void> {
+  await page.addInitScript(() => {
+    const w = window as unknown as { freeze: { mode: string; delivered: boolean; held: number; start: number } };
+    w.freeze = { mode: "none", delivered: false, held: 0, start: NaN };
+    const raf = window.requestAnimationFrame.bind(window);
+    let nextIsTransition = false, inTransition = false;
+    const append = Element.prototype.append;
+    Element.prototype.append = function (this: Element, ...nodes: (Node | string)[]) {
+      append.apply(this, nodes);
+      if (this === document.body && nodes.some(node => node instanceof HTMLElement && node.classList.contains("perspective-transition") && node.dataset.graphFiles)) {
+        w.freeze.start = performance.now();
+        nextIsTransition = true;
+      }
+    };
+    window.requestAnimationFrame = function (callback: FrameRequestCallback): number {
+      if (!nextIsTransition && !inTransition) return raf(callback);
+      nextIsTransition = false;
+      const freeze = w.freeze;
+      if (freeze.mode === "start" || (freeze.mode === "end" && freeze.delivered)) { freeze.held++; return 0; }
+      if (freeze.mode === "end") freeze.delivered = true;
+      const at = freeze.mode === "end" ? freeze.start + 1399.5 : undefined;
+      return raf(now => { inTransition = true; try { callback(at ?? now); } finally { inTransition = false; } });
+    };
+  });
+}
+
+/** Wait until a reading of the page stays the same for a second, polled every 250 ms. */
+async function stillFor(page: Page, read: () => string, label: string): Promise<void> {
+  let last = "", same = 0;
+  const began = Date.now();
+  while (same < 4) {
+    const now = await page.evaluate(read);
+    same = now === last ? same + 1 : 0;
+    last = now;
+    if (Date.now() - began > 60_000) throw new Error(`${label} did not hold still in 60 s`);
+    await page.waitForTimeout(250);
+  }
+}
+
+/** What of the 2D map stands in the transition's frame: the kinds of card and shell the 2D legend names. */
+const inTheFrame = (): Record<string, unknown> => {
+  const frame = document.getElementById("view-graph")!.getBoundingClientRect();
+  const meets = (box: DOMRect): boolean => box.width > 0 && box.right > frame.left && box.left < frame.right && box.bottom > frame.top && box.top < frame.bottom;
+  const seen = (selector: string): Element[] => [...document.querySelectorAll(`#view-map ${selector}`)].filter(each => meets(each.getBoundingClientRect()));
+  return { cards: seen(".node-card").length, testBacked: seen(".node-card.test-backed").length, readingCards: seen(".local-slot-card").length,
+    openShells: seen(".local-directory-band").length, closedShells: seen(".local-directory-closed").length,
+    cellKinds: [...new Set(seen(".local-cell").map(cell => (cell as HTMLElement).dataset.kind))].sort(), wires: seen(".connection-path").length,
+    gathered: seen("polygon.connection-path").length };
+};
+
+test.afterAll(() => useBuild("after"));
+
+for (const picture of ["repo", "estate", "scripts"] as const) {
+  for (const direction of ["to3D", "to2D"] as const) {
+    for (const tag of ["before", "after", "before2"] as const) {
+      test(`pixels ${picture} ${direction} ${tag}`, async ({ page }) => {
+        test.setTimeout(150_000);
+        const build = tag === "after" ? "after" : "before";
+        useBuild(build);
+        const { base, id } = PICTURES[picture];
+        const subject = id ? `node=${encodeURIComponent(id)}` : "dir=scripts";
+        await holdTheClock(page);
+        const loadBefore = load();
+        let counts: Record<string, unknown>;
+        if (direction === "to3D") {
+          await page.goto(`${base}?view=local&${subject}`);
+          const anchor = id ? `.node-card.local-focus[data-id="${id}"]` : "#map-container .local-directory-closed";
+          await expect(page.locator(anchor).first()).toBeVisible({ timeout: 60_000 });
+          await stillFor(page, () => {
+            const card = document.querySelector(".node-card.local-focus, #map-container .local-directory-closed")!.getBoundingClientRect();
+            return `${card.x.toFixed(2)},${card.y.toFixed(2)},${card.width.toFixed(2)},${card.height.toFixed(2)},${document.querySelectorAll("#view-map *").length}`;
+          }, "the 2D map");
+          counts = await page.evaluate(inTheFrame);
+          await page.evaluate(() => { (window as unknown as { freeze: { mode: string } }).freeze.mode = "start"; });
+        } else {
+          await page.goto(`${base}?view=local&mode=3d&${subject}`);
+          if (id) await expect(page.locator(".force-graph-focus")).toHaveAttribute("data-node-id", id, { timeout: 60_000 });
+          await page.waitForFunction(() => document.getElementById("graph-svg")?.getAttribute("aria-busy") === "false", null, { timeout: 120_000, polling: 250 });
+          await stillFor(page, () => {
+            const marker = document.querySelector<HTMLElement>(".force-graph-focus");
+            return marker ? `${marker.style.left},${marker.style.top},${marker.hidden}` : document.getElementById("graph-svg")!.dataset.motionSubsteps ?? "";
+          }, "the 3D picture");
+          counts = {};
+          await page.evaluate(() => { (window as unknown as { freeze: { mode: string } }).freeze.mode = "end"; });
+        }
+        await page.evaluate(label => [...document.querySelectorAll<HTMLButtonElement>(".perspective-controls button")].find(each => each.textContent === label)!.click(), direction === "to3D" ? "3D" : "2D");
+        await page.waitForFunction(() => (window as unknown as { freeze: { held: number } }).freeze.held > 0, null, { timeout: 60_000 });
+        await page.waitForTimeout(1000);
+        if (direction === "to2D") counts = await page.evaluate(inTheFrame);
+        const layer = page.locator(".perspective-transition[data-graph-files]");
+        const facts = await layer.evaluate(element => {
+          const box = element.getBoundingClientRect();
+          // What is drawn over the layer's bottom rows, page elements above it in paint order (the estate's to-2D pair
+          // differed there by one or two levels in a hundred pixels, on both builds).
+          // Shadows take no hit, so every element outside the layer whose box stands within 40 px of its bottom edge, over
+          // the stretch that differed, is listed with what it draws past its box.
+          const near = [...document.querySelectorAll("body *")].filter(each => !element.contains(each) && each !== element).flatMap(each => {
+            const at = each.getBoundingClientRect(), style = getComputedStyle(each);
+            if (!at.width || !at.height || at.bottom < box.bottom - 40 || at.top > box.bottom + 40 || at.right < box.left + 560 || at.left > box.left + 680) return [];
+            if (style.boxShadow === "none" && style.animationName === "none" && style.filter === "none") return [];
+            return [`${each.tagName.toLowerCase()}${each.id ? `#${each.id}` : ""}${typeof each.className === "string" && each.className.trim() ? `.${each.className.trim().split(/\s+/u).join(".")}` : ""} box=${Math.round(at.left - box.left)},${Math.round(at.top - box.top)},${Math.round(at.width)}x${Math.round(at.height)} shadow=${style.boxShadow} animation=${style.animationName} z=${style.zIndex} visible=${each.checkVisibility({ opacityProperty: true, visibilityProperty: true })}`];
+          });
+          // The scripts picture's contact-sheet More, in its frozen copy, from the copy's left at the map's scale.
+          const sheet = [...element.querySelectorAll<HTMLElement>(".perspective-card")].find(each => each.textContent?.includes("contact-sheet"))?.firstElementChild as HTMLElement | undefined;
+          const sheetMore = sheet && [...sheet.querySelectorAll<HTMLElement>("button")].find(each => (each.getAttribute("aria-label") ?? "").startsWith("More"));
+          const sheetBox = sheet?.getBoundingClientRect();
+          const contactSheetMore = sheet && sheetMore && sheetBox ? +((sheetMore.getBoundingClientRect().left - sheetBox.left) / (sheetBox.width / sheet.offsetWidth || 1)).toFixed(1) : null;
+          return { elements: element.querySelectorAll("*").length, progress: element.dataset.progress, box: box.toJSON(), near, contactSheetMore };
+        });
+        await layer.screenshot({ path: path.join(OUT, `${picture}-${direction}-${tag}.png`) });
+        fs.appendFileSync(path.join(OUT, "captures.jsonl"), JSON.stringify({ picture, direction, tag, build, loadBefore, loadAfter: load(), ...facts, counts }) + "\n");
+      });
+    }
+  }
+}
+
+/**
+ * Where the `contact-sheet` closed directory's More stands, from the left of its box at the map's own scale: in the
+ * original, sampled every 16 ms from the press of 2D; in the layer's copy, as frozen; and in two copies made afresh at
+ * the freeze by the transition's own method, with and without the custom properties.
+ */
+for (const build of ["before", "after"] as const) {
+  test(`pixels diagnose scripts ${build}`, async ({ page }) => {
+    test.setTimeout(150_000);
+    useBuild(build);
+    await holdTheClock(page);
+    await page.goto("/?view=local&mode=3d&dir=scripts");
+    await page.waitForFunction(() => document.getElementById("graph-svg")?.getAttribute("aria-busy") === "false", null, { timeout: 120_000, polling: 250 });
+    await page.waitForTimeout(1500);
+    await page.evaluate(() => {
+      const w = window as unknown as { freeze: { mode: string }; moreTrail: string[] };
+      w.freeze.mode = "end";
+      w.moreTrail = [];
+      const started = performance.now();
+      const sample = (): void => {
+        const closed = [...document.querySelectorAll<HTMLElement>("#view-map .local-directory-closed")].find(each => each.textContent?.includes("contact-sheet"));
+        const more = closed && [...closed.querySelectorAll<HTMLElement>("button")].find(each => (each.getAttribute("aria-label") ?? "").startsWith("More"));
+        if (closed && more) {
+          const box = closed.getBoundingClientRect(), scale = box.width / closed.offsetWidth || 1;
+          w.moreTrail.push(`${Math.round(performance.now() - started)}:${((more.getBoundingClientRect().left - box.left) / scale).toFixed(1)}`);
+        } else w.moreTrail.push(`${Math.round(performance.now() - started)}:-`);
+        if (performance.now() - started < 4000) setTimeout(sample, 16);
+      };
+      sample();
+      [...document.querySelectorAll<HTMLButtonElement>(".perspective-controls button")].find(each => each.textContent === "2D")!.click();
+    });
+    await page.waitForFunction(() => (window as unknown as { freeze: { held: number } }).freeze.held > 0, null, { timeout: 60_000 });
+    await page.waitForTimeout(4500);
+    const reading = await page.evaluate(() => {
+      const layer = document.querySelector<HTMLElement>(".perspective-transition[data-graph-files]")!;
+      const moreOf = (root: Element): HTMLElement | undefined => [...root.querySelectorAll<HTMLElement>("button")].find(each => (each.getAttribute("aria-label") ?? "").startsWith("More"));
+      const offset = (root: HTMLElement): number | null => {
+        const more = moreOf(root);
+        if (!more) return null;
+        const box = root.getBoundingClientRect(), scale = box.width / root.offsetWidth || 1;
+        return +((more.getBoundingClientRect().left - box.left) / scale).toFixed(1);
+      };
+      const original = [...document.querySelectorAll<HTMLElement>("#view-map .local-directory-closed")].find(each => each.textContent?.includes("contact-sheet"))!;
+      const frozen = [...layer.querySelectorAll<HTMLElement>(".perspective-card")].find(each => each.textContent?.includes("contact-sheet"));
+      const copyOf = (source: HTMLElement, custom: boolean): HTMLElement => {
+        const copy = source.cloneNode(false) as HTMLElement;
+        for (const name of [...copy.getAttributeNames()]) if (name === "id" || name === "class" || name === "tabindex" || name === "role" || name.startsWith("data-") || name.startsWith("on")) copy.removeAttribute(name);
+        const style = getComputedStyle(source);
+        if (style.display === "none") { copy.style.cssText = "display:none"; return copy; }
+        const declarations: string[] = [];
+        for (let i = 0; i < style.length; i++) { const name = style.item(i); if (custom || !name.startsWith("--")) declarations.push(`${name}: ${name === "interactivity" ? "auto" : style.getPropertyValue(name)};`); }
+        copy.style.cssText = declarations.join("");
+        for (const child of [...source.childNodes]) copy.append(child instanceof HTMLElement || child instanceof SVGElement ? copyOf(child as HTMLElement, custom) : child.cloneNode(true));
+        return copy;
+      };
+      const fresh = (custom: boolean): number | null => {
+        const wrapper = document.createElement("div");
+        wrapper.className = "perspective-card local-column center";
+        Object.assign(wrapper.style, { position: "absolute", left: "0px", top: "0px", width: `${original.offsetWidth}px`, height: `${original.offsetHeight}px`, transformOrigin: "0 0" });
+        const clone = copyOf(original, custom);
+        Object.assign(clone.style, { width: `${original.offsetWidth}px`, height: `${original.offsetHeight}px`, boxSizing: "border-box", margin: "0", transition: "none" });
+        wrapper.append(clone); layer.append(wrapper);
+        const result = offset(clone);
+        wrapper.remove();
+        return result;
+      };
+      // What differs between the frozen copy's More and a fresh copy's, declaration by declaration, and the same of its name.
+      const differences = (one: HTMLElement | undefined, two: HTMLElement | undefined): string[] => {
+        if (!one || !two) return ["missing"];
+        const names = new Set([...Array.from(one.style), ...Array.from(two.style)].filter(name => !name.startsWith("--")));
+        return [...names].filter(name => one.style.getPropertyValue(name) !== two.style.getPropertyValue(name)).map(name => `${name}: ${one.style.getPropertyValue(name)} | ${two.style.getPropertyValue(name)}`);
+      };
+      const freshCopy = copyOf(original, false);
+      const frozenClone = frozen?.firstElementChild as HTMLElement | undefined;
+      return {
+        original: offset(original), frozen: frozenClone ? offset(frozenClone) : null, freshWith: fresh(true), freshWithout: fresh(false),
+        frozenAgainstFresh: { root: differences(frozenClone, freshCopy), more: differences(frozenClone && moreOf(frozenClone), moreOf(freshCopy)) },
+        trail: (window as unknown as { moreTrail: string[] }).moreTrail,
+        copies: performance.getEntriesByName("live-docs:capture-copies").map(entry => [Math.round(entry.startTime), Math.round(entry.duration)])
+      };
+    });
+    fs.appendFileSync(path.join(OUT, "diagnose.jsonl"), JSON.stringify({ build, ...reading }) + "\n");
+  });
+}
+
+test("pixels compare", async ({ page }) => {
+  test.setTimeout(120_000);
+  useBuild("after");
+  await page.setContent("<!doctype html><title>compare</title>");
+  const url = (file: string): string => `data:image/png;base64,${fs.readFileSync(path.join(OUT, file)).toString("base64")}`;
+  for (const picture of ["repo", "estate", "scripts"]) for (const direction of ["to3D", "to2D"]) for (const [a, b] of [["before", "after"], ["before", "before2"]]) {
+    const first = `${picture}-${direction}-${a}.png`, second = `${picture}-${direction}-${b}.png`;
+    if (!fs.existsSync(path.join(OUT, first)) || !fs.existsSync(path.join(OUT, second))) continue;
+    const result = await page.evaluate(async ([one, two]) => {
+      const image = (src: string): Promise<HTMLImageElement> => new Promise((resolve, reject) => { const each = new Image(); each.onload = () => resolve(each); each.onerror = reject; each.src = src; });
+      const [p, q] = await Promise.all([image(one), image(two)]);
+      if (p.width !== q.width || p.height !== q.height) return { sizes: [p.width, p.height, q.width, q.height], differing: -1 };
+      const pixels = (each: HTMLImageElement): Uint8ClampedArray => { const canvas = document.createElement("canvas"); canvas.width = each.width; canvas.height = each.height; const context = canvas.getContext("2d")!; context.drawImage(each, 0, 0); return context.getImageData(0, 0, each.width, each.height).data; };
+      const x = pixels(p), y = pixels(q);
+      const diff = document.createElement("canvas"); diff.width = p.width; diff.height = p.height;
+      const context = diff.getContext("2d")!; context.drawImage(p, 0, 0); context.fillStyle = "rgba(255,255,255,0.75)"; context.fillRect(0, 0, p.width, p.height);
+      let differing = 0, largest = 0, left = Infinity, top = Infinity, right = -1, bottom = -1;
+      for (let i = 0; i < x.length; i += 4) {
+        const delta = Math.max(Math.abs(x[i] - y[i]), Math.abs(x[i + 1] - y[i + 1]), Math.abs(x[i + 2] - y[i + 2]), Math.abs(x[i + 3] - y[i + 3]));
+        if (!delta) continue;
+        differing++; largest = Math.max(largest, delta);
+        const px = (i / 4) % p.width, py = Math.floor(i / 4 / p.width);
+        left = Math.min(left, px); right = Math.max(right, px); top = Math.min(top, py); bottom = Math.max(bottom, py);
+        context.fillStyle = "red"; context.fillRect(px, py, 1, 1);
+      }
+      return { sizes: [p.width, p.height], differing, of: p.width * p.height, largest, box: differing ? [left, top, right, bottom] : null, diff: differing ? diff.toDataURL("image/png") : null };
+    }, [url(first), url(second)]);
+    if (result.diff) fs.writeFileSync(path.join(OUT, `diff-${picture}-${direction}-${a}-${b}.png`), Buffer.from(result.diff.split(",")[1], "base64"));
+    fs.appendFileSync(path.join(OUT, "compare.jsonl"), JSON.stringify({ picture, direction, pair: `${a}/${b}`, ...result, diff: undefined }) + "\n");
+  }
+});
