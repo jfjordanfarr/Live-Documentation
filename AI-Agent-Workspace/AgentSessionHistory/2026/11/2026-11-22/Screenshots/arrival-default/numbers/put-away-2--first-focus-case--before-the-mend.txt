@@ -1,0 +1,24 @@
+ 23:46:58 up 9 days,  9:55,  0 users,  load average: 7.44, 3.90, 2.70
+FIRST-CASE {"offered":"packages/engine/src/live-docs/graph.ts","under":"packages/engine/src/live-docs/graph.ts","away":0,"radius":11.3,"substeps":"394","busy":"true"}
+  ✓  1 [chromium] › tests/e2e/force-graph-focus.spec.ts:131:5 › a focused URL centers its node, direct clicks pin it, and More opens its details (27.9s)
+FIRST-CASE {"offered":"packages/engine/src/live-docs/graph.ts","under":"packages/engine/src/live-docs/graph.ts","away":0.1,"radius":11.6,"substeps":"410","busy":"true"}
+  ✓  2 [chromium] › tests/e2e/force-graph-focus.spec.ts:131:5 › a focused URL centers its node, direct clicks pin it, and More opens its details (28.7s)
+FIRST-CASE {"offered":"packages/engine/src/live-docs/graph.ts","under":"packages/engine/src/live-docs/graph.ts","away":0,"radius":11.5,"substeps":"412","busy":"true"}
+  ✓  3 [chromium] › tests/e2e/force-graph-focus.spec.ts:131:5 › a focused URL centers its node, direct clicks pin it, and More opens its details (29.6s)
+FIRST-CASE {"offered":"packages/engine/src/live-docs/graph.ts","under":"packages/engine/src/live-docs/graph.ts","away":0,"radius":11.4,"substeps":"405","busy":"true"}
+  ✓  4 [chromium] › tests/e2e/force-graph-focus.spec.ts:131:5 › a focused URL centers its node, direct clicks pin it, and More opens its details (28.0s)
+FIRST-CASE {"offered":"packages/engine/src/live-docs/graph.ts","under":"packages/engine/src/live-docs/graph.ts","away":0.1,"radius":11.4,"substeps":"412","busy":"true"}
+  ✘  5 [chromium] › tests/e2e/force-graph-focus.spec.ts:131:5 › a focused URL centers its node, direct clicks pin it, and More opens its details (33.7s)
+FIRST-CASE {"offered":"packages/engine/src/live-docs/graph.ts","under":"packages/engine/src/live-docs/graph.ts","away":5.5,"radius":11,"substeps":"433","busy":"false"}
+  ✓  6 [chromium] › tests/e2e/force-graph-focus.spec.ts:131:5 › a focused URL centers its node, direct clicks pin it, and More opens its details (19.0s)
+FIRST-CASE {"offered":"shell:packages/explorer","under":"shell:packages/explorer","away":8.7,"radius":11.4,"substeps":"384","busy":"true"}
+  ✘  7 [chromium] › tests/e2e/force-graph-focus.spec.ts:131:5 › a focused URL centers its node, direct clicks pin it, and More opens its details (8.5s)
+FIRST-CASE {"offered":"packages/engine/src/live-docs/graph.ts","under":"packages/engine/src/live-docs/graph.ts","away":0,"radius":11.4,"substeps":"433","busy":"false"}
+  ✓  8 [chromium] › tests/e2e/force-graph-focus.spec.ts:131:5 › a focused URL centers its node, direct clicks pin it, and More opens its details (18.4s)
+    Error: packages/engine/src/live-docs/graph.ts's name is shown within 8 px of the room's centre (Infinity while it is hidden)
+    test-results/force-graph-focus-a-focuse-4bd1d--and-More-opens-its-details-chromium-repeat4/test-failed-1.png
+    Error: the actions offered should be those of packages/engine/src/live-docs/graph.ts; they are: "Actions for the shell of packages/explorer" (shell:packages/explorer). A press at the pointer's place (771.3, 367.2) would take hold of: shell:packages/explorer. The map does not say it is building; aria-busy is true; its motion has run 386 substeps
+    test-results/force-graph-focus-a-focuse-4bd1d--and-More-opens-its-details-chromium-repeat6/test-failed-1.png
+  2 failed
+  6 passed (3.5m)
+ 23:50:33 up 9 days,  9:59,  0 users,  load average: 5.51, 5.53, 3.66
