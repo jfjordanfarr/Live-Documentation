@@ -122,12 +122,8 @@ export function watchLocalKinds(): void {
   const row = document.getElementById("local-legend-kinds"), map = document.getElementById("map-container");
   if (!row || !map) return;
   let pending = 0, shown = "";
-  const view = map.closest<HTMLElement>(".view-container");
   const draw = (): void => {
     pending = 0;
-    // A view put away is not drawn (shell.css), so none of its cells would count: the row stands as it was, and is
-    // read again when the map is shown again.
-    if (view && !view.classList.contains("active")) return;
     const styles: Readonly<Record<string, SpatialLegendMark>> = spatialNodeStyles(), drawn = new Set<SpatialLegendMark>();
     for (const cell of map.querySelectorAll<SVGElement>(".local-cell")) {
       const kind = styles[cell.dataset.kind ?? ""];
@@ -143,6 +139,9 @@ export function watchLocalKinds(): void {
   new MutationObserver(changes => {
     if (!pending && changes.some(change => change.type === "attributes" || concerns(change.target) || [...change.addedNodes, ...change.removedNodes].some(concerns))) pending = requestAnimationFrame(draw);
   }).observe(map, { childList: true, subtree: true, attributes: true, attributeFilter: ["data-lod", "data-looks"] });
+  // A view put away is not drawn (shell.css), so a row drawn while the map is away finds no cell drawn and stands
+  // empty until something of the map changes: it is read again whenever the map's view is shown or put away.
+  const view = map.closest<HTMLElement>(".view-container");
   if (view) new MutationObserver(() => { if (!pending) pending = requestAnimationFrame(draw); }).observe(view, { attributes: true, attributeFilter: ["class"] });
   whenPaletteChanges(() => { if (!pending) pending = requestAnimationFrame(draw); });
   draw();

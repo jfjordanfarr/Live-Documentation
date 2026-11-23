@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/explorer/src/client/views/perspectiveTransition.ts`
-- Generated At: 2026-11-22T07:12:56.506Z
+- Generated At: 2026-11-23T00:11:15.066Z
 
 ## Authored
 ### Purpose
@@ -32,35 +32,35 @@ Since 2026-11-11 ([Turn 6 of the November 10 record](../../../../../../../AI-Age
 ### Public Symbols
 #### `SceneFile` {#symbol-scenefile}
 - Type: interface
-- Source: [source](../../../../../../../packages/explorer/src/client/views/perspectiveTransition.ts#L7)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/perspectiveTransition.ts#L8)
 
 ##### `SceneFile` — Summary
 Screen-space correspondence between native cards and native force positions.
 
 #### `ForceScene` {#symbol-forcescene}
 - Type: interface
-- Source: [source](../../../../../../../packages/explorer/src/client/views/perspectiveTransition.ts#L19)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/perspectiveTransition.ts#L20)
 
 ##### `ForceScene` — Summary
 A frozen projection of the native force scene, without introducing another layout.
 
 #### `LocalScene` {#symbol-localscene}
 - Type: interface
-- Source: [source](../../../../../../../packages/explorer/src/client/views/perspectiveTransition.ts#L56)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/perspectiveTransition.ts#L57)
 
 ##### `LocalScene` — Summary
 Native reading geometry, captured before the view is hidden or its camera changes.
 
 #### `LocalCapture` {#symbol-localcapture}
 - Type: interface
-- Source: [source](../../../../../../../packages/explorer/src/client/views/perspectiveTransition.ts#L63)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/perspectiveTransition.ts#L64)
 
 ##### `LocalCapture` — Summary
 A capture of the 2D map: its scene, complete once `copied` resolves, the copies of its cards and its directories' shells made a slice at a time.
 
 #### `captureLocalScene` {#symbol-capturelocalscene}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/views/perspectiveTransition.ts#L88)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/perspectiveTransition.ts#L89)
 - Returns: [`LocalCapture`](#symbol-localcapture)
 - Parameters: `frame`: `DOMRect`
 
@@ -74,7 +74,7 @@ the page for seconds).
 
 #### `animatePerspective` {#symbol-animateperspective}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/views/perspectiveTransition.ts#L191)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/perspectiveTransition.ts#L192)
 - Parameters: `scene`: [`LocalScene`](#symbol-localscene); `graph`: [`ForceScene`](#symbol-forcescene); `viewport`: `DOMRect`
 
 ##### `animatePerspective` — Summary
@@ -84,17 +84,20 @@ are not changed by this temporary, non-interactive drawing.
 
 #### `holdPerspective` {#symbol-holdperspective}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/views/perspectiveTransition.ts#L385)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/perspectiveTransition.ts#L389)
 
 ##### `holdPerspective` — Summary
 Hold the source picture while the destination renderer produces its first frame: the source surface itself stays
-drawn, as it stands, over the destination until released (`perspective-held` in local.css). An inactive view is laid
-out and drawn, only transparent, so nothing need be copied; until 2026-11-07 the hold was a copy of the whole surface
-with every computed property of every element, several seconds of the page's main thread on this repository's
-pictures, and on the way to 2D a copy never seen, since the 2D map is ready at once and the cover went in the same
-task. The surface is inert and hidden from assistive technology while inactive, as the copy was, and a transparent
-cover over the views' room takes the pointer while it is held, so that a click meant for the held picture reaches
-neither it nor the destination drawing beneath it.
+drawn, as it stands, over the destination until released (`perspective-held` in local.css). A held view is laid out
+and drawn, so nothing need be copied; until 2026-11-07 the hold was a copy of the whole surface with every computed
+property of every element, several seconds of the page's main thread on this repository's pictures, and on the way to
+2D a copy never seen, since the 2D map is ready at once and the cover went in the same task. A view put away is kept
+and not drawn (`content-visibility` in shell.css), and the held one is put away when its hold lets go: until then it
+is hidden from assistive technology, a transparent cover over the views' room takes the pointer, so that a click
+meant for the held picture reaches neither it nor the destination drawing beneath it, and focus offered to it is
+given back (`dom.ts`). It is not inert while held: making a drawn view inert has the browser work out the style of
+every element in it again, 180 ms of each press of 3D on a map of 14,810 elements; made inert once it is not drawn,
+it costs 3 ms (measured 2026-11-22; `settleViews`).
 
 The surface keeps the size and border it was drawn with while held, since leaving the 2D map takes away the room its
 zoom controls kept below it, which would otherwise grow the held map into that room.
@@ -102,6 +105,7 @@ zoom controls kept below it, which would otherwise grow the held map into that r
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
+- [`dom.settleViews`](../dom.ts.mdmd.md#symbol-settleviews)
 - [`palette.activePalette`](../palette.ts.mdmd.md#symbol-activepalette)
 - [`palette.mix`](../palette.ts.mdmd.md#symbol-mix)
 - [`forceGraphData.directoryNodeId`](./forceGraphData.ts.mdmd.md#symbol-directorynodeid)

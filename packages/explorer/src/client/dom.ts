@@ -111,6 +111,8 @@ export function setActiveView(view: ViewName, perspective: LocalMapPerspective):
   document.querySelectorAll<HTMLElement>(".view-container").forEach(container => {
     const active = container.id === `view-${view === "map" && perspective === "3d" ? "graph" : view}`;
     if (active) {
+      // The way back mirrors the way out: a view is made not inert while it is still not drawn, and only then drawn.
+      if (!behindModal) container.inert = false;
       container.classList.add("active");
     } else {
       container.classList.remove("active");

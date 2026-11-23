@@ -390,6 +390,29 @@ test("the keyboard's focus is never left in a view being put away nor lost to th
   expect(record.stood.filter(place => place === "a view not shown" || place === "the page"), "where focus stood after each offer").toEqual([]);
 });
 
+test("a window resized while the 3D picture is put away is the picture's size when it is shown again", async ({ page }) => {
+  // A view put away is not drawn (2026-11-22), so nothing reports its room's size while it is away; the size is
+  // reported when the view is drawn again, and the picture is drawn at it.
+  test.setTimeout(90_000);
+  await page.setViewportSize({ width: 1280, height: 720 });
+  await page.goto(`/samples/estate/?view=local&mode=3d&node=${encodeURIComponent("PaymentService/PaymentService.cs")}`);
+  await expect(page.locator("#graph-svg")).toHaveAttribute("aria-busy", "false", { timeout: 60_000 });
+  const sizes = (): Promise<{ room: number[]; canvas: number[]; drawn: number[] }> => page.evaluate(() => {
+    const room = document.getElementById("graph-svg")!, canvas = room.querySelector("canvas")!, box = canvas.getBoundingClientRect();
+    return { room: [room.clientWidth, room.clientHeight], canvas: [Math.round(box.width), Math.round(box.height)], drawn: [Math.round(canvas.width / devicePixelRatio), Math.round(canvas.height / devicePixelRatio)] };
+  });
+  const first = await sizes();
+  expect(first.canvas, "the canvas fills its room at first").toEqual(first.room);
+  await page.getByRole("button", { name: "2D", exact: true }).click();
+  await expect.poll(() => page.evaluate(VIEW_STATE, "view-graph"), { message: "the 3D picture is put away", timeout: 30_000 }).toEqual(PUT_AWAY);
+  await page.setViewportSize({ width: 1000, height: 640 });
+  await page.getByRole("button", { name: "3D", exact: true }).click();
+  await expect.poll(async () => {
+    const now = await sizes();
+    return { roomIsNarrower: now.room[0]! < first.room[0]!, canvasIsTheRoom: now.canvas.join("×") === now.room.join("×"), drawnAtTheRoom: now.drawn.join("×") === now.room.join("×") };
+  }, { message: "the room is narrower, and the canvas and what it draws are the room's size", timeout: 30_000 }).toEqual({ roomIsNarrower: true, canvasIsTheRoom: true, drawnAtTheRoom: true });
+});
+
 test("search moves focus smoothly, survives filtering, and resizes with its container", async ({ page }) => {
   await page.setViewportSize({ width: 1600, height: 1000 });
   await page.goto(`/?view=local&mode=3d&node=${encodeURIComponent(GRAPH)}`);
