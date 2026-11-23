@@ -1,0 +1,57 @@
+browser-lane: waiting behind put-away
+browser-lane: picking holds the lane (waited 168.6 s, cap 300 s)
+The server at http://localhost:34045 serves this checkout's dist/explorer, and its bundles were built together.
+WebGL in this run is drawn by: ANGLE (Microsoft Corporation, D3D12 (NVIDIA GeForce RTX 3090), OpenGL ES 3.1)
+
+Running 6 tests using 1 worker
+
+AT CENTRE {"pick":"shell:packages/explorer","spheres":[{"id":"packages/engine/src/live-docs/graph.ts","enter":579.2442401195465,"exit":598.2287238384185,"offAxis":0,"radius":9.492241859436035,"opacity":0.75}],"skins":[{"seed":"shell:packages/explorer","hits":[329.2852255358023,508.70928350887783],"alpha":1,"centreDistance":454.1651542797018,"radius":211.42532027457088,"eyeInside":false}],"substeps":"287","busy":"true","offered":null,"look":"skin"}
+UNCOVERED after turns 6
+CLICKED at {"x":789.2761708808621,"y":360.4045940416904}
+R 0 {"pick":"packages/engine/src/live-docs/graph.ts","spheres":[{"id":"packages/engine/src/live-docs/graph.ts","enter":604.2999766836092,"exit":623.5350668449437,"offAxis":0.0009528499855319643,"radius":9.617545127868652,"opacity":0.75}],"skins":[],"substeps":"433","busy":"false","offered":null,"look":"skin"}
+R 4 {"pick":"packages/engine/src/live-docs/graph.ts","spheres":[{"id":"packages/engine/src/live-docs/graph.ts","enter":604.3078863704327,"exit":623.5429762522629,"offAxis":0.001896330480489626,"radius":9.617545127868652,"opacity":0.75}],"skins":[],"substeps":"433","busy":"false","offered":"packages/engine/src/live-docs/graph.ts","look":"skin"}
+POINT {"x":789.2761708808621,"y":360.4045940416904}
+  ✓  1 [chromium] › tests/e2e/force-graph-picking.spec.ts:108:5 › PROBE the pressed sphere's ray while the picture settles (18.5s)
+AT CENTRE {"pick":"shell:packages/explorer","spheres":[{"id":"packages/engine/src/live-docs/graph.ts","enter":579.2442401195465,"exit":598.2287238384185,"offAxis":0,"radius":9.492241859436035,"opacity":0.75}],"skins":[{"seed":"shell:packages/explorer","hits":[329.28522582673344,508.7092833758314],"alpha":1,"centreDistance":454.1651542797018,"radius":211.42532027457088,"eyeInside":false}],"substeps":"287","busy":"true","offered":null,"look":"skin"}
+UNCOVERED after turns 1
+CLICKED at {"x":774.636046184959,"y":360.8174145130055}
+R 0 {"pick":"packages/engine/src/live-docs/graph.ts","spheres":[{"id":"packages/engine/src/live-docs/graph.ts","enter":600.5117781172322,"exit":617.1825438537552,"offAxis":4.803501357932128,"radius":9.620407104492188,"opacity":0.75}],"skins":[],"substeps":"392","busy":"true","offered":null,"look":"skin"}
+R 4 {"pick":"packages/engine/src/live-docs/graph.ts","spheres":[{"id":"packages/engine/src/live-docs/graph.ts","enter":600.6243862054334,"exit":617.290764412608,"offAxis":4.8073061292180865,"radius":9.620407104492188,"opacity":0.75}],"skins":[],"substeps":"420","busy":"true","offered":"packages/engine/src/live-docs/graph.ts","look":"skin"}
+R 6 {"pick":"packages/engine/src/live-docs/graph.ts","spheres":[{"id":"packages/engine/src/live-docs/graph.ts","enter":600.6302499342232,"exit":617.3024660442611,"offAxis":4.802242741804209,"radius":9.620407104492188,"opacity":0.75}],"skins":[],"substeps":"433","busy":"false","offered":"packages/engine/src/live-docs/graph.ts","look":"skin"}
+POINT {"x":774.636046184959,"y":360.8174145130055}
+  ✓  2 [chromium] › tests/e2e/force-graph-picking.spec.ts:108:5 › PROBE the pressed sphere's ray while the picture settles (12.0s)
+AT CENTRE {"pick":"shell:packages/explorer","spheres":[{"id":"packages/engine/src/live-docs/graph.ts","enter":582.4997541186536,"exit":601.5158235308974,"offAxis":0,"radius":9.508034706115723,"opacity":0.75}],"skins":[{"seed":"shell:packages/explorer","hits":[318.10178431137865,521.4534386258372],"alpha":1,"centreDistance":457.4129005267015,"radius":211.42532027457088,"eyeInside":false}],"substeps":"282","busy":"true","offered":null,"look":"skin"}
+UNCOVERED after turns 2
+CLICKED at {"x":778.100820170789,"y":356.7397046400287}
+R 0 {"pick":"packages/engine/src/live-docs/graph.ts","spheres":[{"id":"packages/engine/src/live-docs/graph.ts","enter":593.1957240030933,"exit":612.389395324687,"offAxis":0.007946899811581825,"radius":9.59683895111084,"opacity":0.75}],"skins":[],"substeps":"433","busy":"false","offered":null,"look":"skin"}
+R 3 {"pick":"packages/engine/src/live-docs/graph.ts","spheres":[{"id":"packages/engine/src/live-docs/graph.ts","enter":593.1945911188686,"exit":612.3882485480881,"offAxis":0.014016989737189192,"radius":9.59683895111084,"opacity":0.75}],"skins":[],"substeps":"433","busy":"false","offered":"packages/engine/src/live-docs/graph.ts","look":"skin"}
+POINT {"x":778.100820170789,"y":356.7397046400287}
+  ✓  3 [chromium] › tests/e2e/force-graph-picking.spec.ts:108:5 › PROBE the pressed sphere's ray while the picture settles (13.4s)
+AT CENTRE {"pick":"shell:packages/explorer","spheres":[{"id":"packages/engine/src/live-docs/graph.ts","enter":597.6041452065704,"exit":616.7651712075469,"offAxis":0,"radius":9.580513000488281,"opacity":0.75}],"skins":[{"seed":"shell:packages/explorer","hits":[365.01486042286507,522.6993009067266],"alpha":1,"centreDistance":478.33720485127776,"radius":211.42532027457088,"eyeInside":false}],"substeps":"294","busy":"true","offered":null,"look":"skin"}
+UNCOVERED after turns 1
+CLICKED at {"x":773.3432011008954,"y":359.8560175387825}
+R 0 {"pick":"packages/engine/src/live-docs/graph.ts","spheres":[{"id":"packages/engine/src/live-docs/graph.ts","enter":592.6880212455085,"exit":609.2874877590916,"offAxis":4.789557161142445,"radius":9.582558631896973,"opacity":0.75}],"skins":[],"substeps":"402","busy":"true","offered":null,"look":"skin"}
+R 3 {"pick":"packages/engine/src/live-docs/graph.ts","spheres":[{"id":"packages/engine/src/live-docs/graph.ts","enter":592.7520295792566,"exit":609.3556680130222,"offAxis":4.78594062060303,"radius":9.582558631896973,"opacity":0.75}],"skins":[],"substeps":"424","busy":"true","offered":"packages/engine/src/live-docs/graph.ts","look":"skin"}
+R 5 {"pick":"packages/engine/src/live-docs/graph.ts","spheres":[{"id":"packages/engine/src/live-docs/graph.ts","enter":592.7528167790548,"exit":609.3603005664207,"offAxis":4.782603945220433,"radius":9.582558631896973,"opacity":0.75}],"skins":[],"substeps":"433","busy":"false","offered":"packages/engine/src/live-docs/graph.ts","look":"skin"}
+POINT {"x":773.3432011008954,"y":359.8560175387825}
+  ✓  4 [chromium] › tests/e2e/force-graph-picking.spec.ts:108:5 › PROBE the pressed sphere's ray while the picture settles (12.1s)
+AT CENTRE {"pick":"shell:packages/explorer","spheres":[{"id":"packages/engine/src/live-docs/graph.ts","enter":596.239625145218,"exit":615.3876601946627,"offAxis":0,"radius":9.574017524719238,"opacity":0.75}],"skins":[{"seed":"shell:packages/explorer","hits":[362.22257904806276,520.0144792828501],"alpha":1,"centreDistance":475.18196008973774,"radius":211.42532027457088,"eyeInside":false}],"substeps":"293","busy":"true","offered":null,"look":"skin"}
+UNCOVERED after turns 1
+CLICKED at {"x":769.2112184716906,"y":358.2496340863283}
+R 0 {"pick":"packages/engine/src/live-docs/graph.ts","spheres":[{"id":"packages/engine/src/live-docs/graph.ts","enter":594.1604795807402,"exit":610.7887240009809,"offAxis":4.778543252595341,"radius":9.589530944824219,"opacity":0.75}],"skins":[],"substeps":"400","busy":"true","offered":null,"look":"skin"}
+R 3 {"pick":"packages/engine/src/live-docs/graph.ts","spheres":[{"id":"packages/engine/src/live-docs/graph.ts","enter":594.216586687722,"exit":610.881286343577,"offAxis":4.746688328379916,"radius":9.589530944824219,"opacity":0.75}],"skins":[],"substeps":"421","busy":"true","offered":"packages/engine/src/live-docs/graph.ts","look":"skin"}
+R 5 {"pick":"packages/engine/src/live-docs/graph.ts","spheres":[{"id":"packages/engine/src/live-docs/graph.ts","enter":594.2212215888978,"exit":610.8896612116994,"offAxis":4.743404249797506,"radius":9.589530944824219,"opacity":0.75}],"skins":[],"substeps":"433","busy":"false","offered":"packages/engine/src/live-docs/graph.ts","look":"skin"}
+POINT {"x":769.2112184716906,"y":358.2496340863283}
+  ✓  5 [chromium] › tests/e2e/force-graph-picking.spec.ts:108:5 › PROBE the pressed sphere's ray while the picture settles (12.3s)
+AT CENTRE {"pick":"shell:packages/explorer","spheres":[{"id":"packages/engine/src/live-docs/graph.ts","enter":596.239625145218,"exit":615.3876601946627,"offAxis":0,"radius":9.574017524719238,"opacity":0.75}],"skins":[{"seed":"shell:packages/explorer","hits":[362.2225822351491,520.01447582012],"alpha":1,"centreDistance":475.18196008973774,"radius":211.42532027457088,"eyeInside":false}],"substeps":"293","busy":"true","offered":null,"look":"skin"}
+UNCOVERED after turns 2
+CLICKED at {"x":777.3656993220865,"y":355.49953899913714}
+R 0 {"pick":"packages/engine/src/live-docs/graph.ts","spheres":[{"id":"packages/engine/src/live-docs/graph.ts","enter":590.9059758895734,"exit":610.0850313147527,"offAxis":0.007873450138313172,"radius":9.589530944824219,"opacity":0.75}],"skins":[],"substeps":"433","busy":"false","offered":null,"look":"skin"}
+R 3 {"pick":"packages/engine/src/live-docs/graph.ts","spheres":[{"id":"packages/engine/src/live-docs/graph.ts","enter":590.9039059621691,"exit":610.0829433045155,"offAxis":0.015342651700924567,"radius":9.589530944824219,"opacity":0.75}],"skins":[],"substeps":"433","busy":"false","offered":"packages/engine/src/live-docs/graph.ts","look":"skin"}
+POINT {"x":777.3656993220865,"y":355.49953899913714}
+  ✓  6 [chromium] › tests/e2e/force-graph-picking.spec.ts:108:5 › PROBE the pressed sphere's ray while the picture settles (13.6s)
+
+  6 passed (1.5m)
+browser-lane: released after 89.2 s, exit 0
+
+[exited with code 0]

@@ -1,0 +1,140 @@
+browser-lane: waiting behind first-frame, put-away, put-away, put-away, put-away
+browser-lane: picking holds the lane (waited 109.4 s, cap 300 s)
+The server at http://localhost:45045 serves this checkout's dist/explorer, and its bundles were built together.
+WebGL in this run is drawn by: ANGLE (Microsoft Corporation, D3D12 (NVIDIA GeForce RTX 3090), OpenGL ES 3.1)
+
+Running 21 tests using 1 worker
+
+  ✘   1 [chromium] › tests/e2e/force-graph-picking.spec.ts:110:5 › PROBE the pressed sphere's ray while the picture settles (9.3s)
+COST repository 3D start, graph.ts rested true {"points":4530,"onSomething":1809,"skinNow":1741,"changedA":38,"readerAgrees":4530,"pairs":[["shell:packages/explorer -> packages/engine/src/live-docs/document.ts",5],["shell:packages/explorer -> packages/engine/src/live-docs/boardGraph.ts",4],["shell:packages/explorer -> packages/explorer/src/client/panels/sources-facts.ts",3],["shell:packages/explorer -> packages/explorer/src/client/views/worldMap/controller.ts",2],["shell:packages/explorer -> packages/explorer/src/client/views/worldMap/model.ts",2],["shell:packages/explorer -> tests/integration/programs/csharp/estate/expected/csharp-compiler.json",2],["shell:packages/explorer -> packages/explorer/src/client/download.ts",2],["shell:packages/explorer -> packages/engine/src/live-docs/graph.ts",2],["shell:packages/explorer -> packages/explorer/src/client/reader-links.ts",2],["shell:packages/explorer -> packages/explorer/src/client/views/worldMap/index.ts",1],["shell:packages/explorer -> tests/integration/programs/powershell/rollout/expected/compiler-edges.json",1],["shell:packages/explorer -> packages/explorer/src/shared/graph.ts",1]],"substeps":"433"}
+  ✓   2 [chromium] › tests/e2e/force-graph-picking.spec.ts:148:42 › PROBE COST repository 3D start, graph.ts (9.0s)
+COST repository, graph.ts pinned, 1 hop rested true {"points":4530,"onSomething":1809,"skinNow":1741,"changedA":38,"readerAgrees":4530,"pairs":[["shell:packages/explorer -> packages/engine/src/live-docs/document.ts",5],["shell:packages/explorer -> packages/engine/src/live-docs/boardGraph.ts",4],["shell:packages/explorer -> packages/explorer/src/client/panels/sources-facts.ts",3],["shell:packages/explorer -> packages/explorer/src/client/views/worldMap/controller.ts",2],["shell:packages/explorer -> packages/explorer/src/client/views/worldMap/model.ts",2],["shell:packages/explorer -> tests/integration/programs/csharp/estate/expected/csharp-compiler.json",2],["shell:packages/explorer -> packages/explorer/src/client/download.ts",2],["shell:packages/explorer -> packages/engine/src/live-docs/graph.ts",2],["shell:packages/explorer -> packages/explorer/src/client/reader-links.ts",2],["shell:packages/explorer -> packages/explorer/src/client/views/worldMap/index.ts",1],["shell:packages/explorer -> tests/integration/programs/powershell/rollout/expected/compiler-edges.json",1],["shell:packages/explorer -> packages/explorer/src/shared/graph.ts",1]],"substeps":"433"}
+  ✓   3 [chromium] › tests/e2e/force-graph-picking.spec.ts:148:42 › PROBE COST repository, graph.ts pinned, 1 hop (9.1s)
+COST repository, graph.ts pinned, 2 hops rested true {"points":4547,"onSomething":663,"skinNow":555,"changedA":32,"readerAgrees":4545,"pairs":[["tests/integration/fixtures/powershell-wires/expected/compiler-edges.json -> packages/explorer/src/client/types.ts",3],["tests/integration/fixtures/powershell-wires/expected/compiler-edges.json -> packages/explorer/src/client/palette.ts",2],["tests/integration/fixtures/powershell-wires/expected/compiler-edges.json -> tests/e2e/still-picture.ts",2],["shell:packages/explorer -> packages/explorer/src/client/views/worldMap/controller.ts",1],["shell:packages/explorer -> packages/explorer/src/client/views/pointerRest.ts",1],["shell:packages/explorer -> packages/explorer/src/client/persistence/url-state.ts",1],["shell:packages/explorer -> packages/explorer/src/client/panels/icon-button.ts",1],["shell:packages/explorer -> packages/explorer/src/client/views/forceGraphPhysics.ts",1],["tests/integration/fixtures/powershell-wires/expected/compiler-edges.json -> packages/explorer/src/client/views/forceGraphView.ts",1],["tests/integration/fixtures/powershell-wires/expected/compiler-edges.json -> scripts/layout-lab/approximation.ts",1],["shell:packages/explorer -> scripts/oracle/powershell-ast.ps1",1],["tests/integration/fixtures/powershell-wires/expected/compiler-edges.json -> tests/e2e/contrast.ts",1]],"substeps":"596"}
+  ✓   4 [chromium] › tests/e2e/force-graph-picking.spec.ts:148:42 › PROBE COST repository, graph.ts pinned, 2 hops (11.4s)
+COST estate 3D start, PaymentService.cs rested true {"points":4503,"onSomething":140,"skinNow":87,"changedA":0,"readerAgrees":4503,"pairs":[],"substeps":"532"}
+  ✓   5 [chromium] › tests/e2e/force-graph-picking.spec.ts:148:42 › PROBE COST estate 3D start, PaymentService.cs (9.5s)
+COST estate, PaymentService.cs pinned, 1 hop rested true {"points":4503,"onSomething":140,"skinNow":87,"changedA":0,"readerAgrees":4503,"pairs":[],"substeps":"532"}
+  ✓   6 [chromium] › tests/e2e/force-graph-picking.spec.ts:148:42 › PROBE COST estate, PaymentService.cs pinned, 1 hop (9.4s)
+COST estate, PaymentService.cs pinned, 2 hops rested true {"points":4502,"onSomething":62,"skinNow":2,"changedA":0,"readerAgrees":4500,"pairs":[],"substeps":"347"}
+  ✓   7 [chromium] › tests/e2e/force-graph-picking.spec.ts:148:42 › PROBE COST estate, PaymentService.cs pinned, 2 hops (6.2s)
+AT CENTRE {"pick":"tests/integration/fixtures/powershell-wires/expected/compiler-edges.json","bearing":[0,0,1],"frames":48,"spheres":[{"id":"packages/engine/src/live-docs/graph.ts","enter":618.8854678650965,"exit":638.2464679261376,"offAxis":0,"radius":9.680500030517578,"opacity":0.75}],"skins":[{"seed":"tests/integration/fixtures/powershell-wires/expected/compiler-edges.json","hits":[159.48963894074598,204.77900990021467],"alpha":0.6,"centreDistance":193.42792887665735,"radius":80.4480524338504,"eyeInside":false},{"seed":"shell:packages/explorer","hits":[259.3649134875507,517.1480457813694],"alpha":1,"centreDistance":415.9549500205957,"radius":211.42532027457088,"eyeInside":false}],"substeps":"252","busy":"true","offered":null,"look":"skin"}
+UNCOVERED after turns 1
+CLICKED at {"x":788.9835430908008,"y":369.26685239726436}
+R 0 {"pick":"packages/engine/src/live-docs/graph.ts","bearing":[-0.5068,0.1689,0.8453],"frames":114,"spheres":[{"id":"packages/engine/src/live-docs/graph.ts","enter":670.0289797215859,"exit":690.0313414974506,"offAxis":0.4304722825369915,"radius":10.010440826416016,"opacity":0.75}],"skins":[],"substeps":"319","busy":"true","offered":null,"look":"skin"}
+R 1 {"pick":"packages/engine/src/live-docs/graph.ts","bearing":[-0.5118,0.1706,0.842],"frames":116,"spheres":[{"id":"packages/engine/src/live-docs/graph.ts","enter":670.1538671228006,"exit":690.1125419779132,"offAxis":0.7885112847320751,"radius":10.010440826416016,"opacity":0.75}],"skins":[],"substeps":"321","busy":"true","offered":null,"look":"skin"}
+R 2 {"pick":"packages/engine/src/live-docs/graph.ts","bearing":[-0.5157,0.1719,0.8393],"frames":118,"spheres":[{"id":"packages/engine/src/live-docs/graph.ts","enter":670.2813776318169,"exit":690.0830430256092,"offAxis":1.4773074992190889,"radius":10.010440826416016,"opacity":0.75}],"skins":[],"substeps":"323","busy":"true","offered":null,"look":"skin"}
+R 3 {"pick":"packages/engine/src/live-docs/graph.ts","bearing":[-0.5188,0.1729,0.8372],"frames":120,"spheres":[{"id":"packages/engine/src/live-docs/graph.ts","enter":670.3674963085666,"exit":690.0438770155483,"offAxis":1.849036534970826,"radius":10.010440826416016,"opacity":0.75}],"skins":[],"substeps":"325","busy":"true","offered":"packages/engine/src/live-docs/graph.ts","look":"skin"}
+WRONG 36 {"pick":"shell:packages/explorer","bearing":[-0.5313,0.1771,0.8285],"frames":186,"spheres":[{"id":"packages/engine/src/live-docs/graph.ts","enter":669.1464862517385,"exit":687.7706525086846,"offAxis":3.673422565888989,"radius":10.010440826416016,"opacity":0.15000000596046448}],"skins":[{"seed":"shell:packages/explorer","hits":[490.8681440955055,491.6916865252081],"alpha":1,"centreDistance":557.7645170881384,"radius":211.42532027457088,"eyeInside":false}],"substeps":"391","busy":"true","offered":"shell:packages/explorer","look":"skin"}
+R 36 {"pick":"shell:packages/explorer","bearing":[-0.5313,0.1771,0.8285],"frames":186,"spheres":[{"id":"packages/engine/src/live-docs/graph.ts","enter":669.1464862517385,"exit":687.7706525086846,"offAxis":3.673422565888989,"radius":10.010440826416016,"opacity":0.15000000596046448}],"skins":[{"seed":"shell:packages/explorer","hits":[490.8681440955055,491.6916865252081],"alpha":1,"centreDistance":557.7645170881384,"radius":211.42532027457088,"eyeInside":false}],"substeps":"391","busy":"true","offered":"shell:packages/explorer","look":"skin"}
+R 53 {"pick":"shell:packages/explorer","bearing":[-0.5313,0.1771,0.8285],"frames":228,"spheres":[{"id":"packages/engine/src/live-docs/graph.ts","enter":669.2384405257089,"exit":687.9286015793964,"offAxis":3.588648141847117,"radius":10.010440826416016,"opacity":0.15000000596046448}],"skins":[{"seed":"shell:packages/explorer","hits":[488.6444154138275,499.6175199714155],"alpha":1,"centreDistance":556.7797971709577,"radius":211.42532027457088,"eyeInside":false}],"substeps":"433","busy":"false","offered":"shell:packages/explorer","look":"skin"}
+POINT {"x":788.9835430908008,"y":369.26685239726436}
+  ✓   8 [chromium] › tests/e2e/force-graph-picking.spec.ts:110:5 › PROBE the pressed sphere's ray while the picture settles (27.1s)
+COST repository 3D start, graph.ts rested true {"points":4530,"onSomething":1809,"skinNow":1741,"changedA":38,"readerAgrees":4530,"pairs":[["shell:packages/explorer -> packages/engine/src/live-docs/document.ts",5],["shell:packages/explorer -> packages/engine/src/live-docs/boardGraph.ts",4],["shell:packages/explorer -> packages/explorer/src/client/panels/sources-facts.ts",3],["shell:packages/explorer -> packages/explorer/src/client/views/worldMap/controller.ts",2],["shell:packages/explorer -> packages/explorer/src/client/views/worldMap/model.ts",2],["shell:packages/explorer -> tests/integration/programs/csharp/estate/expected/csharp-compiler.json",2],["shell:packages/explorer -> packages/explorer/src/client/download.ts",2],["shell:packages/explorer -> packages/engine/src/live-docs/graph.ts",2],["shell:packages/explorer -> packages/explorer/src/client/reader-links.ts",2],["shell:packages/explorer -> packages/explorer/src/client/views/worldMap/index.ts",1],["shell:packages/explorer -> tests/integration/programs/powershell/rollout/expected/compiler-edges.json",1],["shell:packages/explorer -> packages/explorer/src/shared/graph.ts",1]],"substeps":"433"}
+  ✓   9 [chromium] › tests/e2e/force-graph-picking.spec.ts:148:42 › PROBE COST repository 3D start, graph.ts (8.6s)
+COST repository, graph.ts pinned, 1 hop rested true {"points":4530,"onSomething":1809,"skinNow":1741,"changedA":38,"readerAgrees":4530,"pairs":[["shell:packages/explorer -> packages/engine/src/live-docs/document.ts",5],["shell:packages/explorer -> packages/engine/src/live-docs/boardGraph.ts",4],["shell:packages/explorer -> packages/explorer/src/client/panels/sources-facts.ts",3],["shell:packages/explorer -> packages/explorer/src/client/views/worldMap/controller.ts",2],["shell:packages/explorer -> packages/explorer/src/client/views/worldMap/model.ts",2],["shell:packages/explorer -> tests/integration/programs/csharp/estate/expected/csharp-compiler.json",2],["shell:packages/explorer -> packages/explorer/src/client/download.ts",2],["shell:packages/explorer -> packages/engine/src/live-docs/graph.ts",2],["shell:packages/explorer -> packages/explorer/src/client/reader-links.ts",2],["shell:packages/explorer -> packages/explorer/src/client/views/worldMap/index.ts",1],["shell:packages/explorer -> tests/integration/programs/powershell/rollout/expected/compiler-edges.json",1],["shell:packages/explorer -> packages/explorer/src/shared/graph.ts",1]],"substeps":"433"}
+  ✓  10 [chromium] › tests/e2e/force-graph-picking.spec.ts:148:42 › PROBE COST repository, graph.ts pinned, 1 hop (8.5s)
+COST repository, graph.ts pinned, 2 hops rested true {"points":4547,"onSomething":663,"skinNow":555,"changedA":32,"readerAgrees":4545,"pairs":[["tests/integration/fixtures/powershell-wires/expected/compiler-edges.json -> packages/explorer/src/client/types.ts",3],["tests/integration/fixtures/powershell-wires/expected/compiler-edges.json -> packages/explorer/src/client/palette.ts",2],["tests/integration/fixtures/powershell-wires/expected/compiler-edges.json -> tests/e2e/still-picture.ts",2],["shell:packages/explorer -> packages/explorer/src/client/views/worldMap/controller.ts",1],["shell:packages/explorer -> packages/explorer/src/client/views/pointerRest.ts",1],["shell:packages/explorer -> packages/explorer/src/client/persistence/url-state.ts",1],["shell:packages/explorer -> packages/explorer/src/client/panels/icon-button.ts",1],["shell:packages/explorer -> packages/explorer/src/client/views/forceGraphPhysics.ts",1],["tests/integration/fixtures/powershell-wires/expected/compiler-edges.json -> packages/explorer/src/client/views/forceGraphView.ts",1],["tests/integration/fixtures/powershell-wires/expected/compiler-edges.json -> scripts/layout-lab/approximation.ts",1],["shell:packages/explorer -> scripts/oracle/powershell-ast.ps1",1],["tests/integration/fixtures/powershell-wires/expected/compiler-edges.json -> tests/e2e/contrast.ts",1]],"substeps":"596"}
+  ✓  11 [chromium] › tests/e2e/force-graph-picking.spec.ts:148:42 › PROBE COST repository, graph.ts pinned, 2 hops (11.4s)
+COST estate 3D start, PaymentService.cs rested true {"points":4503,"onSomething":140,"skinNow":87,"changedA":0,"readerAgrees":4503,"pairs":[],"substeps":"532"}
+  ✓  12 [chromium] › tests/e2e/force-graph-picking.spec.ts:148:42 › PROBE COST estate 3D start, PaymentService.cs (9.5s)
+COST estate, PaymentService.cs pinned, 1 hop rested true {"points":4503,"onSomething":140,"skinNow":87,"changedA":0,"readerAgrees":4503,"pairs":[],"substeps":"532"}
+  ✓  13 [chromium] › tests/e2e/force-graph-picking.spec.ts:148:42 › PROBE COST estate, PaymentService.cs pinned, 1 hop (9.5s)
+COST estate, PaymentService.cs pinned, 2 hops rested true {"points":4502,"onSomething":62,"skinNow":2,"changedA":0,"readerAgrees":4500,"pairs":[],"substeps":"347"}
+  ✓  14 [chromium] › tests/e2e/force-graph-picking.spec.ts:148:42 › PROBE COST estate, PaymentService.cs pinned, 2 hops (7.1s)
+  ✘  15 [chromium] › tests/e2e/force-graph-picking.spec.ts:110:5 › PROBE the pressed sphere's ray while the picture settles (8.8s)
+COST repository 3D start, graph.ts rested true {"points":4530,"onSomething":1809,"skinNow":1741,"changedA":38,"readerAgrees":4530,"pairs":[["shell:packages/explorer -> packages/engine/src/live-docs/document.ts",5],["shell:packages/explorer -> packages/engine/src/live-docs/boardGraph.ts",4],["shell:packages/explorer -> packages/explorer/src/client/panels/sources-facts.ts",3],["shell:packages/explorer -> packages/explorer/src/client/views/worldMap/controller.ts",2],["shell:packages/explorer -> packages/explorer/src/client/views/worldMap/model.ts",2],["shell:packages/explorer -> tests/integration/programs/csharp/estate/expected/csharp-compiler.json",2],["shell:packages/explorer -> packages/explorer/src/client/download.ts",2],["shell:packages/explorer -> packages/engine/src/live-docs/graph.ts",2],["shell:packages/explorer -> packages/explorer/src/client/reader-links.ts",2],["shell:packages/explorer -> packages/explorer/src/client/views/worldMap/index.ts",1],["shell:packages/explorer -> tests/integration/programs/powershell/rollout/expected/compiler-edges.json",1],["shell:packages/explorer -> packages/explorer/src/shared/graph.ts",1]],"substeps":"433"}
+  ✓  16 [chromium] › tests/e2e/force-graph-picking.spec.ts:148:42 › PROBE COST repository 3D start, graph.ts (8.7s)
+COST repository, graph.ts pinned, 1 hop rested true {"points":4530,"onSomething":1809,"skinNow":1741,"changedA":38,"readerAgrees":4530,"pairs":[["shell:packages/explorer -> packages/engine/src/live-docs/document.ts",5],["shell:packages/explorer -> packages/engine/src/live-docs/boardGraph.ts",4],["shell:packages/explorer -> packages/explorer/src/client/panels/sources-facts.ts",3],["shell:packages/explorer -> packages/explorer/src/client/views/worldMap/controller.ts",2],["shell:packages/explorer -> packages/explorer/src/client/views/worldMap/model.ts",2],["shell:packages/explorer -> tests/integration/programs/csharp/estate/expected/csharp-compiler.json",2],["shell:packages/explorer -> packages/explorer/src/client/download.ts",2],["shell:packages/explorer -> packages/engine/src/live-docs/graph.ts",2],["shell:packages/explorer -> packages/explorer/src/client/reader-links.ts",2],["shell:packages/explorer -> packages/explorer/src/client/views/worldMap/index.ts",1],["shell:packages/explorer -> tests/integration/programs/powershell/rollout/expected/compiler-edges.json",1],["shell:packages/explorer -> packages/explorer/src/shared/graph.ts",1]],"substeps":"433"}
+  ✓  17 [chromium] › tests/e2e/force-graph-picking.spec.ts:148:42 › PROBE COST repository, graph.ts pinned, 1 hop (9.1s)
+COST repository, graph.ts pinned, 2 hops rested true {"points":4547,"onSomething":663,"skinNow":555,"changedA":32,"readerAgrees":4545,"pairs":[["tests/integration/fixtures/powershell-wires/expected/compiler-edges.json -> packages/explorer/src/client/types.ts",3],["tests/integration/fixtures/powershell-wires/expected/compiler-edges.json -> packages/explorer/src/client/palette.ts",2],["tests/integration/fixtures/powershell-wires/expected/compiler-edges.json -> tests/e2e/still-picture.ts",2],["shell:packages/explorer -> packages/explorer/src/client/views/worldMap/controller.ts",1],["shell:packages/explorer -> packages/explorer/src/client/views/pointerRest.ts",1],["shell:packages/explorer -> packages/explorer/src/client/persistence/url-state.ts",1],["shell:packages/explorer -> packages/explorer/src/client/panels/icon-button.ts",1],["shell:packages/explorer -> packages/explorer/src/client/views/forceGraphPhysics.ts",1],["tests/integration/fixtures/powershell-wires/expected/compiler-edges.json -> packages/explorer/src/client/views/forceGraphView.ts",1],["tests/integration/fixtures/powershell-wires/expected/compiler-edges.json -> scripts/layout-lab/approximation.ts",1],["shell:packages/explorer -> scripts/oracle/powershell-ast.ps1",1],["tests/integration/fixtures/powershell-wires/expected/compiler-edges.json -> tests/e2e/contrast.ts",1]],"substeps":"596"}
+  ✓  18 [chromium] › tests/e2e/force-graph-picking.spec.ts:148:42 › PROBE COST repository, graph.ts pinned, 2 hops (11.5s)
+COST estate 3D start, PaymentService.cs rested true {"points":4503,"onSomething":140,"skinNow":87,"changedA":0,"readerAgrees":4503,"pairs":[],"substeps":"532"}
+  ✓  19 [chromium] › tests/e2e/force-graph-picking.spec.ts:148:42 › PROBE COST estate 3D start, PaymentService.cs (9.5s)
+COST estate, PaymentService.cs pinned, 1 hop rested true {"points":4503,"onSomething":140,"skinNow":87,"changedA":0,"readerAgrees":4503,"pairs":[],"substeps":"532"}
+  ✓  20 [chromium] › tests/e2e/force-graph-picking.spec.ts:148:42 › PROBE COST estate, PaymentService.cs pinned, 1 hop (9.4s)
+COST estate, PaymentService.cs pinned, 2 hops rested true {"points":4502,"onSomething":62,"skinNow":2,"changedA":0,"readerAgrees":4500,"pairs":[],"substeps":"347"}
+  ✓  21 [chromium] › tests/e2e/force-graph-picking.spec.ts:148:42 › PROBE COST estate, PaymentService.cs pinned, 2 hops (6.3s)
+
+
+  1) [chromium] › tests/e2e/force-graph-picking.spec.ts:110:5 › PROBE the pressed sphere's ray while the picture settles 
+
+    Error: expect(locator).toHaveAttribute(expected) failed
+
+    Locator: locator('.force-graph-focus')
+    Expected: "packages/engine/src/live-docs/graph.ts"
+    Timeout: 5000ms
+    Error: element(s) not found
+
+    Call log:
+      - Expect "toHaveAttribute" with timeout 5000ms
+      - waiting for locator('.force-graph-focus')
+
+
+      113 |   if (process.env.PROBE_THROTTLE) { const cdp = await page.context().newCDPSession(page); await cdp.send("Emulation.setCPUThrottlingRate", { rate: Number(process.env.PROBE_THROTTLE) }); }
+      114 |   await page.goto(`/?view=local&mode=3d&node=${encodeURIComponent(GRAPH)}`);
+    > 115 |   await expect(page.locator(".force-graph-focus")).toHaveAttribute("data-node-id", GRAPH);
+          |                                                    ^
+      116 |   await expect(page.locator("#graph-svg")).not.toHaveAttribute("data-building", /.*/, { timeout: 30_000 });
+      117 |   await installRayReader(page);
+      118 |   const centre = (await renderedNodes(page)).find(node => node.id === GRAPH)!;
+        at /workspaces/Live-Documentation/.claude/worktrees/agent-a7cb91fb393dfd1f4/tests/e2e/force-graph-picking.spec.ts:115:52
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/force-graph-picking-PROBE--26fac-y-while-the-picture-settles-chromium/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/force-graph-picking-PROBE--26fac-y-while-the-picture-settles-chromium/error-context.md
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results/force-graph-picking-PROBE--26fac-y-while-the-picture-settles-chromium/trace.zip
+    Usage:
+
+        npx playwright show-trace test-results/force-graph-picking-PROBE--26fac-y-while-the-picture-settles-chromium/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  2) [chromium] › tests/e2e/force-graph-picking.spec.ts:110:5 › PROBE the pressed sphere's ray while the picture settles 
+
+    Error: expect(locator).toHaveAttribute(expected) failed
+
+    Locator: locator('.force-graph-focus')
+    Expected: "packages/engine/src/live-docs/graph.ts"
+    Timeout: 5000ms
+    Error: element(s) not found
+
+    Call log:
+      - Expect "toHaveAttribute" with timeout 5000ms
+      - waiting for locator('.force-graph-focus')
+
+
+      113 |   if (process.env.PROBE_THROTTLE) { const cdp = await page.context().newCDPSession(page); await cdp.send("Emulation.setCPUThrottlingRate", { rate: Number(process.env.PROBE_THROTTLE) }); }
+      114 |   await page.goto(`/?view=local&mode=3d&node=${encodeURIComponent(GRAPH)}`);
+    > 115 |   await expect(page.locator(".force-graph-focus")).toHaveAttribute("data-node-id", GRAPH);
+          |                                                    ^
+      116 |   await expect(page.locator("#graph-svg")).not.toHaveAttribute("data-building", /.*/, { timeout: 30_000 });
+      117 |   await installRayReader(page);
+      118 |   const centre = (await renderedNodes(page)).find(node => node.id === GRAPH)!;
+        at /workspaces/Live-Documentation/.claude/worktrees/agent-a7cb91fb393dfd1f4/tests/e2e/force-graph-picking.spec.ts:115:52
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/force-graph-picking-PROBE--26fac-y-while-the-picture-settles-chromium-repeat2/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/force-graph-picking-PROBE--26fac-y-while-the-picture-settles-chromium-repeat2/error-context.md
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results/force-graph-picking-PROBE--26fac-y-while-the-picture-settles-chromium-repeat2/trace.zip
+    Usage:
+
+        npx playwright show-trace test-results/force-graph-picking-PROBE--26fac-y-while-the-picture-settles-chromium-repeat2/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  2 failed
+    [chromium] › tests/e2e/force-graph-picking.spec.ts:110:5 › PROBE the pressed sphere's ray while the picture settles 
+    [chromium] › tests/e2e/force-graph-picking.spec.ts:110:5 › PROBE the pressed sphere's ray while the picture settles 
+  19 passed (3.6m)
+browser-lane: released after 218.9 s, exit 1
+
+[exited with code 1]
