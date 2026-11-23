@@ -4,9 +4,9 @@
 
 It writes one markdown file for every source file, saying what that file offers to the rest of the code and what it uses. Those markdown files are the product. The Explorer, a static site you can host or hand to a colleague, and the command line both read them and nothing else. It runs offline, calls no model and makes no network request.
 
-![One file drawn as a card in the Local Map, its three public symbols listed with their descriptions, wires arriving on its left and leaving on its right to neighbouring files](AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-12/Screenshots/local-map-repairs/card-dom-ts-at-arrival.png)
+![One file of a sample program drawn as a card in the Local Map: its public symbols listed with their descriptions and its tests named beneath them, wires arriving at green pins on its left from the files it uses and leaving from blue pins on its right to the files that use it](AI-Agent-Workspace/Gallery/readme/card-at-reading-size.png)
 
-A file as the Local Map draws it: what it uses arrives on the left in green, and what it offers leaves on the right in blue.
+A file of the TypeScript sample as the Local Map draws it: what it uses arrives on the left in green, and what it offers leaves on the right in blue.
 
 **[Open the live demo](https://jfjordanfarr.github.io/Live-Documentation/)**, which is this repository mapped by itself.
 
@@ -99,14 +99,28 @@ The generated sections are rewritten on every run. The authored section is yours
 
 ## Languages
 
-- **TypeScript and JavaScript**, resolved by the TypeScript compiler.
-- **C#, Python, Java, Go, Rust, C and C++**, parsed with tree-sitter and resolved by each language's own rules for namespaces, packages, modules and includes. The results are measured against each language's compiler.
-- **PowerShell**, including modules, dot-sourcing and manifests. No PowerShell installation is needed.
-- **Ruby**, for symbols and requires.
-- **ASP.NET markup** (`.aspx`, `.ascx`, `.cshtml`, `.razor`), connected to its code-behind.
-- **.NET configuration and SQL**: the addresses and connection strings in `web.config` and `app.config`, and the procedures, tables and views in `.sql` files.
-- **Solutions and project manifests**: `.sln` and `.slnx`, `.csproj`, `.vbproj` and `.fsproj`, `packages.config`, `package.json`, `Cargo.toml`, `pyproject.toml`, `go.mod`, `pom.xml` and `.psd1`.
-- **HTML, CSS and JSON**, for the files they reference.
+Each picture is the Explorer's Local Map of one file, as a first visit leaves it: the file outlined in blue, the files it uses on its left and the files that use it on its right. Nine of the rows are one small program written in nine languages, with the same file as the subject of each, so the shapes can be compared. C#, Python, Java, Go, Rust, C and C++ are parsed with tree-sitter and resolved by each language's own rules for namespaces, packages, modules and includes.
+
+| Language or framework | The Explorer drawing it |
+| --- | --- |
+| **TypeScript**, resolved by the TypeScript compiler. | <img src="AI-Agent-Workspace/Gallery/readme/typescript.png" width="500" alt="The Local Map of the TypeScript sample: processor.ts between the type, model and helper files it uses, on its left, and its tests and main.ts, which use it, on its right"> |
+| **JavaScript**, resolved by the TypeScript compiler. | <img src="AI-Agent-Workspace/Gallery/readme/javascript.png" width="500" alt="The Local Map of a .NET estate's portal.js, wired to the routes of a C# controller and to the form elements of an ASP.NET page"> |
+| **C#**, measured against its compiler. | <img src="AI-Agent-Workspace/Gallery/readme/csharp.png" width="500" alt="The Local Map of the C# sample: Processor.cs between the type, model and helper files it uses, on its left, and the tests and Main.cs, which use it, on its right, each in its directory"> |
+| **Python**, measured against its compiler. | <img src="AI-Agent-Workspace/Gallery/readme/python.png" width="500" alt="The Local Map of the Python sample: processor.py between the type, model and helper files it uses, on its left, and its tests and main.py on its right"> |
+| **Java**, measured against its compiler. | <img src="AI-Agent-Workspace/Gallery/readme/java.png" width="500" alt="The Local Map of the Java sample: Processor.java between the type, model and helper classes it uses, on its left, and the tests and Main.java on its right, each in its package's directory; the top of the picture is cut by the frame"> |
+| **Go**, measured against its compiler. | <img src="AI-Agent-Workspace/Gallery/readme/go.png" width="500" alt="The Local Map of the Go sample: processor.go between the type, model and helper packages it uses, on its left, and its tests and main.go on its right"> |
+| **Rust**, measured against its compiler. | <img src="AI-Agent-Workspace/Gallery/readme/rust.png" width="500" alt="The Local Map of the Rust sample: processor.rs between the type, model and helper modules it uses, on its left, and main.rs and the tests on its right"> |
+| **C**, measured against its compiler. | <img src="AI-Agent-Workspace/Gallery/readme/c.png" width="500" alt="The Local Map of the C sample: the header processor.h between the headers it includes, on its left, and the C files that include it, on its right"> |
+| **C++**, measured against its compiler. | <img src="AI-Agent-Workspace/Gallery/readme/cpp.png" width="500" alt="The Local Map of the C++ sample: the header processor.hpp between the headers it includes, on its left, and the C++ files that include it, on its right, every card with its descriptions open"> |
+| **Ruby**, for symbols and requires. | <img src="AI-Agent-Workspace/Gallery/readme/ruby.png" width="500" alt="The Local Map of the Ruby sample: processor.rb between the files it requires, on its left, and main.rb and the specs that require it, on its right, wired file to file"> |
+| **PowerShell**, including modules, dot-sourcing and manifests. No PowerShell installation is needed. Pictured in this repository's own map, where the program is a test fixture. | <img src="AI-Agent-Workspace/Gallery/readme/powershell.png" width="500" alt="The Local Map of a PowerShell script, Invoke-Rollout.ps1, with the scripts, module and module manifest it uses on its left and, on its right, the fixture's list of expected connections, which names it; the left and bottom of the picture run past the frame"> |
+| **ASP.NET markup** (`.aspx`, `.ascx`, `.cshtml`, `.razor`), connected to its code-behind. Pictured: an `.aspx` page. | <img src="AI-Agent-Workspace/Gallery/readme/aspnet-markup.png" width="500" alt="The Local Map of an ASP.NET page, Default.aspx, with its code-behind file on its left and the script that uses its form elements on its right"> |
+| **.NET configuration**: the addresses and connection strings in `web.config` and `app.config`. | <img src="AI-Agent-Workspace/Gallery/readme/dotnet-configuration.png" width="500" alt="The Local Map of an App.config whose rows are the addresses and services it declares: on its left the C# contracts and service and the other configuration file it refers to, on its right a Web.config that uses its address"> |
+| **SQL**: the procedures, tables and views in `.sql` files. | <img src="AI-Agent-Workspace/Gallery/readme/sql.png" width="500" alt="The Local Map of a stored procedure's .sql file, with the tables it uses on its left and the C# data context that uses it on its right"> |
+| **Solutions and project manifests**: `.sln` and `.slnx`, `.csproj`, `.vbproj` and `.fsproj`, `packages.config`, `package.json`, `Cargo.toml`, `pyproject.toml`, `go.mod`, `pom.xml` and `.psd1`. Pictured: a solution and its projects. | <img src="AI-Agent-Workspace/Gallery/readme/solutions-and-manifests.png" width="500" alt="The Local Map of a solution file, Estate.sln, with the project files it names on its left, each in its own directory"> |
+| **HTML**, for the files it references. Pictured in this repository's own map. | <img src="AI-Agent-Workspace/Gallery/readme/html.png" width="500" alt="The Local Map of a web page, index.html: its stylesheet on its left, and on its right the TypeScript files that use its elements"> |
+| **CSS**, for the files it references. Pictured in this repository's own map. | <img src="AI-Agent-Workspace/Gallery/readme/css.png" width="500" alt="The Local Map of a stylesheet, main.css, with the page that uses it on its right; its other connections are folded into a count on its card"> |
+| **JSON**, for the files it references. | <img src="AI-Agent-Workspace/Gallery/readme/json.png" width="500" alt="The Local Map of a JSON file, compile_commands.json, with the C files it names in a column on its left that runs past the top and bottom of the frame"> |
 
 Support is deeper in some languages than in others; every one of them lands in the same markdown.
 
