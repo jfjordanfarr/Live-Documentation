@@ -185,13 +185,21 @@
     height: 100%;
     opacity: 0;
     pointer-events: none;
-    transition: opacity 0.4s ease;
+    /* A view put away is kept and not drawn. It stays drawn through its fade (a discrete transition holds `visible`
+       until its end), and only then does the page make it inert (dom.ts, settleViews): making a view inert while it is
+       drawn has the browser work out the style of every element in it again, 180 ms on a map of 14,810 elements. */
+    content-visibility: hidden;
+    transition: opacity 0.4s ease, content-visibility 0.4s allow-discrete;
     overflow: clip;
 }
 
+/* A view shown is drawn at once: only its opacity takes time, or the discrete transition would start from `hidden`
+   and leave the view undrawn while the press that showed it renders and measures in it. */
 .view-container.active {
     opacity: 1;
     pointer-events: all;
+    content-visibility: visible;
+    transition: opacity 0.4s ease;
 }
 
 /* What stops the Explorer that a reader can act on, as a page opened as a file: its one sentence where the map would

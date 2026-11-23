@@ -597,6 +597,90 @@ The sidebar's fade was not looked at by eye; its states are held by the first ca
 
 **Owed.** What the 155 ms after the handler of the press of 3D is (it is still there: 136 to 143 ms between the handler and `returned` in the five presses after); what makes today's press longer than yesterday's; what the way back by the sidebar now pays for; a recording of the motion; a window resized while 3D is put away; the legend's mend seen red (it rests on the browser's rule that an element of a view not drawn fails `checkVisibility`, and no case was made to fail without it).
 
+## Sixteenth milestone, from 23:30 UTC: the mend committed unfinished, and what it was owed
+
+The root's ruling: finish it. The product change of the fifteenth milestone was committed first, as it stood and said to be unfinished (`9e4be0929`), so that nothing lived uncommitted in a worktree.
+
+**The first focus case** ("a focused URL centers its node, direct clicks pin it, and More opens its details"). The root's reading to be confirmed by one measure before anything was changed: the sphere pressed has drifted from under the still pointer. **It has not.** For the run only, the case said where graph.ts's sphere stood from the pointer and what a press there would take hold of, at the moment any actions were first offered. Alone, eight times on each build:
+
+| Build | Passed | Failed | The sphere's centre from the pointer, px (its radius 11.0 to 11.6) | What a press at the pointer would take |
+| --- | --- | --- | --- | --- |
+| With the mend (load 2.4) | 2 | 6: four by the shell's actions, two by More's click timing out | 0.1, 8.3, 0.1, 8.3, 8.3, 5.6, 0.1, 5.6 | the shell of `packages/explorer` three times (at 0.1, 8.3, 8.3), graph.ts five |
+| The build before the mend (load 5.5 to 7.4, another builder's build beside it) | 6 | 2: one by the shell's actions, one by the name not centred | 0, 0.1, 0, 0, 0.1, 5.5, 8.7, 0 | the shell once (at 8.7), graph.ts seven |
+
+In every reading the pointer is inside the sphere, by 2.4 px at the least, and the picture is at the same 384 to 433 substeps of its motion, busy in all but the three that passed. Where the shell's actions were offered the pointer stood 8.3 to 8.7 px from the centre of an 11 px sphere, three times of four; once the centre itself was under the pointer and a press there would still have taken the shell. So by the root's own rule this is the product's picking and not the case: a shell wins a point that is on the pressed sphere while the picture settles. **Nothing was changed for it**, the measuring lines are out of the case again, and the case stands as it was. It fails on both builds; with the mend it failed six of eight where it failed two of eight before, and since the two were run under different loads that difference is a reading and not a measure. The point the case presses is chosen clear of the sphere's name, and stood off-centre in three of eight runs with the mend and one of eight without.
+
+**Does the motion begin later?** No. The stills could not say, so the estate's transition was put on the page's own clock, every frame from the press until the transition's layer is gone, both ways, five times on each build. The earlier build was made in this worktree by putting the six client files of `87f4fb51f` in place, building, measuring and putting this build's files back. In milliseconds from the press:
+
+| On the estate (`PaymentService.cs`) | The build before | With the mend |
+| --- | --- | --- |
+| To 2D, the motion begins | 922.7, 1087.4, 990.3 | 785.4, 821.5, 807.6, 811.0, 803.2 |
+| To 2D, the motion ends | 2354.9, 2519.5, 2411.7 | 2209.4, 2239.8, 2239.7, 2236.4, 2226.0 |
+| To 2D, frames drawn, and the longest gap between two | 76, 80, 82; 30.3, 29.5, 21.3 | 83, 82, 82, 83, 81; 17.8, 17.6, 20.9, 17.7, 21.5 |
+| To 3D, the motion begins | 676.9, 639.0, 597.5 | 696.6, 688.4, 658.9, 637.6, 760.1 |
+| To 3D, the motion ends | 2102.7, 2070.3, 2018.7 | 2120.7, 2106.5, 2089.5, 2068.2, 2181.1 |
+| To 3D, frames drawn, and the longest gap | 77, 79, 80; 26.7, 24.4, 21.4 | 79, 80, 81, 80, 80; 22.7, 19.9, 19.6, 21.1, 20.9 |
+
+The motion is the same length on both builds, 1.42 to 1.43 s each way in every reading. On the way to 2D it begins 100 to 300 ms sooner with the mend and drops no more frames; on the way to 3D it begins within the same band, some 40 ms later at the middle reading. The stills of the fifteenth milestone that stood a tenth of a second apart were the screenshots' own timing. Only three readings stand for the build before: its fourth and fifth were taken while another builder's build ran beside the hold (load 3.5 rising to 7.4; to 2D beginning at 2,919.9 and 1,239.4 ms, 40 and 71 frames) and are set aside, kept in `numbers/put-away-2--estate-motion--before.jsonl`.
+
+**A window resized while 3D is put away.** Held by a new case in `force-graph-focus.spec.ts`, "a window resized while the 3D picture is put away is the picture's size when it is shown again": on the estate at 1,280 by 720 the canvas fills its room (1,019 by 670); 2D pressed and the 3D picture put away; the window made 1,000 by 640; 3D pressed; the room is 739 by 590 and the canvas, and what it draws, are that size. Seen red by a made fault in the page, no size ever reported (added for the run and removed): "canvasIsTheRoom: false, drawnAtTheRoom: false".
+
+**The sidebar's way back: what the 155 ms is.** One read, and it is this change's own. Recorded on the committed mend with every read of a box or a style in the handler timed: the handler took 193.7 ms, and 181.9 of it is `settleViews` asking a view for its own `content-visibility`, which has the browser work out the returning map's styles there and then; after the handler 83.4 ms of layout was still owed, and the frame after came at 357.8 ms. The same probe on the build before: a handler of 19.9 and 23.7 ms with no read in it, and 225.7 and 339.6 ms owed after it (those two readings beside another builder's builds, load 3.5 to 7.4, so they say where the work falls and not how long it is). So the map's styles and layout come due on the way back on both builds; the mend moved them into the handler and, by the fifteenth milestone's clean readings, made the whole about 155 ms longer.
+
+It was avoidable, and it is mended at its cause: the way back was the way out run backwards in the wrong order. The view was shown, and so drawn, while it was still inert, and then made not inert, so the browser worked out the map's styles as an inert map and then again as one that is not. `setActiveView` now makes the view not inert before it gives it the class that draws it, one line. The same probe on the final build, three times alone (load 1.8 to 2.0): the handler 41.6, 42.4, 39.8 ms (the same read in it now 26.5, 26.8, 25.4 ms); layout owed after it 22.4, 24.1, 24.2 ms; **the frame after at 136.8, 158.9, 146.7 ms**, where the committed mend's was 357.8 and the build before's, by the fifteenth milestone's clean readings, 169 to 214. So the way back is now no dearer than it was before any of this, and the way out keeps its 230 ms. (`numbers/put-away-2--sidebar-back--*.jsonl`.)
+
+**The key's mend, seen red.** It is one line now where it was two. The line that kept the row from being drawn while the map was away was not needed and is out: the row may be drawn empty while nobody can see it, and one observer reads it again whenever the map's view is shown or put away. A new case in `spatial-legend.spec.ts` holds it, "the 2D key's kinds are read again when the map is shown again, after a palette chosen while it was put away": the closed `scripts` directory's map with its two kinds in the key, the sidebar to Knowledge Sources, the palette changed in Tuning, the sidebar back. On a build with the observer taken out (a made fault, built, run and put back) it failed: "the kinds the key shows, the map shown again … Expected: 2, Received: 0". On the final build it passes.
+
+**Runs on the final build.** The four cases this change adds, in one hold: 4 passed (the two of the fifteenth milestone, the resize case, the key's case). The client's unit cases: 105 files, 1,342 passed. Lint over the whole repository: clean. The type-check of every package (`npm run build`): clean. `live-docs:generate`: run, three mirrors regenerated and committed with the code. **Not run on the final build:** the design audit, `force-graph-focus.spec.ts` whole and every other file named as not run in the fifteenth milestone; the final build differs from the one the fifteenth milestone's whole-file runs were made on by the one line of the way back and the key's one observer.
+
+**The first frame, as read in this work and not aimed at**, in milliseconds after the transition's start. On the committed mend, the press case alone five times: to 3D 346, 372, 418, 348, 342; to 2D 366, 380, 402, 414, 350. In the whole file's run the same day: 522 to 3D and 406 to 2D. The probe's five on the mend's first build: to 3D 405.9, 388.5, 359.1, 375.0, 375.5; to 2D 348.7, 379.2, 354.5, 357.9, 354.3. None was read on the final build.
+
+**The other builder's facts, noted.** The hold of 23:47 UTC ran beside three builds of the other builder's: the estate's fourth and fifth readings of the build before, both of its sidebar readings and all eight of its runs of the first focus case shared the machine with them, and are marked so above. Of that build's two failures of the first case, the one by the shell's actions is not a time limit and stands; the one by the name not centred in five seconds is a time limit and is set aside, which leaves one failure in seven. Of what makes today's press of 3D longer than yesterday's, in the five merges named (four of them this builder's): nothing known to this builder runs at the press that did not before. The arrival is cancelled by a return and not begun; Wire Answers' hand is hidden by one attribute; the names' wider buttons add no element. None of these was measured at the press, and none was looked for.
+
+**The lane.** From 23:51 to 00:02 UTC no build could be started: the other builder's holds stood three deep without a gap, and the round's rule was to start no build while it held. The measures above are what fitted round that, and the wider runs did not.
+
+## Seventeenth milestone, November 23, from 01:27 UTC: the wider runs on the merged state
+
+A builder of its own worktree took the mend's tip `4ee8f124b`, merged the day branch's tip `f152fbb6e` into it (no conflict; regeneration changed nothing), installed, built, regenerated and built the browser bundles. **No product behaviour was changed in this milestone.** Every hold below went through the lane on that build, with two other builders' holds and builds taking turns beside it; the load is `/proc/loadavg`'s one-minute figure read at the hold's end (the start of a hold was not on a clock this builder could read, since each waited in the lane in the background). One comment in `perspectiveTransition.ts` was corrected at 01:33 (it said a copied card's view is inert, which a held view no longer is); that made the bundles older than the client, the two holds queued then refused to start for it, and the bundles were built again before any hold below but the first two, which ran on the bundles of 01:29, the same code but for that comment.
+
+| Hold | Specs | Result | Time | Load at its end |
+| --- | --- | --- | --- | --- |
+| 1 | `design-audit` | 12 passed | 5.4 s | 5.81 |
+| 2 | `force-graph-focus` whole | 17 passed, 1 failed | 3.2 min | 2.28 |
+| 3 | `local-map-hidden`, `labels-and-controls`, `inspection` | 24 passed | 1.4 min | 4.76 |
+| 4 | the press case alone, four times, one worker | 2 passed, 2 failed | 1.2 min | 4.95 |
+| 5 | `perspective-zoom`, `spatial-legend` | 12 passed | 1.2 min | 5.02 |
+| 6 | `bare-frame`, `backward-cue`, `card-reading` | 30 passed | 3.5 min | 6.10 (lint, the unit cases and the type-check ran beside it) |
+| 7 | `camera-intent` | 29 passed | 4.5 min | 3.56 |
+| 8 | `explorer-history`, `explorer-navigation`, `force-graph-directories`, `force-graph-exploration` | 23 passed | 3.3 min | 3.54 |
+| 9 | `force-graph-identity`, `force-graph-shells`, `history-2d` | 21 passed | 1.5 min | 3.24 |
+| 10 | `history-panel`, `history-scrubber` without its `@alone` cases | 27 passed, 4 failed | 2.5 min | 3.30 |
+| 11 | `local-map-branches` without its `@alone` case, `local-map-framing`, `local-map-keyboard`, `local-map-learning` | 26 passed | 1.9 min | 5.89 |
+| 12 | `local-map-mirror`, `local-map-packing`, `no-network` | 24 passed | 2.1 min | 4.16 |
+| 13 | `overview-files`, `return-cost`, `returning-connections`, `way-down`, `webgl-refused` | 36 passed | 2.0 min | 4.43 |
+
+**Not run in the time** (the round ended at 02:13 UTC): `world-map`; the four specs this builder's search added, which press the sidebar's items by name or switch 2D and 3D and were not on the list (`search-bar`, `pin-clicks`, `local-map-path`, `shell-accessibility`); the three `@alone` cases (`local-map-branches` one, `history-scrubber` two) at one worker; and `history-panel`'s four with a bundle that carries this repository's history. `history-emphasis` and `inventory-counts` press History, which opens a panel and is not a view, and were left out.
+
+**The first focus case passed** in the whole file's run (14.1 s), the case that failed six of eight yesterday with the mend.
+
+**The press case** failed in the whole file's run on neither bound it is known for but on "the 3D transition folds the cards" (Received: false). Alone four times it failed twice: once on the 2D transition's first frame (475 ms against 400), once on the 3D transition's first frame (454 ms), and in that run the cards' fold was not seen either. What the case reads: it watches the transition every frame and asks whether any frame drew a card at an opacity strictly between 0 and 1. On the way to 3D the cards fold while the transition's progress runs from 0.22 to 0.52 of its 1,400 ms (`perspectivePhases` in `perspectiveGeometry.ts`), a window from 308 to 728 ms after its start, 420 ms long; a frame drawn before it shows every card whole and one after it none. The page's longest wait on the way to 3D (the case's timer, the nearest it has to a frame's gap) was 748 and 847 ms in the two runs where the fold was missed, and 690 to 737 ms in the four where it was seen; the first frame came at 338 and 454 ms in the two. So the fold was missed by a page that drew no frame through the 420 ms in which the fold happens, which is the same long gap of the 3D picture's software renderer that the first-frame bound meets, and not a card that did not fold. That is a reading and not a measure: no build without the mend was run beside these, and no reading of yesterday's recorded the longest wait, so whether the mend changes that gap is not known. The case was not changed. Every reading, in milliseconds:
+
+| Run | Press of 3D (against 500) | Press of 2D less its render (render) | First frame to 2D | First frame to 3D | Longest wait to 2D, to 3D | Fold seen to 3D |
+| --- | --- | --- | --- | --- | --- | --- |
+| Whole file | 339.3 | 311.8 (1,892.4) | 339.5 | 338.0 | 395.4, 748.3 | no |
+| Alone 1 | 291.7 | 346.6 (2,127.8) | 350.7 | 350.9 | 373.5, 689.9 | yes |
+| Alone 2 | 304.2 | 330.7 (1,825.6) | 474.9 | 378.8 | 560.7, 727.3 | yes |
+| Alone 3 | 316.1 | 354.9 (2,145.3) | 393.2 | 453.9 | 413.0, 847.2 | no |
+| Alone 4 | 272.8 | 336.0 (2,090.8) | 374.3 | 369.0 | 415.4, 737.4 | yes |
+
+The press of 3D stays well inside its bound in all five (273 to 339 ms; 500 to 524 before the mend). The four alone ran at a load of about 5, the other builders' builds beside them.
+
+**The four reds of `history-panel.spec.ts`** are not the mend's and not a view: all four stopped at their first line, "/ carries a history (for this repository, npm run live-docs:history computes it before the bundle is built)", Received: undefined. This worktree's bundle was built without the repository's history ("History: none" in the bundle's build), since the history's cache is not committed and a fresh worktree has none. They were not run again with a history.
+
+**Beside the browser.** Lint over the whole repository: clean. `npm run build`: clean. The Explorer's unit cases: 105 files, 1,342 passed. `live-docs:generate`: nothing regenerated. The three audits one by one: markdown links 0 broken of 2,257 files, asset references 0 broken, symbols 0 issues; the record-links check over the two design documents changed: 5 links, 0 broken.
+
+**What was brought level.** The Explorer design did not say how a view is held or put away anywhere; it now does, in its list of the views. The perspective transition's notes said "an inactive view is laid out and drawn, only transparent" and that a card copied in slices is read after its view was made inert; both are kept as what was so then, with what is so since 2026-11-22. The design system's rule and the legend's case stand as the sixteenth milestone left them.
+
 ## Not done
 
 - The sweep: eight holds of twenty-five ran.

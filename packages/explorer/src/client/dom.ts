@@ -31,8 +31,73 @@ export function applyMarbles(choice: MarbleChoice): void {
   chooseMarbles(choice === "on");
 }
 
-/** Activates the given view tab and its container while deactivating siblings. */
+/** A view that is not the one shown: put away, or on its way there (fading out, or held for a change of perspective). */
+const NOT_SHOWN = ".view-container:not(.active)";
+
+/** Whether the page behind a modal reader is inert, the view shown with it; kept so that a fade's end does not undo it. */
+let behindModal = false;
+const watchedViews = new WeakSet<HTMLElement>();
+let focusKept = false;
+
+/**
+ * Give each view the state its place calls for; the one way a view is put away, for every view, for the sidebar's
+ * switch and for a change of perspective. A view no longer shown is hidden from assistive technology at once and takes
+ * no pointer (shell.css), and is made inert only once the stylesheet has taken it out of drawing: when its fade is over
+ * and no change of perspective holds it as the still picture (`perspective-held`). The order is the point. Making a
+ * drawn view inert has the browser work out the style of every element in it again, 180 ms of each press of 3D on a
+ * map of 14,810 elements, paid at the next read of a box; a view not drawn costs 3 ms (measured 2026-11-22). Until it
+ * is inert, focus offered to it is given back ({@link keepFocusInTheViewShown}).
+ *
+ * @param modal whether a modal reader covers the page; left out, it stands as it was last given.
+ */
+export function settleViews(modal = behindModal): void {
+  behindModal = modal;
+  const views = [...document.querySelectorAll<HTMLElement>(".view-container")];
+  for (const view of views) {
+    if (watchedViews.has(view)) continue;
+    watchedViews.add(view);
+    // A fade's end is when the stylesheet stops drawing the view (its `content-visibility` flips last).
+    const settle = (event: Event): void => { if (event.target === view) settleViews(); };
+    view.addEventListener("transitionend", settle);
+    view.addEventListener("transitioncancel", settle);
+  }
+  // Read, then write: each view's own style is asked before any view is made inert.
+  const undrawn = modal ? [] : views.map(view => !view.classList.contains("active") && getComputedStyle(view).contentVisibility === "hidden");
+  views.forEach((view, index) => {
+    view.setAttribute("aria-hidden", String(!view.classList.contains("active")));
+    view.inert = modal || undrawn[index] === true;
+  });
+}
+
+/** Give focus to the first of these that takes it; a disabled control does not, nor one in a view not shown. */
+export function giveFocus(...candidates: Array<Element | null | undefined>): void {
+  for (const candidate of candidates) {
+    if (!(candidate instanceof HTMLElement) || !candidate.isConnected || candidate.closest(NOT_SHOWN)) continue;
+    candidate.focus({ preventScroll: true });
+    if (document.activeElement === candidate) return;
+  }
+}
+
+/**
+ * A reader at the keyboard never has focus standing in a view that is not shown. A view put away is inert; one still
+ * drawn on its way there is not (see {@link settleViews}), so focus offered to it, by Tab or by anything else, is given
+ * back to where it came from.
+ */
+function keepFocusInTheViewShown(): void {
+  if (focusKept) return;
+  focusKept = true;
+  document.addEventListener("focusin", event => {
+    if (!(event.target instanceof Element) || !event.target.closest(NOT_SHOWN)) return;
+    if (event.relatedTarget instanceof Element) giveFocus(event.relatedTarget);
+  });
+}
+
+/**
+ * Activates the given view tab and its container while deactivating siblings. Focus that stood in a view now leaving
+ * goes to the sidebar's control of the view shown: a view on its way out is not inert and would keep it.
+ */
 export function setActiveView(view: ViewName, perspective: LocalMapPerspective): void {
+  keepFocusInTheViewShown();
   document.querySelectorAll<HTMLElement>(".nav-item").forEach(element => {
     if (element.dataset.view === view) {
       element.classList.add("active");
@@ -45,18 +110,20 @@ export function setActiveView(view: ViewName, perspective: LocalMapPerspective):
 
   document.querySelectorAll<HTMLElement>(".view-container").forEach(container => {
     const active = container.id === `view-${view === "map" && perspective === "3d" ? "graph" : view}`;
-    container.inert = !active;
-    container.setAttribute("aria-hidden", String(!active));
     if (active) {
+      // The way back mirrors the way out: a view is made not inert while it is still not drawn, and only then drawn.
+      if (!behindModal) container.inert = false;
       container.classList.add("active");
     } else {
       container.classList.remove("active");
     }
   });
+  settleViews();
 
   const localSurface = document.getElementById(perspective === "3d" ? "view-graph" : "view-map");
   const toolbar = document.getElementById("pathfind-toolbar");
   if (localSurface && toolbar && toolbar.parentElement !== localSurface) localSurface.prepend(toolbar);
+  if (document.activeElement?.closest(NOT_SHOWN)) giveFocus(document.querySelector(".nav-item.active"));
 
   // Toggle force-graph-active class on body for Force Graph-only UI elements
   if (view === "map" && perspective === "3d") {

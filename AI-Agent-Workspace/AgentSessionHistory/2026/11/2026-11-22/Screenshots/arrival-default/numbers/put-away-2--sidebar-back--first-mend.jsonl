@@ -1,0 +1,1 @@
+{"handler":193.7,"layoutOwedAfterTheHandler":83.4,"frameCameAt":278.3,"toTheFrameAfter":357.8,"reads":[{"took":181.9,"read":"computed contentVisibility of div#view-world.view-container","by":"Object.get (<anonymous>:49:40) < static/index.js:13:24085 < Array.map (<anonymous>) < rl (static/index.js:13:24026) < sl (static/index.js:13:24955)"}]}

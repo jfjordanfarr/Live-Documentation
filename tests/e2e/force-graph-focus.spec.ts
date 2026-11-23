@@ -293,6 +293,126 @@ test("the 2D and 3D presses return at once, and the transition still folds the c
   }
 });
 
+/** A view as the page holds it: shown, held for a change of perspective, inert, hidden from assistive technology, drawn. */
+const VIEW_STATE = (id: string): { shown: boolean; held: boolean; inert: boolean; hidden: string | null; drawn: boolean } => {
+  const view = document.getElementById(id)!;
+  return { shown: view.classList.contains("active"), held: view.classList.contains("perspective-held"), inert: view.inert, hidden: view.getAttribute("aria-hidden"), drawn: getComputedStyle(view).contentVisibility !== "hidden" };
+};
+const PUT_AWAY = { shown: false, held: false, inert: true, hidden: "true", drawn: false };
+const SHOWN = { shown: true, held: false, inert: false, hidden: "false", drawn: true };
+
+test("a view leaving is not made inert while it is still drawn, and a view put away is not drawn and is inert", async ({ page }) => {
+  // Making a drawn view inert has the browser work out the style of every element in it again: about 180 ms of the
+  // press of 3D on this picture's 14,810 elements, paid at the next read of a box (measured 2026-11-22). A view not
+  // drawn costs nothing to make inert, so the order is held here, for a held view and for one the sidebar leaves.
+  test.setTimeout(120_000);
+  await page.goto(`/?view=local&mode=3d&node=${encodeURIComponent(GRAPH)}`);
+  await expectFocused(page, GRAPH);
+  expect(await page.evaluate(VIEW_STATE, "view-map"), "the 2D map, while 3D is shown").toEqual(PUT_AWAY);
+  const held = await page.evaluate(() => {
+    [...document.querySelectorAll<HTMLButtonElement>(".perspective-controls button")].find(each => each.textContent === "2D")!.click();
+    const view = document.getElementById("view-graph")!;
+    return { shown: view.classList.contains("active"), held: view.classList.contains("perspective-held"), inert: view.inert, hidden: view.getAttribute("aria-hidden"), drawn: getComputedStyle(view).contentVisibility !== "hidden", covered: !!document.querySelector(".perspective-hold-cover") };
+  });
+  expect(held, "the 3D picture, as the press of 2D returns").toEqual({ shown: false, held: true, inert: false, hidden: "true", drawn: true, covered: true });
+  await expect(page.locator(`.node-card.local-focus[data-id="${GRAPH}"]`)).toBeVisible();
+  await expect.poll(() => page.evaluate(VIEW_STATE, "view-graph"), { message: "the 3D picture, its hold let go", timeout: 30_000 }).toEqual(PUT_AWAY);
+  expect(await page.evaluate(() => document.querySelector("#view-graph canvas")?.checkVisibility()), "the 3D picture's canvas is not drawn").toBe(false);
+  expect(await page.evaluate(VIEW_STATE, "view-map"), "the 2D map, shown").toEqual(SHOWN);
+  await expect(page.locator(".perspective-transition")).toHaveCount(0, { timeout: 30_000 });
+  // The sidebar puts a view away the same way: it fades, drawn and not inert, and is put away when the fade is over.
+  // Focus that stood in the map goes to the sidebar's control of the view shown, since a view fading is not inert and
+  // would keep it. (The switch is made without a press on the control, as a link or the address makes one.)
+  const fading = await page.evaluate(() => {
+    const view = document.getElementById("view-map")!;
+    view.querySelector<HTMLElement>(".node-card button:not([disabled])")!.focus();
+    const stood = !!document.activeElement?.closest("#view-map");
+    [...document.querySelectorAll<HTMLButtonElement>(".nav-item[data-view]")].find(each => each.dataset.view !== "map")!.click();
+    return { shown: view.classList.contains("active"), inert: view.inert, hidden: view.getAttribute("aria-hidden"), drawn: getComputedStyle(view).contentVisibility !== "hidden",
+      focusStoodInTheMap: stood, focusNow: document.activeElement?.matches(".nav-item.active") ? "the sidebar's control of the view shown" : document.activeElement?.closest(".view-container:not(.active)") ? "a view not shown" : document.activeElement === document.body ? "the page" : "elsewhere" };
+  });
+  expect(fading, "the 2D map, as the sidebar's press returns").toEqual({ shown: false, inert: false, hidden: "true", drawn: true, focusStoodInTheMap: true, focusNow: "the sidebar's control of the view shown" });
+  await expect.poll(() => page.evaluate(VIEW_STATE, "view-map"), { message: "the 2D map, its fade over" }).toEqual(PUT_AWAY);
+  expect(await page.evaluate(() => document.querySelector("#view-map .node-card")?.checkVisibility()), "the 2D map's cards are not drawn").toBe(false);
+  await page.locator('.nav-item[data-view="map"]').click();
+  await expect.poll(() => page.evaluate(VIEW_STATE, "view-map"), { message: "the 2D map, shown again" }).toEqual(SHOWN);
+  await expect(page.locator(`.node-card.local-focus[data-id="${GRAPH}"]`)).toBeVisible();
+});
+
+test("the keyboard's focus is never left in a view being put away nor lost to the page by a switch, and focus offered to a held view is given back", async ({ page }) => {
+  // A held view is drawn and not inert (the case above), so the keyboard is kept from it by the page: every focus that
+  // enters a view not shown is recorded here before the page answers it, and where focus stands once it has.
+  test.setTimeout(120_000);
+  await page.addInitScript(() => {
+    const record = { offered: [] as string[], stood: [] as string[], keysWhileHeld: 0, trail: [] as string[] };
+    (window as unknown as { focusRecord: typeof record }).focusRecord = record;
+    const where = (element: Element | null): string => !element || element === document.body ? "the page" : element.closest(".view-container:not(.active)") ? "a view not shown" : element.closest(".view-container") ? "the view shown" : "a control outside the views";
+    window.addEventListener("focusin", event => {
+      if (event.target instanceof Element) record.trail.push(`${event.target.tagName.toLowerCase()}${event.target.id ? `#${event.target.id}` : ""} "${(event.target.getAttribute("aria-label") ?? event.target.textContent ?? "").trim().slice(0, 16)}" in ${event.target.closest(".view-container")?.id ?? "no view"}`);
+      if (!(event.target instanceof Element) || !event.target.closest(".view-container:not(.active)")) return;
+      record.offered.push(document.querySelector(".perspective-held") ? "while held" : "after the hold");
+      setTimeout(() => record.stood.push(where(document.activeElement)), 0);
+    }, true);
+    window.addEventListener("keydown", event => { if (event.key === "Tab" && document.querySelector(".perspective-held")) record.keysWhileHeld++; }, true);
+  });
+  await page.goto(`/?view=local&node=${encodeURIComponent(GRAPH)}`);
+  await expect(page.locator(`.node-card.local-focus[data-id="${GRAPH}"]`)).toBeVisible();
+  const where = (): Promise<string> => page.evaluate(() => {
+    const element = document.activeElement;
+    return !element || element === document.body ? "the page" : element.closest(".view-container:not(.active)") ? "a view not shown" : element.closest(".perspective-controls") ? `the ${element.textContent} control` : element.closest(".view-container") ? "the view shown" : "a control outside the views";
+  });
+  // A real key begins each change. Left alone, the focus is lent while the control that began the change is disabled,
+  // and that control takes it back when the change is done.
+  for (const label of ["3D", "2D"] as const) {
+    await page.locator(".perspective-controls button", { hasText: label }).focus();
+    await page.keyboard.press("Enter");
+    expect(await where(), `focus, as the change to ${label} begins`).not.toMatch(/the page|a view not shown/u);
+    await expect.poll(where, { message: `focus, the change to ${label} done`, timeout: 30_000 }).toBe(`the ${label} control`);
+  }
+  // And a real Tab walks from the last control before the held map into it.
+  await page.locator(".perspective-controls button", { hasText: "3D" }).focus();
+  await page.keyboard.press("Enter");
+  await page.evaluate(() => {
+    const map = document.getElementById("view-map")!;
+    const before = [...document.querySelectorAll<HTMLElement>(":is(button, input, select, a[href], [tabindex]):not([disabled], [tabindex='-1'])")]
+      .filter(each => map.compareDocumentPosition(each) & Node.DOCUMENT_POSITION_PRECEDING && !each.contains(map) && !each.closest(".view-container:not(.active)"));
+    for (const each of before.reverse()) {
+      each.focus();
+      if (document.activeElement === each) break;
+    }
+  });
+  expect(await where(), "focus, placed before the held map").not.toMatch(/the page|a view not shown/u);
+  for (let key = 0; key < 2; key++) await page.keyboard.press("Tab");
+  await page.waitForTimeout(50);
+  const record = await page.evaluate(() => (window as unknown as { focusRecord: { offered: string[]; stood: string[]; keysWhileHeld: number } }).focusRecord);
+  expect(record.keysWhileHeld, "Tab was pressed while the 2D map was held").toBeGreaterThan(0);
+  expect(record.offered, `focus was offered to the held map; focus went ${(record as unknown as { trail: string[] }).trail.join(" > ")}`).toContain("while held");
+  expect(record.stood.filter(place => place === "a view not shown" || place === "the page"), "where focus stood after each offer").toEqual([]);
+});
+
+test("a window resized while the 3D picture is put away is the picture's size when it is shown again", async ({ page }) => {
+  // A view put away is not drawn (2026-11-22), so nothing reports its room's size while it is away; the size is
+  // reported when the view is drawn again, and the picture is drawn at it.
+  test.setTimeout(90_000);
+  await page.setViewportSize({ width: 1280, height: 720 });
+  await page.goto(`/samples/estate/?view=local&mode=3d&node=${encodeURIComponent("PaymentService/PaymentService.cs")}`);
+  await expect(page.locator("#graph-svg")).toHaveAttribute("aria-busy", "false", { timeout: 60_000 });
+  const sizes = (): Promise<{ room: number[]; canvas: number[]; drawn: number[] }> => page.evaluate(() => {
+    const room = document.getElementById("graph-svg")!, canvas = room.querySelector("canvas")!, box = canvas.getBoundingClientRect();
+    return { room: [room.clientWidth, room.clientHeight], canvas: [Math.round(box.width), Math.round(box.height)], drawn: [Math.round(canvas.width / devicePixelRatio), Math.round(canvas.height / devicePixelRatio)] };
+  });
+  const first = await sizes();
+  expect(first.canvas, "the canvas fills its room at first").toEqual(first.room);
+  await page.getByRole("button", { name: "2D", exact: true }).click();
+  await expect.poll(() => page.evaluate(VIEW_STATE, "view-graph"), { message: "the 3D picture is put away", timeout: 30_000 }).toEqual(PUT_AWAY);
+  await page.setViewportSize({ width: 1000, height: 640 });
+  await page.getByRole("button", { name: "3D", exact: true }).click();
+  await expect.poll(async () => {
+    const now = await sizes();
+    return { roomIsNarrower: now.room[0]! < first.room[0]!, canvasIsTheRoom: now.canvas.join("×") === now.room.join("×"), drawnAtTheRoom: now.drawn.join("×") === now.room.join("×") };
+  }, { message: "the room is narrower, and the canvas and what it draws are the room's size", timeout: 30_000 }).toEqual({ roomIsNarrower: true, canvasIsTheRoom: true, drawnAtTheRoom: true });
+});
+
 test("search moves focus smoothly, survives filtering, and resizes with its container", async ({ page }) => {
   await page.setViewportSize({ width: 1600, height: 1000 });
   await page.goto(`/?view=local&mode=3d&node=${encodeURIComponent(GRAPH)}`);

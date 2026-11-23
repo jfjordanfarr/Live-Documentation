@@ -139,6 +139,10 @@ export function watchLocalKinds(): void {
   new MutationObserver(changes => {
     if (!pending && changes.some(change => change.type === "attributes" || concerns(change.target) || [...change.addedNodes, ...change.removedNodes].some(concerns))) pending = requestAnimationFrame(draw);
   }).observe(map, { childList: true, subtree: true, attributes: true, attributeFilter: ["data-lod", "data-looks"] });
+  // A view put away is not drawn (shell.css), so a row drawn while the map is away finds no cell drawn and stands
+  // empty until something of the map changes: it is read again whenever the map's view is shown or put away.
+  const view = map.closest<HTMLElement>(".view-container");
+  if (view) new MutationObserver(() => { if (!pending) pending = requestAnimationFrame(draw); }).observe(view, { attributes: true, attributeFilter: ["class"] });
   whenPaletteChanges(() => { if (!pending) pending = requestAnimationFrame(draw); });
   draw();
 }

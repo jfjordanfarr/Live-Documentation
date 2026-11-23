@@ -233,6 +233,27 @@ test("the 2D key has no kinds row where the cells are one grey or a closed direc
   }
 });
 
+test("the 2D key's kinds are read again when the map is shown again, after a palette chosen while it was put away", async ({ page }) => {
+  // A view put away is not drawn (2026-11-22), and the kinds are read from cells that are drawn: a palette chosen
+  // while the map is away draws the row from a map with no cell drawn, which empties it, and the way back by the
+  // sidebar draws nothing of the map again, so the row is read again when the map's view is shown.
+  test.setTimeout(90_000);
+  await page.setViewportSize({ width: 1440, height: 900 });
+  await page.goto(CLOSED);
+  await still(page);
+  const kinds = page.locator("#local-legend-kinds > *");
+  const before = await kinds.count();
+  expect(before, "the kinds the key shows before").toBeGreaterThan(0);
+  await page.locator('.nav-item[data-view="sources"]').click();
+  await expect.poll(() => page.evaluate(() => document.getElementById("view-map")!.inert), { message: "the 2D map is put away" }).toBe(true);
+  await page.evaluate(() => { for (let each = document.getElementById("tuning-palette")!.closest("details"); each; each = each.parentElement!.closest("details")) each.open = true; });
+  await page.locator("#tuning-palette").selectOption("vividKinds");
+  await page.evaluate(() => new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve))));
+  await page.locator('.nav-item[data-view="map"]').click();
+  await expect(page.locator("#local-legend")).toBeVisible();
+  await expect(kinds, "the kinds the key shows, the map shown again").toHaveCount(before);
+});
+
 test("the key's words are whole and apart in both maps, in the sidebar's one width and on a narrow screen", async ({ page }) => {
   test.setTimeout(150_000);
   const WORDS = ["#map-legend .legend-word"];

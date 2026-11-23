@@ -1,0 +1,32 @@
+ 23:34:21 up 9 days,  9:43,  0 users,  load average: 3.03, 1.88, 1.85
+FIRST-CASE {"offered":"packages/engine/src/live-docs/graph.ts","under":"shell:packages/explorer","away":0.1,"radius":11.2,"substeps":"414","busy":"true"}
+  ✘  1 [chromium] › tests/e2e/force-graph-focus.spec.ts:131:5 › a focused URL centers its node, direct clicks pin it, and More opens its details (7.7s)
+FIRST-CASE {"offered":"shell:packages/explorer","under":"shell:packages/explorer","away":8.3,"radius":11.1,"substeps":"410","busy":"true"}
+  ✘  2 [chromium] › tests/e2e/force-graph-focus.spec.ts:131:5 › a focused URL centers its node, direct clicks pin it, and More opens its details (7.2s)
+FIRST-CASE {"offered":"packages/engine/src/live-docs/graph.ts","under":"packages/engine/src/live-docs/graph.ts","away":0.1,"radius":11.2,"substeps":"409","busy":"true"}
+  ✘  3 [chromium] › tests/e2e/force-graph-focus.spec.ts:131:5 › a focused URL centers its node, direct clicks pin it, and More opens its details (7.4s)
+FIRST-CASE {"offered":"shell:packages/explorer","under":"shell:packages/explorer","away":8.3,"radius":11.1,"substeps":"404","busy":"true"}
+  ✘  4 [chromium] › tests/e2e/force-graph-focus.spec.ts:131:5 › a focused URL centers its node, direct clicks pin it, and More opens its details (7.2s)
+FIRST-CASE {"offered":"packages/engine/src/live-docs/graph.ts","under":"packages/engine/src/live-docs/graph.ts","away":8.3,"radius":11.1,"substeps":"433","busy":"false"}
+  ✓  5 [chromium] › tests/e2e/force-graph-focus.spec.ts:131:5 › a focused URL centers its node, direct clicks pin it, and More opens its details (18.0s)
+FIRST-CASE {"offered":"packages/engine/src/live-docs/graph.ts","under":"packages/engine/src/live-docs/graph.ts","away":5.6,"radius":11.4,"substeps":"402","busy":"true"}
+  ✘  6 [chromium] › tests/e2e/force-graph-focus.spec.ts:131:5 › a focused URL centers its node, direct clicks pin it, and More opens its details (31.1s)
+FIRST-CASE {"offered":"packages/engine/src/live-docs/graph.ts","under":"packages/engine/src/live-docs/graph.ts","away":0.1,"radius":11.1,"substeps":"407","busy":"true"}
+  ✘  7 [chromium] › tests/e2e/force-graph-focus.spec.ts:131:5 › a focused URL centers its node, direct clicks pin it, and More opens its details (31.1s)
+FIRST-CASE {"offered":"packages/engine/src/live-docs/graph.ts","under":"packages/engine/src/live-docs/graph.ts","away":5.6,"radius":11.3,"substeps":"413","busy":"true"}
+  ✓  8 [chromium] › tests/e2e/force-graph-focus.spec.ts:131:5 › a focused URL centers its node, direct clicks pin it, and More opens its details (16.5s)
+    Error: the actions offered should be those of packages/engine/src/live-docs/graph.ts; they are: "Actions for the shell of packages/explorer" (shell:packages/explorer). A press at the pointer's place (775.8, 356.1) would take hold of: shell:packages/explorer. The map does not say it is building; aria-busy is true; its motion has run 416 substeps
+    test-results/force-graph-focus-a-focuse-4bd1d--and-More-opens-its-details-chromium/test-failed-1.png
+    Error: the actions offered should be those of packages/engine/src/live-docs/graph.ts; they are: "Actions for the shell of packages/explorer" (shell:packages/explorer). A press at the pointer's place (769.7, 362.0) would take hold of: shell:packages/explorer. The map does not say it is building; aria-busy is true; its motion has run 412 substeps
+    test-results/force-graph-focus-a-focuse-4bd1d--and-More-opens-its-details-chromium-repeat1/test-failed-1.png
+    Error: the actions offered should be those of packages/engine/src/live-docs/graph.ts; they are: "Actions for the shell of packages/explorer" (shell:packages/explorer). A press at the pointer's place (775.8, 356.1) would take hold of: shell:packages/explorer. The map does not say it is building; aria-busy is true; its motion has run 411 substeps
+    test-results/force-graph-focus-a-focuse-4bd1d--and-More-opens-its-details-chromium-repeat2/test-failed-1.png
+    Error: the actions offered should be those of packages/engine/src/live-docs/graph.ts; they are: "Actions for the shell of packages/explorer" (shell:packages/explorer). A press at the pointer's place (775.2, 364.6) would take hold of: shell:packages/explorer. The map does not say it is building; aria-busy is true; its motion has run 406 substeps
+    test-results/force-graph-focus-a-focuse-4bd1d--and-More-opens-its-details-chromium-repeat3/test-failed-1.png
+    Error: locator.click: Test timeout of 30000ms exceeded.
+    test-results/force-graph-focus-a-focuse-4bd1d--and-More-opens-its-details-chromium-repeat5/test-failed-1.png
+    Error: locator.click: Test timeout of 30000ms exceeded.
+    test-results/force-graph-focus-a-focuse-4bd1d--and-More-opens-its-details-chromium-repeat6/test-failed-1.png
+  6 failed
+  2 passed (2.4m)
+ 23:36:45 up 9 days,  9:45,  0 users,  load average: 2.43, 2.02, 1.91
