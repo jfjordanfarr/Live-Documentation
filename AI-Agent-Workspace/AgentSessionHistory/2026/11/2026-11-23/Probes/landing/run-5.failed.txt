@@ -1,0 +1,58 @@
+  1) [chromium] › tests/e2e/force-graph-discovery.spec.ts:70:5 › with nothing asked about, the connections layout starts at the archipelago, every group's seed and nothing grown; a click on a seed pins it and grows its group, the other seeds dimmed 
+    Error: the picture did not come to rest within 2700 substeps of its motion; after 2727 substeps, 1375 frames and 23.0 s it was still moving
+    expect(received).toBe(expected) // Object.is equality
+    Expected: true
+    Received: false
+       at force-graph-observation.ts:133
+      131 |   const seconds = (Date.now() - began) / 1000, rate = (frames / seconds).toFixed(2), took = seconds.toFixed(1);
+      132 |   console.log(`came to rest? ${bounds.label}: ${still ? "yes" : "no"}, ${substeps} substeps in ${frames} frames, ${took} s at ${rate} frames a second; bounds ${bounds.substeps} substeps, ${bounds.seconds} s`);
+    > 133 |   expect(still, `the picture did not come to rest within ${bounds.substeps} substeps of its motion; after ${substeps} substeps, ${frames} frames and ${took} s it was still moving`).toBe(true);
+          |                                                                                                                                                                                      ^
+      134 |   expect.soft(seconds, `the picture came to rest in ${substeps} substeps and ${frames} frames, which took ${took} s on this machine at ${rate} frames a second; the clock allows ${bounds.seconds} s. Slow, not broken`)
+      135 |     .toBeLessThanOrEqual(bounds.seconds);
+      136 | }
+        at cameToRest (/workspaces/Live-Documentation/tests/e2e/force-graph-observation.ts:133:182)
+        at /workspaces/Live-Documentation/tests/e2e/force-graph-discovery.spec.ts:113:3
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/force-graph-discovery-with-8f805-roup-the-other-seeds-dimmed-chromium/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+    Error Context: test-results/force-graph-discovery-with-8f805-roup-the-other-seeds-dimmed-chromium/error-context.md
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results/force-graph-discovery-with-8f805-roup-the-other-seeds-dimmed-chromium/trace.zip
+    Usage:
+        npx playwright show-trace test-results/force-graph-discovery-with-8f805-roup-the-other-seeds-dimmed-chromium/trace.zip
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+  2) [chromium] › tests/e2e/local-map-directories.spec.ts:617:5 › with Opened Directory at Flow, a pin in a directory prices no shape and keeps the cards already on screen in their columns 
+    Error: cards that changed column
+    expect(received).toEqual(expected) // deep equality
+    - Expected  - 1
+    + Received  + 4
+    - Array []
+    + Array [
+    +   "packages/explorer/src/client/views/localView/unconnected-symbols.ts",
+    +   "packages/explorer/src/client/views/localView/unconnected-symbols.test.ts",
+    + ]
+      628 |   expect(Object.keys(after).length).toBeGreaterThan(Object.keys(before).length - 1);
+      629 |   const moved = Object.keys(before).filter(id => id in after && after[id] !== before[id]);
+    > 630 |   expect(moved, "cards that changed column").toEqual([]);
+          |                                              ^
+      631 |   // The shape chosen for the directory was reused: the pin priced none.
+      632 |   await expect(root).not.toHaveAttribute("data-flow-shape-ms", /./u);
+      633 | });
+        at /workspaces/Live-Documentation/tests/e2e/local-map-directories.spec.ts:630:46
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/local-map-directories-with-3dc04--on-screen-in-their-columns-chromium/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+    Error Context: test-results/local-map-directories-with-3dc04--on-screen-in-their-columns-chromium/error-context.md
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results/local-map-directories-with-3dc04--on-screen-in-their-columns-chromium/trace.zip
+    Usage:
+        npx playwright show-trace test-results/local-map-directories-with-3dc04--on-screen-in-their-columns-chromium/trace.zip
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+  2 failed
+    [chromium] › tests/e2e/force-graph-discovery.spec.ts:70:5 › with nothing asked about, the connections layout starts at the archipelago, every group's seed and nothing grown; a click on a seed pins it and grows its group, the other seeds dimmed 
+    [chromium] › tests/e2e/local-map-directories.spec.ts:617:5 › with Opened Directory at Flow, a pin in a directory prices no shape and keeps the cards already on screen in their columns 
+  7 skipped
+  740 passed (44.5m)
+Browser suite, second pass: the cases that need the machine to themselves, one worker
+  3 passed (1.2m)
