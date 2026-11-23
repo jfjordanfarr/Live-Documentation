@@ -3,7 +3,7 @@ import { TrackballControls } from "three/addons/controls/TrackballControls.js";
 
 import { activePalette } from "../palette";
 import type { Marble } from "./forceGraphAppearance";
-import { createSpatialBuffers, drawSpatialGraphOnChange, type SpatialDrawLink, type SpatialDrawStyle, type SpatialWrapperStyle, type SpatialWrapperUnit } from "./forceGraphBatches";
+import { createSpatialBuffers, drawSpatialGraphOnChange, pickedAt, type SpatialDrawLink, type SpatialDrawStyle, type SpatialWrapperStyle, type SpatialWrapperUnit } from "./forceGraphBatches";
 import type { CameraPoint } from "./forceGraphCamera";
 import type { Placed, SpatialNode } from "./forceGraphLayout";
 import type { GroupWrappers, WrapperHull } from "./forceGraphWrappers";
@@ -243,15 +243,15 @@ export class SpatialRenderer<N extends SpatialNode, L extends SpatialDrawLink<N>
     this.eye.updateMatrixWorld(); this.raycaster.setFromCamera(this.pointer, this.eye);
   }
   /**
-   * Pick the closest tessellated sphere in the latest uploaded picture, or the node of the closest wrapper when the ray
-   * meets a wrapper first: a wrapper acts as its seed does, and a directory shell, drawn as its wrapper alone, is picked
-   * by it (2026-11-05).
+   * The one picker of the 3D map, which a press, a hover, a rest, a touch, a drag's grab and the observers' `spatialPick`
+   * all ask: in the latest uploaded picture, the nearest tessellated sphere the ray meets, wherever a skin stands before
+   * it, and the node of the nearest wrapper only where the ray meets no sphere (`pickedAt`, 2026-11-23). A wrapper acts as
+   * its seed does, and a directory shell, drawn as its wrapper alone, is picked by it. A sphere is seen through the
+   * translucent skin before it, so what is seen under the pointer is what is pressed.
    */
   nodeAt(clientX: number, clientY: number): N | undefined {
     this.setRay(clientX, clientY);
-    const sphere = this.buffers.pickNodeHit(this.raycaster), wrapper = this.buffers.pickWrapper(this.raycaster);
-    const seed = wrapper && (!sphere || wrapper.distance < sphere.distance) ? this.byId.get(wrapper.seed) : undefined;
-    return seed ?? sphere?.node;
+    return pickedAt(this.buffers.pickNodeHit(this.raycaster), this.buffers.pickWrapper(this.raycaster), seed => this.byId.get(seed));
   }
   /** The documented relationship under the pointer, picked by its projected stroke, without showing it. */
   wireAt(clientX: number, clientY: number): L | undefined {

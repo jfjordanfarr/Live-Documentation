@@ -292,6 +292,85 @@ export async function clearStroke(page: Page, spheres: readonly Sphere[], wires:
   return undefined;
 }
 
+/** What a ray through a point of the 3D map meets, nearest first, along the ray in the picture's units. */
+export interface RayReading {
+  /** What the page's own picker gives there (`spatialPick`, which a press and a hover use), null for the background. */
+  pick: string | null;
+  /** Whether the canvas itself is under the point, no name or control. */
+  canvas: boolean;
+  /** Every drawn sphere the ray passes through: where it enters and leaves it. */
+  spheres: Array<{ id: string; enter: number; exit: number }>;
+  /** Every wrapper's skin the ray crosses, a directory shell's or a wrapped group's: its first and last crossing. */
+  skins: Array<{ seed: string; enter: number; exit: number }>;
+}
+
+/**
+ * Read the ray through each point from the uploaded picture, independently of the page's picker (2026-11-23): each drawn
+ * sphere as the true sphere its instance matrix says, and every triangle of the wrappers' one mesh, either face. The
+ * picker's own answer is read beside it, so a case can find a point where a skin stands before a sphere and hold what
+ * the picker does there (`AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-23/Probes/picking/README.md`).
+ */
+export async function rayAt(page: Page, points: ReadonlyArray<{ x: number; y: number }>): Promise<RayReading[]> {
+  return page.evaluate(points => {
+    type Vec = Vector3;
+    const observed = (window as unknown as ObservedWindow).renderedGraph!;
+    const canvas = document.querySelector("#graph-svg canvas")!, rect = canvas.getBoundingClientRect();
+    const pick = (observed.scene.userData as { spatialPick(x: number, y: number): string | null }).spatialPick;
+    const drawn: Array<{ id: string; x: number; y: number; z: number; r: number }> = [];
+    observed.scene.traverse(object => {
+      const mesh = object as DrawMesh, batch = mesh.userData.spatialBatch;
+      if (batch?.kind !== "nodes") return;
+      for (const entry of batch.entries) {
+        if (!entry.enabled || entry.slot >= mesh.count) continue;
+        const matrix = mesh.matrixWorld.clone(); mesh.getMatrixAt(entry.slot, matrix); matrix.premultiply(mesh.matrixWorld);
+        const e = matrix.elements;
+        drawn.push({ id: entry.data.id!, x: e[12], y: e[13], z: e[14], r: Math.hypot(e[0], e[1], e[2]) });
+      }
+    });
+    const wrapper = observed.scene.getObjectByName("Spatial wrappers") as Mesh<BufferGeometry>;
+    const ranges = (wrapper.userData.spatialWrappers as { ranges: Array<{ seed: string }> }).ranges;
+    const positions = wrapper.visible ? wrapper.geometry.getAttribute("position").array : new Float32Array();
+    const groups = wrapper.visible ? wrapper.geometry.getAttribute("wrapperGroup").array : new Float32Array();
+    const indices = wrapper.visible ? wrapper.geometry.getIndex()!.array : new Uint32Array();
+    const triangles = Math.min(indices.length, wrapper.geometry.drawRange.count);
+    return points.map(({ x, y }) => {
+      const origin = observed.camera.position.clone() as Vec;
+      const direction = (observed.camera.position.clone() as Vec).set((x - rect.left) / rect.width * 2 - 1, 1 - (y - rect.top) / rect.height * 2, 0.5)
+        .unproject(observed.camera).sub(origin).normalize();
+      const spheres: RayReading["spheres"] = [];
+      for (const sphere of drawn) {
+        const cx = sphere.x - origin.x, cy = sphere.y - origin.y, cz = sphere.z - origin.z;
+        const along = cx * direction.x + cy * direction.y + cz * direction.z, off = cx * cx + cy * cy + cz * cz - along * along;
+        if (off > sphere.r * sphere.r) continue;
+        const half = Math.sqrt(sphere.r * sphere.r - off);
+        if (along + half > 0) spheres.push({ id: sphere.id, enter: along - half, exit: along + half });
+      }
+      const crossings = new Map<number, number[]>();
+      for (let i = 0; i < triangles; i += 3) {
+        const a = 3 * indices[i], b = 3 * indices[i + 1], c = 3 * indices[i + 2];
+        const e1x = positions[b] - positions[a], e1y = positions[b + 1] - positions[a + 1], e1z = positions[b + 2] - positions[a + 2];
+        const e2x = positions[c] - positions[a], e2y = positions[c + 1] - positions[a + 1], e2z = positions[c + 2] - positions[a + 2];
+        const px = direction.y * e2z - direction.z * e2y, py = direction.z * e2x - direction.x * e2z, pz = direction.x * e2y - direction.y * e2x;
+        const det = e1x * px + e1y * py + e1z * pz;
+        if (Math.abs(det) < 1e-12) continue;
+        const inverse = 1 / det, tx = origin.x - positions[a], ty = origin.y - positions[a + 1], tz = origin.z - positions[a + 2];
+        const u = (tx * px + ty * py + tz * pz) * inverse;
+        if (u < 0 || u > 1) continue;
+        const qx = ty * e1z - tz * e1y, qy = tz * e1x - tx * e1z, qz = tx * e1y - ty * e1x;
+        const v = (direction.x * qx + direction.y * qy + direction.z * qz) * inverse;
+        if (v < 0 || u + v > 1) continue;
+        const t = (e2x * qx + e2y * qy + e2z * qz) * inverse;
+        if (t <= 0) continue;
+        const group = groups[indices[i]], list = crossings.get(group) ?? [];
+        list.push(t); crossings.set(group, list);
+      }
+      const skins = [...crossings].map(([group, ts]) => ({ seed: ranges[group].seed, enter: Math.min(...ts), exit: Math.max(...ts) }));
+      spheres.sort((p, q) => p.enter - q.enter); skins.sort((p, q) => p.enter - q.enter);
+      return { pick: pick(x, y), canvas: document.elementFromPoint(x, y) === canvas, spheres, skins };
+    });
+  }, points);
+}
+
 /** Read skin vertices and interior marks from uploaded geometry, independently of transition capture/projection code. */
 export async function renderedBodyCarriers(page: Page) {
   return page.evaluate(() => {

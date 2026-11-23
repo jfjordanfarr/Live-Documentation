@@ -1,6 +1,6 @@
 # A shell's skin takes the press from a sphere seen through it: what was measured
 
-**Historical evidence, 2026-11-23, 01:27 to about 01:50 UTC.** Taken by a builder on a worktree of `f152fbb6e`, its bundles built there, one worker, each run a hold of the browser lane of its own, WebGL on the graphics card (ANGLE, D3D12, RTX 3090), load 1.9 to 5.9 with other builders' runs and builds beside. The probe was a spec of its own and is kept here as text ([`ray-probe.spec.ts.txt`](ray-probe.spec.ts.txt)); its outputs are [`run-six-plain.txt`](run-six-plain.txt) and [`run-slowed-sixfold.txt`](run-slowed-sixfold.txt). **Nothing in the product was changed**: the measurement supports the first hypothesis, which makes it a question of what a press takes, the root's to rule.
+**Historical evidence, 2026-11-23, 01:27 to about 01:50 UTC.** Taken by a builder on a worktree of `f152fbb6e`, its bundles built there, one worker, each run a hold of the browser lane of its own, WebGL on the graphics card (ANGLE, D3D12, RTX 3090), load 1.9 to 5.9 with other builders' runs and builds beside. The probe was a spec of its own and is kept here as text ([`ray-probe.spec.ts.txt`](ray-probe.spec.ts.txt)); its outputs are [`run-six-plain.txt`](run-six-plain.txt) and [`run-slowed-sixfold.txt`](run-slowed-sixfold.txt). **At this first milestone nothing in the product was changed** (the rule ruled on and built is the second milestone, at the end): the measurement supports the first hypothesis, which makes it a question of what a press takes, the root's to rule.
 
 The case is `force-graph-focus.spec.ts`, "a focused URL centers its node, direct clicks pin it, and More opens its details": this repository's 3D map focused on `packages/engine/src/live-docs/graph.ts`, the camera turned until a press takes graph.ts somewhere on its disc, a click there (pinning it), and the pointer left at rest. Sometimes the actions then offered are the shell of `packages/explorer`'s.
 
@@ -51,7 +51,41 @@ The same grid, every 12 px over the canvas, the pictures held at rest (`aria-bus
 
 **What the measurement favours: A.** It is the only one that answers both the moving case and the still one, it moves 0 to 38 points of some 4,500 on the four pictures, and it is the one with a pure rule. B could be added to A for a sphere that drifts out from under a still pointer after a press, but nothing measured here needs it: through the failure the pointer stayed inside graph.ts.
 
-## Not done
+## The second milestone: the ruling, and the rule built (about 01:50 to 02:27 UTC)
+
+**The root's ruling: A, "what is seen is what is pressed"**, on the owner's first two values ("a person can see it", "the map does not lie"): a sphere a person sees under the pointer and cannot press is a hidden door, and B leaves that door shut at the build's end. B is not built.
+
+**The Cloud looks, by eye: A holds under every look.** The estate opened on `PaymentService.cs`, the camera placed beyond the largest shell (`shell:Portal/Pages`) on the line through the file's sphere, under Cloud ([picture](cloud-behind-shell.png)) and under Cloud with the rim ([picture](cloud-rim-behind-shell.png)): the mist fills the frame, and every sphere behind it, the file among them, is plainly seen through it, muted but whole, with its wires. So the rule needs no look; the shell keeps the press only where the ray meets no sphere, in every look. The same situation under Skin, taken as the old rule failed, is [here](skin-behind-shell-old-rule.png). The ray readings agreed between the two Cloud looks: 37 points over the file's disc where the skin is met first (at 18.9 to 42.8) and the file after (at 270.6).
+
+**What was built.**
+- `pickedAt` in `packages/explorer/src/client/views/forceGraphBatches.ts`, pure: the nearest sphere hit's node whenever there is one, else the nearest wrapper's seed, else nothing. `nodeAt` in `forceGraphRenderer.ts` asks it. Every route that picks goes through `nodeAt`: the view's hover and rest (`pickPointer`, which a touch also takes), its press (`pointerdown`, the press's own id), the renderer's drag grab, and the observers' `spatialPick`. No other route picks a sphere or a wrapper (`pickWrapper` and `pickNodeHit` have no other caller).
+- Vitest, `forceGraphBatches.test.ts`, "what a press takes where a skin stands before a sphere (2026-11-23)": the five cases of the rule, and the buffers' own hits for a shell drawn as its skin alone with a file's sphere behind it on the axis (the sphere) and beside it (the shell).
+- `rayAt` in `tests/e2e/force-graph-observation.ts`: the ray read from the uploaded picture, independently of the picker.
+- `tests/e2e/force-graph-picking.spec.ts`, one case, on the estate at rest with the camera placed as above: the picker gives the file where the skin stands before it; a rest there offers the file's actions and leaves it at least as bright; a press pins it; on the same skin with no sphere behind, a rest offers the shell's actions and a press pops it. It fails when no such point is found.
+- The rule is written in the design system (`interaction-and-accessibility.mdmd.md`, "In 3D, what is seen under the pointer is what is pressed") and in the Explorer design's Group Wrappers and Directory shells paragraphs.
+
+**Seen red on the old rule** (the old two lines put back in `nodeAt`, the bundles built, run alone, load 5.8, then restored and rebuilt):
+
+> a press at (768.5, 397.2), where shell:Portal/Pages's skin is met at 19.0 and PaymentService/PaymentService.cs at 267.9, takes … Expected: "PaymentService/PaymentService.cs" Received: "shell:Portal/Pages"
+
+**Runs on the new rule**, each a hold of its own, one or two workers, load 2.8 to 4.1 before and after:
+
+| Run | Result |
+| --- | --- |
+| `npm run lint`, `npm run build` | clean, clean |
+| `vitest --project unit packages/explorer` | 105 files, 1,344 passed |
+| `force-graph-picking.spec.ts`, 1 worker | 1 passed (14.0 s) |
+| `force-graph-focus.spec.ts` whole, 2 workers | 14 passed, 1 failed: line 267, "the 3D press returned in 511 ms, the 2D map's render 46 ms", against 500, the time bound another builder is measuring |
+| its first case ("a focused URL centers its node …"), 3 times, 1 worker | 3 passed |
+| `force-graph-shells.spec.ts`, 2 workers | 9 passed |
+| `force-graph-directories.spec.ts`, 2 workers | 4 passed |
+| `force-graph-exploration.spec.ts` and `force-graph-identity.spec.ts`, 2 workers | 14 passed |
+| `force-graph-wrappers.spec.ts` and `force-graph-building.spec.ts`, 2 workers | 8 passed |
+| `force-graph-discovery.spec.ts`, 2 workers | 2 passed, 1 failed: line 70, the known slow settle (2,717 substeps against 2,700) |
+
+No case leaned on a skin taking the press over a sphere; none was changed.
+
+## Not done (at the first milestone)
 
 - No rule was changed and no browser case was written; the root rules on the fork first.
 - The grid's counts are of points, not of things: a sphere that A makes pressable may have been pressable elsewhere on its disc before.

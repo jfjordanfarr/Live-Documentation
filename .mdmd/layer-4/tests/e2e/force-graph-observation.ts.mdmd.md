@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: `tests/e2e/force-graph-observation.ts`
-- Generated At: 2026-11-22T22:34:37.603Z
+- Generated At: 2026-11-23T02:16:52.757Z
 
 ## Authored
 ### Purpose
@@ -143,9 +143,27 @@ A point on a reference wire where a hover reaches the wire and nothing else: the
 screen whose middle stands clear of every sphere, inside the canvas, and on the bare canvas rather than a name or a
 control, since a sphere or a label under the pointer takes the hover instead.
 
+#### `RayReading` {#symbol-rayreading}
+- Type: interface
+- Source: [source](../../../../tests/e2e/force-graph-observation.ts#L296)
+
+##### `RayReading` — Summary
+What a ray through a point of the 3D map meets, nearest first, along the ray in the picture's units.
+
+#### `rayAt` {#symbol-rayat}
+- Type: function
+- Source: [source](../../../../tests/e2e/force-graph-observation.ts#L313)
+- Parameters: `page`: `Page`; `points`: `ReadonlyArray`
+
+##### `rayAt` — Summary
+Read the ray through each point from the uploaded picture, independently of the page's picker (2026-11-23): each drawn
+sphere as the true sphere its instance matrix says, and every triangle of the wrappers' one mesh, either face. The
+picker's own answer is read beside it, so a case can find a point where a skin stands before a sphere and hold what
+the picker does there (`AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-23/Probes/picking/README.md`).
+
 #### `renderedBodyCarriers` {#symbol-renderedbodycarriers}
 - Type: function
-- Source: [source](../../../../tests/e2e/force-graph-observation.ts#L296)
+- Source: [source](../../../../tests/e2e/force-graph-observation.ts#L375)
 - Parameters: `page`: `Page`
 
 ##### `renderedBodyCarriers` — Summary

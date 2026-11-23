@@ -1,7 +1,7 @@
 import { Color, InstancedMesh, Matrix4, NoToneMapping, PerspectiveCamera, SRGBColorSpace, Quaternion, Raycaster, Scene, SphereGeometry, Vector2, Vector3, type WebGLRenderer } from "three";
 import { describe, expect, it } from "vitest";
 
-import { createSpatialBuffers, drawSpatialGraphOnChange, screenWireIntersectsFrustum, type SpatialWrapperUnit } from "./forceGraphBatches";
+import { createSpatialBuffers, drawSpatialGraphOnChange, pickedAt, screenWireIntersectsFrustum, type SpatialWrapperUnit } from "./forceGraphBatches";
 import { wrapperHull, type GroupShape } from "./forceGraphWrappers";
 
 interface Node { id: string; publicSymbols: string[]; x: number; y: number; z: number; radius: number; color: string; ring?: string }
@@ -342,6 +342,39 @@ describe("the wrappers' mesh (2026-11-05)", () => {
     expect(material.uniforms.uHover.value, "a wrapper bursting open has no rim").toBe(-1);
     const alpha = buffers.wrappers.geometry.getAttribute("wrapperAlpha");
     expect(new Set(Array.from({ length: alpha.count }, (_, i) => alpha.getX(i)))).toEqual(new Set([.5, 1]));
+    buffers.dispose();
+  });
+});
+
+describe("what a press takes where a skin stands before a sphere (2026-11-23)", () => {
+  const nodes = new Map([["shell:a", node("shell:a", 0, 0, 0)], ["b.ts", node("b.ts", 0, 0, -100)]]);
+  const nodeOf = (seed: string): Node | undefined => nodes.get(seed);
+  const sphere = (distance: number) => ({ node: nodes.get("b.ts")!, distance }), wrapper = (distance: number) => ({ seed: "shell:a", distance });
+
+  it("takes the sphere wherever the ray meets one, the wrapper's seed only where it meets none, and nothing where it meets neither", () => {
+    expect(pickedAt(sphere(500), null, nodeOf)?.id, "a sphere alone").toBe("b.ts");
+    expect(pickedAt(undefined, wrapper(300), nodeOf)?.id, "a wrapper alone").toBe("shell:a");
+    expect(pickedAt(sphere(500), wrapper(300), nodeOf)?.id, "a skin nearer than the sphere seen through it").toBe("b.ts");
+    expect(pickedAt(sphere(300), wrapper(500), nodeOf)?.id, "a sphere nearer than the skin").toBe("b.ts");
+    expect(pickedAt(undefined, null, nodeOf), "neither").toBeUndefined();
+  });
+
+  it("answers so through the buffers' own hits: a free sphere behind a shell's skin is taken there, the shell beside it", () => {
+    // The shell is drawn as its skin alone, as a directory shell is; a file's sphere stands behind it, on the camera's axis.
+    const { buffers, camera, draw } = setup(each => each.id !== "shell:a"), shell = node("shell:a", 0, 0, 0), behind = node("b.ts", 0, 0, -300);
+    const hull = wrapperHull({ seed: "shell:a", members: [{ id: "x", x: -30, y: 0, z: 0, radius: 4 }, { id: "y", x: 30, y: 0, z: 0, radius: 4 }] }, 6);
+    buffers.setData({ nodes: [shell, behind], links: [] });
+    buffers.setWrappers(["shell:a"], () => hull, "skin");
+    buffers.styleWrappers({ alpha: () => 1, scale: () => 1, hovered: null, popping: new Set() }); draw();
+    const byId = new Map([shell, behind].map(each => [each.id, each]));
+    const through = (x: number): Raycaster => new Raycaster(camera.position.clone(), new Vector3(x, 0, 0).sub(camera.position).normalize());
+    const onAxis = through(0), beside = through(20);
+    // On the axis the skin is met first and the sphere behind it after: the sphere.
+    expect(buffers.pickWrapper(onAxis)!.distance).toBeLessThan(buffers.pickNodeHit(onAxis)!.distance);
+    expect(pickedAt(buffers.pickNodeHit(onAxis), buffers.pickWrapper(onAxis), id => byId.get(id))?.id).toBe("b.ts");
+    // Beside it, on the same skin with no sphere behind: the shell.
+    expect(buffers.pickNodeHit(beside)).toBeUndefined();
+    expect(pickedAt(buffers.pickNodeHit(beside), buffers.pickWrapper(beside), id => byId.get(id))?.id).toBe("shell:a");
     buffers.dispose();
   });
 });
