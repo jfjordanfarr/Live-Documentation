@@ -639,6 +639,43 @@ It was avoidable, and it is mended at its cause: the way back was the way out ru
 
 **The lane.** From 23:51 to 00:02 UTC no build could be started: the other builder's holds stood three deep without a gap, and the round's rule was to start no build while it held. The measures above are what fitted round that, and the wider runs did not.
 
+## Seventeenth milestone, November 23, from 01:27 UTC: the wider runs on the merged state
+
+A builder of its own worktree took the mend's tip `4ee8f124b`, merged the day branch's tip `f152fbb6e` into it (no conflict; regeneration changed nothing), installed, built, regenerated and built the browser bundles. **No product behaviour was changed in this milestone.** Every hold below went through the lane on that build, with two other builders' holds and builds taking turns beside it; the load is `/proc/loadavg`'s one-minute figure read at the hold's end (the start of a hold was not on a clock this builder could read, since each waited in the lane in the background). One comment in `perspectiveTransition.ts` was corrected at 01:33 (it said a copied card's view is inert, which a held view no longer is); that made the bundles older than the client, the two holds queued then refused to start for it, and the bundles were built again before any hold below but the first two, which ran on the bundles of 01:29, the same code but for that comment.
+
+| Hold | Specs | Result | Time | Load at its end |
+| --- | --- | --- | --- | --- |
+| 1 | `design-audit` | 12 passed | 5.4 s | 5.81 |
+| 2 | `force-graph-focus` whole | 17 passed, 1 failed | 3.2 min | 2.28 |
+| 3 | `local-map-hidden`, `labels-and-controls`, `inspection` | 24 passed | 1.4 min | 4.76 |
+| 4 | the press case alone, four times, one worker | 2 passed, 2 failed | 1.2 min | 4.95 |
+| 5 | `perspective-zoom`, `spatial-legend` | 12 passed | 1.2 min | 5.02 |
+| 6 | `bare-frame`, `backward-cue`, `card-reading` | 30 passed | 3.5 min | 6.10 (lint, the unit cases and the type-check ran beside it) |
+| 7 | `camera-intent` | 29 passed | 4.5 min | 3.56 |
+| 8 | `explorer-history`, `explorer-navigation`, `force-graph-directories`, `force-graph-exploration` | 23 passed | 3.3 min | 3.54 |
+| 9 | `force-graph-identity`, `force-graph-shells`, `history-2d` | 21 passed | 1.5 min | 3.24 |
+| 10 | `history-panel`, `history-scrubber` without its `@alone` cases | 27 passed, 4 failed | 2.5 min | 3.30 |
+
+**The first focus case passed** in the whole file's run (14.1 s), the case that failed six of eight yesterday with the mend.
+
+**The press case** failed in the whole file's run on neither bound it is known for but on "the 3D transition folds the cards" (Received: false). Alone four times it failed twice: once on the 2D transition's first frame (475 ms against 400), once on the 3D transition's first frame (454 ms), and in that run the cards' fold was not seen either. What the case reads: it watches the transition every frame and asks whether any frame drew a card at an opacity strictly between 0 and 1. On the way to 3D the cards fold while the transition's progress runs from 0.22 to 0.52 of its 1,400 ms (`perspectivePhases` in `perspectiveGeometry.ts`), a window from 308 to 728 ms after its start, 420 ms long; a frame drawn before it shows every card whole and one after it none. The page's longest wait on the way to 3D (the case's timer, the nearest it has to a frame's gap) was 748 and 847 ms in the two runs where the fold was missed, and 690 to 737 ms in the four where it was seen; the first frame came at 338 and 454 ms in the two. So the fold was missed by a page that drew no frame through the 420 ms in which the fold happens, which is the same long gap of the 3D picture's software renderer that the first-frame bound meets, and not a card that did not fold. That is a reading and not a measure: no build without the mend was run beside these, and no reading of yesterday's recorded the longest wait, so whether the mend changes that gap is not known. The case was not changed. Every reading, in milliseconds:
+
+| Run | Press of 3D (against 500) | Press of 2D less its render (render) | First frame to 2D | First frame to 3D | Longest wait to 2D, to 3D | Fold seen to 3D |
+| --- | --- | --- | --- | --- | --- | --- |
+| Whole file | 339.3 | 311.8 (1,892.4) | 339.5 | 338.0 | 395.4, 748.3 | no |
+| Alone 1 | 291.7 | 346.6 (2,127.8) | 350.7 | 350.9 | 373.5, 689.9 | yes |
+| Alone 2 | 304.2 | 330.7 (1,825.6) | 474.9 | 378.8 | 560.7, 727.3 | yes |
+| Alone 3 | 316.1 | 354.9 (2,145.3) | 393.2 | 453.9 | 413.0, 847.2 | no |
+| Alone 4 | 272.8 | 336.0 (2,090.8) | 374.3 | 369.0 | 415.4, 737.4 | yes |
+
+The press of 3D stays well inside its bound in all five (273 to 339 ms; 500 to 524 before the mend). The four alone ran at a load of about 5, the other builders' builds beside them.
+
+**The four reds of `history-panel.spec.ts`** are not the mend's and not a view: all four stopped at their first line, "/ carries a history (for this repository, npm run live-docs:history computes it before the bundle is built)", Received: undefined. This worktree's bundle was built without the repository's history ("History: none" in the bundle's build), since the history's cache is not committed and a fresh worktree has none. They were not run again with a history.
+
+**Beside the browser.** Lint over the whole repository: clean. `npm run build`: clean. The Explorer's unit cases: 105 files, 1,342 passed. `live-docs:generate`: nothing regenerated. The three audits one by one: markdown links 0 broken of 2,257 files, asset references 0 broken, symbols 0 issues; the record-links check over the two design documents changed: 5 links, 0 broken.
+
+**What was brought level.** The Explorer design did not say how a view is held or put away anywhere; it now does, in its list of the views. The perspective transition's notes said "an inactive view is laid out and drawn, only transparent" and that a card copied in slices is read after its view was made inert; both are kept as what was so then, with what is so since 2026-11-22. The design system's rule and the legend's case stand as the sixteenth milestone left them.
+
 ## Not done
 
 - The sweep: eight holds of twenty-five ran.
