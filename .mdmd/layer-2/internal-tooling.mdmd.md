@@ -151,7 +151,7 @@ All accept `--json`.
 
 ## Fixtures
 
-Fixture workspaces live under `tests/integration/fixtures/` (hand-authored scenarios) and `tests/integration/programs/` (per-language sample programs, including the eight Rosetta implementations). They are plain directories that the integration suites and the oracle copy into a temporary workspace; the only thing written back is a fixture's `expected/` directory, by `oracle:index`. See [Sample Programs](../layer-3/sample-programs.mdmd.md).
+Fixture workspaces live under `tests/integration/fixtures/` (hand-authored scenarios) and `tests/integration/programs/` (per-language sample programs, including the nine Rosetta implementations). They are plain directories that the integration suites and the oracle copy into a temporary workspace; the only thing written back is a fixture's `expected/` directory, by `oracle:index`. See [Sample Programs](../layer-3/sample-programs.mdmd.md).
 
 ---
 

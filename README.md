@@ -2,7 +2,7 @@
 
 **Live Documentation turns a folder of source files into a map you can look at.**
 
-It writes one markdown file for every source file, saying what that file offers to the rest of the code and what it uses. Those markdown files are the product. The Explorer, a static site you can host or hand to a colleague, and the command line both read them and nothing else. It runs offline, calls no model and makes no network request.
+It reads every file as text and records what that file offers to the rest of the code and what it uses. Those facts are the product. The Explorer, a static site you can host or hand to a colleague, and the command line both read them and nothing else. It runs offline, calls no model and makes no network request.
 
 ![One file drawn as a card in the Local Map, its three public symbols listed with their descriptions, wires arriving on its left and leaving on its right to neighbouring files](AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-12/Screenshots/local-map-repairs/card-dom-ts-at-arrival.png)
 
@@ -74,9 +74,9 @@ npm run live-docs:inspect -- --reachable
 
 Add `--workspace <folder>` to ask them of your own, and `--json` for output a script can read.
 
-## What it writes
+## How the facts are kept
 
-A Live Doc is ordinary markdown. Headings are the file's public symbols and links are its dependencies, so the map can be read, searched, diffed and reviewed like any other file in the repository. Shortened, one looks like this:
+Today a scan writes one markdown file for every source file, a Live Doc. Headings are the file's public symbols and links are its dependencies, so the facts can be read, searched and diffed like any other text. Shortened, one looks like this:
 
 ```markdown
 # packages/explorer/src/client/errors.ts
@@ -95,7 +95,9 @@ What the Explorer says when it cannot start, or stops.
 - [`template.detail-panel`](../shared/template.html.mdmd.md#symbol-detail-panel)
 ```
 
-The generated sections are rewritten on every run. The authored section is yours: say what the file is for, and the Explorer shows your words on its card. Commit the Live Docs with the code, and a pull request shows what a change did to the shape of the system.
+The generated sections are rewritten on every run. The authored section is yours: say what the file is for, and the Explorer shows your words on its card.
+
+This store is on trial. A scan of a large repository leaves thousands of files beside the code it maps, and the direction is one compact file, with markdown written out only when you ask for it, so that a scan leaves nothing in your folder. [The format](.mdmd/layer-3/stored-form.mdmd.md) exists as a module with a specification; nothing in the product uses it yet.
 
 ## Languages
 
@@ -134,9 +136,15 @@ None is required. To change where the Live Docs go, what is left out or which bo
 
 [SECURITY.md](SECURITY.md) says how to check each of these yourself.
 
-## How it differs
+## Why this one
 
-Google CodeWiki, Windsurf Codemaps and GitLab Knowledge Graph answer related questions from a hosted service or inside an editor. Live Documentation's answer is files in your own repository: they work offline, they are versioned with the code, any tool that reads markdown can read them, and the licence is MIT.
+A map of code is an old idea, and many tools draw one. Google CodeWiki, Windsurf Codemaps and GitLab Knowledge Graph answer related questions from a hosted service or inside an editor. This one runs on your machine, under an MIT licence, and is held to five things.
+
+- **Its reading is measured against the compiler's, and its misses are listed.** Twenty-seven sample programs in nine languages carry the answer of a tool built on each language's own compiler, analyser or parser, and [a test](tests/integration/live-docs/oracle.test.ts) fails on any difference that is not [registered with its cause](tests/integration/programs/compiler-differences.json), and on a registered one that has stopped happening. On real code the agreement is not complete, and the numbers are kept: on DNN Platform's C#, the reader draws 20,971 uses between files where the compiler binds 24,837, with 20,392 in common ([the record](AI-Agent-Workspace/Work/readers-on-main.md)).
+- **Where it cannot know, it says so and draws nothing.** A file no reader handles is listed as not read, never as unused. A type name that several projects declare is left unlinked and counted, 874 of them on mojoPortal, where a guess would have drawn a line. A connection between systems says whether it was read from a contract, read from configuration or declared by a person. No model writes any of it.
+- **It is made for someone who does not read code.** The picture is the interface: blue is what a file offers, green is what uses it, and almost no words of ours stand on the screen. It is tested the way a stranger would meet it: in over two hundred runs a model shown only the screen, with a keyboard and a mouse and nothing of the code, was given a visitor's task, and [what it stumbled on](AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-21/Probes/blind-playtests/README.md) is written down.
+- **It reads the code most tools pass over, and the connections between systems.** ASP.NET markup and its code-behind, WCF endpoints and connection strings in `web.config`, SQL scripts, PowerShell, .NET Framework projects and solutions; and from those, which system calls which, on one board. [A sample estate](tests/integration/programs/csharp/estate/README.md), one payment chain from a web portal to two databases, is mapped in every test run.
+- **It is yours.** Your code is read as text and never built or run. Nothing is sent anywhere, the page refuses every site but its own, and [SECURITY.md](SECURITY.md) says how to check each of these yourself.
 
 ## Guides
 
@@ -147,7 +155,14 @@ Google CodeWiki, Windsurf Codemaps and GitLab Knowledge Graph answer related que
 
 ## Where it stands
 
-The map of a single repository is what works today, and it is still changing week to week. The World Map is younger. The 3D view takes a while to settle on a repository of a thousand files. [The vision](.mdmd/layer-1/vision.mdmd.md) says where it is going.
+The map of a single repository is what works today, and it is still changing week to week. The World Map, which draws several systems on one board, is younger. What is not there yet:
+
+- **The readers differ in depth.** Ruby is not yet measured against anything. C and C++ do not yet connect a call to the file that implements it. SQL scripts are read as if a folder were one database, and Oracle PL/SQL is read poorly.
+- **Real code has been one-off runs.** DNN Platform, mojoPortal, dbatools, tSQLt and others were each mapped once, inside an investigation. [A standing run](AI-Agent-Workspace/Work/proven-on-real-repositories.md) over real repositories, and a run on Windows, are not in place.
+- **The 3D view is slow on a large picture.** It takes a while to settle on a repository of a thousand files.
+- **You need a command line today.** A single page that maps a folder you pick, with nothing to install, is being designed and is not built.
+
+[The vision](.mdmd/layer-1/vision.mdmd.md) says where it is going.
 
 This repository is built by one person working with AI coding agents, and the whole record of that work is kept in [AI-Agent-Workspace](AI-Agent-Workspace/README.md). It is not open to contributions yet.
 
