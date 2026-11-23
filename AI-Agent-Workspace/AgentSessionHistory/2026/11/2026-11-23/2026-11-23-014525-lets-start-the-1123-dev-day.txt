@@ -3212,3 +3212,200 @@
 
   main moves if the run passes everything, or everything except the one known
   slow-settle test. Next from me: the result.
+
+● Background command "Run the landing's four stages on the day branch with the
+  Flow case corrected and Drag settled" failed with exit code 4
+
+  Searched for 1 pattern, read 1 file, listed 1 directory, ran 4 shell commands (ctrl+o to expand)
+
+● The trial's test failed because its link dropped the "stay at reading size"
+  setting, so the page zoomed out and the key press had nothing to hit. I'm
+  confirming that with a probe, then fixing the test's link and rerunning it.
+  · summary
+
+  Ran 3 shell commands (ctrl+o to expand)
+
+● The full run is going again; the last one stopped on one test, which is now
+  fixed.
+
+  - What failed: the run passed everything except the known slow settle and the
+    symbols trial's own "Folded" test. The corrected Flow test and the single
+    Drag test both passed.
+  - Why: that test's link carried the new lever but not the setting that keeps
+    the page at reading size. The page pulled back to the zoomed-out view, where
+    a folded card draws no "+N symbols" line, so the test's key press had
+    nothing to land on. Whether it passed depended on whether the press came
+    before or after the pull-back. A probe confirmed it.
+  - The fix: the test's link now carries both settings. The spec then passed 15
+    of 15 across three repeats.
+
+  One thing I did with your file: your export of this chat was already tracked
+  (my slip from earlier), and you saved it again during the run. A landing only
+  starts from a clean tree, so I committed it as you last saved it, unread.
+
+  Please avoid saving that export for the next hour or so. It would leave the
+  tree changed again while the run is going. Your preview's files are rebuilt in
+  about ten minutes.
+
+  Next from me: the result, and main if it passes.
+
+● Background command "Run the landing's four stages on the day branch with the
+  trial's spec mended" failed with exit code 1
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● My mistake: I changed the test's imports and did not regenerate its Live Doc,
+  so the run's first stage refused the mismatch after 25 seconds. Regenerating,
+  committing and restarting.
+
+  Ran 2 shell commands (ctrl+o to expand)
+
+● The run is going again. The previous attempt stopped in its first stage after
+  25 seconds, and that was my fault: I had changed the test's imports without
+  regenerating its Live Doc, and the history stage refuses a mismatch. The doc
+  is regenerated and committed.
+
+  As before, please hold off saving the chat export until this run ends; your
+  preview's files are rebuilt about ten minutes in. Next from me: the result,
+  and main if it passes.
+
+● Background command "Run the landing's four stages on the day branch with the
+  regenerated Live Doc" failed with exit code 4
+
+  Ran 3 shell commands (ctrl+o to expand)
+
+● The run ended on the one known failing test alone, so it lands. Committing the
+  record and moving main now.
+
+  Ran 2 shell commands (ctrl+o to expand)
+
+● main is moved, and it is stable. The full run passed everything except the one
+  known slow 3D settle test: 740 browser tests passed, plus the 3 that run
+  alone. main and today's branch both stand at 5416fa246, 22 commits past what
+  GitHub has. Pushing is yours:
+
+  git push origin main day/2026-11-23
+
+  What this landing added
+
+  - Symbols trial: tuning panel → 2D Layout → Unconnected (Shown, Dimmed,
+    Folded). Shown is still the default, so nothing changes until you choose.
+    Your preview's files are current; reload to see it.
+  - Drag: every drag swings now, and the lever is gone. The drag test is a
+    single stable test.
+  - Flow test: corrected to what was decided on November 13.
+
+  main now has one known failing test, where this morning it had two.
+
+  For your eye, when you have time
+
+  - Folded versus Shown on your JSON file. Folded draws no "+138 symbols" line
+    at the zoomed-out view you arrive at; that is the fault to fix before it
+    could become the default.
+  - Flow's reshuffle. Of 249 single-file pins checked across six directories,
+    102 move at least one card that was already on screen. The count and four
+    costed options (AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-23/Pr
+    obes/flow-pins/README.md) are filed for the Flow trial you raised on
+    November 22.
+
+  My rulings today, all yours to reverse
+
+  - 3D pick: what you can see is what you press. You've tried this one.
+  - Drag: Swings is the only behaviour.
+  - Two tests restated because they asserted more than was ever decided: the
+    transition-copies test and the Flow pin test.
+
+  Loose ends
+
+  - The day's record is still open, as you asked, and the summary is not
+    written.
+  - Next work is in the first Next item of direction
+    (AI-Agent-Workspace/Memory/direction.md).
+  - Three of today's runs were lost to my own slips: a builder brief that didn't
+    name the tests' type-check, a drag test left off the list to run, and a
+    Live Doc I didn't regenerate. The guards are written into direction.
+  - A finished builder's worktree from this morning is still locked by this
+    session's harness; the record tells the next agent to remove it.
+  - I have not checked how GitHub's workflows ended after this morning's push.
+
+  I'm starting nothing new unless you ask.
+
+❯ <ide_opened_file>The user opened the file
+  /workspaces/Live-Documentation/AI-Agent-Workspace/AgentSessionHistory/2026/11
+  /2026-11-23/2026-11-23-014525-lets-start-the-1123-dev-day.txt in the IDE.
+  This may or may not be related to the current task.</ide_opened_file>
+
+❯ Go ahead and close out the chat record for the day. I'll start up a new chat
+  after UTC switches over with a different model. Thank you for your efforts.
+
+  Read 2 files, ran 4 shell commands (ctrl+o to expand)
+
+● Closing the day: writing its summary now, then the narrative, the inventory
+  and Memory, and a last check of links.
+
+● Write(AI-Agent-Workspace/AgentSessionHistory/2026/11/Summarized/2026-11-23.1.S
+       UMMARIZED.md)  ⎿  Wrote 122 lines to AI-Agent-Workspace/AgentSessionHistory/2026/11/Summ
+     arized/2026-11-23.1.SUMMARIZED.md
+      1 # November 23, 2026 — two landings, and three tests that told the
+         truth late
+      2
+      3 **Session `2026-11-23.1`.** Claude Code in the VS Code extension,
+         model Fable 5.2 (`claude-fable-5-2`) as the harness states it; b
+        uilders on Opus 5.5. Opened by the owner at 01:20 UTC on November
+         23 (8:20 PM on November 22 by their clock) as "the 11/23 dev day
+        ", and closed at their word at 18:59 UTC the same day. Summary wr
+        itten by the session's root on November 23 at that word. Coverage
+        : complete for the one capture read, the maintained record, with
+     … +120 lines (~18 KB) (ctrl+o to expand)
+
+  Read 1 file, ran 4 shell commands (ctrl+o to expand)
+
+● Summary, narrative, Memory, inventory and work items are written and their
+  links check out. Writing the record's closing note, then the last commit and
+  main.
+
+  Ran 5 shell commands (ctrl+o to expand)
+
+● The dev day is closed. Thank you for the day, and for the plain steer when I
+  was holding main back.
+
+  What I wrote at the close
+
+  - The day's summary (AI-Agent-Workspace/AgentSessionHistory/2026/11/Summarized
+    /2026-11-23.1.SUMMARIZED.md), turn by turn, ending with every question still
+    open with you.
+  - Three paragraphs in the narrative's last chapter, and a row in its table of
+    harnesses.
+  - Two entries in owner.md, in your words: reaching a day's named goal, and
+    leaving a record open for another agent.
+  - The month's inventory entry, closed.
+  - A dated follow-up in the work item on the Explorer holding a large map,
+    since today's mends answered a question it had held open.
+
+  Direction's first Next item already holds what comes next: the count line so
+  Folded can become a default, your Flow trial with the pin count, and the
+  smaller things owed.
+
+  One limit on the summary, which it also states: I wrote it from the session
+  and the record's notes as I made them, not from a fresh read of the whole
+  record.
+
+  State
+
+  - main and day/2026-11-23 both stand at 8f96de5de. You pushed the second
+    landing while I was writing; two commits of close-out records are left:
+
+  git push origin main day/2026-11-23
+
+  - Your export of this chat shows as changed in the working tree, since you've
+    saved it again. It is yours to save once more and commit when the chat ends;
+    the next session records its size and hash.
+  - The merged builder's worktree is still locked by this session's harness; the
+    record tells the next agent to remove it.
+  - I did not check how GitHub's workflows ended after your pushes.
+
+  For the next chat
+
+  The new model does the usual startup read; this day's summary is the last of
+  the five, and its closing table is what the first reply brings back to you.
+  The new day's branch is cut from main.
