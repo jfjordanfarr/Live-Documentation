@@ -183,6 +183,28 @@ describe("saving only what a person changed (2026-10-22)", () => {
     expect(JSON.parse(store.get(PERSISTED_UI_KEY)!)).toEqual({ version: PERSISTED_UI_VERSION, tuning: { appearance: { marbles: "on" }, forceGraph: { hops: 2 } } });
   });
 
+  it("loads a saved Drag, either value, without error, keeps the other choices and does not write it back (2026-11-23)", () => {
+    // Tuning's Drag, a trial of the 3D map from 2026-11-22, ended when the owner chose Swings: a drag swings what is tied
+    // to the held sphere whatever a browser saved, and the next save drops the word.
+    for (const drag of ["holds", "swings"]) {
+      vi.useFakeTimers();
+      const store = new Map<string, string>([[PERSISTED_UI_KEY, JSON.stringify({ version: PERSISTED_UI_VERSION, tuning: { forceGraph: { drag, hops: 2 } } })]]);
+      vi.stubGlobal("window", {
+        localStorage: { getItem: (key: string) => store.get(key) ?? null, setItem: (key: string, value: string) => store.set(key, value), removeItem: (key: string) => store.delete(key) },
+        setTimeout,
+        clearTimeout
+      });
+      const state = applyPersistedUi(defaults(), readPersistedUi());
+      expect(state.tuning.forceGraph, drag).toEqual({ ...getDefaultTuning().forceGraph, hops: 2 });
+      const scheduler = createPersistUiScheduler(() => state);
+      scheduler.schedule();
+      scheduler.flush();
+      expect(JSON.parse(store.get(PERSISTED_UI_KEY)!), drag).toEqual({ version: PERSISTED_UI_VERSION, tuning: { forceGraph: { hops: 2 } } });
+      vi.unstubAllGlobals();
+      vi.useRealTimers();
+    }
+  });
+
   it("draws no marbles by default, whether a browser saved Off when On was the default or saved nothing", () => {
     // Off is the default again since 2026-11-19; on 2026-11-18 and 19 On was, and Off was saved as a change from it.
     // A browser that saved Off then now holds the default, and one that saved nothing gets it too; a viewer who wants

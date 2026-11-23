@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 
 import { applyLayoutPreset, applyLayoutSettings, layoutSettingsOf, readLayoutSettings } from "./layout-presets";
-import { compressSnapshot, decompressSnapshot, DEFAULT_SNAPSHOT } from "./persistence/compressed-url-state";
+import { compressSnapshot, decompressSnapshot, DEFAULT_SNAPSHOT, payloadToSnapshot, snapshotToPayload, type CompressedPayload } from "./persistence/compressed-url-state";
 import { getDefaultTuning } from "./persistence/local-storage";
 
 describe("shared packing preferences", () => {
@@ -80,6 +80,19 @@ describe("shared packing preferences", () => {
     expect(applyLayoutSettings(getDefaultTuning(), restored.layout).forceGraph.beyondHops).toBe("next-step");
     // A link made at everything opens at everything in a browser whose own tuning holds the next step.
     expect(applyLayoutSettings(horizon, layoutSettingsOf(everything)).forceGraph.beyondHops).toBe("everything");
+  });
+
+  it("opens a link that says a Drag, either value, with the value unread, since a drag swings since 2026-11-23", () => {
+    // Links made while Tuning's Drag was on trial (2026-11-22 and 23) carry "swings"; none carried "holds", the default,
+    // but a hand-made one might. Either opens, with the link's other settings and without the word.
+    const base = snapshotToPayload({ ...DEFAULT_SNAPSHOT, perspective: "3d" });
+    for (const drag of ["holds", "swings"]) {
+      const opened = payloadToSnapshot({ ...base, l: { forceGraph: { drag, gravity: 0.1 } } as CompressedPayload["l"] });
+      expect(opened.perspective, drag).toBe("3d");
+      expect(opened.layout, drag).toEqual({ forceGraph: { gravity: 0.1 } });
+      expect(applyLayoutSettings(getDefaultTuning(), opened.layout).forceGraph, drag).toEqual({ ...getDefaultTuning().forceGraph, gravity: 0.1 });
+      expect(readLayoutSettings({ forceGraph: { drag } }), drag).toBeUndefined();
+    }
   });
 
   it("opens a link in Flow unless it says the grid, which it carries only when chosen (2026-11-13)", () => {

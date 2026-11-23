@@ -8,7 +8,7 @@
 import { applyMarbles, applyPalette } from "../dom";
 import { layoutSettingsOf } from "../layout-presets";
 import { DEFAULT_PALETTE, isPaletteName } from "../palette";
-import { ARRIVAL_WAITS, ARRIVALS, CUT_COUNTED, DIRECTION_MARKS, MIRROR_TURNS, UNCONNECTED_ROWS, WAY_DOWNS, WIRE_ANSWERS, FRAMINGS, STEPS, CHANGE_EMPHASES, CLOSED_CELL_COLOURS, CLOSED_DIRECTORY_LOOKS, CLOSED_DIRECTORY_SHAPES, DESCRIPTIONS_ZOOMED_OUT, DIRECTORY_LAYOUTS, GROUP_WRAPPERS, BEYOND_HOPS, SCAN_GROWTHS, SCAN_PACES, DRAGS, FRAME_CHOICES, HIDDEN_FILES_LOOKS, MARBLE_CHOICES, OVERVIEW_FILES, type ExplorerState, type FrameChoice } from "../types";
+import { ARRIVAL_WAITS, ARRIVALS, CUT_COUNTED, DIRECTION_MARKS, MIRROR_TURNS, UNCONNECTED_ROWS, WAY_DOWNS, WIRE_ANSWERS, FRAMINGS, STEPS, CHANGE_EMPHASES, CLOSED_CELL_COLOURS, CLOSED_DIRECTORY_LOOKS, CLOSED_DIRECTORY_SHAPES, DESCRIPTIONS_ZOOMED_OUT, DIRECTORY_LAYOUTS, GROUP_WRAPPERS, BEYOND_HOPS, SCAN_GROWTHS, SCAN_PACES, FRAME_CHOICES, HIDDEN_FILES_LOOKS, MARBLE_CHOICES, OVERVIEW_FILES, type ExplorerState, type FrameChoice } from "../types";
 import { TUNING_HELP, tuningHelpId } from "./tuning-levers";
 import { initTuningReset } from "./tuning-reset";
 
@@ -129,7 +129,6 @@ export function initTuningPanel(config: TuningPanelConfig): () => void {
   const beyondHopsSelect = document.getElementById("tuning-force-beyond-hops") as HTMLSelectElement | null;
   const scanGrowthSelect = document.getElementById("tuning-force-scan-growth") as HTMLSelectElement | null;
   const scanPaceSelect = document.getElementById("tuning-force-scan-pace") as HTMLSelectElement | null;
-  const dragSelect = document.getElementById("tuning-force-drag") as HTMLSelectElement | null;
 
   const wireSlider = (input: HTMLInputElement | null, outputId: string, setter: (v: number) => void): void => {
     if (!input) return;
@@ -258,7 +257,6 @@ export function initTuningPanel(config: TuningPanelConfig): () => void {
     if (beyondHopsSelect) beyondHopsSelect.value = state.tuning.forceGraph.beyondHops;
     if (scanGrowthSelect) scanGrowthSelect.value = state.tuning.forceGraph.scanGrowth;
     if (scanPaceSelect) scanPaceSelect.value = state.tuning.forceGraph.scanPace;
-    if (dragSelect) dragSelect.value = state.tuning.forceGraph.drag;
 
     // Set CSS custom properties on document root so they cascade to both views
     document.documentElement.style.setProperty("--local-column-gap", `${state.tuning.localMap.columnGap}px`);
@@ -577,14 +575,6 @@ export function initTuningPanel(config: TuningPanelConfig): () => void {
       state.tuning.forceGraph.scanPace = SCAN_PACES.find(choice => choice === scanPaceSelect.value) ?? SCAN_PACES[0];
       onTuningChange();
       onScanGrowth();
-    });
-  }
-
-  // What is tied to a dragged sphere does (a trial, 2026-11-22): the next drag reads it; nothing moves now.
-  if (dragSelect) {
-    dragSelect.addEventListener("change", () => {
-      state.tuning.forceGraph.drag = DRAGS.find(choice => choice === dragSelect.value) ?? DRAGS[0];
-      onTuningChange();
     });
   }
 

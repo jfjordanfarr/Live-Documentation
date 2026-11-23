@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: `packages/explorer/src/client/layout-presets.test.ts`
-- Generated At: 2026-11-19T21:10:13.603Z
+- Generated At: 2026-11-23T16:13:09.322Z
 
 ## Authored
 ### Purpose
@@ -31,9 +31,12 @@ _No public symbols detected_
 - [`layout-presets.applyLayoutSettings`](./layout-presets.ts.mdmd.md#symbol-applylayoutsettings)
 - [`layout-presets.layoutSettingsOf`](./layout-presets.ts.mdmd.md#symbol-layoutsettingsof)
 - [`layout-presets.readLayoutSettings`](./layout-presets.ts.mdmd.md#symbol-readlayoutsettings)
+- [`compressed-url-state.CompressedPayload`](./persistence/compressed-url-state.ts.mdmd.md#symbol-compressedpayload) (type-only)
 - [`compressed-url-state.DEFAULT_SNAPSHOT`](./persistence/compressed-url-state.ts.mdmd.md#symbol-default_snapshot)
 - [`compressed-url-state.compressSnapshot`](./persistence/compressed-url-state.ts.mdmd.md#symbol-compresssnapshot)
 - [`compressed-url-state.decompressSnapshot`](./persistence/compressed-url-state.ts.mdmd.md#symbol-decompresssnapshot)
+- [`compressed-url-state.payloadToSnapshot`](./persistence/compressed-url-state.ts.mdmd.md#symbol-payloadtosnapshot)
+- [`compressed-url-state.snapshotToPayload`](./persistence/compressed-url-state.ts.mdmd.md#symbol-snapshottopayload)
 - [`local-storage.getDefaultTuning`](./persistence/local-storage.ts.mdmd.md#symbol-getdefaulttuning)
 - `vitest` - `describe`, `expect`, `it`
 <!-- LIVE-DOC:END Dependencies -->

@@ -1738,13 +1738,11 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
     /** Build the field again when the forces' settings changed; unfold at full strength for a change of the forces alone, since a membership change is fed at the update energy instead. */
     const updateForces = (reheat: boolean): void => {
       const instance = forceGraphInstance!;
-      const { updateEnergy, settleHold, linkWidth, nodeZoomResistance, wireZoomResistance, groupWrappers, shellDepth, scanGrowth, scanPace, drag, ...forces } = state.tuning.forceGraph;
+      const { updateEnergy, settleHold, linkWidth, nodeZoomResistance, wireZoomResistance, groupWrappers, shellDepth, scanGrowth, scanPace, ...forces } = state.tuning.forceGraph;
       // The energy feeds the next membership change and the Settle Hold the next settle; neither changes a force.
       void updateEnergy; void settleHold;
       // The scan trial feeds the picture what it shows; it changes no force.
       void scanGrowth; void scanPace;
-      // What a drag lets go of is read by the motion while a sphere is held; it changes no force of the field.
-      void drag;
       // What is wrapped changes what is shown, which the membership carries; a wrapper's room is its seed's clearance.
       void groupWrappers; void shellDepth;
       void nodeZoomResistance; void wireZoomResistance; // Appearance does not change the layout's physical sizes.

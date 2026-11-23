@@ -605,16 +605,19 @@ describe("the easing: one motion through a conservative field, until the spheres
     expect(run(40)).toEqual(run(null));
   });
 
-  it("lets what is tied to a held sphere come further after it under Drag's Swings than while it holds its ground (2026-11-22)", () => {
+  it("lets what is tied to a held sphere let go of where it stood and swing after the hand, however strong the tether (2026-11-23)", () => {
     // The owner: "swinging the graph around with me". A chain of eight files, each tied to the next; a hand carries the
-    // chain's first file far to the side. Holding its ground, every file is held toward where it stood as well as by
-    // the picture's gravity; swinging, the tied files let go of where they stood and only gravity holds them back.
+    // chain's first file far to the side. The tied files let go of where they stood, so the tether pulls them nowhere and
+    // only their ties and the picture's gravity move them: they come as far as in a picture with no tether at all, at
+    // the default tether and at five times it. Until 2026-11-23 Tuning's Drag also offered holding every file toward
+    // where it stood; on this chain that left the next four files 44 to 74 of the hand's 600 short of the untethered
+    // picture at the default tether, and the owner chose the swing ("I like \"Swings\" a little bettter").
     const WAY = 600;
-    const carried = (drag: "holds" | "swings"): number[] => {
+    const carried = (tether: number): number[] => {
       const chain: SpatialNode[] = Array.from({ length: 8 }, (_, i) => ({ ...node(`chain/f${i}`, 1), x: 0, y: i * 70, z: 0 }));
       const ties: SpatialLink[] = chain.slice(1).map((file, i) => ({ source: chain[i].id, target: file.id, count: 1 }));
       const simulation = forceSimulation(chain, 3).stop();
-      const motion = motionForce<SpatialNode>({ tuning: () => ({ ...tuning, drag }), layout: () => "connections", links: () => ties, strength: () => 1 });
+      const motion = motionForce<SpatialNode>({ tuning: () => ({ ...tuning, tether }), layout: () => "connections", links: () => ties, strength: () => 1 });
       motion.wake("hold");
       simulation.force("motion", motion);
       // The picture comes to rest held where it stands, as a picture a person drags in has.
@@ -625,13 +628,17 @@ describe("the easing: one motion through a conservative field, until the spheres
       for (let tick = 0; tick < 3000; tick++) simulation.tick();
       return chain.map((file, i) => file.x! - from[i]);
     };
-    const holds = carried("holds"), swings = carried("swings");
-    expect(holds[0]).toBeCloseTo(WAY, 6);
-    expect(swings[0]).toBeCloseTo(WAY, 6);
-    // The four files next along the chain each come at least a twentieth of the hand's way further once let go.
-    for (const link of [1, 2, 3, 4]) expect(swings[link] - holds[link], `the file ${link} links from the hand`).toBeGreaterThan(WAY / 20);
-    // Neither carries the chain whole: gravity holds the far end near where it was under both.
-    expect(Math.abs(swings[7])).toBeLessThan(WAY / 10);
+    const untethered = carried(0);
+    for (const tether of [tuning.tether, 5 * tuning.tether]) {
+      const swung = carried(tether);
+      expect(swung[0]).toBeCloseTo(WAY, 6);
+      // The four files next along the chain each come within a sixtieth of the hand's way of where no tether would leave them.
+      for (const link of [1, 2, 3, 4]) expect(Math.abs(swung[link] - untethered[link]), `the file ${link} links from the hand, tether ${tether}`).toBeLessThan(WAY / 60);
+      // Nor is the chain carried whole: gravity holds the far end near where it was.
+      expect(Math.abs(swung[7])).toBeLessThan(WAY / 10);
+    }
+    // And the tied files really are carried: the next file comes most of the hand's way.
+    expect(untethered[1]).toBeGreaterThan(WAY / 2);
   });
 
   it("holds a sphere a hand has fixed, falls still once and wakes again", () => {

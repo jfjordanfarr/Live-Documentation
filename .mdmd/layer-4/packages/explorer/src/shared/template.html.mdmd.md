@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/explorer/src/shared/template.html`
-- Generated At: 2026-11-23T14:55:17.084Z
+- Generated At: 2026-11-23T16:13:10.617Z
 
 ## Authored
 ### Purpose
@@ -313,9 +313,6 @@ Since 2026-11-19 ([Turn 14 of the November 18 record](../../../../../../AI-Agent
 - Type: variable
 
 #### `tuning-force-coupling-value` {#symbol-tuning-force-coupling-value}
-- Type: variable
-
-#### `tuning-force-drag` {#symbol-tuning-force-drag}
 - Type: variable
 
 #### `tuning-force-gravity` {#symbol-tuning-force-gravity}

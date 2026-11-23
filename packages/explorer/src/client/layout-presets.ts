@@ -1,4 +1,4 @@
-import { ARRIVAL_WAITS, ARRIVALS, CUT_COUNTED, DIRECTION_MARKS, MIRROR_TURNS, UNCONNECTED_ROWS, WAY_DOWNS, WIRE_ANSWERS, FRAMINGS, STEPS, BEYOND_HOPS, SCAN_GROWTHS, SCAN_PACES, DRAGS, CLOSED_CELL_COLOURS, CLOSED_DIRECTORY_LOOKS, CLOSED_DIRECTORY_SHAPES, DESCRIPTIONS_ZOOMED_OUT, DIRECTORY_LAYOUTS, GROUP_WRAPPERS, HIDDEN_FILES_LOOKS, OVERVIEW_FILES, ZOOM_LOOKS, type ForceGraphTuning, type LocalMapTuning, type TuningConfig } from "./types";
+import { ARRIVAL_WAITS, ARRIVALS, CUT_COUNTED, DIRECTION_MARKS, MIRROR_TURNS, UNCONNECTED_ROWS, WAY_DOWNS, WIRE_ANSWERS, FRAMINGS, STEPS, BEYOND_HOPS, SCAN_GROWTHS, SCAN_PACES, CLOSED_CELL_COLOURS, CLOSED_DIRECTORY_LOOKS, CLOSED_DIRECTORY_SHAPES, DESCRIPTIONS_ZOOMED_OUT, DIRECTORY_LAYOUTS, GROUP_WRAPPERS, HIDDEN_FILES_LOOKS, OVERVIEW_FILES, ZOOM_LOOKS, type ForceGraphTuning, type LocalMapTuning, type TuningConfig } from "./types";
 import { ARRIVAL_REST_S } from "./views/localView/camera-intent";
 
 /** One packing preference interpreted by both Local Map representations. */
@@ -69,8 +69,9 @@ export function applyLayoutPreset(tuning: TuningConfig, preset: LayoutPreset): T
  * "reading" exists only from now on. Arrival Waits and Wire Answers changed their defaults the same day, to waiting while
  * attended and to on, and read the same way. And Framing (2026-11-19), only Follows Pins, its absence reading as By Hand.
  * Scan Growth and Scan Pace (2026-11-22, a trial of the 3D map): only an order of arrival and the slower pace are
- * carried, their absence reading as off and as measured; and Drag (the same day), only Swings, its absence reading as
- * holding its ground. Unconnected (2026-11-23, a trial of the 2D map) likewise: only Dimmed or Folded is carried, and its
+ * carried, their absence reading as off and as measured. Drag (the same day, a trial of the 3D map) carried only Swings
+ * until the owner chose it on 2026-11-23 and the lever went: a link or a saved tuning that still says either value
+ * opens, the value unread, since a drag swings whatever it says. Unconnected (2026-11-23, a trial of the 2D map) likewise: only Dimmed or Folded is carried, and its
  * absence reads as Shown.
  */
 export function readLayoutSettings(value: unknown): LayoutSettings | undefined {
@@ -123,10 +124,9 @@ export function readLayoutSettings(value: unknown): LayoutSettings | undefined {
     const beyondHops = BEYOND_HOPS.slice(1).find(choice => choice === (input as Record<string, unknown>).beyondHops);
     const scanGrowth = SCAN_GROWTHS.slice(1).find(choice => choice === (input as Record<string, unknown>).scanGrowth);
     const scanPace = SCAN_PACES.slice(1).find(choice => choice === (input as Record<string, unknown>).scanPace);
-    const drag = DRAGS.slice(1).find(choice => choice === (input as Record<string, unknown>).drag);
-    if (Object.keys(numbers).length || groupWrappers || beyondHops || scanGrowth || scanPace || drag) {
+    if (Object.keys(numbers).length || groupWrappers || beyondHops || scanGrowth || scanPace) {
       result.forceGraph = { ...numbers, ...(groupWrappers ? { groupWrappers } : null), ...(beyondHops ? { beyondHops } : null),
-        ...(scanGrowth ? { scanGrowth } : null), ...(scanPace ? { scanPace } : null), ...(drag ? { drag } : null) };
+        ...(scanGrowth ? { scanGrowth } : null), ...(scanPace ? { scanPace } : null) };
     }
   }
   return Object.keys(result).length ? result : undefined;
@@ -156,7 +156,7 @@ export function applyLayoutSettings(tuning: TuningConfig, settings: LayoutSettin
   const descriptions = settings?.localMap ? { descriptionsZoomedOut: DESCRIPTIONS_ZOOMED_OUT[0] } : null;
   // Beyond the Hops likewise (2026-11-18): only the next step is written, and its absence reads as everything.
   // The scan trial likewise (2026-11-22): only an order and the slower pace are written, and their absence reads as off, as measured.
-  const beyond = settings?.forceGraph ? { beyondHops: BEYOND_HOPS[0], scanGrowth: SCAN_GROWTHS[0], scanPace: SCAN_PACES[0], drag: DRAGS[0] } : null;
+  const beyond = settings?.forceGraph ? { beyondHops: BEYOND_HOPS[0], scanGrowth: SCAN_GROWTHS[0], scanPace: SCAN_PACES[0] } : null;
   return { ...tuning, localMap: { ...tuning.localMap, ...directory, ...looks, ...closed, ...descriptions, ...settings?.localMap },
     forceGraph: { ...tuning.forceGraph, ...beyond, ...settings?.forceGraph } };
 }
