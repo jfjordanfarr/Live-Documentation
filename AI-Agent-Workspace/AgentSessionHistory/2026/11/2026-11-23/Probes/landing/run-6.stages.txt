@@ -1,0 +1,8 @@
+=== history: begun 16:32:35 UTC, HEAD c0d886854, load 1.04
+=== history: ended 16:33:18 UTC, exit 0
+=== gate: begun 16:33:18 UTC, HEAD c0d886854, load 6.87
+=== gate: ended 16:38:57 UTC, exit 0
+=== bundles: begun 16:38:57 UTC, HEAD c0d886854, load 12.15
+=== bundles: ended 16:39:53 UTC, exit 0
+=== browser: begun 16:39:53 UTC, HEAD c0d886854, load 7.84
+=== browser: ended 17:25:54 UTC, exit 1

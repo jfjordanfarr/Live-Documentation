@@ -5,7 +5,7 @@ import { compressSnapshot, decompressSnapshot, DEFAULT_SNAPSHOT } from "../../pa
 import type { UnconnectedRows } from "../../packages/explorer/src/client/types";
 import type { StaticExplorerData } from "../../packages/explorer/src/shared/staticExplorerData";
 import { describeFaults, overlapsAmong, textBoxes, truncations } from "./design-audit";
-import { arriveAtReadingSize, LOCAL_MAP, localMapStill } from "./still-picture";
+import { arriveAtReadingSize, AT_READING_SIZE, LOCAL_MAP, localMapStill } from "./still-picture";
 
 /**
  * Tuning → 2D Layout → Unconnected (a trial of 2026-11-23, the owner's "holy moly" before a card of dozens of unwired
@@ -61,10 +61,15 @@ async function oracle(page: Page): Promise<{ connected: string[]; unconnected: s
   return { connected, unconnected };
 }
 
-/** The address with the file pinned whole and its subject, the lever carried by the link when it is not its default. */
+/**
+ * The address with the file pinned whole and its subject, the lever carried by the link when it is not its default. A
+ * link that carries any of the map's tuning carries all of it, so the arrival held at reading size goes with the lever:
+ * with the lever alone the page arrived at the pull-back that ships, where a folded card has no room to write its count,
+ * and the press of the count met nothing (the sixth landing of 2026-11-23, and a probe that read the count not drawn).
+ */
 const address = (unconnected?: UnconnectedRows): string => `${BASE}?s=${compressSnapshot({
   ...DEFAULT_SNAPSHOT, selectedNodeId: FILE, pinSet: { entries: [{ nodeId: FILE, symbol: "*" }] },
-  ...(unconnected ? { layout: { localMap: { unconnected } } } : null)
+  ...(unconnected ? { layout: { localMap: { ...AT_READING_SIZE, unconnected } } } : null)
 })}`;
 
 const card = (page: Page) => page.locator(`#map-container .node-card[data-id="${FILE}"]`);
