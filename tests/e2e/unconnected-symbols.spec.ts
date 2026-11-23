@@ -28,6 +28,9 @@ async function oracle(page: Page): Promise<{ connected: string[]; unconnected: s
   const bundle = (await (await page.request.get(`${BASE}explorer-data.json`)).json()) as StaticExplorerData;
   const graph = bundle.graph as LiveDocGraph;
   const file = graph.files[FILE];
+  // An edge names a symbol by its slug, so the oracle reads only a file whose every symbol has one.
+  expect(file.symbols.every(symbol => symbol.slug !== undefined), "every symbol of the file has a slug").toBe(true);
+  const symbols = file.symbols.map(symbol => ({ ...symbol, slug: symbol.slug ?? "" }));
   const touched = new Set<string>();
   for (const other of Object.values(graph.files)) {
     for (const edge of other.edges) {
@@ -39,8 +42,8 @@ async function oracle(page: Page): Promise<{ connected: string[]; unconnected: s
     if (edge.from && edge.to) touched.add(edge.from);
     if (edge.to === FILE && edge.toSymbol) touched.add(edge.toSymbol);
   }
-  const slugOf = new Map(file.symbols.map(symbol => [symbol.name, symbol.slug]));
-  for (const symbol of file.symbols) {
+  const slugOf = new Map(symbols.map(symbol => [symbol.name, symbol.slug]));
+  for (const symbol of symbols) {
     for (const line of symbol.references) {
       const types = line.role === "Parameters" ? line.parameters.flatMap(parameter => parameter.types) : line.types;
       for (const type of types) {
@@ -50,8 +53,8 @@ async function oracle(page: Page): Promise<{ connected: string[]; unconnected: s
       }
     }
   }
-  const connected = file.symbols.filter(symbol => touched.has(symbol.slug)).map(symbol => symbol.name);
-  const unconnected = file.symbols.filter(symbol => !touched.has(symbol.slug)).map(symbol => symbol.name);
+  const connected = symbols.filter(symbol => touched.has(symbol.slug)).map(symbol => symbol.name);
+  const unconnected = symbols.filter(symbol => !touched.has(symbol.slug)).map(symbol => symbol.name);
   // Every case reads the oracle, so none passes on a file with nothing to fold or nothing left.
   expect(connected.length, "connected rows").toBeGreaterThan(0);
   expect(unconnected.length, "unconnected rows").toBeGreaterThan(0);
