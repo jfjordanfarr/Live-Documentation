@@ -1,0 +1,213 @@
+// A probe of the transition's first frame, for this round only: never committed, removed before the handback.
+import { test, expect, type Page } from "@playwright/test";
+import fs from "node:fs";
+import path from "node:path";
+
+import { observeGraph } from "./force-graph-observation";
+
+const OUT = "/tmp/claude-1000/-workspaces-Live-Documentation/eb058c9c-8bd5-455d-9ef9-76560750588e/scratchpad/first-frame/out";
+const PICTURES = {
+  repo: { url: `/?view=local&mode=3d&node=${encodeURIComponent("packages/engine/src/live-docs/graph.ts")}`, id: "packages/engine/src/live-docs/graph.ts" },
+  estate: { url: `/samples/estate/?view=local&mode=3d&node=${encodeURIComponent("PaymentService/PaymentService.cs")}`, id: "PaymentService/PaymentService.cs" }
+} as const;
+const CATEGORIES = ["devtools.timeline", "disabled-by-default-devtools.timeline", "disabled-by-default-devtools.timeline.frame",
+  "disabled-by-default-devtools.timeline.stack", "disabled-by-default-devtools.timeline.invalidationTracking", "blink.user_timing", "v8.execute", "disabled-by-default-v8.cpu_profiler", "toplevel", "cc", "gpu", "viz", "blink"];
+
+async function noteTransitionStart(page: Page): Promise<void> {
+  await page.addInitScript(() => {
+    const append = Element.prototype.append;
+    Element.prototype.append = function (this: Element, ...nodes: (Node | string)[]) {
+      append.apply(this, nodes);
+      if (this === document.body && nodes.some(node => node instanceof HTMLElement && node.classList.contains("perspective-transition") && node.dataset.graphFiles)) {
+        (window as unknown as { transitionStarted: number }).transitionStarted = performance.now();
+        performance.mark("probe:transition-start");
+      }
+    };
+  });
+}
+
+async function timedPress(page: Page, label: "2D" | "3D") {
+  return page.evaluate(label => new Promise<Record<string, unknown>>(resolve => {
+    const button = [...document.querySelectorAll<HTMLButtonElement>(".perspective-controls button")].find(each => each.textContent === label)!;
+    let seen = false, returned = 0, done = false, firstFrame: number | null = null, layerElements = 0, mapElements = 0;
+    const frames: number[] = [];
+    const finish = (): void => {
+      if (done) return;
+      done = true;
+      const measures = performance.getEntriesByType("measure").filter(entry => entry.startTime >= started && entry.name.startsWith("live-docs:"))
+        .map(entry => ({ name: entry.name, start: +(entry.startTime - started).toFixed(1), duration: +entry.duration.toFixed(1) }));
+      const transitionStarted = (window as unknown as { transitionStarted?: number }).transitionStarted ?? NaN;
+      resolve({ label, returned, firstFrame, transitionStart: transitionStarted - started, frames, layerElements, mapElements, measures });
+    };
+    const watch = (now: number): void => {
+      frames.push(+(performance.now() - started).toFixed(1));
+      const layer = document.querySelector<HTMLElement>(".perspective-transition[data-graph-files]");
+      if (!layer) {
+        if (seen) finish();
+        else requestAnimationFrame(watch);
+        return;
+      }
+      if (!seen) {
+        firstFrame = performance.now() - ((window as unknown as { transitionStarted?: number }).transitionStarted ?? NaN);
+        performance.mark("probe:first-frame");
+        layerElements = layer.querySelectorAll("*").length;
+        mapElements = document.getElementById("view-map")!.querySelectorAll("*").length;
+      }
+      seen = true;
+      void now;
+      requestAnimationFrame(watch);
+    };
+    const channel = new MessageChannel(), started = performance.now();
+    channel.port1.onmessage = () => {
+      returned = performance.now() - started;
+      requestAnimationFrame(watch);
+      setTimeout(finish, 60_000);
+    };
+    performance.mark("probe:press");
+    button.click();
+    channel.port2.postMessage(null);
+  }), label);
+}
+
+async function expectFocused(page: Page, id: string): Promise<void> {
+  const label = page.locator(".force-graph-focus");
+  await expect(label).toHaveAttribute("data-node-id", id, { timeout: 30_000 });
+  await expect(label).toBeVisible();
+  await expect.poll(() => page.locator("#graph-svg").evaluate(element => {
+    const marker = element.querySelector<HTMLElement>(".force-graph-focus")!;
+    if (marker.hidden || !marker.checkVisibility()) return Infinity;
+    const frame = element.getBoundingClientRect();
+    const controls = [...document.querySelectorAll<HTMLElement>(".perspective-controls:not([hidden]), .history-scrubber:not([hidden])")]
+      .map(control => control.getBoundingClientRect()).filter(box => box.width && box.top > frame.top && box.bottom <= frame.bottom + 1);
+    const bottom = Math.min(frame.bottom, ...controls.map(box => box.top)) - frame.top;
+    return Math.hypot(parseFloat(marker.style.left) - element.clientWidth / 2, parseFloat(marker.style.top) - bottom / 2);
+  }), { timeout: 30_000 }).toBeLessThan(8);
+}
+
+test("probe count", async ({ page }) => {
+  test.setTimeout(120_000);
+  await page.goto(`/?view=local&node=${encodeURIComponent(PICTURES.repo.id)}`);
+  await expect(page.locator(`.node-card.local-focus[data-id="${PICTURES.repo.id}"]`)).toBeVisible();
+  const counts = await page.evaluate(() => {
+    const map = document.getElementById("view-map")!;
+    const elements = [...map.querySelectorAll<HTMLElement>(".node-card, .node-card *")].slice(0, 1000);
+    const sample = getComputedStyle(elements[0]);
+    const names = Array.from({ length: sample.length }, (_, i) => sample.item(i));
+    const make = (keep: (name: string) => boolean): HTMLElement => {
+      const host = document.createElement("div");
+      host.style.cssText = "position:fixed;left:0;top:0;width:10px;height:10px;overflow:hidden;opacity:0.01;pointer-events:none";
+      for (const element of elements) {
+        const style = getComputedStyle(element);
+        const copy = document.createElement("div");
+        const declarations: string[] = [];
+        for (let i = 0; i < style.length; i++) { const name = style.item(i); if (keep(name)) declarations.push(`${name}: ${style.getPropertyValue(name)};`); }
+        copy.style.cssText = declarations.join("");
+        host.append(copy);
+      }
+      return host;
+    };
+    const time = (host: HTMLElement): number => {
+      void getComputedStyle(document.body).opacity;
+      const begun = performance.now();
+      document.body.append(host);
+      void getComputedStyle(host.lastElementChild!).opacity;
+      const took = performance.now() - begun;
+      host.remove();
+      return +took.toFixed(1);
+    };
+    const all = make(() => true), standard = make(name => !name.startsWith("--")), none = make(() => false);
+    return { elements: elements.length, declarations: names.length, custom: names.filter(name => name.startsWith("--")).length,
+      allMs: [time(all), time(make(() => true))], standardMs: [time(standard), time(make(name => !name.startsWith("--")))], noneMs: [time(none), time(make(() => false))] };
+  });
+  fs.appendFileSync(path.join(OUT, "counts.jsonl"), JSON.stringify(counts) + "\n");
+});
+
+const SCRATCH = path.dirname(OUT);
+const SITE = path.resolve(__dirname, "../../dist/explorer");
+/** Put a kept build's client in place, for the page and the estate's; the server serves files as they stand. */
+function useBuild(name: string): void {
+  for (const target of [path.join(SITE, "static"), path.join(SITE, "samples/estate/static")]) {
+    fs.copyFileSync(path.join(SCRATCH, `${name}-static`, "index.js"), path.join(target, "index.js"));
+    for (const sheet of fs.readdirSync(path.join(SCRATCH, `${name}-static`, "styles"))) {
+      fs.copyFileSync(path.join(SCRATCH, `${name}-static`, "styles", sheet), path.join(target, "styles", sheet));
+    }
+  }
+}
+const load = (): string => fs.readFileSync("/proc/loadavg", "utf8").split(" ")[0];
+const SWAPS = (process.env.PROBE_BUILDS ?? "before,after").split(",");
+for (const picture of ["repo", "estate"] as const) {
+  for (const run of picture === "repo" ? [1, 2, 3, 4, 5] : [1]) {
+    for (const build of picture === "repo" && run === 1 ? ["hasless", ...SWAPS] : SWAPS) {
+      test(`probe swap repo ${picture} ${run} ${build}`, async ({ page }) => {
+        test.setTimeout(120_000);
+        useBuild(build);
+        const { url, id } = PICTURES[picture];
+        await observeGraph(page);
+        await noteTransitionStart(page);
+        await page.goto(url);
+        await expectFocused(page, id);
+        for (const label of ["2D", "3D"] as const) {
+          const before = load();
+          const result = await timedPress(page, label);
+          const after = load();
+          fs.appendFileSync(path.join(OUT, "swap.jsonl"), JSON.stringify({ picture, run, build, loadBefore: before, loadAfter: after, ...result }) + "\n");
+          if (label === "2D") await expect(page.locator(`.node-card.local-focus[data-id="${id}"]`)).toBeVisible();
+          else await expectFocused(page, id);
+        }
+      });
+    }
+  }
+}
+
+for (const picture of ["repo", "estate"] as const) {
+  for (const BUILD of SWAPS) test(`probe look ${picture} ${BUILD}`, async ({ page }) => {
+    test.setTimeout(120_000);
+    useBuild(BUILD);
+    const { url, id } = PICTURES[picture];
+    await observeGraph(page);
+    await noteTransitionStart(page);
+    await page.goto(url);
+    await expectFocused(page, id);
+    const session = await page.context().newCDPSession(page);
+    for (const label of ["2D", "3D"] as const) {
+      const shots: { data: string; at: number }[] = [];
+      session.on("Page.screencastFrame", frame => {
+        shots.push({ data: frame.data, at: frame.metadata.timestamp ?? 0 });
+        void session.send("Page.screencastFrameAck", { sessionId: frame.sessionId }).catch(() => {});
+      });
+      await session.send("Page.startScreencast", { format: "jpeg", quality: 60, maxWidth: 800, maxHeight: 500, everyNthFrame: 1 });
+      const pressedAt = Date.now() / 1000;
+      const result = await timedPress(page, label);
+      await session.send("Page.stopScreencast");
+      session.removeAllListeners("Page.screencastFrame");
+      shots.forEach((shot, index) => fs.writeFileSync(path.join(OUT, `look-${picture}-${BUILD}-${label}-${String(index).padStart(3, "0")}-${Math.round((shot.at - pressedAt) * 1000)}ms.jpg`), Buffer.from(shot.data, "base64")));
+      fs.appendFileSync(path.join(OUT, "look.jsonl"), JSON.stringify({ picture, build: BUILD, ...result, frames: undefined, shots: shots.length }) + "\n");
+      if (label === "2D") await expect(page.locator(`.node-card.local-focus[data-id="${id}"]`)).toBeVisible();
+      else await expectFocused(page, id);
+    }
+  });
+  for (const traced of [true, false]) {
+    for (const run of [1, 2, 3, 4, 5]) {
+      test(`probe ${picture} ${traced ? "traced" : "plain"} ${run}`, async ({ page }) => {
+        test.setTimeout(120_000);
+        const { url, id } = PICTURES[picture];
+        await observeGraph(page);
+        await noteTransitionStart(page);
+        await page.goto(url);
+        await expectFocused(page, id);
+        const results: Record<string, unknown>[] = [];
+        for (const label of ["2D", "3D"] as const) {
+          const browser = page.context().browser()!;
+          const stamp = `${picture}-${traced ? "traced" : "plain"}-${run}-${label}-${Date.now()}`;
+          if (traced) await browser.startTracing(page, { path: path.join(OUT, `${stamp}.trace.json`), categories: CATEGORIES });
+          const result = await timedPress(page, label);
+          if (traced) await browser.stopTracing();
+          results.push({ ...result, stamp });
+          if (label === "2D") await expect(page.locator(`.node-card.local-focus[data-id="${id}"]`)).toBeVisible();
+          else await expectFocused(page, id);
+        }
+        fs.appendFileSync(path.join(OUT, "readings.jsonl"), results.map(each => JSON.stringify(each)).join("\n") + "\n");
+      });
+    }
+  }
+}
