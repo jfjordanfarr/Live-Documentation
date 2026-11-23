@@ -81,7 +81,7 @@ An exported map is a snapshot stamped with where it came from: repository, commi
 
 ## Correctness
 
-The map's edges are checked against oracles that share no mechanism with the analyzer: a compiler's own resolution, what actually breaks when a symbol is removed, and small hand-verified fixtures for patterns such as reflection and markup-to-code-behind. Cross-language parity, the same program written in eight languages producing the same shape, guards against regressions in any one adapter. Where an edge is inferred rather than observed, the map says so.
+The map's edges are checked against oracles that share no mechanism with the analyzer: a compiler's own resolution, what actually breaks when a symbol is removed, and small hand-verified fixtures for patterns such as reflection and markup-to-code-behind. Cross-language parity, the same program written in nine languages producing the same shape, guards against regressions in any one adapter. Where an edge is inferred rather than observed, the map says so.
 
 ## What it is not
 

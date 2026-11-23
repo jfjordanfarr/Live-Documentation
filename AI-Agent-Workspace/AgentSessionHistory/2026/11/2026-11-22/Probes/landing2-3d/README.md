@@ -79,3 +79,31 @@ Seen red by a made fault, the pointer taken to rest on a directory shell's skin 
 It failed in 17.5 s where the landing's failure took the case's whole thirty. Without the fault the case passed alone (22.7 s).
 
 The same press is made the same blind way in two more places of `force-graph-focus.spec.ts`, both on the estate sample after its picture is held at rest, and both left as they are: "mouse Unpin releases hover attention" presses "Unpin PaymentResultModel.cs" straight after moving the pointer to the sphere, and "keyboard More keeps its sphere's controls available" holds "More actions for PaymentResultModel.cs" visible by its name and then focuses "Pin PaymentResultModel.cs". The two later places that reach Pin by name first hold the actions' `data-node-id`. `force-graph-discovery.spec.ts` presses no body's action.
+
+## 5. Did the day slow the press of 3D and the transition's first frame? (23:36 to 00:01 UTC)
+
+**Yes, both are today's; neither stood at its bound yesterday.** The press case alone, one worker, on yesterday's `main` (`76cd9914c`) and on the day branch's tip (`0c5a66ec9`), each built in a checkout of its own, run turn and turn about; then one build's data served to the other's code, three steps of the day built between them, and today's build with two of the day's new defaults put back. Milliseconds, the range and the median; every run is in [the table](press-yesterday-and-today.tsv) with the load beside it.
+
+| Build | Runs | Press of 3D returned (bound 500) | Press of 2D less its render (500) | First frame to 3D (400) | First frame to 2D (400) | The page's own measure of the 3D press | Elements under `#view-map` at the press of 3D |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| Yesterday's `main` | 7 | 398 to 627, **419** | 280 to 387, 311 | 277 to 426, **300** | 269 to 484, 302 | 250 to 458, 274 | 13,781 |
+| Today's tip | 7 | 413 to 584, **496** | 354 to 456, 383 | 346 to 467, **385** | 358 to 466, 375 | 268 to 413, 335 | 14,810 |
+| Yesterday's code, today's data | 3 | 413 to 438, 419 | 302 to 338, 318 | 328 to 342, 335 | 302 to 325, 311 | 263 to 274, 270 | 14,576 |
+| Today's code, yesterday's data | 3 | 458 to 471, 462 | 317 to 425, 403 | 292 to 331, 315 | 329 to 332, 329 | 308 to 321, 311 | 13,994 |
+| `4d9ebbfae`, 04:39, the 3D budget of 2,048 | 3 | 409 to 461, 418 | 286 to 335, 325 | 319 to 348, 338 | 301 to 324, 321 | 264 to 293, 270 | 14,024 |
+| `22b74e21b`, the step before the arrival's merge | 4 | 420 to 459, 429 | 281 to 388, 305 | 332 to 379, 352 | 315 to 344, 327 | 274 to 306, 278 | 14,570 |
+| `15f4d689c`, the arrival made the default | 4 | 484 to 593, 535 | 300 to 359, 329 | 713 to 827, 764 | 358 to 432, 403 | 319 to 397, 360 | 14,529 |
+| Today's tip, Wire Answers off | 3 | 477 to 497, 491 | 357 to 376, 367 | 361 to 409, 376 | 389 to 410, 399 | 324 to 331, 326 | 14,577 |
+| Today's tip, Arrival and Arrival Waits as yesterday | 3 | 472 to 521, 480 | 377 to 589, 403 | 364 to 513, 374 | 377 to 508, 406 | 319 to 358, 326 | 14,810 |
+
+The case failed two times of seven on yesterday's build (once on the first frame to 2D at 419, once with every number high, the press at 627) and four of seven on today's.
+
+**The press of 3D: the code, about 45 to 75 ms, and not the picture.** Yesterday's code returns in 419 with either day's data; today's code in 462 with yesterday's data and 496 with its own, and the two swapped sets do not overlap (413 to 438 against 458 to 471). It is in the day's last five merges that touch the page: 418 at 04:39 and 429 at the step before the arrival's merge, both yesterday's number, and 535 at that merge (`15f4d689c`), where the press also began an arrival, a fault `cb7a75798` took out later (its first frame of 713 to 827 is that fault's). Which of the five (`15f4d689c`, `cb7a75798`, `7683d9ecb`, `d55e6392e`, `992fc454b`) was not parted, and what in it pays was not found. **It is not the defaults:** with Wire Answers off the press is 491, and with the arrival as it stood yesterday 480; Wire Answers accounts for 233 of the elements and none of the time.
+
+**The first frame: about 85 ms to 3D and 70 to 2D, from the picture and the code both, spread over the day.** Today's data on yesterday's code adds about 35 to 3D and 10 to 2D; today's code on yesterday's data about 15 and 27; it was already 338 and 321 at 04:39 and 352 and 327 before the arrival's merge. No one merge carries it.
+
+**The picture grew by 1,029 elements under the 2D map**, 13,781 to 14,810: about 800 from the repository's own growth and about 230 from Wire Answers on.
+
+What the numbers are worth: the machine was shared throughout with another builder's runs and builds (load 1.9 to 4.3, and 8.3 for the one run straight after this probe's own three builds; 21 runs waited behind that builder on the lane), and the other builder's hold from about 23:47 shared the machine with those three builds. A build's own runs spread by 20 to 170 ms, so a step of 45 ms between two builds of the day is near that spread; the two swaps, tight and apart, are the firmer evidence. Each step of the day was built with its own data. The counting lines added to the case in each checkout were removed, and the checkouts with them.
+
+Beside the cause already found, the 190 ms the press pays to make the held 2D map inert, which stood yesterday too: this is a second, smaller cost that came in today.
