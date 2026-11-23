@@ -1,0 +1,49 @@
+run	at	load	3D returned	2D returned less render	first frame to 3D	first frame to 2D	page's 3D press	under #view-map	cards	result
+yesterday-1	23:36:15	1.88	419	290	308	419	274	13781	50	1 failed
+today-1	23:37:07	2.76	481	373	373	358	322	14810	52	1 passed (17.7s)
+yesterday-2	23:37:25	2.61	398	296	297	280	251	13781	50	1 passed (16.0s)
+today-2	23:37:42	2.47	413	354	385	364	268	14810	52	1 passed (17.2s)
+yesterday-3	23:38:01	2.34	398	280	277	269	250	13781	50	1 passed (15.7s)
+today-3	23:39:00	2.18	584	383	382	466	413	14810	52	1 failed
+yesterday-4	23:40:59	2.44	490	387	309	310	334	13781	50	1 passed (17.4s)
+today-4	23:41:17	2.82	517	398	385	375	358	14810	52	1 failed
+yesterday-5	23:41:40	2.93	418	316	298	270	267	13781	50	1 passed (16.8s)
+today-5	23:41:58	2.80	443	356	346	364	296	14810	52	1 passed (17.5s)
+yesterdays-code-todays-data-1	23:49:40	8.27	438	338	342	325	274	14576	52	1 passed (17.4s)
+todays-code-yesterdays-data-1	23:50:52	4.71	471	403	331	329	321	13994	50	1 passed (17.3s)
+budget-1	23:51:10	4.10	418	335	338	321	270	14024	50	1 passed (17.3s)
+before-arrival-1	23:51:29	3.80	438	313	379	344	281	14570	52	1 passed (17.7s)
+arrival-1	23:51:48	3.52	no reading
+yesterdays-code-todays-data-2	23:52:20	2.65	413	318	328	311	263	14576	52	1 passed (16.0s)
+todays-code-yesterdays-data-2	23:52:37	3.01	458	317	292	329	308	13994	50	1 passed (15.9s)
+budget-2	23:52:54	2.74	409	286	348	301	264	14024	50	1 passed (16.0s)
+before-arrival-2	23:53:11	3.02	420	281	362	315	276	14570	52	1 passed (16.0s)
+arrival-2	23:53:28	3.29	no reading
+yesterdays-code-todays-data-3	23:53:57	3.06	419	302	335	302	270	14576	52	1 passed (15.7s)
+todays-code-yesterdays-data-3	23:54:14	3.03	462	425	315	332	311	13994	50	1 passed (17.7s)
+budget-3	23:54:32	3.03	461	325	319	324	293	14024	50	1 passed (17.0s)
+before-arrival-3	23:55:23	2.95	420	296	343	315	274	14570	52	1 passed (16.0s)
+arrival-3	23:56:22	3.35	484	300	713	383	319	14529	52	1 failed
+yesterday-6	23:57:45	3.69	627	311	426	484	458	13781	50	1 failed
+today-6	23:58:50	3.69	538	396	431	390	377	14810	52	1 failed
+arrival-4	23:54:24	2.95	593	330	827	423	397	14529	52	1 failed
+before-arrival-4	23:55:05	2.64	459	388	332	338	306	14570	52	1 passed (18.0s)
+arrival-5	23:56:05	3.15	541	359	758	432	367	14529	52	1 failed
+yesterday-7	23:57:16	3.66	427	323	300	302	275	13781	50	1 passed (16.9s)
+today-7	23:58:25	3.39	496	456	467	399	335	14810	52	1 failed
+arrival-6	23:59:50	4.09	529	328	771	358	353	14529	52	1 failed
+today-wire-answers-off-1	23:54:49	2.74	491	367	376	410	324	14577	52	1 failed
+today-arrival-as-yesterday-1	23:55:46	3.34	480	377	374	406	326	14810	52	1 failed
+today-wire-answers-off-2	23:56:44	3.13	477	376	409	389	326	14577	52	1 failed
+today-arrival-as-yesterday-2	23:58:07	3.62	521	589	513	508	358	14810	52	1 failed
+today-wire-answers-off-3	23:59:22	4.30	497	357	361	399	331	14577	52	1 passed (19.5s)
+today-arrival-as-yesterday-3	00:00:35	3.82	472	403	364	377	319	14810	52	1 passed (17.5s)
+yesterday: n=7			398-627 med 419	280-387 med 311	277-426 med 300	269-484 med 302	250-458 med 274
+today: n=7			413-584 med 496	354-456 med 383	346-467 med 385	358-466 med 375	268-413 med 335
+yesterdays-code-todays-data: n=3			413-438 med 419	302-338 med 318	328-342 med 335	302-325 med 311	263-274 med 270
+todays-code-yesterdays-data: n=3			458-471 med 462	317-425 med 403	292-331 med 315	329-332 med 329	308-321 med 311
+budget: n=3			409-461 med 418	286-335 med 325	319-348 med 338	301-324 med 321	264-293 med 270
+before-arrival: n=4			420-459 med 429	281-388 med 305	332-379 med 352	315-344 med 327	274-306 med 278
+arrival: n=4			484-593 med 535	300-359 med 329	713-827 med 764	358-432 med 403	319-397 med 360
+today-wire-answers-off: n=3			477-497 med 491	357-376 med 367	361-409 med 376	389-410 med 399	324-331 med 326
+today-arrival-as-yesterday: n=3			472-521 med 480	377-589 med 403	364-513 med 374	377-508 med 406	319-358 med 326
