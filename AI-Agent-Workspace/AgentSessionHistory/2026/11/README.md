@@ -60,6 +60,8 @@ Source inventory, maintained by the root agent. The October 31 session that ende
 ## November 23, session 1 — Claude Code, Fable 5.2
 
 - [Maintained root record](2026-11-23/2026-11-23.1.record.md): opened by the owner at 01:20 UTC on November 23 (8:20 PM on November 22 by their clock), thirty-five minutes after the November 22 chat's closing message, as "the 11/23 dev day". Begins with the startup read, the filing of that closing message and of the export's committed state, and the landing of the November 22 day branch, which the owner wants on `main` before they push. On the branch `day/2026-11-23`, cut from `day/2026-11-22` at `f152fbb6e`. Open; no summary yet.
+- Probes of the day, each with a README:
+  - [why a directory shell takes the press from a sphere seen through it in the 3D map](2026-11-23/Probes/picking/README.md): the pointer's ray read against every drawn sphere and every triangle of the skins, the failing moment reproduced with the processor slowed, and what each of three pick rules would change on four pictures at rest.
 
 ## November 22, session 1 — Claude Code, Fable 5.2
 

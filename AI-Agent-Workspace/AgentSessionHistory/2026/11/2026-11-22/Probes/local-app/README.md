@@ -66,6 +66,14 @@ The owner closed every Chrome window and opened `index.html` again ([Turn 4 of t
 
 **What it means.** A shortcut to the local file cannot carry the product's identity by the page's doing. What a Windows shortcut can carry is an icon it names itself, set by whoever writes the shortcut; the installed form, which would bring an icon everywhere, is the one the owner refused as the product's path on 2026-11-21, since it reaches out to a URL.
 
+## The button pressed after a restart, 2026-11-23
+
+**Dated follow-up, written by the root of the November 23 session** from the result line the owner pasted in [Turn 2 of that day's record](../../../2026-11-23/2026-11-23.1.record.md#turn-2) (8:41 PM on November 22 by their clock, the first copy's fifth launch):
+
+> 2\. Folders: Chrome asked again, and gave the folder back without picking it again. [on opening: prompt; now: granted; presses: 1]
+
+So the press that the section above left untried is made: after a restart, one press brings the browser's own question, and the folder comes back with no picking again. A remembered folder costs one press and one question. **Not seen:** what the question offered, this once or on every visit; the result line does not say and the owner was not asked again. The same line reports two copies seen in one storage with localStorage and IndexedDB agreeing (as the first run found), the folder listed (1,585 files in 190 folders) in 1.6 s, the save picker saving, the second copy marked as downloaded and the first "not said", and of six launches five in a tab and one in a window of its own. The probe on Edge is still untried.
+
 ## A second copy of the page, for the two things left
 
 `probe.html` as committed after the run differs from the one the owner ran in two ways: it carries an icon of its own (two joined dots, blue and green), and its results begin "Local app probe 2". Two things, about two minutes:
