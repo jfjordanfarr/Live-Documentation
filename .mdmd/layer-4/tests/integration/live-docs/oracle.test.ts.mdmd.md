@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: `tests/integration/live-docs/oracle.test.ts`
-- Generated At: 2026-11-21T05:42:35.944Z
+- Generated At: 2026-11-23T00:34:57.432Z
 
 ## Authored
 ### Purpose
@@ -34,4 +34,5 @@ _No public symbols detected_
 <!-- LIVE-DOC:BEGIN Cited By -->
 ### Cited By
 - [`.mdmd/layer-3/openings.mdmd.md`](../../../../layer-3/openings.mdmd.md)
+- [`README.md`](../../../../../README.md)
 <!-- LIVE-DOC:END Cited By -->
