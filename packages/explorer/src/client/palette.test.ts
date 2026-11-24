@@ -2,7 +2,7 @@ import * as fs from "node:fs";
 import * as path from "node:path";
 import { describe, expect, it } from "vitest";
 
-import { activePalette, channels, chooseMarbles, choosePalette, customProperties, DEFAULT_PALETTE, isPaletteName, marblesDrawn, mix, PALETTES, paletteStylesheet, PROPOSED, rgba, TODAY, unitChannels, VIVID_KINDS, whenPaletteChanges, type Palette } from "./palette";
+import { activePalette, channels, chooseMarbles, choosePalette, customProperties, DEFAULT_PALETTE, GRAPHITE_VIVID, isPaletteName, marblesDrawn, mix, MOONLIT_INK, PALETTES, paletteStylesheet, PROPOSED, rgba, SLATE_STRUCTURE, TODAY, unitChannels, VIVID_KINDS, whenPaletteChanges, type Palette } from "./palette";
 import { fileShares, MARBLE_COLOUR, MARBLE_FRAGMENT_PARS, MARBLE_SHINE, MARBLE_VEINS, MARBLE_VERTEX, MARBLE_VERTEX_PARS, marbleAmount, marbleCounts, marbleOf, marbleSeed, marbleShares, marbleTint, type SpatialKind } from "./views/forceGraphAppearance";
 
 describe("the palette", () => {
@@ -175,6 +175,12 @@ describe("a valid palette", () => {
     expect([second.offersPin, second.usesPin, second.testLabel, second.testLabelTint, second.implementationLabelTint, second.worldDarkWireOffers, second.worldDarkWireUses])
       .toEqual([role.offers, role.uses, kind.test, kind.test, kind.implementation, VIVID_KINDS.world.dark.offers, VIVID_KINDS.world.dark.uses]);
     expect(VIVID_KINDS.hasTests.mark).toBe(PROPOSED.hasTests.mark);
+  });
+
+  it("is what the three holistic palette candidates are, each verified in OKLab with solar gold changes", () => {
+    expect(shortfalls(GRAPHITE_VIVID)).toEqual([]);
+    expect(shortfalls(MOONLIT_INK)).toEqual([]);
+    expect(shortfalls(SLATE_STRUCTURE)).toEqual([]);
   });
 
   it("is not what today's palette is, as a stated fact, in its identities' distances and in nothing else", () => {

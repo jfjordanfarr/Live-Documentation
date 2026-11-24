@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/explorer/src/client/views/forceGraphEmphasis.ts`
-- Generated At: 2026-11-19T21:10:14.932Z
+- Generated At: 2026-11-24T20:38:09.059Z
 
 ## Authored
 ### Purpose
@@ -34,19 +34,26 @@ Whether the mode glows the changed.
 ##### `dims` — Summary
 Whether the mode dims the unchanged.
 
+#### `rimmed` {#symbol-rimmed}
+- Type: const
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphEmphasis.ts#L42)
+
+##### `rimmed` — Summary
+Whether a changed file wears the history rim (2026-11-24: light at the edge, keeping kind colour and marble).
+
 #### `emphasizedSphere` {#symbol-emphasizedsphere}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphEmphasis.ts#L47)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphEmphasis.ts#L49)
 - Parameters: `mode`: [`ChangeEmphasis`](../types.ts.mdmd.md#symbol-changeemphasis)
 
 ##### `emphasizedSphere` — Summary
-A sphere's colour for the displayed commit: changed spheres white and whole where the mode glows; unchanged ones
-dimmed where the mode dims, save one `asked` about, which keeps its own. The result remains constant until the changed
-set, mode or deliberate attention changes.
+A sphere's colour for the displayed commit: changed spheres keep their own kind colour at full alpha where the mode
+glows (their shader draws the history rim in `history.changed`); unchanged ones dim where the mode dims, save one
+`asked` about, which keeps its own. The result remains constant until the changed set, mode or deliberate attention changes.
 
 #### `emphasizedWireAlpha` {#symbol-emphasizedwirealpha}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphEmphasis.ts#L53)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphEmphasis.ts#L55)
 - Parameters: `mode`: [`ChangeEmphasis`](../types.ts.mdmd.md#symbol-changeemphasis)
 
 ##### `emphasizedWireAlpha` — Summary
@@ -54,14 +61,14 @@ A white reference wire's alpha under the emphasis: a changed wire's raised towar
 
 #### `pairKey` {#symbol-pairkey}
 - Type: const
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphEmphasis.ts#L60)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphEmphasis.ts#L62)
 
 ##### `pairKey` — Summary
 The key of an undirected pair of files, the same whichever end is named first.
 
 #### `ShownUnit` {#symbol-shownunit}
 - Type: interface
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphEmphasis.ts#L67)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphEmphasis.ts#L69)
 
 ##### `ShownUnit` — Summary
 A unit a body's skin shows within it, as the emphasis reads it: a file's dot or an inner bubble, by its id (a file's
@@ -70,14 +77,14 @@ whose files are drawn (`veiledUnits`).
 
 #### `BodyChanges (interface)` {#symbol-bodychanges-interface}
 - Type: interface
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphEmphasis.ts#L75)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphEmphasis.ts#L77)
 
 ##### `BodyChanges (interface)` — Summary
 Where a body shows the step of the history displayed.
 
 #### `bodyChanges (function)` {#symbol-bodychanges-function}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphEmphasis.ts#L102)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphEmphasis.ts#L104)
 - Returns: [`BodyChanges`](#symbol-bodychanges-interface)
 - Parameters: `members`: `ReadonlySet`; `changed`: `Iterable`; `deleted`: `Iterable`; `asked`: `Iterable`
 
@@ -96,7 +103,7 @@ units, the changes and what was asked about, never by the files a veiled body ho
 
 #### `deletionHomes` {#symbol-deletionhomes}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphEmphasis.ts#L156)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphEmphasis.ts#L158)
 - Parameters: `deleted`: `Iterable`; `homes`: `ReadonlyMap`
 
 ##### `deletionHomes` — Summary
@@ -107,21 +114,21 @@ file. A file no directory drawn holds is shown in none. By body, each body's fil
 
 #### `emphasizedUnits` {#symbol-emphasizedunits}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphEmphasis.ts#L178)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphEmphasis.ts#L180)
 - Returns: `U`[]
 - Parameters: `changes`: [`BodyChanges`](#symbol-bodychanges-interface); `mode`: [`ChangeEmphasis`](../types.ts.mdmd.md#symbol-changeemphasis)
 - Constraints: [`ShownUnit`](#symbol-shownunit)
 
 ##### `emphasizedUnits` — Summary
-A body's units as the step colours them: a file's dot as `emphasizedSphere` colours a sphere at full strength, from
-its kind's `#rrggbb` colour; a bubble lit where the mode glows and it is lit, and, where the mode dims, at the dimmed
-share of its alpha unless it holds a change or a file asked about; an asked-about file's dot keeps its own colour. Nothing
-is enlarged: the irrelevant fades rather than the relevant grows.
-A dot drawn as a marble (2026-11-17) loses its marble where the step glows it white, as a sphere does.
+A body's units as the step colours them: a file's dot keeps its own kind colour and marble (`emphasizedSphere`) and
+sets `lit` when `rimmed`, so its shader draws the history rim over its kind glass and veins; a bubble is lit where the
+mode glows and it is lit, and, where the mode dims, at the dimmed share of its alpha unless it holds a change or a
+file asked about; an asked-about file's dot keeps its own colour. Nothing is enlarged: the irrelevant fades rather
+than the relevant grows.
 
 #### `emphasizedSkin` {#symbol-emphasizedskin}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphEmphasis.ts#L187)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphEmphasis.ts#L189)
 - Parameters: `changes`: [`BodyChanges`](#symbol-bodychanges-interface); `mode`: [`ChangeEmphasis`](../types.ts.mdmd.md#symbol-changeemphasis)
 
 ##### `emphasizedSkin` — Summary

@@ -38,15 +38,17 @@ const WIRE_GLOW = 0.85;
 export const glows = (mode: ChangeEmphasis): boolean => mode === "glow" || mode === "both";
 /** Whether the mode dims the unchanged. */
 export const dims = (mode: ChangeEmphasis): boolean => mode === "dim" || mode === "both";
+/** Whether a changed file wears the history rim (2026-11-24: light at the edge, keeping kind colour and marble). */
+export const rimmed = (changed: boolean, mode: ChangeEmphasis): boolean => changed && glows(mode);
 
 /**
- * A sphere's colour for the displayed commit: changed spheres white and whole where the mode glows; unchanged ones
- * dimmed where the mode dims, save one `asked` about, which keeps its own. The result remains constant until the changed
- * set, mode or deliberate attention changes.
+ * A sphere's colour for the displayed commit: changed spheres keep their own kind colour at full alpha where the mode
+ * glows (their shader draws the history rim in `history.changed`); unchanged ones dim where the mode dims, save one
+ * `asked` about, which keeps its own. The result remains constant until the changed set, mode or deliberate attention changes.
  */
 export function emphasizedSphere(hex: string, alpha: number, changed: boolean, mode: ChangeEmphasis, asked = false): string {
   const own = rgba(hex, (!changed && !asked && dims(mode) ? alpha * (1 - DIM_LOSS) : alpha).toFixed(3));
-  return changed && glows(mode) ? rgba(activePalette().history.changed, "1.000") : own;
+  return rimmed(changed, mode) ? rgba(hex, "1.000") : own;
 }
 
 /** A white reference wire's alpha under the emphasis: a changed wire's raised toward the glow, an unchanged one's reduced, where the mode says so. */
@@ -169,17 +171,17 @@ export function deletionHomes(deleted: Iterable<string>, homes: ReadonlyMap<stri
 }
 
 /**
- * A body's units as the step colours them: a file's dot as `emphasizedSphere` colours a sphere at full strength, from
- * its kind's `#rrggbb` colour; a bubble lit where the mode glows and it is lit, and, where the mode dims, at the dimmed
- * share of its alpha unless it holds a change or a file asked about; an asked-about file's dot keeps its own colour. Nothing
- * is enlarged: the irrelevant fades rather than the relevant grows.
- * A dot drawn as a marble (2026-11-17) loses its marble where the step glows it white, as a sphere does.
+ * A body's units as the step colours them: a file's dot keeps its own kind colour and marble (`emphasizedSphere`) and
+ * sets `lit` when `rimmed`, so its shader draws the history rim over its kind glass and veins; a bubble is lit where the
+ * mode glows and it is lit, and, where the mode dims, at the dimmed share of its alpha unless it holds a change or a
+ * file asked about; an asked-about file's dot keeps its own colour. Nothing is enlarged: the irrelevant fades rather
+ * than the relevant grows.
  */
 export function emphasizedUnits<U extends ShownUnit & { color?: string; lit?: boolean; alpha?: number; marble?: object }>(units: readonly U[], changes: BodyChanges, mode: ChangeEmphasis): U[] {
   return units.map(unit => {
     if (unit.kind !== "file") return { ...unit, lit: glows(mode) && changes.lit.has(unit.id), alpha: dims(mode) && !changes.holding.has(unit.id) ? 1 - DIM_LOSS : 1 };
     const changed = changes.lit.has(unit.id), color = emphasizedSphere(unit.color ?? activePalette().history.changed, 1, changed, mode, changes.holding.has(unit.id));
-    return changed && glows(mode) && unit.marble ? { ...unit, color, marble: undefined } : { ...unit, color };
+    return { ...unit, color, lit: rimmed(changed, mode) };
   });
 }
 

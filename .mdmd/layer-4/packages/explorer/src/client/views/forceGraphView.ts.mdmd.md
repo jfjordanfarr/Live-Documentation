@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/explorer/src/client/views/forceGraphView.ts`
-- Generated At: 2026-11-24T18:30:17.423Z
+- Generated At: 2026-11-24T20:38:09.267Z
 
 ## Authored
 ### Purpose
@@ -201,6 +201,7 @@ Creates the Force Graph (3D) view for the Live Docs Explorer.
 - [`forceGraphEmphasis.emphasizedWireAlpha`](./forceGraphEmphasis.ts.mdmd.md#symbol-emphasizedwirealpha)
 - [`forceGraphEmphasis.glows`](./forceGraphEmphasis.ts.mdmd.md#symbol-glows)
 - [`forceGraphEmphasis.pairKey`](./forceGraphEmphasis.ts.mdmd.md#symbol-pairkey)
+- [`forceGraphEmphasis.rimmed`](./forceGraphEmphasis.ts.mdmd.md#symbol-rimmed)
 - [`forceGraphLabels.LabelBox`](./forceGraphLabels.ts.mdmd.md#symbol-labelbox) (type-only)
 - [`forceGraphLabels.SpatialLabel`](./forceGraphLabels.ts.mdmd.md#symbol-spatiallabel) (type-only)
 - [`forceGraphLabels.SpatialLabelBody`](./forceGraphLabels.ts.mdmd.md#symbol-spatiallabelbody) (type-only)

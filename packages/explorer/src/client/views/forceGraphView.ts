@@ -71,7 +71,7 @@ import { SPATIAL_RING_OUTER_RADIUS, type SpatialWrapperUnit } from "./forceGraph
 import { buildingPhase, nextBuilding, nodePointer, NOT_BUILDING, type Building } from "./forceGraphBuilding";
 import { cornerPanelInsets, focusedCameraPosition, frameCameraSpheres, screenAnchorTranslation, wheelZoomCamera, type CameraPoint } from "./forceGraphCamera";
 import { directoryNodeId, labelNamesOf, spatialGraphOf, type SpatialGraphData, type SpatialGraphNode, type SpatialLinkKind } from "./forceGraphData";
-import { bodyChanges, deletionHomes, emphasizedSkin, emphasizedSphere, emphasizedUnits, emphasizedWireAlpha, glows, pairKey } from "./forceGraphEmphasis";
+import { bodyChanges, deletionHomes, emphasizedSkin, emphasizedSphere, emphasizedUnits, emphasizedWireAlpha, glows, pairKey, rimmed } from "./forceGraphEmphasis";
 import { placeSpatialLabels, type SpatialLabel, type SpatialLabelBody, type LabelBox } from "./forceGraphLabels";
 import { linkPulls, motionForce, placeNewSpheres, spatialNodeRadius, symbolCountOf, type MotionForce, type MotionStart, type Placed } from "./forceGraphLayout";
 import { SPATIAL_DRAG_SLOP, SpatialRenderer } from "./forceGraphRenderer";
@@ -2170,18 +2170,16 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
         if (emphasis === "none") return alpha === 1 ? color : emphasizedSphere(color, alpha, false, "none");
         return emphasizedSphere(color, alpha, changedNodes.has(node.id), emphasis, askedAbout.has(node.id));
       });
-      // A marble is drawn on every file it colours, faded and dimmed with it, save where the step glows a changed file
-      // white, which replaces it (the marble trial, 2026-11-17).
-      forceGraphInstance?.nodeMarble((node: ForceGraphNode) => {
-        const { marble } = fileLook(node.id, node.archetype);
-        return marble && !(glows(emphasis) && changedNodes.has(node.id)) ? marble : null;
-      });
+      // A marble stays drawn on every file it colours, faded and dimmed with it; the history rim draws over the glass and veins (2026-11-24).
+      forceGraphInstance?.nodeMarble((node: ForceGraphNode) => fileLook(node.id, node.archetype).marble);
+      forceGraphInstance?.nodeChanged((node: ForceGraphNode) => rimmed(changedNodes.has(node.id), emphasis));
       // With Group Wrappers Off, a ring around every sphere with connections the picture does not show, a click on which
       // shows them: the owner's choice of 2026-11-02, B over A, the frontier's dimming kept and the ring saying where there
       // is more. The ring keeps its strength at the frontier, where it is the cue, and fades with the hover's attention.
       // With any wrapper on there is none (2026-11-18): the wrappers and shells say what is held back.
       forceGraphInstance?.nodeRing((node: ForceGraphNode) => {
         if (!hasRing(node.id)) return null;
+        if (rimmed(changedNodes.has(node.id), emphasis)) return rgba(activePalette().history.changed, "1.000");
         const alpha = attention ? (attention.has(node.id) ? .85 : .15) : .85;
         return emphasizedSphere(spatialNodeStyle(node.archetype).color, alpha, changedNodes.has(node.id), emphasis, askedAbout.has(node.id));
       });
@@ -2194,7 +2192,7 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
         return { visible, onPath: onPath && visible, dimmed: frontier(a) || frontier(b), changed: !!historyChanges?.changedPairs.has(pairKey(a, b)) };
       };
       forceGraphInstance?.linkColor((link: ForceGraphLink) => {
-        const { visible, onPath, dimmed, changed } = regard(link), { kind, scene } = activePalette();
+        const { visible, onPath, dimmed, changed } = regard(link), { kind, scene, history } = activePalette();
         // Containment is the structure itself, drawn as a line; a reference revealed in the structure layout reads
         // against the tree rather than as the faint web of the connections layout. A path's wires are drawn at full
         // strength (2026-10-30), so that the route reads over the web around it. A wire to the frontier is dimmed with it.
@@ -2207,9 +2205,9 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
         // Local wires at .3, the whole-root web at .16, the hovered file's at .5, a wire to the frontier at .12, so the few
         // wires a person is reading stand out. Every reference wire is white: the colour that ran along it from the file
         // that uses to the file that offers (2026-10-30) was withdrawn on 2026-10-31 at the owner's eye, and the hover's
-        // words carry the direction. Under the history's emphasis a wire the step added or changed glows with its files.
+        // words carry the direction. Under the history's emphasis a wire the step added or changed glows in `history.changed`.
         const alpha = !visible ? 0.025 : hovered ? 0.5 : dimmed ? 0.12 : rootOverview ? 0.16 : 0.3;
-        return rgba(scene.wire, emphasis === "none" ? alpha : emphasizedWireAlpha(alpha, changed, emphasis).toFixed(3));
+        return rgba(changed && glows(emphasis) ? history.changed : scene.wire, emphasis === "none" ? alpha : emphasizedWireAlpha(alpha, changed, emphasis).toFixed(3));
       });
       // A common scale for every wire; reference counts retain their relative weight while camera motion and spring
       // stretch change no base width, and a path's wires are twice as wide. Zoom resistance controls the projection.
@@ -2259,6 +2257,7 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
         radius: node => spatialNodeRadius(node, state.tuning.forceGraph),
         nodeColor: node => fileLook(node.id, node.archetype).color,
         marble: node => fileLook(node.id, node.archetype).marble,
+        changed: () => false,
         linkColor: () => rgba(activePalette().scene.wire, 0.16),
         linkWidth: () => state.tuning.forceGraph.linkWidth,
         linkVisible: () => true,

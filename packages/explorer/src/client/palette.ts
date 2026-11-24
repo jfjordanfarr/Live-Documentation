@@ -337,8 +337,119 @@ export const VIVID_KINDS: Palette = {
   }
 };
 
+/**
+ * Holistic palette candidate A (2026-11-24, OKLab-verified): keeps blue implementation and green test, neutral
+ * graphite 3D ground, silver skins, quieter chrome, soft lilac documents, test-green has-tests mark, and solar gold
+ * for history changes.
+ */
+export const GRAPHITE_VIVID: Palette = {
+  ...TODAY,
+  text: { ...TODAY.text, onSelected: "#111318" },
+  state: { selected: "#c9ced8", selectedHover: "#aab1bd" },
+  role: { offers: "#67dfff", uses: "#56ffad" },
+  kind: { ...TODAY.kind, implementation: "#008dfe", test: "#6ec439", asset: "#fe4986", document: "#bca3d2", directory: "#c97510" },
+  hasTests: { mark: "#6ec439", text: "#e6f5dc", textMuted: "#c8e3b8", label: "#9fd27f" },
+  history: { changed: "#ffd335" },
+  signal: { ...TODAY.signal, cue: "#dea06d", cueText: "#f0c39a" },
+  typeRef: PROPOSED.typeRef,
+  scene: {
+    ...TODAY.scene,
+    ground: "#0c0d10", citedBy: "#ddd0ea", unmatchedWire: "#a3a9b3", skin: "#b4bcc8", skinShine: "#5a6070",
+    cloud: "#a5adb8", hoverRim: "#e6eaf0", keySample: "#aeb4be", labelGround: "#0a0b0e", labelLine: "#4a4f59",
+    directoryLabel: "#eab27a", directoryLabelLine: "#6a4a26", travellingName: "#15171b"
+  },
+  world: {
+    light: { ...TODAY.world.light, offers: "#046aac", uses: "#008e60", warm: "#a86003" },
+    dark: { ...TODAY.world.dark, offers: "#67dfff", uses: "#56ffad", warm: "#dea06d" }
+  },
+  secondValues: {
+    offersPin: "#67dfff", usesPin: "#56ffad", selectedRing: "#c9ced8", sourcesHover: "#aab1bd",
+    testLabel: "#6ec439", implementationLabelTint: "#008dfe", testLabelTint: "#6ec439", assetLabelTint: "#fe4986",
+    errorWash: "#ff8888", pathFoundWash: "#8bd49a", worldLightPressed: "#d7e7f2",
+    worldLightWireOffers: "#046aac", worldLightWireUses: "#008e60", worldDarkWireOffers: "#67dfff", worldDarkWireUses: "#56ffad"
+  }
+};
+
+/**
+ * Holistic palette candidate B (2026-11-24, OKLab-verified): quiet kinds and loud relations — pearl implementation,
+ * violet test matching the has-tests mark, warm paper-white document, cool ink grounds in 2D and 3D, moonlit skins,
+ * and solar gold for history changes.
+ */
+export const MOONLIT_INK: Palette = {
+  ...TODAY,
+  ground: {
+    page: "#13151b", deep: "#0c0e13", surface: "#171a21", raised: "#1a1d24", card: "#1d2028", cardHover: "#282c36",
+    control: "#2c303a", glass: "#1c1f27", shade: "#000000", sheen: "#ffffff"
+  },
+  line: { border: "#2a2e38", interactive: "#3a3f4c", hover: "#737b8a", membrane: "#383d4a" },
+  text: { ...TODAY.text, onSelected: "#10131a" },
+  state: { selected: "#dfe5ef", selectedHover: "#bcc5d3" },
+  role: { offers: "#01aafd", uses: "#64e9a4" },
+  kind: { ...TODAY.kind, implementation: "#adb4ba", test: "#896dff", asset: "#e95693", document: "#fef4e1", directory: "#cd7203" },
+  hasTests: { ...TODAY.hasTests, mark: "#896dff" },
+  history: { changed: "#ffd12a" },
+  signal: { ...TODAY.signal, cue: "#dd9f6c", cueText: "#f0c39a" },
+  typeRef: PROPOSED.typeRef,
+  scene: {
+    ...TODAY.scene,
+    ground: "#070a12", citedBy: "#fbf6e8", skin: "#9fb4d0", skinShine: "#4f6380", cloud: "#8ea3bf",
+    hoverRim: "#dde8ff", keySample: "#aab4c4", labelGround: "#070a12", labelLine: "#3f4a60",
+    directoryLabel: "#f0b47a", directoryLabelLine: "#6b4a28", travellingName: "#12151c"
+  },
+  world: {
+    light: { ...TODAY.world.light, offers: "#046aac", uses: "#008e60", warm: "#a86003" },
+    dark: { ...TODAY.world.dark, offers: "#01aafd", uses: "#64e9a4", warm: "#dd9f6c" }
+  },
+  secondValues: {
+    offersPin: "#01aafd", usesPin: "#64e9a4", selectedRing: "#dfe5ef", sourcesHover: "#bcc5d3",
+    testLabel: "#896dff", implementationLabelTint: "#adb4ba", testLabelTint: "#896dff", assetLabelTint: "#e95693",
+    errorWash: "#ff8888", pathFoundWash: "#8bd49a", worldLightPressed: "#d7e7f2",
+    worldLightWireOffers: "#046aac", worldLightWireUses: "#008e60", worldDarkWireOffers: "#01aafd", worldDarkWireUses: "#64e9a4"
+  }
+};
+
+/**
+ * Holistic palette candidate C (2026-11-24, OKLab-verified): pewter structure, cool code (periwinkle implementation,
+ * olive test), warm content (apricot document, rose asset), lifted slate dusk grounds, and solar gold for history changes.
+ */
+export const SLATE_STRUCTURE: Palette = {
+  ...TODAY,
+  ground: {
+    page: "#191c22", deep: "#12141a", surface: "#1d2027", raised: "#20242b", card: "#22262e", cardHover: "#2d323b",
+    control: "#343943", glass: "#22262d", shade: "#000000", sheen: "#ffffff"
+  },
+  line: { border: "#2e333c", interactive: "#3e444f", hover: "#7a8290", membrane: "#3c424d" },
+  text: { ...TODAY.text, subtle: "#909090", panelSubtle: "#8a92a2", onSelected: "#0f1217" },
+  state: { selected: "#dfe3e9", selectedHover: "#c0c6cf" },
+  role: { offers: "#a2ddff", uses: "#46fdb6" },
+  kind: { ...TODAY.kind, implementation: "#6082fe", test: "#749c12", asset: "#cd5d77", document: "#f49e6e", directory: "#8fa2b1" },
+  hasTests: { mark: "#749c12", text: "#eef5dc", textMuted: "#d3e2b0", label: "#a9c46a" },
+  history: { changed: "#ffdc58" },
+  signal: { ...TODAY.signal, cue: "#dea187", cueText: "#f2c6ae" },
+  typeRef: PROPOSED.typeRef,
+  scene: {
+    ...TODAY.scene,
+    ground: "#141820", citedBy: "#f8cdb2", unmatchedWire: "#9aa6b5", skin: "#a9b4c2", skinShine: "#586272",
+    cloud: "#9aa5b4", hoverRim: "#e3e9f2", keySample: "#aab3bf", labelGround: "#10131a", labelLine: "#4a5260",
+    chipLine: "#565c66", directoryLabel: "#c9d2de", directoryLabelLine: "#4f5866", travellingName: "#171a20"
+  },
+  world: {
+    light: { ...TODAY.world.light, offers: "#046aac", uses: "#008e60", warm: "#a86003" },
+    dark: { ...TODAY.world.dark, offers: "#a2ddff", uses: "#46fdb6", warm: "#dea187" }
+  },
+  secondValues: {
+    offersPin: "#a2ddff", usesPin: "#46fdb6", selectedRing: "#dfe3e9", sourcesHover: "#c0c6cf",
+    testLabel: "#749c12", implementationLabelTint: "#6082fe", testLabelTint: "#749c12", assetLabelTint: "#cd5d77",
+    errorWash: "#ff8888", pathFoundWash: "#8bd49a", worldLightPressed: "#d7e7f2",
+    worldLightWireOffers: "#046aac", worldLightWireUses: "#008e60", worldDarkWireOffers: "#a2ddff", worldDarkWireUses: "#46fdb6"
+  }
+};
+
 /** The palettes a viewer may choose, by name. */
-export const PALETTES = { today: TODAY, proposed: PROPOSED, vividKinds: VIVID_KINDS } as const satisfies Record<string, Palette>;
+export const PALETTES = {
+  today: TODAY, proposed: PROPOSED, vividKinds: VIVID_KINDS,
+  graphiteVivid: GRAPHITE_VIVID, moonlitInk: MOONLIT_INK, slateStructure: SLATE_STRUCTURE
+} as const satisfies Record<string, Palette>;
 
 /** A palette's name. */
 export type PaletteName = keyof typeof PALETTES;

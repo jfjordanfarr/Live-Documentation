@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: `packages/explorer/src/client/views/forceGraphEmphasis.test.ts`
-- Generated At: 2026-11-22T07:12:54.647Z
+- Generated At: 2026-11-24T20:38:09.054Z
 
 ## Authored
 ### Purpose
@@ -35,5 +35,6 @@ _No public symbols detected_
 - [`forceGraphEmphasis.emphasizedWireAlpha`](./forceGraphEmphasis.ts.mdmd.md#symbol-emphasizedwirealpha)
 - [`forceGraphEmphasis.glows`](./forceGraphEmphasis.ts.mdmd.md#symbol-glows)
 - [`forceGraphEmphasis.pairKey`](./forceGraphEmphasis.ts.mdmd.md#symbol-pairkey)
+- [`forceGraphEmphasis.rimmed`](./forceGraphEmphasis.ts.mdmd.md#symbol-rimmed)
 - `vitest` - `describe`, `expect`, `it`
 <!-- LIVE-DOC:END Dependencies -->

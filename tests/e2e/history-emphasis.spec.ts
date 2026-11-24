@@ -53,13 +53,13 @@ async function settled(page: Page): Promise<void> {
 type Colour = [number, number, number];
 
 /**
- * The colour a sphere is drawn in, read from the instance buffer, and whether a marble is drawn on it: its veins'
- * fourth value, one for a marble and zero for none (`writeMarble` in forceGraphBatches.ts).
+ * The colour a sphere is drawn in, read from the instance buffer, whether a marble is drawn on it (`spatialMarbleVeins.w`),
+ * and whether it wears the history change rim (`spatialChanged`).
  */
-async function drawnSphere(page: Page, id: string): Promise<{ colour: Colour; marble: boolean }> {
+async function drawnSphere(page: Page, id: string): Promise<{ colour: Colour; marble: boolean; changed: boolean }> {
   return page.evaluate(id => {
     const { scene } = (window as unknown as { renderedGraph: { scene: Scene } }).renderedGraph;
-    let found: { colour: [number, number, number]; marble: boolean } = { colour: [NaN, NaN, NaN], marble: false };
+    let found: { colour: [number, number, number]; marble: boolean; changed: boolean } = { colour: [NaN, NaN, NaN], marble: false, changed: false };
     scene.traverse(object => {
       const mesh = object as InstancedMesh;
       const batch = mesh.userData.spatialBatch as { kind: string; entries: SpatialDrawEntry<{ id: string }>[] } | undefined;
@@ -68,7 +68,8 @@ async function drawnSphere(page: Page, id: string): Promise<{ colour: Colour; ma
       if (!entry) return;
       const colour = (mesh.material as MeshLambertMaterial).color.clone(); mesh.getColorAt(entry.slot, colour);
       const veins = mesh.geometry.getAttribute("spatialMarbleVeins");
-      found = { colour: [colour.r, colour.g, colour.b], marble: veins ? veins.getW(entry.slot) === 1 : false };
+      const changed = mesh.geometry.getAttribute("spatialChanged");
+      found = { colour: [colour.r, colour.g, colour.b], marble: veins ? veins.getW(entry.slot) === 1 : false, changed: changed ? changed.getX(entry.slot) === 1 : false };
     });
     return found;
   }, id);
@@ -110,22 +111,21 @@ const emphasis = (mode: string) => async ({ context }: { context: import("@playw
   }, mode);
 };
 
-const WHITE: Colour = [1, 1, 1];
-
-test("a commit's changed file is white immediately while the rest keep their base colour", async ({ page, context, browser }) => {
+test("a commit's changed file wears the history rim immediately while keeping its own colour and marble", async ({ page, context, browser }) => {
   await emphasis("glow")({ context });
   await observeGraph(page);
   const address = entry(await commitWith(page, "Retire the legacy helper"));
-  const own = await ownSpheres(browser, address, ["src/engine/util.ts"]);
+  const own = await ownSpheres(browser, address, ["src/app/main.ts", "src/engine/util.ts"]);
   await page.goto(address);
   await settled(page);
   const changed = await drawnSphere(page, "src/app/main.ts"), unchanged = await drawnSphere(page, "src/engine/util.ts");
   expect(unchanged.colour.every(Number.isFinite) && changed.colour.every(Number.isFinite)).toBe(true);
-  expect(changed.colour).toEqual(WHITE);
-  expect(unchanged.colour).not.toEqual(WHITE);
+  expect(changed.colour, "the changed file keeps its own kind colour").toEqual(own["src/app/main.ts"]);
   expect(unchanged.colour, "the unchanged file keeps its own colour").toEqual(own["src/engine/util.ts"]);
-  // White replaces the changed file's marble, as it replaces a plain sphere's colour; the rest keep theirs.
-  expect(changed.marble, "the glowing file carries no marble").toBe(false);
+  expect(changed.changed, "the glowing file wears the history rim").toBe(true);
+  expect(unchanged.changed, "the unchanged file wears no rim").toBe(false);
+  // The rim draws over the glass and veins: both changed and unchanged files keep their marbles.
+  expect(changed.marble, "the glowing file keeps its marble").toBe(true);
   expect(unchanged.marble, "the unchanged file is a marble").toBe(true);
   const nodes = await renderedNodes(page);
   expect(nodes.find(node => node.id === "src/engine/util.ts")!.opacity, "under glow the rest are not dimmed").toBeCloseTo(0.75, 2);
@@ -133,7 +133,7 @@ test("a commit's changed file is white immediately while the rest keep their bas
 });
 
 for (const mode of ["glow", "dim"] as const) for (const rate of [1, 0.5]) {
-  test(`${mode} holds colours and alpha through a commit at ${rate} step/s and changes them only at the next event`, async ({ page, context, browser }) => {
+  test(`${mode} holds colours, rim and alpha through a commit at ${rate} step/s and changes them only at the next event`, async ({ page, context, browser }) => {
     test.setTimeout(90_000);
     await emphasis(mode)({ context });
     await observeGraph(page);
@@ -146,20 +146,19 @@ for (const mode of ["glow", "dim"] as const) for (const rate of [1, 0.5]) {
     };
     await page.goto(entry(at));
     await settled(page);
-    const changedColour = (id: string, step: keyof typeof own): Colour => mode === "glow" ? WHITE : own[step][id];
     const backgroundAlpha = mode === "glow" ? 0.75 : 0.15;
     const appearance = async () => {
       const [mainSphere, utilSphere, nodes] = await Promise.all([drawnSphere(page, main), drawnSphere(page, util), renderedNodes(page)]);
-      return { mainColour: mainSphere.colour, mainMarble: mainSphere.marble, utilColour: utilSphere.colour, utilMarble: utilSphere.marble,
+      return { mainColour: mainSphere.colour, mainMarble: mainSphere.marble, mainChanged: mainSphere.changed,
+        utilColour: utilSphere.colour, utilMarble: utilSphere.marble, utilChanged: utilSphere.changed,
         mainAlpha: nodes.find(node => node.id === main)!.opacity, utilAlpha: nodes.find(node => node.id === util)!.opacity };
     };
     const first = await appearance();
     expect(first.utilColour.every(Number.isFinite)).toBe(true);
-    expect(first.utilColour).not.toEqual(WHITE);
-    expect(first.mainColour).toEqual(changedColour(main, "at"));
+    expect(first.mainColour, "the changed file keeps its own colour").toEqual(own.at[main]);
     expect(first.utilColour, "the unchanged file keeps its own colour").toEqual(own.at[util]);
-    // Glow's white replaces the changed file's marble; Dim keeps every marble.
-    expect([first.mainMarble, first.utilMarble]).toEqual([mode !== "glow", true]);
+    expect([first.mainChanged, first.utilChanged]).toEqual([mode === "glow", false]);
+    expect([first.mainMarble, first.utilMarble]).toEqual([true, true]);
     expect(first.mainAlpha).toBeCloseTo(0.75, 5);
     expect(first.utilAlpha).toBeCloseTo(backgroundAlpha, 5);
     await page.getByLabel("Playback speed").selectOption(String(rate));
@@ -173,20 +172,29 @@ for (const mode of ["glow", "dim"] as const) for (const rate of [1, 0.5]) {
     }
     await expect(page.locator(".history-track")).toHaveAttribute("aria-valuenow", "5");
     await page.getByRole("button", { name: "Pause", exact: true }).click();
-    await expect.poll(() => drawnColour(page, main)).toEqual(own.next[main]);
-    await expect.poll(() => drawnColour(page, util)).toEqual(changedColour(util, "next"));
+    if (mode === "glow") {
+      await expect.poll(async () => (await drawnSphere(page, main)).changed).toBe(false);
+      await expect.poll(async () => (await drawnSphere(page, util)).changed).toBe(true);
+    } else {
+      await expect.poll(async () => (await renderedNodes(page)).find(node => node.id === main)!.opacity).toBeCloseTo(backgroundAlpha, 5);
+      await expect.poll(async () => (await renderedNodes(page)).find(node => node.id === util)!.opacity).toBeCloseTo(0.75, 5);
+    }
     const stepped = await appearance();
-    // The light moves with the step: main.ts has its marble again, and util.ts loses its own where it glows.
-    expect([stepped.mainMarble, stepped.utilMarble]).toEqual([true, mode !== "glow"]);
+    expect(stepped.mainColour).toEqual(own.next[main]);
+    expect(stepped.utilColour).toEqual(own.next[util]);
+    expect([stepped.mainChanged, stepped.utilChanged]).toEqual([false, mode === "glow"]);
+    expect([stepped.mainMarble, stepped.utilMarble]).toEqual([true, true]);
     expect(stepped.mainAlpha).toBeCloseTo(backgroundAlpha, 5);
     expect(stepped.utilAlpha).toBeCloseTo(0.75, 5);
     // The final commit still has an event, although it uses today's graph. Closing history ends the emphasis.
     await page.locator(".history-track").press("End");
-    await expect.poll(() => drawnColour(page, model)).toEqual(changedColour(model, "last"));
+    await expect.poll(async () => (await drawnSphere(page, model)).changed).toBe(mode === "glow");
+    await expect.poll(() => drawnColour(page, model)).toEqual(own.last[model]);
     await expect.poll(async () => (await renderedNodes(page)).find(node => node.id === model)!.opacity).toBeCloseTo(0.75, 5);
     await page.getByRole("button", { name: "History", exact: true }).click();
+    await expect.poll(async () => (await drawnSphere(page, model)).changed).toBe(false);
     await expect.poll(() => drawnColour(page, model)).toEqual(own.today[model]);
-    expect((await drawnSphere(page, model)).marble, "today the file is a marble again").toBe(true);
+    expect((await drawnSphere(page, model)).marble, "today the file is a marble").toBe(true);
     await expect.poll(async () => (await renderedNodes(page)).find(node => node.id === util)!.opacity).toBeCloseTo(0.75, 5);
   });
 }
@@ -205,6 +213,7 @@ test("with the rest dimmed, the changed file keeps its alpha; closing history re
   const changed = await drawnSphere(page, "src/app/main.ts"), unchanged = await drawnSphere(page, "src/engine/util.ts");
   expect(changed.colour, "under dim the changed file keeps its own colour").toEqual(own["src/app/main.ts"]);
   expect(unchanged.colour, "and the dimmed file its own").toEqual(own["src/engine/util.ts"]);
+  expect([changed.changed, unchanged.changed], "under dim nothing wears the rim").toEqual([false, false]);
   expect([changed.marble, unchanged.marble], "under dim both keep their marbles").toEqual([true, true]);
   // Today, with the history closed, nothing is a step's change.
   await page.getByRole("button", { name: "History" }).click();
@@ -235,20 +244,28 @@ for (const mode of ["dim", "both"] as const) {
         return ids.has(main) && ids.has(util);
       }, { timeout: 60_000, message: "the pinned file and the changed file are drawn" }).toBe(true);
     };
-    const address = pinned(await commitWith(page, "Retire the legacy helper"));
-    const own = await ownColours(browser, address, drawn, async plain => drawnColour(plain, util));
-    await page.goto(address);
+    const [at, next] = await Promise.all([commitWith(page, "Retire the legacy helper"), commitWith(page, "Retire the legacy helper", "history", 1)]);
+    const own = {
+      at: await ownColours(browser, pinned(at), drawn, async plain => drawnColour(plain, util)),
+      next: await ownColours(browser, pinned(next), drawn, async plain => drawnColour(plain, util))
+    };
+    await page.goto(pinned(at));
     await drawn(page);
     const nodes = await renderedNodes(page);
     const opacity = (id: string): number => nodes.find(node => node.id === id)!.opacity;
     expect(opacity(util), "the pinned file is not dimmed").toBeCloseTo(0.75, 5);
-    expect(await drawnColour(page, util), "and keeps its own colour").toEqual(own);
+    expect(await drawnColour(page, util), "and keeps its own colour").toEqual(own.at);
     expect((await drawnSphere(page, util)).marble, "and its marble").toBe(true);
+    expect((await drawnSphere(page, util)).changed, "and wears no rim before it changes").toBe(false);
     const changedAlpha = opacity(main);
     expect(nodes.filter(node => node.id !== util && node.id !== main).some(node => node.opacity < 0.2), "the rest the step left is dimmed").toBe(true);
-    // The next step changed util.ts and not main.ts: util.ts, under Both, glows white; main.ts dims to a fifth.
+    // The next step changed util.ts and not main.ts: util.ts, under Both, wears the rim while keeping its colour and marble; main.ts dims to a fifth.
     await page.locator(".history-track").press("ArrowRight");
-    if (mode === "both") await expect.poll(() => drawnColour(page, util)).toEqual(WHITE);
+    if (mode === "both") {
+      await expect.poll(async () => (await drawnSphere(page, util)).changed).toBe(true);
+      expect(await drawnColour(page, util), "util.ts keeps its own colour under the rim").toEqual(own.next);
+      expect((await drawnSphere(page, util)).marble, "and keeps its marble").toBe(true);
+    }
     // main.ts stands a hop from the pin, at the frontier, whose own alpha the step then takes to a fifth.
     await expect.poll(async () => (await renderedNodes(page)).find(node => node.id === main)?.opacity, "main.ts, unchanged now, dims").toBeLessThan(0.2);
     expect(changedAlpha, "and was brighter while the step had changed it").toBeGreaterThan(0.2);
@@ -281,7 +298,7 @@ async function drawnBubbles(page: Page): Promise<{ files: DrawnUnit[]; balloons:
       const mesh = scene.getObjectByName(name) as InstancedMesh | undefined;
       if (!mesh?.visible) return [];
       const records = mesh.userData.spatialUnits as Array<{ seed: string; id: string; veiled: boolean }>;
-      const opacity = mesh.geometry.getAttribute("spatialOpacity"), lit = mesh.geometry.getAttribute("spatialLit");
+      const opacity = mesh.geometry.getAttribute("spatialOpacity"), lit = mesh.geometry.getAttribute("spatialLit") ?? mesh.geometry.getAttribute("spatialChanged");
       // The dots carry a marble's veins, their fourth value one for a marble and zero for none; the balloons carry none.
       const veins = mesh.geometry.getAttribute("spatialMarbleVeins");
       return Array.from({ length: mesh.count }, (_, slot) => ({ seed: records[slot].seed, id: records[slot].id, veiled: records[slot].veiled,
@@ -320,10 +337,8 @@ async function bubblesDrawn(page: Page, files: readonly string[], skins: readonl
   }, { timeout: 60_000, message: "the sample's skins and the dots within them have been drawn" }).toBe(true);
 }
 
-const white = (drawn: DrawnUnit): boolean => drawn.color.every(channel => channel === 1);
-
 test.describe("inside the wrappers", () => {
-  test("a changed file's dot is white while the rest keep their own colour, and the next step moves the light", async ({ page, context, browser }) => {
+  test("a changed file's dot wears the rim while keeping its own colour and marble, and the next step moves the light", async ({ page, context, browser }) => {
     test.setTimeout(90_000);
     await emphasis("glow")({ context });
     await observeGraph(page);
@@ -337,31 +352,34 @@ test.describe("inside the wrappers", () => {
     await bubblesDrawn(page, dots, ["directory:src"]);
     const first = await drawnBubbles(page);
     const main = unit(first.files, "src/app/main.ts"), util = unit(first.files, "src/engine/util.ts");
-    expect(main.color).toEqual([1, 1, 1]);
+    expect(main.color, "the changed dot keeps its own colour").toEqual(own.at["src/app/main.ts"]);
     expect(util.color.every(Number.isFinite)).toBe(true);
-    expect(white(util)).toBe(false);
     expect(util.color, "the unchanged dot keeps its own colour").toEqual(own.at["src/engine/util.ts"]);
-    // White replaces the glowing dot's marble, as it does a sphere's; the rest keep theirs.
-    expect([main.marble, util.marble]).toEqual([false, true]);
-    // White and whole as a changed sphere is, at the spheres' alpha; under glow the rest are not dimmed.
+    expect([main.lit, util.lit], "only the changed dot wears the rim").toEqual([1, 0]);
+    // Both changed and unchanged dots keep their marbles; the rim sits over the glass and veins.
+    expect([main.marble, util.marble]).toEqual([true, true]);
+    // At the spheres' alpha; under glow the rest are not dimmed.
     expect(main.alpha).toBeCloseTo(0.75, 5);
     expect(util.alpha).toBeCloseTo(0.75, 5);
     // The open balloon holding the lit dot is not lit itself, nor the skin around it: the dot says where.
     expect(unit(first.balloons, "src/app").lit).toBe(0);
     expect(unit(first.balloons, "src/engine").lit).toBe(0);
     expect(skin(first.skins, "directory:src")).toEqual({ seed: "directory:src", lit: 0, alpha: 1 });
-    // Stepping on: util.ts changed and main.ts did not; main.ts returns to its own colour and its marble.
+    // Stepping on: util.ts changed and main.ts did not; the rim moves to util.ts and both keep their colours and marbles.
     await page.locator(".history-track").press("ArrowRight");
-    await expect.poll(async () => unit((await drawnBubbles(page)).files, "src/engine/util.ts").color).toEqual([1, 1, 1]);
+    await expect.poll(async () => unit((await drawnBubbles(page)).files, "src/engine/util.ts").lit).toBe(1);
     const stepped = await drawnBubbles(page);
+    expect(unit(stepped.files, "src/app/main.ts").lit).toBe(0);
     expect(unit(stepped.files, "src/app/main.ts").color).toEqual(own.next["src/app/main.ts"]);
-    expect([unit(stepped.files, "src/app/main.ts").marble, unit(stepped.files, "src/engine/util.ts").marble]).toEqual([true, false]);
-    // Leaving the history restores every unit's own colour.
+    expect(unit(stepped.files, "src/engine/util.ts").color).toEqual(own.next["src/engine/util.ts"]);
+    expect([unit(stepped.files, "src/app/main.ts").marble, unit(stepped.files, "src/engine/util.ts").marble]).toEqual([true, true]);
+    // Leaving the history restores every unit unrimmed.
     await page.getByRole("button", { name: "History", exact: true }).click();
-    await expect.poll(async () => unit((await drawnBubbles(page)).files, "src/engine/util.ts").color).toEqual(own.today["src/engine/util.ts"]);
+    await expect.poll(async () => unit((await drawnBubbles(page)).files, "src/engine/util.ts").lit).toBe(0);
     const today = await drawnBubbles(page);
     expect(unit(today.files, "src/app/main.ts").color).toEqual(own.today["src/app/main.ts"]);
-    expect(today.files.some(white)).toBe(false);
+    expect(unit(today.files, "src/engine/util.ts").color).toEqual(own.today["src/engine/util.ts"]);
+    expect(today.files.every(file => file.lit === 0)).toBe(true);
     expect(today.files.every(file => file.marble), "today every dot is a marble").toBe(true);
     expect([...today.balloons, ...today.skins].every(item => item.lit === 0)).toBe(true);
   });
@@ -375,8 +393,8 @@ test.describe("inside the wrappers", () => {
     // lib/big.ts is gone; lib holds no bubble of its own directory, so its skin is the innermost thing drawn for it.
     expect(drawn.files.some(file => file.id === "lib/big.ts")).toBe(false);
     expect(skin(drawn.skins, "directory:lib").lit).toBe(1);
-    expect(white(unit(drawn.files, "lib/huge.ts")), "the rewrite born in its place is a changed dot").toBe(true);
-    expect(white(unit(drawn.files, "lib/legacy.ts"))).toBe(false);
+    expect(unit(drawn.files, "lib/huge.ts").lit, "the rewrite born in its place is a rimmed dot").toBe(1);
+    expect(unit(drawn.files, "lib/legacy.ts").lit).toBe(0);
     expect(skin(drawn.skins, "directory:src").lit).toBe(0);
     // The step before deleted nothing in lib: its skin is not lit.
     await page.locator(".history-track").press("ArrowLeft");
@@ -397,6 +415,7 @@ test.describe("inside the wrappers", () => {
     expect(util.alpha).toBeCloseTo(0.15, 5);
     expect(main.color, "under dim the changed file keeps its own colour").toEqual(own["src/app/main.ts"]);
     expect(util.color, "and the dimmed file its own").toEqual(own["src/engine/util.ts"]);
+    expect([main.lit, util.lit], "under dim nothing wears the rim").toEqual([0, 0]);
     expect([main.marble, util.marble], "under dim every dot keeps its marble").toEqual([true, true]);
     expect(unit(drawn.balloons, "src/app").alpha).toBeCloseTo(1, 5);
     expect(unit(drawn.balloons, "src/engine").alpha).toBeCloseTo(0.2, 5);
@@ -424,27 +443,27 @@ test.describe("inside the wrappers", () => {
     await bubblesDrawn(page, ["lib/huge.ts", "src/app/main.ts"], ["directory:lib", "directory:src"]);
     const drawn = await drawnBubbles(page);
     expect(drawn.files.length).toBe(6);
-    expect(drawn.files.some(white)).toBe(false);
+    expect(drawn.files.every(file => file.lit === 0)).toBe(true);
     expect(drawn.files.every(file => Math.abs(file.alpha - 0.75) < 1e-6)).toBe(true);
     expect(drawn.balloons.every(balloon => balloon.lit === 0 && Math.abs(balloon.alpha - 1) < 1e-6)).toBe(true);
     expect(drawn.skins.every(item => item.lit === 0 && Math.abs(item.alpha - 1) < 1e-6)).toBe(true);
   });
 
-  test("in the Connections layout a changed file's dot inside an island's skin is white; the island's seed glows as a sphere", async ({ page, context }) => {
+  test("in the Connections layout a changed file's dot inside an island's skin is rimmed; the island's seed glows as a sphere", async ({ page, context }) => {
     await emphasis("glow")({ context });
     await observeGraph(page);
     await page.goto(wrapped(await commitWith(page, "Teach the engine to smooth"), "connections"));
     await bubblesDrawn(page, ["src/engine/util.ts", "src/engine/model.ts"], ["src/app/main.ts"]);
     const drawn = await drawnBubbles(page);
-    expect(unit(drawn.files, "src/engine/util.ts").color).toEqual([1, 1, 1]);
-    expect(white(unit(drawn.files, "src/engine/model.ts"))).toBe(false);
+    expect(unit(drawn.files, "src/engine/util.ts").lit).toBe(1);
+    expect(unit(drawn.files, "src/engine/model.ts").lit).toBe(0);
     expect(skin(drawn.skins, "src/app/main.ts").lit).toBe(0);
-    // At the step that changed the seed alone among the island's files that stand, the seed's sphere glows and no dot does.
+    // At the step that changed the seed alone among the island's files that stand, the seed's sphere wears the rim and no dot does.
     await page.locator(".history-track").press("ArrowLeft");
-    await expect.poll(async () => drawnColour(page, "src/app/main.ts")).toEqual([1, 1, 1]);
+    await expect.poll(async () => (await drawnSphere(page, "src/app/main.ts")).changed).toBe(true);
     const before = await drawnBubbles(page);
     expect(before.files.some(file => file.id === "src/app/main.ts"), "the seed is a sphere, never a dot").toBe(false);
-    expect(white(unit(before.files, "src/engine/util.ts"))).toBe(false);
+    expect(unit(before.files, "src/engine/util.ts").lit).toBe(0);
   });
 });
 
@@ -499,7 +518,7 @@ test.describe("inside veils", () => {
     // The open bubble around it holds the change and is not lit; nor is the skin.
     expect(unit(drawn.balloons, around).lit).toBe(0);
     expect(skin(drawn.skins, "directory:big").lit).toBe(0);
-    expect(drawn.files.some(white)).toBe(false);
+    expect(drawn.files.some(file => file.lit === 1)).toBe(false);
   });
 
   test("a body veiled whole lights for a change in it, and the body beside it does not", async ({ page, context }) => {
@@ -514,7 +533,7 @@ test.describe("inside veils", () => {
     expect(veil.lit).toBe(1);
     expect(drawn.balloons.filter(balloon => balloon.lit === 1).map(balloon => balloon.id)).toEqual(["directory:big"]);
     expect(drawn.files.filter(file => file.seed === "directory:wide").length).toBe(10);
-    expect(drawn.files.some(white)).toBe(false);
+    expect(drawn.files.some(file => file.lit === 1)).toBe(false);
     expect(drawn.skins.every(item => item.lit === 0)).toBe(true);
   });
 });

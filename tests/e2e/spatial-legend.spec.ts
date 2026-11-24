@@ -116,14 +116,27 @@ test("the spatial key follows rendered kinds, including a retained test hidden b
 test("the Local Map shows the matching legend and lends neither key to another view", async ({ page }) => {
   await page.goto("/samples/estate/?view=local&mode=3d&node=Portal/Services/GatewayClient.cs");
   await expect(page.locator("#spatial-legend")).toBeVisible();
-  // The subject's one hop ends in a frontier; Skin also names the wrapped groups and directory shells. With the wrappers on
-  // no sphere wears a ring, so the key has no row for it (2026-11-18); until then the frontier's spheres with more behind
-  // them wore rings beside the shells. The marbles' veins have no row: the files are plain by default (again since
-  // 2026-11-19; on 2026-11-18 and 19, with marbles the default, the key had an Offers and Uses row).
+  // The subject's one hop ends in a frontier; Skin also names the directory shells. With the default next-step horizon
+  // (promoted 2026-11-24) unreached islands are omitted so "Wrapped group" appears only when beyondHops is "everything".
+  // With the wrappers on no sphere wears a ring, so the key has no row for it (2026-11-18). The marbles' veins have no
+  // row: the files are plain by default (again since 2026-11-19).
+  await expect(page.locator("#spatial-legend .legend-row")).toHaveText([
+    "Implementation", "Symbols", "References", "Beyond", "Directory shell"
+  ]);
+  expectFewWords(await rowsOf(page, "#spatial-legend"), "the 3D key");
+  await page.evaluate(() => {
+    const select = document.getElementById("tuning-force-beyond-hops") as HTMLSelectElement;
+    select.value = "everything";
+    select.dispatchEvent(new Event("change", { bubbles: true }));
+  });
   await expect(page.locator("#spatial-legend .legend-row")).toHaveText([
     "Implementation", "Symbols", "References", "Beyond", "Wrapped group", "Directory shell"
   ]);
-  expectFewWords(await rowsOf(page, "#spatial-legend"), "the 3D key");
+  await page.evaluate(() => {
+    const select = document.getElementById("tuning-force-beyond-hops") as HTMLSelectElement;
+    select.value = "next-step";
+    select.dispatchEvent(new Event("change", { bubbles: true }));
+  });
   // With the wrappers Off the ring is the picture's only sign of more (the owner's choice of 2026-11-02), and the key says
   // what it means.
   await page.evaluate(() => {
@@ -294,10 +307,10 @@ test("the key's words are whole and apart in both maps, in the sidebar's one wid
   }
   await page.setViewportSize({ width: 1280, height: 800 });
   await page.goto("/samples/estate/?view=local&mode=3d&node=Portal/Services/GatewayClient.cs");
-  // Six rows under Skin since 2026-11-18, when the ring's row left the key with the rings; the marbles' veins have no
-  // row while the files are plain, the default (again since 2026-11-19).
-  await expect(page.locator("#spatial-legend .legend-row")).toHaveCount(6);
-  await audit("3D", 6);
+  // Five rows under Skin with the default next-step horizon (promoted 2026-11-24; "Wrapped group" only appears when
+  // beyondHops is "everything"); the marbles' veins have no row while the files are plain, the default.
+  await expect(page.locator("#spatial-legend .legend-row")).toHaveCount(5);
+  await audit("3D", 5);
   // The audit sees these words: squeezed into a quarter of the panel, they are cut, and it says so.
   await page.addStyleTag({ content: "#map-legend { width: 60px; overflow: hidden; }" });
   expect((await truncations(page, WORDS)).length, "the audit finds the key's words when they are cut").toBeGreaterThan(0);

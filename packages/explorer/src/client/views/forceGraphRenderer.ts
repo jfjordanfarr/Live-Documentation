@@ -171,6 +171,8 @@ export class SpatialRenderer<N extends SpatialNode, L extends SpatialDrawLink<N>
   nodeRing(read: (node: N) => string | null): this { this.options.style.ring = read; this.invalidateAppearance(); return this; }
   /** Replace the rule for the marble a sphere is drawn as, or null for a plain sphere (2026-11-17). */
   nodeMarble(read: (node: N) => Marble | null): this { this.options.style.marble = read; this.invalidateAppearance(); return this; }
+  /** Replace the rule for whether a sphere wears the history change rim (2026-11-24). */
+  nodeChanged(read: (node: N) => boolean): this { this.options.style.changed = read; this.invalidateAppearance(); return this; }
   /**
    * Wrap these nodes in their hulls, drawn in the look given, none when off (2026-11-05): a wrapped group's seed or a
    * directory shell, each at its node's place, or at the place given for one bursting after its node left the picture;

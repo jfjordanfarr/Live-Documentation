@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: `packages/explorer/src/client/palette.test.ts`
-- Generated At: 2026-11-22T07:12:54.022Z
+- Generated At: 2026-11-24T20:38:08.695Z
 
 ## Authored
 ### Purpose
@@ -28,9 +28,12 @@ _No public symbols detected_
 - `node:fs`
 - `node:path`
 - [`palette.DEFAULT_PALETTE`](./palette.ts.mdmd.md#symbol-default_palette)
+- [`palette.GRAPHITE_VIVID`](./palette.ts.mdmd.md#symbol-graphite_vivid)
+- [`palette.MOONLIT_INK`](./palette.ts.mdmd.md#symbol-moonlit_ink)
 - [`palette.PALETTES`](./palette.ts.mdmd.md#symbol-palettes)
 - [`palette.PROPOSED`](./palette.ts.mdmd.md#symbol-proposed)
 - [`Palette`](./palette.ts.mdmd.md#symbol-palette) (type-only)
+- [`palette.SLATE_STRUCTURE`](./palette.ts.mdmd.md#symbol-slate_structure)
 - [`palette.TODAY`](./palette.ts.mdmd.md#symbol-today)
 - [`palette.VIVID_KINDS`](./palette.ts.mdmd.md#symbol-vivid_kinds)
 - [`palette.activePalette`](./palette.ts.mdmd.md#symbol-activepalette)

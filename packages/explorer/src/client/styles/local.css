@@ -739,22 +739,25 @@ body.zoom-controls-active #view-map { height: calc(100% - 70px - var(--history-r
    by the GPU, the blur close up and the aliasing far out the owner saw (Turn 17); the controller sets the class. */
 #map-viewport.camera-moving { will-change: transform; }
 
-/* The step of the history on the 2D map (2026-11-19; legible Dim refinement 2026-11-24), by Tuning's Changed Files as
-   in 3D: under Dim, unchanged non-asked cards soften to 0.46 (or 0.72 when zero visible items changed at this step) while
-   changed cards carry a crisp var(--history-changed) rim so they stand out immediately without washing out the map; under
-   Glow (and Both), changed cards carry the stronger 2 px halo. Classes only, so the thumb's drag lays nothing out. */
-#map-container.history-dims .node-card.is-history-changed { border-color: var(--history-changed); box-shadow: 0 0 0 1.5px var(--history-changed); }
+/* The step of the history on the 2D map (2026-11-19; legible Dim & golden outer rim/glow 2026-11-24), by Tuning's
+   Changed Files as in 3D: each card keeps its own border (including `.test-backed`) inside an outer `box-shadow` in
+   `var(--history-changed)` — crisp 1.5 px under Dim, 2 px plus a soft outer glow under Glow/Both; unchanged non-asked
+   cards soften to 0.46 (or 0.72 when zero visible items changed at this step). Classes only, so the thumb's drag lays
+   nothing out. */
+#map-container.history-dims .node-card.is-history-changed { box-shadow: 0 0 0 1.5px var(--history-changed); }
 #map-container.history-dims .node-card:not(.is-history-changed):not(.is-history-asked) { opacity: .46; }
 #map-container.history-dims[data-history-visible-changes="0"] .node-card:not(.is-history-changed):not(.is-history-asked) { opacity: .72; }
-#map-container.history-glows .node-card.is-history-changed { border-color: var(--history-changed); box-shadow: 0 0 0 2px var(--history-changed); }
+#map-container.history-glows .node-card.is-history-changed { box-shadow: 0 0 0 2px var(--history-changed), 0 0 14px 2px rgba(var(--history-changed-rgb), .5); }
+#map-container.history-dims .node-card.local-focus.is-history-changed { box-shadow: 0 0 0 2px rgba(var(--second-values-selected-ring-rgb), 0.4), 0 0 0 3.5px var(--history-changed), 0 12px 30px rgba(var(--state-selected-rgb), 0.22); }
+#map-container.history-glows .node-card.local-focus.is-history-changed { box-shadow: 0 0 0 2px rgba(var(--second-values-selected-ring-rgb), 0.4), 0 0 0 4px var(--history-changed), 0 0 16px 3px rgba(var(--history-changed-rgb), .5), 0 12px 30px rgba(var(--state-selected-rgb), 0.22); }
 /* A closed directory holding a change is lit as a card is, the change shown at the innermost thing drawn for it: its
-   border in the box shapes, its drawn outline in the folder's; under Dim the closed boxes holding none fade. */
-#map-container.history-dims .local-directory-closed.is-history-changed:not(.local-closed-shape--tab) { border-color: var(--history-changed); box-shadow: 0 0 0 1px var(--history-changed); }
+   outer ring/glow in the box shapes, its drawn outline in the folder's; under Dim the closed boxes holding none fade. */
+#map-container.history-dims .local-directory-closed.is-history-changed:not(.local-closed-shape--tab) { box-shadow: 0 0 0 1px var(--history-changed); }
 #map-container.history-dims .local-directory-closed.is-history-changed .local-closed-outline__look { stroke: var(--history-changed); stroke-width: 1.5px; }
 #map-container.history-dims .local-directory-closed:not(.is-history-changed) { opacity: .46; }
 #map-container.history-dims[data-history-visible-changes="0"] .local-directory-closed:not(.is-history-changed) { opacity: .72; }
-#map-container.history-glows .local-directory-closed.is-history-changed:not(.local-closed-shape--tab) { border-color: var(--history-changed); box-shadow: 0 0 0 1px var(--history-changed); }
-#map-container.history-glows .local-directory-closed.is-history-changed .local-closed-outline__look { stroke: var(--history-changed); stroke-width: 2px; }
+#map-container.history-glows .local-directory-closed.is-history-changed:not(.local-closed-shape--tab) { box-shadow: 0 0 0 2px var(--history-changed), 0 0 12px 2px rgba(var(--history-changed-rgb), .5); }
+#map-container.history-glows .local-directory-closed.is-history-changed .local-closed-outline__look { stroke: var(--history-changed); stroke-width: 2px; filter: drop-shadow(0 0 3px rgba(var(--history-changed-rgb), .7)); }
 /* The mirrored picture (2026-11-22, reading-direction.ts): what uses stands first from the left. The layout is the one
    laid out for the picture that reads the other way, reflected about the upright line through the content root's own
    edge: the root and the wires' layer are reflected, so every place, every membrane and every wire is, and no wire

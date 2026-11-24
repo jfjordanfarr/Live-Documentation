@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/explorer/src/client/palette.ts`
-- Generated At: 2026-11-19T21:10:13.694Z
+- Generated At: 2026-11-24T20:38:08.704Z
 
 ## Authored
 ### Purpose
@@ -88,23 +88,52 @@ identity still stands apart, and every second value equal to its meaning as in t
 kind label in the details panel is the test kind's green, as the test sphere is; a 2D card that tests use keeps the
 has-tests violet.
 
+#### `GRAPHITE_VIVID` {#symbol-graphite_vivid}
+- Type: const
+- Source: [source](../../../../../../packages/explorer/src/client/palette.ts#L345)
+- Returns: [`Palette`](#symbol-palette)
+
+##### `GRAPHITE_VIVID` — Summary
+Holistic palette candidate A (2026-11-24, OKLab-verified): keeps blue implementation and green test, neutral
+graphite 3D ground, silver skins, quieter chrome, soft lilac documents, test-green has-tests mark, and solar gold
+for history changes.
+
+#### `MOONLIT_INK` {#symbol-moonlit_ink}
+- Type: const
+- Source: [source](../../../../../../packages/explorer/src/client/palette.ts#L378)
+- Returns: [`Palette`](#symbol-palette)
+
+##### `MOONLIT_INK` — Summary
+Holistic palette candidate B (2026-11-24, OKLab-verified): quiet kinds and loud relations — pearl implementation,
+violet test matching the has-tests mark, warm paper-white document, cool ink grounds in 2D and 3D, moonlit skins,
+and solar gold for history changes.
+
+#### `SLATE_STRUCTURE` {#symbol-slate_structure}
+- Type: const
+- Source: [source](../../../../../../packages/explorer/src/client/palette.ts#L415)
+- Returns: [`Palette`](#symbol-palette)
+
+##### `SLATE_STRUCTURE` — Summary
+Holistic palette candidate C (2026-11-24, OKLab-verified): pewter structure, cool code (periwinkle implementation,
+olive test), warm content (apricot document, rose asset), lifted slate dusk grounds, and solar gold for history changes.
+
 #### `PALETTES` {#symbol-palettes}
 - Type: const
-- Source: [source](../../../../../../packages/explorer/src/client/palette.ts#L341)
+- Source: [source](../../../../../../packages/explorer/src/client/palette.ts#L449)
 
 ##### `PALETTES` — Summary
 The palettes a viewer may choose, by name.
 
 #### `PaletteName` {#symbol-palettename}
 - Type: type
-- Source: [source](../../../../../../packages/explorer/src/client/palette.ts#L344)
+- Source: [source](../../../../../../packages/explorer/src/client/palette.ts#L455)
 
 ##### `PaletteName` — Summary
 A palette's name.
 
 #### `DEFAULT_PALETTE` {#symbol-default_palette}
 - Type: const
-- Source: [source](../../../../../../packages/explorer/src/client/palette.ts#L347)
+- Source: [source](../../../../../../packages/explorer/src/client/palette.ts#L458)
 - Returns: [`PaletteName`](#symbol-palettename)
 
 ##### `DEFAULT_PALETTE` — Summary
@@ -112,14 +141,14 @@ The palette drawn when none is chosen.
 
 #### `isPaletteName` {#symbol-ispalettename}
 - Type: const
-- Source: [source](../../../../../../packages/explorer/src/client/palette.ts#L350)
+- Source: [source](../../../../../../packages/explorer/src/client/palette.ts#L461)
 
 ##### `isPaletteName` — Summary
 Whether a saved name is a palette's.
 
 #### `MASK_KEEP` {#symbol-mask_keep}
 - Type: const
-- Source: [source](../../../../../../packages/explorer/src/client/palette.ts#L353)
+- Source: [source](../../../../../../packages/explorer/src/client/palette.ts#L464)
 - Returns: [`Colour`](#symbol-colour)
 
 ##### `MASK_KEEP` — Summary
@@ -127,7 +156,7 @@ A cell mask's luminance where the cells stay drawn: not a colour a person sees, 
 
 #### `MASK_FADE` {#symbol-mask_fade}
 - Type: const
-- Source: [source](../../../../../../packages/explorer/src/client/palette.ts#L355)
+- Source: [source](../../../../../../packages/explorer/src/client/palette.ts#L466)
 - Returns: [`Colour`](#symbol-colour)
 
 ##### `MASK_FADE` — Summary
@@ -135,14 +164,14 @@ A cell mask's luminance where the cells fade, at a field's end.
 
 #### `activePalette` {#symbol-activepalette}
 - Type: const
-- Source: [source](../../../../../../packages/explorer/src/client/palette.ts#L361)
+- Source: [source](../../../../../../packages/explorer/src/client/palette.ts#L472)
 
 ##### `activePalette` — Summary
 The palette in force.
 
 #### `marblesDrawn` {#symbol-marblesdrawn}
 - Type: const
-- Source: [source](../../../../../../packages/explorer/src/client/palette.ts#L369)
+- Source: [source](../../../../../../packages/explorer/src/client/palette.ts#L480)
 
 ##### `marblesDrawn` — Summary
 Whether files are drawn as marbles (the marble trial, 2026-11-17): each file's colour its kind's glass with veins of
@@ -152,14 +181,14 @@ default on 2026-11-18 and 19).
 
 #### `paletteNamed` {#symbol-palettenamed}
 - Type: const
-- Source: [source](../../../../../../packages/explorer/src/client/palette.ts#L372)
+- Source: [source](../../../../../../packages/explorer/src/client/palette.ts#L483)
 
 ##### `paletteNamed` — Summary
 A palette by name, the default for a name no palette has.
 
 #### `whenPaletteChanges` {#symbol-whenpalettechanges}
 - Type: function
-- Source: [source](../../../../../../packages/explorer/src/client/palette.ts#L380)
+- Source: [source](../../../../../../packages/explorer/src/client/palette.ts#L491)
 - Parameters: `palette`: [`Palette`](#symbol-palette)
 
 ##### `whenPaletteChanges` — Summary
@@ -168,7 +197,7 @@ drew is drawn again as it now should be; returns the unsubscription.
 
 #### `choosePalette` {#symbol-choosepalette}
 - Type: function
-- Source: [source](../../../../../../packages/explorer/src/client/palette.ts#L386)
+- Source: [source](../../../../../../packages/explorer/src/client/palette.ts#L497)
 - Returns: [`Palette`](#symbol-palette)
 
 ##### `choosePalette` — Summary
@@ -176,42 +205,42 @@ Puts a palette in force by name, the default for a name no palette has, tells wh
 
 #### `chooseMarbles` {#symbol-choosemarbles}
 - Type: function
-- Source: [source](../../../../../../packages/explorer/src/client/palette.ts#L395)
+- Source: [source](../../../../../../packages/explorer/src/client/palette.ts#L506)
 
 ##### `chooseMarbles` — Summary
 Turns the marbles on or off, and tells whoever listens to the palette if that changed: the same redraw, nothing moving.
 
 #### `channels` {#symbol-channels}
 - Type: function
-- Source: [source](../../../../../../packages/explorer/src/client/palette.ts#L402)
+- Source: [source](../../../../../../packages/explorer/src/client/palette.ts#L513)
 
 ##### `channels` — Summary
 A colour's channels, 0 to 255.
 
 #### `rgba` {#symbol-rgba}
 - Type: function
-- Source: [source](../../../../../../packages/explorer/src/client/palette.ts#L409)
+- Source: [source](../../../../../../packages/explorer/src/client/palette.ts#L520)
 
 ##### `rgba` — Summary
 A colour at an opacity, as `rgba(r, g, b, alpha)`, the alpha written as given.
 
 #### `unitChannels` {#symbol-unitchannels}
 - Type: const
-- Source: [source](../../../../../../packages/explorer/src/client/palette.ts#L415)
+- Source: [source](../../../../../../packages/explorer/src/client/palette.ts#L526)
 
 ##### `unitChannels` — Summary
 A colour's channels, 0 to 1, for a shader.
 
 #### `mix` {#symbol-mix}
 - Type: function
-- Source: [source](../../../../../../packages/explorer/src/client/palette.ts#L418)
+- Source: [source](../../../../../../packages/explorer/src/client/palette.ts#L529)
 
 ##### `mix` — Summary
 A colour between two, `t` of the way from `a` to `b`, each channel rounded, as `rgb(r,g,b)`.
 
 #### `customProperties` {#symbol-customproperties}
 - Type: function
-- Source: [source](../../../../../../packages/explorer/src/client/palette.ts#L431)
+- Source: [source](../../../../../../packages/explorer/src/client/palette.ts#L542)
 - Parameters: `palette`: [`Palette`](#symbol-palette)
 
 ##### `customProperties` — Summary
@@ -222,7 +251,7 @@ its channels (`--ground-card-hover-rgb: 47, 47, 51`), from which a stylesheet dr
 
 #### `paletteStylesheet` {#symbol-palettestylesheet}
 - Type: function
-- Source: [source](../../../../../../packages/explorer/src/client/palette.ts#L445)
+- Source: [source](../../../../../../packages/explorer/src/client/palette.ts#L556)
 - Parameters: `palette`: [`Palette`](#symbol-palette)
 
 ##### `paletteStylesheet` — Summary

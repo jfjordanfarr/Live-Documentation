@@ -1,13 +1,18 @@
 import { describe, expect, it } from "vitest";
 
-import { bodyChanges, deletionHomes, dims, emphasizedSkin, emphasizedSphere, emphasizedUnits, emphasizedWireAlpha, glows, pairKey, type ShownUnit } from "./forceGraphEmphasis";
+import { bodyChanges, deletionHomes, dims, emphasizedSkin, emphasizedSphere, emphasizedUnits, emphasizedWireAlpha, glows, pairKey, rimmed, type ShownUnit } from "./forceGraphEmphasis";
 
 describe("how a commit's changed files stand out", () => {
-  it("makes a changed sphere white immediately, including at the frontier, and restores its base colour in the next changed set", () => {
-    expect(emphasizedSphere("#0091ff", 1, true, "glow")).toBe("rgba(255, 255, 255, 1.000)");
-    expect(emphasizedSphere("#0091ff", 0.4, true, "glow")).toBe("rgba(255, 255, 255, 1.000)");
+  it("keeps a changed sphere's own colour at full alpha immediately, including at the frontier, and marks it rimmed", () => {
+    expect(emphasizedSphere("#0091ff", 1, true, "glow")).toBe("rgba(0, 145, 255, 1.000)");
+    expect(emphasizedSphere("#0091ff", 0.4, true, "glow")).toBe("rgba(0, 145, 255, 1.000)");
     expect(emphasizedSphere("#0091ff", 1, false, "glow")).toBe("rgba(0, 145, 255, 1.000)");
     expect(emphasizedSphere("#0091ff", 0.4, false, "glow")).toBe("rgba(0, 145, 255, 0.400)");
+    expect(rimmed(true, "glow")).toBe(true);
+    expect(rimmed(true, "both")).toBe(true);
+    expect(rimmed(false, "glow")).toBe(false);
+    expect(rimmed(true, "dim")).toBe(false);
+    expect(rimmed(true, "none")).toBe(false);
     expect(() => emphasizedSphere("blue", 1, true, "glow")).toThrow(/#rrggbb/);
   });
 
@@ -15,7 +20,7 @@ describe("how a commit's changed files stand out", () => {
     expect(emphasizedSphere("#0091ff", 1, false, "dim")).toBe("rgba(0, 145, 255, 0.200)");
     expect(emphasizedSphere("#0091ff", 0.4, false, "dim")).toBe("rgba(0, 145, 255, 0.080)");
     expect(emphasizedSphere("#0091ff", 1, true, "dim")).toBe("rgba(0, 145, 255, 1.000)");
-    expect(emphasizedSphere("#0091ff", 1, true, "both")).toBe("rgba(255, 255, 255, 1.000)");
+    expect(emphasizedSphere("#0091ff", 1, true, "both")).toBe("rgba(0, 145, 255, 1.000)");
     expect(emphasizedSphere("#0091ff", 1, false, "both")).toBe("rgba(0, 145, 255, 0.200)");
     expect(emphasizedSphere("#0091ff", 0.4, true, "none")).toBe("rgba(0, 145, 255, 0.400)");
   });
@@ -54,7 +59,7 @@ describe("how a commit's changes show inside a wrapper's skin", () => {
   const seed = "dir:a";
   const of = (shown: Unit[], id: string): Unit => shown.find(unit => unit.id === id)!;
 
-  it("lights a changed file's dot white and whole, as a changed sphere, and leaves the open bubble around it unlit", () => {
+  it("rims a changed file's dot while keeping its own colour, and leaves the open bubble around it unlit", () => {
     const changes = bodyChanges(units, members, seed, ["a/b/y.ts"], []);
     expect([...changes.lit]).toEqual(["a/b/y.ts"]);
     expect([...changes.holding]).toEqual(["a/b"]);
@@ -62,8 +67,10 @@ describe("how a commit's changes show inside a wrapper's skin", () => {
     expect(changes.holds).toBe(true);
     const glowing = emphasizedUnits(units, changes, "glow");
     expect(of(glowing, "a/b/y.ts").color).toBe(emphasizedSphere(blue, 1, true, "glow"));
-    expect(of(glowing, "a/b/y.ts").color).toBe("rgba(255, 255, 255, 1.000)");
+    expect(of(glowing, "a/b/y.ts").color).toBe("rgba(0, 145, 255, 1.000)");
+    expect(of(glowing, "a/b/y.ts").lit).toBe(true);
     expect(of(glowing, "a/b/z.ts").color).toBe("rgba(0, 145, 255, 1.000)");
+    expect(of(glowing, "a/b/z.ts").lit).toBe(false);
     expect(of(glowing, "a/b").lit).toBe(false);
     expect(glowing.filter(unit => unit.kind === "directory").every(unit => unit.alpha === 1)).toBe(true);
     expect(emphasizedSkin(changes, "glow")).toEqual({ lit: false, alpha: 1 });
@@ -82,8 +89,10 @@ describe("how a commit's changes show inside a wrapper's skin", () => {
     expect(dimmed.some(unit => unit.lit)).toBe(false);
     expect(emphasizedSkin(changes, "dim")).toEqual({ lit: false, alpha: 1 });
     const both = emphasizedUnits(units, changes, "both");
-    expect(of(both, "a/b/y.ts").color).toBe("rgba(255, 255, 255, 1.000)");
+    expect(of(both, "a/b/y.ts").color).toBe("rgba(0, 145, 255, 1.000)");
+    expect(of(both, "a/b/y.ts").lit).toBe(true);
     expect(of(both, "a/b/z.ts").color).toBe("rgba(0, 145, 255, 0.200)");
+    expect(of(both, "a/b/z.ts").lit).toBe(false);
     // A body the step does not touch dims whole, its skin with it.
     const untouched = bodyChanges(units, members, seed, ["elsewhere/q.ts"], []);
     expect(untouched.holds).toBe(false);
@@ -92,19 +101,26 @@ describe("how a commit's changes show inside a wrapper's skin", () => {
     expect(emphasizedUnits(units, untouched, "dim").filter(unit => unit.kind === "directory").every(unit => Math.abs(unit.alpha! - 0.2) < 1e-9)).toBe(true);
   });
 
-  it("drops the marble of a dot the step glows white and keeps it on the rest; where the mode dims, every dot keeps its marble", () => {
-    // With marbles drawn (Tuning → Colour → Marbles → On), a glowing dot is white and whole, as a changed sphere is, with no veins.
+  it("keeps the marble of every dot under all modes, setting lit only on changed dots when glowing", () => {
+    // With marbles drawn (Tuning → Colour → Marbles → On), a glowing dot keeps its marble and wears the rim (`lit: true`).
     const marble = { glass: blue, offers: 0.2, uses: 0.1, seed: 0.5 };
     const marbled = units.map(unit => unit.kind === "file" ? { ...unit, marble } : unit);
     const changes = bodyChanges(marbled, members, seed, ["a/b/y.ts"], []);
     for (const mode of ["glow", "both"] as const) {
       const shown = emphasizedUnits(marbled, changes, mode);
-      expect(of(shown, "a/b/y.ts").marble, mode).toBeUndefined();
-      for (const id of ["a/x.ts", "a/b/z.ts", "a/e/u.ts"]) expect(of(shown, id).marble, `${mode} ${id}`).toBe(marble);
+      expect(of(shown, "a/b/y.ts").marble, mode).toBe(marble);
+      expect(of(shown, "a/b/y.ts").lit, mode).toBe(true);
+      for (const id of ["a/x.ts", "a/b/z.ts", "a/e/u.ts"]) {
+        expect(of(shown, id).marble, `${mode} ${id}`).toBe(marble);
+        expect(of(shown, id).lit, `${mode} ${id}`).toBe(false);
+      }
     }
     for (const mode of ["dim", "none"] as const) {
       const shown = emphasizedUnits(marbled, changes, mode);
-      for (const id of ["a/x.ts", "a/b/y.ts", "a/b/z.ts", "a/e/u.ts"]) expect(of(shown, id).marble, `${mode} ${id}`).toBe(marble);
+      for (const id of ["a/x.ts", "a/b/y.ts", "a/b/z.ts", "a/e/u.ts"]) {
+        expect(of(shown, id).marble, `${mode} ${id}`).toBe(marble);
+        expect(of(shown, id).lit, `${mode} ${id}`).toBe(false);
+      }
     }
   });
 
@@ -172,7 +188,7 @@ describe("how a commit's changes show inside a wrapper's skin", () => {
     expect(of(emphasizedUnits(units, pinnedDot, "glow"), "a/b/z.ts").color, "glow dims nothing, and lights no asked-about file the step left").toBe("rgba(0, 145, 255, 1.000)");
     // Asked about and changed, the dot is emphasised exactly as any changed dot.
     const both = bodyChanges(units, members, seed, ["a/b/z.ts"], [], ["a/b/z.ts"]);
-    expect(of(emphasizedUnits(units, both, "both"), "a/b/z.ts").color).toBe(emphasizedSphere(blue, 1, true, "both"));
+    expect(of(emphasizedUnits(units, both, "both"), "a/b/z.ts")).toMatchObject({ color: emphasizedSphere(blue, 1, true, "both"), lit: true });
     // A pinned file not drawn, inside a veiled bubble: that bubble, and every bubble around it, keeps its alpha, unlit.
     const veiled = bodyChanges(units, members, seed, [], [], ["a/e/f/s.ts"]);
     expect(veiled.lit.size).toBe(0);
@@ -190,17 +206,17 @@ describe("how a commit's changes show inside a wrapper's skin", () => {
     expect(seeded).toEqual({ lit: new Set(), holding: new Set(), skin: false, holds: true });
     expect(emphasizedSphere(blue, 1, false, "dim", true)).toBe("rgba(0, 145, 255, 1.000)");
     expect(emphasizedSphere(blue, 0.4, false, "both", true), "at the frontier's alpha it keeps that, no less").toBe("rgba(0, 145, 255, 0.400)");
-    expect(emphasizedSphere(blue, 1, true, "both", true)).toBe("rgba(255, 255, 255, 1.000)");
+    expect(emphasizedSphere(blue, 1, true, "both", true)).toBe("rgba(0, 145, 255, 1.000)");
   });
 
   it("changes no colour, alpha or light without a mode, and none without a change", () => {
     const changes = bodyChanges(units, members, seed, ["a/b/y.ts", "a/c/w.ts"], ["a/gone.ts"]);
     const plain = emphasizedUnits(units, changes, "none");
-    expect(plain.filter(unit => unit.kind === "file").every(unit => unit.color === "rgba(0, 145, 255, 1.000)")).toBe(true);
+    expect(plain.filter(unit => unit.kind === "file").every(unit => unit.color === "rgba(0, 145, 255, 1.000)" && !unit.lit)).toBe(true);
     expect(plain.filter(unit => unit.kind === "directory").every(unit => !unit.lit && unit.alpha === 1)).toBe(true);
     expect(emphasizedSkin(changes, "none")).toEqual({ lit: false, alpha: 1 });
     const nothing = bodyChanges(units, members, seed, [], []);
-    expect(emphasizedUnits(units, nothing, "glow").some(unit => unit.lit || unit.color === "rgba(255, 255, 255, 1.000)")).toBe(false);
+    expect(emphasizedUnits(units, nothing, "glow").some(unit => unit.lit)).toBe(false);
     expect(emphasizedSkin(nothing, "glow")).toEqual({ lit: false, alpha: 1 });
   });
 

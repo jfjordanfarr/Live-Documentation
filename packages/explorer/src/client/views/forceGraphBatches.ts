@@ -3,7 +3,7 @@ import { LineMaterial } from "three/addons/lines/LineMaterial.js";
 import { LineSegmentsGeometry } from "three/addons/lines/LineSegmentsGeometry.js";
 
 import { activePalette, marblesDrawn, unitChannels } from "../palette";
-import { containedSpherePrimitive, ContainedSphereMaterial } from "./containedSphere";
+import { CHANGED_RIM_FRAGMENT, containedSpherePrimitive, ContainedSphereMaterial } from "./containedSphere";
 import { MARBLE_COLOUR, MARBLE_FRAGMENT_PARS, MARBLE_SHINE, MARBLE_VERTEX, MARBLE_VERTEX_PARS, type Marble } from "./forceGraphAppearance";
 import type { Placed, SpatialNode } from "./forceGraphLayout";
 import { clipSpatialWireDepth, pickSpatialWire, spatialSizeScale } from "./forceGraphSizing";
@@ -42,6 +42,8 @@ export interface SpatialDrawBatch<T> {
    * and whether it is a marble, seven values in membership order; absent for a batch that draws none.
    */
   marbles?: Float64Array;
+  /** Whether each sphere carries the history change rim (2026-11-24), in membership order; present on sphere batches. */
+  changed?: Uint8Array;
 }
 
 /** The values a marble carries to its sphere's shaders, after its glass's three channels: its two shares, its seed, and one for a marble. */
@@ -65,6 +67,8 @@ export interface SpatialDrawStyle<N, L> {
    * is then its far tint, and its glass and veins are drawn on it at close range.
    */
   marble?: (node: N) => Marble | null;
+  /** Whether a sphere wears the history change rim in `history.changed` (2026-11-24). */
+  changed?: (node: N) => boolean;
   /**
    * Whether a node is drawn as a sphere (every node, unless said): a directory shell is drawn as its wrapper alone
    * (2026-11-05), its radius kept for its wires, which end at its body rather than at a sphere drawn under the zoom's resistance.
@@ -124,28 +128,34 @@ export interface SpatialWrapperUnit {
 
 /** Pack documented nodes and wires straight into three instance buffers; camera changes never build scene proxies. */
 export function createSpatialBuffers<N extends SpatialNode, L extends SpatialDrawLink<N>>(scene: Scene, style: SpatialDrawStyle<N, L>, renderer?: WebGLRenderer) {
-  // The marbles' two roles, in linear light as the lit shaders read colours, shared by every material that draws a
-  // marble and set again from the palette in force (`recolour`).
-  const marbleRoles = { uMarbleOffers: { value: new Color() }, uMarbleUses: { value: new Color() } };
-  const paintMarbles = (): void => { const { role } = activePalette(); marbleRoles.uMarbleOffers.value.set(role.offers); marbleRoles.uMarbleUses.value.set(role.uses); };
-  paintMarbles();
+  // The spheres' linear-light uniforms shared by every sphere material (marbles' two roles and the history change rim),
+  // converted from sRGB by Three's `Color.set` and updated from the palette in force (`recolour`).
+  const sphereColours = { uMarbleOffers: { value: new Color() }, uMarbleUses: { value: new Color() }, uChanged: { value: new Color() } };
+  const paintSpheres = (): void => {
+    const { role, history } = activePalette();
+    sphereColours.uMarbleOffers.value.set(role.offers);
+    sphereColours.uMarbleUses.value.set(role.uses);
+    sphereColours.uChanged.value.set(history.changed);
+  };
+  paintSpheres();
   /**
    * A transparent instanced material whose alpha each instance carries; a lit one that `marbled` may draw its spheres as
-   * marbles (2026-11-17), the pattern standing in the unit sphere the geometry's positions describe.
+   * marbles (2026-11-17) and draws the history change rim in `uChanged` (2026-11-24), the marble pattern standing in the
+   * unit sphere the geometry's positions describe.
    */
   const alphaMaterial = (lit = true, marbled = false): MeshLambertMaterial | MeshBasicMaterial => {
     const material = lit ? new MeshLambertMaterial({ transparent: true }) : new MeshBasicMaterial({ transparent: true, depthWrite: false });
     material.onBeforeCompile = shader => {
-      shader.vertexShader = shader.vertexShader.replace("#include <common>", `#include <common>\nattribute float spatialOpacity;\nvarying float vSpatialOpacity;${marbled ? `${MARBLE_VERTEX_PARS}\n${MARBLE_LOCAL_PARS}` : ""}`)
-        .replace("#include <begin_vertex>", `#include <begin_vertex>\nvSpatialOpacity = spatialOpacity;${marbled ? `${MARBLE_VERTEX}\n#ifdef MARBLES\nvMarbleLocal = position;\n#endif` : ""}`);
-      shader.fragmentShader = shader.fragmentShader.replace("#include <common>", `#include <common>\nvarying float vSpatialOpacity;${marbled ? `${MARBLE_FRAGMENT_PARS}\n${MARBLE_LOCAL_PARS}\n#define MARBLE_LOCAL normalize(vMarbleLocal)` : ""}`)
+      shader.vertexShader = shader.vertexShader.replace("#include <common>", `#include <common>\nattribute float spatialOpacity;\nvarying float vSpatialOpacity;${marbled ? `\nattribute float spatialChanged;\nvarying float vChanged;${MARBLE_VERTEX_PARS}\n${MARBLE_LOCAL_PARS}` : ""}`)
+        .replace("#include <begin_vertex>", `#include <begin_vertex>\nvSpatialOpacity = spatialOpacity;${marbled ? `\nvChanged = spatialChanged;${MARBLE_VERTEX}\n#ifdef MARBLES\nvMarbleLocal = position;\n#endif` : ""}`);
+      shader.fragmentShader = shader.fragmentShader.replace("#include <common>", `#include <common>\nvarying float vSpatialOpacity;${marbled ? `\nuniform vec3 uChanged;\nvarying float vChanged;${MARBLE_FRAGMENT_PARS}\n${MARBLE_LOCAL_PARS}\n#define MARBLE_LOCAL normalize(vMarbleLocal)` : ""}`)
         .replace("#include <color_fragment>", `#include <color_fragment>\ndiffuseColor.a *= vSpatialOpacity;${marbled ? MARBLE_COLOUR : ""}`);
       if (marbled) {
-        shader.fragmentShader = shader.fragmentShader.replace("#include <opaque_fragment>", `${MARBLE_SHINE}\n#include <opaque_fragment>`);
-        Object.assign(shader.uniforms, marbleRoles);
+        shader.fragmentShader = shader.fragmentShader.replace("#include <opaque_fragment>", `${MARBLE_SHINE}${CHANGED_RIM_FRAGMENT}\n#include <opaque_fragment>`);
+        Object.assign(shader.uniforms, sphereColours);
       }
     };
-    material.customProgramCacheKey = () => `spatial-instance-alpha-${lit ? "lit" : "flat"}${marbled ? "-marbled" : ""}`;
+    material.customProgramCacheKey = () => `spatial-instance-alpha-${lit ? "lit" : "flat"}${marbled ? "-marbled-rim" : ""}`;
     return material;
   };
   /** A marbled mesh's two instance attributes beside its colour: each marble's glass, and its veins (`MARBLE_VALUES`). */
@@ -174,6 +184,7 @@ export function createSpatialBuffers<N extends SpatialNode, L extends SpatialDra
     mesh.geometry.setAttribute("spatialOpacity", new InstancedBufferAttribute(new Float32Array(batch.capacity), 1).setUsage(DynamicDrawUsage));
     if (mesh.material instanceof LineMaterial) mesh.geometry.setAttribute("spatialWidth", new InstancedBufferAttribute(new Float32Array(batch.capacity), 1).setUsage(DynamicDrawUsage));
     if (batch.marbles) { marbleAttributes(mesh.geometry, batch.capacity); batch.marbles = new Float64Array(MARBLE_VALUES * batch.capacity); }
+    if (batch.changed) { mesh.geometry.setAttribute("spatialChanged", new InstancedBufferAttribute(new Float32Array(batch.capacity), 1).setUsage(DynamicDrawUsage)); batch.changed = new Uint8Array(batch.capacity); }
     batch.depths = new Float64Array(batch.capacity); batch.serials = new Float64Array(batch.capacity);
     batch.appearance = new Float64Array(5 * batch.capacity); batch.enabled = new Uint8Array(batch.capacity);
   };
@@ -181,7 +192,7 @@ export function createSpatialBuffers<N extends SpatialNode, L extends SpatialDra
     const mesh = new InstancedMesh(geometry, material, 1);
     mesh.name = `Spatial ${kind}`; mesh.count = 0; mesh.frustumCulled = false; mesh.renderOrder = renderOrder;
     const batch: SpatialDrawBatch<T> = { mesh, entries: [], ordered: [], visible: [], unseen: [], depths: new Float64Array(),
-      serials: new Float64Array(), appearance: new Float64Array(), enabled: new Uint8Array(), capacity: 0, ...(marbled ? { marbles: new Float64Array() } : null) };
+      serials: new Float64Array(), appearance: new Float64Array(), enabled: new Uint8Array(), capacity: 0, ...(marbled ? { marbles: new Float64Array(), changed: new Uint8Array() } : null) };
     mesh.userData.spatialBatch = { kind, entries: batch.entries };
     mesh.raycast = () => {};
     scene.add(mesh);
@@ -239,9 +250,10 @@ export function createSpatialBuffers<N extends SpatialNode, L extends SpatialDra
     return mesh;
   };
   const containedFile = containedSpherePrimitive(renderer);
-  if (containedFile.material) Object.assign(containedFile.material.uniforms, marbleRoles);
+  if (containedFile.material) Object.assign(containedFile.material.uniforms, sphereColours);
   const unitFiles = unitMesh("Spatial shell files", containedFile.geometry, containedFile.material ?? alphaMaterial(true, true), 10);
   marbleAttributes(unitFiles.geometry, 1);
+  unitFiles.geometry.setAttribute("spatialChanged", new InstancedBufferAttribute(new Float32Array(1), 1).setUsage(DynamicDrawUsage));
   /**
    * The two materials that may draw a marble compile its code in only while marbles are drawn (`MARBLES`, which every
    * chunk of the marble stands inside): with marbles off their programs are what they were before marbles, at no cost
@@ -307,8 +319,9 @@ export function createSpatialBuffers<N extends SpatialNode, L extends SpatialDra
     };
     read(nodes, style.nodeColor, style.radius, style.sphere ?? (() => true), .75);
     // A marble's glass and veins, in linear light as the instance colour is; a plain sphere's all zero.
-    const marbles = nodes.marbles!;
+    const marbles = nodes.marbles!, changed = nodes.changed!;
     for (let i = 0; i < nodes.entries.length; i++) {
+      changed[i] = style.changed?.(nodes.entries[i].data) ? 1 : 0;
       const marble = style.marble?.(nodes.entries[i].data) ?? null, at = MARBLE_VALUES * i;
       if (!marble) { marbles.fill(0, at, at + MARBLE_VALUES); continue; }
       const glass = colorOf(marble.glass).color;
@@ -366,9 +379,9 @@ export function createSpatialBuffers<N extends SpatialNode, L extends SpatialDra
     for (const index of unseen) ordered[i++] = index;
   };
   const upload = <T>(batch: SpatialDrawBatch<T>, write: (array: InstancedBufferAttribute["array"], offset: number, index: number) => void): void => {
-    const { mesh, ordered, appearance } = batch, opacity = mesh.geometry.getAttribute("spatialOpacity"), width = mesh.geometry.getAttribute("spatialWidth");
+    const { mesh, ordered, appearance } = batch, opacity = mesh.geometry.getAttribute("spatialOpacity"), width = mesh.geometry.getAttribute("spatialWidth"), changedAttr = mesh.geometry.getAttribute("spatialChanged");
     if (!batch.entries.length) { mesh.count = 0; return; }
-    const matrices = mesh.instanceMatrix.array, colors = mesh.instanceColor!.array, alphas = opacity.array, widths = width?.array, marbles = batch.marbles;
+    const matrices = mesh.instanceMatrix.array, colors = mesh.instanceColor!.array, alphas = opacity.array, widths = width?.array, marbles = batch.marbles, changed = batch.changed, changedValues = changedAttr?.array;
     for (let slot = 0; slot < ordered.length; slot++) {
       const index = ordered[slot], at = index * 5, c = slot * 3;
       batch.entries[index].slot = slot;
@@ -377,10 +390,12 @@ export function createSpatialBuffers<N extends SpatialNode, L extends SpatialDra
       alphas[slot] = appearance[at + 3];
       if (widths) widths[slot] = appearance[at + 4];
       if (marbles) writeMarble(mesh.geometry, slot, marbles, MARBLE_VALUES * index);
+      if (changedValues && changed) changedValues[slot] = changed[index];
     }
     mesh.instanceMatrix.needsUpdate = true; mesh.instanceColor!.needsUpdate = true; opacity.needsUpdate = true;
     if (width) width.needsUpdate = true;
     if (marbles) markMarbles(mesh.geometry);
+    if (changedAttr) changedAttr.needsUpdate = true;
   };
   const update = (camera: Camera, width: number, height: number, nodeResistance: number, wireResistance: number, target: Vector3): void => {
     refreshStyle(); viewport.set(width, height);
@@ -539,7 +554,7 @@ export function createSpatialBuffers<N extends SpatialNode, L extends SpatialDra
         const file = unit.kind === "file", tint = file ? colorOf(unit.color ?? activePalette().history.changed) : null;
         (file ? files : balloons).push({ seed, id: unit.id, kind: unit.kind, x, y, z,
           radius: (file ? Math.min(unit.radius * sphereScale, unit.reach) : unit.radius) * scale, color: tint?.color ?? white,
-          alpha: (file ? .75 * (tint?.alpha ?? 1) : unit.alpha ?? 1) * alpha, veil: unit.veiled ? 1 : 0, lit: !file && unit.lit ? 1 : 0,
+          alpha: (file ? .75 * (tint?.alpha ?? 1) : unit.alpha ?? 1) * alpha, veil: unit.veiled ? 1 : 0, lit: unit.lit ? 1 : 0,
           depth: depthOf(x, y, z), parent: unit.parent, level: unit.depth, ...(file && unit.marble ? { marble: unit.marble } : null) });
       }
     }
@@ -552,7 +567,10 @@ export function createSpatialBuffers<N extends SpatialNode, L extends SpatialDra
         mesh.instanceMatrix = new InstancedBufferAttribute(new Float32Array(16 * capacity), 16).setUsage(DynamicDrawUsage);
         mesh.instanceColor = new InstancedBufferAttribute(new Float32Array(3 * capacity), 3).setUsage(DynamicDrawUsage);
         mesh.geometry.setAttribute("spatialOpacity", new InstancedBufferAttribute(new Float32Array(capacity), 1).setUsage(DynamicDrawUsage));
-        if (mesh === unitFiles) marbleAttributes(mesh.geometry, capacity);
+        if (mesh === unitFiles) {
+          marbleAttributes(mesh.geometry, capacity);
+          mesh.geometry.setAttribute("spatialChanged", new InstancedBufferAttribute(new Float32Array(capacity), 1).setUsage(DynamicDrawUsage));
+        }
       }
       // The balloons' own values, veiled and lit, each grown with the instances.
       const values = mesh === unitBalloons ? BALLOON_VALUES.map(name => {
@@ -563,6 +581,7 @@ export function createSpatialBuffers<N extends SpatialNode, L extends SpatialDra
         return grown;
       }) : null;
       const matrices = mesh.instanceMatrix.array, colors = mesh.instanceColor!.array, opacity = mesh.geometry.getAttribute("spatialOpacity") as InstancedBufferAttribute;
+      const fileChanged = mesh === unitFiles ? mesh.geometry.getAttribute("spatialChanged") as InstancedBufferAttribute : null;
       drawn.forEach((unit, slot) => {
         const at = 16 * slot;
         matrices.fill(0, at, at + 16);
@@ -576,10 +595,11 @@ export function createSpatialBuffers<N extends SpatialNode, L extends SpatialDra
           marbleValues[0] = glass?.r ?? 0; marbleValues[1] = glass?.g ?? 0; marbleValues[2] = glass?.b ?? 0;
           marbleValues[3] = marble?.offers ?? 0; marbleValues[4] = marble?.uses ?? 0; marbleValues[5] = marble?.seed ?? 0; marbleValues[6] = marble ? 1 : 0;
           writeMarble(mesh.geometry, slot, marbleValues, 0);
+          fileChanged!.array[slot] = unit.lit;
         }
       });
       if (values) for (const value of values) value.needsUpdate = true;
-      if (mesh === unitFiles) markMarbles(mesh.geometry);
+      if (mesh === unitFiles) { markMarbles(mesh.geometry); fileChanged!.needsUpdate = true; }
       mesh.count = drawn.length; mesh.visible = drawn.length > 0;
       unitBindings.set(mesh, drawn);
       mesh.instanceMatrix.needsUpdate = true; mesh.instanceColor!.needsUpdate = true; opacity.needsUpdate = true;
@@ -676,7 +696,7 @@ export function createSpatialBuffers<N extends SpatialNode, L extends SpatialDra
   return { nodes, lines, arrows, rings, wrappers, captureBodies, setData, update, pickNode, pickNodeHit, pickLink, pickWrapper, setWrappers, styleWrappers, invalidateAppearance: (): void => { appearanceDirty = true; },
     /** The skins' colours again from the palette in force, and every accessor read again. */
     recolour: (): void => {
-      paintMarbles(); compileMarbles();
+      paintSpheres(); compileMarbles();
       const colours = sceneColours();
       for (const material of [wrapperMaterial, balloonMaterial]) for (const [name, uniform] of Object.entries(colours)) (material.uniforms[name].value as Vector3).copy(uniform.value);
       appearanceDirty = true;

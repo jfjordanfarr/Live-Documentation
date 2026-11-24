@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/explorer/src/client/views/containedSphere.ts`
-- Generated At: 2026-11-19T21:10:14.651Z
+- Generated At: 2026-11-24T20:38:08.966Z
 
 ## Authored
 ### Purpose
@@ -64,15 +64,24 @@ Enable the actual per-sample interpolation needed to preserve native MSAA covera
 ##### `containedSpherePrimitive` — Summary
 Choose the compatible native primitive before any shader compilation on unsupported contexts.
 
+#### `CHANGED_RIM_FRAGMENT` {#symbol-changed_rim_fragment}
+- Type: const
+- Source: [source](../../../../../../../packages/explorer/src/client/views/containedSphere.ts#L121)
+
+##### `CHANGED_RIM_FRAGMENT` — Summary
+Fresnel + pixel-width rim for a sphere changed at the displayed history step (2026-11-24): runs in linear light after
+`MARBLE_SHINE` and outside `#ifdef MARBLES`, so changed spheres keep their kind colour and marble veins inside a crisp
+`uChanged` rim whatever their screen size.
+
 #### `ContainedSphereMaterial` {#symbol-containedspherematerial}
 - Type: class
-- Source: [source](../../../../../../../packages/explorer/src/client/views/containedSphere.ts#L121)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/containedSphere.ts#L135)
 - Extends: `RawShaderMaterial`
 
 ##### `ContainedSphereMaterial` — Summary
 Lambert-lit analytic unit sphere, scaled uniformly by its uploaded instance matrix; one whose instance is a marble
 (2026-11-17) draws its glass and veins as a 3D map's sphere does, read from the same chunks. Its owner gives it the
-marbles' two role colours as the uniforms `uMarbleOffers` and `uMarbleUses`.
+marbles' two role colours (`uMarbleOffers`, `uMarbleUses`) and the history rim colour (`uChanged`) in linear light.
 <!-- LIVE-DOC:END Public Symbols -->
 
 <!-- LIVE-DOC:BEGIN Dependencies -->

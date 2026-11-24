@@ -114,9 +114,23 @@ export function containedSpherePrimitive(renderer?: WebGLRenderer): { geometry: 
 }
 
 /**
+ * Fresnel + pixel-width rim for a sphere changed at the displayed history step (2026-11-24): runs in linear light after
+ * `MARBLE_SHINE` and outside `#ifdef MARBLES`, so changed spheres keep their kind colour and marble veins inside a crisp
+ * `uChanged` rim whatever their screen size.
+ */
+export const CHANGED_RIM_FRAGMENT = `
+if (vChanged > 0.5) {
+  float facing = abs(dot(normalize(normal), normalize(vViewPosition)));
+  float edge = 1.0 - smoothstep(0.0, 3.0 * fwidth(facing), facing);
+  float rim = max(edge, 1.0 - smoothstep(0.0, 0.55, facing));
+  outgoingLight = mix(outgoingLight, uChanged, rim);
+  diffuseColor.a = max(diffuseColor.a, rim);
+}`;
+
+/**
  * Lambert-lit analytic unit sphere, scaled uniformly by its uploaded instance matrix; one whose instance is a marble
  * (2026-11-17) draws its glass and veins as a 3D map's sphere does, read from the same chunks. Its owner gives it the
- * marbles' two role colours as the uniforms `uMarbleOffers` and `uMarbleUses`.
+ * marbles' two role colours (`uMarbleOffers`, `uMarbleUses`) and the history rim colour (`uChanged`) in linear light.
  */
 export class ContainedSphereMaterial extends RawShaderMaterial {
   readonly sphereRadius = 1;
@@ -126,7 +140,9 @@ export class ContainedSphereMaterial extends RawShaderMaterial {
 
     shader.vertexShader = shader.vertexShader.replace("#include <common>", `#include <common>
 attribute float spatialOpacity;
-varying float vSpatialOpacity;${MARBLE_VERTEX_PARS}
+attribute float spatialChanged;
+varying float vSpatialOpacity;
+varying float vChanged;${MARBLE_VERTEX_PARS}
 varying vec3 vSphereCenter;
 varying float vSphereRadius;
 varying vec3 vSphereRay;
@@ -145,7 +161,7 @@ bool containedSphereOutside(vec3 center, float radius) {
   }
   return false;
 }`)
-      .replace("#include <begin_vertex>", `#include <begin_vertex>\nvSpatialOpacity = spatialOpacity;${MARBLE_VERTEX}`)
+      .replace("#include <begin_vertex>", `#include <begin_vertex>\nvSpatialOpacity = spatialOpacity;\nvChanged = spatialChanged;${MARBLE_VERTEX}`)
       .replace("#include <project_vertex>", `
 mat4 sphereModelView = modelViewMatrix * instanceMatrix;
 vec3 sphereCenter = sphereModelView[3].xyz;
@@ -175,7 +191,9 @@ vec4 mvPosition = vec4(sphereCenter, 1.0);
 `);
     shader.fragmentShader = shader.fragmentShader.replace("#include <common>", `#include <common>
 uniform mat4 projectionMatrix;
+uniform vec3 uChanged;
 varying float vSpatialOpacity;
+varying float vChanged;
 varying vec3 vSphereCenter;
 varying float vSphereRadius;
 varying vec3 vSphereRay;
@@ -204,11 +222,12 @@ containedViewPosition = -containedHit;
       .replace("#include <normal_fragment_begin>", `float faceDirection = 1.0;
 vec3 normal = normalize(containedHit - vSphereCenter);
 vec3 nonPerturbedNormal = normal;`)
-      .replace("#include <opaque_fragment>", `${MARBLE_SHINE}\n#include <opaque_fragment>`);
+      .replace("#include <opaque_fragment>", `${MARBLE_SHINE}${CHANGED_RIM_FRAGMENT}\n#include <opaque_fragment>`);
     const uniforms = UniformsUtils.clone(ShaderLib.lambert.uniforms);
     uniforms.containedOutputSRGB = { value: true };
     uniforms.uMarbleOffers = { value: new Color() };
     uniforms.uMarbleUses = { value: new Color() };
+    uniforms.uChanged = { value: new Color() };
     super({
       glslVersion: GLSL3, lights: true, transparent: true, uniforms,
       defines: { USE_INSTANCING: 1, USE_INSTANCING_COLOR: 1 },
@@ -252,7 +271,7 @@ ${ShaderChunk.colorspace_pars_fragment}
 vec4 linearToOutputTexel(vec4 value) { return containedOutputSRGB ? sRGBTransferOETF(value) : value; }
 ` + shader.fragmentShader
     });
-    this.customProgramCacheKey = () => "spatial-contained-sphere-per-sample-v3";
+    this.customProgramCacheKey = () => "spatial-contained-sphere-per-sample-v4";
     this.onBeforeCompile = (_shader, renderer) => {
       if (!supportsContainedSphereSamples(renderer)) throw new Error("Per-sample sphere material requires sample variables/interpolation and the supported output pipeline; use native sphere geometry on this context.");
     };
