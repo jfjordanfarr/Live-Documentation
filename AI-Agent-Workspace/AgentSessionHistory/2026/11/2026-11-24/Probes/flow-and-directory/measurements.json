@@ -1,0 +1,3914 @@
+{
+  "measuredAt": "2026-11-24",
+  "commit": "257914ceb",
+  "viewport": {
+    "width": 1280,
+    "height": 800,
+    "deviceScaleFactor": 1
+  },
+  "defaults": {
+    "localMap": {
+      "directoryLayout": "flow",
+      "unconnected": "folded",
+      "moveMs": 450,
+      "framing": "hand",
+      "step": "least",
+      "churnCost": 100,
+      "crossingCost": 80,
+      "orderStarts": 2,
+      "searchStarts": 32,
+      "searchPatience": 8
+    },
+    "forceGraph": {
+      "spatialLayout": "structure",
+      "groupWrappers": "skin",
+      "hops": 1,
+      "shellDepth": 2
+    }
+  },
+  "partA_2dFlowWalks": {
+    "repo-deep-client": {
+      "startUrl": "/?view=local&dir=",
+      "steps": [
+        {
+          "stepIndex": 0,
+          "action": "land on scan root",
+          "openedDirectory": "",
+          "targetWasInViewport": null,
+          "clickMethod": null,
+          "moveObserved": null,
+          "state": {
+            "stepLabel": "root",
+            "openedDirectory": null,
+            "url": "http://127.0.0.1:35641/?s=N4IgbiBcDMA0IBsqgQewMYEMEFlMAdkR1UEBXAWwDsBxAqARgAYn4BLAFwFMK7DIATABZ4AI0xUAJnygCAHPAAWXNgHNFHAMKoAzhygBWeAHc2kjou17D8Cj1EAnCVwCiYLlSpcdO2bftOXgDKbBT4CGzonACesizwDqjGADJc7ghePn4gDlwcZA5UVvqQDAYsAL7wAGaoDuhcNE74ikQRVADWMpAAbKzEipgOqlxQffAkCBE6bKi09JBGxKhk4WxUqozwVKiSXCEAXqOQIiA60RSipEFYCMcM8KpOYDFQTAB0TAJLJGFzHhwglx8ENMBxZlQ3u8BBNBsMuAAlCQjN7wAj4RIAD1CYIhULgiHWHSCHFyGwsUKWq0kYNcXmGsVK8G4Fi4DihX3gOjyHDuAAlSJJUcROFxJAAhaIABTIUy2hM6AHUzBSmSAdnsAFqoVAUBHeNh6CQNfEmNi5bW6-UzI1UE2QD4ATm2mDsAEESgwFCBFKh8L41bl3NgAGJOOwB8ZnZRTAAiwNVMJATxW%2BEVzXwbIDZw66xAFSqOSg1Ww3PgACti6WuPBUFAANogesAHRAknNXHQHDq0VbsFbrYAuiBB-AhZBGyOKkA",
+            "openDirectories": [
+              ""
+            ],
+            "cardsCount": 10,
+            "closedBoxesCount": 6,
+            "wiresTotal": 1,
+            "pairLinesCount": 1,
+            "flowActive": true,
+            "flowShape": {
+              "rows": null,
+              "boxRows": {},
+              "looseColumns": {
+                "": 2
+              }
+            },
+            "flowShapesCount": 4,
+            "orderStart": "ranked",
+            "orderScore": 10245,
+            "orderSignals": {
+              "vertical": 0,
+              "crossings": 0,
+              "height": 750,
+              "width": 1279,
+              "churn": 0,
+              "unevenness": 0,
+              "steps": 0,
+              "unlevel": 0
+            },
+            "searchStatus": "settled",
+            "searchTried": 8,
+            "searchAdopted": 0,
+            "searchCycleTried": 0,
+            "searchCycleAdopted": 0,
+            "searchAlignmentTried": 0,
+            "searchAlignmentAdopted": 0,
+            "camera": {
+              "k": 1,
+              "x": 0,
+              "y": 0
+            },
+            "look": "reading",
+            "columnsCount": 4
+          },
+          "displacement": null
+        },
+        {
+          "stepIndex": 1,
+          "action": "open packages",
+          "openedDirectory": "packages",
+          "targetWasInViewport": true,
+          "clickMethod": "mouse-handle",
+          "moveObserved": {
+            "sawMovingTrue": true,
+            "movingDurationMs": 448,
+            "moveCount": 1,
+            "sawSearchRunning": true
+          },
+          "state": {
+            "stepLabel": "open packages",
+            "openedDirectory": "packages",
+            "url": "http://127.0.0.1:35641/?s=N4IgbiBcDMA0IBsqgQewMYEMEFlMAdkR1UEBXAWwDsBxAqARgAYn4BLAFwFMK7DIATABZ4AI0xUAJnygCAHPAAWXNgHNFHAMKoAzhygBWeAHc2kjou17D8Cj1EAnCVwCiYLlSpcdO2bftOXgDKbBT4CGzonACesizwDqjGADJc7ghePn4gDlwcZA5UVvqQDAYsAL7wAGaoDuhcNE74ikQRVADWMpAAbKzEipgOqlxQffAkCBE6bKi09JBGxKhk4WxUqozwVKiSXCEAXqOQIiA60RSipEFYCMcM8KpOYDFQTAB0TAJLJGFzHhwglx8ENMBxZlQ3u8BBNBsMuAAlCQjN7wAj4RIAD1CYIhULgiHWHSCHFyGwsUKWq0kYNcXmGsVK8G4Fi4DihX3gOjyHDuAAlSJJUcROFxJAAhaIABTIUy2hM6AHUzBSmSAdnsAFqoVAUBHeNh6CQNfEmNi5bW6-UzI1UE2QD4ATm2mDsAEESgwFCBFKh8L41bl3NgAGJOOwB8ZnZRTAAiwNVMJATxW%2BEVzXwbIDZw66xAFSqOSg1Ww3PgACti6WuPBUFAANogesAHRAknNXHQHDq0VbsFbrYAuiB4C22x2uz2%2B62QegOpgRjohyBB-AhZBGyOQLP54uVxUgA",
+            "openDirectories": [
+              "",
+              "packages"
+            ],
+            "cardsCount": 10,
+            "closedBoxesCount": 9,
+            "wiresTotal": 1,
+            "pairLinesCount": 1,
+            "flowActive": true,
+            "flowShape": {
+              "rows": null,
+              "boxRows": {},
+              "looseColumns": {
+                "": 2
+              }
+            },
+            "flowShapesCount": 4,
+            "orderStart": "seed 1",
+            "orderScore": 11456,
+            "orderSignals": {
+              "vertical": 106,
+              "crossings": 0,
+              "height": 831,
+              "width": 1279,
+              "churn": 7,
+              "unevenness": 0,
+              "steps": 0,
+              "unlevel": 0
+            },
+            "searchStatus": "settled",
+            "searchTried": 8,
+            "searchAdopted": 0,
+            "searchCycleTried": 0,
+            "searchCycleAdopted": 0,
+            "searchAlignmentTried": 0,
+            "searchAlignmentAdopted": 0,
+            "camera": {
+              "k": 1,
+              "x": 0,
+              "y": 0
+            },
+            "look": "reading",
+            "columnsCount": 4
+          },
+          "displacement": {
+            "outsideCount": 15,
+            "outsideMovedLayoutCount": 15,
+            "outsideMovedLayoutPct": 100,
+            "outsideColumnChangedCount": 2,
+            "outsideColumnChangedPct": 13.3,
+            "outsideLayoutMedianDist": 302,
+            "outsideLayoutMaxDist": 639,
+            "outsideMovedScreenCount": 15,
+            "outsideMovedScreenPct": 100,
+            "outsideScreenMedianDist": 302,
+            "outsideScreenMaxDist": 639,
+            "byRelation": {
+              "sibling-in-parent": {
+                "total": 15,
+                "movedLayout": 15,
+                "colChanged": 2,
+                "medianLayoutDist": 302,
+                "maxLayoutDist": 639
+              }
+            },
+            "topOutsideMovers": [
+              {
+                "id": ".gitignore",
+                "kind": "card",
+                "dir": "",
+                "relation": "sibling-in-parent",
+                "beforeLayout": {
+                  "left": 1047,
+                  "top": 0,
+                  "col": 3
+                },
+                "afterLayout": {
+                  "left": 1047,
+                  "top": 639,
+                  "col": 3
+                },
+                "layoutDx": 0,
+                "layoutDy": 639,
+                "layoutDist": 639,
+                "columnChanged": false,
+                "screenDx": 0,
+                "screenDy": 639,
+                "screenDist": 639
+              },
+              {
+                "id": "tests",
+                "kind": "box",
+                "dir": "",
+                "relation": "sibling-in-parent",
+                "beforeLayout": {
+                  "left": 348,
+                  "top": 212,
+                  "col": 1
+                },
+                "afterLayout": {
+                  "left": 0,
+                  "top": 514,
+                  "col": 0
+                },
+                "layoutDx": -348,
+                "layoutDy": 302,
+                "layoutDist": 460.8,
+                "columnChanged": true,
+                "screenDx": -348,
+                "screenDy": 302,
+                "screenDist": 460.8
+              },
+              {
+                "id": "scripts",
+                "kind": "box",
+                "dir": "",
+                "relation": "sibling-in-parent",
+                "beforeLayout": {
+                  "left": 0,
+                  "top": 212,
+                  "col": 0
+                },
+                "afterLayout": {
+                  "left": 348,
+                  "top": 408,
+                  "col": 1
+                },
+                "layoutDx": 348,
+                "layoutDy": 196,
+                "layoutDist": 399.4,
+                "columnChanged": true,
+                "screenDx": 348,
+                "screenDy": 196,
+                "screenDist": 399.4
+              },
+              {
+                "id": "eslint.config.js",
+                "kind": "card",
+                "dir": "",
+                "relation": "sibling-in-parent",
+                "beforeLayout": {
+                  "left": 680,
+                  "top": 397,
+                  "col": 2
+                },
+                "afterLayout": {
+                  "left": 680,
+                  "top": 73,
+                  "col": 2
+                },
+                "layoutDx": 0,
+                "layoutDy": -324,
+                "layoutDist": 324,
+                "columnChanged": false,
+                "screenDx": 0,
+                "screenDy": -324,
+                "screenDist": 324
+              },
+              {
+                "id": "package.json",
+                "kind": "card",
+                "dir": "",
+                "relation": "sibling-in-parent",
+                "beforeLayout": {
+                  "left": 1047,
+                  "top": 376,
+                  "col": 3
+                },
+                "afterLayout": {
+                  "left": 1047,
+                  "top": 73,
+                  "col": 3
+                },
+                "layoutDx": 0,
+                "layoutDy": -303,
+                "layoutDist": 303,
+                "columnChanged": false,
+                "screenDx": 0,
+                "screenDy": -303,
+                "screenDist": 303
+              },
+              {
+                "id": "vitest.config.ts",
+                "kind": "card",
+                "dir": "",
+                "relation": "sibling-in-parent",
+                "beforeLayout": {
+                  "left": 1047,
+                  "top": 565,
+                  "col": 3
+                },
+                "afterLayout": {
+                  "left": 1047,
+                  "top": 262,
+                  "col": 3
+                },
+                "layoutDx": 0,
+                "layoutDy": -303,
+                "layoutDist": 303,
+                "columnChanged": false,
+                "screenDx": 0,
+                "screenDy": -303,
+                "screenDist": 303
+              },
+              {
+                "id": "tsconfig.base.json",
+                "kind": "card",
+                "dir": "",
+                "relation": "sibling-in-parent",
+                "beforeLayout": {
+                  "left": 0,
+                  "top": 318,
+                  "col": 0
+                },
+                "afterLayout": {
+                  "left": 0,
+                  "top": 620,
+                  "col": 0
+                },
+                "layoutDx": 0,
+                "layoutDy": 302,
+                "layoutDist": 302,
+                "columnChanged": false,
+                "screenDx": 0,
+                "screenDy": 302,
+                "screenDist": 302
+              },
+              {
+                "id": ".devcontainer",
+                "kind": "box",
+                "dir": "",
+                "relation": "sibling-in-parent",
+                "beforeLayout": {
+                  "left": 0,
+                  "top": 0,
+                  "col": 0
+                },
+                "afterLayout": {
+                  "left": 0,
+                  "top": 302,
+                  "col": 0
+                },
+                "layoutDx": 0,
+                "layoutDy": 302,
+                "layoutDist": 302,
+                "columnChanged": false,
+                "screenDx": 0,
+                "screenDy": 302,
+                "screenDist": 302
+              }
+            ]
+          }
+        },
+        {
+          "stepIndex": 2,
+          "action": "open packages/explorer",
+          "openedDirectory": "packages/explorer",
+          "targetWasInViewport": true,
+          "clickMethod": "mouse-handle",
+          "moveObserved": {
+            "sawMovingTrue": true,
+            "movingDurationMs": 1394,
+            "moveCount": 3,
+            "sawSearchRunning": true
+          },
+          "state": {
+            "stepLabel": "open packages/explorer",
+            "openedDirectory": "packages/explorer",
+            "url": "http://127.0.0.1:35641/?s=N4IgbiBcDMA0IBsqgQewMYEMEFlMAdkR1UEBXAWwDsBxAqARgAYn4BLAFwFMK7DIATABZ4AI0xUAJnygCAHPAAWXNgHNFHAMKoAzhygBWeAHc2kjou17D8Cj1EAnCVwCiYLlSpcdO2bftOXgDKbBT4CGzonACesizwDqjGADJc7ghePn4gDlwcZA5UVvqQDAYsAL7wAGaoDuhcNE74ikQRVADWMpAAbKzEipgOqlxQffAkCBE6bKi09JBGxKhk4WxUqozwVKiSXCEAXqOQIiA60RSipEFYCMcM8KpOYDFQTAB0TAJLJGFzHhwglx8ENMBxZlQ3u8BBNBsMuAAlCQjN7wAj4RIAD1CYIhULgiHWHSCHFyGwsUKWq0kYNcXmGsVK8G4Fi4DihX3gOjyHDuAAlSJJUcROFxJAAhaIABTIUy2hM6AHUzBSmSAdnsAFqoVAUBHeNh6CQNfEmNi5bW6-UzI1UE2QD4ATm2mDsAEESgwFCBFKh8L41bl3NgAGJOOwB8ZnZRTAAiwNVMJATxW%2BEVzXwbIDZw66xAFSqOSg1Ww3PgACti6WuPBUFAANogesAHRAknNXHQHDq0VbsFbrYAuiB4C22x2uz2%2B62QegOpgRjohyOm6327lJw5eyOZ5g5wvvAB6LiY8J1NnLwfwIWQRsr2fzxf3vePo8ns%2B5dmDipAA",
+            "openDirectories": [
+              "",
+              "packages",
+              "packages/explorer"
+            ],
+            "cardsCount": 12,
+            "closedBoxesCount": 9,
+            "wiresTotal": 2,
+            "pairLinesCount": 2,
+            "flowActive": true,
+            "flowShape": {
+              "rows": 1,
+              "boxRows": {},
+              "looseColumns": {
+                "": 2
+              }
+            },
+            "flowShapesCount": 6,
+            "orderStart": "previous",
+            "orderScore": 14710,
+            "orderSignals": {
+              "vertical": 661,
+              "crossings": 0,
+              "height": 978,
+              "width": 1715,
+              "churn": 0,
+              "unevenness": 0,
+              "steps": 0,
+              "unlevel": 0
+            },
+            "searchStatus": "settled",
+            "searchTried": 8,
+            "searchAdopted": 2,
+            "searchCycleTried": 0,
+            "searchCycleAdopted": 0,
+            "searchAlignmentTried": 3,
+            "searchAlignmentAdopted": 2,
+            "camera": {
+              "k": 1,
+              "x": 0,
+              "y": 0
+            },
+            "look": "reading",
+            "columnsCount": 5
+          },
+          "displacement": {
+            "outsideCount": 18,
+            "outsideMovedLayoutCount": 18,
+            "outsideMovedLayoutPct": 100,
+            "outsideColumnChangedCount": 14,
+            "outsideColumnChangedPct": 77.8,
+            "outsideLayoutMedianDist": 442.1,
+            "outsideLayoutMaxDist": 838,
+            "outsideMovedScreenCount": 18,
+            "outsideMovedScreenPct": 100,
+            "outsideScreenMedianDist": 595.1,
+            "outsideScreenMaxDist": 1040.9,
+            "byRelation": {
+              "sibling-in-parent": {
+                "total": 3,
+                "movedLayout": 3,
+                "colChanged": 2,
+                "medianLayoutDist": 458.8,
+                "maxLayoutDist": 757
+              },
+              "higher-ancestor": {
+                "total": 15,
+                "movedLayout": 15,
+                "colChanged": 12,
+                "medianLayoutDist": 442.1,
+                "maxLayoutDist": 838
+              }
+            },
+            "topOutsideMovers": [
+              {
+                "id": ".vscode",
+                "kind": "box",
+                "dir": "",
+                "relation": "higher-ancestor",
+                "beforeLayout": {
+                  "left": 0,
+                  "top": 408,
+                  "col": 0
+                },
+                "afterLayout": {
+                  "left": 732,
+                  "top": 0,
+                  "col": 2
+                },
+                "layoutDx": 732,
+                "layoutDy": -408,
+                "layoutDist": 838,
+                "columnChanged": true,
+                "screenDx": 732,
+                "screenDy": -740,
+                "screenDist": 1040.9
+              },
+              {
+                "id": "packages/generator",
+                "kind": "box",
+                "dir": "packages",
+                "relation": "sibling-in-parent",
+                "beforeLayout": {
+                  "left": 13,
+                  "top": 179,
+                  "col": 0
+                },
+                "afterLayout": {
+                  "left": 745,
+                  "top": 372,
+                  "col": 2
+                },
+                "layoutDx": 732,
+                "layoutDy": 193,
+                "layoutDist": 757,
+                "columnChanged": true,
+                "screenDx": 732,
+                "screenDy": -139,
+                "screenDist": 745.1
+              },
+              {
+                "id": "tsconfig.json",
+                "kind": "card",
+                "dir": "",
+                "relation": "higher-ancestor",
+                "beforeLayout": {
+                  "left": 348,
+                  "top": 514,
+                  "col": 1
+                },
+                "afterLayout": {
+                  "left": 732,
+                  "top": 106,
+                  "col": 2
+                },
+                "layoutDx": 384,
+                "layoutDy": -408,
+                "layoutDist": 560.3,
+                "columnChanged": true,
+                "screenDx": 384,
+                "screenDy": -740,
+                "screenDist": 833.7
+              },
+              {
+                "id": "tests",
+                "kind": "box",
+                "dir": "",
+                "relation": "higher-ancestor",
+                "beforeLayout": {
+                  "left": 0,
+                  "top": 514,
+                  "col": 0
+                },
+                "afterLayout": {
+                  "left": 348,
+                  "top": 106,
+                  "col": 1
+                },
+                "layoutDx": 348,
+                "layoutDy": -408,
+                "layoutDist": 536.3,
+                "columnChanged": true,
+                "screenDx": 348,
+                "screenDy": -740,
+                "screenDist": 817.7
+              },
+              {
+                "id": "scripts",
+                "kind": "box",
+                "dir": "",
+                "relation": "higher-ancestor",
+                "beforeLayout": {
+                  "left": 348,
+                  "top": 408,
+                  "col": 1
+                },
+                "afterLayout": {
+                  "left": 0,
+                  "top": 106,
+                  "col": 0
+                },
+                "layoutDx": -348,
+                "layoutDy": -302,
+                "layoutDist": 460.8,
+                "columnChanged": true,
+                "screenDx": -348,
+                "screenDy": -634,
+                "screenDist": 723.2
+              },
+              {
+                "id": "packages/engine",
+                "kind": "box",
+                "dir": "packages",
+                "relation": "sibling-in-parent",
+                "beforeLayout": {
+                  "left": 13,
+                  "top": 73,
+                  "col": 0
+                },
+                "afterLayout": {
+                  "left": 361,
+                  "top": 372,
+                  "col": 1
+                },
+                "layoutDx": 348,
+                "layoutDy": 299,
+                "layoutDist": 458.8,
+                "columnChanged": true,
+                "screenDx": 348,
+                "screenDy": -33,
+                "screenDist": 349.6
+              },
+              {
+                "id": "eslint.config.js",
+                "kind": "card",
+                "dir": "",
+                "relation": "higher-ancestor",
+                "beforeLayout": {
+                  "left": 680,
+                  "top": 73,
+                  "col": 2
+                },
+                "afterLayout": {
+                  "left": 1116,
+                  "top": 0,
+                  "col": 3
+                },
+                "layoutDx": 436,
+                "layoutDy": -73,
+                "layoutDist": 442.1,
+                "columnChanged": true,
+                "screenDx": 436,
+                "screenDy": -405,
+                "screenDist": 595.1
+              },
+              {
+                "id": ".gitattributes",
+                "kind": "card",
+                "dir": "",
+                "relation": "higher-ancestor",
+                "beforeLayout": {
+                  "left": 680,
+                  "top": 261,
+                  "col": 2
+                },
+                "afterLayout": {
+                  "left": 1116,
+                  "top": 188,
+                  "col": 3
+                },
+                "layoutDx": 436,
+                "layoutDy": -73,
+                "layoutDist": 442.1,
+                "columnChanged": true,
+                "screenDx": 436,
+                "screenDy": -405,
+                "screenDist": 595.1
+              }
+            ]
+          }
+        },
+        {
+          "stepIndex": 3,
+          "action": "open packages/explorer/src",
+          "openedDirectory": "packages/explorer/src",
+          "targetWasInViewport": true,
+          "clickMethod": "mouse-handle",
+          "moveObserved": {
+            "sawMovingTrue": true,
+            "movingDurationMs": 1371,
+            "moveCount": 3,
+            "sawSearchRunning": true
+          },
+          "state": {
+            "stepLabel": "open packages/explorer/src",
+            "openedDirectory": "packages/explorer/src",
+            "url": "http://127.0.0.1:35641/?s=N4IgbiBcDMA0IBsqgQewMYEMEFlMAdkR1UEBXAWwDsBxAqARgAYn4BLAFwFMK7DIATABZ4AI0xUAJnygCAHPAAWXNgHNFHAMKoAzhygBWeAHc2kjou17D8Cj1EAnCVwCiYLlSpcdO2bftOXgDKbBT4CGzonACesizwDqjGADJc7ghePn4gDlwcZA5UVvqQDAYsAL7wAGaoDuhcNE74ikQRVADWMpAAbKzEipgOqlxQffAkCBE6bKi09JBGxKhk4WxUqozwVKiSXCEAXqOQIiA60RSipEFYCMcM8KpOYDFQTAB0TAJLJGFzHhwglx8ENMBxZlQ3u8BBNBsMuAAlCQjN7wAj4RIAD1CYIhULgiHWHSCHFyGwsUKWq0kYNcXmGsVK8G4Fi4DihX3gOjyHDuAAlSJJUcROFxJAAhaIABTIUy2hM6AHUzBSmSAdnsAFqoVAUBHeNh6CQNfEmNi5bW6-UzI1UE2QD4ATm2mDsAEESgwFCBFKh8L41bl3NgAGJOOwB8ZnZRTAAiwNVMJATxW%2BEVzXwbIDZw66xAFSqOSg1Ww3PgACti6WuPBUFAANogesAHRAknNXHQHDq0VbsFbrYAuiB4C22x2uz2%2B62QegOpgRjohyOm6327lJw5eyOZ5g5wvvAB6LiY8J1NnL0drifdrfTkCz%2BeL4%2BntC5ByHnT1ZeD%2BBCyCNiuj4Hr48DAc%2BJ5nu%2BQF7k%2BR6QW%2BbKfvUICDhUQA",
+            "openDirectories": [
+              "",
+              "packages",
+              "packages/explorer",
+              "packages/explorer/src"
+            ],
+            "cardsCount": 12,
+            "closedBoxesCount": 10,
+            "wiresTotal": 2,
+            "pairLinesCount": 2,
+            "flowActive": true,
+            "flowShape": {
+              "rows": 1,
+              "boxRows": {},
+              "looseColumns": {
+                "": 2
+              }
+            },
+            "flowShapesCount": 6,
+            "orderStart": "previous",
+            "orderScore": 15054,
+            "orderSignals": {
+              "vertical": 555,
+              "crossings": 0,
+              "height": 1068,
+              "width": 1715,
+              "churn": 0,
+              "unevenness": 0,
+              "steps": 0,
+              "unlevel": 0
+            },
+            "searchStatus": "settled",
+            "searchTried": 8,
+            "searchAdopted": 2,
+            "searchCycleTried": 0,
+            "searchCycleAdopted": 0,
+            "searchAlignmentTried": 3,
+            "searchAlignmentAdopted": 2,
+            "camera": {
+              "k": 1,
+              "x": 0,
+              "y": 0
+            },
+            "look": "reading",
+            "columnsCount": 5
+          },
+          "displacement": {
+            "outsideCount": 20,
+            "outsideMovedLayoutCount": 1,
+            "outsideMovedLayoutPct": 5,
+            "outsideColumnChangedCount": 0,
+            "outsideColumnChangedPct": 0,
+            "outsideLayoutMedianDist": 0,
+            "outsideLayoutMaxDist": 106,
+            "outsideMovedScreenCount": 20,
+            "outsideMovedScreenPct": 100,
+            "outsideScreenMedianDist": 90,
+            "outsideScreenMaxDist": 196,
+            "byRelation": {
+              "sibling-in-parent": {
+                "total": 2,
+                "movedLayout": 1,
+                "colChanged": 0,
+                "medianLayoutDist": 53,
+                "maxLayoutDist": 106
+              },
+              "higher-ancestor": {
+                "total": 18,
+                "movedLayout": 0,
+                "colChanged": 0,
+                "medianLayoutDist": 0,
+                "maxLayoutDist": 0
+              }
+            },
+            "topOutsideMovers": [
+              {
+                "id": "packages/explorer/tsconfig.json",
+                "kind": "card",
+                "dir": "packages/explorer",
+                "relation": "sibling-in-parent",
+                "beforeLayout": {
+                  "left": 374,
+                  "top": 767,
+                  "col": 1
+                },
+                "afterLayout": {
+                  "left": 374,
+                  "top": 661,
+                  "col": 1
+                },
+                "layoutDx": 0,
+                "layoutDy": -106,
+                "layoutDist": 106,
+                "columnChanged": false,
+                "screenDx": 0,
+                "screenDy": -196,
+                "screenDist": 196
+              },
+              {
+                "id": "packages/explorer/package.json",
+                "kind": "card",
+                "dir": "packages/explorer",
+                "relation": "sibling-in-parent",
+                "beforeLayout": {
+                  "left": 758,
+                  "top": 661,
+                  "col": 2
+                },
+                "afterLayout": {
+                  "left": 758,
+                  "top": 661,
+                  "col": 2
+                },
+                "layoutDx": 0,
+                "layoutDy": 0,
+                "layoutDist": 0,
+                "columnChanged": false,
+                "screenDx": 0,
+                "screenDy": -90,
+                "screenDist": 90
+              },
+              {
+                "id": "tsconfig.base.json",
+                "kind": "card",
+                "dir": "",
+                "relation": "higher-ancestor",
+                "beforeLayout": {
+                  "left": 0,
+                  "top": 212,
+                  "col": 0
+                },
+                "afterLayout": {
+                  "left": 0,
+                  "top": 212,
+                  "col": 0
+                },
+                "layoutDx": 0,
+                "layoutDy": 0,
+                "layoutDist": 0,
+                "columnChanged": false,
+                "screenDx": 0,
+                "screenDy": -90,
+                "screenDist": 90
+              },
+              {
+                "id": "tsconfig.json",
+                "kind": "card",
+                "dir": "",
+                "relation": "higher-ancestor",
+                "beforeLayout": {
+                  "left": 732,
+                  "top": 106,
+                  "col": 2
+                },
+                "afterLayout": {
+                  "left": 732,
+                  "top": 106,
+                  "col": 2
+                },
+                "layoutDx": 0,
+                "layoutDy": 0,
+                "layoutDist": 0,
+                "columnChanged": false,
+                "screenDx": 0,
+                "screenDy": -90,
+                "screenDist": 90
+              },
+              {
+                "id": "eslint.config.js",
+                "kind": "card",
+                "dir": "",
+                "relation": "higher-ancestor",
+                "beforeLayout": {
+                  "left": 1116,
+                  "top": 0,
+                  "col": 3
+                },
+                "afterLayout": {
+                  "left": 1116,
+                  "top": 0,
+                  "col": 3
+                },
+                "layoutDx": 0,
+                "layoutDy": 0,
+                "layoutDist": 0,
+                "columnChanged": false,
+                "screenDx": 0,
+                "screenDy": -90,
+                "screenDist": 90
+              },
+              {
+                "id": ".gitattributes",
+                "kind": "card",
+                "dir": "",
+                "relation": "higher-ancestor",
+                "beforeLayout": {
+                  "left": 1116,
+                  "top": 188,
+                  "col": 3
+                },
+                "afterLayout": {
+                  "left": 1116,
+                  "top": 188,
+                  "col": 3
+                },
+                "layoutDx": 0,
+                "layoutDy": 0,
+                "layoutDist": 0,
+                "columnChanged": false,
+                "screenDx": 0,
+                "screenDy": -90,
+                "screenDist": 90
+              },
+              {
+                "id": ".live-docs.config.json",
+                "kind": "card",
+                "dir": "",
+                "relation": "higher-ancestor",
+                "beforeLayout": {
+                  "left": 1116,
+                  "top": 376,
+                  "col": 3
+                },
+                "afterLayout": {
+                  "left": 1116,
+                  "top": 376,
+                  "col": 3
+                },
+                "layoutDx": 0,
+                "layoutDy": 0,
+                "layoutDist": 0,
+                "columnChanged": false,
+                "screenDx": 0,
+                "screenDy": -90,
+                "screenDist": 90
+              },
+              {
+                "id": "slopcop.config.json",
+                "kind": "card",
+                "dir": "",
+                "relation": "higher-ancestor",
+                "beforeLayout": {
+                  "left": 1116,
+                  "top": 585,
+                  "col": 3
+                },
+                "afterLayout": {
+                  "left": 1116,
+                  "top": 585,
+                  "col": 3
+                },
+                "layoutDx": 0,
+                "layoutDy": 0,
+                "layoutDist": 0,
+                "columnChanged": false,
+                "screenDx": 0,
+                "screenDy": -90,
+                "screenDist": 90
+              }
+            ]
+          },
+          "screenshot": "2d-repo-before-client.png"
+        },
+        {
+          "stepIndex": 4,
+          "action": "open packages/explorer/src/client",
+          "openedDirectory": "packages/explorer/src/client",
+          "targetWasInViewport": true,
+          "clickMethod": "mouse-handle",
+          "moveObserved": {
+            "sawMovingTrue": true,
+            "movingDurationMs": 5221,
+            "moveCount": 11,
+            "sawSearchRunning": true
+          },
+          "state": {
+            "stepLabel": "open packages/explorer/src/client",
+            "openedDirectory": "packages/explorer/src/client",
+            "url": "http://127.0.0.1:35641/?s=N4IgbiBcDMA0IBsqgQewMYEMEFlMAdkR1UEBXAWwDsBxAqARgAYn4BLAFwFMK7DIATABZ4AI0xUAJnygCAHPAAWXNgHNFHAMKoAzhygBWeAHc2kjou17D8Cj1EAnCVwCiYLlSpcdO2bftOXgDKbBT4CGzonACesizwDqjGADJc7ghePn4gDlwcZA5UVvqQDAYsAL7wAGaoDuhcNE74ikQRVADWMpAAbKzEipgOqlxQffAkCBE6bKi09JBGxKhk4WxUqozwVKiSXCEAXqOQIiA60RSipEFYCMcM8KpOYDFQTAB0TAJLJGFzHhwglx8ENMBxZlQ3u8BBNBsMuAAlCQjN7wAj4RIAD1CYIhULgiHWHSCHFyGwsUKWq0kYNcXmGsVK8G4Fi4DihX3gOjyHDuAAlSJJUcROFxJAAhaIABTIUy2hM6AHUzBSmSAdnsAFqoVAUBHeNh6CQNfEmNi5bW6-UzI1UE2QD4ATm2mDsAEESgwFCBFKh8L41bl3NgAGJOOwB8ZnZRTAAiwNVMJATxW%2BEVzXwbIDZw66xAFSqOSg1Ww3PgACti6WuPBUFAANogesAHRAknNXHQHDq0VbsFbrYAuiB4C22x2uz2%2B62QegOpgRjohyOm6327lJw5eyOZ5g5wvvAB6LiY8J1NnL0drifdrfTkCz%2BeL4%2BntC5ByHnT1S%2Br8cb2-bv2D57k%2BR4nme76fvUh7oBEALLoO8BCpAjYro%2BB6%2BPA6HPuBb5smhIEYS%2BEFslB6AEfuOGvueH5fugMFwVQ%2BiDhUQA",
+            "openDirectories": [
+              "",
+              "packages",
+              "packages/explorer",
+              "packages/explorer/src",
+              "packages/explorer/src/client"
+            ],
+            "cardsCount": 37,
+            "closedBoxesCount": 16,
+            "wiresTotal": 42,
+            "pairLinesCount": 42,
+            "flowActive": true,
+            "flowShape": {
+              "rows": 5,
+              "boxRows": {},
+              "looseColumns": {}
+            },
+            "flowShapesCount": 5,
+            "orderStart": "seed 2",
+            "orderScore": 185333,
+            "orderSignals": {
+              "vertical": 43832,
+              "crossings": 21,
+              "height": 1690,
+              "width": 5369,
+              "churn": 0,
+              "unevenness": 2930,
+              "steps": 14,
+              "unlevel": 2844
+            },
+            "searchStatus": "settled",
+            "searchTried": 8,
+            "searchAdopted": 10,
+            "searchCycleTried": 0,
+            "searchCycleAdopted": 0,
+            "searchAlignmentTried": 37,
+            "searchAlignmentAdopted": 10,
+            "camera": {
+              "k": 1,
+              "x": 0,
+              "y": 0
+            },
+            "look": "reading",
+            "columnsCount": 11
+          },
+          "displacement": {
+            "outsideCount": 21,
+            "outsideMovedLayoutCount": 20,
+            "outsideMovedLayoutPct": 95.2,
+            "outsideColumnChangedCount": 16,
+            "outsideColumnChangedPct": 76.2,
+            "outsideLayoutMedianDist": 1545.6,
+            "outsideLayoutMaxDist": 4036.7,
+            "outsideMovedScreenCount": 21,
+            "outsideMovedScreenPct": 100,
+            "outsideScreenMedianDist": 1533.8,
+            "outsideScreenMaxDist": 4029.9,
+            "byRelation": {
+              "sibling-in-parent": {
+                "total": 1,
+                "movedLayout": 1,
+                "colChanged": 1,
+                "medianLayoutDist": 893.3,
+                "maxLayoutDist": 893.3
+              },
+              "higher-ancestor": {
+                "total": 20,
+                "movedLayout": 19,
+                "colChanged": 15,
+                "medianLayoutDist": 1719.3,
+                "maxLayoutDist": 4036.7
+              }
+            },
+            "topOutsideMovers": [
+              {
+                "id": "eslint.config.js",
+                "kind": "card",
+                "dir": "",
+                "relation": "higher-ancestor",
+                "beforeLayout": {
+                  "left": 1116,
+                  "top": 0,
+                  "col": 3
+                },
+                "afterLayout": {
+                  "left": 5113,
+                  "top": 565,
+                  "col": 10
+                },
+                "layoutDx": 3997,
+                "layoutDy": 565,
+                "layoutDist": 4036.7,
+                "columnChanged": true,
+                "screenDx": 3945,
+                "screenDy": 822.7,
+                "screenDist": 4029.9
+              },
+              {
+                "id": ".gitattributes",
+                "kind": "card",
+                "dir": "",
+                "relation": "higher-ancestor",
+                "beforeLayout": {
+                  "left": 1116,
+                  "top": 188,
+                  "col": 3
+                },
+                "afterLayout": {
+                  "left": 5113,
+                  "top": 753,
+                  "col": 10
+                },
+                "layoutDx": 3997,
+                "layoutDy": 565,
+                "layoutDist": 4036.7,
+                "columnChanged": true,
+                "screenDx": 3945,
+                "screenDy": 822.7,
+                "screenDist": 4029.9
+              },
+              {
+                "id": "packages/explorer/package.json",
+                "kind": "card",
+                "dir": "packages/explorer",
+                "relation": "higher-ancestor",
+                "beforeLayout": {
+                  "left": 758,
+                  "top": 661,
+                  "col": 2
+                },
+                "afterLayout": {
+                  "left": 4755,
+                  "top": 339,
+                  "col": 9
+                },
+                "layoutDx": 3997,
+                "layoutDy": -322,
+                "layoutDist": 4009.9,
+                "columnChanged": true,
+                "screenDx": 3945,
+                "screenDy": -64.3,
+                "screenDist": 3945.5
+              },
+              {
+                "id": "slopcop.config.json",
+                "kind": "card",
+                "dir": "",
+                "relation": "higher-ancestor",
+                "beforeLayout": {
+                  "left": 1116,
+                  "top": 585,
+                  "col": 3
+                },
+                "afterLayout": {
+                  "left": 5113,
+                  "top": 376,
+                  "col": 10
+                },
+                "layoutDx": 3997,
+                "layoutDy": -209,
+                "layoutDist": 4002.5,
+                "columnChanged": true,
+                "screenDx": 3945,
+                "screenDy": 48.7,
+                "screenDist": 3945.3
+              },
+              {
+                "id": "package.json",
+                "kind": "card",
+                "dir": "",
+                "relation": "higher-ancestor",
+                "beforeLayout": {
+                  "left": 1483,
+                  "top": 0,
+                  "col": 4
+                },
+                "afterLayout": {
+                  "left": 5113,
+                  "top": 941,
+                  "col": 10
+                },
+                "layoutDx": 3630,
+                "layoutDy": 941,
+                "layoutDist": 3750,
+                "columnChanged": true,
+                "screenDx": 3578,
+                "screenDy": 1198.7,
+                "screenDist": 3773.5
+              },
+              {
+                "id": "vitest.config.ts",
+                "kind": "card",
+                "dir": "",
+                "relation": "higher-ancestor",
+                "beforeLayout": {
+                  "left": 1483,
+                  "top": 189,
+                  "col": 4
+                },
+                "afterLayout": {
+                  "left": 5113,
+                  "top": 1130,
+                  "col": 10
+                },
+                "layoutDx": 3630,
+                "layoutDy": 941,
+                "layoutDist": 3750,
+                "columnChanged": true,
+                "screenDx": 3578,
+                "screenDy": 1198.7,
+                "screenDist": 3773.5
+              },
+              {
+                "id": ".nvmrc",
+                "kind": "card",
+                "dir": "",
+                "relation": "higher-ancestor",
+                "beforeLayout": {
+                  "left": 1483,
+                  "top": 378,
+                  "col": 4
+                },
+                "afterLayout": {
+                  "left": 5113,
+                  "top": 0,
+                  "col": 10
+                },
+                "layoutDx": 3630,
+                "layoutDy": -378,
+                "layoutDist": 3649.6,
+                "columnChanged": true,
+                "screenDx": 3578,
+                "screenDy": -120.3,
+                "screenDist": 3580
+              },
+              {
+                "id": ".gitignore",
+                "kind": "card",
+                "dir": "",
+                "relation": "higher-ancestor",
+                "beforeLayout": {
+                  "left": 1483,
+                  "top": 566,
+                  "col": 4
+                },
+                "afterLayout": {
+                  "left": 5113,
+                  "top": 188,
+                  "col": 10
+                },
+                "layoutDx": 3630,
+                "layoutDy": -378,
+                "layoutDist": 3649.6,
+                "columnChanged": true,
+                "screenDx": 3578,
+                "screenDy": -120.3,
+                "screenDist": 3580
+              }
+            ]
+          },
+          "screenshot": "2d-repo-after-client.png"
+        },
+        {
+          "stepIndex": 5,
+          "action": "open packages/explorer/src/client/views",
+          "openedDirectory": "packages/explorer/src/client/views",
+          "targetWasInViewport": false,
+          "clickMethod": "dom-click-offscreen",
+          "moveObserved": {
+            "sawMovingTrue": true,
+            "movingDurationMs": 10963,
+            "moveCount": 21,
+            "sawSearchRunning": true
+          },
+          "state": {
+            "stepLabel": "open packages/explorer/src/client/views",
+            "openedDirectory": "packages/explorer/src/client/views",
+            "url": "http://127.0.0.1:35641/?s=N4IgbiBcDMA0IBsqgQewMYEMEFlMAdkR1UEBXAWwDsBxAqARgAYn4BLAFwFMK7DIATABZ4AI0xUAJnygCAHPAAWXNgHNFHAMKoAzhygBWeAHc2kjou17D8Cj1EAnCVwCiYLlSpcdO2bftOXgDKbBT4CGzonACesizwDqjGADJc7ghePn4gDlwcZA5UVvqQDAYsAL7wAGaoDuhcNE74ikQRVADWMpAAbKzEipgOqlxQffAkCBE6bKi09JBGxKhk4WxUqozwVKiSXCEAXqOQIiA60RSipEFYCMcM8KpOYDFQTAB0TAJLJGFzHhwglx8ENMBxZlQ3u8BBNBsMuAAlCQjN7wAj4RIAD1CYIhULgiHWHSCHFyGwsUKWq0kYNcXmGsVK8G4Fi4DihX3gOjyHDuAAlSJJUcROFxJAAhaIABTIUy2hM6AHUzBSmSAdnsAFqoVAUBHeNh6CQNfEmNi5bW6-UzI1UE2QD4ATm2mDsAEESgwFCBFKh8L41bl3NgAGJOOwB8ZnZRTAAiwNVMJATxW%2BEVzXwbIDZw66xAFSqOSg1Ww3PgACti6WuPBUFAANogesAHRAknNXHQHDq0VbsFbrYAuiB4C22x2uz2%2B62QegOpgRjohyOm6327lJw5eyOZ5g5wvvAB6LiY8J1NnL0drifdrfTkCz%2BeL4%2BntC5ByHnT1S%2Br8cb2-bv2D57k%2BR4nme76fvUh7oBEAI-mO66dgB96PgeOgvhBbJQegMFwVQHCHi8XDGEuIDDoO8BCpAjYrmhi50SB6GYW%2BbKMfuz7gaxH5fug7GgRhXHnjx0GwWwAL8cxQmQbxeHiQRRHiaR5EVEAA",
+            "openDirectories": [
+              "",
+              "packages",
+              "packages/explorer",
+              "packages/explorer/src",
+              "packages/explorer/src/client",
+              "packages/explorer/src/client/views"
+            ],
+            "cardsCount": 94,
+            "closedBoxesCount": 17,
+            "wiresTotal": 171,
+            "pairLinesCount": 171,
+            "flowActive": true,
+            "flowShape": {
+              "rows": null,
+              "boxRows": {},
+              "looseColumns": {}
+            },
+            "flowShapesCount": 3,
+            "orderStart": "cycle 1",
+            "orderScore": 1155977,
+            "orderSignals": {
+              "vertical": 523732,
+              "crossings": 502,
+              "height": 3869,
+              "width": 7115,
+              "churn": 0,
+              "unevenness": 3561,
+              "steps": 14,
+              "unlevel": 12872
+            },
+            "searchStatus": "settled",
+            "searchTried": 13,
+            "searchAdopted": 20,
+            "searchCycleTried": 1,
+            "searchCycleAdopted": 1,
+            "searchAlignmentTried": 103,
+            "searchAlignmentAdopted": 19,
+            "camera": {
+              "k": 1,
+              "x": 0,
+              "y": 0
+            },
+            "look": "reading",
+            "columnsCount": 12
+          },
+          "displacement": {
+            "outsideCount": 52,
+            "outsideMovedLayoutCount": 51,
+            "outsideMovedLayoutPct": 98.1,
+            "outsideColumnChangedCount": 20,
+            "outsideColumnChangedPct": 38.5,
+            "outsideLayoutMedianDist": 656.2,
+            "outsideLayoutMaxDist": 1901.5,
+            "outsideMovedScreenCount": 52,
+            "outsideMovedScreenPct": 100,
+            "outsideScreenMedianDist": 1489.2,
+            "outsideScreenMaxDist": 2730.5,
+            "byRelation": {
+              "sibling-in-parent": {
+                "total": 31,
+                "movedLayout": 31,
+                "colChanged": 11,
+                "medianLayoutDist": 582.8,
+                "maxLayoutDist": 1612.8
+              },
+              "higher-ancestor": {
+                "total": 21,
+                "movedLayout": 20,
+                "colChanged": 9,
+                "medianLayoutDist": 1192.2,
+                "maxLayoutDist": 1901.5
+              }
+            },
+            "topOutsideMovers": [
+              {
+                "id": ".gitattributes",
+                "kind": "card",
+                "dir": "",
+                "relation": "higher-ancestor",
+                "beforeLayout": {
+                  "left": 5113,
+                  "top": 753,
+                  "col": 10
+                },
+                "afterLayout": {
+                  "left": 6859,
+                  "top": 0,
+                  "col": 11
+                },
+                "layoutDx": 1746,
+                "layoutDy": -753,
+                "layoutDist": 1901.5,
+                "columnChanged": true,
+                "screenDx": 1798,
+                "screenDy": -2055,
+                "screenDist": 2730.5
+              },
+              {
+                "id": "slopcop.config.json",
+                "kind": "card",
+                "dir": "",
+                "relation": "higher-ancestor",
+                "beforeLayout": {
+                  "left": 5113,
+                  "top": 376,
+                  "col": 10
+                },
+                "afterLayout": {
+                  "left": 6859,
+                  "top": 941,
+                  "col": 11
+                },
+                "layoutDx": 1746,
+                "layoutDy": 565,
+                "layoutDist": 1835.1,
+                "columnChanged": true,
+                "screenDx": 1798,
+                "screenDy": -737,
+                "screenDist": 1943.2
+              },
+              {
+                "id": ".nvmrc",
+                "kind": "card",
+                "dir": "",
+                "relation": "higher-ancestor",
+                "beforeLayout": {
+                  "left": 5113,
+                  "top": 0,
+                  "col": 10
+                },
+                "afterLayout": {
+                  "left": 6859,
+                  "top": 376,
+                  "col": 11
+                },
+                "layoutDx": 1746,
+                "layoutDy": 376,
+                "layoutDist": 1786,
+                "columnChanged": true,
+                "screenDx": 1798,
+                "screenDy": -926,
+                "screenDist": 2022.4
+              },
+              {
+                "id": "package.json",
+                "kind": "card",
+                "dir": "",
+                "relation": "higher-ancestor",
+                "beforeLayout": {
+                  "left": 5113,
+                  "top": 941,
+                  "col": 10
+                },
+                "afterLayout": {
+                  "left": 6859,
+                  "top": 752,
+                  "col": 11
+                },
+                "layoutDx": 1746,
+                "layoutDy": -189,
+                "layoutDist": 1756.2,
+                "columnChanged": true,
+                "screenDx": 1798,
+                "screenDy": -1491,
+                "screenDist": 2335.8
+              },
+              {
+                "id": "packages/explorer/package.json",
+                "kind": "card",
+                "dir": "packages/explorer",
+                "relation": "higher-ancestor",
+                "beforeLayout": {
+                  "left": 4755,
+                  "top": 339,
+                  "col": 9
+                },
+                "afterLayout": {
+                  "left": 6501,
+                  "top": 279,
+                  "col": 10
+                },
+                "layoutDx": 1746,
+                "layoutDy": -60,
+                "layoutDist": 1747,
+                "columnChanged": true,
+                "screenDx": 1798,
+                "screenDy": -1362,
+                "screenDist": 2255.6
+              },
+              {
+                "id": ".gitignore",
+                "kind": "card",
+                "dir": "",
+                "relation": "higher-ancestor",
+                "beforeLayout": {
+                  "left": 5113,
+                  "top": 188,
+                  "col": 10
+                },
+                "afterLayout": {
+                  "left": 6859,
+                  "top": 188,
+                  "col": 11
+                },
+                "layoutDx": 1746,
+                "layoutDy": 0,
+                "layoutDist": 1746,
+                "columnChanged": true,
+                "screenDx": 1798,
+                "screenDy": -1302,
+                "screenDist": 2219.9
+              },
+              {
+                "id": "eslint.config.js",
+                "kind": "card",
+                "dir": "",
+                "relation": "higher-ancestor",
+                "beforeLayout": {
+                  "left": 5113,
+                  "top": 565,
+                  "col": 10
+                },
+                "afterLayout": {
+                  "left": 6859,
+                  "top": 564,
+                  "col": 11
+                },
+                "layoutDx": 1746,
+                "layoutDy": -1,
+                "layoutDist": 1746,
+                "columnChanged": true,
+                "screenDx": 1798,
+                "screenDy": -1303,
+                "screenDist": 2220.5
+              },
+              {
+                "id": "vitest.config.ts",
+                "kind": "card",
+                "dir": "",
+                "relation": "higher-ancestor",
+                "beforeLayout": {
+                  "left": 5113,
+                  "top": 1130,
+                  "col": 10
+                },
+                "afterLayout": {
+                  "left": 6859,
+                  "top": 1130,
+                  "col": 11
+                },
+                "layoutDx": 1746,
+                "layoutDy": 0,
+                "layoutDist": 1746,
+                "columnChanged": true,
+                "screenDx": 1798,
+                "screenDy": -1302,
+                "screenDist": 2219.9
+              }
+            ]
+          },
+          "screenshot": "2d-repo-after-views.png"
+        }
+      ],
+      "errors": []
+    },
+    "repo-shallow-scripts": {
+      "startUrl": "/?view=local&dir=",
+      "steps": [
+        {
+          "stepIndex": 0,
+          "action": "land on scan root",
+          "openedDirectory": "",
+          "targetWasInViewport": null,
+          "clickMethod": null,
+          "moveObserved": null,
+          "state": {
+            "stepLabel": "root",
+            "openedDirectory": null,
+            "url": "http://127.0.0.1:35641/?s=N4IgbiBcDMA0IBsqgQewMYEMEFlMAdkR1UEBXAWwDsBxAqARgAYn4BLAFwFMK7DIATABZ4AI0xUAJnygCAHPAAWXNgHNFHAMKoAzhygBWeAHc2kjou17D8Cj1EAnCVwCiYLlSpcdO2bftOXgDKbBT4CGzonACesizwDqjGADJc7ghePn4gDlwcZA5UVvqQDAYsAL7wAGaoDuhcNE74ikQRVADWMpAAbKzEipgOqlxQffAkCBE6bKi09JBGxKhk4WxUqozwVKiSXCEAXqOQIiA60RSipEFYCMcM8KpOYDFQTAB0TAJLJGFzHhwglx8ENMBxZlQ3u8BBNBsMuAAlCQjN7wAj4RIAD1CYIhULgiHWHSCHFyGwsUKWq0kYNcXmGsVK8G4Fi4DihX3gOjyHDuAAlSJJUcROFxJAAhaIABTIUy2hM6AHUzBSmSAdnsAFqoVAUBHeNh6CQNfEmNi5bW6-UzI1UE2QD4ATm2mDsAEESgwFCBFKh8L41bl3NgAGJOOwB8ZnZRTAAiwNVMJATxW%2BEVzXwbIDZw66xAFSqOSg1Ww3PgACti6WuPBUFAANogesAHRAknNXHQHDq0VbsFbrYAuiBB-AhZBGyOKkA",
+            "openDirectories": [
+              ""
+            ],
+            "cardsCount": 10,
+            "closedBoxesCount": 6,
+            "wiresTotal": 1,
+            "pairLinesCount": 1,
+            "flowActive": true,
+            "flowShape": {
+              "rows": null,
+              "boxRows": {},
+              "looseColumns": {
+                "": 2
+              }
+            },
+            "flowShapesCount": 4,
+            "orderStart": "ranked",
+            "orderScore": 10245,
+            "orderSignals": {
+              "vertical": 0,
+              "crossings": 0,
+              "height": 750,
+              "width": 1279,
+              "churn": 0,
+              "unevenness": 0,
+              "steps": 0,
+              "unlevel": 0
+            },
+            "searchStatus": "settled",
+            "searchTried": 8,
+            "searchAdopted": 0,
+            "searchCycleTried": 0,
+            "searchCycleAdopted": 0,
+            "searchAlignmentTried": 0,
+            "searchAlignmentAdopted": 0,
+            "camera": {
+              "k": 1,
+              "x": 0,
+              "y": 0
+            },
+            "look": "reading",
+            "columnsCount": 4
+          },
+          "displacement": null,
+          "screenshot": "2d-repo-before-scripts.png"
+        },
+        {
+          "stepIndex": 1,
+          "action": "open scripts",
+          "openedDirectory": "scripts",
+          "targetWasInViewport": true,
+          "clickMethod": "mouse-handle",
+          "moveObserved": {
+            "sawMovingTrue": true,
+            "movingDurationMs": 1877,
+            "moveCount": 4,
+            "sawSearchRunning": true
+          },
+          "state": {
+            "stepLabel": "open scripts",
+            "openedDirectory": "scripts",
+            "url": "http://127.0.0.1:35641/?s=N4IgbiBcDMA0IBsqgQewMYEMEFlMAdkR1UEBXAWwDsBxAqARgAYn4BLAFwFMK7DIATABZ4AI0xUAJnygCAHPAAWXNgHNFHAMKoAzhygBWeAHc2kjou17D8Cj1EAnCVwCiYLlSpcdO2bftOXgDKbBT4CGzonACesizwDqjGADJc7ghePn4gDlwcZA5UVvqQDAYsAL7wAGaoDuhcNE74ikQRVADWMpAAbKzEipgOqlxQffAkCBE6bKi09JBGxKhk4WxUqozwVKiSXCEAXqOQIiA60RSipEFYCMcM8KpOYDFQTAB0TAJLJGFzHhwglx8ENMBxZlQ3u8BBNBsMuAAlCQjN7wAj4RIAD1CYIhULgiHWHSCHFyGwsUKWq0kYNcXmGsVK8G4Fi4DihX3gOjyHDuAAlSJJUcROFxJAAhaIABTIUy2hM6AHUzBSmSAdnsAFqoVAUBHeNh6CQNfEmNi5bW6-UzI1UE2QD4ATm2mDsAEESgwFCBFKh8L41bl3NgAGJOOwB8ZnZRTAAiwNVMJATxW%2BEVzXwbIDZw66xAFSqOSg1Ww3PgACti6WuPBUFAANogesAHRAknNXHQHDq0VbsFbrYAuiB4C22x2uz2%2B62dOgHGx8BwdEOQIP4ELII2R2c5wul6uKkA",
+            "openDirectories": [
+              "",
+              "scripts"
+            ],
+            "cardsCount": 21,
+            "closedBoxesCount": 11,
+            "wiresTotal": 7,
+            "pairLinesCount": 7,
+            "flowActive": true,
+            "flowShape": {
+              "rows": null,
+              "boxRows": {},
+              "looseColumns": {}
+            },
+            "flowShapesCount": 6,
+            "orderStart": "previous",
+            "orderScore": 22702,
+            "orderSignals": {
+              "vertical": 3158,
+              "crossings": 0,
+              "height": 1611,
+              "width": 1769,
+              "churn": 0,
+              "unevenness": 0,
+              "steps": 0,
+              "unlevel": 272
+            },
+            "searchStatus": "settled",
+            "searchTried": 8,
+            "searchAdopted": 3,
+            "searchCycleTried": 0,
+            "searchCycleAdopted": 0,
+            "searchAlignmentTried": 3,
+            "searchAlignmentAdopted": 3,
+            "camera": {
+              "k": 1,
+              "x": 0,
+              "y": 0
+            },
+            "look": "reading",
+            "columnsCount": 5
+          },
+          "displacement": {
+            "outsideCount": 15,
+            "outsideMovedLayoutCount": 14,
+            "outsideMovedLayoutPct": 93.3,
+            "outsideColumnChangedCount": 13,
+            "outsideColumnChangedPct": 86.7,
+            "outsideLayoutMedianDist": 603.8,
+            "outsideLayoutMaxDist": 1115.4,
+            "outsideMovedScreenCount": 15,
+            "outsideMovedScreenPct": 100,
+            "outsideScreenMedianDist": 526,
+            "outsideScreenMaxDist": 1030.2,
+            "byRelation": {
+              "sibling-in-parent": {
+                "total": 15,
+                "movedLayout": 14,
+                "colChanged": 13,
+                "medianLayoutDist": 603.8,
+                "maxLayoutDist": 1115.4
+              }
+            },
+            "topOutsideMovers": [
+              {
+                "id": "slopcop.config.json",
+                "kind": "card",
+                "dir": "",
+                "relation": "sibling-in-parent",
+                "beforeLayout": {
+                  "left": 680,
+                  "top": 585,
+                  "col": 2
+                },
+                "afterLayout": {
+                  "left": 1502,
+                  "top": 1339,
+                  "col": 4
+                },
+                "layoutDx": 822,
+                "layoutDy": 754,
+                "layoutDist": 1115.4,
+                "columnChanged": true,
+                "screenDx": 822,
+                "screenDy": 621,
+                "screenDist": 1030.2
+              },
+              {
+                "id": "eslint.config.js",
+                "kind": "card",
+                "dir": "",
+                "relation": "sibling-in-parent",
+                "beforeLayout": {
+                  "left": 680,
+                  "top": 397,
+                  "col": 2
+                },
+                "afterLayout": {
+                  "left": 1502,
+                  "top": 962,
+                  "col": 4
+                },
+                "layoutDx": 822,
+                "layoutDy": 565,
+                "layoutDist": 997.5,
+                "columnChanged": true,
+                "screenDx": 822,
+                "screenDy": 432,
+                "screenDist": 928.6
+              },
+              {
+                "id": ".live-docs.config.json",
+                "kind": "card",
+                "dir": "",
+                "relation": "sibling-in-parent",
+                "beforeLayout": {
+                  "left": 680,
+                  "top": 188,
+                  "col": 2
+                },
+                "afterLayout": {
+                  "left": 1502,
+                  "top": 376,
+                  "col": 4
+                },
+                "layoutDx": 822,
+                "layoutDy": 188,
+                "layoutDist": 843.2,
+                "columnChanged": true,
+                "screenDx": 822,
+                "screenDy": 55,
+                "screenDist": 823.8
+              },
+              {
+                "id": ".gitattributes",
+                "kind": "card",
+                "dir": "",
+                "relation": "sibling-in-parent",
+                "beforeLayout": {
+                  "left": 680,
+                  "top": 0,
+                  "col": 2
+                },
+                "afterLayout": {
+                  "left": 1502,
+                  "top": 0,
+                  "col": 4
+                },
+                "layoutDx": 822,
+                "layoutDy": 0,
+                "layoutDist": 822,
+                "columnChanged": true,
+                "screenDx": 822,
+                "screenDy": -133,
+                "screenDist": 832.7
+              },
+              {
+                "id": "packages",
+                "kind": "box",
+                "dir": "",
+                "relation": "sibling-in-parent",
+                "beforeLayout": {
+                  "left": 348,
+                  "top": 106,
+                  "col": 1
+                },
+                "afterLayout": {
+                  "left": 1120,
+                  "top": 0,
+                  "col": 3
+                },
+                "layoutDx": 772,
+                "layoutDy": -106,
+                "layoutDist": 779.2,
+                "columnChanged": true,
+                "screenDx": 772,
+                "screenDy": -239,
+                "screenDist": 808.1
+              },
+              {
+                "id": ".vscode",
+                "kind": "box",
+                "dir": "",
+                "relation": "sibling-in-parent",
+                "beforeLayout": {
+                  "left": 0,
+                  "top": 106,
+                  "col": 0
+                },
+                "afterLayout": {
+                  "left": 737,
+                  "top": 0,
+                  "col": 2
+                },
+                "layoutDx": 737,
+                "layoutDy": -106,
+                "layoutDist": 744.6,
+                "columnChanged": true,
+                "screenDx": 737,
+                "screenDy": -239,
+                "screenDist": 774.8
+              },
+              {
+                "id": "vitest.config.ts",
+                "kind": "card",
+                "dir": "",
+                "relation": "sibling-in-parent",
+                "beforeLayout": {
+                  "left": 1047,
+                  "top": 565,
+                  "col": 3
+                },
+                "afterLayout": {
+                  "left": 1502,
+                  "top": 1150,
+                  "col": 4
+                },
+                "layoutDx": 455,
+                "layoutDy": 585,
+                "layoutDist": 741.1,
+                "columnChanged": true,
+                "screenDx": 455,
+                "screenDy": 452,
+                "screenDist": 641.3
+              },
+              {
+                "id": ".nvmrc",
+                "kind": "card",
+                "dir": "",
+                "relation": "sibling-in-parent",
+                "beforeLayout": {
+                  "left": 1047,
+                  "top": 188,
+                  "col": 3
+                },
+                "afterLayout": {
+                  "left": 1502,
+                  "top": 585,
+                  "col": 4
+                },
+                "layoutDx": 455,
+                "layoutDy": 397,
+                "layoutDist": 603.8,
+                "columnChanged": true,
+                "screenDx": 455,
+                "screenDy": 264,
+                "screenDist": 526
+              }
+            ]
+          },
+          "screenshot": "2d-repo-after-scripts.png"
+        },
+        {
+          "stepIndex": 2,
+          "action": "open scripts/live-docs",
+          "openedDirectory": "scripts/live-docs",
+          "targetWasInViewport": true,
+          "clickMethod": "mouse-handle",
+          "moveObserved": {
+            "sawMovingTrue": true,
+            "movingDurationMs": 3836,
+            "moveCount": 8,
+            "sawSearchRunning": true
+          },
+          "state": {
+            "stepLabel": "open scripts/live-docs",
+            "openedDirectory": "scripts/live-docs",
+            "url": "http://127.0.0.1:35641/?s=N4IgbiBcDMA0IBsqgQewMYEMEFlMAdkR1UEBXAWwDsBxAqARgAYn4BLAFwFMK7DIATABZ4AI0xUAJnygCAHPAAWXNgHNFHAMKoAzhygBWeAHc2kjou17D8Cj1EAnCVwCiYLlSpcdO2bftOXgDKbBT4CGzonACesizwDqjGADJc7ghePn4gDlwcZA5UVvqQDAYsAL7wAGaoDuhcNE74ikQRVADWMpAAbKzEipgOqlxQffAkCBE6bKi09JBGxKhk4WxUqozwVKiSXCEAXqOQIiA60RSipEFYCMcM8KpOYDFQTAB0TAJLJGFzHhwglx8ENMBxZlQ3u8BBNBsMuAAlCQjN7wAj4RIAD1CYIhULgiHWHSCHFyGwsUKWq0kYNcXmGsVK8G4Fi4DihX3gOjyHDuAAlSJJUcROFxJAAhaIABTIUy2hM6AHUzBSmSAdnsAFqoVAUBHeNh6CQNfEmNi5bW6-UzI1UE2QD4ATm2mDsAEESgwFCBFKh8L41bl3NgAGJOOwB8ZnZRTAAiwNVMJATxW%2BEVzXwbIDZw66xAFSqOSg1Ww3PgACti6WuPBUFAANogesAHRAknNXHQHDq0VbsFbrYAuiB4C22x2uz2%2B62dOgHGx8BwdEOR03W%2B3cpOHL2RzO5wulwB6CLuAC0kgwy5Aw8H8CFkEbq9n88Xvi5%2B9fx7YZ4v6F8g4qIA",
+            "openDirectories": [
+              "",
+              "scripts",
+              "scripts/live-docs"
+            ],
+            "cardsCount": 41,
+            "closedBoxesCount": 11,
+            "wiresTotal": 24,
+            "pairLinesCount": 24,
+            "flowActive": true,
+            "flowShape": {
+              "rows": 18,
+              "boxRows": {},
+              "looseColumns": {}
+            },
+            "flowShapesCount": 6,
+            "orderStart": "previous",
+            "orderScore": 108555,
+            "orderSignals": {
+              "vertical": 51751,
+              "crossings": 10,
+              "height": 2739,
+              "width": 2800,
+              "churn": 0,
+              "unevenness": 172,
+              "steps": 1,
+              "unlevel": 1144
+            },
+            "searchStatus": "settled",
+            "searchTried": 8,
+            "searchAdopted": 7,
+            "searchCycleTried": 0,
+            "searchCycleAdopted": 0,
+            "searchAlignmentTried": 12,
+            "searchAlignmentAdopted": 7,
+            "camera": {
+              "k": 1,
+              "x": 0,
+              "y": 0
+            },
+            "look": "reading",
+            "columnsCount": 7
+          },
+          "displacement": {
+            "outsideCount": 31,
+            "outsideMovedLayoutCount": 29,
+            "outsideMovedLayoutPct": 93.5,
+            "outsideColumnChangedCount": 21,
+            "outsideColumnChangedPct": 67.7,
+            "outsideLayoutMedianDist": 657.5,
+            "outsideLayoutMaxDist": 1642.4,
+            "outsideMovedScreenCount": 31,
+            "outsideMovedScreenPct": 100,
+            "outsideScreenMedianDist": 1059,
+            "outsideScreenMaxDist": 1719.2,
+            "byRelation": {
+              "sibling-in-parent": {
+                "total": 16,
+                "movedLayout": 15,
+                "colChanged": 10,
+                "medianLayoutDist": 593.1,
+                "maxLayoutDist": 1031
+              },
+              "higher-ancestor": {
+                "total": 15,
+                "movedLayout": 14,
+                "colChanged": 11,
+                "medianLayoutDist": 1031,
+                "maxLayoutDist": 1642.4
+              }
+            },
+            "topOutsideMovers": [
+              {
+                "id": "tests",
+                "kind": "box",
+                "dir": "",
+                "relation": "higher-ancestor",
+                "beforeLayout": {
+                  "left": 0,
+                  "top": 106,
+                  "col": 0
+                },
+                "afterLayout": {
+                  "left": 1639,
+                  "top": 0,
+                  "col": 4
+                },
+                "layoutDx": 1639,
+                "layoutDy": -106,
+                "layoutDist": 1642.4,
+                "columnChanged": true,
+                "screenDx": 1613,
+                "screenDy": -595,
+                "screenDist": 1719.2
+              },
+              {
+                "id": "scripts/devcontainer.test.ts",
+                "kind": "card",
+                "dir": "scripts",
+                "relation": "sibling-in-parent",
+                "beforeLayout": {
+                  "left": 1133,
+                  "top": 418,
+                  "col": 3
+                },
+                "afterLayout": {
+                  "left": 2164,
+                  "top": 418,
+                  "col": 5
+                },
+                "layoutDx": 1031,
+                "layoutDy": 0,
+                "layoutDist": 1031,
+                "columnChanged": true,
+                "screenDx": 1005,
+                "screenDy": -489,
+                "screenDist": 1117.7
+              },
+              {
+                "id": "scripts/e2e-passes.mjs",
+                "kind": "card",
+                "dir": "scripts",
+                "relation": "sibling-in-parent",
+                "beforeLayout": {
+                  "left": 1133,
+                  "top": 606,
+                  "col": 3
+                },
+                "afterLayout": {
+                  "left": 2164,
+                  "top": 606,
+                  "col": 5
+                },
+                "layoutDx": 1031,
+                "layoutDy": 0,
+                "layoutDist": 1031,
+                "columnChanged": true,
+                "screenDx": 1005,
+                "screenDy": -489,
+                "screenDist": 1117.7
+              },
+              {
+                "id": "scripts/e2e-passes.test.ts",
+                "kind": "card",
+                "dir": "scripts",
+                "relation": "sibling-in-parent",
+                "beforeLayout": {
+                  "left": 1133,
+                  "top": 794,
+                  "col": 3
+                },
+                "afterLayout": {
+                  "left": 2164,
+                  "top": 794,
+                  "col": 5
+                },
+                "layoutDx": 1031,
+                "layoutDy": 0,
+                "layoutDist": 1031,
+                "columnChanged": true,
+                "screenDx": 1005,
+                "screenDy": -489,
+                "screenDist": 1117.7
+              },
+              {
+                "id": ".gitattributes",
+                "kind": "card",
+                "dir": "",
+                "relation": "higher-ancestor",
+                "beforeLayout": {
+                  "left": 1502,
+                  "top": 0,
+                  "col": 4
+                },
+                "afterLayout": {
+                  "left": 2533,
+                  "top": 0,
+                  "col": 6
+                },
+                "layoutDx": 1031,
+                "layoutDy": 0,
+                "layoutDist": 1031,
+                "columnChanged": true,
+                "screenDx": 1005,
+                "screenDy": -489,
+                "screenDist": 1117.7
+              },
+              {
+                "id": ".gitignore",
+                "kind": "card",
+                "dir": "",
+                "relation": "higher-ancestor",
+                "beforeLayout": {
+                  "left": 1502,
+                  "top": 188,
+                  "col": 4
+                },
+                "afterLayout": {
+                  "left": 2533,
+                  "top": 188,
+                  "col": 6
+                },
+                "layoutDx": 1031,
+                "layoutDy": 0,
+                "layoutDist": 1031,
+                "columnChanged": true,
+                "screenDx": 1005,
+                "screenDy": -489,
+                "screenDist": 1117.7
+              },
+              {
+                "id": ".live-docs.config.json",
+                "kind": "card",
+                "dir": "",
+                "relation": "higher-ancestor",
+                "beforeLayout": {
+                  "left": 1502,
+                  "top": 376,
+                  "col": 4
+                },
+                "afterLayout": {
+                  "left": 2533,
+                  "top": 376,
+                  "col": 6
+                },
+                "layoutDx": 1031,
+                "layoutDy": 0,
+                "layoutDist": 1031,
+                "columnChanged": true,
+                "screenDx": 1005,
+                "screenDy": -489,
+                "screenDist": 1117.7
+              },
+              {
+                "id": ".nvmrc",
+                "kind": "card",
+                "dir": "",
+                "relation": "higher-ancestor",
+                "beforeLayout": {
+                  "left": 1502,
+                  "top": 585,
+                  "col": 4
+                },
+                "afterLayout": {
+                  "left": 2533,
+                  "top": 585,
+                  "col": 6
+                },
+                "layoutDx": 1031,
+                "layoutDy": 0,
+                "layoutDist": 1031,
+                "columnChanged": true,
+                "screenDx": 1005,
+                "screenDy": -489,
+                "screenDist": 1117.7
+              }
+            ]
+          },
+          "screenshot": "2d-repo-after-live-docs.png"
+        }
+      ],
+      "errors": []
+    },
+    "estate-portal": {
+      "startUrl": "/samples/estate/?view=local&dir=",
+      "steps": [
+        {
+          "stepIndex": 0,
+          "action": "land on scan root",
+          "openedDirectory": "",
+          "targetWasInViewport": null,
+          "clickMethod": null,
+          "moveObserved": null,
+          "state": {
+            "stepLabel": "root",
+            "openedDirectory": null,
+            "url": "http://127.0.0.1:35641/samples/estate/?s=N4IgbiBcDMA0IBsqgQewMYEMEFlMAdkR1UEBXAWwDsBxAqARgAYn4BLAFwFMK7DIATABZ4AI0xUAJnygCAHPAAWXNgHNFHAMKoAzhygBWeAHc2kjou17D8Cj1EAnCVwCiYLlSpcdO2bftOXgDKbBT4CGzonACesizwDqjGADJc7ghePn4gDlwcZA5UVvqQDAYsAL7wAGaoDuhcNE74ikQRVADWMpAAbKzEipgOqlxQffAkCBE6bKi09JBGxKhk4WxUqozwVKiSXCEAXqOQIiA60RSipEFYCMcM8KpOYDFQTAB0TAJLJGFzHhwglx8ENMBxZlQ3u8BBNBsMuAAlCQjN7wAj4RIAD1CYIhULgiHWHSCHFyGwsUKWq0kYNcXmGsVK8G4Fi4DihX3gOjyHDuAAlSJJUcROFxJAAhaIABTIUy2hM6AHUzBSmSAdnsAFqoVAUBHeNh6CQNfEmNi5bW6-UzI1UE2QD4ATm2mDsAEESgwFCBFKh8L41bl3NgAGJOOwB8ZnZRTAAiwNVMJATxW%2BEVzXwbIDZw66xAFSqOSg1Ww3PgACti6WuPBUFAANogesAHRAknNXHQHDq0VbsFbrYAuiBB-AhZBGyOKkA",
+            "openDirectories": [
+              ""
+            ],
+            "cardsCount": 1,
+            "closedBoxesCount": 6,
+            "wiresTotal": 0,
+            "pairLinesCount": 0,
+            "flowActive": true,
+            "flowShape": {
+              "rows": null,
+              "boxRows": {},
+              "looseColumns": {}
+            },
+            "flowShapesCount": 1,
+            "orderStart": "ranked",
+            "orderScore": 5775,
+            "orderSignals": {
+              "vertical": 0,
+              "crossings": 0,
+              "height": 396,
+              "width": 759,
+              "churn": 0,
+              "unevenness": 0,
+              "steps": 0,
+              "unlevel": 0
+            },
+            "searchStatus": "settled",
+            "searchTried": 8,
+            "searchAdopted": 0,
+            "searchCycleTried": 0,
+            "searchCycleAdopted": 0,
+            "searchAlignmentTried": 0,
+            "searchAlignmentAdopted": 0,
+            "camera": {
+              "k": 1,
+              "x": 0,
+              "y": 0
+            },
+            "look": "reading",
+            "columnsCount": 3
+          },
+          "displacement": null,
+          "screenshot": "2d-estate-before-portal.png"
+        },
+        {
+          "stepIndex": 1,
+          "action": "open Portal",
+          "openedDirectory": "Portal",
+          "targetWasInViewport": true,
+          "clickMethod": "mouse-handle",
+          "moveObserved": {
+            "sawMovingTrue": true,
+            "movingDurationMs": 919,
+            "moveCount": 2,
+            "sawSearchRunning": true
+          },
+          "state": {
+            "stepLabel": "open Portal",
+            "openedDirectory": "Portal",
+            "url": "http://127.0.0.1:35641/samples/estate/?s=N4IgbiBcDMA0IBsqgQewMYEMEFlMAdkR1UEBXAWwDsBxAqARgAYn4BLAFwFMK7DIATABZ4AI0xUAJnygCAHPAAWXNgHNFHAMKoAzhygBWeAHc2kjou17D8Cj1EAnCVwCiYLlSpcdO2bftOXgDKbBT4CGzonACesizwDqjGADJc7ghePn4gDlwcZA5UVvqQDAYsAL7wAGaoDuhcNE74ikQRVADWMpAAbKzEipgOqlxQffAkCBE6bKi09JBGxKhk4WxUqozwVKiSXCEAXqOQIiA60RSipEFYCMcM8KpOYDFQTAB0TAJLJGFzHhwglx8ENMBxZlQ3u8BBNBsMuAAlCQjN7wAj4RIAD1CYIhULgiHWHSCHFyGwsUKWq0kYNcXmGsVK8G4Fi4DihX3gOjyHDuAAlSJJUcROFxJAAhaIABTIUy2hM6AHUzBSmSAdnsAFqoVAUBHeNh6CQNfEmNi5bW6-UzI1UE2QD4ATm2mDsAEESgwFCBFKh8L41bl3NgAGJOOwB8ZnZRTAAiwNVMJATxW%2BEVzXwbIDZw66xAFSqOSg1Ww3PgACti6WuPBUFAANogesAHRAknNXHQHDq0VbsFbrYAuiB4C22x2uz2%2B62pXUONghyBB-AhZBGyOQLOHPOkIOKkA",
+            "openDirectories": [
+              "",
+              "Portal"
+            ],
+            "cardsCount": 3,
+            "closedBoxesCount": 11,
+            "wiresTotal": 1,
+            "pairLinesCount": 1,
+            "flowActive": true,
+            "flowShape": {
+              "rows": null,
+              "boxRows": {
+                "Portal": 5
+              },
+              "looseColumns": {}
+            },
+            "flowShapesCount": 4,
+            "orderStart": "ranked",
+            "orderScore": 8848,
+            "orderSignals": {
+              "vertical": 603,
+              "crossings": 0,
+              "height": 1013,
+              "width": 616,
+              "churn": 0,
+              "unevenness": 0,
+              "steps": 0,
+              "unlevel": 0
+            },
+            "searchStatus": "settled",
+            "searchTried": 8,
+            "searchAdopted": 1,
+            "searchCycleTried": 0,
+            "searchCycleAdopted": 0,
+            "searchAlignmentTried": 1,
+            "searchAlignmentAdopted": 1,
+            "camera": {
+              "k": 1,
+              "x": 0,
+              "y": 0
+            },
+            "look": "reading",
+            "columnsCount": 2
+          },
+          "displacement": {
+            "outsideCount": 6,
+            "outsideMovedLayoutCount": 5,
+            "outsideMovedLayoutPct": 83.3,
+            "outsideColumnChangedCount": 4,
+            "outsideColumnChangedPct": 66.7,
+            "outsideLayoutMedianDist": 353.3,
+            "outsideLayoutMaxDist": 608.3,
+            "outsideMovedScreenCount": 6,
+            "outsideMovedScreenPct": 100,
+            "outsideScreenMedianDist": 414.5,
+            "outsideScreenMaxDist": 688.5,
+            "byRelation": {
+              "sibling-in-parent": {
+                "total": 6,
+                "movedLayout": 5,
+                "colChanged": 4,
+                "medianLayoutDist": 353.3,
+                "maxLayoutDist": 608.3
+              }
+            },
+            "topOutsideMovers": [
+              {
+                "id": "Gateway",
+                "kind": "box",
+                "dir": "",
+                "relation": "sibling-in-parent",
+                "beforeLayout": {
+                  "left": 599,
+                  "top": 0,
+                  "col": 2
+                },
+                "afterLayout": {
+                  "left": 0,
+                  "top": 106,
+                  "col": 0
+                },
+                "layoutDx": -599,
+                "layoutDy": 106,
+                "layoutDist": 608.3,
+                "columnChanged": true,
+                "screenDx": -346.4,
+                "screenDy": -212,
+                "screenDist": 406.1
+              },
+              {
+                "id": "Estate.sln",
+                "kind": "card",
+                "dir": "",
+                "relation": "sibling-in-parent",
+                "beforeLayout": {
+                  "left": 0,
+                  "top": 212,
+                  "col": 0
+                },
+                "afterLayout": {
+                  "left": 358,
+                  "top": 212,
+                  "col": 1
+                },
+                "layoutDx": 358,
+                "layoutDy": 0,
+                "layoutDist": 358,
+                "columnChanged": true,
+                "screenDx": 610.6,
+                "screenDy": -318,
+                "screenDist": 688.5
+              },
+              {
+                "id": "Hub",
+                "kind": "box",
+                "dir": "",
+                "relation": "sibling-in-parent",
+                "beforeLayout": {
+                  "left": 0,
+                  "top": 106,
+                  "col": 0
+                },
+                "afterLayout": {
+                  "left": 358,
+                  "top": 106,
+                  "col": 1
+                },
+                "layoutDx": 358,
+                "layoutDy": 0,
+                "layoutDist": 358,
+                "columnChanged": true,
+                "screenDx": 610.6,
+                "screenDy": -318,
+                "screenDist": 688.5
+              },
+              {
+                "id": "PaymentService",
+                "kind": "box",
+                "dir": "",
+                "relation": "sibling-in-parent",
+                "beforeLayout": {
+                  "left": 332,
+                  "top": 106,
+                  "col": 1
+                },
+                "afterLayout": {
+                  "left": 0,
+                  "top": 212,
+                  "col": 0
+                },
+                "layoutDx": -332,
+                "layoutDy": 106,
+                "layoutDist": 348.5,
+                "columnChanged": true,
+                "screenDx": -79.4,
+                "screenDy": -212,
+                "screenDist": 226.4
+              },
+              {
+                "id": "Database",
+                "kind": "box",
+                "dir": "",
+                "relation": "sibling-in-parent",
+                "beforeLayout": {
+                  "left": 332,
+                  "top": 0,
+                  "col": 1
+                },
+                "afterLayout": {
+                  "left": 358,
+                  "top": 0,
+                  "col": 1
+                },
+                "layoutDx": 26,
+                "layoutDy": 0,
+                "layoutDist": 26,
+                "columnChanged": false,
+                "screenDx": 278.6,
+                "screenDy": -318,
+                "screenDist": 422.8
+              },
+              {
+                "id": "Contracts",
+                "kind": "box",
+                "dir": "",
+                "relation": "sibling-in-parent",
+                "beforeLayout": {
+                  "left": 0,
+                  "top": 0,
+                  "col": 0
+                },
+                "afterLayout": {
+                  "left": 0,
+                  "top": 0,
+                  "col": 0
+                },
+                "layoutDx": 0,
+                "layoutDy": 0,
+                "layoutDist": 0,
+                "columnChanged": false,
+                "screenDx": 252.6,
+                "screenDy": -318,
+                "screenDist": 406.1
+              }
+            ]
+          },
+          "screenshot": "2d-estate-after-portal.png"
+        },
+        {
+          "stepIndex": 2,
+          "action": "open Portal/Services",
+          "openedDirectory": "Portal/Services",
+          "targetWasInViewport": true,
+          "clickMethod": "mouse-handle",
+          "moveObserved": {
+            "sawMovingTrue": true,
+            "movingDurationMs": 913,
+            "moveCount": 2,
+            "sawSearchRunning": true
+          },
+          "state": {
+            "stepLabel": "open Portal/Services",
+            "openedDirectory": "Portal/Services",
+            "url": "http://127.0.0.1:35641/samples/estate/?s=N4IgbiBcDMA0IBsqgQewMYEMEFlMAdkR1UEBXAWwDsBxAqARgAYn4BLAFwFMK7DIATABZ4AI0xUAJnygCAHPAAWXNgHNFHAMKoAzhygBWeAHc2kjou17D8Cj1EAnCVwCiYLlSpcdO2bftOXgDKbBT4CGzonACesizwDqjGADJc7ghePn4gDlwcZA5UVvqQDAYsAL7wAGaoDuhcNE74ikQRVADWMpAAbKzEipgOqlxQffAkCBE6bKi09JBGxKhk4WxUqozwVKiSXCEAXqOQIiA60RSipEFYCMcM8KpOYDFQTAB0TAJLJGFzHhwglx8ENMBxZlQ3u8BBNBsMuAAlCQjN7wAj4RIAD1CYIhULgiHWHSCHFyGwsUKWq0kYNcXmGsVK8G4Fi4DihX3gOjyHDuAAlSJJUcROFxJAAhaIABTIUy2hM6AHUzBSmSAdnsAFqoVAUBHeNh6CQNfEmNi5bW6-UzI1UE2QD4ATm2mDsAEESgwFCBFKh8L41bl3NgAGJOOwB8ZnZRTAAiwNVMJATxW%2BEVzXwbIDZw66xAFSqOSg1Ww3PgACti6WuPBUFAANogesAHRAknNXHQHDq0VbsFbrYAuiB4C22x2uz2%2B62pXUONghyOm6327lJw5eyOZ3PsAB6IEOF4NHSLwfwIWQRtL2cOedIeA3u-7tlH7wgQcVIA",
+            "openDirectories": [
+              "",
+              "Portal",
+              "Portal/Services"
+            ],
+            "cardsCount": 4,
+            "closedBoxesCount": 10,
+            "wiresTotal": 1,
+            "pairLinesCount": 1,
+            "flowActive": true,
+            "flowShape": {
+              "rows": null,
+              "boxRows": {
+                "Portal": 4
+              },
+              "looseColumns": {}
+            },
+            "flowShapesCount": 4,
+            "orderStart": "ranked",
+            "orderScore": 10418,
+            "orderSignals": {
+              "vertical": 603,
+              "crossings": 0,
+              "height": 1292,
+              "width": 651,
+              "churn": 0,
+              "unevenness": 0,
+              "steps": 0,
+              "unlevel": 0
+            },
+            "searchStatus": "settled",
+            "searchTried": 8,
+            "searchAdopted": 1,
+            "searchCycleTried": 0,
+            "searchCycleAdopted": 0,
+            "searchAlignmentTried": 1,
+            "searchAlignmentAdopted": 1,
+            "camera": {
+              "k": 1,
+              "x": 0,
+              "y": 0
+            },
+            "look": "reading",
+            "columnsCount": 2
+          },
+          "displacement": {
+            "outsideCount": 13,
+            "outsideMovedLayoutCount": 6,
+            "outsideMovedLayoutPct": 46.2,
+            "outsideColumnChangedCount": 0,
+            "outsideColumnChangedPct": 0,
+            "outsideLayoutMedianDist": 0,
+            "outsideLayoutMaxDist": 111.6,
+            "outsideMovedScreenCount": 13,
+            "outsideMovedScreenPct": 100,
+            "outsideScreenMedianDist": 428.6,
+            "outsideScreenMaxDist": 533.2,
+            "byRelation": {
+              "sibling-in-parent": {
+                "total": 7,
+                "movedLayout": 3,
+                "colChanged": 0,
+                "medianLayoutDist": 0,
+                "maxLayoutDist": 111.6
+              },
+              "higher-ancestor": {
+                "total": 6,
+                "movedLayout": 3,
+                "colChanged": 0,
+                "medianLayoutDist": 17.5,
+                "maxLayoutDist": 35
+              }
+            },
+            "topOutsideMovers": [
+              {
+                "id": "Portal/Web.config",
+                "kind": "card",
+                "dir": "Portal",
+                "relation": "sibling-in-parent",
+                "beforeLayout": {
+                  "left": 371,
+                  "top": 815,
+                  "col": 1
+                },
+                "afterLayout": {
+                  "left": 406,
+                  "top": 709,
+                  "col": 1
+                },
+                "layoutDx": 35,
+                "layoutDy": -106,
+                "layoutDist": 111.6,
+                "columnChanged": false,
+                "screenDx": 0,
+                "screenDy": -533.2,
+                "screenDist": 533.2
+              },
+              {
+                "id": "Estate.sln",
+                "kind": "card",
+                "dir": "",
+                "relation": "higher-ancestor",
+                "beforeLayout": {
+                  "left": 358,
+                  "top": 212,
+                  "col": 1
+                },
+                "afterLayout": {
+                  "left": 393,
+                  "top": 212,
+                  "col": 1
+                },
+                "layoutDx": 35,
+                "layoutDy": 0,
+                "layoutDist": 35,
+                "columnChanged": false,
+                "screenDx": 0,
+                "screenDy": -427.2,
+                "screenDist": 427.2
+              },
+              {
+                "id": "Portal/Controllers",
+                "kind": "box",
+                "dir": "Portal",
+                "relation": "sibling-in-parent",
+                "beforeLayout": {
+                  "left": 371,
+                  "top": 497,
+                  "col": 1
+                },
+                "afterLayout": {
+                  "left": 406,
+                  "top": 497,
+                  "col": 1
+                },
+                "layoutDx": 35,
+                "layoutDy": 0,
+                "layoutDist": 35,
+                "columnChanged": false,
+                "screenDx": 0,
+                "screenDy": -427.2,
+                "screenDist": 427.2
+              },
+              {
+                "id": "Portal/Pages",
+                "kind": "box",
+                "dir": "Portal",
+                "relation": "sibling-in-parent",
+                "beforeLayout": {
+                  "left": 371,
+                  "top": 603,
+                  "col": 1
+                },
+                "afterLayout": {
+                  "left": 406,
+                  "top": 603,
+                  "col": 1
+                },
+                "layoutDx": 35,
+                "layoutDy": 0,
+                "layoutDist": 35,
+                "columnChanged": false,
+                "screenDx": 0,
+                "screenDy": -427.2,
+                "screenDist": 427.2
+              },
+              {
+                "id": "Database",
+                "kind": "box",
+                "dir": "",
+                "relation": "higher-ancestor",
+                "beforeLayout": {
+                  "left": 358,
+                  "top": 0,
+                  "col": 1
+                },
+                "afterLayout": {
+                  "left": 393,
+                  "top": 0,
+                  "col": 1
+                },
+                "layoutDx": 35,
+                "layoutDy": 0,
+                "layoutDist": 35,
+                "columnChanged": false,
+                "screenDx": 0,
+                "screenDy": -427.2,
+                "screenDist": 427.2
+              },
+              {
+                "id": "Hub",
+                "kind": "box",
+                "dir": "",
+                "relation": "higher-ancestor",
+                "beforeLayout": {
+                  "left": 358,
+                  "top": 106,
+                  "col": 1
+                },
+                "afterLayout": {
+                  "left": 393,
+                  "top": 106,
+                  "col": 1
+                },
+                "layoutDx": 35,
+                "layoutDy": 0,
+                "layoutDist": 35,
+                "columnChanged": false,
+                "screenDx": 0,
+                "screenDy": -427.2,
+                "screenDist": 427.2
+              },
+              {
+                "id": "Portal/Portal.csproj",
+                "kind": "card",
+                "dir": "Portal",
+                "relation": "sibling-in-parent",
+                "beforeLayout": {
+                  "left": 13,
+                  "top": 815,
+                  "col": 0
+                },
+                "afterLayout": {
+                  "left": 13,
+                  "top": 815,
+                  "col": 0
+                },
+                "layoutDx": 0,
+                "layoutDy": 0,
+                "layoutDist": 0,
+                "columnChanged": false,
+                "screenDx": -35,
+                "screenDy": -427.2,
+                "screenDist": 428.6
+              },
+              {
+                "id": "Portal/App_Code",
+                "kind": "box",
+                "dir": "Portal",
+                "relation": "sibling-in-parent",
+                "beforeLayout": {
+                  "left": 13,
+                  "top": 497,
+                  "col": 0
+                },
+                "afterLayout": {
+                  "left": 13,
+                  "top": 497,
+                  "col": 0
+                },
+                "layoutDx": 0,
+                "layoutDy": 0,
+                "layoutDist": 0,
+                "columnChanged": false,
+                "screenDx": -35,
+                "screenDy": -427.2,
+                "screenDist": 428.6
+              }
+            ]
+          },
+          "screenshot": "2d-estate-after-portal-services.png"
+        },
+        {
+          "stepIndex": 3,
+          "action": "open Portal/Controllers",
+          "openedDirectory": "Portal/Controllers",
+          "targetWasInViewport": false,
+          "clickMethod": "dom-click-offscreen",
+          "moveObserved": {
+            "sawMovingTrue": true,
+            "movingDurationMs": 914,
+            "moveCount": 2,
+            "sawSearchRunning": true
+          },
+          "state": {
+            "stepLabel": "open Portal/Controllers",
+            "openedDirectory": "Portal/Controllers",
+            "url": "http://127.0.0.1:35641/samples/estate/?s=N4IgbiBcDMA0IBsqgQewMYEMEFlMAdkR1UEBXAWwDsBxAqARgAYn4BLAFwFMK7DIATABZ4AI0xUAJnygCAHPAAWXNgHNFHAMKoAzhygBWeAHc2kjou17D8Cj1EAnCVwCiYLlSpcdO2bftOXgDKbBT4CGzonACesizwDqjGADJc7ghePn4gDlwcZA5UVvqQDAYsAL7wAGaoDuhcNE74ikQRVADWMpAAbKzEipgOqlxQffAkCBE6bKi09JBGxKhk4WxUqozwVKiSXCEAXqOQIiA60RSipEFYCMcM8KpOYDFQTAB0TAJLJGFzHhwglx8ENMBxZlQ3u8BBNBsMuAAlCQjN7wAj4RIAD1CYIhULgiHWHSCHFyGwsUKWq0kYNcXmGsVK8G4Fi4DihX3gOjyHDuAAlSJJUcROFxJAAhaIABTIUy2hM6AHUzBSmSAdnsAFqoVAUBHeNh6CQNfEmNi5bW6-UzI1UE2QD4ATm2mDsAEESgwFCBFKh8L41bl3NgAGJOOwB8ZnZRTAAiwNVMJATxW%2BEVzXwbIDZw66xAFSqOSg1Ww3PgACti6WuPBUFAANogesAHRAknNXHQHDq0VbsFbrYAuiB4C22x2uz2%2B62pXUONghyOm6327lJw5eyOZ3PsAB6IEOF4NHSL0crifdjfTkCzhzzhC77RUUmkO4OE8gYeD%2BBCyCNpe3veAE7g%2BT4vlMWbAXee4Hke3ifhUQA",
+            "openDirectories": [
+              "",
+              "Portal",
+              "Portal/Controllers",
+              "Portal/Services"
+            ],
+            "cardsCount": 5,
+            "closedBoxesCount": 9,
+            "wiresTotal": 2,
+            "pairLinesCount": 2,
+            "flowActive": true,
+            "flowShape": {
+              "rows": null,
+              "boxRows": {
+                "Portal": 1
+              },
+              "looseColumns": {}
+            },
+            "flowShapesCount": 4,
+            "orderStart": "ranked",
+            "orderScore": 12364,
+            "orderSignals": {
+              "vertical": 376,
+              "crossings": 0,
+              "height": 872,
+              "width": 1364,
+              "churn": 0,
+              "unevenness": 102,
+              "steps": 1,
+              "unlevel": 102
+            },
+            "searchStatus": "settled",
+            "searchTried": 8,
+            "searchAdopted": 1,
+            "searchCycleTried": 0,
+            "searchCycleAdopted": 0,
+            "searchAlignmentTried": 3,
+            "searchAlignmentAdopted": 1,
+            "camera": {
+              "k": 1,
+              "x": 0,
+              "y": 0
+            },
+            "look": "reading",
+            "columnsCount": 4
+          },
+          "displacement": {
+            "outsideCount": 13,
+            "outsideMovedLayoutCount": 11,
+            "outsideMovedLayoutPct": 84.6,
+            "outsideColumnChangedCount": 6,
+            "outsideColumnChangedPct": 46.2,
+            "outsideLayoutMedianDist": 420,
+            "outsideLayoutMaxDist": 1220.2,
+            "outsideMovedScreenCount": 13,
+            "outsideMovedScreenPct": 100,
+            "outsideScreenMedianDist": 436.1,
+            "outsideScreenMaxDist": 854.2,
+            "byRelation": {
+              "sibling-in-parent": {
+                "total": 6,
+                "movedLayout": 6,
+                "colChanged": 4,
+                "medianLayoutDist": 461.6,
+                "maxLayoutDist": 1220.2
+              },
+              "higher-ancestor": {
+                "total": 6,
+                "movedLayout": 4,
+                "colChanged": 2,
+                "medianLayoutDist": 106,
+                "maxLayoutDist": 826.8
+              },
+              "other-branch": {
+                "total": 1,
+                "movedLayout": 1,
+                "colChanged": 0,
+                "medianLayoutDist": 420,
+                "maxLayoutDist": 420
+              }
+            },
+            "topOutsideMovers": [
+              {
+                "id": "Portal/Scripts",
+                "kind": "box",
+                "dir": "Portal",
+                "relation": "sibling-in-parent",
+                "beforeLayout": {
+                  "left": 13,
+                  "top": 709,
+                  "col": 0
+                },
+                "afterLayout": {
+                  "left": 1191,
+                  "top": 391,
+                  "col": 3
+                },
+                "layoutDx": 1178,
+                "layoutDy": -318,
+                "layoutDist": 1220.2,
+                "columnChanged": true,
+                "screenDx": 850.8,
+                "screenDy": 76.3,
+                "screenDist": 854.2
+              },
+              {
+                "id": "Gateway",
+                "kind": "box",
+                "dir": "",
+                "relation": "higher-ancestor",
+                "beforeLayout": {
+                  "left": 0,
+                  "top": 106,
+                  "col": 0
+                },
+                "afterLayout": {
+                  "left": 820,
+                  "top": 0,
+                  "col": 2
+                },
+                "layoutDx": 820,
+                "layoutDy": -106,
+                "layoutDist": 826.8,
+                "columnChanged": true,
+                "screenDx": 492.8,
+                "screenDy": 288.3,
+                "screenDist": 570.9
+              },
+              {
+                "id": "Hub",
+                "kind": "box",
+                "dir": "",
+                "relation": "higher-ancestor",
+                "beforeLayout": {
+                  "left": 393,
+                  "top": 106,
+                  "col": 1
+                },
+                "afterLayout": {
+                  "left": 1178,
+                  "top": 0,
+                  "col": 3
+                },
+                "layoutDx": 785,
+                "layoutDy": -106,
+                "layoutDist": 792.1,
+                "columnChanged": true,
+                "screenDx": 457.8,
+                "screenDy": 288.3,
+                "screenDist": 541
+              },
+              {
+                "id": "Portal/Web.config",
+                "kind": "card",
+                "dir": "Portal",
+                "relation": "sibling-in-parent",
+                "beforeLayout": {
+                  "left": 406,
+                  "top": 709,
+                  "col": 1
+                },
+                "afterLayout": {
+                  "left": 833,
+                  "top": 497,
+                  "col": 2
+                },
+                "layoutDx": 427,
+                "layoutDy": -212,
+                "layoutDist": 476.7,
+                "columnChanged": true,
+                "screenDx": 99.8,
+                "screenDy": 182.3,
+                "screenDist": 207.8
+              },
+              {
+                "id": "Portal/Pages",
+                "kind": "box",
+                "dir": "Portal",
+                "relation": "sibling-in-parent",
+                "beforeLayout": {
+                  "left": 406,
+                  "top": 603,
+                  "col": 1
+                },
+                "afterLayout": {
+                  "left": 833,
+                  "top": 391,
+                  "col": 2
+                },
+                "layoutDx": 427,
+                "layoutDy": -212,
+                "layoutDist": 476.7,
+                "columnChanged": true,
+                "screenDx": 99.8,
+                "screenDy": 182.3,
+                "screenDist": 207.8
+              },
+              {
+                "id": "Portal/Models",
+                "kind": "box",
+                "dir": "Portal",
+                "relation": "sibling-in-parent",
+                "beforeLayout": {
+                  "left": 13,
+                  "top": 603,
+                  "col": 0
+                },
+                "afterLayout": {
+                  "left": 406,
+                  "top": 391,
+                  "col": 1
+                },
+                "layoutDx": 393,
+                "layoutDy": -212,
+                "layoutDist": 446.5,
+                "columnChanged": true,
+                "screenDx": 65.8,
+                "screenDy": 182.3,
+                "screenDist": 193.8
+              },
+              {
+                "id": "Portal/Services/GatewayClient.cs",
+                "kind": "card",
+                "dir": "Portal/Services",
+                "relation": "other-branch",
+                "beforeLayout": {
+                  "left": 26,
+                  "top": 1081,
+                  "col": 0
+                },
+                "afterLayout": {
+                  "left": 26,
+                  "top": 661,
+                  "col": 0
+                },
+                "layoutDx": 0,
+                "layoutDy": -420,
+                "layoutDist": 420,
+                "columnChanged": false,
+                "screenDx": -327.2,
+                "screenDy": -25.7,
+                "screenDist": 328.2
+              },
+              {
+                "id": "Portal/Portal.csproj",
+                "kind": "card",
+                "dir": "Portal",
+                "relation": "sibling-in-parent",
+                "beforeLayout": {
+                  "left": 13,
+                  "top": 815,
+                  "col": 0
+                },
+                "afterLayout": {
+                  "left": 13,
+                  "top": 395,
+                  "col": 0
+                },
+                "layoutDx": 0,
+                "layoutDy": -420,
+                "layoutDist": 420,
+                "columnChanged": false,
+                "screenDx": -327.2,
+                "screenDy": -25.7,
+                "screenDist": 328.2
+              }
+            ]
+          },
+          "screenshot": "2d-estate-after-portal-controllers.png"
+        }
+      ],
+      "errors": []
+    },
+    "estate-payment-service": {
+      "startUrl": "/samples/estate/?view=local&dir=",
+      "steps": [
+        {
+          "stepIndex": 0,
+          "action": "land on scan root",
+          "openedDirectory": "",
+          "targetWasInViewport": null,
+          "clickMethod": null,
+          "moveObserved": null,
+          "state": {
+            "stepLabel": "root",
+            "openedDirectory": null,
+            "url": "http://127.0.0.1:35641/samples/estate/?s=N4IgbiBcDMA0IBsqgQewMYEMEFlMAdkR1UEBXAWwDsBxAqARgAYn4BLAFwFMK7DIATABZ4AI0xUAJnygCAHPAAWXNgHNFHAMKoAzhygBWeAHc2kjou17D8Cj1EAnCVwCiYLlSpcdO2bftOXgDKbBT4CGzonACesizwDqjGADJc7ghePn4gDlwcZA5UVvqQDAYsAL7wAGaoDuhcNE74ikQRVADWMpAAbKzEipgOqlxQffAkCBE6bKi09JBGxKhk4WxUqozwVKiSXCEAXqOQIiA60RSipEFYCMcM8KpOYDFQTAB0TAJLJGFzHhwglx8ENMBxZlQ3u8BBNBsMuAAlCQjN7wAj4RIAD1CYIhULgiHWHSCHFyGwsUKWq0kYNcXmGsVK8G4Fi4DihX3gOjyHDuAAlSJJUcROFxJAAhaIABTIUy2hM6AHUzBSmSAdnsAFqoVAUBHeNh6CQNfEmNi5bW6-UzI1UE2QD4ATm2mDsAEESgwFCBFKh8L41bl3NgAGJOOwB8ZnZRTAAiwNVMJATxW%2BEVzXwbIDZw66xAFSqOSg1Ww3PgACti6WuPBUFAANogesAHRAknNXHQHDq0VbsFbrYAuiBB-AhZBGyOKkA",
+            "openDirectories": [
+              ""
+            ],
+            "cardsCount": 1,
+            "closedBoxesCount": 6,
+            "wiresTotal": 0,
+            "pairLinesCount": 0,
+            "flowActive": true,
+            "flowShape": {
+              "rows": null,
+              "boxRows": {},
+              "looseColumns": {}
+            },
+            "flowShapesCount": 1,
+            "orderStart": "ranked",
+            "orderScore": 5775,
+            "orderSignals": {
+              "vertical": 0,
+              "crossings": 0,
+              "height": 396,
+              "width": 759,
+              "churn": 0,
+              "unevenness": 0,
+              "steps": 0,
+              "unlevel": 0
+            },
+            "searchStatus": "settled",
+            "searchTried": 8,
+            "searchAdopted": 0,
+            "searchCycleTried": 0,
+            "searchCycleAdopted": 0,
+            "searchAlignmentTried": 0,
+            "searchAlignmentAdopted": 0,
+            "camera": {
+              "k": 1,
+              "x": 0,
+              "y": 0
+            },
+            "look": "reading",
+            "columnsCount": 3
+          },
+          "displacement": null,
+          "screenshot": "2d-estate-before-portal.png"
+        },
+        {
+          "stepIndex": 1,
+          "action": "open PaymentService",
+          "openedDirectory": "PaymentService",
+          "targetWasInViewport": true,
+          "clickMethod": "mouse-handle",
+          "moveObserved": {
+            "sawMovingTrue": true,
+            "movingDurationMs": 454,
+            "moveCount": 1,
+            "sawSearchRunning": true
+          },
+          "state": {
+            "stepLabel": "open PaymentService",
+            "openedDirectory": "PaymentService",
+            "url": "http://127.0.0.1:35641/samples/estate/?s=N4IgbiBcDMA0IBsqgQewMYEMEFlMAdkR1UEBXAWwDsBxAqARgAYn4BLAFwFMK7DIATABZ4AI0xUAJnygCAHPAAWXNgHNFHAMKoAzhygBWeAHc2kjou17D8Cj1EAnCVwCiYLlSpcdO2bftOXgDKbBT4CGzonACesizwDqjGADJc7ghePn4gDlwcZA5UVvqQDAYsAL7wAGaoDuhcNE74ikQRVADWMpAAbKzEipgOqlxQffAkCBE6bKi09JBGxKhk4WxUqozwVKiSXCEAXqOQIiA60RSipEFYCMcM8KpOYDFQTAB0TAJLJGFzHhwglx8ENMBxZlQ3u8BBNBsMuAAlCQjN7wAj4RIAD1CYIhULgiHWHSCHFyGwsUKWq0kYNcXmGsVK8G4Fi4DihX3gOjyHDuAAlSJJUcROFxJAAhaIABTIUy2hM6AHUzBSmSAdnsAFqoVAUBHeNh6CQNfEmNi5bW6-UzI1UE2QD4ATm2mDsAEESgwFCBFKh8L41bl3NgAGJOOwB8ZnZRTAAiwNVMJATxW%2BEVzXwbIDZw66xAFSqOSg1Ww3PgACti6WuPBUFAANogesAHRAknNXHQHDq0VbsFbrYAuiB4C22x2uz2%2B62pZgLgCgQ4Xg0hyBB-AhZBGyOQLP51RAWzl6NBxUgA",
+            "openDirectories": [
+              "",
+              "PaymentService"
+            ],
+            "cardsCount": 4,
+            "closedBoxesCount": 6,
+            "wiresTotal": 2,
+            "pairLinesCount": 2,
+            "flowActive": true,
+            "flowShape": {
+              "rows": null,
+              "boxRows": {},
+              "looseColumns": {}
+            },
+            "flowShapesCount": 3,
+            "orderStart": "ranked",
+            "orderScore": 9138,
+            "orderSignals": {
+              "vertical": 520,
+              "crossings": 0,
+              "height": 926,
+              "width": 636,
+              "churn": 0,
+              "unevenness": 102,
+              "steps": 1,
+              "unlevel": 102
+            },
+            "searchStatus": "settled",
+            "searchTried": 10,
+            "searchAdopted": 0,
+            "searchCycleTried": 0,
+            "searchCycleAdopted": 0,
+            "searchAlignmentTried": 1,
+            "searchAlignmentAdopted": 0,
+            "camera": {
+              "k": 1,
+              "x": 0,
+              "y": 0
+            },
+            "look": "reading",
+            "columnsCount": 2
+          },
+          "displacement": {
+            "outsideCount": 6,
+            "outsideMovedLayoutCount": 5,
+            "outsideMovedLayoutPct": 83.3,
+            "outsideColumnChangedCount": 4,
+            "outsideColumnChangedPct": 66.7,
+            "outsideLayoutMedianDist": 378,
+            "outsideLayoutMaxDist": 608.3,
+            "outsideMovedScreenCount": 6,
+            "outsideMovedScreenPct": 100,
+            "outsideScreenMedianDist": 382.5,
+            "outsideScreenMaxDist": 647.7,
+            "byRelation": {
+              "sibling-in-parent": {
+                "total": 6,
+                "movedLayout": 5,
+                "colChanged": 4,
+                "medianLayoutDist": 378,
+                "maxLayoutDist": 608.3
+              }
+            },
+            "topOutsideMovers": [
+              {
+                "id": "Gateway",
+                "kind": "box",
+                "dir": "",
+                "relation": "sibling-in-parent",
+                "beforeLayout": {
+                  "left": 599,
+                  "top": 0,
+                  "col": 2
+                },
+                "afterLayout": {
+                  "left": 0,
+                  "top": 106,
+                  "col": 0
+                },
+                "layoutDx": -599,
+                "layoutDy": 106,
+                "layoutDist": 608.3,
+                "columnChanged": true,
+                "screenDx": -366.4,
+                "screenDy": -110,
+                "screenDist": 382.5
+              },
+              {
+                "id": "Portal",
+                "kind": "box",
+                "dir": "",
+                "relation": "sibling-in-parent",
+                "beforeLayout": {
+                  "left": 599,
+                  "top": 106,
+                  "col": 2
+                },
+                "afterLayout": {
+                  "left": 0,
+                  "top": 212,
+                  "col": 0
+                },
+                "layoutDx": -599,
+                "layoutDy": 106,
+                "layoutDist": 608.3,
+                "columnChanged": true,
+                "screenDx": -366.4,
+                "screenDy": -110,
+                "screenDist": 382.5
+              },
+              {
+                "id": "Estate.sln",
+                "kind": "card",
+                "dir": "",
+                "relation": "sibling-in-parent",
+                "beforeLayout": {
+                  "left": 0,
+                  "top": 212,
+                  "col": 0
+                },
+                "afterLayout": {
+                  "left": 378,
+                  "top": 212,
+                  "col": 1
+                },
+                "layoutDx": 378,
+                "layoutDy": 0,
+                "layoutDist": 378,
+                "columnChanged": true,
+                "screenDx": 610.6,
+                "screenDy": -216,
+                "screenDist": 647.7
+              },
+              {
+                "id": "Hub",
+                "kind": "box",
+                "dir": "",
+                "relation": "sibling-in-parent",
+                "beforeLayout": {
+                  "left": 0,
+                  "top": 106,
+                  "col": 0
+                },
+                "afterLayout": {
+                  "left": 378,
+                  "top": 106,
+                  "col": 1
+                },
+                "layoutDx": 378,
+                "layoutDy": 0,
+                "layoutDist": 378,
+                "columnChanged": true,
+                "screenDx": 610.6,
+                "screenDy": -216,
+                "screenDist": 647.7
+              },
+              {
+                "id": "Database",
+                "kind": "box",
+                "dir": "",
+                "relation": "sibling-in-parent",
+                "beforeLayout": {
+                  "left": 332,
+                  "top": 0,
+                  "col": 1
+                },
+                "afterLayout": {
+                  "left": 378,
+                  "top": 0,
+                  "col": 1
+                },
+                "layoutDx": 46,
+                "layoutDy": 0,
+                "layoutDist": 46,
+                "columnChanged": false,
+                "screenDx": 278.6,
+                "screenDy": -216,
+                "screenDist": 352.5
+              },
+              {
+                "id": "Contracts",
+                "kind": "box",
+                "dir": "",
+                "relation": "sibling-in-parent",
+                "beforeLayout": {
+                  "left": 0,
+                  "top": 0,
+                  "col": 0
+                },
+                "afterLayout": {
+                  "left": 0,
+                  "top": 0,
+                  "col": 0
+                },
+                "layoutDx": 0,
+                "layoutDy": 0,
+                "layoutDist": 0,
+                "columnChanged": false,
+                "screenDx": 232.6,
+                "screenDy": -216,
+                "screenDist": 317.4
+              }
+            ]
+          },
+          "screenshot": "2d-estate-before-data.png"
+        },
+        {
+          "stepIndex": 2,
+          "action": "open PaymentService/Data",
+          "openedDirectory": "PaymentService/Data",
+          "targetWasInViewport": true,
+          "clickMethod": "mouse-handle",
+          "moveObserved": {
+            "sawMovingTrue": true,
+            "movingDurationMs": 1875,
+            "moveCount": 4,
+            "sawSearchRunning": true
+          },
+          "state": {
+            "stepLabel": "open PaymentService/Data",
+            "openedDirectory": "PaymentService/Data",
+            "url": "http://127.0.0.1:35641/samples/estate/?s=N4IgbiBcDMA0IBsqgQewMYEMEFlMAdkR1UEBXAWwDsBxAqARgAYn4BLAFwFMK7DIATABZ4AI0xUAJnygCAHPAAWXNgHNFHAMKoAzhygBWeAHc2kjou17D8Cj1EAnCVwCiYLlSpcdO2bftOXgDKbBT4CGzonACesizwDqjGADJc7ghePn4gDlwcZA5UVvqQDAYsAL7wAGaoDuhcNE74ikQRVADWMpAAbKzEipgOqlxQffAkCBE6bKi09JBGxKhk4WxUqozwVKiSXCEAXqOQIiA60RSipEFYCMcM8KpOYDFQTAB0TAJLJGFzHhwglx8ENMBxZlQ3u8BBNBsMuAAlCQjN7wAj4RIAD1CYIhULgiHWHSCHFyGwsUKWq0kYNcXmGsVK8G4Fi4DihX3gOjyHDuAAlSJJUcROFxJAAhaIABTIUy2hM6AHUzBSmSAdnsAFqoVAUBHeNh6CQNfEmNi5bW6-UzI1UE2QD4ATm2mDsAEESgwFCBFKh8L41bl3NgAGJOOwB8ZnZRTAAiwNVMJATxW%2BEVzXwbIDZw66xAFSqOSg1Ww3PgACti6WuPBUFAANogesAHRAknNXHQHDq0VbsFbrYAuiB4C22x2uz2%2B62pZgLgCgQ4Xg0hyOm6327lJw5eyOZ3O7FRAWzl1wAPSxsGYVeD%2BBCyCNtez%2BdHxenp8HhcnyLny8cTAgIOFRAA",
+            "openDirectories": [
+              "",
+              "PaymentService",
+              "PaymentService/Data"
+            ],
+            "cardsCount": 7,
+            "closedBoxesCount": 5,
+            "wiresTotal": 10,
+            "pairLinesCount": 10,
+            "flowActive": true,
+            "flowShape": {
+              "rows": null,
+              "boxRows": {},
+              "looseColumns": {}
+            },
+            "flowShapesCount": 3,
+            "orderStart": "seed 5",
+            "orderScore": 16225,
+            "orderSignals": {
+              "vertical": 1599,
+              "crossings": 3,
+              "height": 1025,
+              "width": 1105,
+              "churn": 0,
+              "unevenness": 102,
+              "steps": 1,
+              "unlevel": 102
+            },
+            "searchStatus": "settled",
+            "searchTried": 11,
+            "searchAdopted": 3,
+            "searchCycleTried": 0,
+            "searchCycleAdopted": 0,
+            "searchAlignmentTried": 4,
+            "searchAlignmentAdopted": 2,
+            "camera": {
+              "k": 1,
+              "x": 0,
+              "y": 0
+            },
+            "look": "reading",
+            "columnsCount": 3
+          },
+          "displacement": {
+            "outsideCount": 9,
+            "outsideMovedLayoutCount": 8,
+            "outsideMovedLayoutPct": 88.9,
+            "outsideColumnChangedCount": 7,
+            "outsideColumnChangedPct": 77.8,
+            "outsideLayoutMedianDist": 431.4,
+            "outsideLayoutMaxDist": 893,
+            "outsideMovedScreenCount": 9,
+            "outsideMovedScreenPct": 100,
+            "outsideScreenMedianDist": 376.5,
+            "outsideScreenMaxDist": 807.4,
+            "byRelation": {
+              "sibling-in-parent": {
+                "total": 3,
+                "movedLayout": 3,
+                "colChanged": 3,
+                "medianLayoutDist": 464.2,
+                "maxLayoutDist": 893
+              },
+              "higher-ancestor": {
+                "total": 6,
+                "movedLayout": 5,
+                "colChanged": 4,
+                "medianLayoutDist": 402.2,
+                "maxLayoutDist": 833.8
+              }
+            },
+            "topOutsideMovers": [
+              {
+                "id": "PaymentService/PaymentService.cs",
+                "kind": "card",
+                "dir": "PaymentService",
+                "relation": "sibling-in-parent",
+                "beforeLayout": {
+                  "left": 13,
+                  "top": 728,
+                  "col": 0
+                },
+                "afterLayout": {
+                  "left": 840,
+                  "top": 391,
+                  "col": 2
+                },
+                "layoutDx": 827,
+                "layoutDy": -337,
+                "layoutDist": 893,
+                "columnChanged": true,
+                "screenDx": 484.8,
+                "screenDy": -494,
+                "screenDist": 692.1
+              },
+              {
+                "id": "Gateway",
+                "kind": "box",
+                "dir": "",
+                "relation": "higher-ancestor",
+                "beforeLayout": {
+                  "left": 0,
+                  "top": 106,
+                  "col": 0
+                },
+                "afterLayout": {
+                  "left": 827,
+                  "top": 0,
+                  "col": 2
+                },
+                "layoutDx": 827,
+                "layoutDy": -106,
+                "layoutDist": 833.8,
+                "columnChanged": true,
+                "screenDx": 484.8,
+                "screenDy": -263,
+                "screenDist": 551.5
+              },
+              {
+                "id": "PaymentService/PaymentService.csproj",
+                "kind": "card",
+                "dir": "PaymentService",
+                "relation": "sibling-in-parent",
+                "beforeLayout": {
+                  "left": 13,
+                  "top": 501,
+                  "col": 0
+                },
+                "afterLayout": {
+                  "left": 426,
+                  "top": 289,
+                  "col": 1
+                },
+                "layoutDx": 413,
+                "layoutDy": -212,
+                "layoutDist": 464.2,
+                "columnChanged": true,
+                "screenDx": 70.8,
+                "screenDy": -369,
+                "screenDist": 375.7
+              },
+              {
+                "id": "Estate.sln",
+                "kind": "card",
+                "dir": "",
+                "relation": "higher-ancestor",
+                "beforeLayout": {
+                  "left": 378,
+                  "top": 212,
+                  "col": 1
+                },
+                "afterLayout": {
+                  "left": 827,
+                  "top": 106,
+                  "col": 2
+                },
+                "layoutDx": 449,
+                "layoutDy": -106,
+                "layoutDist": 461.3,
+                "columnChanged": true,
+                "screenDx": 106.8,
+                "screenDy": -263,
+                "screenDist": 283.8
+              },
+              {
+                "id": "PaymentService/App.config",
+                "kind": "card",
+                "dir": "PaymentService",
+                "relation": "sibling-in-parent",
+                "beforeLayout": {
+                  "left": 391,
+                  "top": 497,
+                  "col": 1
+                },
+                "afterLayout": {
+                  "left": 13,
+                  "top": 289,
+                  "col": 0
+                },
+                "layoutDx": -378,
+                "layoutDy": -208,
+                "layoutDist": 431.4,
+                "columnChanged": true,
+                "screenDx": -720.2,
+                "screenDy": -365,
+                "screenDist": 807.4
+              },
+              {
+                "id": "Portal",
+                "kind": "box",
+                "dir": "",
+                "relation": "higher-ancestor",
+                "beforeLayout": {
+                  "left": 0,
+                  "top": 212,
+                  "col": 0
+                },
+                "afterLayout": {
+                  "left": 413,
+                  "top": 106,
+                  "col": 1
+                },
+                "layoutDx": 413,
+                "layoutDy": -106,
+                "layoutDist": 426.4,
+                "columnChanged": true,
+                "screenDx": 70.8,
+                "screenDy": -263,
+                "screenDist": 272.4
+              },
+              {
+                "id": "Hub",
+                "kind": "box",
+                "dir": "",
+                "relation": "higher-ancestor",
+                "beforeLayout": {
+                  "left": 378,
+                  "top": 106,
+                  "col": 1
+                },
+                "afterLayout": {
+                  "left": 0,
+                  "top": 106,
+                  "col": 0
+                },
+                "layoutDx": -378,
+                "layoutDy": 0,
+                "layoutDist": 378,
+                "columnChanged": true,
+                "screenDx": -720.2,
+                "screenDy": -157,
+                "screenDist": 737.2
+              },
+              {
+                "id": "Database",
+                "kind": "box",
+                "dir": "",
+                "relation": "higher-ancestor",
+                "beforeLayout": {
+                  "left": 378,
+                  "top": 0,
+                  "col": 1
+                },
+                "afterLayout": {
+                  "left": 413,
+                  "top": 0,
+                  "col": 1
+                },
+                "layoutDx": 35,
+                "layoutDy": 0,
+                "layoutDist": 35,
+                "columnChanged": false,
+                "screenDx": -307.2,
+                "screenDy": -157,
+                "screenDist": 345
+              }
+            ]
+          },
+          "screenshot": "2d-estate-after-data.png"
+        }
+      ],
+      "errors": []
+    }
+  },
+  "partB_3dStructureCases": {
+    "case1-estate": {
+      "target": "Contracts/IPaymentHub.cs",
+      "point": {
+        "x": 591.6050743591923,
+        "y": 347.0184853520158
+      },
+      "settle": {
+        "settled": true,
+        "substeps": 399,
+        "nodes": 54
+      },
+      "restStats": {
+        "nodeCounts": {
+          "total": 54,
+          "files": 36,
+          "hubs": 18
+        },
+        "containmentTotal": 53,
+        "containmentVisible": 53,
+        "containmentOpaque": 53,
+        "refTotal": 65,
+        "refVisible": 0,
+        "refOpaque": 0,
+        "refZeroAlphaButVisible": 0,
+        "refOpacitiesSample": [],
+        "refWidthsSample": [],
+        "docTotal": 0,
+        "docVisible": 0,
+        "docOpaque": 0,
+        "hoveredNodeAttr": "false",
+        "actionsLabel": null,
+        "legendHasReferences": true,
+        "legendHasPath": false
+      },
+      "stats": {
+        "nodeCounts": {
+          "total": 54,
+          "files": 36,
+          "hubs": 18
+        },
+        "containmentTotal": 53,
+        "containmentVisible": 53,
+        "containmentOpaque": 53,
+        "refTotal": 65,
+        "refVisible": 7,
+        "refOpaque": 7,
+        "refZeroAlphaButVisible": 0,
+        "refOpacitiesSample": [
+          0.5
+        ],
+        "refWidthsSample": [
+          1,
+          1.4,
+          1.6
+        ],
+        "docTotal": 0,
+        "docVisible": 0,
+        "docOpaque": 0,
+        "hoveredNodeAttr": "true",
+        "actionsLabel": {
+          "id": "Contracts/IPaymentHub.cs",
+          "label": "Actions for IPaymentHub.cs"
+        },
+        "legendHasReferences": true,
+        "legendHasPath": false
+      },
+      "screenshot": "3d-structure-case1-hover-file-estate.png",
+      "errors": []
+    },
+    "case2-estate": {
+      "target": "directory:Database",
+      "point": {
+        "x": 802.6851111295734,
+        "y": 385.05720346591073
+      },
+      "stats": {
+        "nodeCounts": {
+          "total": 54,
+          "files": 36,
+          "hubs": 18
+        },
+        "containmentTotal": 53,
+        "containmentVisible": 53,
+        "containmentOpaque": 53,
+        "refTotal": 65,
+        "refVisible": 4,
+        "refOpaque": 0,
+        "refZeroAlphaButVisible": 4,
+        "refOpacitiesSample": [
+          0
+        ],
+        "refWidthsSample": [],
+        "docTotal": 0,
+        "docVisible": 0,
+        "docOpaque": 0,
+        "hoveredNodeAttr": "true",
+        "actionsLabel": {
+          "id": "directory:Database",
+          "label": "Actions for Database"
+        },
+        "legendHasReferences": true,
+        "legendHasPath": false
+      },
+      "screenshot": "3d-structure-case2-hover-hub-estate.png",
+      "errors": []
+    },
+    "case1-repo": {
+      "target": "packages/engine/src/live-docs/graph.ts",
+      "point": {
+        "x": 659.2264041149053,
+        "y": 434.38477427341536
+      },
+      "settle": {
+        "settled": true,
+        "substeps": 318,
+        "nodes": 47
+      },
+      "restStats": {
+        "nodeCounts": {
+          "total": 47,
+          "files": 42,
+          "hubs": 5
+        },
+        "containmentTotal": 46,
+        "containmentVisible": 46,
+        "containmentOpaque": 46,
+        "refTotal": 103,
+        "refVisible": 0,
+        "refOpaque": 0,
+        "refZeroAlphaButVisible": 0,
+        "refOpacitiesSample": [],
+        "refWidthsSample": [],
+        "actionsLabel": null,
+        "legendHasReferences": true
+      },
+      "stats": {
+        "nodeCounts": {
+          "total": 47,
+          "files": 42,
+          "hubs": 5
+        },
+        "containmentTotal": 46,
+        "containmentVisible": 46,
+        "containmentOpaque": 46,
+        "refTotal": 103,
+        "refVisible": 12,
+        "refOpaque": 12,
+        "refZeroAlphaButVisible": 0,
+        "refOpacitiesSample": [
+          0.5
+        ],
+        "refWidthsSample": [
+          1,
+          1.4,
+          1.6,
+          1.9,
+          2,
+          2.1,
+          2.3
+        ],
+        "actionsLabel": {
+          "id": "packages/engine/src/live-docs/graph.ts",
+          "label": "Actions for graph.ts"
+        },
+        "legendHasReferences": true
+      },
+      "screenshot": "3d-structure-case1-hover-file-repo.png"
+    },
+    "case2-repo": {
+      "target": "directory:packages/engine/src",
+      "point": null,
+      "stats": {
+        "nodeCounts": {
+          "total": 47,
+          "files": 42,
+          "hubs": 5
+        },
+        "containmentTotal": 46,
+        "containmentVisible": 46,
+        "containmentOpaque": 46,
+        "refTotal": 103,
+        "refVisible": 103,
+        "refOpaque": 0,
+        "refZeroAlphaButVisible": 103,
+        "refOpacitiesSample": [
+          0
+        ],
+        "refWidthsSample": [],
+        "actionsLabel": {
+          "id": "directory:packages/engine/src",
+          "label": "Actions for packages/engine/src"
+        },
+        "legendHasReferences": true
+      },
+      "screenshot": "3d-structure-case2-hover-hub-repo.png"
+    },
+    "case3-estate": {
+      "pins": [
+        "PaymentService/PaymentService.cs",
+        "PaymentService/Data/PaymentsContext.cs",
+        "Hub/PaymentHub.cs"
+      ],
+      "settle": {
+        "settled": true,
+        "substeps": 376,
+        "nodes": 54
+      },
+      "purePinnedStats": {
+        "nodeCounts": {
+          "total": 6,
+          "files": 3,
+          "hubs": 3
+        },
+        "containmentTotal": 4,
+        "containmentVisible": 4,
+        "containmentOpaque": 4,
+        "refTotal": 1,
+        "refVisible": 1,
+        "refOpaque": 1,
+        "refZeroAlphaButVisible": 0,
+        "refOpacitiesSample": [
+          0.5
+        ],
+        "refWidthsSample": [
+          1
+        ],
+        "docTotal": 0,
+        "docVisible": 0,
+        "docOpaque": 0,
+        "hoveredNodeAttr": "false",
+        "actionsLabel": null,
+        "legendHasReferences": true,
+        "legendHasPath": false
+      },
+      "stats": {
+        "nodeCounts": {
+          "total": 54,
+          "files": 36,
+          "hubs": 18
+        },
+        "containmentTotal": 53,
+        "containmentVisible": 53,
+        "containmentOpaque": 53,
+        "refTotal": 65,
+        "refVisible": 29,
+        "refOpaque": 29,
+        "refZeroAlphaButVisible": 0,
+        "refOpacitiesSample": [
+          0.5
+        ],
+        "refWidthsSample": [
+          1,
+          1.4,
+          1.6
+        ],
+        "docTotal": 0,
+        "docVisible": 0,
+        "docOpaque": 0,
+        "hoveredNodeAttr": "false",
+        "actionsLabel": null,
+        "legendHasReferences": true,
+        "legendHasPath": false
+      },
+      "screenshot": "3d-structure-case3-pinned-estate.png",
+      "errors": []
+    },
+    "case3-repo": {
+      "pins": [
+        "packages/engine/src/live-docs/graph.ts",
+        "packages/engine/src/live-docs/document.ts",
+        "packages/explorer/src/shared/staticBuilder.ts"
+      ],
+      "openDirectories": [
+        "packages/engine/src/live-docs"
+      ],
+      "settle": {
+        "settled": true,
+        "substeps": 461,
+        "nodes": 49
+      },
+      "purePinnedStats": {
+        "nodeCounts": {
+          "total": 5,
+          "files": 3,
+          "hubs": 2
+        },
+        "containmentTotal": 3,
+        "containmentVisible": 3,
+        "containmentOpaque": 3,
+        "refTotal": 3,
+        "refVisible": 3,
+        "refOpaque": 3,
+        "refZeroAlphaButVisible": 0,
+        "refOpacitiesSample": [
+          0.5
+        ],
+        "refWidthsSample": [
+          1,
+          2
+        ],
+        "docTotal": 0,
+        "docVisible": 0,
+        "docOpaque": 0,
+        "hoveredNodeAttr": "false",
+        "actionsLabel": null,
+        "legendHasReferences": true,
+        "legendHasPath": false
+      },
+      "stats": {
+        "nodeCounts": {
+          "total": 49,
+          "files": 43,
+          "hubs": 6
+        },
+        "containmentTotal": 47,
+        "containmentVisible": 47,
+        "containmentOpaque": 47,
+        "refTotal": 108,
+        "refVisible": 45,
+        "refOpaque": 45,
+        "refZeroAlphaButVisible": 0,
+        "refOpacitiesSample": [
+          0.5
+        ],
+        "refWidthsSample": [
+          1,
+          1.4,
+          1.6,
+          1.8,
+          1.9,
+          2,
+          2.1,
+          2.2,
+          2.3,
+          2.6
+        ],
+        "actionsLabel": null,
+        "legendHasReferences": true
+      },
+      "screenshot": "3d-structure-case3-pinned-repo.png"
+    },
+    "case4-estate": {
+      "from": "Portal/Pages/Default.aspx",
+      "to": "Database/SqlServer/dbo.Payment.sql",
+      "settle": {
+        "settled": true,
+        "substeps": 183,
+        "nodes": 22
+      },
+      "stats": {
+        "nodeCounts": {
+          "total": 22,
+          "files": 12,
+          "hubs": 10
+        },
+        "containmentTotal": 14,
+        "containmentVisible": 14,
+        "containmentOpaque": 14,
+        "refTotal": 11,
+        "refVisible": 11,
+        "refOpaque": 11,
+        "refZeroAlphaButVisible": 0,
+        "refOpacitiesSample": [
+          0.9
+        ],
+        "refWidthsSample": [
+          2,
+          2.8,
+          3.2
+        ],
+        "docTotal": 0,
+        "docVisible": 0,
+        "docOpaque": 0,
+        "hoveredNodeAttr": "false",
+        "actionsLabel": null,
+        "legendHasReferences": true,
+        "legendHasPath": true
+      },
+      "pathText": "Path found: 12 files; 2 references between these files run the other way and are not drawn in 2D\n      Default.aspxusesportal.jsusesPaymentsController.csusesGatewayClient.csusesPaymentsController.csusesGatewaySettings.csusesWeb.configusesApp.configusesApp.configusesPaymentService.csusesPayment.csusesdbo.Payment.sql",
+      "screenshot": "3d-structure-case4-path-estate.png",
+      "errors": []
+    },
+    "case4-repo": {
+      "from": "scripts/live-docs/generate.ts",
+      "to": "packages/engine/src/live-docs/core.ts",
+      "settle": {
+        "settled": true,
+        "substeps": 138,
+        "nodes": 6
+      },
+      "stats": {
+        "nodeCounts": {
+          "total": 6,
+          "files": 3,
+          "hubs": 3
+        },
+        "containmentTotal": 3,
+        "containmentVisible": 3,
+        "containmentOpaque": 3,
+        "refTotal": 2,
+        "refVisible": 2,
+        "refOpaque": 2,
+        "refZeroAlphaButVisible": 0,
+        "refOpacitiesSample": [
+          0.9
+        ],
+        "refWidthsSample": [
+          2,
+          5.2
+        ],
+        "docTotal": 0,
+        "docVisible": 0,
+        "docOpaque": 0,
+        "hoveredNodeAttr": "false",
+        "actionsLabel": null,
+        "legendHasReferences": true,
+        "legendHasPath": true
+      },
+      "pathText": "Path found: 3 files\n      generate.tsusesgenerator.tsusescore.ts",
+      "screenshot": "3d-structure-case4-path-repo.png",
+      "errors": []
+    }
+  }
+}
