@@ -4,6 +4,7 @@ import type { SymbolOrder } from "../../types";
 import { fileShares, marbleCounts } from "../forceGraphAppearance";
 import { getVisibleConnections, retainFile, type PinSet } from "../pin-state";
 import { normalizeSymbolIdentifier } from "../symbolAnchors";
+import { rankAnchoredColumns } from "./anchored-ranking";
 import { orderBranches, type BranchOrder, type ForwardReference, type OrderInput } from "./branch-order";
 import type { ClosedContents, ClosedFile, NestedContents } from "./closed-looks";
 import { cycleCandidates } from "./cycle-order";
@@ -65,6 +66,12 @@ export interface RankingOptions {
    * 2026-11-16).
    */
   orders?: ReadonlyMap<string, readonly string[]>;
+  /**
+   * Base column indices of already-placed files (an opened directory's unpinned Flow ranking) to hold steady: anchored
+   * files keep their column grouping and strict relative order unless a forward-DAG conflict forces detaching a
+   * minimum-size conflicting subset (Flow Option C, 2026-11-24).
+   */
+  anchors?: ReadonlyMap<string, number>;
 }
 
 /** Where the order step begins and how long it looks. */
@@ -391,7 +398,9 @@ export function exploreBranches(
     if (pinned?.has(row(edge.targetSymbol))) remember(node.id, edge.sourceSymbol);
   }
   const directoryOfNode = (nodeId: string): string => parentDirectory(byId.get(nodeId)?.codeRelativePath ?? nodeId);
-  const ranked = rankBranches(flow ? files.filter(node => retained.has(node.id) || joined.has(node.id)) : party, links, options.ranking);
+  const anchors = flow && retained.size > 0 ? ownFlowAnchors(graph, opened, index, byId, include, options.ranking) : undefined;
+  const rankingOptions = anchors ? { ...options.ranking, anchors } : options.ranking;
+  const ranked = rankBranches(flow ? files.filter(node => retained.has(node.id) || joined.has(node.id)) : party, links, rankingOptions);
   const rankedIds = ranked.columns.map(column => column.map(node => node.id));
   const boxesOf = (directory: string): string[] => [...closed.keys()].filter(path => parentDirectory(path) === directory);
   const membersOf = (directory: string): string[] => (index.get(directory)?.files ?? []).filter(file => members.has(file));
@@ -500,6 +509,54 @@ function closedDirectory(path: string, index: DirectoryIndex, cellOf: (file: str
 
 /** What every directory holds, as {@link directoryIndex} gives it. */
 type DirectoryIndex = ReadonlyMap<string, { files: string[]; subdirectories: string[] }>;
+
+/**
+ * The unpinned base column of every ranked file directly inside an opened directory at Flow, ranked on links among
+ * those own files alone (independent of what is pinned, selected or read, matching `shapeOfDirectories`). Returns
+ * undefined when the opened directories have no internal links among their own files.
+ */
+function ownFlowAnchors(
+  graph: ExplorerGraphPayload,
+  opened: OpenDirectories,
+  index: DirectoryIndex,
+  byId: ReadonlyMap<string, ExplorerNodePayload>,
+  include: (node: ExplorerNodePayload) => boolean,
+  ranking: RankingOptions | undefined
+): Map<string, number> | undefined {
+  const ownNodes: ExplorerNodePayload[] = [];
+  const ownIds = new Set<string>();
+  for (const directory of [...opened].sort()) {
+    const contents = index.get(directory);
+    if (!contents) continue;
+    for (const file of contents.files) {
+      const node = byId.get(file);
+      if (node && include(node) && !ownIds.has(file)) {
+        ownIds.add(file);
+        ownNodes.push(node);
+      }
+    }
+  }
+  if (!ownNodes.length) return undefined;
+  const endpointId = (endpoint: string | { id: string }): string => typeof endpoint === "string" ? endpoint : endpoint.id;
+  const undrawn: UndrawnLink[] = [];
+  for (const link of graph.links) {
+    const sourceId = endpointId(link.source), targetId = endpointId(link.target);
+    if (sourceId !== targetId && ownIds.has(sourceId) && ownIds.has(targetId)) {
+      undrawn.push({ sourceId, targetId, kind: link.kind, sourceSymbol: link.sourceSymbol, targetSymbol: link.targetSymbol });
+    }
+  }
+  const ownLines = pairLines(undrawn);
+  if (!ownLines.length) return undefined;
+  const ownJoined = new Set(ownLines.flatMap(line => [line.sourceId, line.targetId]));
+  const base = rankBranches(ownNodes.filter(node => ownJoined.has(node.id)), ownLines, {
+    pull: ranking?.pull,
+    tie: ranking?.tie,
+    orders: ranking?.orders
+  });
+  const anchors = new Map<string, number>();
+  base.columns.forEach((column, col) => { for (const node of column) anchors.set(node.id, col); });
+  return anchors.size ? anchors : undefined;
+}
 
 /** How many files stand under a directory at any depth. */
 function filesUnder(directory: string, index: DirectoryIndex): number {
@@ -636,7 +693,8 @@ export function rankBranches(nodes: ExplorerNodePayload[], links: LocalEdge[], o
   const at = new Map(ids.map((id, i) => [id, i]));
   const pairs: Constraint[] = pairList.flatMap(({ provider, consumer, weight }) =>
     returns(provider, consumer) ? [] : [{ tail: at.get(provider)!, head: at.get(consumer)!, delta: 1, weight }]);
-  const column = rankColumns(ids.length, pairs, pull, tie);
+  const column = (options.anchors?.size ? rankAnchoredColumns(ids, pairs, options.anchors, pull, tie) : null)
+    ?? rankColumns(ids.length, pairs, pull, tie);
   const back = new Set(edges.filter(edge => returns(edge.targetId, edge.sourceId)).map(edgeKey));
   const columns: ExplorerNodePayload[][] = [];
   nodes.forEach((node, i) => (columns[column[i]] ??= []).push(node));

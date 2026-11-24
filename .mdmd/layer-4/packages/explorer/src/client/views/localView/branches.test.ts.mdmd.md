@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: `packages/explorer/src/client/views/localView/branches.test.ts`
-- Generated At: 2026-11-22T07:12:55.473Z
+- Generated At: 2026-11-24T02:21:12.992Z
 
 ## Authored
 ### Purpose
@@ -32,6 +32,7 @@ _No public symbols detected_
 - [`document.parseLiveDoc`](../../../../../engine/src/live-docs/document.ts.mdmd.md#symbol-parselivedoc)
 - [`document.renderLiveDoc`](../../../../../engine/src/live-docs/document.ts.mdmd.md#symbol-renderlivedoc)
 - [`graph.deriveLiveDocGraph`](../../../../../engine/src/live-docs/graph.ts.mdmd.md#symbol-derivelivedocgraph)
+- [`branches.arrangeExploration`](./branches.ts.mdmd.md#symbol-arrangeexploration)
 - [`branches.buildBranches`](./branches.ts.mdmd.md#symbol-buildbranches)
 - [`branches.commonDirectory`](./branches.ts.mdmd.md#symbol-commondirectory)
 - [`branches.directoryIndex`](./branches.ts.mdmd.md#symbol-directoryindex)
@@ -47,6 +48,7 @@ _No public symbols detected_
 - [`pin-state.addPin`](../pin-state.ts.mdmd.md#symbol-addpin)
 - [`pin-state.getVisibleConnections`](../pin-state.ts.mdmd.md#symbol-getvisibleconnections)
 - [`pin-state.removePin`](../pin-state.ts.mdmd.md#symbol-removepin)
+- [`pin-state.retainFile`](../pin-state.ts.mdmd.md#symbol-retainfile)
 - [`graph.explorerGraphOf`](../../../shared/graph.ts.mdmd.md#symbol-explorergraphof)
 - [`types.ExplorerGraphPayload`](../../../shared/types.ts.mdmd.md#symbol-explorergraphpayload) (type-only)
 - [`types.ExplorerNodePayload`](../../../shared/types.ts.mdmd.md#symbol-explorernodepayload) (type-only)

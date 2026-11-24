@@ -614,14 +614,11 @@ async function pinByHand(page: Page, file: string): Promise<void> {
   await settled(page);
 }
 
-// What was ruled on 2026-11-13 is the paragraph above: a pin prices no shape, and the directory keeps the shape chosen on
-// it alone. This case asked until 2026-11-23 that no card already on screen change column on the pin. That check stood
-// in for the ruling and held only by this directory's content: a pin brings the pinned file's references from outside the
-// directory, Flow joins them by lines to every card that uses them, and the ranking then moves some of the directory's
-// own cards. Measured on 2026-11-23, 102 of 249 single-file pins over six directories move one of the directory's own
-// cards (AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-23/Probes/flow-pins/README.md). What a pin should do to
-// the cards already on screen is open with the owner, who found Flow's reshuffle "too much surprise" (2026-11-22).
-test("with Opened Directory at Flow, a pin in a directory prices no shape, keeps the directory's shape and keeps every card on screen", async ({ page }) => {
+// Under Flow Option C (2026-11-24), pinning a file inside an opened directory holds the directory's unpinned own
+// columns steady wherever the forward DAG allows, inserting columns only when an incoming file has no room between
+// neighbouring own columns and detaching only the minimum conflicting own cards on a real conflict. The directory's
+// shape is still priced once on the unpinned directory alone, so pinning prices no shape and by-hand matches by-link.
+test("with Opened Directory at Flow, a pin within reach keeps every own card in its exact column and keeps the directory's shape", async ({ page }) => {
   test.setTimeout(120_000);
   const LOCAL_VIEW = "packages/explorer/src/client/views/localView";
   await page.goto(opened(LOCAL_VIEW, "flow"));
@@ -635,9 +632,70 @@ test("with Opened Directory at Flow, a pin in a directory prices no shape, keeps
   await pinByHand(page, `${LOCAL_VIEW}/directory-flow.ts`);
   const after = await columnsOf(page);
   expect(Object.keys(before).filter(id => !(id in after)), "cards that left the picture").toEqual([]);
+  // Every own card already on screen stays in its exact column (specifically including unconnected-symbols.ts & .test.ts).
+  const moved = Object.entries(before).filter(([id, col]) => after[id] !== col).map(([id, col]) => `${id}: ${col} -> ${after[id]}`);
+  expect(moved, "own cards that changed column on a within-reach pin").toEqual([]);
   // The shape chosen for the directory was reused: the pin priced none, and the directory stands in the same shape.
   await expect(root).not.toHaveAttribute("data-flow-shape-ms", /./u);
   await expect(root).toHaveAttribute("data-flow-shape", shape!);
+});
+
+test("with Opened Directory at Flow, a real-conflict pin moves only the minimal conflicting own cards and keeps all non-cycle wires forward", async ({ page }) => {
+  test.setTimeout(180_000);
+  const VIEWS = `${CLIENT}/views`;
+  await page.goto(opened(VIEWS, "flow"));
+  await settled(page);
+  const ownOf = (cols: Record<string, number>): Record<string, number> =>
+    Object.fromEntries(Object.entries(cols).filter(([id]) => id.startsWith(`${VIEWS}/`) && !id.slice(VIEWS.length + 1).includes("/") && id.includes(".")));
+  const before = ownOf(await columnsOf(page));
+  expect(Object.keys(before).length).toBeGreaterThan(40);
+
+  // Pinning forceGraphData.ts brings in client/types.ts, creating a real conflict (must sit right of col 5 and left of col 1).
+  await pinByHand(page, `${VIEWS}/forceGraphData.ts`);
+  const afterAll = await columnsOf(page);
+  const after = ownOf(afterAll);
+  expect(afterAll[`${CLIENT}/types.ts`], "incoming client/types.ts entered the map").toBeDefined();
+
+  // Every non-cycle wire and pair line runs strictly left-to-right.
+  const wires = await page.evaluate(() => {
+    const cards = new Map([...document.querySelectorAll<HTMLElement>("#map-container .local-column")].map(wrapper => {
+      const card = wrapper.firstElementChild as HTMLElement;
+      const rect = wrapper.getBoundingClientRect();
+      return [card.dataset.id ?? "", { col: Number(wrapper.dataset.column), left: rect.left, right: rect.right }];
+    }));
+    return [...document.querySelectorAll<SVGPathElement>("#map-connections path.connection-path:not(.bundle-run):not(.back-route)")]
+      .map(path => ({
+        provider: path.dataset.targetId ?? "",
+        consumer: path.dataset.sourceId ?? "",
+        p: cards.get(path.dataset.targetId ?? ""),
+        c: cards.get(path.dataset.sourceId ?? "")
+      }))
+      .filter(edge => edge.provider && edge.consumer && edge.provider !== edge.consumer);
+  });
+  expect(wires.length).toBeGreaterThan(10);
+  for (const wire of wires) {
+    expect(wire.p!.col, `${wire.provider} (${wire.p!.col}) -> ${wire.consumer} (${wire.c!.col})`).toBeLessThan(wire.c!.col);
+    expect(wire.p!.right, `${wire.provider} right < ${wire.consumer} left`).toBeLessThan(wire.c!.left);
+  }
+
+  // Only the minimal conflicting own cards (2 of ~57) break their base column grouping; the vast majority stays put.
+  const modalOf = new Map<number, number>();
+  for (const baseCol of new Set(Object.values(before))) {
+    const counts = new Map<number, number>();
+    for (const [id, c] of Object.entries(before)) if (c === baseCol) counts.set(after[id], (counts.get(after[id]) ?? 0) + 1);
+    modalOf.set(baseCol, [...counts.entries()].sort((a, b) => b[1] - a[1])[0][0]);
+  }
+  const detached = Object.entries(before).filter(([id, c]) => after[id] !== modalOf.get(c));
+  expect(detached.length, `detached own cards: ${detached.map(([id]) => id).join(", ")}`).toBeLessThanOrEqual(4);
+  expect(Object.keys(before).length - detached.length, "non-conflicting majority stays grouped").toBeGreaterThan(40);
+
+  // Opening the shared link in a fresh browser yields identical columns.
+  const fresh = await page.context().browser()!.newContext({ viewport: { width: 1800, height: 1100 } });
+  const visitor = await fresh.newPage();
+  await visitor.goto(page.url());
+  await settled(visitor);
+  expect(await columnsOf(visitor)).toEqual(afterAll);
+  await fresh.close();
 });
 
 test("with Opened Directory at Flow, the picture pinned by hand and the picture its link opens stand the directory's cards in the same columns", async ({ page }) => {

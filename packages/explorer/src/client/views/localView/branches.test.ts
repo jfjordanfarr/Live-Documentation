@@ -6,8 +6,8 @@ import { deriveLiveDocGraph } from "@live-documentation/engine/live-docs/graph";
 
 import { explorerGraphOf } from "../../../shared/graph";
 import type { ExplorerGraphPayload, ExplorerNodePayload } from "../../../shared/types";
-import { addPin, EMPTY_PIN_SET, removePin, getVisibleConnections } from "../pin-state";
-import { buildBranches, commonDirectory, directoryIndex, edgeKey, exploreBranches, isClosedDirectory, membraneDirectory, orderExploration, placeMembers, rankBranches } from "./branches";
+import { addPin, EMPTY_PIN_SET, removePin, getVisibleConnections, retainFile } from "../pin-state";
+import { arrangeExploration, buildBranches, commonDirectory, directoryIndex, edgeKey, exploreBranches, isClosedDirectory, membraneDirectory, orderExploration, placeMembers, rankBranches } from "./branches";
 import type { LocalEdge } from "./types";
 
 function node(id: string, archetype = "implementation"): ExplorerNodePayload {
@@ -504,6 +504,102 @@ describe("directories opening in the Local Map (2026-10-08)", () => {
       expect(ids(trial.ranking.columns)).toEqual(ids(plain.ranking.columns));
       expect(trial.hiddenConnections).toEqual(plain.hiddenConnections);
       expect(trial.order.leading).toBeUndefined();
+    });
+
+    it("holds an opened directory's own columns on a pin within reach, inserts a column when needed, and detaches only minimal conflicts (Option C)", () => {
+      const colOf = (cols: readonly (readonly string[])[]): Record<string, number> =>
+        Object.fromEntries(cols.flatMap((col, index) => col.map(id => [id, index] as const)));
+      const expectAllForward = (result: ReturnType<typeof exploreBranches>): void => {
+        const at = colOf(result.arrangement!.ranked);
+        for (const edge of result.subgraph.links) {
+          if (edge.sourceId === edge.targetId || result.ranking.back.has(edgeKey(edge))) continue;
+          expect(at[edge.targetId], `${edge.targetId} -> ${edge.sourceId}`).toBeLessThan(at[edge.sourceId]);
+        }
+      };
+
+      // 1. Within-reach tipping-balance case (like localView + directory-flow.ts):
+      // Own chain d/a(0) -> d/b(1) -> d/c(2) -> d/d(3), plus d/u(2) using d/a once and serving d/d twice.
+      // Pinning d/b brings external ext/types which d/b uses and d/u also uses twice; unanchored simplex would pull d/u left.
+      const files1 = ["d/a", "d/b", "d/c", "d/d", "d/u", "d/loose", "ext/types"].map(id => node(id));
+      const graph1: ExplorerGraphPayload = {
+        nodes: files1,
+        links: [
+          { source: "d/b", target: "d/a", kind: "dependency" },
+          { source: "d/c", target: "d/b", kind: "dependency" },
+          { source: "d/d", target: "d/c", kind: "dependency" },
+          { source: "d/u", target: "d/a", kind: "dependency" },
+          { source: "d/d", target: "d/u", targetSymbol: "s1", kind: "dependency" },
+          { source: "d/d", target: "d/u", targetSymbol: "s2", kind: "dependency" },
+          { source: "d/b", target: "ext/types", kind: "dependency" },
+          { source: "d/u", target: "ext/types", targetSymbol: "t1", kind: "dependency" },
+          { source: "d/u", target: "ext/types", targetSymbol: "t2", kind: "dependency" },
+          { source: "ext/types", target: "d/a", kind: "dependency" }
+        ],
+        stats: { nodes: files1.length, links: 10, references: 10, dependenciesOutsideScan: 0 }
+      };
+      const opts = { openDirectories: new Set(["d"]), directoryFlow: true };
+      const base1 = exploreBranches(null, graph1, EMPTY_PIN_SET, () => true, opts);
+      const baseCols1 = colOf(base1.arrangement!.ranked);
+      expect(baseCols1).toEqual({ "d/a": 0, "d/b": 1, "d/c": 2, "d/u": 2, "d/d": 3 });
+      // Pinning d/b brings ext/types strictly between d/a(0) and d/b(1): column 1 is inserted, every own column stays grouped!
+      const pinnedInsert = exploreBranches(null, graph1, retainFile(EMPTY_PIN_SET, "d/b"), () => true, opts);
+      expectAllForward(pinnedInsert);
+      expect(colOf(pinnedInsert.arrangement!.ranked)).toEqual({ "d/a": 0, "ext/types": 1, "d/b": 2, "d/c": 3, "d/u": 3, "d/d": 4 });
+      // Pinning d/d with an incoming card ext/mid between d/a(0) and d/u(2) fits within reach in col 1 with ZERO own shift!
+      const graphReach: ExplorerGraphPayload = {
+        nodes: files1,
+        links: [
+          { source: "d/b", target: "d/a", kind: "dependency" },
+          { source: "d/c", target: "d/b", kind: "dependency" },
+          { source: "d/d", target: "d/c", kind: "dependency" },
+          { source: "d/u", target: "d/a", kind: "dependency" },
+          { source: "d/d", target: "d/u", targetSymbol: "s1", kind: "dependency" },
+          { source: "d/d", target: "d/u", targetSymbol: "s2", kind: "dependency" },
+          { source: "d/u", target: "ext/types", targetSymbol: "t1", kind: "dependency" },
+          { source: "d/u", target: "ext/types", targetSymbol: "t2", kind: "dependency" },
+          { source: "d/loose", target: "ext/types", kind: "dependency" },
+          { source: "ext/types", target: "d/a", kind: "dependency" }
+        ],
+        stats: { nodes: files1.length, links: 10, references: 10, dependenciesOutsideScan: 0 }
+      };
+      const pinnedReach = exploreBranches(null, graphReach, retainFile(EMPTY_PIN_SET, "d/u"), () => true, opts);
+      expectAllForward(pinnedReach);
+      const reachCols = colOf(pinnedReach.arrangement!.ranked);
+      for (const [id, col] of Object.entries(baseCols1)) expect(reachCols[id], id).toBe(col);
+      expect(reachCols["ext/types"]).toBe(1);
+      // Newly joined loose own file leaves looseOf and sits strictly right of ext/types without moving any base own card.
+      expect(reachCols["d/loose"]).toBeGreaterThan(reachCols["ext/types"]);
+      // Wrapped shapes remain deterministic and preserve forward ordering.
+      const wrapped = arrangeExploration(pinnedReach, { rows: 1, boxRows: new Map(), looseColumns: new Map() });
+      expect(wrapped.ranking.columns.flat().map(f => f.id).sort()).toEqual(pinnedReach.subgraph.nodes.map(f => f.id).sort());
+
+      // 2. Real conflict + mixed cycle + multiple opened directories:
+      const files2 = ["a/r", "a/u1", "a/u2", "a/u3", "a/mid", "a/tail", "b/lone", "ext/bridge"].map(id => node(id));
+      const graph2: ExplorerGraphPayload = {
+        nodes: files2,
+        links: [
+          { source: "a/u1", target: "a/r", kind: "dependency" },
+          { source: "a/u2", target: "a/r", kind: "dependency" },
+          { source: "a/u3", target: "a/r", kind: "dependency" },
+          { source: "a/mid", target: "a/u1", kind: "dependency" },
+          { source: "a/tail", target: "a/mid", kind: "dependency" },
+          { source: "b/lone", target: "a/mid", kind: "dependency" },
+          // Pinning b/lone brings ext/bridge which uses b/lone(3) and provides to a/u1..u3(1) -> conflict!
+          { source: "ext/bridge", target: "b/lone", kind: "dependency" },
+          { source: "a/u1", target: "ext/bridge", kind: "dependency" },
+          { source: "a/u2", target: "ext/bridge", kind: "dependency" },
+          { source: "a/u3", target: "ext/bridge", kind: "dependency" }
+        ],
+        stats: { nodes: files2.length, links: 10, references: 10, dependenciesOutsideScan: 0 }
+      };
+      const multiOpts = { openDirectories: new Set(["a", "b"]), directoryFlow: true };
+      const multiPinned = exploreBranches(null, graph2, retainFile(EMPTY_PIN_SET, "b/lone"), () => true, multiOpts);
+      expectAllForward(multiPinned);
+      // Cycle formed (a/u1 -> a/mid -> b/lone -> ext/bridge -> a/u1): offered in cycles, every non-cycle edge strictly forward.
+      expect(multiPinned.ranking.cycles.length).toBe(1);
+      // Link-vs-hand determinism: calling again with same pin produces byte-identical column arrangement.
+      const again = exploreBranches(null, graph2, retainFile(EMPTY_PIN_SET, "b/lone"), () => true, multiOpts);
+      expect(again.arrangement!.ranked).toEqual(multiPinned.arrangement!.ranked);
     });
   });
 
