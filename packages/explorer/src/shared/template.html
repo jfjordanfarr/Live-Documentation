@@ -273,6 +273,13 @@
             </select>
           </label>
           <label class="tuning-slider">
+            <span>Flow Ancestors</span>
+            <select id="tuning-flow-ancestors">
+              <option value="whole-tree" selected>Whole Tree</option>
+              <option value="local">Connected Folders Only</option>
+            </select>
+          </label>
+          <label class="tuning-slider">
             <span>Closed Directory</span>
             <select id="tuning-closed-directory">
               <option value="cells" selected>Skin with cells: a cell for each file</option>
@@ -560,6 +567,14 @@
             <label class="tuning-slider">
               <span>Wire Zoom Resistance</span><input type="range" id="tuning-force-wire-zoom-resistance" min="0" max="1" step="0.05" value="0.9" />
               <output id="tuning-force-wire-zoom-resistance-value">0.9</output>
+            </label>
+            <label class="tuning-slider">
+              <span>Structure Lines</span>
+              <select id="tuning-force-structure-lines">
+                <option value="on-demand" selected>On Demand</option>
+                <option value="hover-file">Hover File Only</option>
+                <option value="none">None (Pure Tree)</option>
+              </select>
             </label>
           </details>
         </details>

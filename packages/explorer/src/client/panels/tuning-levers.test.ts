@@ -31,7 +31,8 @@ describe("tuning help", () => {
     // Mirror Turn the same day in the 2D layout group, the trial of how the picture moves when the mirror button is pressed.
     // Unconnected on 2026-11-23 beside it, the trial of what a whole file's card does with the rows nothing connects to;
     // Drag left the same day, the owner having chosen Swings, which every drag now does.
-    expect(ids.length).toBe(83);
+    // Flow Ancestors (2D Layout) and Structure Lines (3D Layout -> Appearance) joined on 2026-11-24 for the Flow & Directory trial.
+    expect(ids.length).toBe(85);
     expect(Object.keys(TUNING_HELP).sort()).toEqual([...ids].sort());
   });
 
@@ -87,7 +88,7 @@ describe("the template's initial tuning values", () => {
   it("equal the defaults in getDefaultTuning for every control", () => {
     const defaults = getDefaultTuning();
     const ids = templateControlIds();
-    expect(ids.length).toBe(83);
+    expect(ids.length).toBe(85);
     for (const id of ids) {
       const { group, key } = settingOf(id, defaults);
       const expected = (defaults[group] as unknown as Record<string, unknown>)[key];

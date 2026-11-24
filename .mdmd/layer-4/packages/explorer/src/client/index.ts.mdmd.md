@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: `packages/explorer/src/client/index.ts`
 - Entry: declared
-- Generated At: 2026-11-23T00:11:13.657Z
+- Generated At: 2026-11-24T05:59:35.598Z
 
 ## Authored
 ### Purpose
@@ -142,6 +142,7 @@ _No public symbols detected_
 - [`graph-search.searchIndexOf`](./search/graph-search.ts.mdmd.md#symbol-searchindexof)
 - [`search-bar.SearchWords`](./search/search-bar.ts.mdmd.md#symbol-searchwords) (type-only)
 - [`search-bar.createSearchBar`](./search/search-bar.ts.mdmd.md#symbol-createsearchbar)
+- [`types.DirectoryLayout`](./types.ts.mdmd.md#symbol-directorylayout) (type-only)
 - [`types.DiscoveryTarget`](./types.ts.mdmd.md#symbol-discoverytarget) (type-only)
 - [`types.ExplorerState`](./types.ts.mdmd.md#symbol-explorerstate) (type-only)
 - [`types.InspectionTarget`](./types.ts.mdmd.md#symbol-inspectiontarget) (type-only)

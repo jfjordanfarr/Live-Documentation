@@ -42,6 +42,7 @@ export const TUNING_HELP: Readonly<Record<string, string>> = {
   "tuning-card-text":                 "How a card shows its text: every symbol has a fixed slot cut with an ellipsis, or a description opens on a tap.",
   "tuning-zoom-looks":                "With fixed slots, how cards change as the map zooms out: at every press, or only twice, between three looks.",
   "tuning-directory-layout":          "How an opened directory stands: a grid with no lines, or in order of use with a line for each pair of files.",
+  "tuning-flow-ancestors":            "In Flow, whether opening a connected folder rearranges ancestor folders or keeps each folder's own items local.",
   "tuning-closed-directory":          "How a closed directory is drawn: a skin of cells, a plain box, or a stack of cards; its size stays.",
   "tuning-closed-shape":              "The shape of a closed directory's skin: a folder with its name on its tab, a capsule, or a card's corners.",
   "tuning-palette":                   "The colours the page is drawn in: today's, or a proposed palette, where each colour means one thing in every view.",
@@ -105,6 +106,7 @@ export const TUNING_HELP: Readonly<Record<string, string>> = {
   "tuning-force-node-zoom-resistance": "Resist zoom at the centre of your view: 0 follows zoom, 1 holds size there; rotation keeps world proportions.",
   "tuning-force-name-at":             "How large a sphere draws before its name appears; what you asked about and the hovered sphere are always named.",
   "tuning-force-wire-zoom-resistance": "Resist zoom at the centre of your view: 0 follows zoom, 1 holds width there; rotation keeps world proportions.",
+  "tuning-force-structure-lines":     "In 3D Structure, when file reference lines draw across the directory tree: on demand, on file hover only, or never.",
 
   // History: the scrubber (history/tick-model.ts, history/history-control.ts).
   "tuning-history-axis":              "Lays the scrubber's steps out by date, where a quiet stretch shows as a gap, or evenly by step.",

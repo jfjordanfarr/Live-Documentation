@@ -205,7 +205,9 @@ test("a directory hub inspects, its Open action frames its members, and the shar
   await page.getByRole("button", { name: "2D", exact: true }).click();
   await localMapSettled(page);
   await expect(page.locator(`.local-directory-label[data-directory="${directory}"] .local-directory-close`)).toBeVisible();
-  await expect(page.getByRole("button", { name: "Structure", exact: true })).toBeHidden();
+  // Unified Connections/Structure control (2026-11-24 Milestone 4B, owner Turn 13 of 2026-11-22): Structure stays visible
+  // in 2D (controlling Flow vs Grid independently of 3D's spatialLayout), and 3D retains its Structure pressed state on return.
+  await expect(page.getByRole("button", { name: "Structure", exact: true })).toBeVisible();
   await page.getByRole("button", { name: "3D", exact: true }).click();
   await expect(page.getByRole("button", { name: "Structure", exact: true })).toHaveAttribute("aria-pressed", "true");
   await page.getByRole("button", { name: `Release directory ${directory}`, exact: true }).click();

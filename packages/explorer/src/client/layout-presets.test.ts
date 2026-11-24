@@ -354,4 +354,34 @@ describe("shared packing preferences", () => {
     // An address that carries no layout at all leaves the browser's own choice alone.
     expect(applyLayoutSettings(keep, undefined).localMap.overviewFiles).toBe("keep");
   });
+
+  it("carries Flow Ancestors and Structure Lines only when away from their defaults, and restores defaults when omitted (2026-11-24)", () => {
+    const plain = getDefaultTuning();
+    expect(plain.localMap.flowAncestors).toBe("whole-tree");
+    expect(plain.forceGraph.structureLines).toBe("on-demand");
+    expect(layoutSettingsOf(plain).localMap).not.toHaveProperty("flowAncestors");
+    expect(layoutSettingsOf(plain).forceGraph).not.toHaveProperty("structureLines");
+    expect(readLayoutSettings({ localMap: { flowAncestors: "whole-tree" } })).toBeUndefined();
+    expect(readLayoutSettings({ localMap: { flowAncestors: "unknown" } })).toBeUndefined();
+    expect(readLayoutSettings({ forceGraph: { structureLines: "on-demand" } })).toBeUndefined();
+    expect(readLayoutSettings({ forceGraph: { structureLines: "all" } })).toBeUndefined();
+
+    const local = getDefaultTuning();
+    local.localMap.flowAncestors = "local";
+    const localCarried = decompressSnapshot(compressSnapshot({ ...DEFAULT_SNAPSHOT, layout: layoutSettingsOf(local) }));
+    expect(localCarried.layout?.localMap?.flowAncestors).toBe("local");
+    expect(applyLayoutSettings(getDefaultTuning(), localCarried.layout).localMap.flowAncestors).toBe("local");
+    expect(applyLayoutSettings(local, layoutSettingsOf(plain)).localMap.flowAncestors).toBe("whole-tree");
+    expect(applyLayoutSettings(local, undefined).localMap.flowAncestors).toBe("local");
+
+    for (const mode of ["hover-file", "none"] as const) {
+      const chosen = getDefaultTuning();
+      chosen.forceGraph.structureLines = mode;
+      const carried = decompressSnapshot(compressSnapshot({ ...DEFAULT_SNAPSHOT, perspective: "3d", layout: layoutSettingsOf(chosen) }));
+      expect(carried.layout?.forceGraph?.structureLines).toBe(mode);
+      expect(applyLayoutSettings(getDefaultTuning(), carried.layout).forceGraph.structureLines).toBe(mode);
+      expect(applyLayoutSettings(chosen, layoutSettingsOf(plain)).forceGraph.structureLines).toBe("on-demand");
+      expect(applyLayoutSettings(chosen, undefined).forceGraph.structureLines).toBe(mode);
+    }
+  });
 });

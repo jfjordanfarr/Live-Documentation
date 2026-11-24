@@ -182,7 +182,8 @@ function exploreWith(controller: LocalViewController, orders?: ReadonlyMap<strin
     // A moment's cards carry no words of that day, and a path is asked over today's files: neither is drawn at a moment.
     reading: moment ? [] : state.reading,
     path: moment ? undefined : controller.getActivePath() ?? undefined,
-    directoryFlow: tuning.directoryLayout === "flow"
+    directoryFlow: tuning.directoryLayout === "flow",
+    flowAncestors: tuning.flowAncestors
   });
 }
 
@@ -509,7 +510,7 @@ function shapeOfDirectories(controller: LocalViewController, sceneTuning: SceneT
   };
   const own = exploreBranches(null, graphData, EMPTY_PIN_SET, filtered, {
     symbolOrder: tuning.symbolOrder, ranking: { pull: tuning.rankingPull, tie: tuning.rankingTie }, membraneDepth: tuning.membraneDepth,
-    openDirectories: controller.openDirectories, directoryFlow: true
+    openDirectories: controller.openDirectories, directoryFlow: true, flowAncestors: tuning.flowAncestors
   });
   const input = own.arrangement;
   const boxes = new Set(own.closed.keys());

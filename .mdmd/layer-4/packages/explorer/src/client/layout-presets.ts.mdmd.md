@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/explorer/src/client/layout-presets.ts`
-- Generated At: 2026-11-23T16:13:09.328Z
+- Generated At: 2026-11-24T05:59:35.614Z
 
 ## Authored
 ### Purpose
@@ -124,7 +124,7 @@ absence reads as Shown.
 
 #### `layoutSettingsOf` {#symbol-layoutsettingsof}
 - Type: function
-- Source: [source](../../../../../../packages/explorer/src/client/layout-presets.ts#L136)
+- Source: [source](../../../../../../packages/explorer/src/client/layout-presets.ts#L138)
 - Returns: [`LayoutSettings`](#symbol-layoutsettings)
 - Parameters: `tuning`: [`TuningConfig`](./types.ts.mdmd.md#symbol-tuningconfig)
 
@@ -133,7 +133,7 @@ Snapshot the controls that affect packing and spatial encodings, independent of 
 
 #### `applyLayoutSettings` {#symbol-applylayoutsettings}
 - Type: function
-- Source: [source](../../../../../../packages/explorer/src/client/layout-presets.ts#L151)
+- Source: [source](../../../../../../packages/explorer/src/client/layout-presets.ts#L153)
 - Returns: [`TuningConfig`](./types.ts.mdmd.md#symbol-tuningconfig)
 - Parameters: `tuning`: [`TuningConfig`](./types.ts.mdmd.md#symbol-tuningconfig); `settings`: [`LayoutSettings`](#symbol-layoutsettings)
 
@@ -161,6 +161,7 @@ picture). So a link made with the defaults shows them in a browser whose own tun
 - [`types.DESCRIPTIONS_ZOOMED_OUT`](./types.ts.mdmd.md#symbol-descriptions_zoomed_out)
 - [`types.DIRECTION_MARKS`](./types.ts.mdmd.md#symbol-direction_marks)
 - [`types.DIRECTORY_LAYOUTS`](./types.ts.mdmd.md#symbol-directory_layouts)
+- [`types.FLOW_ANCESTORS`](./types.ts.mdmd.md#symbol-flow_ancestors)
 - [`types.FRAMINGS`](./types.ts.mdmd.md#symbol-framings)
 - [`types.ForceGraphTuning`](./types.ts.mdmd.md#symbol-forcegraphtuning) (type-only)
 - [`types.GROUP_WRAPPERS`](./types.ts.mdmd.md#symbol-group_wrappers)
@@ -171,6 +172,7 @@ picture). So a link made with the defaults shows them in a browser whose own tun
 - [`types.SCAN_GROWTHS`](./types.ts.mdmd.md#symbol-scan_growths)
 - [`types.SCAN_PACES`](./types.ts.mdmd.md#symbol-scan_paces)
 - [`types.STEPS`](./types.ts.mdmd.md#symbol-steps)
+- [`types.STRUCTURE_LINES`](./types.ts.mdmd.md#symbol-structure_lines)
 - [`types.TuningConfig`](./types.ts.mdmd.md#symbol-tuningconfig) (type-only)
 - [`types.UNCONNECTED_ROWS`](./types.ts.mdmd.md#symbol-unconnected_rows)
 - [`types.WAY_DOWNS`](./types.ts.mdmd.md#symbol-way_downs)

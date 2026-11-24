@@ -1,0 +1,1223 @@
+{
+  "measuredAt": "2026-11-24T06:12:17.225Z",
+  "viewport": {
+    "width": 1280,
+    "height": 800
+  },
+  "repoWalk1": {
+    "wholeTree": [
+      {
+        "step": 0,
+        "action": "land on scan root",
+        "cols": 4,
+        "wires": 1,
+        "flowShape": "{\"rows\":null,\"boxRows\":{},\"looseColumns\":{\"\":2}}"
+      },
+      {
+        "step": 1,
+        "action": "open packages",
+        "cols": 4,
+        "wires": 1,
+        "flowShape": "{\"rows\":null,\"boxRows\":{},\"looseColumns\":{\"\":2}}",
+        "displacement": {
+          "outsideCount": 15,
+          "outsideMovedLayoutCount": 15,
+          "outsideMovedLayoutPct": 100,
+          "outsideColumnChangedCount": 2,
+          "outsideColumnChangedPct": 13.3,
+          "outsideLayoutMedianDist": 302,
+          "outsideLayoutMaxDist": 639,
+          "topMovers": [
+            {
+              "id": ".gitignore",
+              "kind": "card",
+              "colBefore": 3,
+              "colAfter": 3,
+              "colChanged": false,
+              "layoutDist": 639,
+              "layoutDx": 0,
+              "layoutDy": 639,
+              "screenDist": 639
+            },
+            {
+              "id": "tests",
+              "kind": "box",
+              "colBefore": 1,
+              "colAfter": 0,
+              "colChanged": true,
+              "layoutDist": 460.8,
+              "layoutDx": -348,
+              "layoutDy": 302,
+              "screenDist": 460.8
+            },
+            {
+              "id": "scripts",
+              "kind": "box",
+              "colBefore": 0,
+              "colAfter": 1,
+              "colChanged": true,
+              "layoutDist": 399.4,
+              "layoutDx": 348,
+              "layoutDy": 196,
+              "screenDist": 399.4
+            },
+            {
+              "id": "eslint.config.js",
+              "kind": "card",
+              "colBefore": 2,
+              "colAfter": 2,
+              "colChanged": false,
+              "layoutDist": 324,
+              "layoutDx": 0,
+              "layoutDy": -324,
+              "screenDist": 324
+            },
+            {
+              "id": "package.json",
+              "kind": "card",
+              "colBefore": 3,
+              "colAfter": 3,
+              "colChanged": false,
+              "layoutDist": 303,
+              "layoutDx": 0,
+              "layoutDy": -303,
+              "screenDist": 303
+            },
+            {
+              "id": "vitest.config.ts",
+              "kind": "card",
+              "colBefore": 3,
+              "colAfter": 3,
+              "colChanged": false,
+              "layoutDist": 303,
+              "layoutDx": 0,
+              "layoutDy": -303,
+              "screenDist": 303
+            }
+          ]
+        }
+      },
+      {
+        "step": 2,
+        "action": "open packages/explorer",
+        "cols": 5,
+        "wires": 2,
+        "flowShape": "{\"rows\":1,\"boxRows\":{},\"looseColumns\":{\"\":2}}",
+        "displacement": {
+          "outsideCount": 18,
+          "outsideMovedLayoutCount": 18,
+          "outsideMovedLayoutPct": 100,
+          "outsideColumnChangedCount": 14,
+          "outsideColumnChangedPct": 77.8,
+          "outsideLayoutMedianDist": 442.1,
+          "outsideLayoutMaxDist": 838,
+          "topMovers": [
+            {
+              "id": ".vscode",
+              "kind": "box",
+              "colBefore": 0,
+              "colAfter": 2,
+              "colChanged": true,
+              "layoutDist": 838,
+              "layoutDx": 732,
+              "layoutDy": -408,
+              "screenDist": 1040.9
+            },
+            {
+              "id": "packages/generator",
+              "kind": "box",
+              "colBefore": 0,
+              "colAfter": 2,
+              "colChanged": true,
+              "layoutDist": 757,
+              "layoutDx": 732,
+              "layoutDy": 193,
+              "screenDist": 745.1
+            },
+            {
+              "id": "tsconfig.json",
+              "kind": "card",
+              "colBefore": 1,
+              "colAfter": 2,
+              "colChanged": true,
+              "layoutDist": 560.3,
+              "layoutDx": 384,
+              "layoutDy": -408,
+              "screenDist": 833.7
+            },
+            {
+              "id": "tests",
+              "kind": "box",
+              "colBefore": 0,
+              "colAfter": 1,
+              "colChanged": true,
+              "layoutDist": 536.3,
+              "layoutDx": 348,
+              "layoutDy": -408,
+              "screenDist": 817.7
+            },
+            {
+              "id": "scripts",
+              "kind": "box",
+              "colBefore": 1,
+              "colAfter": 0,
+              "colChanged": true,
+              "layoutDist": 460.8,
+              "layoutDx": -348,
+              "layoutDy": -302,
+              "screenDist": 723.2
+            },
+            {
+              "id": "packages/engine",
+              "kind": "box",
+              "colBefore": 0,
+              "colAfter": 1,
+              "colChanged": true,
+              "layoutDist": 458.8,
+              "layoutDx": 348,
+              "layoutDy": 299,
+              "screenDist": 349.6
+            }
+          ]
+        }
+      },
+      {
+        "step": 3,
+        "action": "open packages/explorer/src",
+        "cols": 5,
+        "wires": 2,
+        "flowShape": "{\"rows\":1,\"boxRows\":{},\"looseColumns\":{\"\":2}}",
+        "displacement": {
+          "outsideCount": 20,
+          "outsideMovedLayoutCount": 1,
+          "outsideMovedLayoutPct": 5,
+          "outsideColumnChangedCount": 0,
+          "outsideColumnChangedPct": 0,
+          "outsideLayoutMedianDist": 0,
+          "outsideLayoutMaxDist": 106,
+          "topMovers": [
+            {
+              "id": "packages/explorer/tsconfig.json",
+              "kind": "card",
+              "colBefore": 1,
+              "colAfter": 1,
+              "colChanged": false,
+              "layoutDist": 106,
+              "layoutDx": 0,
+              "layoutDy": -106,
+              "screenDist": 196
+            },
+            {
+              "id": "packages/explorer/package.json",
+              "kind": "card",
+              "colBefore": 2,
+              "colAfter": 2,
+              "colChanged": false,
+              "layoutDist": 0,
+              "layoutDx": 0,
+              "layoutDy": 0,
+              "screenDist": 90
+            },
+            {
+              "id": "packages/engine",
+              "kind": "box",
+              "colBefore": 1,
+              "colAfter": 1,
+              "colChanged": false,
+              "layoutDist": 0,
+              "layoutDx": 0,
+              "layoutDy": 0,
+              "screenDist": 90
+            },
+            {
+              "id": "packages/stored-form",
+              "kind": "box",
+              "colBefore": 1,
+              "colAfter": 1,
+              "colChanged": false,
+              "layoutDist": 0,
+              "layoutDx": 0,
+              "layoutDy": 0,
+              "screenDist": 90
+            },
+            {
+              "id": "packages/generator",
+              "kind": "box",
+              "colBefore": 2,
+              "colAfter": 2,
+              "colChanged": false,
+              "layoutDist": 0,
+              "layoutDx": 0,
+              "layoutDy": 0,
+              "screenDist": 90
+            },
+            {
+              "id": ".devcontainer",
+              "kind": "box",
+              "colBefore": 0,
+              "colAfter": 0,
+              "colChanged": false,
+              "layoutDist": 0,
+              "layoutDx": 0,
+              "layoutDy": 0,
+              "screenDist": 90
+            }
+          ]
+        }
+      },
+      {
+        "step": 4,
+        "action": "open packages/explorer/src/client",
+        "cols": 11,
+        "wires": 42,
+        "flowShape": "{\"rows\":5,\"boxRows\":{},\"looseColumns\":{}}",
+        "displacement": {
+          "outsideCount": 21,
+          "outsideMovedLayoutCount": 20,
+          "outsideMovedLayoutPct": 95.2,
+          "outsideColumnChangedCount": 16,
+          "outsideColumnChangedPct": 76.2,
+          "outsideLayoutMedianDist": 1545.6,
+          "outsideLayoutMaxDist": 4036.7,
+          "topMovers": [
+            {
+              "id": "eslint.config.js",
+              "kind": "card",
+              "colBefore": 3,
+              "colAfter": 10,
+              "colChanged": true,
+              "layoutDist": 4036.7,
+              "layoutDx": 3997,
+              "layoutDy": 565,
+              "screenDist": 4029.9
+            },
+            {
+              "id": ".gitattributes",
+              "kind": "card",
+              "colBefore": 3,
+              "colAfter": 10,
+              "colChanged": true,
+              "layoutDist": 4036.7,
+              "layoutDx": 3997,
+              "layoutDy": 565,
+              "screenDist": 4029.9
+            },
+            {
+              "id": "packages/explorer/package.json",
+              "kind": "card",
+              "colBefore": 2,
+              "colAfter": 9,
+              "colChanged": true,
+              "layoutDist": 4009.9,
+              "layoutDx": 3997,
+              "layoutDy": -322,
+              "screenDist": 3945.5
+            },
+            {
+              "id": "slopcop.config.json",
+              "kind": "card",
+              "colBefore": 3,
+              "colAfter": 10,
+              "colChanged": true,
+              "layoutDist": 4002.5,
+              "layoutDx": 3997,
+              "layoutDy": -209,
+              "screenDist": 3945.3
+            },
+            {
+              "id": "package.json",
+              "kind": "card",
+              "colBefore": 4,
+              "colAfter": 10,
+              "colChanged": true,
+              "layoutDist": 3750,
+              "layoutDx": 3630,
+              "layoutDy": 941,
+              "screenDist": 3773.5
+            },
+            {
+              "id": "vitest.config.ts",
+              "kind": "card",
+              "colBefore": 4,
+              "colAfter": 10,
+              "colChanged": true,
+              "layoutDist": 3750,
+              "layoutDx": 3630,
+              "layoutDy": 941,
+              "screenDist": 3773.5
+            }
+          ]
+        }
+      }
+    ],
+    "local": [
+      {
+        "step": 0,
+        "action": "land on scan root",
+        "cols": 4,
+        "wires": 1,
+        "flowShape": "{\"rows\":null,\"boxRows\":{},\"looseColumns\":{\"\":2}}"
+      },
+      {
+        "step": 1,
+        "action": "open packages",
+        "cols": 4,
+        "wires": 1,
+        "flowShape": "{\"rows\":null,\"boxRows\":{},\"looseColumns\":{\"\":2}}",
+        "displacement": {
+          "outsideCount": 15,
+          "outsideMovedLayoutCount": 15,
+          "outsideMovedLayoutPct": 100,
+          "outsideColumnChangedCount": 2,
+          "outsideColumnChangedPct": 13.3,
+          "outsideLayoutMedianDist": 302,
+          "outsideLayoutMaxDist": 639,
+          "topMovers": [
+            {
+              "id": ".gitignore",
+              "kind": "card",
+              "colBefore": 3,
+              "colAfter": 3,
+              "colChanged": false,
+              "layoutDist": 639,
+              "layoutDx": 0,
+              "layoutDy": 639,
+              "screenDist": 639
+            },
+            {
+              "id": "tests",
+              "kind": "box",
+              "colBefore": 1,
+              "colAfter": 0,
+              "colChanged": true,
+              "layoutDist": 460.8,
+              "layoutDx": -348,
+              "layoutDy": 302,
+              "screenDist": 460.8
+            },
+            {
+              "id": "scripts",
+              "kind": "box",
+              "colBefore": 0,
+              "colAfter": 1,
+              "colChanged": true,
+              "layoutDist": 399.4,
+              "layoutDx": 348,
+              "layoutDy": 196,
+              "screenDist": 399.4
+            },
+            {
+              "id": "eslint.config.js",
+              "kind": "card",
+              "colBefore": 2,
+              "colAfter": 2,
+              "colChanged": false,
+              "layoutDist": 324,
+              "layoutDx": 0,
+              "layoutDy": -324,
+              "screenDist": 324
+            },
+            {
+              "id": "package.json",
+              "kind": "card",
+              "colBefore": 3,
+              "colAfter": 3,
+              "colChanged": false,
+              "layoutDist": 303,
+              "layoutDx": 0,
+              "layoutDy": -303,
+              "screenDist": 303
+            },
+            {
+              "id": "vitest.config.ts",
+              "kind": "card",
+              "colBefore": 3,
+              "colAfter": 3,
+              "colChanged": false,
+              "layoutDist": 303,
+              "layoutDx": 0,
+              "layoutDy": -303,
+              "screenDist": 303
+            }
+          ]
+        }
+      },
+      {
+        "step": 2,
+        "action": "open packages/explorer",
+        "cols": 4,
+        "wires": 2,
+        "flowShape": "{\"rows\":null,\"boxRows\":{\"\":2},\"looseColumns\":{\"\":2}}",
+        "displacement": {
+          "outsideCount": 18,
+          "outsideMovedLayoutCount": 18,
+          "outsideMovedLayoutPct": 100,
+          "outsideColumnChangedCount": 5,
+          "outsideColumnChangedPct": 27.8,
+          "outsideLayoutMedianDist": 302,
+          "outsideLayoutMaxDist": 838,
+          "topMovers": [
+            {
+              "id": ".vscode",
+              "kind": "box",
+              "colBefore": 0,
+              "colAfter": 2,
+              "colChanged": true,
+              "layoutDist": 838,
+              "layoutDx": 732,
+              "layoutDy": -408,
+              "screenDist": 1116.5
+            },
+            {
+              "id": "packages/stored-form",
+              "kind": "box",
+              "colBefore": 1,
+              "colAfter": 0,
+              "colChanged": true,
+              "layoutDist": 569.7,
+              "layoutDx": -348,
+              "layoutDy": 451,
+              "screenDist": 348.4
+            },
+            {
+              "id": "tests",
+              "kind": "box",
+              "colBefore": 0,
+              "colAfter": 1,
+              "colChanged": true,
+              "layoutDist": 536.3,
+              "layoutDx": 348,
+              "layoutDy": -408,
+              "screenDist": 912
+            },
+            {
+              "id": "packages/generator",
+              "kind": "box",
+              "colBefore": 0,
+              "colAfter": 1,
+              "colChanged": true,
+              "layoutDist": 490,
+              "layoutDx": 348,
+              "layoutDy": 345,
+              "screenDist": 359.4
+            },
+            {
+              "id": "scripts",
+              "kind": "box",
+              "colBefore": 1,
+              "colAfter": 0,
+              "colChanged": true,
+              "layoutDist": 460.8,
+              "layoutDx": -348,
+              "layoutDy": -302,
+              "screenDist": 815
+            },
+            {
+              "id": "packages/engine",
+              "kind": "box",
+              "colBefore": 0,
+              "colAfter": 0,
+              "colChanged": false,
+              "layoutDist": 451,
+              "layoutDx": 0,
+              "layoutDy": 451,
+              "screenDist": 16
+            }
+          ]
+        }
+      },
+      {
+        "step": 3,
+        "action": "open packages/explorer/src",
+        "cols": 4,
+        "wires": 2,
+        "flowShape": "{\"rows\":null,\"boxRows\":{\"\":2},\"looseColumns\":{\"\":2}}",
+        "displacement": {
+          "outsideCount": 20,
+          "outsideMovedLayoutCount": 15,
+          "outsideMovedLayoutPct": 75,
+          "outsideColumnChangedCount": 1,
+          "outsideColumnChangedPct": 5,
+          "outsideLayoutMedianDist": 36,
+          "outsideLayoutMaxDist": 362.9,
+          "topMovers": [
+            {
+              "id": "packages/explorer/package.json",
+              "kind": "card",
+              "colBefore": 1,
+              "colAfter": 0,
+              "colChanged": true,
+              "layoutDist": 362.9,
+              "layoutDx": -348,
+              "layoutDy": -103,
+              "screenDist": 423.9
+            },
+            {
+              "id": "packages/explorer/tsconfig.json",
+              "kind": "card",
+              "colBefore": 1,
+              "colAfter": 1,
+              "colChanged": false,
+              "layoutDist": 111.9,
+              "layoutDx": 36,
+              "layoutDy": 106,
+              "screenDist": 48.8
+            },
+            {
+              "id": "packages/generator",
+              "kind": "box",
+              "colBefore": 1,
+              "colAfter": 1,
+              "colChanged": false,
+              "layoutDist": 36,
+              "layoutDx": 36,
+              "layoutDy": 0,
+              "screenDist": 143.6
+            },
+            {
+              "id": ".github",
+              "kind": "box",
+              "colBefore": 1,
+              "colAfter": 1,
+              "colChanged": false,
+              "layoutDist": 36,
+              "layoutDx": 36,
+              "layoutDy": 0,
+              "screenDist": 143.6
+            },
+            {
+              "id": "tests",
+              "kind": "box",
+              "colBefore": 1,
+              "colAfter": 1,
+              "colChanged": false,
+              "layoutDist": 36,
+              "layoutDx": 36,
+              "layoutDy": 0,
+              "screenDist": 143.6
+            },
+            {
+              "id": "tsconfig.json",
+              "kind": "card",
+              "colBefore": 1,
+              "colAfter": 1,
+              "colChanged": false,
+              "layoutDist": 36,
+              "layoutDx": 36,
+              "layoutDy": 0,
+              "screenDist": 143.6
+            }
+          ]
+        }
+      },
+      {
+        "step": 4,
+        "action": "open packages/explorer/src/client",
+        "cols": 9,
+        "wires": 42,
+        "flowShape": "{\"rows\":6,\"boxRows\":{},\"looseColumns\":{}}",
+        "displacement": {
+          "outsideCount": 21,
+          "outsideMovedLayoutCount": 21,
+          "outsideMovedLayoutPct": 100,
+          "outsideColumnChangedCount": 9,
+          "outsideColumnChangedPct": 42.9,
+          "outsideLayoutMedianDist": 1849.7,
+          "outsideLayoutMaxDist": 3508.9,
+          "topMovers": [
+            {
+              "id": ".live-docs.config.json",
+              "kind": "card",
+              "colBefore": 2,
+              "colAfter": 8,
+              "colChanged": true,
+              "layoutDist": 3508.9,
+              "layoutDx": 3500,
+              "layoutDy": -250,
+              "screenDist": 3463.2
+            },
+            {
+              "id": "vitest.config.ts",
+              "kind": "card",
+              "colBefore": 3,
+              "colAfter": 2,
+              "colChanged": true,
+              "layoutDist": 2385.6,
+              "layoutDx": -54,
+              "layoutDy": 2385,
+              "screenDist": 2960.9
+            },
+            {
+              "id": "eslint.config.js",
+              "kind": "card",
+              "colBefore": 2,
+              "colAfter": 2,
+              "colChanged": false,
+              "layoutDist": 2301.4,
+              "layoutDx": 313,
+              "layoutDy": 2280,
+              "screenDist": 2865.9
+            },
+            {
+              "id": "package.json",
+              "kind": "card",
+              "colBefore": 3,
+              "colAfter": 2,
+              "colChanged": true,
+              "layoutDist": 2197.7,
+              "layoutDx": -54,
+              "layoutDy": 2197,
+              "screenDist": 2773
+            },
+            {
+              "id": ".vscode",
+              "kind": "box",
+              "colBefore": 2,
+              "colAfter": 0,
+              "colChanged": true,
+              "layoutDist": 2100.4,
+              "layoutDx": -768,
+              "layoutDy": 1955,
+              "screenDist": 2658.6
+            },
+            {
+              "id": "slopcop.config.json",
+              "kind": "card",
+              "colBefore": 2,
+              "colAfter": 2,
+              "colChanged": false,
+              "layoutDist": 2095.5,
+              "layoutDx": 313,
+              "layoutDy": 2072,
+              "screenDist": 2658.8
+            }
+          ]
+        }
+      }
+    ]
+  },
+  "estateWalk1": {
+    "wholeTree": [
+      {
+        "step": 0,
+        "action": "land on scan root",
+        "cols": 3,
+        "wires": 0,
+        "flowShape": "{\"rows\":null,\"boxRows\":{},\"looseColumns\":{}}"
+      },
+      {
+        "step": 1,
+        "action": "open Portal",
+        "cols": 2,
+        "wires": 1,
+        "flowShape": "{\"rows\":null,\"boxRows\":{\"Portal\":5},\"looseColumns\":{}}",
+        "displacement": {
+          "outsideCount": 6,
+          "outsideMovedLayoutCount": 5,
+          "outsideMovedLayoutPct": 83.3,
+          "outsideColumnChangedCount": 4,
+          "outsideColumnChangedPct": 66.7,
+          "outsideLayoutMedianDist": 358,
+          "outsideLayoutMaxDist": 608.3,
+          "topMovers": [
+            {
+              "id": "Gateway",
+              "kind": "box",
+              "colBefore": 2,
+              "colAfter": 0,
+              "colChanged": true,
+              "layoutDist": 608.3,
+              "layoutDx": -599,
+              "layoutDy": 106,
+              "screenDist": 406.1
+            },
+            {
+              "id": "Hub",
+              "kind": "box",
+              "colBefore": 0,
+              "colAfter": 1,
+              "colChanged": true,
+              "layoutDist": 358,
+              "layoutDx": 358,
+              "layoutDy": 0,
+              "screenDist": 688.5
+            },
+            {
+              "id": "Estate.sln",
+              "kind": "card",
+              "colBefore": 0,
+              "colAfter": 1,
+              "colChanged": true,
+              "layoutDist": 358,
+              "layoutDx": 358,
+              "layoutDy": 0,
+              "screenDist": 688.5
+            },
+            {
+              "id": "PaymentService",
+              "kind": "box",
+              "colBefore": 1,
+              "colAfter": 0,
+              "colChanged": true,
+              "layoutDist": 348.5,
+              "layoutDx": -332,
+              "layoutDy": 106,
+              "screenDist": 226.4
+            },
+            {
+              "id": "Database",
+              "kind": "box",
+              "colBefore": 1,
+              "colAfter": 1,
+              "colChanged": false,
+              "layoutDist": 26,
+              "layoutDx": 26,
+              "layoutDy": 0,
+              "screenDist": 422.8
+            },
+            {
+              "id": "Contracts",
+              "kind": "box",
+              "colBefore": 0,
+              "colAfter": 0,
+              "colChanged": false,
+              "layoutDist": 0,
+              "layoutDx": 0,
+              "layoutDy": 0,
+              "screenDist": 406.1
+            }
+          ]
+        }
+      },
+      {
+        "step": 2,
+        "action": "open Portal/Services",
+        "cols": 2,
+        "wires": 1,
+        "flowShape": "{\"rows\":null,\"boxRows\":{\"Portal\":4},\"looseColumns\":{}}",
+        "displacement": {
+          "outsideCount": 13,
+          "outsideMovedLayoutCount": 6,
+          "outsideMovedLayoutPct": 46.2,
+          "outsideColumnChangedCount": 0,
+          "outsideColumnChangedPct": 0,
+          "outsideLayoutMedianDist": 0,
+          "outsideLayoutMaxDist": 111.6,
+          "topMovers": [
+            {
+              "id": "Portal/Web.config",
+              "kind": "card",
+              "colBefore": 1,
+              "colAfter": 1,
+              "colChanged": false,
+              "layoutDist": 111.6,
+              "layoutDx": 35,
+              "layoutDy": -106,
+              "screenDist": 533.2
+            },
+            {
+              "id": "Portal/Controllers",
+              "kind": "box",
+              "colBefore": 1,
+              "colAfter": 1,
+              "colChanged": false,
+              "layoutDist": 35,
+              "layoutDx": 35,
+              "layoutDy": 0,
+              "screenDist": 427.2
+            },
+            {
+              "id": "Portal/Pages",
+              "kind": "box",
+              "colBefore": 1,
+              "colAfter": 1,
+              "colChanged": false,
+              "layoutDist": 35,
+              "layoutDx": 35,
+              "layoutDy": 0,
+              "screenDist": 427.2
+            },
+            {
+              "id": "Database",
+              "kind": "box",
+              "colBefore": 1,
+              "colAfter": 1,
+              "colChanged": false,
+              "layoutDist": 35,
+              "layoutDx": 35,
+              "layoutDy": 0,
+              "screenDist": 427.2
+            },
+            {
+              "id": "Hub",
+              "kind": "box",
+              "colBefore": 1,
+              "colAfter": 1,
+              "colChanged": false,
+              "layoutDist": 35,
+              "layoutDx": 35,
+              "layoutDy": 0,
+              "screenDist": 427.2
+            },
+            {
+              "id": "Estate.sln",
+              "kind": "card",
+              "colBefore": 1,
+              "colAfter": 1,
+              "colChanged": false,
+              "layoutDist": 35,
+              "layoutDx": 35,
+              "layoutDy": 0,
+              "screenDist": 427.2
+            }
+          ]
+        }
+      },
+      {
+        "step": 3,
+        "action": "open Portal/Controllers",
+        "cols": 4,
+        "wires": 2,
+        "flowShape": "{\"rows\":null,\"boxRows\":{\"Portal\":1},\"looseColumns\":{}}",
+        "displacement": {
+          "outsideCount": 13,
+          "outsideMovedLayoutCount": 11,
+          "outsideMovedLayoutPct": 84.6,
+          "outsideColumnChangedCount": 6,
+          "outsideColumnChangedPct": 46.2,
+          "outsideLayoutMedianDist": 420,
+          "outsideLayoutMaxDist": 1220.2,
+          "topMovers": [
+            {
+              "id": "Portal/Scripts",
+              "kind": "box",
+              "colBefore": 0,
+              "colAfter": 3,
+              "colChanged": true,
+              "layoutDist": 1220.2,
+              "layoutDx": 1178,
+              "layoutDy": -318,
+              "screenDist": 854.2
+            },
+            {
+              "id": "Gateway",
+              "kind": "box",
+              "colBefore": 0,
+              "colAfter": 2,
+              "colChanged": true,
+              "layoutDist": 826.8,
+              "layoutDx": 820,
+              "layoutDy": -106,
+              "screenDist": 570.9
+            },
+            {
+              "id": "Hub",
+              "kind": "box",
+              "colBefore": 1,
+              "colAfter": 3,
+              "colChanged": true,
+              "layoutDist": 792.1,
+              "layoutDx": 785,
+              "layoutDy": -106,
+              "screenDist": 541
+            },
+            {
+              "id": "Portal/Pages",
+              "kind": "box",
+              "colBefore": 1,
+              "colAfter": 2,
+              "colChanged": true,
+              "layoutDist": 476.7,
+              "layoutDx": 427,
+              "layoutDy": -212,
+              "screenDist": 207.8
+            },
+            {
+              "id": "Portal/Web.config",
+              "kind": "card",
+              "colBefore": 1,
+              "colAfter": 2,
+              "colChanged": true,
+              "layoutDist": 476.7,
+              "layoutDx": 427,
+              "layoutDy": -212,
+              "screenDist": 207.8
+            },
+            {
+              "id": "Portal/Models",
+              "kind": "box",
+              "colBefore": 0,
+              "colAfter": 1,
+              "colChanged": true,
+              "layoutDist": 446.5,
+              "layoutDx": 393,
+              "layoutDy": -212,
+              "screenDist": 193.8
+            }
+          ]
+        }
+      }
+    ],
+    "local": [
+      {
+        "step": 0,
+        "action": "land on scan root",
+        "cols": 3,
+        "wires": 0,
+        "flowShape": "{\"rows\":null,\"boxRows\":{},\"looseColumns\":{}}"
+      },
+      {
+        "step": 1,
+        "action": "open Portal",
+        "cols": 3,
+        "wires": 1,
+        "flowShape": "{\"rows\":null,\"boxRows\":{},\"looseColumns\":{}}",
+        "displacement": {
+          "outsideCount": 6,
+          "outsideMovedLayoutCount": 6,
+          "outsideMovedLayoutPct": 100,
+          "outsideColumnChangedCount": 1,
+          "outsideColumnChangedPct": 16.7,
+          "outsideLayoutMedianDist": 468.4,
+          "outsideLayoutMaxDist": 700,
+          "topMovers": [
+            {
+              "id": "Contracts",
+              "kind": "box",
+              "colBefore": 0,
+              "colAfter": 0,
+              "colChanged": false,
+              "layoutDist": 700,
+              "layoutDx": 0,
+              "layoutDy": 700,
+              "screenDist": 575.1
+            },
+            {
+              "id": "Hub",
+              "kind": "box",
+              "colBefore": 0,
+              "colAfter": 0,
+              "colChanged": false,
+              "layoutDist": 700,
+              "layoutDx": 0,
+              "layoutDy": 700,
+              "screenDist": 575.1
+            },
+            {
+              "id": "Estate.sln",
+              "kind": "card",
+              "colBefore": 0,
+              "colAfter": 1,
+              "colChanged": true,
+              "layoutDist": 468.4,
+              "layoutDx": 358,
+              "layoutDy": 302,
+              "screenDist": 392.8
+            },
+            {
+              "id": "Gateway",
+              "kind": "box",
+              "colBefore": 2,
+              "colAfter": 2,
+              "colChanged": false,
+              "layoutDist": 315.4,
+              "layoutDx": 91,
+              "layoutDy": 302,
+              "screenDist": 195.8
+            },
+            {
+              "id": "Database",
+              "kind": "box",
+              "colBefore": 1,
+              "colAfter": 1,
+              "colChanged": false,
+              "layoutDist": 303.1,
+              "layoutDx": 26,
+              "layoutDy": 302,
+              "screenDist": 178
+            },
+            {
+              "id": "PaymentService",
+              "kind": "box",
+              "colBefore": 1,
+              "colAfter": 1,
+              "colChanged": false,
+              "layoutDist": 303.1,
+              "layoutDx": 26,
+              "layoutDy": 302,
+              "screenDist": 178
+            }
+          ]
+        }
+      },
+      {
+        "step": 2,
+        "action": "open Portal/Services",
+        "cols": 3,
+        "wires": 1,
+        "flowShape": "{\"rows\":null,\"boxRows\":{},\"looseColumns\":{}}",
+        "displacement": {
+          "outsideCount": 13,
+          "outsideMovedLayoutCount": 11,
+          "outsideMovedLayoutPct": 84.6,
+          "outsideColumnChangedCount": 1,
+          "outsideColumnChangedPct": 7.7,
+          "outsideLayoutMedianDist": 90,
+          "outsideLayoutMaxDist": 732.7,
+          "topMovers": [
+            {
+              "id": "Portal/Web.config",
+              "kind": "card",
+              "colBefore": 0,
+              "colAfter": 2,
+              "colChanged": true,
+              "layoutDist": 732.7,
+              "layoutDx": 725,
+              "layoutDy": -106,
+              "screenDist": 742.9
+            },
+            {
+              "id": "Portal/Portal.csproj",
+              "kind": "card",
+              "colBefore": 0,
+              "colAfter": 0,
+              "colChanged": false,
+              "layoutDist": 209,
+              "layoutDx": 0,
+              "layoutDy": -209,
+              "screenDist": 518.2
+            },
+            {
+              "id": "Database",
+              "kind": "box",
+              "colBefore": 1,
+              "colAfter": 1,
+              "colChanged": false,
+              "layoutDist": 108.8,
+              "layoutDx": 35,
+              "layoutDy": 103,
+              "screenDist": 207.2
+            },
+            {
+              "id": "PaymentService",
+              "kind": "box",
+              "colBefore": 1,
+              "colAfter": 1,
+              "colChanged": false,
+              "layoutDist": 108.8,
+              "layoutDx": 35,
+              "layoutDy": 103,
+              "screenDist": 207.2
+            },
+            {
+              "id": "Estate.sln",
+              "kind": "card",
+              "colBefore": 1,
+              "colAfter": 1,
+              "colChanged": false,
+              "layoutDist": 108.8,
+              "layoutDx": 35,
+              "layoutDy": 103,
+              "screenDist": 207.2
+            },
+            {
+              "id": "Gateway",
+              "kind": "box",
+              "colBefore": 2,
+              "colAfter": 2,
+              "colChanged": false,
+              "layoutDist": 108.8,
+              "layoutDx": 35,
+              "layoutDy": 103,
+              "screenDist": 207.2
+            }
+          ]
+        }
+      },
+      {
+        "step": 3,
+        "action": "open Portal/Controllers",
+        "cols": 3,
+        "wires": 2,
+        "flowShape": "{\"rows\":null,\"boxRows\":{},\"looseColumns\":{}}",
+        "displacement": {
+          "outsideCount": 13,
+          "outsideMovedLayoutCount": 8,
+          "outsideMovedLayoutPct": 61.5,
+          "outsideColumnChangedCount": 4,
+          "outsideColumnChangedPct": 30.8,
+          "outsideLayoutMedianDist": 299,
+          "outsideLayoutMaxDist": 826.8,
+          "topMovers": [
+            {
+              "id": "Portal/Pages",
+              "kind": "box",
+              "colBefore": 0,
+              "colAfter": 2,
+              "colChanged": true,
+              "layoutDist": 826.8,
+              "layoutDx": 820,
+              "layoutDy": -106,
+              "screenDist": 847
+            },
+            {
+              "id": "Portal/Scripts",
+              "kind": "box",
+              "colBefore": 1,
+              "colAfter": 0,
+              "colChanged": true,
+              "layoutDist": 393,
+              "layoutDx": -393,
+              "layoutDy": 0,
+              "screenDist": 407
+            },
+            {
+              "id": "Portal/Models",
+              "kind": "box",
+              "colBefore": 2,
+              "colAfter": 1,
+              "colChanged": true,
+              "layoutDist": 332,
+              "layoutDx": -332,
+              "layoutDy": 0,
+              "screenDist": 348.5
+            },
+            {
+              "id": "Portal/Web.config",
+              "kind": "card",
+              "colBefore": 2,
+              "colAfter": 1,
+              "colChanged": true,
+              "layoutDist": 332,
+              "layoutDx": -332,
+              "layoutDy": 0,
+              "screenDist": 348.5
+            },
+            {
+              "id": "Gateway",
+              "kind": "box",
+              "colBefore": 2,
+              "colAfter": 2,
+              "colChanged": false,
+              "layoutDist": 313.7,
+              "layoutDx": 95,
+              "layoutDy": 299,
+              "screenDist": 215.1
+            },
+            {
+              "id": "Database",
+              "kind": "box",
+              "colBefore": 1,
+              "colAfter": 1,
+              "colChanged": false,
+              "layoutDist": 299,
+              "layoutDx": 0,
+              "layoutDy": 299,
+              "screenDist": 193
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

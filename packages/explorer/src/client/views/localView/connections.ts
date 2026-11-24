@@ -98,6 +98,7 @@ export function drawConnections(context: ConnectionsContext): number {
   const backward = (context.branches ? settledReturning(context, context.branches).total : 0) + doubling;
   context.runtime.overlay.dataset.active = String(drawn > 0);
   context.runtime.overlay.dataset.backwardConnections = String(backward);
+  context.runtime.overlay.dataset.unshownConnections = String(context.branches?.unshownConnections ?? 0);
   return backward;
 }
 
@@ -151,6 +152,7 @@ export function clearConnections(runtime: LocalViewRuntime): void {
   runtime.overlay.replaceChildren();
   runtime.overlay.dataset.active = "false";
   runtime.overlay.dataset.backwardConnections = "0";
+  runtime.overlay.dataset.unshownConnections = "0";
   runtime.wires = null;
 }
 

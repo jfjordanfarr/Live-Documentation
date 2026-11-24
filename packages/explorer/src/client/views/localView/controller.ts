@@ -784,6 +784,7 @@ export class LocalViewController implements LocalViewApi {
     if (!graphData.nodes.length) {
       clearConnections(this.runtime);
       this.options.onBackwardConnections?.(0);
+      this.options.onUnshownConnections?.(0);
       this.container.innerHTML = '<div class="empty-hint" tabindex="-1" role="status">No files in this graph.</div>';
       this.mapTransform = { x: 0, y: 0, k: 1 };
       this.mapHasInitialFit = false;
@@ -838,33 +839,41 @@ export class LocalViewController implements LocalViewApi {
     this.scheduleConnectionRedraw();
   }
 
+  private structureGridHoverActive(): boolean {
+    const branches = this.branches;
+    return !!branches && !branches.flow && this.options.state.tuning.localMap.directoryLayout === "grid" && !this.getActivePath()
+      && (branches.unshownPairs.length > 0 || this.openDirectories.size > 0 || branches.subgraph.center === null);
+  }
+
   /**
-   * The directory flow trial's hover (2026-11-12): the card the pointer is over, or the card holding the keyboard's
-   * focus, as the pointer moves between elements and focus between controls. The cards are built afresh by every
-   * render, so the map's container listens for them all.
+   * Card-level hover (Flow since 2026-11-12; extended to 2D Structure grid on 2026-11-24): the card the pointer is
+   * over, or the card holding the keyboard's focus, as the pointer moves between elements and focus between controls.
+   * The cards are built afresh by every render, so the map's container listens for them all.
    */
   private readonly handleCardAttention = (event: Event): void => {
     const leaving = event.type === "pointerleave" || event.type === "focusout";
     const target = leaving ? (event as FocusEvent).relatedTarget : event.target;
     const card = target instanceof Element && this.container.contains(target) ? target.closest<HTMLElement>(".node-card") : null;
-    const id = this.branches?.flow || this.container.hasAttribute(OVERVIEW_FILES_ATTRIBUTE) ? card?.dataset.id ?? null : null;
+    const id = this.branches?.flow || this.container.hasAttribute(OVERVIEW_FILES_ATTRIBUTE) || this.structureGridHoverActive()
+      ? card?.dataset.id ?? null : null;
     if (id === this.flowHover) return;
     this.flowHover = id;
     this.applyFlowHover();
   };
 
   /**
-   * Lights the hovered card's lines and fades the rest, where opened directories stand in flow order: the lines and
-   * wires that touch the card and the cards at their far ends keep their look, every other line, card and closed box is
-   * faded by the stylesheet, a return's stubs at both its ends among the lit, its route not drawn. Nothing moves and
-   * nothing is added. A hovered symbol row's own highlight outranks it (local.css). Marked again after every drawing of
-   * the wires, since a render makes new cards and may make new lines under a resting pointer.
+   * Lights the hovered card's partners and fades the rest: in Flow and overview files-only, lights its lines and far-end
+   * cards; in 2D Structure (grid), lights cards connected via undrawn inter-file links or drawn pinned wires while
+   * drawing zero pair lines. Nothing moves and nothing is added. A hovered symbol row's own highlight outranks it
+   * (local.css). Marked again after every drawing of the wires, since a render makes new cards under a resting pointer.
    */
   private applyFlowHover(): void {
     const branches = this.branches, id = this.flowHover;
-    // Files only at the overview (2026-11-13) draws Flow's lines, and takes Flow's hover with them.
-    const flowing = !!branches?.flow || this.container.hasAttribute(OVERVIEW_FILES_ATTRIBUTE);
-    const lit = id && branches && flowing ? flowNeighbours(branches.subgraph.links, new Set(branches.subgraph.nodes.map(node => node.id)), id) : null;
+    // Files only at the overview (2026-11-13) draws Flow's lines, and takes Flow's hover with them; 2D Structure (grid)
+    // highlights connected partner cards via `unshownPairs` without drawing lines (2026-11-24).
+    const flowing = !!branches?.flow || this.container.hasAttribute(OVERVIEW_FILES_ATTRIBUTE) || this.structureGridHoverActive();
+    const hoverLinks = branches ? (branches.unshownPairs.length ? [...branches.subgraph.links, ...branches.unshownPairs] : branches.subgraph.links) : [];
+    const lit = id && branches && flowing ? flowNeighbours(hoverLinks, new Set(branches.subgraph.nodes.map(node => node.id)), id) : null;
     const on = lit !== null;
     if (!on && !this.container.classList.contains("flow-hover")) return;
     this.container.classList.toggle("flow-hover", on);
@@ -889,7 +898,10 @@ export class LocalViewController implements LocalViewApi {
     });
     // A transient crossing during rearrangement is not a reason to leave 2D, nor a move a reason to let the cue go out and
     // light again: the frames of a move report nothing, and its final frame reports the picture it arrived at (2026-11-15).
-    if (!this.stage?.move) this.options.onBackwardConnections?.(backward);
+    if (!this.stage?.move) {
+      this.options.onBackwardConnections?.(backward);
+      this.options.onUnshownConnections?.(this.branches?.unshownConnections ?? 0);
+    }
     if (this.flowHover) this.applyFlowHover();
     this.wireAnswers.redrawn();
   }

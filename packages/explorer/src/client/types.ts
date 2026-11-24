@@ -95,6 +95,12 @@ export interface LocalMapTuning {
    */
   directoryLayout: DirectoryLayout;
   /**
+   * Whether opening a connected folder in Flow propagates flow layout to ancestor folders (a trial of 2026-11-24):
+   * "whole-tree", the default, counts transitive descendants as flowing; "local" restricts each opened folder's span
+   * and loose-file placement to its own direct ranked files and left-aligns disconnected components.
+   */
+  flowAncestors: FlowAncestors;
+  /**
    * How a closed directory's box is drawn: "cells", the default since 2026-11-15 (the owner: "Cells is definitely my
    * favorite"), a skin holding a cell for each file and a small skin for each directory inside, as the 3D bag of cells
    * does; "box", the plain box; "stack", the top card of a stack whose edges show how much it holds. Looks only: the
@@ -437,6 +443,18 @@ export type DirectoryLayout = "grid" | "flow";
  */
 export const DIRECTORY_LAYOUTS: readonly DirectoryLayout[] = ["flow", "grid"];
 
+/** Whether Flow propagates to ancestor folders ("whole-tree") or keeps each folder's own span local ("local"). */
+export type FlowAncestors = "whole-tree" | "local";
+
+/** Every Flow Ancestors choice, in the order the control offers them; the first, whole-tree, is the default. */
+export const FLOW_ANCESTORS: readonly FlowAncestors[] = ["whole-tree", "local"];
+
+/** When 3D Structure draws file-to-file reference lines across the directory tree (a trial of 2026-11-24). */
+export type StructureLines = "on-demand" | "hover-file" | "none";
+
+/** Every Structure Lines choice, in the order the control offers them; the first, on-demand, is the default. */
+export const STRUCTURE_LINES: readonly StructureLines[] = ["on-demand", "hover-file", "none"];
+
 /** How a closed directory's box is drawn in the 2D map: a skin with cells, the plain box, or a stack. */
 export type ClosedDirectoryLook = "cells" | "box" | "stack";
 
@@ -717,6 +735,8 @@ export interface ForceGraphTuning {
   scanGrowth: ScanGrowth;
   /** The rhythm the scan trial plays at (`ScanPace`). */
   scanPace: ScanPace;
+  /** When 3D Structure draws file-to-file reference lines across the directory tree (`StructureLines`, 2026-11-24). */
+  structureLines: StructureLines;
 }
 
 /** The end of a path a person asked for: a file, perhaps one symbol of it, or a directory. The path starts at the newest pin (2026-10-14). */

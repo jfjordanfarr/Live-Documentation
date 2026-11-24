@@ -1,6 +1,6 @@
 import type { ExplorerGraphPayload, ExplorerNodePayload } from "../../../shared/types";
 import { readingFiles, type ReadingChoice } from "../../reading-state";
-import type { SymbolOrder } from "../../types";
+import type { FlowAncestors, SymbolOrder } from "../../types";
 import { fileShares, marbleCounts } from "../forceGraphAppearance";
 import { getVisibleConnections, retainFile, type PinSet } from "../pin-state";
 import { normalizeSymbolIdentifier } from "../symbolAnchors";
@@ -31,6 +31,10 @@ export interface BranchGraph {
   order: BranchOrder;
   /** Whether the picture's opened directories stand in flow order, with pair lines (the directory flow trial, 2026-11-12). */
   flow?: boolean;
+  /** Distinct inter-file pair connections among shown file cards not currently drawn (2D Structure / grid availability cue). */
+  unshownConnections: number;
+  /** Those undrawn inter-file pair lines, kept so 2D Structure card hover can highlight connected partners without drawing wires. */
+  unshownPairs: readonly LocalEdge[];
 }
 
 /** The ranking of retained files into columns, and the references the ranking reads backward. */
@@ -72,6 +76,8 @@ export interface RankingOptions {
    * minimum-size conflicting subset (Flow Option C, 2026-11-24).
    */
   anchors?: ReadonlyMap<string, number>;
+  /** Where disconnected components align horizontally: "right" (default, chains end together) or "left" (used by Flow Ancestors "local"). */
+  alignComponents?: "right" | "left";
 }
 
 /** Where the order step begins and how long it looks. */
@@ -115,6 +121,8 @@ export interface BranchOptions {
    * (`arrangeExploration`, 2026-11-13). Omitted or false, the grid.
    */
   directoryFlow?: boolean;
+  /** Whether Flow propagates to ancestor folders ("whole-tree", default) or stays local to direct ranked files ("local"). */
+  flowAncestors?: FlowAncestors;
 }
 
 /** A closed directory drawn as a box: a pseudo-node with no symbols, standing in for everything under it. */
@@ -172,6 +180,10 @@ export interface Exploration {
   closed: Map<string, ClosedDirectory>;
   /** Whether the picture's opened directories stand in flow order, with pair lines (the directory flow trial, 2026-11-12). */
   flow: boolean;
+  /** Distinct inter-file pair connections among shown file cards not currently drawn (2D Structure / grid availability cue). */
+  unshownConnections: number;
+  /** Those undrawn inter-file pair lines, for 2D Structure card hover highlighting without drawing lines. */
+  unshownPairs: readonly LocalEdge[];
   /**
    * In flow order, what the columns are laid out from, so that the page can lay the same exploration out in another shape
    * ({@link arrangeExploration}) and let the price choose; the columns given are the narrowest shape's.
@@ -292,7 +304,7 @@ export function exploreBranches(
   graph: ExplorerGraphPayload,
   pins: PinSet,
   include: (node: ExplorerNodePayload) => boolean,
-  options: Pick<BranchOptions, "symbolOrder" | "ranking" | "membraneDepth" | "openDirectories" | "path" | "reading" | "directoryFlow"> = {}
+  options: Pick<BranchOptions, "symbolOrder" | "ranking" | "membraneDepth" | "openDirectories" | "path" | "reading" | "directoryFlow" | "flowAncestors"> = {}
 ): Exploration {
   const symbolOrder = options.symbolOrder ?? "layout";
   const id = (endpoint: string | { id: string }): string => typeof endpoint === "string" ? endpoint : endpoint.id;
@@ -370,16 +382,21 @@ export function exploreBranches(
       // Both ends are file cards on screen: the link is drawn, in its pair's line, and so is no hidden connection.
       undrawn.push({ sourceId, targetId, kind: link.kind, sourceSymbol: link.sourceSymbol, targetSymbol: link.targetSymbol });
     } else {
+      if (!flow && !path && opened.size > 0 && sourceId !== targetId && cards.has(sourceId) && cards.has(targetId)) {
+        // In 2D Structure (grid), record undrawn inter-file links for the amber Connections cue and calm hover highlighting.
+        undrawn.push({ sourceId, targetId, kind: link.kind, sourceSymbol: link.sourceSymbol, targetSymbol: link.targetSymbol });
+      }
       for (const endpoint of new Set([sourceId, targetId])) {
         if (shown.has(endpoint)) hiddenConnections.set(endpoint, (hiddenConnections.get(endpoint) ?? 0) + 1);
       }
     }
   }
-  // The pair lines join the references: the ranking, the ordering, the placement and the drawing take them as wires
-  // between the two cards' hubs. A member a line joins is ranked with the retained files.
+  // The pair lines join the references in Flow; in Grid they remain undrawn and feed the availability cue and card hover.
   const lines = pairLines(undrawn);
-  links.push(...lines);
-  const joined = new Set(lines.flatMap(line => [line.sourceId, line.targetId]));
+  if (flow) links.push(...lines);
+  const unshownPairs: readonly LocalEdge[] = flow ? [] : lines;
+  const unshownConnections = unshownPairs.length;
+  const joined = flow ? new Set(lines.flatMap(line => [line.sourceId, line.targetId])) : new Set<string>();
   const keys = new Set(links.map(edgeKey));
   const party = files.filter(node => retained.has(node.id));
   const row = (symbol: string | undefined): string => normalizeSymbolIdentifier(symbol) ?? "__internals__";
@@ -398,14 +415,28 @@ export function exploreBranches(
     if (pinned?.has(row(edge.targetSymbol))) remember(node.id, edge.sourceSymbol);
   }
   const directoryOfNode = (nodeId: string): string => parentDirectory(byId.get(nodeId)?.codeRelativePath ?? nodeId);
-  const anchors = flow && retained.size > 0 ? ownFlowAnchors(graph, opened, index, byId, include, options.ranking) : undefined;
-  const rankingOptions = anchors ? { ...options.ranking, anchors } : options.ranking;
+  const alignComponents = flow && options.flowAncestors === "local" ? "left" as const : options.ranking?.alignComponents;
+  const baseRankingOptions = alignComponents ? { ...options.ranking, alignComponents } : options.ranking;
+  const anchors = flow && retained.size > 0 ? ownFlowAnchors(graph, opened, index, byId, include, baseRankingOptions) : undefined;
+  const rankingOptions = anchors ? { ...baseRankingOptions, anchors } : baseRankingOptions;
   const ranked = rankBranches(flow ? files.filter(node => retained.has(node.id) || joined.has(node.id)) : party, links, rankingOptions);
   const rankedIds = ranked.columns.map(column => column.map(node => node.id));
   const boxesOf = (directory: string): string[] => [...closed.keys()].filter(path => parentDirectory(path) === directory);
   const membersOf = (directory: string): string[] => (index.get(directory)?.files ?? []).filter(file => members.has(file));
+  const internalIds = flow && options.flowAncestors === "local" ? new Set<string>() : undefined;
+  if (internalIds) {
+    for (const edge of links) {
+      if (edge.sourceId === edge.targetId) continue;
+      if (directoryOfNode(edge.sourceId) === directoryOfNode(edge.targetId)) {
+        internalIds.add(edge.sourceId);
+        internalIds.add(edge.targetId);
+      }
+    }
+  }
   const arrangement: FlowInput | null = flow
-    ? { ranked: rankedIds, opened, boxesOf, looseOf: directory => membersOf(directory).filter(file => !joined.has(file)), directoryOf: directoryOfNode }
+    ? { ranked: rankedIds, opened, boxesOf, looseOf: directory => membersOf(directory).filter(file => !joined.has(file)), directoryOf: directoryOfNode,
+        ...(options.flowAncestors ? { ancestors: options.flowAncestors } : null),
+        ...(internalIds ? { internalIds } : null) }
     : null;
   const columns = arrangement ? flowColumns(arrangement) : placeMembers(rankedIds, opened, directory => [...boxesOf(directory), ...membersOf(directory)], directoryOfNode);
   const ranking: BranchRanking = { columns: columns.map(column => column.flatMap(nodeId => byId.get(nodeId) ?? [])), back: ranked.back, cycles: ranked.cycles };
@@ -456,6 +487,8 @@ export function exploreBranches(
     members,
     closed,
     flow,
+    unshownConnections,
+    unshownPairs,
     ...(arrangement ? { arrangement } : null),
     directories,
     order: {
@@ -496,6 +529,8 @@ export function orderExploration(exploration: Exploration, options: OrderOptions
     back: exploration.ranking.back,
     rows: order.rows,
     order,
+    unshownConnections: exploration.unshownConnections,
+    unshownPairs: exploration.unshownPairs,
     ...(exploration.flow ? { flow: true } : null)
   };
 }
@@ -551,7 +586,8 @@ function ownFlowAnchors(
   const base = rankBranches(ownNodes.filter(node => ownJoined.has(node.id)), ownLines, {
     pull: ranking?.pull,
     tie: ranking?.tie,
-    orders: ranking?.orders
+    orders: ranking?.orders,
+    alignComponents: ranking?.alignComponents
   });
   const anchors = new Map<string, number>();
   base.columns.forEach((column, col) => { for (const node of column) anchors.set(node.id, col); });
@@ -694,7 +730,7 @@ export function rankBranches(nodes: ExplorerNodePayload[], links: LocalEdge[], o
   const pairs: Constraint[] = pairList.flatMap(({ provider, consumer, weight }) =>
     returns(provider, consumer) ? [] : [{ tail: at.get(provider)!, head: at.get(consumer)!, delta: 1, weight }]);
   const column = (options.anchors?.size ? rankAnchoredColumns(ids, pairs, options.anchors, pull, tie) : null)
-    ?? rankColumns(ids.length, pairs, pull, tie);
+    ?? rankColumns(ids.length, pairs, pull, tie, options.alignComponents ?? "right");
   const back = new Set(edges.filter(edge => returns(edge.targetId, edge.sourceId)).map(edgeKey));
   const columns: ExplorerNodePayload[][] = [];
   nodes.forEach((node, i) => (columns[column[i]] ??= []).push(node));
@@ -707,21 +743,28 @@ export function rankBranches(nodes: ExplorerNodePayload[], links: LocalEdge[], o
  * least total span, each connected group ended at the last column, and a file that costs the same in several columns
  * placed by the tie rule.
  */
-function rankColumns(count: number, pairs: readonly Constraint[], pull: number, tie: "fewest" | "right" | "left"): number[] {
+function rankColumns(count: number, pairs: readonly Constraint[], pull: number, tie: "fewest" | "right" | "left", alignComponents: "right" | "left" = "right"): number[] {
   // The pull: a column past every file, toward which each file is drawn by the pull's weight, so that a file stands
   // further right than the spans alone would have it wherever the pull outweighs the spans it lengthens.
   const sink = count;
   const pulls: Constraint[] = pull > 0 ? Array.from({ length: count }, (_, v) => ({ tail: v, head: sink, delta: 0, weight: pull })) : [];
   const column = rankByNetworkSimplex(count + (pull > 0 ? 1 : 0), [...pairs, ...pulls]).position.slice(0, count);
-  // Files no reference joins stand apart from one another, so each connected group ends at the last column, as a
-  // file nothing uses does: the picture's right edge is where the chains end.
+  // Files no reference joins stand apart from one another: by default each connected group ends at the last column
+  // ("right"), so chains finish together; under Flow Ancestors "local" each starts at column 0 ("left"), so opening a
+  // deeper connected folder never pulls an unrelated ancestor component rightward.
   const group = Array.from({ length: count }, (_, i) => i);
   const find = (v: number): number => (group[v] === v ? v : (group[v] = find(group[v])));
   for (const edge of pairs) group[find(edge.tail)] = find(edge.head);
   const last = Math.max(0, ...column);
-  const groupLast = new Map<number, number>();
-  for (let v = 0; v < count; v++) groupLast.set(find(v), Math.max(groupLast.get(find(v)) ?? 0, column[v]));
-  for (let v = 0; v < count; v++) column[v] += last - groupLast.get(find(v))!;
+  if (alignComponents === "left") {
+    const groupFirst = new Map<number, number>();
+    for (let v = 0; v < count; v++) groupFirst.set(find(v), Math.min(groupFirst.get(find(v)) ?? Infinity, column[v]));
+    for (let v = 0; v < count; v++) column[v] -= groupFirst.get(find(v))!;
+  } else {
+    const groupLast = new Map<number, number>();
+    for (let v = 0; v < count; v++) groupLast.set(find(v), Math.max(groupLast.get(find(v)) ?? 0, column[v]));
+    for (let v = 0; v < count; v++) column[v] += last - groupLast.get(find(v))!;
+  }
   // A file whose references weigh the same on both sides costs the same in any column between its providers and its
   // consumers (the pull counted on the consumers' side); by the tie rule it takes the column with the fewest other
   // cards, the rightmost among equals, so no stack grows for nothing, or the rightmost or leftmost outright.

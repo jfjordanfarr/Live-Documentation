@@ -601,6 +601,75 @@ describe("directories opening in the Local Map (2026-10-08)", () => {
       const again = exploreBranches(null, graph2, retainFile(EMPTY_PIN_SET, "b/lone"), () => true, multiOpts);
       expect(again.arrangement!.ranked).toEqual(multiPinned.arrangement!.ranked);
     });
+
+    it("computes unshownConnections and unshownPairs in 2D grid without drawing wires, excluding drawn pinned wires and self-links (2026-11-24)", () => {
+      const files = ["d/a", "d/b", "d/c", "d/lone"].map(id => node(id));
+      const g: ExplorerGraphPayload = {
+        nodes: files,
+        links: [
+          { source: "d/b", target: "d/a", sourceSymbol: "s1", targetSymbol: "v1", kind: "dependency" },
+          { source: "d/b", target: "d/a", sourceSymbol: "s2", targetSymbol: "v2", kind: "dependency" },
+          { source: "d/c", target: "d/b", kind: "dependency" },
+          { source: "d/c", target: "d/c", kind: "dependency" }
+        ],
+        stats: { nodes: 4, links: 4, references: 4, dependenciesOutsideScan: 0 }
+      };
+      // Grid (directoryFlow: false): 0 drawn links, 2 distinct inter-file pairs (d/b->d/a and d/c->d/b), self-link excluded.
+      const grid = exploreBranches(null, g, EMPTY_PIN_SET, () => true, { openDirectories: new Set(["d"]), directoryFlow: false });
+      expect(grid.subgraph.links).toEqual([]);
+      expect(grid.unshownConnections).toBe(2);
+      expect(grid.unshownPairs.map(e => [e.sourceId, e.targetId, e.gathered])).toEqual([["d/b", "d/a", 2], ["d/c", "d/b", 1]]);
+      // Ordered BranchGraph carries the same unshown count & pairs for calm hover highlighting.
+      const orderedGrid = orderExploration(grid);
+      expect(orderedGrid.unshownConnections).toBe(2);
+      expect(orderedGrid.unshownPairs).toEqual(grid.unshownPairs);
+      // Pinning d/a draws d/b->d/a explicitly, leaving only d/c->d/b as unshown (1).
+      const pinnedGrid = exploreBranches(null, g, retainFile(EMPTY_PIN_SET, "d/a"), () => true, { openDirectories: new Set(["d"]), directoryFlow: false });
+      expect(pinnedGrid.subgraph.links.some(e => e.sourceId === "d/b" && e.targetId === "d/a")).toBe(true);
+      expect(pinnedGrid.unshownConnections).toBe(1);
+      expect(pinnedGrid.unshownPairs.map(e => [e.sourceId, e.targetId])).toEqual([["d/c", "d/b"]]);
+      // Flow draws all pairs directly, so unshownConnections is 0.
+      const inFlow = exploreBranches(null, g, EMPTY_PIN_SET, () => true, { openDirectories: new Set(["d"]), directoryFlow: true });
+      expect(inFlow.unshownConnections).toBe(0);
+      expect(inFlow.unshownPairs).toEqual([]);
+    });
+
+    it("under flowAncestors: 'local', left-aligns disconnected ancestor components and prevents deep child chains and cross-directory outliers from flinging ancestor loose files (2026-11-24)", () => {
+      const files = ["r0", "r1", "rl1", "rl2", "r_cross", "pkg/sub/c0", "pkg/sub/c1", "pkg/sub/c2", "pkg/sub/c3", "pkg/sub/lone"].map(id => node(id));
+      const g: ExplorerGraphPayload = {
+        nodes: files,
+        links: [
+          { source: "r1", target: "r0", kind: "dependency" },
+          { source: "pkg/sub/c1", target: "pkg/sub/c0", kind: "dependency" },
+          { source: "pkg/sub/c2", target: "pkg/sub/c1", kind: "dependency" },
+          { source: "pkg/sub/c3", target: "pkg/sub/c2", kind: "dependency" },
+          // Cross-directory reference from deep chain tail to a root config file (like client/index.ts -> .live-docs.config.json).
+          { source: "pkg/sub/c3", target: "r_cross", kind: "dependency" }
+        ],
+        stats: { nodes: files.length, links: 5, references: 5, dependenciesOutsideScan: 0 }
+      };
+      const opened = new Set(["", "pkg", "pkg/sub"]);
+      const whole = exploreBranches(null, g, EMPTY_PIN_SET, () => true, { openDirectories: opened, directoryFlow: true, flowAncestors: "whole-tree" });
+      const local = exploreBranches(null, g, EMPTY_PIN_SET, () => true, { openDirectories: opened, directoryFlow: true, flowAncestors: "local" });
+      const colOf = (res: ReturnType<typeof exploreBranches>): Record<string, number> =>
+        Object.fromEntries(res.ranking.columns.flatMap((col, i) => col.map(f => [f.id, i] as const)));
+      const wholeCols = colOf(whole), localCols = colOf(local);
+      // In whole-tree, r0->r1 shifts right to cols 2..3 and root loose rl1/rl2 get flung past pkg/sub/lone to col 5.
+      expect(wholeCols["r0"]).toBe(2);
+      expect(wholeCols["rl1"]).toBeGreaterThan(wholeCols["pkg/sub/c3"]);
+      // In local, r0->r1 stays left-aligned at cols 0..1 and root loose rl1/rl2 stay right behind r1 at col 2,
+      // even though r_cross sits beside its consumer pkg/sub/c3 at col 2!
+      expect(localCols["r0"]).toBe(0);
+      expect(localCols["r1"]).toBe(1);
+      expect(localCols["rl1"]).toBe(2);
+      expect(localCols["rl2"]).toBe(2);
+      expect(localCols["r_cross"]).toBeLessThan(localCols["pkg/sub/c3"]);
+      // Deep child chain preserves strict left-to-right ordering.
+      expect(localCols["pkg/sub/c0"]).toBeLessThan(localCols["pkg/sub/c1"]);
+      expect(localCols["pkg/sub/c1"]).toBeLessThan(localCols["pkg/sub/c2"]);
+      expect(localCols["pkg/sub/c2"]).toBeLessThan(localCols["pkg/sub/c3"]);
+      expect(localCols["pkg/sub/lone"]).toBe(4);
+    });
   });
 
   it("lays an opened directory's items from its party's first column, as wide as its span or the square root of their count, appending columns", () => {

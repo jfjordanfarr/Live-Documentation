@@ -119,15 +119,15 @@ test("the toolbar's groups stand parted by rules, each choice group with one cho
   expect(facts.map(group => group.pressed)).toEqual([0, 0, 1, 1]);
   expect(facts.map(group => group.rule)).toEqual(["0px", "1px", "1px", "1px"]);
   await expect(page.locator(".scene-nav-info")).toHaveCount(0);
-  // In 2D the 3D layout's group goes with its buttons, and no rule is left standing alone; the fit stays first, since
-  // 2026-11-12 the 2D map's own Fit, and since 2026-11-22 the mirror stands beside it there, a state of the picture as
-  // the fit is and hidden in 3D, where no picture has a left-to-right rule to mirror. Until that day's gate this line
-  // asked the first group for its one button, which the mirror's merge had made two without this case being run.
+  // Since 2026-11-24 (Milestone 4B, following the owner's Turn 13 request of 2026-11-22), Connections and Structure stand
+  // in BOTH 2D and 3D: in 2D they toggle Flow vs calm folder Grid (synced with Tuning's Opened Directory), while Hops
+  // stays 3D-only and Mirror stands beside Fit in 2D alone. So 2D shows all 4 choice groups parted by rules.
   await page.getByRole("button", { name: "2D", exact: true }).click();
   await expect(page.locator(".local-placed")).toBeVisible();
-  await expect(groups).toHaveCount(3);
-  expect(await groups.evaluateAll(elements => elements.map(element => getComputedStyle(element).borderLeftWidth))).toEqual(["0px", "1px", "1px"]);
+  await expect(groups).toHaveCount(4);
+  expect(await groups.evaluateAll(elements => elements.map(element => getComputedStyle(element).borderLeftWidth))).toEqual(["0px", "1px", "1px", "1px"]);
   expect(await groups.first().locator("button:visible").evaluateAll(buttons => buttons.map(button => button.getAttribute("aria-label")))).toEqual(["Fit current scope", "Mirror the map"]);
+  expect(await groups.last().locator("button:visible").evaluateAll(buttons => buttons.map(button => button.getAttribute("aria-label")))).toEqual(["Connections", "Structure"]);
 });
 
 /** Chooses how an opened directory stands for every page this test opens, beside the suite's own saved tuning. */

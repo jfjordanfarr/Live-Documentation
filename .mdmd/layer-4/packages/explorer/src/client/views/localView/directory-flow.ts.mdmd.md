@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/explorer/src/client/views/localView/directory-flow.ts`
-- Generated At: 2026-11-22T07:12:55.917Z
+- Generated At: 2026-11-24T06:08:35.389Z
 
 ## Authored
 ### Purpose
@@ -28,14 +28,14 @@ Since 2026-11-19 ([Turn 23 of the November 18 record](../../../../../../../../AI
 ### Public Symbols
 #### `UndrawnLink` {#symbol-undrawnlink}
 - Type: interface
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/directory-flow.ts#L27)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/directory-flow.ts#L28)
 
 ##### `UndrawnLink` — Summary
 A link of the graph between two file cards on screen that the picture draws no wire for.
 
 #### `pairLines` {#symbol-pairlines}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/directory-flow.ts#L45)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/directory-flow.ts#L46)
 - Returns: [`LocalEdge`](./types.ts.mdmd.md#symbol-localedge)[]
 
 ##### `pairLines` — Summary
@@ -46,7 +46,7 @@ no pair of cards and make no line.
 
 #### `flowNeighbours` {#symbol-flowneighbours}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/directory-flow.ts#L63)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/directory-flow.ts#L64)
 - Parameters: `cards`: `ReadonlySet`
 
 ##### `flowNeighbours` — Summary
@@ -56,21 +56,21 @@ nothing is faded.
 
 #### `isPairLine` {#symbol-ispairline}
 - Type: const
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/directory-flow.ts#L74)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/directory-flow.ts#L75)
 
 ##### `isPairLine` — Summary
 Whether an edge is a pair line of an opened directory rather than a reference between two symbols.
 
 #### `linksOf` {#symbol-linksof}
 - Type: const
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/directory-flow.ts#L77)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/directory-flow.ts#L78)
 
 ##### `linksOf` — Summary
 How many of the graph's links an edge stands for: a pair line's count, one for a reference.
 
 #### `wrapRanks` {#symbol-wrapranks}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/directory-flow.ts#L84)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/directory-flow.ts#L85)
 
 ##### `wrapRanks` — Summary
 The ranking's columns with every rank that holds more than `rows` cards wrapped into neighbouring columns, as few as
@@ -79,14 +79,14 @@ drops nothing; the ranks keep their order, so a file still never stands left of 
 
 #### `FlowInput` {#symbol-flowinput}
 - Type: interface
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/directory-flow.ts#L94)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/directory-flow.ts#L95)
 
 ##### `FlowInput` — Summary
 What {@link flowColumns} lays out.
 
 #### `FlowShape` {#symbol-flowshape}
 - Type: interface
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/directory-flow.ts#L113)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/directory-flow.ts#L118)
 
 ##### `FlowShape` — Summary
 How the things no line places stand in a picture in flow order: how a tall rank wraps, how many rows each opened
@@ -97,7 +97,7 @@ the "price", go ahead and add it", 2026-11-13).
 
 #### `NARROW_SHAPE` {#symbol-narrow_shape}
 - Type: const
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/directory-flow.ts#L123)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/directory-flow.ts#L128)
 - Returns: [`FlowShape`](#symbol-flowshape)
 
 ##### `NARROW_SHAPE` — Summary
@@ -105,14 +105,14 @@ The narrowest shape, where the search begins: no rank wrapped, every box within 
 
 #### `shapeRecord` {#symbol-shaperecord}
 - Type: const
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/directory-flow.ts#L126)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/directory-flow.ts#L131)
 
 ##### `shapeRecord` — Summary
 A shape as plain data, for the page to say which it drew.
 
 #### `flowColumns` {#symbol-flowcolumns}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/directory-flow.ts#L222)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/directory-flow.ts#L230)
 - Parameters: `input`: [`FlowInput`](#symbol-flowinput); `shape`: [`FlowShape`](#symbol-flowshape)
 
 ##### `flowColumns` — Summary
@@ -136,7 +136,7 @@ Every id given stands in exactly one column, and the ranks' cards keep their ord
 
 #### `NOMINAL_CARD` {#symbol-nominal_card}
 - Type: const
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/directory-flow.ts#L237)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/directory-flow.ts#L245)
 
 ##### `NOMINAL_CARD` — Summary
 The nominal sizes the shape is chosen on, in the picture's own pixels (2026-11-13). A directory's shape is a coarse
@@ -151,21 +151,21 @@ case holds the file card to the page's median unpinned card, so that a change to
 
 #### `NOMINAL_BOX` {#symbol-nominal_box}
 - Type: const
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/directory-flow.ts#L239)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/directory-flow.ts#L247)
 
 ##### `NOMINAL_BOX` — Summary
 A closed directory's box on the nominal model: every box the page drew on 2026-11-13.
 
 #### `NOMINAL_LABEL` {#symbol-nominal_label}
 - Type: const
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/directory-flow.ts#L241)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/directory-flow.ts#L249)
 
 ##### `NOMINAL_LABEL` — Summary
 A directory's label on the nominal model: the strip the layout keeps for its handle, the page's own constant since 2026-11-15 (one line, 30, before).
 
 #### `nominalMeasurer` {#symbol-nominalmeasurer}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/directory-flow.ts#L251)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/directory-flow.ts#L259)
 - Returns: [`SceneMeasurer`](./branch-scene.ts.mdmd.md#symbol-scenemeasurer)
 - Parameters: `ids`: `Iterable`
 
@@ -179,14 +179,14 @@ owner's to choose. A closed box ends no line.
 
 #### `ShapeSearch` {#symbol-shapesearch}
 - Type: interface
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/directory-flow.ts#L265)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/directory-flow.ts#L273)
 
 ##### `ShapeSearch` — Summary
 What {@link searchFlowShape} found: the cheapest shape it met and its price, and every shape it priced, in order.
 
 #### `searchFlowShape` {#symbol-searchflowshape}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/directory-flow.ts#L282)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/directory-flow.ts#L290)
 - Returns: [`ShapeSearch`](#symbol-shapesearch)
 - Parameters: `input`: [`FlowInput`](#symbol-flowinput); `shape`: [`FlowShape`](#symbol-flowshape)
 
@@ -203,7 +203,7 @@ filters takes the same shape on every screen, after any pins and from any link.
 
 #### `wrapChoices` {#symbol-wrapchoices}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/directory-flow.ts#L339)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/directory-flow.ts#L347)
 
 ##### `wrapChoices` — Summary
 The rows at which the ranks wrap differently, from the tallest rank's down: each wraps them into more columns than the last.
@@ -211,6 +211,7 @@ The rows at which the ranks wrap differently, from the tallest rank's down: each
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
+- [`types.FlowAncestors`](../../types.ts.mdmd.md#symbol-flowancestors) (type-only)
 - [`branch-scene.SceneMeasurer`](./branch-scene.ts.mdmd.md#symbol-scenemeasurer) (type-only)
 - [`directory-handle.HANDLE_STRIP`](./directory-handle.ts.mdmd.md#symbol-handle_strip)
 - [`directory-state.OpenDirectories`](./directory-state.ts.mdmd.md#symbol-opendirectories) (type-only)

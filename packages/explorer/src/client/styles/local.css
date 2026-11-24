@@ -315,14 +315,21 @@ span.local-disclosure { cursor: default; }
 .perspective-group:has(button:not([hidden])) ~ .perspective-group { margin-left: 4px; padding-left: 8px; border-left: 1px solid var(--line-border); }
 .perspective-group:not(:has(button:not([hidden]))) { display: none; }
 .perspective-controls :is(button, select):focus-visible { outline: 2px solid var(--state-selected); }
-/* The 3D button's cue, while the 2D picture draws connections against its left-to-right order (2026-11-15): amber, never
-   the pressed blue or the focus ring; the label takes the amber, a soft glow stands around it, and many such connections
-   deepen the glow and tint the face. One slow pulse as it lights or rises a strength, none under reduced motion. */
-.perspective-controls button.has-backward-wires { --backward-glow: 0 0 7px 1px rgba(var(--signal-cue-rgb), 0.360784); border-color: var(--signal-cue); color: var(--signal-cue-text); box-shadow: var(--backward-glow); }
-.perspective-controls button.has-backward-wires[data-backward="many"] { --backward-glow: 0 0 12px 3px rgba(var(--signal-cue-rgb), 0.560784); background: rgba(var(--signal-cue-rgb), 0.141176); }
-.perspective-controls button.has-backward-wires.backward-rising { animation: backward-rise 1.8s ease-in-out 1; }
+/* The 3D button's cue, while the 2D picture draws connections against its left-to-right order (2026-11-15), and the
+   Connections button's cue, while Structure hides connections among shown files (2026-11-24): amber, never the pressed
+   blue or the focus ring; the label takes the amber, a soft glow stands around it, and many such connections deepen
+   the glow and tint the face. One slow pulse as it lights or rises a strength, none under reduced motion. */
+.perspective-controls button.has-backward-wires,
+.perspective-controls button.has-unshown-connections { --backward-glow: 0 0 7px 1px rgba(var(--signal-cue-rgb), 0.360784); border-color: var(--signal-cue); color: var(--signal-cue-text); box-shadow: var(--backward-glow); }
+.perspective-controls button.has-backward-wires[data-backward="many"],
+.perspective-controls button.has-unshown-connections[data-unshown="many"] { --backward-glow: 0 0 12px 3px rgba(var(--signal-cue-rgb), 0.560784); background: rgba(var(--signal-cue-rgb), 0.141176); }
+.perspective-controls button.has-backward-wires.backward-rising,
+.perspective-controls button.has-unshown-connections.unshown-rising { animation: backward-rise 1.8s ease-in-out 1; }
 @keyframes backward-rise { 0%, 100% { box-shadow: var(--backward-glow); } 40% { box-shadow: 0 0 20px 7px rgba(var(--signal-cue-rgb), 0.666667); } }
-@media (prefers-reduced-motion: reduce) { .perspective-controls button.has-backward-wires.backward-rising { animation: none; } }
+@media (prefers-reduced-motion: reduce) {
+  .perspective-controls button.has-backward-wires.backward-rising,
+  .perspective-controls button.has-unshown-connections.unshown-rising { animation: none; }
+}
 .perspective-controls button:disabled { cursor: default; opacity: .55; }
 /* Not offered by this browser, and kept as a focus stop that says why (the 3D control where WebGL is refused, 2026-11-21):
    the same faded label, by its colour rather than the element's opacity, which would fade its focus ring too: in Today's
@@ -473,7 +480,7 @@ span.local-disclosure { cursor: default; }
 #map-container .symbol-anchor.hub:not(.hub-ends-wire) { visibility: hidden; }
 /* The legend's width row says what a gathered wire's width means, while the overview band draws them, and not otherwise. */
 #local-legend .legend-row--gathered { display: none; }
-body:has(#map-container[data-lod="overview"]) #local-legend .legend-row--gathered { display: flex; }
+body:has(#map-container[data-lod="overview"]):has(#map-connections[data-active="true"]) #local-legend .legend-row--gathered { display: flex; }
 #local-legend .legend-row--gathered .spatial-legend-sample { --legend-color: var(--role-offers); opacity: var(--wire-opacity); }
 /* The legend's kinds row holds a mark for each colour a closed directory's cells are drawn in, and nothing, and so is
    not drawn, while no coloured cell is on screen (2026-11-16). Its samples are cells as the map draws them. */

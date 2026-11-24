@@ -17,6 +17,7 @@
  */
 
 import type { ExplorerLinkKind } from "../../../shared/types";
+import type { FlowAncestors } from "../../types";
 import type { SceneMeasurer } from "./branch-scene";
 import { HANDLE_STRIP } from "./directory-handle";
 import { under, type OpenDirectories } from "./directory-state";
@@ -101,6 +102,10 @@ export interface FlowInput {
   looseOf(directory: string): readonly string[];
   /** The directory an item stands directly in: a file's, and a closed box's parent. */
   directoryOf(id: string): string;
+  /** Whether Flow propagates across transitive descendants ("whole-tree", default) or stays local to direct ranked files ("local"). */
+  ancestors?: FlowAncestors;
+  /** Under ancestors: "local", files that connect to another file in the same directory; cross-directory-only files do not stretch their folder's span. */
+  internalIds?: ReadonlySet<string>;
 }
 
 /**
@@ -153,8 +158,11 @@ function wrapOwn(input: FlowInput, rows: number | null): string[][] {
 function layFlow(input: FlowInput, shape: FlowShape): { columns: string[][]; spans: Map<string, number>; flowing: string[] } {
   const columns = wrapOwn(input, shape.rows);
   const ranked = columns.map(column => [...column]);
+  const local = input.ancestors === "local";
   const holding = (from: readonly (readonly string[])[], directory: string): number[] =>
-    from.flatMap((column, index) => (column.some(id => under(input.directoryOf(id), directory)) ? [index] : []));
+    from.flatMap((column, index) => (column.some(id => local
+      ? input.directoryOf(id) === directory && (!input.internalIds || input.internalIds.has(id))
+      : under(input.directoryOf(id), directory)) ? [index] : []));
   const push = (column: number, id: string): void => {
     while (columns.length <= column) columns.push([]);
     columns[column].push(id);

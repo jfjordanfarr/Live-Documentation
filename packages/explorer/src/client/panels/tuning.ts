@@ -8,7 +8,7 @@
 import { applyMarbles, applyPalette } from "../dom";
 import { layoutSettingsOf } from "../layout-presets";
 import { DEFAULT_PALETTE, isPaletteName } from "../palette";
-import { ARRIVAL_WAITS, ARRIVALS, CUT_COUNTED, DIRECTION_MARKS, MIRROR_TURNS, UNCONNECTED_ROWS, WAY_DOWNS, WIRE_ANSWERS, FRAMINGS, STEPS, CHANGE_EMPHASES, CLOSED_CELL_COLOURS, CLOSED_DIRECTORY_LOOKS, CLOSED_DIRECTORY_SHAPES, DESCRIPTIONS_ZOOMED_OUT, DIRECTORY_LAYOUTS, GROUP_WRAPPERS, BEYOND_HOPS, SCAN_GROWTHS, SCAN_PACES, FRAME_CHOICES, HIDDEN_FILES_LOOKS, MARBLE_CHOICES, OVERVIEW_FILES, type ExplorerState, type FrameChoice } from "../types";
+import { ARRIVAL_WAITS, ARRIVALS, CUT_COUNTED, DIRECTION_MARKS, FLOW_ANCESTORS, MIRROR_TURNS, STRUCTURE_LINES, UNCONNECTED_ROWS, WAY_DOWNS, WIRE_ANSWERS, FRAMINGS, STEPS, CHANGE_EMPHASES, CLOSED_CELL_COLOURS, CLOSED_DIRECTORY_LOOKS, CLOSED_DIRECTORY_SHAPES, DESCRIPTIONS_ZOOMED_OUT, DIRECTORY_LAYOUTS, GROUP_WRAPPERS, BEYOND_HOPS, SCAN_GROWTHS, SCAN_PACES, FRAME_CHOICES, HIDDEN_FILES_LOOKS, MARBLE_CHOICES, OVERVIEW_FILES, type ExplorerState, type FrameChoice } from "../types";
 import { TUNING_HELP, tuningHelpId } from "./tuning-levers";
 import { initTuningReset } from "./tuning-reset";
 
@@ -81,6 +81,7 @@ export function initTuningPanel(config: TuningPanelConfig): () => void {
   const cardTextSelect = document.getElementById("tuning-card-text") as HTMLSelectElement | null;
   const zoomLooksSelect = document.getElementById("tuning-zoom-looks") as HTMLSelectElement | null;
   const directoryLayoutSelect = document.getElementById("tuning-directory-layout") as HTMLSelectElement | null;
+  const flowAncestorsSelect = document.getElementById("tuning-flow-ancestors") as HTMLSelectElement | null;
   const closedDirectorySelect = document.getElementById("tuning-closed-directory") as HTMLSelectElement | null;
   const closedShapeSelect = document.getElementById("tuning-closed-shape") as HTMLSelectElement | null;
   const closedCellsSelect = document.getElementById("tuning-closed-cells") as HTMLSelectElement | null;
@@ -129,6 +130,7 @@ export function initTuningPanel(config: TuningPanelConfig): () => void {
   const beyondHopsSelect = document.getElementById("tuning-force-beyond-hops") as HTMLSelectElement | null;
   const scanGrowthSelect = document.getElementById("tuning-force-scan-growth") as HTMLSelectElement | null;
   const scanPaceSelect = document.getElementById("tuning-force-scan-pace") as HTMLSelectElement | null;
+  const structureLinesSelect = document.getElementById("tuning-force-structure-lines") as HTMLSelectElement | null;
 
   const wireSlider = (input: HTMLInputElement | null, outputId: string, setter: (v: number) => void): void => {
     if (!input) return;
@@ -216,6 +218,7 @@ export function initTuningPanel(config: TuningPanelConfig): () => void {
     if (cardTextSelect) cardTextSelect.value = state.tuning.localMap.cardText;
     if (zoomLooksSelect) zoomLooksSelect.value = state.tuning.localMap.zoomLooks;
     if (directoryLayoutSelect) directoryLayoutSelect.value = state.tuning.localMap.directoryLayout;
+    if (flowAncestorsSelect) flowAncestorsSelect.value = state.tuning.localMap.flowAncestors;
     if (closedDirectorySelect) closedDirectorySelect.value = state.tuning.localMap.closedDirectory;
     if (closedShapeSelect) closedShapeSelect.value = state.tuning.localMap.closedShape;
     if (closedCellsSelect) closedCellsSelect.value = state.tuning.localMap.closedCells;
@@ -257,6 +260,7 @@ export function initTuningPanel(config: TuningPanelConfig): () => void {
     if (beyondHopsSelect) beyondHopsSelect.value = state.tuning.forceGraph.beyondHops;
     if (scanGrowthSelect) scanGrowthSelect.value = state.tuning.forceGraph.scanGrowth;
     if (scanPaceSelect) scanPaceSelect.value = state.tuning.forceGraph.scanPace;
+    if (structureLinesSelect) structureLinesSelect.value = state.tuning.forceGraph.structureLines;
 
     // Set CSS custom properties on document root so they cascade to both views
     document.documentElement.style.setProperty("--local-column-gap", `${state.tuning.localMap.columnGap}px`);
@@ -328,6 +332,14 @@ export function initTuningPanel(config: TuningPanelConfig): () => void {
   if (directoryLayoutSelect) {
     directoryLayoutSelect.addEventListener("change", () => {
       state.tuning.localMap.directoryLayout = DIRECTORY_LAYOUTS.find(choice => choice === directoryLayoutSelect.value) ?? DIRECTORY_LAYOUTS[0];
+      onTuningChange();
+      if (state.view === "map" && state.perspective === "2d") onRender();
+    });
+  }
+  // Whether Flow propagates to ancestor folders changes ancestor columns and loose-file placement: the view re-renders.
+  if (flowAncestorsSelect) {
+    flowAncestorsSelect.addEventListener("change", () => {
+      state.tuning.localMap.flowAncestors = FLOW_ANCESTORS.find(choice => choice === flowAncestorsSelect.value) ?? FLOW_ANCESTORS[0];
       onTuningChange();
       if (state.view === "map" && state.perspective === "2d") onRender();
     });
@@ -575,6 +587,14 @@ export function initTuningPanel(config: TuningPanelConfig): () => void {
       state.tuning.forceGraph.scanPace = SCAN_PACES.find(choice => choice === scanPaceSelect.value) ?? SCAN_PACES[0];
       onTuningChange();
       onScanGrowth();
+    });
+  }
+  // When 3D Structure draws file-to-file reference wires across the tree (2026-11-24): updates appearance without reheating.
+  if (structureLinesSelect) {
+    structureLinesSelect.addEventListener("change", () => {
+      state.tuning.forceGraph.structureLines = STRUCTURE_LINES.find(choice => choice === structureLinesSelect.value) ?? STRUCTURE_LINES[0];
+      onTuningChange();
+      if (state.view === "map" && state.perspective === "3d") onRender();
     });
   }
 

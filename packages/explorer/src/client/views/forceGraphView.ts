@@ -173,6 +173,8 @@ export interface ForceGraphViewOptions {
   /** How many files the picture shows of the files the filters allow, told at every change of what is shown (2026-10-31). */
   /** How many files the picture shows of those the filters allow, and among them the groups of two or more files and the lone files (2026-11-02). */
   onShown?: (shown: number, total: number, groups: number, alone: number) => void;
+  /** How many file-to-file reference links among currently shown files are not drawn as opaque wires in 3D Structure (2026-11-24). */
+  onUnshownConnections?: (count: number) => void;
 }
 
 /** Public API surface of the Force Graph view. */
@@ -278,6 +280,7 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
   let forceSettings = "";
   let sizeSettings = "";
   let wireWidth: number | undefined;
+  let reportedUnshown = -1;
   let pictureRevision = 0;
   let motionRevision = 0;
   let placedNames = "";
@@ -1738,11 +1741,13 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
     /** Build the field again when the forces' settings changed; unfold at full strength for a change of the forces alone, since a membership change is fed at the update energy instead. */
     const updateForces = (reheat: boolean): void => {
       const instance = forceGraphInstance!;
-      const { updateEnergy, settleHold, linkWidth, nodeZoomResistance, wireZoomResistance, groupWrappers, shellDepth, scanGrowth, scanPace, ...forces } = state.tuning.forceGraph;
+      const { updateEnergy, settleHold, linkWidth, nodeZoomResistance, wireZoomResistance, groupWrappers, shellDepth, scanGrowth, scanPace, structureLines, ...forces } = state.tuning.forceGraph;
       // The energy feeds the next membership change and the Settle Hold the next settle; neither changes a force.
       void updateEnergy; void settleHold;
       // The scan trial feeds the picture what it shows; it changes no force.
       void scanGrowth; void scanPace;
+      // Structure Lines controls visibility/attention of file references in 3D Structure without altering physics.
+      void structureLines;
       // What is wrapped changes what is shown, which the membership carries; a wrapper's room is its seed's clearance.
       void groupWrappers; void shellDepth;
       void nodeZoomResistance; void wireZoomResistance; // Appearance does not change the layout's physical sizes.
@@ -1913,16 +1918,57 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
       : path?.includes(node.id) ? 3
       : 5]));
     for (const [id, label] of nameLabels) if (!present.has(id)) { label.remove(); nameLabels.delete(id); labelSizes.delete(label); }
-    const hasAttention = !!pins.entries.length || !!path?.length || directories.length > 0;
     const rootOverview = directories.includes("");
-    // The key says what is drawn: the references and their directions where they are, the path, and the fading.
-    // The key: the rings while any is drawn, which since 2026-11-18 is only with Group Wrappers Off (the owner's choice
-    // of 2026-11-02, a sphere with connections the picture does not show), and the wrapped groups and the shells while
-    // any is drawn (2026-11-05); a shell is no kind of file, so the kinds are read from the files.
-    let legendAttention = false;
+    const pathPairs = new Set(path?.slice(1).map((id, index) => JSON.stringify([id, path[index]].sort())));
+    const isReferenceLink = (link: ForceGraphLink): boolean =>
+      link.kind !== "containment" && link.kind !== "related-doc" && link.kind !== "cited-by";
+    const isReferenceVisible = (link: ForceGraphLink, hovered: string | null, hoveredDirectory: string | undefined): boolean => {
+      if (state.spatialLayout !== "structure" || link.kind === "containment") return true;
+      // Hovering a directory hub highlights its subtree's containment without enabling zero-alpha ghost reference wires (2026-11-24).
+      if (hoveredDirectory !== undefined) return false;
+      const a = resolveLinkEndpoint(link.source), b = resolveLinkEndpoint(link.target);
+      if (isReferenceLink(link)) {
+        const mode = state.tuning.forceGraph.structureLines;
+        if (mode === "none") return false;
+        if (hovered) return a === hovered || b === hovered;
+        if (mode === "hover-file") return false;
+        if (path?.length) return pathPairs.has(JSON.stringify([a, b].sort()));
+        // Among the pinned files and their connections, and the subject; not among an open directory's files, which
+        // would draw the whole web over a directory opened whole (discovery, 2026-10-31).
+        return pinnedScope.has(a) && pinnedScope.has(b);
+      }
+      if (hovered) return a === hovered || b === hovered;
+      if (path?.length) return pathPairs.has(JSON.stringify([a, b].sort()));
+      return pinnedScope.has(a) && pinnedScope.has(b);
+    };
+    const referenceCounts = (hovered: string | null, hoveredDirectory: string | undefined): { opaque: number; unshown: number } => {
+      let opaque = 0, unshown = 0;
+      for (const link of graphLinks) {
+        if (!isReferenceLink(link)) continue;
+        const a = resolveLinkEndpoint(link.source), b = resolveLinkEndpoint(link.target);
+        const nodeA = liveNodes.get(a), nodeB = liveNodes.get(b);
+        if (!nodeA || !nodeB || !isFile(nodeA) || !isFile(nodeB)) continue;
+        const visible = isReferenceVisible(link, hovered, hoveredDirectory);
+        const onPath = !!path?.length && pathPairs.has(JSON.stringify([a, b].sort()));
+        const attended = hovered ? a === hovered || b === hovered : path?.length ? onPath : true;
+        if (visible && (state.spatialLayout !== "structure" || onPath || attended)) opaque++;
+        else if (state.spatialLayout === "structure") unshown++;
+      }
+      return { opaque, unshown };
+    };
+    const reportUnshown = (count: number): void => {
+      if (count === reportedUnshown) return;
+      reportedUnshown = count;
+      options.onUnshownConnections?.(count);
+    };
+    // The key says what is drawn: References only when at least one opaque file-to-file reference wire is drawn on screen
+    // (2026-11-24), Path when path wires are drawn, and the fading, rings, wrapped groups and shells as drawn.
+    const initialHoverDir = hoveredId ? nodeCache.get(hoveredId)?.directoryPath : undefined;
+    let opaqueReferences = referenceCounts(hoveredId, initialHoverDir).opaque;
+    reportUnshown(state.spatialLayout === "structure" ? referenceCounts(hoveredId, initialHoverDir).unshown : 0);
     const keyed: SpatialGraphData = { nodes: picture.nodes.filter(node => node.shellFiles === undefined), links: picture.links };
-    drawLegend = (): void => renderSpatialLegend(keyed, state.tuning.forceGraph.symbolScale, { references: state.spatialLayout === "connections" || hasAttention || legendAttention,
-      path: !!path?.length, frontier: hasFrontier, rings: ringed.size > 0,
+    drawLegend = (): void => renderSpatialLegend(keyed, state.tuning.forceGraph.symbolScale, { references: opaqueReferences > 0,
+      path: !!path?.length && (state.spatialLayout !== "structure" || state.tuning.forceGraph.structureLines === "on-demand"), frontier: hasFrontier, rings: ringed.size > 0,
       wrapped: [...wrapped.keys()].some(id => !shells.has(id) && !cells.has(id) && isWrapped(id)), shells: [...shells.keys(), ...cells.keys()].some(isWrapped),
       // The files a skin draws within it, as cells, are files of the picture too, and their kinds are keyed with the spheres'.
       inside: state.tuning.forceGraph.groupWrappers === "skin" ? [...new Set([...wrapped.keys()].filter(isWrapped)
@@ -1935,16 +1981,12 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
       }
       framedDirectoryScope = directoryScope;
     };
-    const pathPairs = new Set(path?.slice(1).map((id, index) => JSON.stringify([id, path[index]].sort())));
-    const within = (id: string, directory: string): boolean => {
-      const node = nodeCache.get(id);
-      return !!node && under(node.directoryPath ?? node.codeRelativePath, directory);
-    };
     updateAttention = (): void => {
       // Hover is a temporary look at a file's connections among what is shown. Leaving restores the picture; it never
       // restores a snapshot from graph entry. Since 2026-10-31 nothing fades for standing outside the pins: the picture
       // shows only what was asked about and its hops, and the last hop shown is dimmed as the frontier.
       const hovered = hoveredId;
+      const structureLines = state.tuning.forceGraph.structureLines;
       // The hover isolates a file and its connections; a drawn path isolates its files; otherwise nothing is faded.
       const attention = hovered ? new Set([hovered]) : path?.length ? new Set(path) : null;
       const hoveredDirectory = hovered ? nodeCache.get(hovered)?.directoryPath : undefined;
@@ -1958,7 +2000,19 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
           const a = resolveLinkEndpoint(link.source), b = resolveLinkEndpoint(link.target);
           if (a === hovered || b === hovered) { attention!.add(a); attention!.add(b); }
         }
+      } else if (state.spatialLayout === "structure" && structureLines !== "on-demand" && path?.length) {
+        // Without path chords across the tree, keep each path file's ancestor directory hubs lit so the tree shows where the path lives.
+        for (const fileId of path) {
+          const filePath = nodeCache.get(fileId)?.codeRelativePath ?? fileId;
+          for (let directory = parentDirectory(filePath); ; directory = parentDirectory(directory)) {
+            attention!.add(directoryNodeId(directory));
+            if (!directory) break;
+          }
+        }
       }
+      const counts = referenceCounts(hovered, hoveredDirectory);
+      opaqueReferences = counts.opaque;
+      reportUnshown(state.spatialLayout === "structure" ? counts.unshown : 0);
       // A force or camera edit with identical attention needs no buffer appearance update. History emphasis is
       // constant within a displayed commit, so its mode and step identify that appearance.
       const emphasis = historyChanges ? state.tuning.history.changeEmphasis : "none";
@@ -1968,16 +2022,17 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
         path ?? null,
         directoryAttention ?? null,
         state.spatialLayout,
+        structureLines,
+        opaqueReferences,
         rootOverview,
         frontierHop,
         emphasis,
         historyChanges?.step ?? null,
         [...askedAbout].sort()
       ]);
-      if (attentionSettings === nextAttention) return;
+      if (attentionSettings === nextAttention) { drawLegend(); return; }
       attentionSettings = nextAttention;
       pictureChanged();
-      legendAttention = attention !== null;
       drawLegend();
       const frontier = atFrontier;
       // A wrapper takes its seed's attention: faded for the hover; dimmed as another group, though less than a sphere, since a veil
@@ -2012,7 +2067,8 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
       const regard = (link: ForceGraphLink): { visible: boolean; onPath: boolean; dimmed: boolean; changed: boolean } => {
         const a = resolveLinkEndpoint(link.source), b = resolveLinkEndpoint(link.target);
         const onPath = !!path?.length && pathPairs.has(JSON.stringify([a, b].sort()));
-        const visible = hovered ? a === hovered || b === hovered : path?.length ? onPath : true;
+        const pathTreeSpoke = link.kind === "containment" && state.spatialLayout === "structure" && structureLines !== "on-demand" && !hovered && !!path?.length && !!attention && attention.has(a) && attention.has(b);
+        const visible = hovered ? a === hovered || b === hovered : path?.length ? (onPath || pathTreeSpoke) : true;
         return { visible, onPath: onPath && visible, dimmed: frontier(a) || frontier(b), changed: !!historyChanges?.changedPairs.has(pairKey(a, b)) };
       };
       forceGraphInstance?.linkColor((link: ForceGraphLink) => {
@@ -2037,18 +2093,7 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
       // stretch change no base width, and a path's wires are twice as wide. Zoom resistance controls the projection.
       forceGraphInstance?.linkWidth((link: ForceGraphLink) => state.tuning.forceGraph.linkWidth * (regard(link).onPath ? 2 : 1)
         * (link.kind === "related-doc" || link.kind === "cited-by" ? 0.5 : link.kind === "containment" ? 1 : Math.min(3, 1 + 0.375 * Math.log2(Math.max(1, link.count)))));
-      forceGraphInstance?.linkVisibility((link: ForceGraphLink) => {
-        if (state.spatialLayout !== "structure" || link.kind === "containment") return true;
-        // In the structure layout a reference is drawn on demand: for the hovered file, within and out of the hovered
-        // hub's subtree, among the retained files, and along a path.
-        const a = resolveLinkEndpoint(link.source), b = resolveLinkEndpoint(link.target);
-        if (hoveredDirectory !== undefined) return within(a, hoveredDirectory) || within(b, hoveredDirectory);
-        if (hovered) return a === hovered || b === hovered;
-        if (path?.length) return pathPairs.has(JSON.stringify([a, b].sort()));
-        // Among the pinned files and their connections, and the subject; not among an open directory's files, which
-        // would draw the whole web over a directory opened whole (discovery, 2026-10-31).
-        return pinnedScope.has(a) && pinnedScope.has(b);
-      });
+      forceGraphInstance?.linkVisibility((link: ForceGraphLink) => isReferenceVisible(link, hovered, hoveredDirectory));
     };
 
     if (forceGraphInstance) {

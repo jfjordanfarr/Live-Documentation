@@ -43,7 +43,7 @@ import { placeOf } from "./persistence/place";
 import { chooseReading, releaseReading } from "./reading-state";
 import { searchIndexOf, type SearchHit } from "./search/graph-search";
 import { createSearchBar, type SearchWords } from "./search/search-bar";
-import type { DiscoveryTarget, ExplorerState, InspectionTarget, LocalMapPerspective, PathDestination, SpatialLayout, ViewName } from "./types";
+import type { DirectoryLayout, DiscoveryTarget, ExplorerState, InspectionTarget, LocalMapPerspective, PathDestination, SpatialLayout, ViewName } from "./types";
 import { defaultSpatialLayout } from "./views/forceGraphScope";
 import { createForceGraphView } from "./views/forceGraphView";
 import { createLocalView } from "./views/localView";
@@ -323,6 +323,10 @@ function startExplorer(bundle: StaticExplorerData, initialSnapshot: UrlStateSnap
   let backwardConnections = 0;
   // The strength the 3D button shows, so that its pulse plays only as the cue lights or rises.
   let shownStrength: BackwardStrength = "none";
+  // Unshown inter-file connections in 2D Structure (grid) and 3D Structure, for the amber cue on Connections (2026-11-24).
+  let localUnshownConnections = 0;
+  let spatialUnshownConnections = 0;
+  let shownUnshownStrength: BackwardStrength = "none";
   /** Today's graph as the scan trial has it so far, while it plays: the counts are then of the files arrived, not of a scan not yet done. */
   let scanGraph: ExplorerGraphPayload | null = null;
   const syncStatsLine = (): void => {
@@ -376,6 +380,11 @@ function startExplorer(bundle: StaticExplorerData, initialSnapshot: UrlStateSnap
       backwardConnections = count;
       syncPerspectiveControls();
     },
+    onUnshownConnections: count => {
+      if (count === localUnshownConnections) return;
+      localUnshownConnections = count;
+      syncPerspectiveControls();
+    },
     // A Zoom button that can do no more says so: disabled, which a reader of the page is told (2026-11-06).
     onFollowing: () => syncPerspectiveControls(),
     onFramingLeftOut: () => syncRetainedWords(),
@@ -416,6 +425,11 @@ function startExplorer(bundle: StaticExplorerData, initialSnapshot: UrlStateSnap
       if (shownFiles?.shown === shown && shownFiles.total === total && shownFiles.groups === groups && shownFiles.alone === alone) return;
       shownFiles = { shown, total, groups, alone };
       syncStatsLine();
+    },
+    onUnshownConnections: count => {
+      if (count === spatialUnshownConnections) return;
+      spatialUnshownConnections = count;
+      syncPerspectiveControls();
     }
   });
 
@@ -675,16 +689,21 @@ function startExplorer(bundle: StaticExplorerData, initialSnapshot: UrlStateSnap
   // Its press asks for 3D, which shows the 2D map already shown, and so does nothing.
   if (!threeDNotRefused()) graphButton.setAttribute("aria-disabled", "true");
   graphButton.addEventListener("animationend", () => graphButton.classList.remove("backward-rising"));
-  // The 3D layout: the emergent network of the analyzed references, or the emergent tree of the declared directories
-  // (the owner's distinction, 2026-10-14). A choice inside 3D, shown only there.
+  // Connections vs Structure (unified across 2D and 3D on 2026-11-24, after the owner's Turn 12–13 request of 2026-11-22):
+  // in 3D toggles spatialLayout ("connections" / "structure"); in 2D toggles directoryLayout ("flow" / "grid"), synced with Tuning.
   const connectionsButton = iconButton("Connections", '<circle cx="12" cy="6" r="2.5"/><circle cx="6" cy="17" r="2.5"/><circle cx="18" cy="17" r="2.5"/><path d="m10.8 8.3-3.6 6.4M13.2 8.3l3.6 6.4M8.5 17h7"/>');
   connectionsButton.title = "Connections: files placed by their analyzed references";
   connectionsButton.dataset.spatialLayout = "connections";
+  connectionsButton.addEventListener("animationend", () => connectionsButton.classList.remove("unshown-rising"));
   const structureButton = iconButton("Structure", '<circle cx="12" cy="5" r="2.5"/><circle cx="6" cy="18" r="2.5"/><circle cx="18" cy="18" r="2.5"/><path d="M12 7.5v4M12 11.5l-6 4M12 11.5l6 4"/>');
   structureButton.title = "Structure: files placed by their declared directories";
   structureButton.dataset.spatialLayout = "structure";
   for (const button of [connectionsButton, structureButton]) {
-    button.addEventListener("click", () => changeSpatialLayout(button.dataset.spatialLayout === "structure" ? "structure" : "connections"));
+    button.addEventListener("click", () => {
+      const target = button.dataset.spatialLayout === "structure" ? "structure" : "connections";
+      if (state.perspective === "3d") changeSpatialLayout(target);
+      else changeDirectoryLayout(target === "structure" ? "grid" : "flow");
+    });
   }
   const hopsSelect = document.createElement("select");
   hopsSelect.setAttribute("aria-label", "Hops shown");
@@ -1215,7 +1234,6 @@ function startExplorer(bundle: StaticExplorerData, initialSnapshot: UrlStateSnap
     perspectiveControls.hidden = state.view !== "map";
     frame?.sync();
     for (const button of [fitButton, wholeButton, keyButton, tuningButton, mapButton, graphButton, connectionsButton, structureButton, historyButton]) button.disabled = changingPerspective;
-    connectionsButton.hidden = structureButton.hidden = state.perspective !== "3d";
     const mirrored = state.tuning.appearance.reads === "usesFirst";
     mirrorButton.hidden = state.perspective !== "2d";
     mirrorButton.disabled = changingPerspective;
@@ -1242,8 +1260,35 @@ function startExplorer(bundle: StaticExplorerData, initialSnapshot: UrlStateSnap
     hopsSelect.value = String(state.tuning.forceGraph.hops);
     historyButton.hidden = !historyControl.available;
     historyButton.setAttribute("aria-pressed", String(historyControl.isOpen()));
-    connectionsButton.setAttribute("aria-pressed", String(state.spatialLayout === "connections"));
-    structureButton.setAttribute("aria-pressed", String(state.spatialLayout === "structure"));
+    const isConnections = state.perspective === "3d"
+      ? state.spatialLayout === "connections"
+      : state.tuning.localMap.directoryLayout === "flow";
+    connectionsButton.setAttribute("aria-pressed", String(isConnections));
+    structureButton.setAttribute("aria-pressed", String(!isConnections));
+    // Amber availability cue on Connections while Structure hides inter-file connections among shown files (2026-11-24).
+    const unshown = isConnections ? 0 : state.perspective === "3d" ? spatialUnshownConnections : localUnshownConnections;
+    const unshownStrength = backwardStrength(unshown);
+    const unshownRises = BACKWARD_STRENGTHS.indexOf(unshownStrength) > BACKWARD_STRENGTHS.indexOf(shownUnshownStrength);
+    shownUnshownStrength = unshownStrength;
+    connectionsButton.classList.toggle("has-unshown-connections", unshownStrength !== "none");
+    if (unshownStrength === "none") delete connectionsButton.dataset.unshown;
+    else connectionsButton.dataset.unshown = unshownStrength;
+    if (unshownRises) {
+      connectionsButton.classList.remove("unshown-rising");
+      void connectionsButton.offsetWidth;
+      connectionsButton.classList.add("unshown-rising");
+    }
+    if (state.perspective === "3d") {
+      connectionsButton.title = unshown > 0
+        ? `${unshown} ${unshown === 1 ? "reference" : "references"} among shown files. Switch to Connections to arrange by them.`
+        : "Connections: files placed by their analyzed references";
+      structureButton.title = "Structure: files placed by their declared directories";
+    } else {
+      connectionsButton.title = unshown > 0
+        ? `${unshown} ${unshown === 1 ? "connection" : "connections"} among shown files. Switch to Connections to arrange by them.`
+        : "Connections: opened directories arranged in flow order with pair lines";
+      structureButton.title = "Structure: opened directories arranged in a calm folder grid without flow lines";
+    }
     const whole = state.openDirectories?.has("") ?? false;
     wholeButton.setAttribute("aria-pressed", String(whole));
     wholeButton.title = whole ? "Whole picture on: every file is shown; press to return to what you asked about"
@@ -1311,6 +1356,16 @@ function startExplorer(bundle: StaticExplorerData, initialSnapshot: UrlStateSnap
       return;
     }
     searchBar.sync(newest ? chipWordsOf(newest) : null, state.destination ? chipWordsOf(itemOf(state.destination)) : null, reach, state.view === "map");
+  }
+
+  /** Change how opened directories stand in the 2D Local Map; stays 100% synced with Tuning's Opened Directory control. */
+  function changeDirectoryLayout(layout: DirectoryLayout): void {
+    if (state.tuning.localMap.directoryLayout === layout || changingPerspective) return;
+    state.tuning.localMap.directoryLayout = layout;
+    schedulePersistUi();
+    syncTuningControls();
+    renderCurrentView();
+    persistExploration();
   }
 
   /** Change how the 3D Local Map places its files; the picture re-settles from where it stands, a step in the history. */

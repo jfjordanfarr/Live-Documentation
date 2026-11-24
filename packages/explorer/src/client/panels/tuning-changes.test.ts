@@ -84,6 +84,8 @@ describe("the control that shows a setting", () => {
     expect(tuningControlId({ group: "history", key: "changeEmphasis" })).toBe("tuning-history-change-emphasis");
     expect(tuningControlId({ group: "appearance", key: "palette" })).toBe("tuning-palette");
     expect(tuningControlId({ group: "bezier", key: "stubMaxOffset" })).toBe("tuning-stub-max-offset");
+    expect(tuningControlId({ group: "localMap", key: "flowAncestors" })).toBe("tuning-flow-ancestors");
+    expect(tuningControlId({ group: "forceGraph", key: "structureLines" })).toBe("tuning-force-structure-lines");
   });
 
   it("is found for every lever in the template, so that a changed lever is always marked", () => {

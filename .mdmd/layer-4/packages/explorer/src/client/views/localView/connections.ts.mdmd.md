@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/explorer/src/client/views/localView/connections.ts`
-- Generated At: 2026-11-22T07:12:55.706Z
+- Generated At: 2026-11-24T05:59:36.396Z
 
 ## Authored
 ### Purpose
@@ -71,7 +71,7 @@ counted, and the cycles' returns, the ordinary case, never lit it).
 
 #### `drawsReference` {#symbol-drawsreference}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/connections.ts#L109)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/connections.ts#L110)
 - Parameters: `_unnamed_`: [`ConnectionsContext`](#symbol-connectionscontext); `edge`: [`LocalEdge`](./types.ts.mdmd.md#symbol-localedge)
 
 ##### `drawsReference` — Summary
@@ -81,7 +81,7 @@ and with files only (2026-11-15). The card's foot asks it before the picture is 
 
 #### `clearConnections` {#symbol-clearconnections}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/connections.ts#L150)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/connections.ts#L151)
 - Parameters: `runtime`: [`LocalViewRuntime`](./runtime.ts.mdmd.md#symbol-localviewruntime)
 
 ##### `clearConnections` — Summary

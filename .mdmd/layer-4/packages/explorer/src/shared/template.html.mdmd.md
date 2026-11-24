@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/explorer/src/shared/template.html`
-- Generated At: 2026-11-23T16:13:10.617Z
+- Generated At: 2026-11-24T05:59:36.838Z
 
 ## Authored
 ### Purpose
@@ -270,6 +270,9 @@ Since 2026-11-19 ([Turn 14 of the November 18 record](../../../../../../AI-Agent
 #### `tuning-directory-layout` {#symbol-tuning-directory-layout}
 - Type: variable
 
+#### `tuning-flow-ancestors` {#symbol-tuning-flow-ancestors}
+- Type: variable
+
 #### `tuning-force-approximation` {#symbol-tuning-force-approximation}
 - Type: variable
 
@@ -388,6 +391,9 @@ Since 2026-11-19 ([Turn 14 of the November 18 record](../../../../../../AI-Agent
 - Type: variable
 
 #### `tuning-force-shell-depth-value` {#symbol-tuning-force-shell-depth-value}
+- Type: variable
+
+#### `tuning-force-structure-lines` {#symbol-tuning-force-structure-lines}
 - Type: variable
 
 #### `tuning-force-symbol-scale` {#symbol-tuning-force-symbol-scale}

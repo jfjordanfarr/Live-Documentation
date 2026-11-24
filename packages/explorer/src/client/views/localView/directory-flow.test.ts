@@ -183,6 +183,42 @@ describe("the columns of a directory in flow order", () => {
     expect(columns).toEqual([["d/a"], ["d/in/x", "d/in/b"], ["d/in/q"], ["d/p"]]);
   });
 
+  it("under ancestors: 'local', keeps each folder's span local to its own direct ranked files and does not fling ancestor loose files past a deep child", () => {
+    // Root "" has direct ranked files in cols 0..1 plus loose files and boxes; child "a/b" has a 4-col chain (cols 0..3)
+    // and intermediate ancestor "a" has zero direct ranked files.
+    const ranked = [["r0", "a/b/c0"], ["r1", "a/b/c1"], ["a/b/c2"], ["a/b/c3"]];
+    const contents = {
+      "": { boxes: ["docs", "tests"], loose: ["eslint", "pkg"] },
+      "a": { boxes: ["a/other"] },
+      "a/b": { boxes: ["a/b/sub"], loose: ["a/b/lone"] }
+    };
+    const whole = flowColumns(flow(ranked, contents));
+    const local = flowColumns({ ...flow(ranked, contents), ancestors: "local" });
+    const wholeAt = columnOf(whole), localAt = columnOf(local);
+    // In whole-tree, "" loose files are flung past a/b/lone (col 5); in local, "" loose files stand right after r1 (col 2)!
+    expect(wholeAt.get("eslint")!).toBeGreaterThan(wholeAt.get("a/b/c3")!);
+    expect(localAt.get("eslint")!).toBe(2);
+    expect(localAt.get("pkg")!).toBe(2);
+    // Every item appears once and all ranked left-to-right order holds across shapes.
+    const all = [...ranked.flat(), "docs", "tests", "eslint", "pkg", "a/other", "a/b/sub", "a/b/lone"].sort();
+    for (const shape of [NARROW_SHAPE, shaped({ rows: 1, boxRows: { "": 1, "a/b": 1 }, looseColumns: { "": 2 } })]) {
+      const cols = flowColumns({ ...flow(ranked, contents), ancestors: "local" }, shape);
+      expect(cols.flat().sort()).toEqual(all);
+      const at = columnOf(cols);
+      expect(at.get("r0")!).toBeLessThan(at.get("r1")!);
+      expect(at.get("a/b/c0")!).toBeLessThan(at.get("a/b/c1")!);
+      expect(at.get("a/b/c1")!).toBeLessThan(at.get("a/b/c2")!);
+      expect(at.get("a/b/c2")!).toBeLessThan(at.get("a/b/c3")!);
+    }
+    // An ancestor with ZERO direct ranked files stays in its compact grid anchored at 0 instead of entering flowing.
+    const deepOnly = flow([["a/b/c0"], ["a/b/c1"], ["a/b/c2"]], { "": { boxes: ["docs", "tests"], loose: ["readme", "pkg"] }, "a/b": { loose: ["a/b/lone"] } });
+    const deepLocal = flowColumns({ ...deepOnly, ancestors: "local" });
+    const deepAt = columnOf(deepLocal);
+    // 4 items in "" form a 2-column grid anchored at col 0 (cols 0..1), NOT flung past col 3.
+    for (const item of ["docs", "tests", "readme", "pkg"]) expect(deepAt.get(item)!).toBeLessThanOrEqual(1);
+    expect(deepAt.get("a/b/lone")!).toBe(3);
+  });
+
   it("lays a directory with no file in the ranks as the grid lays it, in every shape: a directory of subdirectories gains nothing", () => {
     const boxes = ["d/w", "d/x", "d/y", "d/z"], loose = ["d/p", "d/q", "d/r"];
     const items = (directory: string): string[] => (directory === "d" ? [...boxes, ...loose] : []);

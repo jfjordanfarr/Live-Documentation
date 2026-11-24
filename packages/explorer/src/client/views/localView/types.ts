@@ -39,6 +39,8 @@ export interface LocalViewOptions {
   onShowDirectoryActions: (directory: string, anchor: { x: number; y: number }) => void | Promise<void>;
   /** How many connections the 2D picture draws against its left-to-right order: a cycle's returning references, once each, and a forward wire whose route doubles back; never a file's own (2026-11-15). */
   onBackwardConnections?: (count: number) => void;
+  /** How many distinct inter-file pair connections exist among shown file cards while 2D Structure (grid) suppresses Flow lines (2026-11-24). */
+  onUnshownConnections?: (count: number) => void;
   /** Whether the camera stands at its farthest or its closest zoom, said when either changes, for the Zoom buttons. */
   onZoomLimits?: (limits: { farthest: boolean; closest: boolean }) => void;
   /** Whether the camera follows the pins (Tuning's Framing, Follows Pins), said when it changes, for Fit's pressed state. */
