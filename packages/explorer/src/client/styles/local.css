@@ -368,10 +368,16 @@ span.local-disclosure { cursor: default; }
 .directory-ancestor:hover, .directory-ancestor:focus-visible { border-color: var(--state-selected); outline: none; background: var(--selected-subtle); }
 .directory-ancestor-preview { position: absolute; pointer-events: none; z-index: 100; border: 1px solid var(--state-selected); border-radius: 12px; opacity: .5; }
 .directory-ancestor-preview[hidden] { display: none; }
-/* A narrow map raises the strip above the pin tray; it stands above the open history scrubber by the room the scrubber
-   asks for, as the tray does (until 2026-11-19 it did not, and covered the scrubber's buttons at a phone's width). */
-@media (max-width: 850px) {
-  .perspective-controls { bottom: calc(72px + var(--history-room)); }
+/* A narrow map raises the strip above the pin tray and zoom controls; it stands above the open history scrubber by the
+   room the scrubber asks for, as the tray does (until 2026-11-19 it did not, and covered the scrubber's buttons at a
+   phone's width). Querying #main's width (760 px, or 850 px in the Bare frame which adds Key and Tuning) keeps the
+   centred strip clear of #controls after the Flow/Directory toggle widened it, while leaving the drawer-open lift to
+   shell.css (2026-11-24). */
+@container main (max-width: 760px) {
+  #main:not([data-detail-drawer="open"]) .perspective-controls { bottom: calc(72px + var(--history-room)); }
+}
+@container main (max-width: 850px) {
+  :root[data-frame="bare"] #main:not([data-detail-drawer="open"]) .perspective-controls { bottom: calc(72px + var(--history-room)); }
 }
 
 /* Directory containment and dependency rank are independent in the reading view. */
@@ -478,9 +484,11 @@ span.local-disclosure { cursor: default; }
 /* A card's node-level hub is drawn only where a wire of the band shown ends on it (2026-11-06): a file-level reference
    at the closer bands, a gathered wire at the overview band; the wires' drawing marks them. */
 #map-container .symbol-anchor.hub:not(.hub-ends-wire) { visibility: hidden; }
-/* The legend's width row says what a gathered wire's width means, while the overview band draws them, and not otherwise. */
+/* The legend's width row says what a gathered wire's width means, while the overview band draws them, and not otherwise.
+   Synced onto #local-legend[data-gathered="true"] directly instead of body:has(...) so DOM mutations never trigger
+   document-wide :has() invalidation (2026-11-24). */
 #local-legend .legend-row--gathered { display: none; }
-body:has(#map-container[data-lod="overview"]):has(#map-connections[data-active="true"]) #local-legend .legend-row--gathered { display: flex; }
+#local-legend[data-gathered="true"] .legend-row--gathered { display: flex; }
 #local-legend .legend-row--gathered .spatial-legend-sample { --legend-color: var(--role-offers); opacity: var(--wire-opacity); }
 /* The legend's kinds row holds a mark for each colour a closed directory's cells are drawn in, and nothing, and so is
    not drawn, while no coloured cell is on screen (2026-11-16). Its samples are cells as the map draws them. */

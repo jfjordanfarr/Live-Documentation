@@ -113,6 +113,19 @@ export function renderSpatialLegend(graph: SpatialGraphData, symbolScale: number
 }
 
 /**
+ * Keep the 2D legend's gathered-wire width row synced with `#map-container[data-lod="overview"]` and
+ * `#map-connections[data-active="true"]`, replacing a page-wide `body:has(...)` selector (2026-11-24).
+ */
+export function syncLocalGatheredLegend(): void {
+  const legend = document.getElementById("local-legend");
+  if (!legend) return;
+  const gathered = document.getElementById("map-container")?.dataset.lod === "overview"
+    && document.getElementById("map-connections")?.dataset.active === "true";
+  if (gathered) legend.dataset.gathered = "true";
+  else delete legend.dataset.gathered;
+}
+
+/**
  * The 2D map's kinds (2026-11-16): the template's `local-legend-kinds` row, where the template has one, holds a mark
  * for each kind whose colour a closed directory's cells are drawn in, and stands empty, which the stylesheet hides,
  * while no coloured cell is drawn. The kinds are read from the cells themselves, whose kinds the 2D map writes and whose
@@ -120,15 +133,20 @@ export function renderSpatialLegend(graph: SpatialGraphData, symbolScale: number
  * palette chosen later draws the row again in its colours.
  */
 export function watchLocalKinds(): void {
+  syncLocalGatheredLegend();
   const row = document.getElementById("local-legend-kinds"), map = document.getElementById("map-container");
   if (!row || !map) return;
   const layer = map.parentElement;
+  const view = map.closest<HTMLElement>(".view-container");
+  const isActive = (): boolean => !view || view.classList.contains("active");
   let pending = 0, shown = "";
   const draw = (): void => {
     pending = 0;
-    // During a 3D Mirror turn, rotateY(90deg) and edge-on opacity make checkVisibility() transiently report false; hold
-    // the standing kinds until the turn finishes instead of flickering the legend empty and back.
-    if (layer?.hasAttribute(TURNING_ATTRIBUTE)) return;
+    // Never inspect or mutate the 2D legend while #view-map is put away (for example when releaseCover() removes
+    // .perspective-held during the transition to 3D, which otherwise ran checkVisibility() on every cell and triggered
+    // a ~180 ms second-frame style-invalidation stall, 2026-11-24). During a 3D Mirror turn, rotateY(90deg) and edge-on
+    // opacity make checkVisibility() transiently report false; hold the standing kinds until the turn finishes.
+    if (!isActive() || layer?.hasAttribute(TURNING_ATTRIBUTE)) return;
     const styles: Readonly<Record<string, SpatialLegendMark>> = spatialNodeStyles(), drawn = new Set<SpatialLegendMark>();
     for (const cell of map.querySelectorAll<SVGElement>(".local-cell")) {
       const kind = styles[cell.dataset.kind ?? ""];
@@ -139,19 +157,22 @@ export function watchLocalKinds(): void {
     shown = signature;
     row.replaceChildren(...marksOf("node", marks));
   };
+  const schedule = (): void => {
+    if (!pending && isActive()) pending = requestAnimationFrame(draw);
+  };
   // The cells are drawn and redrawn inside closed boxes and encasing directory handles, and a look shows or hides them by the map's attributes.
   const concerns = (node: Node): boolean => node instanceof Element
     && (node.matches(".local-directory-closed, .local-directory-closed *, .local-handle-cells, .local-handle-cells *")
       || !!node.querySelector(".local-directory-closed, .local-handle-cells"));
   new MutationObserver(changes => {
-    if (!pending && changes.some(change => change.type === "attributes" || concerns(change.target) || [...change.addedNodes, ...change.removedNodes].some(concerns))) pending = requestAnimationFrame(draw);
+    if (isActive() && !pending && changes.some(change => change.type === "attributes" || concerns(change.target) || [...change.addedNodes, ...change.removedNodes].some(concerns))) {
+      pending = requestAnimationFrame(draw);
+    }
   }).observe(map, { childList: true, subtree: true, attributes: true, attributeFilter: ["data-lod", "data-looks"] });
   // Catch up once a Mirror 3D turn removes data-turning on the map's layer.
-  if (layer) new MutationObserver(() => { if (!pending && !layer.hasAttribute(TURNING_ATTRIBUTE)) pending = requestAnimationFrame(draw); }).observe(layer, { attributes: true, attributeFilter: [TURNING_ATTRIBUTE] });
-  // A view put away is not drawn (shell.css), so a row drawn while the map is away finds no cell drawn and stands
-  // empty until something of the map changes: it is read again whenever the map's view is shown or put away.
-  const view = map.closest<HTMLElement>(".view-container");
-  if (view) new MutationObserver(() => { if (!pending) pending = requestAnimationFrame(draw); }).observe(view, { attributes: true, attributeFilter: ["class"] });
-  whenPaletteChanges(() => { if (!pending) pending = requestAnimationFrame(draw); });
+  if (layer) new MutationObserver(() => { if (!layer.hasAttribute(TURNING_ATTRIBUTE)) schedule(); }).observe(layer, { attributes: true, attributeFilter: [TURNING_ATTRIBUTE] });
+  // Refresh when the 2D view becomes active again; ignore class changes (such as removing .perspective-held) while inactive.
+  if (view) new MutationObserver(() => { schedule(); }).observe(view, { attributes: true, attributeFilter: ["class"] });
+  whenPaletteChanges(() => { schedule(); });
   draw();
 }

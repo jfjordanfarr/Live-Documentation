@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/explorer/src/client/panels/spatial-legend.ts`
-- Generated At: 2026-11-24T04:28:05.250Z
+- Generated At: 2026-11-24T09:10:38.548Z
 
 ## Authored
 ### Purpose
@@ -69,9 +69,17 @@ The rows of the key for a filtered graph at the moment shown, in reading order; 
 ##### `renderSpatialLegend` — Summary
 Describe the spatial map's filtered, current-moment encodings without changing its geometry or attention.
 
+#### `syncLocalGatheredLegend` {#symbol-synclocalgatheredlegend}
+- Type: function
+- Source: [source](../../../../../../../packages/explorer/src/client/panels/spatial-legend.ts#L119)
+
+##### `syncLocalGatheredLegend` — Summary
+Keep the 2D legend's gathered-wire width row synced with `#map-container[data-lod="overview"]` and
+`#map-connections[data-active="true"]`, replacing a page-wide `body:has(...)` selector (2026-11-24).
+
 #### `watchLocalKinds` {#symbol-watchlocalkinds}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/panels/spatial-legend.ts#L122)
+- Source: [source](../../../../../../../packages/explorer/src/client/panels/spatial-legend.ts#L135)
 
 ##### `watchLocalKinds` — Summary
 The 2D map's kinds (2026-11-16): the template's `local-legend-kinds` row, where the template has one, holds a mark
@@ -91,6 +99,8 @@ palette chosen later draws the row again in its colours.
 - [`forceGraphAppearance.spatialNodeStyles`](../views/forceGraphAppearance.ts.mdmd.md#symbol-spatialnodestyles)
 - [`forceGraphData.SpatialGraphData`](../views/forceGraphData.ts.mdmd.md#symbol-spatialgraphdata) (type-only)
 - [`mirror-motion.TURNING_ATTRIBUTE`](../views/localView/mirror-motion.ts.mdmd.md#symbol-turning_attribute)
+- [`template.local-legend`](../../shared/template.html.mdmd.md#symbol-local-legend)
 - [`template.local-legend-kinds`](../../shared/template.html.mdmd.md#symbol-local-legend-kinds)
+- [`template.map-connections`](../../shared/template.html.mdmd.md#symbol-map-connections)
 - [`template.map-container`](../../shared/template.html.mdmd.md#symbol-map-container)
 <!-- LIVE-DOC:END Dependencies -->

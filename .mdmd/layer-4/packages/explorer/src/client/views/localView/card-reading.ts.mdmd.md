@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/explorer/src/client/views/localView/card-reading.ts`
-- Generated At: 2026-11-24T04:28:06.005Z
+- Generated At: 2026-11-24T09:10:39.295Z
 
 ## Authored
 ### Purpose
@@ -96,7 +96,7 @@ while names open full descriptions in the reader.
 
 #### `markFirstPin` {#symbol-markfirstpin}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/card-reading.ts#L1068)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/card-reading.ts#L1074)
 
 ##### `markFirstPin` — Summary
 Write the pin depths for a card whose rows were just ordered, and its held name's lines at the overview band, whose
@@ -119,6 +119,7 @@ room they bound, from the card's last reading: no layout is read.
 - [`reading-state.descriptionIsOpen`](../../reading-state.ts.mdmd.md#symbol-descriptionisopen)
 - [`types.DescriptionsZoomedOut`](../../types.ts.mdmd.md#symbol-descriptionszoomedout) (type-only)
 - [`types.InspectionTarget`](../../types.ts.mdmd.md#symbol-inspectiontarget) (type-only)
+- [`card-factory.drawClosedSkin`](./card-factory.ts.mdmd.md#symbol-drawclosedskin)
 - [`card-factory.drawHeldLooks`](./card-factory.ts.mdmd.md#symbol-drawheldlooks)
 - [`closed-looks.CELLS`](./closed-looks.ts.mdmd.md#symbol-cells)
 - [`directory-handle.CLOSED_FOOT`](./directory-handle.ts.mdmd.md#symbol-closed_foot)

@@ -10,7 +10,7 @@ import { createReaderLinkHandler, type ReaderLinkContext } from "../../reader-li
 import { authoredSections } from "../../reader-sections";
 import { descriptionIsOpen, type ReadingChoice } from "../../reading-state";
 import type { DescriptionsZoomedOut, InspectionTarget } from "../../types";
-import { drawHeldLooks } from "./card-factory";
+import { drawClosedSkin, drawHeldLooks } from "./card-factory";
 import { CELLS } from "./closed-looks";
 import { CLOSED_FOOT, closedFamily, HANDLE_FLOOR, HANDLE_INDENT, handleParts, type ClosedSibling } from "./directory-handle";
 import { chooseHeldHeader, chooseNameHeader, CONTROLS_GAP, HELD_BANDS, heldLineCount, heldSegments, heldTitle, rowSegments, seamLineCount, type HeldBand, type TitleRooms } from "./held-lines";
@@ -315,7 +315,10 @@ export class CardReading {
       if (purpose && !purpose.element.hidden && card.scrollHeight > available) purpose.more.hidden = false;
       if (overflow && (!purpose || purpose.element.hidden) && card.classList.contains("local-reading-card") && card.scrollHeight > available) overflow.hidden = false;
     }
-    if (!this.slots) return;
+    if (!this.slots) {
+      for (const box of this.container.querySelectorAll<HTMLElement>(".local-closed--cells")) drawClosedSkin(box);
+      return;
+    }
     // The rooms of every slot card are read before any is written, so that the page lays out once for them all rather
     // than once a row (direction.md's November 6 cost finding).
     const resistances = this.options.resistances(), looks = this.options.zoomLooks() === "three";
@@ -332,7 +335,10 @@ export class CardReading {
     const rooms = [...this.cards.values()].flatMap(({ card }) => measureRooms(card, resistances, looks, keep));
     if (looks) rooms.push(...closedBoxWrites([...this.container.querySelectorAll<HTMLElement>(".local-directory-closed")]));
     for (const write of rooms) applyRoomWrite(write);
-    if (looks) for (const box of this.container.querySelectorAll<HTMLElement>(".local-closed--cells")) drawHeldLooks(box);
+    for (const box of this.container.querySelectorAll<HTMLElement>(".local-closed--cells")) {
+      drawClosedSkin(box);
+      if (looks) drawHeldLooks(box);
+    }
   }
 
   /** Every kept-visible description shows; the books and the names say what each one would do next. */

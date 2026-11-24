@@ -416,27 +416,27 @@
 /* The reader overlays the map. Its controls occupy the visible room without resizing the canvas: keep zoom controls
    and the pin tray on the bottom row beside the toolbar whenever #main has room for all three beside the reader, and
    lift them above the toolbar only where the remaining width is genuinely too narrow (2026-11-24). */
-#main:has(#detail-panel.visible:not(.reading-dialog)) .pin-tray {
+#main[data-detail-drawer="open"] .pin-tray {
     right: calc(var(--detail-panel-width) + 12px);
 }
-#main:has(#detail-panel.visible:not(.reading-dialog)) .perspective-controls {
+#main[data-detail-drawer="open"] .perspective-controls {
     left: calc((100% - var(--detail-panel-width)) / 2);
     max-width: calc(100% - var(--detail-panel-width) - 24px);
     flex-wrap: wrap;
     justify-content: center;
 }
 /* The history's scrubber ends at the reader's edge, its ticks and readout in the visible room (2026-10-20). */
-#main:has(#detail-panel.visible:not(.reading-dialog)) .history-scrubber { right: calc(var(--detail-panel-width) + 12px); }
+#main[data-detail-drawer="open"] .history-scrubber { right: calc(var(--detail-panel-width) + 12px); }
 @container main (max-width: 1015px) {
-    #main:has(#detail-panel.visible:not(.reading-dialog)) .pin-tray,
-    #main:has(#detail-panel.visible:not(.reading-dialog)) #controls {
+    #main[data-detail-drawer="open"] .pin-tray,
+    #main[data-detail-drawer="open"] #controls {
         bottom: calc(110px + var(--history-room));
     }
 }
 /* The bare frame adds Key and Tuning to the bottom toolbar (~410 px wide), so it lifts slightly earlier. */
 @container main (max-width: 1100px) {
-    :root[data-frame="bare"] #main:has(#detail-panel.visible:not(.reading-dialog)) .pin-tray,
-    :root[data-frame="bare"] #main:has(#detail-panel.visible:not(.reading-dialog)) #controls {
+    :root[data-frame="bare"] #main[data-detail-drawer="open"] .pin-tray,
+    :root[data-frame="bare"] #main[data-detail-drawer="open"] #controls {
         bottom: calc(110px + var(--history-room));
     }
 }

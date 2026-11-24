@@ -11,7 +11,7 @@ import { GitHubSlugger } from "@live-documentation/engine/tooling/githubSlugger"
 import { readMarkdownLinks } from "@live-documentation/engine/tooling/markdownLinks";
 
 import type { ExplorerNodePayload } from "../shared/types";
-import { requireElement } from "./dom";
+import { requireElement, syncDetailDrawerState } from "./dom";
 import { escapeHtml } from "./graph-helpers";
 import type { HistoryMoment } from "./history/moment";
 import { renderMarkdown } from "./markdown";
@@ -99,6 +99,7 @@ export function createDetailPanel(
   body.before(note);
   panel.setAttribute("aria-hidden", "true");
   panel.inert = true;
+  syncDetailDrawerState();
 
   // Track current node for action buttons
   let currentNode: ExplorerNodePayload | null = null;
@@ -111,6 +112,7 @@ export function createDetailPanel(
     panel.classList.remove("visible");
     panel.setAttribute("aria-hidden", "true");
     panel.inert = true;
+    syncDetailDrawerState();
     currentNode = null;
     currentBundledDoc = null;
     currentTarget = null;
@@ -143,6 +145,7 @@ export function createDetailPanel(
     panel.inert = false;
     panel.setAttribute("aria-hidden", "false");
     panel.classList.add("visible");
+    syncDetailDrawerState();
   }
 
   function attachReaderLinks(): void {

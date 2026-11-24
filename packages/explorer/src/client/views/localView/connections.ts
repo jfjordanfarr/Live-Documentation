@@ -1,3 +1,4 @@
+import { syncLocalGatheredLegend } from "../../panels/spatial-legend";
 import type { BezierTuning, DirectionMarks, ExplorerState, LocalMapTuning, MapReads } from "../../types";
 import { computeSelfLoopStubs, DEFAULT_SELF_LOOP_PARAMS, type LaceEdges, type SelfLoopParams } from "../connection-geometry";
 import { normalizeSymbolIdentifier } from "../symbolAnchors";
@@ -97,6 +98,7 @@ export function drawConnections(context: ConnectionsContext): number {
   }
   const backward = (context.branches ? settledReturning(context, context.branches).total : 0) + doubling;
   context.runtime.overlay.dataset.active = String(drawn > 0);
+  syncLocalGatheredLegend();
   context.runtime.overlay.dataset.backwardConnections = String(backward);
   context.runtime.overlay.dataset.unshownConnections = String(context.branches?.unshownConnections ?? 0);
   return backward;
@@ -151,6 +153,7 @@ function layerOf(runtime: LocalViewRuntime, svgNamespace: string): WireLayer {
 export function clearConnections(runtime: LocalViewRuntime): void {
   runtime.overlay.replaceChildren();
   runtime.overlay.dataset.active = "false";
+  syncLocalGatheredLegend();
   runtime.overlay.dataset.backwardConnections = "0";
   runtime.overlay.dataset.unshownConnections = "0";
   runtime.wires = null;

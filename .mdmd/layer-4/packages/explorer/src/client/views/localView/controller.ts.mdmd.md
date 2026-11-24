@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/explorer/src/client/views/localView/controller.ts`
-- Generated At: 2026-11-22T07:12:55.801Z
+- Generated At: 2026-11-24T09:10:39.375Z
 
 ## Authored
 ### Purpose
@@ -74,7 +74,7 @@ Since 2026-11-15 ([Turn 1 of the November 15 record](../../../../../../../../AI-
 ### Public Symbols
 #### `LocalViewController` {#symbol-localviewcontroller}
 - Type: class
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/controller.ts#L91)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/controller.ts#L92)
 - Implements: [`LocalViewApi`](./types.ts.mdmd.md#symbol-localviewapi)
 
 ##### `LocalViewController` — Summary
@@ -86,6 +86,7 @@ Coordinates the native Local Map, independent exploration pins and explicit FROM
 - [`dom.requireElement`](../../dom.ts.mdmd.md#symbol-requireelement)
 - [`moment.HistoryChanges`](../../history/moment.ts.mdmd.md#symbol-historychanges) (type-only)
 - [`moment.HistoryMoment`](../../history/moment.ts.mdmd.md#symbol-historymoment) (type-only)
+- [`spatial-legend.syncLocalGatheredLegend`](../../panels/spatial-legend.ts.mdmd.md#symbol-synclocalgatheredlegend)
 - [`reading-state.readingFiles`](../../reading-state.ts.mdmd.md#symbol-readingfiles)
 - [`branch-renderer.BranchStage`](./branch-renderer.ts.mdmd.md#symbol-branchstage) (type-only)
 - [`branch-renderer.createStage`](./branch-renderer.ts.mdmd.md#symbol-createstage)

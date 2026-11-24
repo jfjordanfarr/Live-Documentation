@@ -7,7 +7,7 @@ import { announce } from "./announce";
 import { inferDefaultEntryNodeId } from "./bootstrap";
 import { landingOf } from "./bootstrap/landing";
 import { createDetailPanel, type DetailPanelAction } from "./detailPanel";
-import { applyMarbles, applyPalette, giveFocus, requireElement, setActiveView, settleViews } from "./dom";
+import { applyMarbles, applyPalette, giveFocus, requireElement, setActiveView, settleViews, syncDetailDrawerState } from "./dom";
 import { downloadDocs, downloadFactsJson, type DownloadBundleType, type DownloadFormat } from "./download";
 import { attachGlobalErrorHandler, ExplorerRefusal, OPENED_AS_FILE, reportFatalExplorerError } from "./errors";
 import { buildTestCoverageMap, resolveLinkEndpoint, getInputById } from "./graph-helpers";
@@ -1408,6 +1408,7 @@ function startExplorer(bundle: StaticExplorerData, initialSnapshot: UrlStateSnap
     const sourceCapture = previous === "2d" ? captureLocalScene(requireElement("view-map"), requireElement(`view-${destination}`).getBoundingClientRect()) : null;
     if (sourceCapture) cancelPerspectiveCapture = sourceCapture.cancel;
     const sourceGraph = previous === "3d" ? forceGraphView.captureScene() : null;
+    if (previous === "3d" && perspective === "2d") forceGraphView.setActive(false);
     const captured = performance.now();
     performance.measure("live-docs:switch-capture", { start: pressed, end: captured });
     const releaseCover = previous ? holdPerspective(requireElement(`view-${sourceSurface}`)) : () => {};
@@ -2014,6 +2015,7 @@ function startExplorer(bundle: StaticExplorerData, initialSnapshot: UrlStateSnap
     const panel = requireElement("detail-panel");
     const modal = readerIsModal();
     panel.classList.toggle("reading-dialog", readingDialog());
+    syncDetailDrawerState();
     readerBackdrop.hidden = !readingDialog();
     panel.setAttribute("role", modal ? "dialog" : "complementary");
     if (modal) panel.setAttribute("aria-modal", "true");

@@ -4,6 +4,7 @@ import type {
 } from "../../../shared/types";
 import { requireElement } from "../../dom";
 import type { HistoryChanges, HistoryMoment } from "../../history/moment";
+import { syncLocalGatheredLegend } from "../../panels/spatial-legend";
 import { readingFiles } from "../../reading-state";
 import { EMPTY_PIN_SET, isSymbolPinned as isExplorationPin, type PinSet } from "../pin-state";
 import {
@@ -2072,6 +2073,7 @@ export class LocalViewController implements LocalViewApi {
     const style = container.style;
     const bandChanged = dataset.lod !== band;
     dataset.lod = band;
+    if (bandChanged) syncLocalGatheredLegend();
     style.setProperty("--text-scale", text);
     style.setProperty("--name-growth", growth);
     style.setProperty("--control-scale", control);

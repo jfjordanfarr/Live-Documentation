@@ -1,5 +1,5 @@
 import { settleViews } from "../dom";
-import { activePalette, mix } from "../palette";
+import { activePalette, mix, whenPaletteChanges } from "../palette";
 import { directoryNodeId } from "./forceGraphData";
 import type { SceneBody } from "./perspectiveBodies";
 import { directoryOpacity, gatherWire, outlineLength, pathOutline, perspectiveCorrespondences, perspectivePhases, polygonOutline, sampleOutline, type TransitionPoint } from "./perspectiveGeometry";
@@ -92,6 +92,7 @@ export function captureLocalScene(root: HTMLElement, frame: DOMRect): LocalCaptu
   const moving = !window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   // What the transition can show of a copy: its frame, grown so that a part standing a little past its box is kept.
   const seen = { left: frame.left - SEEN_MARGIN, top: frame.top - SEEN_MARGIN, right: frame.right + SEEN_MARGIN, bottom: frame.bottom + SEEN_MARGIN };
+  const catalog = copyStyleCatalog(root.ownerDocument);
   const cards = [...root.querySelectorAll<HTMLElement>(".node-card, .local-directory-closed")].flatMap(card => {
     const directory = card.classList.contains("local-directory-closed");
     const title = card.querySelector<HTMLElement>(directory ? ".local-directory-closed__name" : ".node-title");
@@ -105,14 +106,24 @@ export function captureLocalScene(root: HTMLElement, frame: DOMRect): LocalCaptu
       clone: null, width: card.offsetWidth, height: card.offsetHeight, scale: rect.width / card.offsetWidth,
       offsetX: x - rect.left, offsetY: y - rect.top };
     // Under reduced motion there is no transition to draw a copy in: none is made, and the switch does not wait for any.
-    if (moving && meets(rect, frame)) copies.push({ steps: visualCopySteps(card, true, seen, { x, y }), done: copy => { snapshot.clone = copy; } });
+    if (moving && meets(rect, frame)) copies.push({ steps: visualCopySteps(card, catalog, catalog.hostAValues, true, seen, { x, y }), done: copy => { snapshot.clone = copy; } });
     return [snapshot];
   });
   const cardsDone = performance.now();
   performance.measure("live-docs:capture-cards", { start: started, end: cardsDone });
+  const svgCtms = new WeakMap<SVGSVGElement, DOMMatrix | null>();
   const wires = [...root.querySelectorAll<SVGPathElement>(".connection-path")].flatMap(path => {
-    const matrix = path.getScreenCTM();
-    if (!matrix || !path.dataset.sourceId || !path.dataset.targetId) return [];
+    if (!path.dataset.sourceId || !path.dataset.targetId) return [];
+    const style = getComputedStyle(path);
+    const svg = path.ownerSVGElement;
+    let matrix: DOMMatrix | null;
+    if (svg && path.parentNode === svg && !path.hasAttribute("transform") && style.transform === "none") {
+      if (svgCtms.has(svg)) matrix = svgCtms.get(svg)!;
+      else { matrix = svg.getScreenCTM(); svgCtms.set(svg, matrix); }
+    } else {
+      matrix = path.getScreenCTM();
+    }
+    if (!matrix) return [];
     // The outline is read from the wire's own data where the Local Map wrote it in the forms it uses, the browser's
     // sampling being some 15 ms a wire; any other form is sampled by the browser as before.
     const outline = path.tagName === "polygon" ? polygonOutline(path.getAttribute("points") ?? "") : pathOutline(path.getAttribute("d") ?? "");
@@ -121,7 +132,6 @@ export function captureLocalScene(root: HTMLElement, frame: DOMRect): LocalCaptu
     const local = outline ? sampleOutline(outline, steps)
       : Array.from({ length: steps + 1 }, (_, i) => path.getPointAtLength(length * i / steps));
     const points = local.map(point => ({ x: matrix.a * point.x + matrix.c * point.y + matrix.e, y: matrix.b * point.x + matrix.d * point.y + matrix.f }));
-    const style = getComputedStyle(path);
     return [{ provider: path.dataset.targetId, consumer: path.dataset.sourceId, points,
       opacity: Number(style.opacity) * Number(path.tagName === "polygon" ? style.fillOpacity : style.strokeOpacity),
       width: parseFloat(style.strokeWidth) * Math.hypot(matrix.a, matrix.b) }];
@@ -149,7 +159,7 @@ export function captureLocalScene(root: HTMLElement, frame: DOMRect): LocalCaptu
       x: rect.left, y: rect.top, scale: rect.width / band.offsetWidth };
     Object.assign(snapshot.clone.style, box);
     if (moving && (parts.own || parts.shape || parts.label)) {
-      copies.push({ steps: shellCopySteps(band, parts, seen), done: copy => { Object.assign(copy.style, box); snapshot.clone = copy; } });
+      copies.push({ steps: shellCopySteps(band, parts, seen, catalog), done: copy => { Object.assign(copy.style, box); snapshot.clone = copy; } });
     }
     return snapshot;
   });
@@ -442,14 +452,340 @@ function meets(box: Box, frame: Box): boolean {
   return box.right > frame.left && box.left < frame.right && box.bottom > frame.top && box.top < frame.bottom;
 }
 
+const SVG_NS = "http://www.w3.org/2000/svg";
+const MODE_CONSTANT = 0, MODE_INHERIT = 1, MODE_CURRENT_COLOR = 2, MODE_ALWAYS = 3;
+
+/** Properties whose computed "0px" turns into `medium` (3 px) once their sibling style leaves "none". */
+const WIDTH_GUARD_OF: Readonly<Record<string, string>> = {
+  "border-top-width": "border-top-style",
+  "border-right-width": "border-right-style",
+  "border-bottom-width": "border-bottom-style",
+  "border-left-width": "border-left-style",
+  "border-block-start-width": "border-block-start-style",
+  "border-block-end-width": "border-block-end-style",
+  "border-inline-start-width": "border-inline-start-style",
+  "border-inline-end-width": "border-inline-end-style",
+  "outline-width": "outline-style",
+  "column-rule-width": "column-rule-style"
+};
+
+/** Inherited properties that stay fixed in the neutral probe so logical/physical axes never swap. */
+const EXPLICIT_INHERITED = new Set(["writing-mode", "direction"]);
+
+/** Layout-resolved and core visual properties always inspected regardless of stylesheet presence. */
+const ALWAYS_CHECK_PROPS = [
+  "width", "height", "inline-size", "block-size",
+  "min-width", "min-height", "min-inline-size", "min-block-size",
+  "max-width", "max-height", "max-inline-size", "max-block-size",
+  "top", "right", "bottom", "left",
+  "inset-block-start", "inset-block-end", "inset-inline-start", "inset-inline-end",
+  "transform", "transform-origin", "perspective", "perspective-origin", "scale", "rotate", "translate",
+  "display", "position", "visibility", "opacity", "color", "interactivity", "box-sizing",
+  "font-size", "font-family", "font-weight", "font-style", "line-height", "text-align", "white-space",
+  "overflow-x", "overflow-y", "overflow-block", "overflow-inline", "text-overflow",
+  "fill", "stroke", "stroke-width", "fill-opacity", "stroke-opacity", "stroke-dasharray", "stroke-linecap", "stroke-linejoin",
+  "clip-path", "mask", "mask-image", "background-color", "background-image", "box-shadow",
+  "z-index", "pointer-events", "cursor", "user-select", "contain",
+  "border-top-width", "border-right-width", "border-bottom-width", "border-left-width",
+  "border-block-start-width", "border-block-end-width", "border-inline-start-width", "border-inline-end-width",
+  "border-top-style", "border-right-style", "border-bottom-style", "border-left-style",
+  "border-block-start-style", "border-block-end-style", "border-inline-start-style", "border-inline-end-style",
+  "border-top-color", "border-right-color", "border-bottom-color", "border-left-color",
+  "border-block-start-color", "border-block-end-color", "border-inline-start-color", "border-inline-end-color",
+  "border-top-left-radius", "border-top-right-radius", "border-bottom-right-radius", "border-bottom-left-radius",
+  "border-start-start-radius", "border-start-end-radius", "border-end-start-radius", "border-end-end-radius",
+  "margin-top", "margin-right", "margin-bottom", "margin-left",
+  "margin-block-start", "margin-block-end", "margin-inline-start", "margin-inline-end",
+  "padding-top", "padding-right", "padding-bottom", "padding-left",
+  "padding-block-start", "padding-block-end", "padding-inline-start", "padding-inline-end",
+  "outline-width", "outline-style", "outline-color", "outline-offset",
+  "text-decoration-line", "text-decoration-style", "text-decoration-color", "text-decoration-thickness",
+  "row-gap", "column-gap"
+];
+
+/** Collect every non-custom, non-animation CSS property declared across a document's stylesheets (following `@import`), or null if unreadable. */
+function collectDocumentProps(doc: Document): Set<string> | null {
+  const used = new Set<string>(ALWAYS_CHECK_PROPS);
+  const walk = (rules: CSSRuleList): void => {
+    for (let r = 0; r < rules.length; r++) {
+      const rule = rules[r];
+      if ("styleSheet" in rule && rule.styleSheet) {
+        walk((rule.styleSheet as CSSStyleSheet).cssRules);
+      }
+      if ("style" in rule && rule.style instanceof CSSStyleDeclaration) {
+        for (let i = 0; i < rule.style.length; i++) {
+          const name = rule.style.item(i);
+          if (!name.startsWith("--") && name !== "animation" && !name.startsWith("animation-")) used.add(name);
+        }
+      }
+      if ("cssRules" in rule && rule.cssRules) walk(rule.cssRules as CSSRuleList);
+    }
+  };
+  for (let s = 0; s < doc.styleSheets.length; s++) {
+    try { walk(doc.styleSheets[s].cssRules); } catch { return null; }
+  }
+  for (const [widthProp, styleProp] of Object.entries(WIDTH_GUARD_OF)) {
+    if (used.has(widthProp)) used.add(styleProp);
+  }
+  return used;
+}
+
+/** Distinct non-default values applied to a probe host so tag baselines classify inherited vs constant properties automatically. */
+function probeInheritedOverrides(): string {
+  const palette = activePalette();
+  return [
+    `color: ${palette.role.offers}`,
+    "font-family: monospace",
+    "font-size: 23px",
+    "font-style: italic",
+    "font-weight: 700",
+    "font-stretch: condensed",
+    "font-kerning: none",
+    "font-optical-sizing: none",
+    "font-synthesis-small-caps: none",
+    "font-synthesis-style: none",
+    "font-synthesis-weight: none",
+    "font-variant-caps: small-caps",
+    "font-variant-east-asian: full-width",
+    "font-variant-ligatures: no-common-ligatures",
+    "font-variant-numeric: tabular-nums",
+    "font-variant-position: sub",
+    "font-variant-emoji: text",
+    "line-height: 31px",
+    "letter-spacing: 3px",
+    "word-spacing: 7px",
+    "white-space: pre",
+    "white-space-collapse: preserve",
+    "text-wrap-mode: nowrap",
+    "text-wrap-style: balance",
+    "text-align: right",
+    "text-align-last: right",
+    "text-indent: 13px",
+    "text-transform: uppercase",
+    "text-rendering: geometricprecision",
+    `text-shadow: ${palette.role.uses} 1px 2px 3px`,
+    "text-emphasis-style: dot",
+    `text-emphasis-color: ${palette.kind.asset}`,
+    "text-emphasis-position: under",
+    "text-underline-offset: 5px",
+    "text-underline-position: under",
+    "text-orientation: upright",
+    "text-anchor: middle",
+    "text-size-adjust: 150%",
+    "visibility: hidden",
+    "cursor: crosshair",
+    "pointer-events: none",
+    "user-select: none",
+    "overflow-wrap: anywhere",
+    "word-break: break-all",
+    "line-break: anywhere",
+    "hyphens: manual",
+    "hyphenate-character: '~'",
+    "tab-size: 3",
+    "quotes: '[' ']'",
+    "list-style-type: square",
+    "list-style-position: inside",
+    "orphans: 5",
+    "widows: 5",
+    "image-rendering: pixelated",
+    "shape-rendering: crispedges",
+    "color-rendering: optimizespeed",
+    "color-interpolation: linearrgb",
+    "color-interpolation-filters: srgb",
+    `fill: ${palette.kind.directory}`,
+    "fill-opacity: 0.5",
+    "fill-rule: evenodd",
+    `stroke: ${palette.kind.document}`,
+    "stroke-width: 5px",
+    "stroke-opacity: 0.5",
+    "stroke-dasharray: 3px, 4px",
+    "stroke-dashoffset: 2px",
+    "stroke-linecap: round",
+    "stroke-linejoin: round",
+    "stroke-miterlimit: 7",
+    "paint-order: stroke",
+    "clip-rule: evenodd",
+    "border-collapse: collapse",
+    "border-spacing: 5px",
+    "-webkit-border-horizontal-spacing: 5px",
+    "-webkit-border-vertical-spacing: 5px",
+    "caption-side: bottom",
+    "empty-cells: hide",
+    "speak: none",
+    "print-color-adjust: exact",
+    "-webkit-font-smoothing: antialiased",
+    `-webkit-text-fill-color: ${palette.hasTests.mark}`,
+    `-webkit-text-stroke-color: ${palette.signal.error}`,
+    "-webkit-text-stroke-width: 2px",
+    `caret-color: ${palette.signal.cue}`,
+    "-webkit-box-direction: reverse",
+    "-webkit-line-break: after-white-space",
+    "-webkit-rtl-ordering: visual",
+    "-webkit-ruby-position: after",
+    "-webkit-text-combine: horizontal",
+    "-webkit-text-orientation: upright",
+    "-webkit-text-security: disc",
+    "-webkit-user-modify: read-write",
+    "ruby-align: center",
+    "ruby-position: under",
+    "math-style: compact",
+    `accent-color: ${palette.signal.pathFound}`,
+    "dominant-baseline: central",
+    "interactivity: inert"
+  ].join(";");
+}
+
+interface TagBaseline {
+  modes: Uint8Array;
+  values: string[];
+  hasAnimation: boolean;
+}
+
+interface CopyStyleCatalog {
+  version: number;
+  sheetCount: number;
+  doc: Document;
+  probeOverrides: string;
+  propNames: string[];
+  indexOf: Map<string, number>;
+  colorIndex: number;
+  interactivityIndex: number;
+  widthGuardIndices: Int32Array;
+  hostAValues: string[];
+  hostBValues: string[];
+  hostAColor: string;
+  hostBColor: string;
+  baselines: Map<string, TagBaseline>;
+}
+
+let catalogVersion = 0;
+whenPaletteChanges(() => { catalogVersion++; });
+const styleCatalogs = new WeakMap<Document, CopyStyleCatalog>();
+
+/** Build or reuse a document's tag-baseline catalog so transition copies emit only non-default, non-inherited declarations. */
+function copyStyleCatalog(doc: Document): CopyStyleCatalog {
+  const cached = styleCatalogs.get(doc);
+  if (cached && cached.version === catalogVersion && cached.sheetCount === doc.styleSheets.length) return cached;
+  const probeOverrides = probeInheritedOverrides();
+  const hostA = doc.createElement("div");
+  hostA.className = "perspective-transition local-map-host";
+  hostA.style.cssText = "display: none";
+  const hostB = doc.createElement("div");
+  hostB.className = "perspective-transition local-map-host";
+  hostB.style.cssText = `display: none; ${probeOverrides}`;
+  doc.body.append(hostA, hostB);
+  const csA = getComputedStyle(hostA), csB = getComputedStyle(hostB);
+  const usedProps = collectDocumentProps(doc);
+  const propNames: string[] = [];
+  for (let i = 0; i < csA.length; i++) {
+    const name = csA.item(i);
+    // Custom properties are never read by a classless copy, animations must never replay on a frozen frame, and
+    // properties absent from every stylesheet and core layout set only appear via element inline styles (checked below).
+    if (name.startsWith("--") || name === "animation" || name.startsWith("animation-") || (usedProps && !usedProps.has(name))) continue;
+    propNames.push(name);
+  }
+  const indexOf = new Map(propNames.map((name, index) => [name, index]));
+  const widthGuardIndices = new Int32Array(propNames.length).fill(-1);
+  for (const [widthProp, styleProp] of Object.entries(WIDTH_GUARD_OF)) {
+    const wi = indexOf.get(widthProp), si = indexOf.get(styleProp);
+    if (wi !== undefined && si !== undefined) widthGuardIndices[wi] = si;
+  }
+  const interactivityIndex = indexOf.get("interactivity") ?? -1;
+  const hostAValues = propNames.map((name, index) => index === interactivityIndex ? "auto" : csA.getPropertyValue(name));
+  const hostBValues = propNames.map(name => csB.getPropertyValue(name));
+  const colorIndex = indexOf.get("color") ?? -1;
+  const hostAColor = colorIndex >= 0 ? hostAValues[colorIndex] : "";
+  const hostBColor = colorIndex >= 0 ? hostBValues[colorIndex] : "";
+  hostA.remove();
+  hostB.remove();
+  const catalog: CopyStyleCatalog = {
+    version: catalogVersion, sheetCount: doc.styleSheets.length, doc, probeOverrides, propNames, indexOf, colorIndex, interactivityIndex,
+    widthGuardIndices, hostAValues, hostBValues, hostAColor, hostBColor, baselines: new Map()
+  };
+  styleCatalogs.set(doc, catalog);
+  return catalog;
+}
+
+/** Measure once what a bare, classless tag computes inside the transition layer vs an overridden parent. */
+function tagBaseline(catalog: CopyStyleCatalog, element: Element): TagBaseline {
+  const ns = element.namespaceURI ?? "";
+  const tag = element.tagName;
+  const key = `${ns}\0${tag}`;
+  const existing = catalog.baselines.get(key);
+  if (existing) return existing;
+  const { doc, probeOverrides, propNames, hostAValues, hostBValues, hostAColor, hostBColor } = catalog;
+  const hostA = doc.createElement("div");
+  hostA.className = "perspective-transition local-map-host";
+  hostA.style.cssText = "display: none";
+  const hostB = doc.createElement("div");
+  hostB.className = "perspective-transition local-map-host";
+  hostB.style.cssText = `display: none; ${probeOverrides}`;
+  const mount = (host: HTMLDivElement): Element => {
+    // HTML element.tagName is uppercase ("BUTTON", "P", "A"); createElementNS is case-sensitive and would create
+    // unknown XML elements without HTML UA styles, whereas createElement lowercases HTML tags and SVG keeps exact case.
+    const sample = ns === SVG_NS ? doc.createElementNS(SVG_NS, tag)
+      : ns && ns !== "http://www.w3.org/1999/xhtml" ? doc.createElementNS(ns, tag)
+        : doc.createElement(tag);
+    if (ns === SVG_NS && tag.toLowerCase() !== "svg") {
+      const svg = doc.createElementNS(SVG_NS, "svg");
+      svg.append(sample);
+      host.append(svg);
+    } else {
+      host.append(sample);
+    }
+    return sample;
+  };
+  const elA = mount(hostA), elB = mount(hostB);
+  doc.body.append(hostA, hostB);
+  const csA = getComputedStyle(elA), csB = getComputedStyle(elB);
+  const count = propNames.length;
+  const modes = new Uint8Array(count);
+  const values = new Array<string>(count);
+  for (let i = 0; i < count; i++) {
+    const name = propNames[i];
+    const valA = i === catalog.interactivityIndex ? "auto" : csA.getPropertyValue(name);
+    const valB = csB.getPropertyValue(name);
+    values[i] = valA;
+    const hA = hostAValues[i], hB = hostBValues[i];
+    if (name !== "color" && valA === hostAColor && valB === hostBColor && hostAColor !== hostBColor) {
+      modes[i] = MODE_CURRENT_COLOR;
+    } else if (valA === hA && valB === hB && (hA !== hB || EXPLICIT_INHERITED.has(name))) {
+      modes[i] = MODE_INHERIT;
+    } else if (valA === valB) {
+      modes[i] = MODE_CONSTANT;
+    } else {
+      modes[i] = MODE_ALWAYS;
+    }
+  }
+  const hasAnimation = csA.getPropertyValue("animation-name") !== "none";
+  hostA.remove();
+  hostB.remove();
+  const baseline: TagBaseline = { modes, values, hasAnimation };
+  catalog.baselines.set(key, baseline);
+  return baseline;
+}
+
 /**
  * A directory's shell copied an element at a time: the band's own box where the frame meets it, else an empty box, with
  * its outline and its label where the frame meets them.
  */
-function* shellCopySteps(band: HTMLElement, parts: { own: boolean; shape: HTMLElement | null; label: HTMLElement | null }, seen: Box): Generator<void, HTMLElement> {
-  const clone = parts.own ? yield* visualCopySteps(band, false) : document.createElement("div");
-  if (parts.shape) clone.append(yield* visualCopySteps(parts.shape, true, seen));
-  if (parts.label) clone.append(yield* visualCopySteps(parts.label, true, seen));
+function* shellCopySteps(
+  band: HTMLElement,
+  parts: { own: boolean; shape: HTMLElement | null; label: HTMLElement | null },
+  seen: Box,
+  catalog: CopyStyleCatalog
+): Generator<void, HTMLElement> {
+  let childParent: readonly string[] = catalog.hostAValues;
+  let clone: HTMLElement;
+  if (parts.own) {
+    const copied = yield* visualCopyStepsWithStyle(band, catalog, catalog.hostAValues, false);
+    clone = copied.copy;
+    childParent = copied.ownValues;
+  } else {
+    clone = document.createElement("div");
+  }
+  if (parts.shape) clone.append(yield* visualCopySteps(parts.shape, catalog, childParent, true, seen));
+  if (parts.label) clone.append(yield* visualCopySteps(parts.label, catalog, childParent, true, seen));
   return clone;
 }
 
@@ -457,7 +793,25 @@ function* shellCopySteps(band: HTMLElement, parts: { own: boolean; shape: HTMLEl
  * Freeze an element's computed appearance without duplicating live selectors, IDs or controls, an element at a time,
  * pausing after each, so that a large copy can be spread over slices.
  */
-function* visualCopySteps(root: HTMLElement, deep = true, seen?: Box, anchor?: TransitionPoint): Generator<void, HTMLElement> {
+function* visualCopySteps(
+  root: HTMLElement,
+  catalog: CopyStyleCatalog,
+  parentValues: readonly string[],
+  deep = true,
+  seen?: Box,
+  anchor?: TransitionPoint
+): Generator<void, HTMLElement> {
+  return (yield* visualCopyStepsWithStyle(root, catalog, parentValues, deep, seen, anchor)).copy;
+}
+
+function* visualCopyStepsWithStyle(
+  root: HTMLElement,
+  catalog: CopyStyleCatalog,
+  parentValues: readonly string[],
+  deep = true,
+  seen?: Box,
+  anchor?: TransitionPoint
+): Generator<void, { copy: HTMLElement; ownValues: readonly string[] }> {
   const copy = root.cloneNode(false) as HTMLElement;
   const style = getComputedStyle(root);
   // A box the transition cannot show keeps its own declarations, and so its size and its place in its parent's layout,
@@ -465,34 +819,76 @@ function* visualCopySteps(root: HTMLElement, deep = true, seen?: Box, anchor?: T
   // card shrinks toward its title (the anchor) while it folds, so a part of it stays unseen only if the box spanning it
   // and the anchor misses the frame. An inline box is copied whole, since its size is its contents'.
   if (deep && seen && !style.display.startsWith("inline") && style.display !== "contents" && !meets(spanning(root.getBoundingClientRect(), anchor), seen)) deep = false;
-  // Remove live hooks before writing the large style, avoiding its lazy attribute serialization here.
-  for (const name of [...copy.getAttributeNames()]) {
-    if (name === "id" || name === "class" || name === "tabindex" || name === "role" || name.startsWith("data-") || name.startsWith("on")) copy.removeAttribute(name);
+  // Remove live hooks and cloned inline style before writing sparse declarations, avoiding stale custom properties
+  // and lazy attribute serialization. Track surviving attributes (e.g. SVG fill/stroke) so CSS overrides always win.
+  let presentAttrs: Set<string> | null = null;
+  for (const name of copy.getAttributeNames()) {
+    if (name === "id" || name === "class" || name === "style" || name === "tabindex" || name === "role" || name.startsWith("data-") || name.startsWith("on")) {
+      copy.removeAttribute(name);
+    } else {
+      (presentAttrs ??= new Set()).add(name.toLowerCase());
+    }
   }
   // display:none contributes neither layout nor pixels to this frozen picture. Do not expand an invisible subtree.
-  // visibility:hidden and opacity:0 still occupy layout, so they retain the full copy below.
-  if (style.display === "none") { copy.style.cssText = "display:none"; return copy; }
-  // Read the native length once and preserve every computed property in one parsed declaration block. A custom property
-  // is left out, since nothing a copy draws reads one: every property that used it is copied with its value already
-  // worked out, and a copy keeps no class, so no stylesheet rule or pseudo-element draws on it. Copied, the 323 of each
-  // element's 795 made working out the copies' style, which the transition's first frame waits for, cost more than twice
-  // as much; without them the layer is the same pixel for pixel (2026-11-23, Probes/first-frame). One thing does read
-  // them and is owed: a copy keeps its original's `animation-name`, and the `local-look-*` keyframes read custom
-  // properties, so a copy made within 160 ms of a change of the map's look replays that animation from their fallbacks.
-  const length = style.length;
+  // visibility:hidden and opacity:0 still occupy layout, so they retain the sparse copy below.
+  if (style.display === "none") { copy.style.cssText = "display:none"; return { copy, ownValues: parentValues }; }
+  // Emit only declarations that differ from a bare tag-matched baseline (non-inherited) or the parent copy's computed
+  // style (inherited), skipping custom properties and active animations so copies stay pixel-identical while cutting
+  // inline declarations ~15x (2026-11-24).
+  const baseline = tagBaseline(catalog, root);
+  const { propNames, colorIndex, interactivityIndex, widthGuardIndices } = catalog;
+  const { modes, values: refValues } = baseline;
+  const count = propNames.length;
+  const needOwn = (deep && root.childNodes.length > 0) || !deep;
+  const ownValues = needOwn ? new Array<string>(count) : parentValues;
+  const elColor = colorIndex >= 0 ? style.getPropertyValue("color") : "";
   const declarations: string[] = [];
-  for (let property = 0; property < length; property++) {
-    const name = style.item(property);
-    if (name.startsWith("--")) continue;
+  for (let i = 0; i < count; i++) {
+    const name = propNames[i];
     // A card is copied from the view shown or the view held, neither of them inert since 2026-11-22, but behind the modal
     // reader every view is; the copy is of the picture as it was pressed, live, and stands in a layer that is inert itself.
-    declarations.push(`${name}: ${name === "interactivity" ? "auto" : style.getPropertyValue(name)};`);
+    const val = i === interactivityIndex ? "auto" : style.getPropertyValue(name);
+    if (needOwn) (ownValues as string[])[i] = val;
+    let emit = presentAttrs !== null && presentAttrs.has(name);
+    if (!emit) {
+      const mode = modes[i];
+      if (mode === MODE_CONSTANT) emit = val !== refValues[i];
+      else if (mode === MODE_INHERIT) emit = val !== parentValues[i];
+      else if (mode === MODE_CURRENT_COLOR) emit = val !== elColor;
+      else emit = true;
+    }
+    if (!emit) {
+      const styleIdx = widthGuardIndices[i];
+      if (styleIdx >= 0 && val === "0px" && style.getPropertyValue(propNames[styleIdx]) !== "none") emit = true;
+    }
+    if (emit) declarations.push(`${name}: ${val};`);
   }
-  copy.style.cssText = declarations.join("");
+  // Preserve any inline-style or presentation-attribute property outside the stylesheet catalog (e.g. ad-hoc inline SVG rules).
+  const inlineStyle = root.style;
+  if (inlineStyle && inlineStyle.length > 0) {
+    for (let k = 0; k < inlineStyle.length; k++) {
+      const name = inlineStyle.item(k);
+      if (name.startsWith("--") || name === "animation" || name.startsWith("animation-") || catalog.indexOf.has(name)) continue;
+      const val = style.getPropertyValue(name);
+      if (val) declarations.push(`${name}: ${val};`);
+    }
+  }
+  if (presentAttrs !== null) {
+    for (const attr of presentAttrs) {
+      if (catalog.indexOf.has(attr) || attr === "animation" || attr.startsWith("animation-")) continue;
+      const val = style.getPropertyValue(attr);
+      if (val) declarations.push(`${attr}: ${val};`);
+    }
+  }
+  // Never replay live keyframe animations (such as local-look-* during .local-look-fading) on a frozen copy.
+  if (baseline.hasAnimation || style.getPropertyValue("animation-name") !== "none") {
+    declarations.push("animation-name: none;");
+  }
+  if (declarations.length > 0) copy.style.cssText = declarations.join("");
   if (root instanceof HTMLCanvasElement && copy instanceof HTMLCanvasElement) copy.getContext("2d")?.drawImage(root, 0, 0);
   yield;
   if (deep) for (const child of [...root.childNodes]) {
-    copy.append(child instanceof Element ? yield* visualCopySteps(child as HTMLElement, true, seen, anchor) : child.cloneNode(true));
+    copy.append(child instanceof Element ? yield* visualCopySteps(child as HTMLElement, catalog, ownValues, true, seen, anchor) : child.cloneNode(true));
   }
-  return copy;
+  return { copy, ownValues };
 }

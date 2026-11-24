@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/explorer/src/client/dom.ts`
-- Generated At: 2026-11-23T00:11:13.488Z
+- Generated At: 2026-11-24T09:10:38.335Z
 
 ## Authored
 ### Purpose
@@ -28,9 +28,18 @@ Provides required element lookups and coordinates the Explorer's active view, na
 ##### `requireElement` — Summary
 Looks up an element by `id` and throws if not found.
 
-#### `applyPalette` {#symbol-applypalette}
+#### `syncDetailDrawerState` {#symbol-syncdetaildrawerstate}
 - Type: function
 - Source: [source](../../../../../../packages/explorer/src/client/dom.ts#L19)
+
+##### `syncDetailDrawerState` — Summary
+Reflect whether the side detail drawer is open (visible and not a full reading dialog) on `#main`,
+replacing `#main:has(#detail-panel.visible:not(.reading-dialog))` so DOM mutations inside `#main`
+never trigger `:has()` descendant invalidation across the map and transition copies (2026-11-24).
+
+#### `applyPalette` {#symbol-applypalette}
+- Type: function
+- Source: [source](../../../../../../packages/explorer/src/client/dom.ts#L35)
 
 ##### `applyPalette` — Summary
 Draws the page in a palette, by name (the default for a name no palette has): its colours become the custom properties
@@ -39,7 +48,7 @@ views draw again in it at once where they drew a colour themselves (`whenPalette
 
 #### `applyMarbles` {#symbol-applymarbles}
 - Type: function
-- Source: [source](../../../../../../packages/explorer/src/client/dom.ts#L29)
+- Source: [source](../../../../../../packages/explorer/src/client/dom.ts#L45)
 - Parameters: `choice`: [`MarbleChoice`](./types.ts.mdmd.md#symbol-marblechoice)
 
 ##### `applyMarbles` — Summary
@@ -48,7 +57,7 @@ tint the 2D map's cells, and the maps' scripts draw again as for a palette chose
 
 #### `settleViews` {#symbol-settleviews}
 - Type: function
-- Source: [source](../../../../../../packages/explorer/src/client/dom.ts#L53)
+- Source: [source](../../../../../../packages/explorer/src/client/dom.ts#L69)
 
 ##### `settleViews` — Summary
 Give each view the state its place calls for; the one way a view is put away, for every view, for the sidebar's
@@ -64,14 +73,14 @@ is inert, focus offered to it is given back ({@link keepFocusInTheViewShown}).
 
 #### `giveFocus` {#symbol-givefocus}
 - Type: function
-- Source: [source](../../../../../../packages/explorer/src/client/dom.ts#L73)
+- Source: [source](../../../../../../packages/explorer/src/client/dom.ts#L89)
 
 ##### `giveFocus` — Summary
 Give focus to the first of these that takes it; a disabled control does not, nor one in a view not shown.
 
 #### `setActiveView` {#symbol-setactiveview}
 - Type: function
-- Source: [source](../../../../../../packages/explorer/src/client/dom.ts#L99)
+- Source: [source](../../../../../../packages/explorer/src/client/dom.ts#L115)
 - Parameters: `view`: [`ViewName`](./types.ts.mdmd.md#symbol-viewname); `perspective`: [`LocalMapPerspective`](./types.ts.mdmd.md#symbol-localmapperspective)
 
 ##### `setActiveView` — Summary
@@ -80,7 +89,7 @@ goes to the sidebar's control of the view shown: a view on its way out is not in
 
 #### `setSeamedText` {#symbol-setseamedtext}
 - Type: function
-- Source: [source](../../../../../../packages/explorer/src/client/dom.ts#L150)
+- Source: [source](../../../../../../packages/explorer/src/client/dom.ts#L166)
 
 ##### `setSeamedText` — Summary
 Write a name into an element with a soft break at each of its seams (`seamsOf`), so that a name wider than its box
@@ -97,6 +106,8 @@ wraps at a seam rather than at whatever letter the box ran out at; the element's
 - [`types.MarbleChoice`](./types.ts.mdmd.md#symbol-marblechoice) (type-only)
 - [`types.ViewName`](./types.ts.mdmd.md#symbol-viewname) (type-only)
 - [`word-seams.seamsOf`](./views/localView/word-seams.ts.mdmd.md#symbol-seamsof)
+- [`template.detail-panel`](../shared/template.html.mdmd.md#symbol-detail-panel)
+- [`template.main`](../shared/template.html.mdmd.md#symbol-main)
 <!-- LIVE-DOC:END Dependencies -->
 
 <!-- LIVE-DOC:BEGIN Cited By -->

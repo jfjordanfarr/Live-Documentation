@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: `packages/explorer/src/client/index.ts`
 - Entry: declared
-- Generated At: 2026-11-24T05:59:35.598Z
+- Generated At: 2026-11-24T09:10:38.465Z
 
 ## Authored
 ### Purpose
@@ -73,6 +73,7 @@ _No public symbols detected_
 - [`dom.requireElement`](./dom.ts.mdmd.md#symbol-requireelement)
 - [`dom.setActiveView`](./dom.ts.mdmd.md#symbol-setactiveview)
 - [`dom.settleViews`](./dom.ts.mdmd.md#symbol-settleviews)
+- [`dom.syncDetailDrawerState`](./dom.ts.mdmd.md#symbol-syncdetaildrawerstate)
 - [`download.DownloadBundleType`](./download.ts.mdmd.md#symbol-downloadbundletype) (type-only)
 - [`download.DownloadFormat`](./download.ts.mdmd.md#symbol-downloadformat) (type-only)
 - [`download.downloadDocs`](./download.ts.mdmd.md#symbol-downloaddocs)

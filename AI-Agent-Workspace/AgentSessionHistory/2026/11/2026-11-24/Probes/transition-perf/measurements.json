@@ -1,0 +1,1859 @@
+{
+  "date": "2026-11-24",
+  "baseCommit": "a6ee3eec8",
+  "subject": "packages/engine/src/live-docs/graph.ts",
+  "gpu": "ANGLE (Microsoft Corporation, D3D12 (NVIDIA GeForce RTX 3090), OpenGL ES 3.1)",
+  "perf": {
+    "before": {
+      "to2D": {
+        "runs": 5,
+        "medians": {
+          "returnedMs": 2195.6,
+          "transitionStartMs": 4106.5,
+          "firstFrameMs": 162.6,
+          "secondFrameMs": 14.4,
+          "framesDrawn": 58,
+          "longestGapAfterFrame2Ms": 36.8,
+          "switchPressMs": 1971.5,
+          "switchRenderMs": 1920.5,
+          "captureCardsMs": 3.2,
+          "captureWiresMs": 41.7,
+          "captureDirectoriesMs": 2.2,
+          "captureCopiesMs": 1791.7,
+          "switchAnimationSetupMs": 10.1
+        },
+        "rawRuns": [
+          {
+            "phase": "before",
+            "run": 1,
+            "loadBefore": "0.88",
+            "loadAfter": "1.29",
+            "label": "2D",
+            "returned": 2195.6,
+            "transitionStart": 4106.5,
+            "firstFrame": 181.2,
+            "secondFrame": 19.4,
+            "framesDrawn": 58,
+            "longestGapAfterFrame2": 43.1,
+            "layerElements": 1125,
+            "mapElements": 14918,
+            "measures": [
+              {
+                "name": "live-docs:switch-capture",
+                "start": 0.7,
+                "duration": 1.5
+              },
+              {
+                "name": "live-docs:switch-press",
+                "start": 0.7,
+                "duration": 1971.5
+              },
+              {
+                "name": "live-docs:switch-hold",
+                "start": 2.2,
+                "duration": 0.6
+              },
+              {
+                "name": "live-docs:switch-render",
+                "start": 4.7,
+                "duration": 1920.5
+              },
+              {
+                "name": "live-docs:switch-capture-destination",
+                "start": 1997.5,
+                "duration": 64.4
+              },
+              {
+                "name": "live-docs:capture-cards",
+                "start": 2000.1,
+                "duration": 3
+              },
+              {
+                "name": "live-docs:capture-wires",
+                "start": 2003.1,
+                "duration": 39.2
+              },
+              {
+                "name": "live-docs:capture-directories",
+                "start": 2042.3,
+                "duration": 1.9
+              },
+              {
+                "name": "live-docs:capture-copies",
+                "start": 2044.4,
+                "duration": 2054.2
+              },
+              {
+                "name": "live-docs:switch-animation-setup",
+                "start": 4098.8,
+                "duration": 9.3
+              }
+            ]
+          },
+          {
+            "phase": "before",
+            "run": 2,
+            "loadBefore": "1.51",
+            "loadAfter": "1.43",
+            "label": "2D",
+            "returned": 2506.3,
+            "transitionStart": 4133,
+            "firstFrame": 162.6,
+            "secondFrame": 14.4,
+            "framesDrawn": 57,
+            "longestGapAfterFrame2": 38.1,
+            "layerElements": 1125,
+            "mapElements": 14918,
+            "measures": [
+              {
+                "name": "live-docs:switch-capture",
+                "start": 0.6,
+                "duration": 1.4
+              },
+              {
+                "name": "live-docs:switch-press",
+                "start": 0.6,
+                "duration": 2244.9
+              },
+              {
+                "name": "live-docs:switch-hold",
+                "start": 2,
+                "duration": 0.5
+              },
+              {
+                "name": "live-docs:switch-render",
+                "start": 4.3,
+                "duration": 2189.1
+              },
+              {
+                "name": "live-docs:switch-capture-destination",
+                "start": 2280,
+                "duration": 68.8
+              },
+              {
+                "name": "live-docs:capture-cards",
+                "start": 2284.7,
+                "duration": 3.2
+              },
+              {
+                "name": "live-docs:capture-wires",
+                "start": 2287.9,
+                "duration": 42.3
+              },
+              {
+                "name": "live-docs:capture-directories",
+                "start": 2330.2,
+                "duration": 2.2
+              },
+              {
+                "name": "live-docs:capture-copies",
+                "start": 2332.6,
+                "duration": 1791.7
+              },
+              {
+                "name": "live-docs:switch-animation-setup",
+                "start": 4124.5,
+                "duration": 10.3
+              }
+            ]
+          },
+          {
+            "phase": "before",
+            "run": 3,
+            "loadBefore": "2.60",
+            "loadAfter": "2.55",
+            "label": "2D",
+            "returned": 2772.4,
+            "transitionStart": 4443.9,
+            "firstFrame": 169.4,
+            "secondFrame": 14.6,
+            "framesDrawn": 58,
+            "longestGapAfterFrame2": 36.2,
+            "layerElements": 1125,
+            "mapElements": 14918,
+            "measures": [
+              {
+                "name": "live-docs:switch-capture",
+                "start": 1,
+                "duration": 2.4
+              },
+              {
+                "name": "live-docs:switch-press",
+                "start": 1,
+                "duration": 2474.5
+              },
+              {
+                "name": "live-docs:switch-hold",
+                "start": 3.4,
+                "duration": 0.8
+              },
+              {
+                "name": "live-docs:switch-render",
+                "start": 7.2,
+                "duration": 2408.7
+              },
+              {
+                "name": "live-docs:switch-capture-destination",
+                "start": 2508.8,
+                "duration": 76.9
+              },
+              {
+                "name": "live-docs:capture-cards",
+                "start": 2511.8,
+                "duration": 3.7
+              },
+              {
+                "name": "live-docs:capture-wires",
+                "start": 2515.5,
+                "duration": 50.3
+              },
+              {
+                "name": "live-docs:capture-directories",
+                "start": 2565.8,
+                "duration": 2.5
+              },
+              {
+                "name": "live-docs:capture-copies",
+                "start": 2568.5,
+                "duration": 1866
+              },
+              {
+                "name": "live-docs:switch-animation-setup",
+                "start": 4434.7,
+                "duration": 10.9
+              }
+            ]
+          },
+          {
+            "phase": "before",
+            "run": 4,
+            "loadBefore": "2.42",
+            "loadAfter": "2.55",
+            "label": "2D",
+            "returned": 2010.7,
+            "transitionStart": 3375.3,
+            "firstFrame": 160.7,
+            "secondFrame": 14.1,
+            "framesDrawn": 61,
+            "longestGapAfterFrame2": 36.6,
+            "layerElements": 1125,
+            "mapElements": 14918,
+            "measures": [
+              {
+                "name": "live-docs:switch-capture",
+                "start": 0.7,
+                "duration": 1.3
+              },
+              {
+                "name": "live-docs:switch-press",
+                "start": 0.7,
+                "duration": 1778.1
+              },
+              {
+                "name": "live-docs:switch-hold",
+                "start": 2,
+                "duration": 0.6
+              },
+              {
+                "name": "live-docs:switch-render",
+                "start": 4.2,
+                "duration": 1725.2
+              },
+              {
+                "name": "live-docs:switch-capture-destination",
+                "start": 1808.4,
+                "duration": 66.9
+              },
+              {
+                "name": "live-docs:capture-cards",
+                "start": 1811.4,
+                "duration": 3.3
+              },
+              {
+                "name": "live-docs:capture-wires",
+                "start": 1814.7,
+                "duration": 41.7
+              },
+              {
+                "name": "live-docs:capture-directories",
+                "start": 1856.4,
+                "duration": 2.1
+              },
+              {
+                "name": "live-docs:capture-copies",
+                "start": 1858.7,
+                "duration": 1508.1
+              },
+              {
+                "name": "live-docs:switch-animation-setup",
+                "start": 3367,
+                "duration": 9.8
+              }
+            ]
+          },
+          {
+            "phase": "before",
+            "run": 5,
+            "loadBefore": "2.59",
+            "loadAfter": "2.46",
+            "label": "2D",
+            "returned": 1879.2,
+            "transitionStart": 3375.1,
+            "firstFrame": 153.4,
+            "secondFrame": 13.2,
+            "framesDrawn": 62,
+            "longestGapAfterFrame2": 36.8,
+            "layerElements": 1125,
+            "mapElements": 14918,
+            "measures": [
+              {
+                "name": "live-docs:switch-capture",
+                "start": 0.7,
+                "duration": 1.1
+              },
+              {
+                "name": "live-docs:switch-press",
+                "start": 0.7,
+                "duration": 1647.8
+              },
+              {
+                "name": "live-docs:switch-hold",
+                "start": 1.8,
+                "duration": 0.5
+              },
+              {
+                "name": "live-docs:switch-render",
+                "start": 4,
+                "duration": 1597.5
+              },
+              {
+                "name": "live-docs:switch-capture-destination",
+                "start": 1676.3,
+                "duration": 66.5
+              },
+              {
+                "name": "live-docs:capture-cards",
+                "start": 1678.7,
+                "duration": 3.1
+              },
+              {
+                "name": "live-docs:capture-wires",
+                "start": 1681.8,
+                "duration": 41.3
+              },
+              {
+                "name": "live-docs:capture-directories",
+                "start": 1723.1,
+                "duration": 2.2
+              },
+              {
+                "name": "live-docs:capture-copies",
+                "start": 1725.5,
+                "duration": 1640.8
+              },
+              {
+                "name": "live-docs:switch-animation-setup",
+                "start": 3366.5,
+                "duration": 10.1
+              }
+            ]
+          }
+        ]
+      },
+      "to3D": {
+        "runs": 5,
+        "medians": {
+          "returnedMs": 234.1,
+          "transitionStartMs": 1415.5,
+          "firstFrameMs": 170.6,
+          "secondFrameMs": 172.1,
+          "framesDrawn": 55,
+          "longestGapAfterFrame2Ms": 37.2,
+          "switchPressMs": 118.1,
+          "switchRenderMs": 36.5,
+          "captureCardsMs": 2.3,
+          "captureWiresMs": 33.4,
+          "captureDirectoriesMs": 1.4,
+          "captureCopiesMs": 1372.1,
+          "switchAnimationSetupMs": 10.4
+        },
+        "rawRuns": [
+          {
+            "phase": "before",
+            "run": 1,
+            "loadBefore": "1.29",
+            "loadAfter": "1.51",
+            "label": "3D",
+            "returned": 269.2,
+            "transitionStart": 1742.9,
+            "firstFrame": 181.5,
+            "secondFrame": 172.1,
+            "framesDrawn": 55,
+            "longestGapAfterFrame2": 39.6,
+            "layerElements": 1125,
+            "mapElements": 14918,
+            "measures": [
+              {
+                "name": "live-docs:capture-cards",
+                "start": 0.1,
+                "duration": 2.3
+              },
+              {
+                "name": "live-docs:switch-capture",
+                "start": 0.1,
+                "duration": 51.5
+              },
+              {
+                "name": "live-docs:switch-press",
+                "start": 0.1,
+                "duration": 130.1
+              },
+              {
+                "name": "live-docs:capture-wires",
+                "start": 2.4,
+                "duration": 30.9
+              },
+              {
+                "name": "live-docs:capture-directories",
+                "start": 33.3,
+                "duration": 1.5
+              },
+              {
+                "name": "live-docs:capture-copies",
+                "start": 34.9,
+                "duration": 1704.3
+              },
+              {
+                "name": "live-docs:switch-hold",
+                "start": 51.6,
+                "duration": 0.4
+              },
+              {
+                "name": "live-docs:switch-render",
+                "start": 65,
+                "duration": 46.9
+              },
+              {
+                "name": "live-docs:shells",
+                "start": 93.8,
+                "duration": 5
+              },
+              {
+                "name": "live-docs:switch-capture-destination",
+                "start": 1739.3,
+                "duration": 0
+              },
+              {
+                "name": "live-docs:switch-animation-setup",
+                "start": 1739.4,
+                "duration": 10.4
+              }
+            ]
+          },
+          {
+            "phase": "before",
+            "run": 2,
+            "loadBefore": "1.43",
+            "loadAfter": "1.43",
+            "label": "3D",
+            "returned": 232.1,
+            "transitionStart": 1530,
+            "firstFrame": 181.1,
+            "secondFrame": 197.3,
+            "framesDrawn": 51,
+            "longestGapAfterFrame2": 38.5,
+            "layerElements": 1125,
+            "mapElements": 14918,
+            "measures": [
+              {
+                "name": "live-docs:capture-cards",
+                "start": 0.2,
+                "duration": 2.4
+              },
+              {
+                "name": "live-docs:switch-capture",
+                "start": 0.2,
+                "duration": 54
+              },
+              {
+                "name": "live-docs:switch-press",
+                "start": 0.2,
+                "duration": 118.1
+              },
+              {
+                "name": "live-docs:capture-wires",
+                "start": 2.6,
+                "duration": 32.9
+              },
+              {
+                "name": "live-docs:capture-directories",
+                "start": 35.5,
+                "duration": 1.4
+              },
+              {
+                "name": "live-docs:capture-copies",
+                "start": 37,
+                "duration": 1488.7
+              },
+              {
+                "name": "live-docs:switch-hold",
+                "start": 54.2,
+                "duration": 0.5
+              },
+              {
+                "name": "live-docs:switch-render",
+                "start": 66.6,
+                "duration": 37.2
+              },
+              {
+                "name": "live-docs:shells",
+                "start": 89.9,
+                "duration": 4.1
+              },
+              {
+                "name": "live-docs:switch-capture-destination",
+                "start": 1525.9,
+                "duration": 0
+              },
+              {
+                "name": "live-docs:switch-animation-setup",
+                "start": 1525.9,
+                "duration": 11.1
+              }
+            ]
+          },
+          {
+            "phase": "before",
+            "run": 3,
+            "loadBefore": "2.55",
+            "loadAfter": "2.42",
+            "label": "3D",
+            "returned": 237.9,
+            "transitionStart": 1415.5,
+            "firstFrame": 157.8,
+            "secondFrame": 176.1,
+            "framesDrawn": 55,
+            "longestGapAfterFrame2": 37.2,
+            "layerElements": 1125,
+            "mapElements": 14918,
+            "measures": [
+              {
+                "name": "live-docs:capture-cards",
+                "start": 0.2,
+                "duration": 2.2
+              },
+              {
+                "name": "live-docs:switch-capture",
+                "start": 0.2,
+                "duration": 56.2
+              },
+              {
+                "name": "live-docs:switch-press",
+                "start": 0.2,
+                "duration": 119.5
+              },
+              {
+                "name": "live-docs:capture-wires",
+                "start": 2.4,
+                "duration": 36.4
+              },
+              {
+                "name": "live-docs:capture-directories",
+                "start": 38.8,
+                "duration": 1.4
+              },
+              {
+                "name": "live-docs:capture-copies",
+                "start": 40.2,
+                "duration": 1372.1
+              },
+              {
+                "name": "live-docs:switch-hold",
+                "start": 56.4,
+                "duration": 0.4
+              },
+              {
+                "name": "live-docs:switch-render",
+                "start": 67.2,
+                "duration": 36.5
+              },
+              {
+                "name": "live-docs:shells",
+                "start": 90.7,
+                "duration": 3.7
+              },
+              {
+                "name": "live-docs:switch-capture-destination",
+                "start": 1412.3,
+                "duration": 0
+              },
+              {
+                "name": "live-docs:switch-animation-setup",
+                "start": 1412.4,
+                "duration": 9.9
+              }
+            ]
+          },
+          {
+            "phase": "before",
+            "run": 4,
+            "loadBefore": "2.55",
+            "loadAfter": "2.59",
+            "label": "3D",
+            "returned": 234.1,
+            "transitionStart": 1357.9,
+            "firstFrame": 170.6,
+            "secondFrame": 163,
+            "framesDrawn": 57,
+            "longestGapAfterFrame2": 32.6,
+            "layerElements": 1125,
+            "mapElements": 14918,
+            "measures": [
+              {
+                "name": "live-docs:capture-cards",
+                "start": 0.1,
+                "duration": 2.2
+              },
+              {
+                "name": "live-docs:switch-capture",
+                "start": 0.1,
+                "duration": 54.3
+              },
+              {
+                "name": "live-docs:switch-press",
+                "start": 0.1,
+                "duration": 116.3
+              },
+              {
+                "name": "live-docs:capture-wires",
+                "start": 2.3,
+                "duration": 33.9
+              },
+              {
+                "name": "live-docs:capture-directories",
+                "start": 36.2,
+                "duration": 1.5
+              },
+              {
+                "name": "live-docs:capture-copies",
+                "start": 37.8,
+                "duration": 1316.6
+              },
+              {
+                "name": "live-docs:switch-hold",
+                "start": 54.4,
+                "duration": 0.4
+              },
+              {
+                "name": "live-docs:switch-render",
+                "start": 65.8,
+                "duration": 35.8
+              },
+              {
+                "name": "live-docs:shells",
+                "start": 88.4,
+                "duration": 3.9
+              },
+              {
+                "name": "live-docs:switch-capture-destination",
+                "start": 1354.4,
+                "duration": 0.1
+              },
+              {
+                "name": "live-docs:switch-animation-setup",
+                "start": 1354.5,
+                "duration": 9.9
+              }
+            ]
+          },
+          {
+            "phase": "before",
+            "run": 5,
+            "loadBefore": "2.46",
+            "loadAfter": "2.34",
+            "label": "3D",
+            "returned": 233.4,
+            "transitionStart": 1362,
+            "firstFrame": 161.1,
+            "secondFrame": 166,
+            "framesDrawn": 56,
+            "longestGapAfterFrame2": 35.7,
+            "layerElements": 1125,
+            "mapElements": 14918,
+            "measures": [
+              {
+                "name": "live-docs:capture-cards",
+                "start": 0.1,
+                "duration": 2.3
+              },
+              {
+                "name": "live-docs:switch-capture",
+                "start": 0.1,
+                "duration": 53.7
+              },
+              {
+                "name": "live-docs:switch-press",
+                "start": 0.1,
+                "duration": 115.7
+              },
+              {
+                "name": "live-docs:capture-wires",
+                "start": 2.4,
+                "duration": 33.4
+              },
+              {
+                "name": "live-docs:capture-directories",
+                "start": 35.8,
+                "duration": 1.3
+              },
+              {
+                "name": "live-docs:capture-copies",
+                "start": 37.2,
+                "duration": 1321.7
+              },
+              {
+                "name": "live-docs:switch-hold",
+                "start": 53.8,
+                "duration": 0.4
+              },
+              {
+                "name": "live-docs:switch-render",
+                "start": 65,
+                "duration": 35.8
+              },
+              {
+                "name": "live-docs:shells",
+                "start": 87.6,
+                "duration": 3.9
+              },
+              {
+                "name": "live-docs:switch-capture-destination",
+                "start": 1358.9,
+                "duration": 0
+              },
+              {
+                "name": "live-docs:switch-animation-setup",
+                "start": 1358.9,
+                "duration": 11.4
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "after": {
+      "to2D": {
+        "runs": 5,
+        "medians": {
+          "returnedMs": 1858.8,
+          "transitionStartMs": 2264.6,
+          "firstFrameMs": 23.2,
+          "secondFrameMs": 15.4,
+          "framesDrawn": 68,
+          "longestGapAfterFrame2Ms": 36,
+          "switchPressMs": 1611.8,
+          "switchRenderMs": 1573.2,
+          "captureCardsMs": 14.6,
+          "captureWiresMs": 40,
+          "captureDirectoriesMs": 2.1,
+          "captureCopiesMs": 501.8,
+          "switchAnimationSetupMs": 9.7
+        },
+        "rawRuns": [
+          {
+            "phase": "after",
+            "run": 1,
+            "loadBefore": "2.08",
+            "loadAfter": "2.24",
+            "label": "2D",
+            "returned": 1780.5,
+            "transitionStart": 2129.5,
+            "firstFrame": 20.3,
+            "secondFrame": 21.8,
+            "framesDrawn": 70,
+            "longestGapAfterFrame2": 35.1,
+            "layerElements": 1125,
+            "mapElements": 14918,
+            "measures": [
+              {
+                "name": "live-docs:switch-capture",
+                "start": 0.8,
+                "duration": 2.2
+              },
+              {
+                "name": "live-docs:switch-press",
+                "start": 0.8,
+                "duration": 1510.6
+              },
+              {
+                "name": "live-docs:switch-hold",
+                "start": 3,
+                "duration": 0.6
+              },
+              {
+                "name": "live-docs:switch-render",
+                "start": 5.6,
+                "duration": 1467.2
+              },
+              {
+                "name": "live-docs:switch-capture-destination",
+                "start": 1543.4,
+                "duration": 87.6
+              },
+              {
+                "name": "live-docs:capture-cards",
+                "start": 1546.8,
+                "duration": 19.2
+              },
+              {
+                "name": "live-docs:capture-wires",
+                "start": 1566,
+                "duration": 46.1
+              },
+              {
+                "name": "live-docs:capture-directories",
+                "start": 1612.1,
+                "duration": 2.2
+              },
+              {
+                "name": "live-docs:capture-copies",
+                "start": 1614.5,
+                "duration": 507.1
+              },
+              {
+                "name": "live-docs:switch-animation-setup",
+                "start": 2121.8,
+                "duration": 9.2
+              }
+            ]
+          },
+          {
+            "phase": "after",
+            "run": 2,
+            "loadBefore": "2.24",
+            "loadAfter": "2.38",
+            "label": "2D",
+            "returned": 1988.1,
+            "transitionStart": 2362,
+            "firstFrame": 23.4,
+            "secondFrame": 13.9,
+            "framesDrawn": 68,
+            "longestGapAfterFrame2": 35.8,
+            "layerElements": 1125,
+            "mapElements": 14918,
+            "measures": [
+              {
+                "name": "live-docs:switch-capture",
+                "start": 0.7,
+                "duration": 2.3
+              },
+              {
+                "name": "live-docs:switch-press",
+                "start": 0.7,
+                "duration": 1759.9
+              },
+              {
+                "name": "live-docs:switch-hold",
+                "start": 3,
+                "duration": 0.6
+              },
+              {
+                "name": "live-docs:switch-render",
+                "start": 5.9,
+                "duration": 1716.3
+              },
+              {
+                "name": "live-docs:switch-capture-destination",
+                "start": 1792.5,
+                "duration": 79.9
+              },
+              {
+                "name": "live-docs:capture-cards",
+                "start": 1795.3,
+                "duration": 14.5
+              },
+              {
+                "name": "live-docs:capture-wires",
+                "start": 1809.8,
+                "duration": 43.2
+              },
+              {
+                "name": "live-docs:capture-directories",
+                "start": 1853,
+                "duration": 2.2
+              },
+              {
+                "name": "live-docs:capture-copies",
+                "start": 1855.4,
+                "duration": 498.7
+              },
+              {
+                "name": "live-docs:switch-animation-setup",
+                "start": 2354.3,
+                "duration": 9.5
+              }
+            ]
+          },
+          {
+            "phase": "after",
+            "run": 3,
+            "loadBefore": "2.27",
+            "loadAfter": "2.65",
+            "label": "2D",
+            "returned": 1758.5,
+            "transitionStart": 2147,
+            "firstFrame": 23.2,
+            "secondFrame": 15.4,
+            "framesDrawn": 63,
+            "longestGapAfterFrame2": 46.8,
+            "layerElements": 1125,
+            "mapElements": 14918,
+            "measures": [
+              {
+                "name": "live-docs:switch-capture",
+                "start": 0.6,
+                "duration": 2.1
+              },
+              {
+                "name": "live-docs:switch-press",
+                "start": 0.6,
+                "duration": 1553.4
+              },
+              {
+                "name": "live-docs:switch-hold",
+                "start": 2.7,
+                "duration": 0.7
+              },
+              {
+                "name": "live-docs:switch-render",
+                "start": 5.2,
+                "duration": 1513.5
+              },
+              {
+                "name": "live-docs:switch-capture-destination",
+                "start": 1580,
+                "duration": 73.4
+              },
+              {
+                "name": "live-docs:capture-cards",
+                "start": 1582.6,
+                "duration": 13.5
+              },
+              {
+                "name": "live-docs:capture-wires",
+                "start": 1596.1,
+                "duration": 38.5
+              },
+              {
+                "name": "live-docs:capture-directories",
+                "start": 1634.6,
+                "duration": 2.1
+              },
+              {
+                "name": "live-docs:capture-copies",
+                "start": 1636.9,
+                "duration": 501.8
+              },
+              {
+                "name": "live-docs:switch-animation-setup",
+                "start": 2138.9,
+                "duration": 9.7
+              }
+            ]
+          },
+          {
+            "phase": "after",
+            "run": 4,
+            "loadBefore": "2.68",
+            "loadAfter": "2.68",
+            "label": "2D",
+            "returned": 1967.1,
+            "transitionStart": 2338.2,
+            "firstFrame": 24.2,
+            "secondFrame": 12.4,
+            "framesDrawn": 68,
+            "longestGapAfterFrame2": 36.5,
+            "layerElements": 1125,
+            "mapElements": 14918,
+            "measures": [
+              {
+                "name": "live-docs:switch-capture",
+                "start": 0.7,
+                "duration": 2.4
+              },
+              {
+                "name": "live-docs:switch-press",
+                "start": 0.7,
+                "duration": 1753.2
+              },
+              {
+                "name": "live-docs:switch-hold",
+                "start": 3.1,
+                "duration": 0.7
+              },
+              {
+                "name": "live-docs:switch-render",
+                "start": 5.8,
+                "duration": 1713.8
+              },
+              {
+                "name": "live-docs:switch-capture-destination",
+                "start": 1777.7,
+                "duration": 73.9
+              },
+              {
+                "name": "live-docs:capture-cards",
+                "start": 1779.9,
+                "duration": 14.6
+              },
+              {
+                "name": "live-docs:capture-wires",
+                "start": 1794.5,
+                "duration": 38.7
+              },
+              {
+                "name": "live-docs:capture-directories",
+                "start": 1833.2,
+                "duration": 1.9
+              },
+              {
+                "name": "live-docs:capture-copies",
+                "start": 1835.3,
+                "duration": 494.4
+              },
+              {
+                "name": "live-docs:switch-animation-setup",
+                "start": 2329.9,
+                "duration": 10
+              }
+            ]
+          },
+          {
+            "phase": "after",
+            "run": 5,
+            "loadBefore": "2.86",
+            "loadAfter": "2.87",
+            "label": "2D",
+            "returned": 1858.8,
+            "transitionStart": 2264.6,
+            "firstFrame": 22.2,
+            "secondFrame": 18,
+            "framesDrawn": 69,
+            "longestGapAfterFrame2": 36,
+            "layerElements": 1125,
+            "mapElements": 14918,
+            "measures": [
+              {
+                "name": "live-docs:switch-capture",
+                "start": 0.6,
+                "duration": 1.6
+              },
+              {
+                "name": "live-docs:switch-press",
+                "start": 0.6,
+                "duration": 1611.8
+              },
+              {
+                "name": "live-docs:switch-hold",
+                "start": 2.2,
+                "duration": 0.5
+              },
+              {
+                "name": "live-docs:switch-render",
+                "start": 4.4,
+                "duration": 1573.2
+              },
+              {
+                "name": "live-docs:switch-capture-destination",
+                "start": 1639.9,
+                "duration": 77.6
+              },
+              {
+                "name": "live-docs:capture-cards",
+                "start": 1642.6,
+                "duration": 16.1
+              },
+              {
+                "name": "live-docs:capture-wires",
+                "start": 1658.7,
+                "duration": 40
+              },
+              {
+                "name": "live-docs:capture-directories",
+                "start": 1698.7,
+                "duration": 2
+              },
+              {
+                "name": "live-docs:capture-copies",
+                "start": 1700.9,
+                "duration": 553.9
+              },
+              {
+                "name": "live-docs:switch-animation-setup",
+                "start": 2254.9,
+                "duration": 11.3
+              }
+            ]
+          }
+        ]
+      },
+      "to3D": {
+        "runs": 5,
+        "medians": {
+          "returnedMs": 181.1,
+          "transitionStartMs": 434.7,
+          "firstFrameMs": 42.2,
+          "secondFrameMs": 41.1,
+          "framesDrawn": 65,
+          "longestGapAfterFrame2Ms": 36.7,
+          "switchPressMs": 104.8,
+          "switchRenderMs": 37.5,
+          "captureCardsMs": 2.3,
+          "captureWiresMs": 35.5,
+          "captureDirectoriesMs": 1.4,
+          "captureCopiesMs": 390.2,
+          "switchAnimationSetupMs": 10.1
+        },
+        "rawRuns": [
+          {
+            "phase": "after",
+            "run": 1,
+            "loadBefore": "2.24",
+            "loadAfter": "2.24",
+            "label": "3D",
+            "returned": 177.7,
+            "transitionStart": 420,
+            "firstFrame": 37.2,
+            "secondFrame": 41.1,
+            "framesDrawn": 66,
+            "longestGapAfterFrame2": 34.9,
+            "layerElements": 1125,
+            "mapElements": 14918,
+            "measures": [
+              {
+                "name": "live-docs:switch-capture",
+                "start": 0.1,
+                "duration": 56.1
+              },
+              {
+                "name": "live-docs:switch-press",
+                "start": 0.1,
+                "duration": 104.6
+              },
+              {
+                "name": "live-docs:capture-cards",
+                "start": 0.2,
+                "duration": 2.1
+              },
+              {
+                "name": "live-docs:capture-wires",
+                "start": 2.3,
+                "duration": 36.3
+              },
+              {
+                "name": "live-docs:capture-directories",
+                "start": 38.6,
+                "duration": 1.4
+              },
+              {
+                "name": "live-docs:capture-copies",
+                "start": 40.1,
+                "duration": 376.5
+              },
+              {
+                "name": "live-docs:switch-hold",
+                "start": 56.2,
+                "duration": 0.4
+              },
+              {
+                "name": "live-docs:switch-render",
+                "start": 58.2,
+                "duration": 35.5
+              },
+              {
+                "name": "live-docs:shells",
+                "start": 80.5,
+                "duration": 4.1
+              },
+              {
+                "name": "live-docs:switch-capture-destination",
+                "start": 416.6,
+                "duration": 0
+              },
+              {
+                "name": "live-docs:switch-animation-setup",
+                "start": 416.8,
+                "duration": 9.8
+              }
+            ]
+          },
+          {
+            "phase": "after",
+            "run": 2,
+            "loadBefore": "2.38",
+            "loadAfter": "2.27",
+            "label": "3D",
+            "returned": 194.7,
+            "transitionStart": 434.7,
+            "firstFrame": 43.3,
+            "secondFrame": 36.4,
+            "framesDrawn": 65,
+            "longestGapAfterFrame2": 36.4,
+            "layerElements": 1125,
+            "mapElements": 14918,
+            "measures": [
+              {
+                "name": "live-docs:capture-cards",
+                "start": 0.2,
+                "duration": 2.6
+              },
+              {
+                "name": "live-docs:switch-capture",
+                "start": 0.2,
+                "duration": 56.4
+              },
+              {
+                "name": "live-docs:switch-press",
+                "start": 0.2,
+                "duration": 112.7
+              },
+              {
+                "name": "live-docs:capture-wires",
+                "start": 2.8,
+                "duration": 35.5
+              },
+              {
+                "name": "live-docs:capture-directories",
+                "start": 38.3,
+                "duration": 1.7
+              },
+              {
+                "name": "live-docs:capture-copies",
+                "start": 40.1,
+                "duration": 390.2
+              },
+              {
+                "name": "live-docs:switch-hold",
+                "start": 56.6,
+                "duration": 0.5
+              },
+              {
+                "name": "live-docs:switch-render",
+                "start": 58.9,
+                "duration": 42.3
+              },
+              {
+                "name": "live-docs:shells",
+                "start": 83.7,
+                "duration": 4.1
+              },
+              {
+                "name": "live-docs:body-packing",
+                "start": 87.1,
+                "duration": 0.1
+              },
+              {
+                "name": "live-docs:switch-capture-destination",
+                "start": 430.4,
+                "duration": 0
+              },
+              {
+                "name": "live-docs:switch-animation-setup",
+                "start": 430.4,
+                "duration": 12.6
+              }
+            ]
+          },
+          {
+            "phase": "after",
+            "run": 3,
+            "loadBefore": "2.65",
+            "loadAfter": "2.65",
+            "label": "3D",
+            "returned": 222.2,
+            "transitionStart": 570.5,
+            "firstFrame": 77.1,
+            "secondFrame": 44.7,
+            "framesDrawn": 54,
+            "longestGapAfterFrame2": 73.1,
+            "layerElements": 1125,
+            "mapElements": 14918,
+            "measures": [
+              {
+                "name": "live-docs:switch-capture",
+                "start": 0.1,
+                "duration": 64.6
+              },
+              {
+                "name": "live-docs:switch-press",
+                "start": 0.1,
+                "duration": 129.5
+              },
+              {
+                "name": "live-docs:capture-cards",
+                "start": 0.2,
+                "duration": 2.8
+              },
+              {
+                "name": "live-docs:capture-wires",
+                "start": 3,
+                "duration": 42.2
+              },
+              {
+                "name": "live-docs:capture-directories",
+                "start": 45.2,
+                "duration": 2.9
+              },
+              {
+                "name": "live-docs:capture-copies",
+                "start": 48.2,
+                "duration": 515.5
+              },
+              {
+                "name": "live-docs:switch-hold",
+                "start": 64.7,
+                "duration": 0.8
+              },
+              {
+                "name": "live-docs:switch-render",
+                "start": 68,
+                "duration": 49.2
+              },
+              {
+                "name": "live-docs:shells",
+                "start": 99.5,
+                "duration": 5.2
+              },
+              {
+                "name": "live-docs:switch-capture-destination",
+                "start": 563.7,
+                "duration": 0
+              },
+              {
+                "name": "live-docs:switch-animation-setup",
+                "start": 563.8,
+                "duration": 18.9
+              }
+            ]
+          },
+          {
+            "phase": "after",
+            "run": 4,
+            "loadBefore": "2.68",
+            "loadAfter": "2.86",
+            "label": "3D",
+            "returned": 174.7,
+            "transitionStart": 443.2,
+            "firstFrame": 42.2,
+            "secondFrame": 41.1,
+            "framesDrawn": 65,
+            "longestGapAfterFrame2": 38.1,
+            "layerElements": 1125,
+            "mapElements": 14918,
+            "measures": [
+              {
+                "name": "live-docs:switch-capture",
+                "start": 0,
+                "duration": 51.7
+              },
+              {
+                "name": "live-docs:switch-press",
+                "start": 0,
+                "duration": 101
+              },
+              {
+                "name": "live-docs:capture-cards",
+                "start": 0.1,
+                "duration": 2.3
+              },
+              {
+                "name": "live-docs:capture-wires",
+                "start": 2.4,
+                "duration": 31.8
+              },
+              {
+                "name": "live-docs:capture-directories",
+                "start": 34.2,
+                "duration": 1.2
+              },
+              {
+                "name": "live-docs:capture-copies",
+                "start": 35.4,
+                "duration": 404.6
+              },
+              {
+                "name": "live-docs:switch-hold",
+                "start": 51.7,
+                "duration": 0.5
+              },
+              {
+                "name": "live-docs:switch-render",
+                "start": 54,
+                "duration": 36.1
+              },
+              {
+                "name": "live-docs:shells",
+                "start": 76.4,
+                "duration": 3.8
+              },
+              {
+                "name": "live-docs:switch-capture-destination",
+                "start": 440,
+                "duration": 0
+              },
+              {
+                "name": "live-docs:switch-animation-setup",
+                "start": 440,
+                "duration": 10.1
+              }
+            ]
+          },
+          {
+            "phase": "after",
+            "run": 5,
+            "loadBefore": "2.87",
+            "loadAfter": "2.87",
+            "label": "3D",
+            "returned": 181.1,
+            "transitionStart": 405.4,
+            "firstFrame": 38.9,
+            "secondFrame": 29.7,
+            "framesDrawn": 66,
+            "longestGapAfterFrame2": 36.7,
+            "layerElements": 1125,
+            "mapElements": 14918,
+            "measures": [
+              {
+                "name": "live-docs:switch-capture",
+                "start": 0.1,
+                "duration": 54
+              },
+              {
+                "name": "live-docs:switch-press",
+                "start": 0.1,
+                "duration": 104.8
+              },
+              {
+                "name": "live-docs:capture-cards",
+                "start": 0.2,
+                "duration": 2.3
+              },
+              {
+                "name": "live-docs:capture-wires",
+                "start": 2.5,
+                "duration": 33.8
+              },
+              {
+                "name": "live-docs:capture-directories",
+                "start": 36.3,
+                "duration": 1.3
+              },
+              {
+                "name": "live-docs:capture-copies",
+                "start": 37.8,
+                "duration": 364
+              },
+              {
+                "name": "live-docs:switch-hold",
+                "start": 54.1,
+                "duration": 0.4
+              },
+              {
+                "name": "live-docs:switch-render",
+                "start": 56.4,
+                "duration": 37.5
+              },
+              {
+                "name": "live-docs:shells",
+                "start": 80.3,
+                "duration": 3.9
+              },
+              {
+                "name": "live-docs:switch-capture-destination",
+                "start": 401.8,
+                "duration": 0.1
+              },
+              {
+                "name": "live-docs:switch-animation-setup",
+                "start": 401.9,
+                "duration": 9.9
+              }
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "declarations": {
+    "before": [
+      {
+        "phase": "before",
+        "picture": "repo",
+        "direction": "to3D",
+        "layerElements": 1003,
+        "copiedCount": 945,
+        "totalDecl": 372115,
+        "avgDecl": 393.8,
+        "medianDecl": 467,
+        "minDecl": 1,
+        "maxDecl": 467,
+        "contactSheet": null
+      },
+      {
+        "phase": "before",
+        "picture": "repo",
+        "direction": "to2D",
+        "layerElements": 1125,
+        "copiedCount": 1065,
+        "totalDecl": 417424,
+        "avgDecl": 391.9,
+        "medianDecl": 467,
+        "minDecl": 1,
+        "maxDecl": 467,
+        "contactSheet": null
+      },
+      {
+        "phase": "before",
+        "picture": "scripts",
+        "direction": "to3D",
+        "layerElements": 655,
+        "copiedCount": 626,
+        "totalDecl": 262052,
+        "avgDecl": 418.6,
+        "medianDecl": 467,
+        "minDecl": 1,
+        "maxDecl": 467,
+        "contactSheet": {
+          "origMoreLeft": 118,
+          "frozenMoreLeft": 118,
+          "origTabMoreShift": "-84.00px",
+          "origTabReading": "144.00",
+          "origOutlineD": "M10.5 0.5H133.5A10 10 0 0 1 143.",
+          "origWidth": 232,
+          "frozenWidth": 232
+        }
+      },
+      {
+        "phase": "before",
+        "picture": "scripts",
+        "direction": "to2D",
+        "layerElements": 655,
+        "copiedCount": 626,
+        "totalDecl": 262052,
+        "avgDecl": 418.6,
+        "medianDecl": 467,
+        "minDecl": 1,
+        "maxDecl": 467,
+        "contactSheet": {
+          "origMoreLeft": 118,
+          "frozenMoreLeft": 202,
+          "origTabMoreShift": "-84.00px",
+          "origTabReading": "144.00",
+          "origOutlineD": "M10.5 0.5H133.5A10 10 0 0 1 143.",
+          "origWidth": 232,
+          "frozenWidth": 232
+        }
+      },
+      {
+        "phase": "before",
+        "picture": "estate",
+        "direction": "to3D",
+        "layerElements": 142,
+        "copiedCount": 131,
+        "totalDecl": 55611,
+        "avgDecl": 424.5,
+        "medianDecl": 467,
+        "minDecl": 1,
+        "maxDecl": 467,
+        "contactSheet": null
+      },
+      {
+        "phase": "before",
+        "picture": "estate",
+        "direction": "to2D",
+        "layerElements": 142,
+        "copiedCount": 131,
+        "totalDecl": 55611,
+        "avgDecl": 424.5,
+        "medianDecl": 467,
+        "minDecl": 1,
+        "maxDecl": 467,
+        "contactSheet": null
+      }
+    ],
+    "after": [
+      {
+        "phase": "after",
+        "picture": "repo",
+        "direction": "to3D",
+        "layerElements": 1003,
+        "copiedCount": 945,
+        "totalDecl": 20997,
+        "avgDecl": 22.2,
+        "medianDecl": 14,
+        "minDecl": 1,
+        "maxDecl": 75,
+        "contactSheet": null
+      },
+      {
+        "phase": "after",
+        "picture": "repo",
+        "direction": "to2D",
+        "layerElements": 1125,
+        "copiedCount": 1065,
+        "totalDecl": 23211,
+        "avgDecl": 21.8,
+        "medianDecl": 13,
+        "minDecl": 1,
+        "maxDecl": 75,
+        "contactSheet": null
+      },
+      {
+        "phase": "after",
+        "picture": "scripts",
+        "direction": "to3D",
+        "layerElements": 655,
+        "copiedCount": 626,
+        "totalDecl": 7859,
+        "avgDecl": 12.6,
+        "medianDecl": 7,
+        "minDecl": 0,
+        "maxDecl": 72,
+        "contactSheet": {
+          "origMoreLeft": 118,
+          "frozenMoreLeft": 118,
+          "origTabMoreShift": "-84.00px",
+          "origTabReading": "144.00",
+          "origOutlineD": "M10.5 0.5H133.5A10 10 0 0 1 143.",
+          "origWidth": 232,
+          "frozenWidth": 232
+        }
+      },
+      {
+        "phase": "after",
+        "picture": "scripts",
+        "direction": "to2D",
+        "layerElements": 655,
+        "copiedCount": 626,
+        "totalDecl": 7859,
+        "avgDecl": 12.6,
+        "medianDecl": 7,
+        "minDecl": 0,
+        "maxDecl": 72,
+        "contactSheet": {
+          "origMoreLeft": 118,
+          "frozenMoreLeft": 118,
+          "origTabMoreShift": "-84.00px",
+          "origTabReading": "144.00",
+          "origOutlineD": "M10.5 0.5H133.5A10 10 0 0 1 143.",
+          "origWidth": 232,
+          "frozenWidth": 232
+        }
+      },
+      {
+        "phase": "after",
+        "picture": "estate",
+        "direction": "to3D",
+        "layerElements": 142,
+        "copiedCount": 131,
+        "totalDecl": 3227,
+        "avgDecl": 24.6,
+        "medianDecl": 15,
+        "minDecl": 1,
+        "maxDecl": 75,
+        "contactSheet": null
+      },
+      {
+        "phase": "after",
+        "picture": "estate",
+        "direction": "to2D",
+        "layerElements": 142,
+        "copiedCount": 131,
+        "totalDecl": 3227,
+        "avgDecl": 24.6,
+        "medianDecl": 15,
+        "minDecl": 1,
+        "maxDecl": 75,
+        "contactSheet": null
+      }
+    ]
+  },
+  "pixelComparison": {
+    "headBeforeVsAfter": [
+      {
+        "picture": "repo",
+        "direction": "to3D",
+        "sizes": [
+          1019,
+          670
+        ],
+        "differing": 0,
+        "of": 682730,
+        "largest": 0,
+        "box": null
+      },
+      {
+        "picture": "repo",
+        "direction": "to2D",
+        "sizes": [
+          1019,
+          601
+        ],
+        "differing": 0,
+        "of": 612419,
+        "largest": 0,
+        "box": null
+      },
+      {
+        "picture": "scripts",
+        "direction": "to3D",
+        "sizes": [
+          1019,
+          670
+        ],
+        "differing": 0,
+        "of": 682730,
+        "largest": 0,
+        "box": null
+      },
+      {
+        "picture": "scripts",
+        "direction": "to2D",
+        "sizes": [
+          1019,
+          601
+        ],
+        "differing": 696,
+        "of": 612419,
+        "largest": 114,
+        "box": [
+          25,
+          85,
+          256,
+          166
+        ]
+      },
+      {
+        "picture": "estate",
+        "direction": "to3D",
+        "sizes": [
+          1019,
+          670
+        ],
+        "differing": 8985,
+        "of": 682730,
+        "largest": 65,
+        "box": [
+          0,
+          21,
+          713,
+          669
+        ]
+      },
+      {
+        "picture": "estate",
+        "direction": "to2D",
+        "sizes": [
+          1019,
+          601
+        ],
+        "differing": 963,
+        "of": 612419,
+        "largest": 6,
+        "box": [
+          536,
+          585,
+          613,
+          600
+        ]
+      }
+    ],
+    "liveDenseVsSparseSameFrame": [
+      {
+        "picture": "estate",
+        "direction": "to3D",
+        "sizes": [
+          1019,
+          670
+        ],
+        "differing": 0,
+        "of": 682730,
+        "largest": 0,
+        "box": null
+      },
+      {
+        "picture": "scripts",
+        "direction": "to2D",
+        "sizes": [
+          1019,
+          601
+        ],
+        "differing": 0,
+        "of": 612419,
+        "largest": 0,
+        "box": null
+      }
+    ]
+  },
+  "shellHoverRim": {
+    "best": {
+      "seed": "shell:packages/engine",
+      "sx": 763.3331905412937,
+      "sy": 341.43864965424814,
+      "sr": 239.1739824799824,
+      "overlapCount": 64,
+      "overlapping": [
+        {
+          "id": ".github/workflows/npm-audit.yml",
+          "sx": 736.0471467114801,
+          "sy": 479.94859974151603,
+          "sr": 3.4249816498396886
+        },
+        {
+          "id": ".github/workflows/pages.yml",
+          "sx": 912.9908429986667,
+          "sy": 327.71858950784144,
+          "sr": 3.404764557496049
+        },
+        {
+          "id": ".vscode/settings.json",
+          "sx": 675.0942079857439,
+          "sy": 531.4155244611841,
+          "sr": 3.5345171116986154
+        },
+        {
+          "id": "packages/engine/grammars/powershell/build.sh",
+          "sx": 707.755721154763,
+          "sy": 369.0408985348565,
+          "sr": 3.358873387846107
+        },
+        {
+          "id": "packages/engine/src/live-docs/boardGraph.test.ts",
+          "sx": 748.1011214785215,
+          "sy": 183.55987445269363,
+          "sr": 6.957097149213841
+        }
+      ]
+    },
+    "hoverPoint": {
+      "x": 835.0853852852883,
+      "y": 341.43864965424814
+    },
+    "canvasRect": {
+      "x": 261,
+      "y": 50,
+      "width": 1019,
+      "height": 670,
+      "top": 50,
+      "right": 1280,
+      "bottom": 720,
+      "left": 261
+    },
+    "clip": {
+      "clipX": 417,
+      "clipY": 0,
+      "clipW": 694,
+      "clipH": 694
+    }
+  }
+}

@@ -12,6 +12,22 @@ export function requireElement<T extends HTMLElement>(id: string): T {
 }
 
 /**
+ * Reflect whether the side detail drawer is open (visible and not a full reading dialog) on `#main`,
+ * replacing `#main:has(#detail-panel.visible:not(.reading-dialog))` so DOM mutations inside `#main`
+ * never trigger `:has()` descendant invalidation across the map and transition copies (2026-11-24).
+ */
+export function syncDetailDrawerState(): void {
+  const main = document.getElementById("main");
+  const panel = document.getElementById("detail-panel");
+  if (!main || !panel) return;
+  if (panel.classList.contains("visible") && !panel.classList.contains("reading-dialog")) {
+    main.dataset.detailDrawer = "open";
+  } else {
+    delete main.dataset.detailDrawer;
+  }
+}
+
+/**
  * Draws the page in a palette, by name (the default for a name no palette has): its colours become the custom properties
  * every stylesheet reads, set on the page's root over the build's, and then the palette the maps' scripts read, whose
  * views draw again in it at once where they drew a colour themselves (`whenPaletteChanges`), with nothing moving.

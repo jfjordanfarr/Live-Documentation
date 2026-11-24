@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/explorer/src/client/detailPanel.ts`
-- Generated At: 2026-11-22T07:12:53.662Z
+- Generated At: 2026-11-24T09:10:38.329Z
 
 ## Authored
 ### Purpose
@@ -65,7 +65,7 @@ and node metadata.
 
 #### `inspectedSymbolHtml` {#symbol-inspectedsymbolhtml}
 - Type: function
-- Source: [source](../../../../../../packages/explorer/src/client/detailPanel.ts#L428)
+- Source: [source](../../../../../../packages/explorer/src/client/detailPanel.ts#L431)
 - Parameters: `block`: [`SymbolBlock`](../../../engine/src/live-docs/document.ts.mdmd.md#symbol-symbolblock)
 
 ##### `inspectedSymbolHtml` — Summary
@@ -84,6 +84,7 @@ own, so that an unclosed fence in one section ends with that section.
 - [`GitHubSlugger`](../../../engine/src/tooling/githubSlugger.ts.mdmd.md#symbol-githubslugger)
 - [`markdownLinks.readMarkdownLinks`](../../../engine/src/tooling/markdownLinks.ts.mdmd.md#symbol-readmarkdownlinks)
 - [`dom.requireElement`](./dom.ts.mdmd.md#symbol-requireelement)
+- [`dom.syncDetailDrawerState`](./dom.ts.mdmd.md#symbol-syncdetaildrawerstate)
 - [`graph-helpers.escapeHtml`](./graph-helpers.ts.mdmd.md#symbol-escapehtml)
 - [`moment.HistoryMoment`](./history/moment.ts.mdmd.md#symbol-historymoment) (type-only)
 - [`markdown.renderMarkdown`](./markdown.ts.mdmd.md#symbol-rendermarkdown)

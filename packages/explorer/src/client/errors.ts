@@ -93,6 +93,11 @@ export function reportFatalExplorerError(error: unknown): void {
       panel.inert = false;
       panel.removeAttribute("aria-hidden");
       panel.classList.add("visible");
+      const main = document.getElementById("main");
+      if (main) {
+        if (panel.classList.contains("reading-dialog")) delete main.dataset.detailDrawer;
+        else main.dataset.detailDrawer = "open";
+      }
     }
   }
 

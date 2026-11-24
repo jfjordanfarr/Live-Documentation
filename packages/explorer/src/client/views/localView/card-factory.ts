@@ -355,7 +355,23 @@ export function createClosedDirectory(context: CardContext, closed: ClosedDirect
 const SVG = "http://www.w3.org/2000/svg";
 
 /** What each skin with cells holds and its shape, kept beside its box so that the far looks' drawing can be made from the card reading's rooms. */
-const SKINS = new WeakMap<HTMLElement, { contents: ClosedContents; shape: ClosedDirectoryShape }>();
+const SKINS = new WeakMap<HTMLElement, { contents: ClosedContents; shape: ClosedDirectoryShape; reading: SVGSVGElement; width: number; height: number }>();
+
+/**
+ * Draw a closed directory's tab outline, More shift, and reading-size cells once laid out, skipping work when the box's
+ * size has not changed. Called both synchronously after layout measurement (so transition captures never race the
+ * initial ResizeObserver delivery, 2026-11-24) and on subsequent resizes.
+ */
+export function drawClosedSkin(box: HTMLElement): void {
+  const skin = SKINS.get(box);
+  if (!skin || !box.isConnected) return;
+  const width = box.offsetWidth, height = box.offsetHeight;
+  if (!width || (width === skin.width && height === skin.height)) return;
+  skin.width = width;
+  skin.height = height;
+  if (skin.shape === "tab") { placeTab(box); drawTabs(box); }
+  drawCells(box, skin.reading, skin.contents, skin.shape);
+}
 
 /** How far the folder's tab lifts its handle above the box's own padding, so that the name stands in the tab's middle and the body's top edge clear of the cells. */
 export const TAB_LIFT = 4;
@@ -389,11 +405,8 @@ function drawClosedLook(box: HTMLElement, closed: ClosedDirectory, style: Closed
     box.prepend(outline);
   }
   const contents: ClosedContents = closed.contents ?? { files: [], subdirectories: [] };
-  SKINS.set(box, { contents, shape: style.shape });
-  observeLayout(box, () => {
-    if (style.shape === "tab") { placeTab(box); drawTabs(box); }
-    drawCells(box, reading, contents, style.shape);
-  });
+  SKINS.set(box, { contents, shape: style.shape, reading, width: 0, height: 0 });
+  observeLayout(box, () => drawClosedSkin(box));
 }
 
 /** A folder's two outlines: with its tab, as laid out at the reading look, and plain, for the far looks. */

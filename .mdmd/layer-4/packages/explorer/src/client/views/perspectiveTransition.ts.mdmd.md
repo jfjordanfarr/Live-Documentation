@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/explorer/src/client/views/perspectiveTransition.ts`
-- Generated At: 2026-11-23T00:11:15.066Z
+- Generated At: 2026-11-24T09:10:39.640Z
 
 ## Authored
 ### Purpose
@@ -74,7 +74,7 @@ the page for seconds).
 
 #### `animatePerspective` {#symbol-animateperspective}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/views/perspectiveTransition.ts#L192)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/perspectiveTransition.ts#L202)
 - Parameters: `scene`: [`LocalScene`](#symbol-localscene); `graph`: [`ForceScene`](#symbol-forcescene); `viewport`: `DOMRect`
 
 ##### `animatePerspective` — Summary
@@ -84,7 +84,7 @@ are not changed by this temporary, non-interactive drawing.
 
 #### `holdPerspective` {#symbol-holdperspective}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/views/perspectiveTransition.ts#L389)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/perspectiveTransition.ts#L399)
 
 ##### `holdPerspective` — Summary
 Hold the source picture while the destination renderer produces its first frame: the source surface itself stays
@@ -108,6 +108,7 @@ zoom controls kept below it, which would otherwise grow the held map into that r
 - [`dom.settleViews`](../dom.ts.mdmd.md#symbol-settleviews)
 - [`palette.activePalette`](../palette.ts.mdmd.md#symbol-activepalette)
 - [`palette.mix`](../palette.ts.mdmd.md#symbol-mix)
+- [`palette.whenPaletteChanges`](../palette.ts.mdmd.md#symbol-whenpalettechanges)
 - [`forceGraphData.directoryNodeId`](./forceGraphData.ts.mdmd.md#symbol-directorynodeid)
 - [`perspectiveBodies.SceneBody`](./perspectiveBodies.ts.mdmd.md#symbol-scenebody) (type-only)
 - [`perspectiveGeometry.TransitionPoint`](./perspectiveGeometry.ts.mdmd.md#symbol-transitionpoint) (type-only)

@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/explorer/src/client/views/localView/card-factory.ts`
-- Generated At: 2026-11-22T07:12:55.595Z
+- Generated At: 2026-11-24T09:10:39.269Z
 
 ## Authored
 ### Purpose
@@ -119,16 +119,25 @@ says the act and the directory and takes the keyboard; the evidence reader
 is behind More, as a file's is. It carries no pin: a directory with a party
 file under it is at least encasing, so no wire ever reaches a closed box.
 
+#### `drawClosedSkin` {#symbol-drawclosedskin}
+- Type: function
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/card-factory.ts#L365)
+
+##### `drawClosedSkin` — Summary
+Draw a closed directory's tab outline, More shift, and reading-size cells once laid out, skipping work when the box's
+size has not changed. Called both synchronously after layout measurement (so transition captures never race the
+initial ResizeObserver delivery, 2026-11-24) and on subsequent resizes.
+
 #### `TAB_LIFT` {#symbol-tab_lift}
 - Type: const
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/card-factory.ts#L361)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/card-factory.ts#L377)
 
 ##### `TAB_LIFT` — Summary
 How far the folder's tab lifts its handle above the box's own padding, so that the name stands in the tab's middle and the body's top edge clear of the cells.
 
 #### `drawTabs` {#symbol-drawtabs}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/card-factory.ts#L433)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/card-factory.ts#L446)
 
 ##### `drawTabs` — Summary
 The folder's outlines (2026-11-15). The tab is the reading look's: it rises around the handle as laid out. From the
@@ -138,7 +147,7 @@ rounded outline without a step (the root's decision). The same outlines clip the
 
 #### `drawHeldLooks` {#symbol-drawheldlooks}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/card-factory.ts#L468)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/card-factory.ts#L481)
 
 ##### `drawHeldLooks` — Summary
 The far looks' drawing of a skin with cells (2026-11-13): the cells are the look's other content beside the name, so
@@ -148,14 +157,14 @@ data-cells-<look>, "left top width height scale", the width and height in held u
 
 #### `HiddenCellActions` {#symbol-hiddencellactions}
 - Type: interface
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/card-factory.ts#L545)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/card-factory.ts#L558)
 
 ##### `HiddenCellActions` — Summary
 What a handle's marks do when pressed: a file's cell pins the file, a directory's skin opens the directory.
 
 #### `createHiddenCells` {#symbol-createhiddencells}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/card-factory.ts#L559)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/card-factory.ts#L572)
 - Parameters: `hidden`: [`HiddenContents`](./branches.ts.mdmd.md#symbol-hiddencontents); `style`: [`ClosedStyle`](#symbol-closedstyle); `actions`: [`HiddenCellActions`](#symbol-hiddencellactions)
 
 ##### `createHiddenCells` — Summary
@@ -169,7 +178,7 @@ whole line is held at the file names' size. What the marks are and do is {@link 
 
 #### `createHiddenField` {#symbol-createhiddenfield}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/card-factory.ts#L583)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/card-factory.ts#L596)
 - Parameters: `hidden`: [`HiddenContents`](./branches.ts.mdmd.md#symbol-hiddencontents); `style`: [`ClosedStyle`](#symbol-closedstyle); `actions`: [`HiddenCellActions`](#symbol-hiddencellactions)
 
 ##### `createHiddenField` — Summary
@@ -184,7 +193,7 @@ reading look and the line's marks from the connections look out.
 
 #### `countsOf` {#symbol-countsof}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/card-factory.ts#L733)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/card-factory.ts#L746)
 
 ##### `countsOf` — Summary
 "3 files, 2 directories", either part left out at zero; "empty" when both are.

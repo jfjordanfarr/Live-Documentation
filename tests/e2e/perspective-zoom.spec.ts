@@ -50,7 +50,7 @@ test("hover isolates within retained files, and a row of a whole file narrows th
   await expect(page.locator('.local-directory-band[data-directory="tests/integration/programs/typescript/rosetta/src"]')).toBeVisible();
 });
 
-test("perspective copies preserve every computed SVG declaration but custom properties, without live identifiers or hooks", async ({ page }) => {
+test("perspective copies preserve every computed SVG declaration sparsely without custom properties, animations, or live hooks", async ({ page }) => {
   await page.goto(`/?view=local&node=${ROOT}helpers.ts`);
   // At rest, so that the reading and the copy see the map at one band: the card ladder declares some of a card's custom
   // properties only from the middle band out (--title-room-h, --title-scale), and the arrival passes through the middle
@@ -69,32 +69,72 @@ test("perspective copies preserve every computed SVG declaration but custom prop
     source.style.strokeDasharray = "1px, 2px";
     const computed = getComputedStyle(source);
     const names = Array.from(computed);
-    const reference = source.cloneNode(false) as SVGElement;
-    // Normalize all declarations through CSSOM, as the original freeze did. Computed aliases can change spelling
-    // when assigned (for example app-region), so comparing raw computed strings would report false differences.
-    for (const name of names) reference.style.setProperty(name, computed.getPropertyValue(name));
-    // A copy carries no custom property since 2026-11-23: nothing it draws reads one (every property that used one is
-    // copied with its value worked out, and a copy keeps no class for a stylesheet's rule or a pseudo-element to draw
-    // on), and the 323 of each element's 795 made the style the transition's first frame waits for cost more than
-    // twice as much, with the layer the same pixel for pixel without them (Probes/first-frame of that day). Until then
-    // this case asked for every custom property but the five of the map's zoom state.
-    return Object.fromEntries(names.filter(name => !name.startsWith("--")).map(name => [name, reference.style.getPropertyValue(name)]));
+    // A copy carries no custom property since 2026-11-23, never replays live animations, and since 2026-11-24 emits
+    // only sparse declarations that differ from a neutral baseline or inherited parent style while keeping every
+    // computed non-custom property identical inside the transition layer.
+    return Object.fromEntries(names
+      .filter(name => !name.startsWith("--") && name !== "interactivity" && name !== "animation" && !name.startsWith("animation-"))
+      .map(name => [name, computed.getPropertyValue(name)]));
   });
   expect(expected["font-family"]).toBe('"left;right:still"');
+  expect(expected["stroke-dasharray"]).toBe("1px, 2px");
   expect(Object.keys(expected).length, "the computed declarations a copy is compared by").toBeGreaterThan(300);
   await page.getByRole("button", { name: "3D", exact: true }).click();
   const bridge = page.locator(".perspective-transition[data-graph-files]");
   await expect(bridge).toBeVisible();
   const ghost = bridge.locator(`.perspective-card:has(+ .perspective-file-name[data-node-id="${ROOT}helpers.ts"])`);
-  const actual = await ghost.locator('button[aria-label="Pin helpers.ts"] svg path').evaluate((element, names) =>
-    Object.fromEntries(names.map(name => [name, (element as SVGElement).style.getPropertyValue(name)])), Object.keys(expected));
-  expect(actual).toEqual(expected);
-  expect(await ghost.locator('button[aria-label="Pin helpers.ts"] svg path').evaluate(element => Array.from((element as SVGElement).style).filter(name => name.startsWith("--"))),
-    "the custom properties a copy carries").toEqual([]);
+  const copyReport = await ghost.locator('button[aria-label="Pin helpers.ts"] svg path').evaluate((element, names) => {
+    const target = element as SVGElement;
+    const computed = getComputedStyle(target);
+    return {
+      computed: Object.fromEntries(names.map(name => [name, computed.getPropertyValue(name)])),
+      animationName: computed.getPropertyValue("animation-name"),
+      inlineCount: target.style.length,
+      customProps: Array.from(target.style).filter(name => name.startsWith("--"))
+    };
+  }, Object.keys(expected));
+  expect(copyReport.computed).toEqual(expected);
+  expect(copyReport.animationName).toBe("none");
+  expect(copyReport.inlineCount, "sparse copy emits far fewer inline declarations than all computed properties").toBeLessThan(80);
+  expect(copyReport.customProps, "the custom properties a copy carries").toEqual([]);
   await expect(bridge).toHaveAttribute("aria-hidden", "true");
   await expect(bridge).toHaveAttribute("inert", "");
   await expect(bridge.locator("[id], [data-transition-source], [onclick]")).toHaveCount(0);
   await expect(page.locator("#transition-source-marker")).toHaveCount(1);
+  await expect(bridge).toHaveCount(0);
+});
+
+test("perspective copies captured during a look change (.local-look-fading) force animation-name: none", async ({ page }) => {
+  await page.goto(`/?view=local&node=${ROOT}helpers.ts`);
+  await localMapSettled(page);
+  // Put #map-container into an active look-fade transition so live card elements carry active local-look-* animations
+  // when 3D is pressed, proving the frozen transition copies never replay those keyframes.
+  const activeBefore = await page.locator("#map-container").evaluate(container => {
+    container.dataset.looks = "three";
+    container.dataset.lookFrom = "reading";
+    container.dataset.lod = "far";
+    container.classList.add("local-look-fading");
+    const animated = [...container.querySelectorAll<HTMLElement>(".local-slot-card .symbol-label-text, .local-slot-card .local-file-more")]
+      .map(el => getComputedStyle(el).animationName)
+      .filter(name => name !== "none");
+    return animated;
+  });
+  expect(activeBefore.length, "live card elements carry active local-look-* animations before capture").toBeGreaterThan(0);
+  await page.getByRole("button", { name: "3D", exact: true }).click();
+  const bridge = page.locator(".perspective-transition[data-graph-files]");
+  await expect(bridge).toBeVisible();
+  const animatingCopies = await bridge.evaluate(layer => {
+    const bad: Array<{ tag: string; computed: string; inline: string }> = [];
+    for (const el of layer.querySelectorAll<HTMLElement | SVGElement>("*")) {
+      const computed = getComputedStyle(el).animationName;
+      const inline = el.style?.getPropertyValue("animation-name") ?? "";
+      if (computed !== "none" || (inline !== "" && inline !== "none")) {
+        bad.push({ tag: el.tagName, computed, inline });
+      }
+    }
+    return bad;
+  });
+  expect(animatingCopies, "no frozen transition copy may carry or replay an animation").toEqual([]);
   await expect(bridge).toHaveCount(0);
 });
 

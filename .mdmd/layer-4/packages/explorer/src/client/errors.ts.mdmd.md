@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/explorer/src/client/errors.ts`
-- Generated At: 2026-11-19T21:10:12.948Z
+- Generated At: 2026-11-24T09:43:15.135Z
 
 ## Authored
 ### Purpose
@@ -47,7 +47,7 @@ under "Select a Node", where neither a keyboard nor a screen reader could reach 
 
 #### `attachGlobalErrorHandler` {#symbol-attachglobalerrorhandler}
 - Type: function
-- Source: [source](../../../../../../packages/explorer/src/client/errors.ts#L103)
+- Source: [source](../../../../../../packages/explorer/src/client/errors.ts#L108)
 
 ##### `attachGlobalErrorHandler` — Summary
 Installs a `window.error` listener that delegates to {@link reportFatalExplorerError}.
@@ -58,6 +58,7 @@ Installs a `window.error` listener that delegates to {@link reportFatalExplorerE
 - [`template.detail-body`](../shared/template.html.mdmd.md#symbol-detail-body)
 - [`template.detail-panel`](../shared/template.html.mdmd.md#symbol-detail-panel)
 - [`template.detail-title`](../shared/template.html.mdmd.md#symbol-detail-title)
+- [`template.main`](../shared/template.html.mdmd.md#symbol-main)
 - [`template.stats-line`](../shared/template.html.mdmd.md#symbol-stats-line)
 - [`template.views`](../shared/template.html.mdmd.md#symbol-views)
 <!-- LIVE-DOC:END Dependencies -->

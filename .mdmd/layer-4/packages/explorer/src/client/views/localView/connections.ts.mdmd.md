@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/explorer/src/client/views/localView/connections.ts`
-- Generated At: 2026-11-24T05:59:36.396Z
+- Generated At: 2026-11-24T09:10:39.328Z
 
 ## Authored
 ### Purpose
@@ -44,7 +44,7 @@ Since 2026-11-19 ([Turn 23 of the November 18 record](../../../../../../../../AI
 ### Public Symbols
 #### `ConnectionsContext` {#symbol-connectionscontext}
 - Type: interface
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/connections.ts#L22)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/connections.ts#L23)
 
 ##### `ConnectionsContext` — Summary
 Ambient context required by {@link drawConnections} to measure DOM
@@ -52,7 +52,7 @@ anchors, read explorer state, and emit SVG paths.
 
 #### `drawConnections` {#symbol-drawconnections}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/connections.ts#L85)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/connections.ts#L86)
 - Parameters: `context`: [`ConnectionsContext`](#symbol-connectionscontext)
 
 ##### `drawConnections` — Summary
@@ -71,7 +71,7 @@ counted, and the cycles' returns, the ordinary case, never lit it).
 
 #### `drawsReference` {#symbol-drawsreference}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/connections.ts#L110)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/connections.ts#L112)
 - Parameters: `_unnamed_`: [`ConnectionsContext`](#symbol-connectionscontext); `edge`: [`LocalEdge`](./types.ts.mdmd.md#symbol-localedge)
 
 ##### `drawsReference` — Summary
@@ -81,7 +81,7 @@ and with files only (2026-11-15). The card's foot asks it before the picture is 
 
 #### `clearConnections` {#symbol-clearconnections}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/connections.ts#L151)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/connections.ts#L153)
 - Parameters: `runtime`: [`LocalViewRuntime`](./runtime.ts.mdmd.md#symbol-localviewruntime)
 
 ##### `clearConnections` — Summary
@@ -90,6 +90,7 @@ Takes every wire off the overlay and forgets the layer; the next drawing makes a
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
+- [`spatial-legend.syncLocalGatheredLegend`](../../panels/spatial-legend.ts.mdmd.md#symbol-synclocalgatheredlegend)
 - [`types.BezierTuning`](../../types.ts.mdmd.md#symbol-beziertuning) (type-only)
 - [`types.DirectionMarks`](../../types.ts.mdmd.md#symbol-directionmarks) (type-only)
 - [`types.ExplorerState`](../../types.ts.mdmd.md#symbol-explorerstate) (type-only)
