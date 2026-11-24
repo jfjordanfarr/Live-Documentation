@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/explorer/src/client/views/localView/reading-direction.ts`
-- Generated At: 2026-11-22T05:00:50.659Z
+- Generated At: 2026-11-24T11:19:16.998Z
 
 ## Authored
 ### Purpose
@@ -26,9 +26,18 @@ Says which way a 2D Local Map picture reads, what offers first from the left or 
 ##### `READS_ATTRIBUTE` — Summary
 The attribute on the map's layer that says which way its picture reads; the stylesheet draws the reflection from it.
 
+#### `effectiveReads` {#symbol-effectivereads}
+- Type: function
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/reading-direction.ts#L22)
+- Returns: [`MapReads`](../../types.ts.mdmd.md#symbol-mapreads)
+
+##### `effectiveReads` — Summary
+The reading direction the 2D picture currently shows: a drawn path's own reading direction while a
+path is active (`pathReads`), otherwise the viewer's persisted preference.
+
 #### `isMirrored` {#symbol-ismirrored}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/reading-direction.ts#L19)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/reading-direction.ts#L27)
 - Parameters: `reads`: [`MapReads`](../../types.ts.mdmd.md#symbol-mapreads)
 
 ##### `isMirrored` — Summary
@@ -36,7 +45,7 @@ Whether the picture is the layout reflected: what uses stands first from the lef
 
 #### `writeReads` {#symbol-writereads}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/reading-direction.ts#L24)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/reading-direction.ts#L32)
 - Parameters: `reads`: [`MapReads`](../../types.ts.mdmd.md#symbol-mapreads)
 
 ##### `writeReads` — Summary
@@ -44,21 +53,21 @@ Says on the map's layer which way its picture reads: the attribute while mirrore
 
 #### `PageSide` {#symbol-pageside}
 - Type: type
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/reading-direction.ts#L30)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/reading-direction.ts#L38)
 
 ##### `PageSide` — Summary
 A side of the page, as an arrow key or a pointer names it.
 
 #### `LayoutEnd` {#symbol-layoutend}
 - Type: type
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/reading-direction.ts#L33)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/reading-direction.ts#L41)
 
 ##### `LayoutEnd` — Summary
 An end of the layout's across: its start, where what offers stands, or its end, where what uses stands.
 
 #### `layoutEndAt` {#symbol-layoutendat}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/reading-direction.ts#L41)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/reading-direction.ts#L49)
 - Returns: [`LayoutEnd`](#symbol-layoutend)
 - Parameters: `side`: [`PageSide`](#symbol-pageside)
 
@@ -70,21 +79,21 @@ wires on a card's left).
 
 #### `PageSpan` {#symbol-pagespan}
 - Type: interface
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/reading-direction.ts#L46)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/reading-direction.ts#L54)
 
 ##### `PageSpan` — Summary
 A span across the page, in the page's pixels.
 
 #### `LayoutSpan` {#symbol-layoutspan}
 - Type: interface
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/reading-direction.ts#L49)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/reading-direction.ts#L57)
 
 ##### `LayoutSpan` — Summary
 A span across the layout, in the layout's own units from its origin: start before end, whichever way it is drawn.
 
 #### `spanInLayout` {#symbol-spaninlayout}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/reading-direction.ts#L57)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/reading-direction.ts#L65)
 - Returns: [`LayoutSpan`](#symbol-layoutspan)
 - Parameters: `box`: [`PageSpan`](#symbol-pagespan)
 
@@ -96,7 +105,7 @@ layout is the reflection of where it was measured.
 
 #### `shownSpan` {#symbol-shownspan}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/reading-direction.ts#L64)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/reading-direction.ts#L72)
 - Parameters: `span`: [`LayoutSpan`](#symbol-layoutspan)
 
 ##### `shownSpan` — Summary
@@ -105,5 +114,6 @@ A layout span as the page shows it, in layout units from the same origin: the in
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
+- [`types.ExplorerState`](../../types.ts.mdmd.md#symbol-explorerstate) (type-only)
 - [`types.MapReads`](../../types.ts.mdmd.md#symbol-mapreads) (type-only)
 <!-- LIVE-DOC:END Dependencies -->

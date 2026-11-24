@@ -4,6 +4,7 @@ import path from "node:path";
 import { PERSISTED_UI_KEY } from "../../packages/explorer/src/client/persistence/local-storage";
 import { readSettled, watchPage } from "./scenarios/instrument";
 import { LAWS, routesForward, usesLeftOfferingsRight } from "./scenarios/judgments";
+import { pathAddress } from "./search-bar";
 import { displayNames, loadGraph, localMapStill } from "./still-picture";
 
 /**
@@ -374,6 +375,56 @@ test("the sidebar legend kinds stay steady through a Mirror 3D turn and never fl
   const drops = await page.evaluate(() => (window as unknown as { __legendDrops: string[] }).__legendDrops);
   expect(drops, "legend kinds must never drop mid-turn").toEqual([]);
   await expect(row.locator(".legend-word")).toHaveText(expected);
+});
+
+test("at reading scale a mirrored directory's hidden-file cells stay anchored under its handle, arrow visually, and click to pin", async ({ page }) => {
+  await page.goto(pathAddress("/samples/estate/", "Portal/Pages/Default.aspx", { kind: "file", nodeId: "Database/SqlServer/dbo.Payment.sql" }));
+  await page.waitForSelector("#view-map.has-path");
+  await localMapStill(page);
+  await expect(layer(page)).toHaveAttribute("data-reads", "usesFirst");
+
+  // Both the narrow leaf directory (Portal/Pages) and the wide multi-column parent (Portal) anchor their
+  // hidden-file cells at the right edge directly under their mirrored handle rather than stranded at label.left.
+  for (const directory of ["Portal/Pages", "Portal"]) {
+    const alignment = await page.evaluate(dir => {
+      const label = document.querySelector<HTMLElement>(`#map-container .local-directory-label[data-directory="${dir}"]`)!;
+      const handle = label.querySelector<HTMLElement>(".local-directory-handle")!.getBoundingClientRect();
+      const labelBox = label.getBoundingClientRect();
+      const cells = [...label.querySelectorAll<HTMLButtonElement>(".local-directory-field .local-directory-cell:not([hidden])")]
+        .map(btn => ({ path: btn.dataset.path!, box: btn.getBoundingClientRect() }));
+      return {
+        label: { left: labelBox.left, right: labelBox.right, width: labelBox.width },
+        handle: { left: handle.left, right: handle.right },
+        cells: cells.map(c => ({ path: c.path, left: c.box.left, right: c.box.right, width: c.box.width, height: c.box.height }))
+      };
+    }, directory);
+    expect(alignment.cells.length, `${directory} has visible hidden-file cells`).toBeGreaterThan(0);
+    for (const cell of alignment.cells) {
+      expect(cell.right, `${directory} cell ${cell.path} sits inside label right edge`).toBeLessThanOrEqual(alignment.label.right + 4);
+      expect(cell.left, `${directory} cell ${cell.path} stands under its mirrored handle, not stranded at label left`)
+        .toBeGreaterThanOrEqual(alignment.handle.left - 8);
+    }
+  }
+
+  // Visual arrow navigation inside the reflected .local-directory-field: ArrowLeft moves visually leftward, ArrowRight back rightward.
+  const field = page.locator('#map-container .local-directory-label[data-directory="Portal/Pages"] .local-directory-field');
+  const first = field.locator(".local-directory-cell:not([hidden])").nth(0);
+  const second = field.locator(".local-directory-cell:not([hidden])").nth(1);
+  const firstBox = (await first.boundingBox())!;
+  const secondBox = (await second.boundingBox())!;
+  expect(secondBox.x, "reflected field lays cells right-to-left visually").toBeLessThan(firstBox.x);
+  await first.focus();
+  await expect(first).toBeFocused();
+  await page.keyboard.press("ArrowLeft");
+  await expect(second, "ArrowLeft moves visually leftward in a mirrored field").toBeFocused();
+  await page.keyboard.press("ArrowRight");
+  await expect(first, "ArrowRight moves visually rightward in a mirrored field").toBeFocused();
+
+  // Clicking a mirrored hidden-file cell hits its aligned box and pins that file onto the map.
+  const filePath = (await first.getAttribute("data-path"))!;
+  await first.click();
+  await localMapStill(page);
+  await expect(page.locator(`#map-container .node-card[data-id="${filePath}"]`)).toHaveCount(1);
 });
 
 

@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: `tests/e2e/local-map-path.spec.ts`
-- Generated At: 2026-11-22T03:29:45.486Z
+- Generated At: 2026-11-24T11:19:18.463Z
 
 ## Authored
 ### Purpose
@@ -37,6 +37,7 @@ _No public symbols detected_
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
 - `@playwright/test` - `Page`, `expect`, `test`
+- [`local-storage.PERSISTED_UI_KEY`](../../packages/explorer/src/client/persistence/local-storage.ts.mdmd.md#symbol-persisted_ui_key)
 - [`retained-state.describeRetained`](../../packages/explorer/src/client/views/retained-state.ts.mdmd.md#symbol-describeretained)
 - [`retained-state.retainedItems`](../../packages/explorer/src/client/views/retained-state.ts.mdmd.md#symbol-retaineditems)
 - [`retained-state.retainedKey`](../../packages/explorer/src/client/views/retained-state.ts.mdmd.md#symbol-retainedkey)
@@ -54,6 +55,7 @@ _No public symbols detected_
 - [`still-picture.displayNames`](./still-picture.ts.mdmd.md#symbol-displaynames)
 - [`still-picture.loadGraph`](./still-picture.ts.mdmd.md#symbol-loadgraph)
 - [`still-picture.localMapSettled`](./still-picture.ts.mdmd.md#symbol-localmapsettled)
+- [`still-picture.localMapStill`](./still-picture.ts.mdmd.md#symbol-localmapstill)
 - [`still-picture.panIntoView`](./still-picture.ts.mdmd.md#symbol-panintoview)
 - [`still-picture.readPicture`](./still-picture.ts.mdmd.md#symbol-readpicture)
 - [`still-picture.scoreExpanded`](./still-picture.ts.mdmd.md#symbol-scoreexpanded)

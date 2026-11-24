@@ -736,6 +736,9 @@ body.zoom-controls-active #view-map { height: calc(100% - 70px - var(--history-r
 /* A directory's line starts at its membrane's first corner, which a mirrored picture shows at the right: the line keeps
    its order, since its words still read from the left, and stands against the right end of its label. */
 #map-viewport[data-reads="usesFirst"] .local-directory-row { justify-content: flex-end; margin-left: calc(100% - 100% / var(--dir-scale)); transform-origin: right top; }
+/* Hidden-file cells under the name hold only marks and transparent hit boxes, no text: reflecting the field keeps
+   them anchored directly beneath their mirrored directory handle and keeps every button's hit box aligned to its mark. */
+#map-viewport[data-reads="usesFirst"] .local-directory-field { scale: -1 1; }
 #map-viewport[data-reads="usesFirst"] .symbol-grid { direction: rtl; }
 #map-viewport[data-reads="usesFirst"] .symbol-grid > :not(.symbol-row),
 #map-viewport[data-reads="usesFirst"] .symbol-grid .symbol-row > * { direction: ltr; }

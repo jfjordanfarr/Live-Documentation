@@ -371,17 +371,29 @@ test.describe("Wire Answers", () => {
     const both = await page.evaluate(() => {
       const view = document.querySelector("#view-map")!.getBoundingClientRect();
       const bands = [...document.querySelectorAll<SVGPathElement>(".wire-band:not(.run-band)")];
-      for (const [index, band] of bands.entries()) for (const at of [0.5, 0.35, 0.65, 0.2, 0.8]) {
-        const local = band.getPointAtLength(band.getTotalLength() * at), point = local.matrixTransform(band.getScreenCTM()!);
-        const hit = document.elementFromPoint(point.x, point.y);
-        const ground = !!hit && (hit.id === "view-map" || !!hit.closest("#map-viewport")) && !hit.closest(".node-card, .local-directory-closed, button, a, input, select, .connection-path");
-        if (!ground || point.x < view.left + 40 || point.x > view.right - 340 || point.y < view.top + 60 || point.y > view.bottom - 160) continue;
-        const holders = bands.filter(other => other !== band && other.isPointInStroke(local));
-        // A later band's reach holds the point too, though its own wire does not run through it (its wire, as wide as it
-        // is drawn, does not hold the point).
-        const later = holders.filter(other => bands.indexOf(other) > index);
-        const through = (other: SVGPathElement): boolean => { const wide = other.style.strokeWidth; other.style.strokeWidth = "3px"; const held = other.isPointInStroke(local); other.style.strokeWidth = wide; return held; };
-        if (later.length && !holders.some(through)) return { x: point.x, y: point.y, key: band.dataset.connectionKey!, later: later.length };
+      for (const [index, band] of bands.entries()) {
+        const ctm = band.getScreenCTM();
+        if (!ctm) continue;
+        const inverse = ctm.inverse();
+        const k = Math.hypot(ctm.a, ctm.b) || 1;
+        // Scale-aware clearance: at least 2 screen px clear of any other wire so integer mouse pixel rounding
+        // cannot turn a near-tie into the other wire being closer, while still inside its 12 screen px reach.
+        const nearWidth = `${Math.max(3, 4 / k)}px`;
+        const ownWidth = `${Math.max(2, 2 / k)}px`;
+        for (const at of [0.5, 0.35, 0.65, 0.2, 0.8]) {
+          const point = band.getPointAtLength(band.getTotalLength() * at).matrixTransform(ctm);
+          const sx = Math.round(point.x), sy = Math.round(point.y);
+          const hit = document.elementFromPoint(sx, sy);
+          const ground = !!hit && (hit.id === "view-map" || !!hit.closest("#map-viewport")) && !hit.closest(".node-card, .local-directory-closed, button, a, input, select, .connection-path");
+          if (!ground || sx < view.left + 40 || sx > view.right - 340 || sy < view.top + 60 || sy > view.bottom - 160) continue;
+          const local = new DOMPoint(sx, sy).matrixTransform(inverse);
+          const within = (el: SVGPathElement, width: string): boolean => { const wide = el.style.strokeWidth; el.style.strokeWidth = width; const held = el.isPointInStroke(local); el.style.strokeWidth = wide; return held; };
+          if (!within(band, ownWidth)) continue;
+          const holders = bands.filter(other => other !== band && other.isPointInStroke(local));
+          // A later band's reach holds the integer mouse pixel too, while its wire runs strictly farther from it.
+          const later = holders.filter(other => bands.indexOf(other) > index);
+          if (later.length && !holders.some(other => within(other, nearWidth))) return { x: sx, y: sy, key: band.dataset.connectionKey!, later: later.length };
+        }
       }
       return null;
     });
@@ -415,15 +427,15 @@ test.describe("Wire Answers", () => {
       await page.keyboard.press("Enter");
       await still(page);
     };
-    // One press in and back, to learn where a press in puts each point of the screen.
+    // One press in and back, to learn where a press in puts each point of the screen; also try Zoom Out if no button
+    // center sweeps onto a wire's reach on Zoom In alone as this repository's own graph grows.
     const before = await camera();
     await zoom("Zoom In");
     const closer = await camera();
     await zoom("Zoom Out");
     const back = await camera();
     expect([Math.abs(back.k - before.k) < 1e-6, Math.abs(back.x - before.x) < 0.5, Math.abs(back.y - before.y) < 0.5], "a press in and a press out return the camera").toEqual([true, true, true]);
-    // A control of a card whose middle, after a press in, will stand where a wire's reach now holds the map's ground.
-    const chosen = await page.evaluate(({ before, closer }) => {
+    const findSweptControl = (target: { k: number; x: number; y: number }) => page.evaluate(({ before, target }) => {
       const view = document.querySelector("#view-map")!.getBoundingClientRect(), layer = document.querySelector<HTMLElement>("#map-viewport")!;
       // A screen point belongs to a point of the map; the camera's two transforms say where that point goes.
       const origin = { x: layer.getBoundingClientRect().left - before.x, y: layer.getBoundingClientRect().top - before.y };
@@ -432,23 +444,34 @@ test.describe("Wire Answers", () => {
       for (const control of document.querySelectorAll<HTMLElement>("#map-container .node-card button")) {
         const box = control.getBoundingClientRect();
         if (box.width < 8 || box.height < 6 || getComputedStyle(control).visibility !== "visible") continue;
-        const now = { x: box.left + box.width / 2, y: box.top + box.height / 2 };
-        const then = { x: origin.x + closer.x + (now.x - origin.x - before.x) * closer.k / before.k, y: origin.y + closer.y + (now.y - origin.y - before.y) * closer.k / before.k };
-        if (then.x < view.left + 30 || then.x > view.right - 30 || then.y < view.top + 80 || then.y > view.bottom - 100) continue;
-        const hit = document.elementFromPoint(then.x, then.y);
-        const ground = !!hit && (hit.id === "view-map" || !!hit.closest("#map-viewport")) && !hit.closest(".node-card, .local-directory-closed, button, a, input, select, .connection-path");
-        if (!ground || !bands.some(band => band.isPointInStroke(new DOMPoint(then.x, then.y).matrixTransform(inverse)))) continue;
-        control.dataset.broughtUnder = "true";
-        control.addEventListener("click", () => { (window as unknown as { pressedAfterTheMove?: boolean }).pressedAfterTheMove = true; }, { once: true, capture: true });
-        return { x: then.x, y: then.y, control: control.getAttribute("aria-label") ?? control.className };
+        for (const frac of [0.5, 0.2, 0.8]) {
+          const now = { x: box.left + box.width * frac, y: box.top + box.height / 2 };
+          const then = { x: origin.x + target.x + (now.x - origin.x - before.x) * target.k / before.k, y: origin.y + target.y + (now.y - origin.y - before.y) * target.k / before.k };
+          if (then.x < view.left + 30 || then.x > view.right - 30 || then.y < view.top + 80 || then.y > view.bottom - 100) continue;
+          const hit = document.elementFromPoint(then.x, then.y);
+          const ground = !!hit && (hit.id === "view-map" || !!hit.closest("#map-viewport")) && !hit.closest(".node-card, .local-directory-closed, button, a, input, select, .connection-path");
+          if (!ground || !bands.some(band => band.isPointInStroke(new DOMPoint(then.x, then.y).matrixTransform(inverse)))) continue;
+          control.dataset.broughtUnder = "true";
+          control.addEventListener("click", () => { (window as unknown as { pressedAfterTheMove?: boolean }).pressedAfterTheMove = true; }, { once: true, capture: true });
+          return { x: then.x, y: then.y, control: control.getAttribute("aria-label") ?? control.className };
+        }
       }
       return null;
-    }, { before, closer });
-    expect(chosen, "a control that a press in will bring under a point now in a wire's reach on the ground").not.toBeNull();
+    }, { before, target });
+    let moveZoom: "Zoom In" | "Zoom Out" = "Zoom In";
+    let chosen = await findSweptControl(closer);
+    if (!chosen) {
+      await zoom("Zoom Out");
+      const farther = await camera();
+      await zoom("Zoom In");
+      moveZoom = "Zoom Out";
+      chosen = await findSweptControl(farther);
+    }
+    expect(chosen, "a control that a zoom press will bring under a point now in a wire's reach on the ground").not.toBeNull();
     await page.mouse.move(chosen!.x - 30, chosen!.y - 30);
     await page.mouse.move(chosen!.x, chosen!.y, { steps: 3 });
     await expect(page.locator(".wire-hand"), "the hand's spot stands under the pointer in the wire's reach").toBeVisible();
-    await zoom("Zoom In");
+    await zoom(moveZoom);
     // The control stands at the pointer's point now, and nothing of a wire stands over it.
     const under = await page.evaluate(({ x, y }) => { const hit = document.elementFromPoint(x, y); return { control: !!hit?.closest("[data-brought-under]"), what: hit ? `${hit.tagName.toLowerCase()}.${[...hit.classList].join(".")}` : "" }; }, chosen!);
     expect(under, `"${chosen!.control}" stands at the pointer after the picture moved`).toEqual({ control: true, what: under.what });

@@ -6,7 +6,7 @@ import { curveTo, LANE_MARGIN, routeBacktracks, threadedRoute, type Clearance, t
 import { edgeKey, type BranchGraph } from "./branches";
 import { isPairLine, linksOf } from "./directory-flow";
 import { OVERVIEW_FILES_ATTRIBUTE, OVERVIEW_LINES_ATTRIBUTE } from "./overview-files";
-import { isMirrored, shownSpan, spanInLayout, type LayoutSpan } from "./reading-direction";
+import { effectiveReads, isMirrored, shownSpan, spanInLayout, type LayoutSpan } from "./reading-direction";
 import { returningConnections, returnRoute, type LaidBox, type ReturningConnections } from "./returning-connections";
 import type { LocalViewRuntime, WireLayer } from "./runtime";
 import { attendConnections, releaseConnections } from "./symbol-highlight";
@@ -486,7 +486,7 @@ function drawBranchConnections(context: ConnectionsContext, layer: WireLayer, se
   const extents = context.measureLayoutExtents();
   if (!extents) return { drawn: 0, doubling: 0 };
   const columnOf = new Map(branches.columns.flatMap((nodes, column) => nodes.map(node => [node.id, column] as const)));
-  const reading = pictureReading(runtime, state.tuning.appearance.reads);
+  const reading = pictureReading(runtime, effectiveReads(state));
   const measure = createAnchorMeasurer(runtime.container, runtime.mapTransform.k || 1, reading);
   // The extents are the page's; the overlay is drawn in the layout's own across and reflected with the cards.
   const shown = shownSpan({ start: extents.content.left, end: extents.content.right }, reading.axisInLayer, reading.mirrored);

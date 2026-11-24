@@ -763,6 +763,12 @@ export interface ExplorerState {
   reading?: readonly ReadingChoice[];
   /** Independent exploration branches, retained across perspectives. */
   pins?: PinSet;
+  /**
+   * Transient 2D reading-direction override while a path is drawn (`"usesFirst"` when asked against
+   * offers-first order, `"offersFirst"` when asked with it, or flipped in place by the Mirror
+   * button). Never persisted to `localStorage` or serialized in the URL; cleared to `null` on exit.
+   */
+  pathReads?: MapReads | null;
   /** The end of the path asked for, drawn from the newest pin; null or absent when none is asked. */
   destination?: PathDestination | null;
   /** The file or directory the Knowledge Sources panel walks from in place of the entry points; null or absent for the entry points. */

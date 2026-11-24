@@ -233,6 +233,65 @@ describe("layout-measure", () => {
     it("never shrinks the text to make the path fit", () => {
       expect(computePathFitTransform(bounds(0, 0, 4000, 200), frame).k).toBe(1);
     });
+
+    it("holds the first card whole inside the frame when a tall path places it near the bottom", () => {
+      // Mirrors the 12-file estate route at 1280x800: tall middle columns leave the first card near the bottom of content.
+      const tight = { width: 1030, height: 560 };
+      const { horizontal, vertical } = framePadding(tight);
+      const content = bounds(0, 0, 4200, 1100);
+      const firstCard = bounds(16, 820, 260, 220);
+      const transform = computePathFitTransform(content, tight, firstCard);
+      expect(transform.k).toBe(1);
+      expect(transform.x + content.left).toBeCloseTo(horizontal);
+      expect(transform.y + firstCard.top).toBeGreaterThanOrEqual(vertical - 1e-6);
+      expect(transform.y + firstCard.bottom).toBeLessThanOrEqual(tight.height - vertical + 1e-6);
+      // Clamped to content bottom so there is no dead void below the path.
+      expect(transform.y + content.bottom).toBeCloseTo(tight.height - vertical);
+    });
+
+    it("holds the first card whole when it sits near the top or middle of a tall path", () => {
+      const tight = { width: 1030, height: 560 };
+      const { vertical } = framePadding(tight);
+      const content = bounds(0, 0, 4200, 1200);
+      const nearTop = bounds(16, 24, 260, 180);
+      const topTransform = computePathFitTransform(content, tight, nearTop);
+      expect(topTransform.y + content.top).toBeCloseTo(vertical);
+      expect(topTransform.y + nearTop.top).toBeGreaterThanOrEqual(vertical - 1e-6);
+      expect(topTransform.y + nearTop.bottom).toBeLessThanOrEqual(tight.height - vertical + 1e-6);
+
+      const middle = bounds(16, 500, 260, 180);
+      const midTransform = computePathFitTransform(content, tight, middle);
+      expect(midTransform.y + middle.top + middle.height / 2).toBeCloseTo(tight.height / 2);
+    });
+
+    it("aligns the top of an oversized first card to the top padding so its title stays visible", () => {
+      const tight = { width: 1030, height: 560 };
+      const { vertical } = framePadding(tight);
+      const content = bounds(0, 0, 4200, 1400);
+      const giant = bounds(16, 200, 260, 900);
+      const transform = computePathFitTransform(content, tight, giant);
+      expect(transform.k).toBe(1);
+      expect(transform.y + giant.top).toBeCloseTo(vertical);
+    });
+
+    it("aligns mirrored negative-left content and first card cleanly inside the left padding", () => {
+      // Under data-reads="usesFirst", .local-layout has scale: -1 1 about left top, so content.left is negative.
+      const tight = { width: 1030, height: 560 };
+      const { horizontal, vertical } = framePadding(tight);
+      const content = bounds(-4200, 0, 4200, 1100);
+      const firstCard = bounds(-4184, 800, 260, 220);
+      const wide = computePathFitTransform(content, tight, firstCard);
+      expect(wide.k).toBe(1);
+      expect(wide.x + content.left).toBeCloseTo(horizontal);
+      expect(wide.y + firstCard.top).toBeGreaterThanOrEqual(vertical - 1e-6);
+      expect(wide.y + firstCard.bottom).toBeLessThanOrEqual(tight.height - vertical + 1e-6);
+
+      // A short mirrored path that fits horizontally centres cleanly as well.
+      const shortContent = bounds(-700, 0, 700, 240);
+      const short = computePathFitTransform(shortContent, tight, bounds(-684, 20, 220, 180));
+      expect(short.x + shortContent.left + shortContent.width / 2).toBeCloseTo(tight.width / 2);
+      expect(short.y + shortContent.top + shortContent.height / 2).toBeCloseTo(tight.height / 2);
+    });
   });
 
   describe("clamp", () => {

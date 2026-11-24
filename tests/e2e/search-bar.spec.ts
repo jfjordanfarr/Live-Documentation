@@ -17,7 +17,7 @@ const INDEX = "packages/explorer/src/client/index.ts";
 const LAYOUT = "packages/explorer/src/client/views/forceGraphLayout.ts";
 const VIEWS = "packages/explorer/src/client/views";
 const ESTATE = "/samples/estate/";
-const BAR_TEXT = [".search-group", ".search-row-name", ".search-row-context", ".search-row-badge", ".search-fold-count", "#pathfind-status", ".pathfind-path-hop-name", ".pathfind-path-hop-symbol", ".pathfind-path-relation"];
+const BAR_TEXT = [".search-group", ".search-row-name", ".search-row-context", ".search-row-badge", ".search-fold-count", "#pathfind-status", ".pathfind-path-hop-name", ".pathfind-path-hop-context", ".pathfind-path-hop-symbol", ".pathfind-path-relation"];
 
 test.use({ viewport: { width: 1600, height: 1000 } });
 

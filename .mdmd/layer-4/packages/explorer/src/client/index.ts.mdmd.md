@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: `packages/explorer/src/client/index.ts`
 - Entry: declared
-- Generated At: 2026-11-24T09:10:38.465Z
+- Generated At: 2026-11-24T11:19:15.932Z
 
 ## Authored
 ### Purpose
@@ -158,6 +158,8 @@ _No public symbols detected_
 - [`directory-state.openDirectory`](./views/localView/directory-state.ts.mdmd.md#symbol-opendirectory)
 - [`directory-state.under`](./views/localView/directory-state.ts.mdmd.md#symbol-under)
 - [`index.createLocalView`](./views/localView/index.ts.mdmd.md#symbol-createlocalview)
+- [`reading-direction.effectiveReads`](./views/localView/reading-direction.ts.mdmd.md#symbol-effectivereads)
+- [`reading-direction.isMirrored`](./views/localView/reading-direction.ts.mdmd.md#symbol-ismirrored)
 - [`returning-connections.BACKWARD_STRENGTHS`](./views/localView/returning-connections.ts.mdmd.md#symbol-backward_strengths)
 - [`returning-connections.BackwardStrength`](./views/localView/returning-connections.ts.mdmd.md#symbol-backwardstrength-type) (type-only)
 - [`returning-connections.backwardStrength`](./views/localView/returning-connections.ts.mdmd.md#symbol-backwardstrength-function)

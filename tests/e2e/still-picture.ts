@@ -372,6 +372,8 @@ export interface PictureReading {
   cardsInFrame: number;
   cardsPartlyInFrame: number;
   smallestLabelPx: number | null;
+  /** Whether the 2D Local Map was drawn mirrored (`#map-viewport[data-reads="usesFirst"]`); absent when unmirrored. */
+  mirrored?: boolean;
 }
 
 /**
@@ -697,7 +699,8 @@ export async function readPicture(page: Page, view: ViewReading, names: Record<s
         wires.push({ key, consumer, provider, inFrame: meets(box), endpointsInFrame, endpointsUncovered, smallestFontPx, occludedSamples, samples, foreignSamples, laneSamples, foreignLaneSamples, lengthPx, horizontalPx, verticalPx, points, providerEnd, endpointBox, stub, kind, opacity: Number(style.opacity), filter: style.filter });
       }
       bench.remove();
-      return { wires, cards: cardReadings, frame: toBox(frame), scale, cardsTotal: cards.length, cardsInFrame, cardsPartlyInFrame, smallestLabelPx };
+      const mirrored = document.getElementById("map-viewport")?.getAttribute("data-reads") === "usesFirst";
+      return { wires, cards: cardReadings, frame: toBox(frame), scale, cardsTotal: cards.length, cardsInFrame, cardsPartlyInFrame, smallestLabelPx, ...(mirrored ? { mirrored: true } : {}) };
     },
     { view, names, frameSelector: FRAME, readingPx: READING_PX, along }
   );
@@ -851,7 +854,8 @@ export function scoreExpanded(picture: PictureReading, counts: Record<string, nu
     if (wire.points.length < 4) continue;
     const points: Array<[number, number]> = [];
     for (let i = 0; i + 1 < wire.points.length; i += 2) points.push([wire.points[i], wire.points[i + 1]]);
-    const reading = flowOf(points, wire.providerEnd);
+    const flowPoints = picture.mirrored ? points.map(([x, y]): [number, number] => [-x, y]) : points;
+    const reading = flowOf(flowPoints, wire.providerEnd);
     if (reading.flowing) flowing += 1;
     if (reading.backward) backward += 1;
   }

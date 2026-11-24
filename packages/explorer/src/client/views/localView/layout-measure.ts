@@ -334,19 +334,48 @@ function keepVisible(centred: number, lowest: number, highest: number): number {
 }
 
 /**
- * The camera for a drawn path: reading size, level with the frame's middle,
- * centred when the whole path fits and otherwise with its first file at the
- * left edge. A path is read from its first file, so what the frame cannot hold
- * lies to the right, one pan away, and never the start.
+ * The camera for a drawn path: reading size, centred horizontally when the whole
+ * path fits and otherwise with its first file at the left edge. Vertically,
+ * centred on the whole path when it fits inside the frame's paddings; otherwise
+ * centred on the first file (with its immediate directory label when that union
+ * fits), clamped to the path's vertical extent so no dead void opens outside
+ * the content while the first file stays whole inside the frame (or aligned at
+ * the top padding when the first file itself is taller than the frame).
  */
-export function computePathFitTransform(content: Bounds, frame: Frame): MapTransform {
+export function computePathFitTransform(
+  content: Bounds,
+  frame: Frame,
+  firstCard?: Bounds | null
+): MapTransform {
   const scale = 1;
-  const horizontalPadding = framePadding(frame).horizontal;
-  const fits = content.width * scale + horizontalPadding * 2 <= frame.width;
-  const x = fits
+  const { horizontal: horizontalPadding, vertical: verticalPadding } = framePadding(frame);
+  const fitsX = content.width * scale + horizontalPadding * 2 <= frame.width;
+  const x = fitsX
     ? frame.width / 2 - (content.left + content.width / 2) * scale
     : horizontalPadding - content.left * scale;
-  const y = frame.height / 2 - (content.top + content.height / 2) * scale;
+
+  const fitsY = content.height * scale + verticalPadding * 2 <= frame.height;
+  let y: number;
+  if (fitsY) {
+    y = frame.height / 2 - (content.top + content.height / 2) * scale;
+  } else if (firstCard) {
+    const firstFitsY = firstCard.height * scale + verticalPadding * 2 <= frame.height;
+    if (firstFitsY) {
+      const centered = frame.height / 2 - (firstCard.top + firstCard.height / 2) * scale;
+      const lowest = frame.height - verticalPadding - content.bottom * scale;
+      const highest = verticalPadding - content.top * scale;
+      const clamped = clamp(centered, Math.min(lowest, highest), Math.max(lowest, highest));
+      // Guarantee the first card stays wholly inside [verticalPadding, frame.height - verticalPadding]
+      // even if a caller passes a card box that extends past content's bounds.
+      const cardMinY = verticalPadding - firstCard.top * scale;
+      const cardMaxY = frame.height - verticalPadding - firstCard.bottom * scale;
+      y = clamp(clamped, Math.min(cardMinY, cardMaxY), Math.max(cardMinY, cardMaxY));
+    } else {
+      y = verticalPadding - firstCard.top * scale;
+    }
+  } else {
+    y = frame.height / 2 - (content.top + content.height / 2) * scale;
+  }
   return { x, y, k: scale };
 }
 

@@ -17,6 +17,7 @@ import { compareSymbolNames, type ClosedDirectory, type HiddenContents } from ".
 import { cellField, CELLS, fieldBands, lineMarks, SHAPE_CORNER, stackEdges, tabOutline, type Cell, type CellField, type ClosedContents, type Rect, type Skin } from "./closed-looks";
 import { parentDirectory } from "./directory-bands";
 import { chevronMarkup, HANDLE_LINE } from "./directory-handle";
+import { READS_ATTRIBUTE } from "./reading-direction";
 import type { ColumnRole } from "./types";
 import { NODE_HUB } from "./wire-gathering";
 import { countOf } from "./word-seams";
@@ -671,11 +672,15 @@ function markToolbar(tag: "span" | "div", className: string, directory: string, 
   element.append(...buttons);
   const shown = (): HTMLButtonElement[] => buttons.filter(button => !button.hidden);
   // One stop in the tab order: the arrow keys move the stop among the marks shown, Home and End to their ends.
+  // When `.local-directory-field` is reflected under a mirrored map, horizontal arrows follow visual screen order.
   element.addEventListener("keydown", event => {
     const list = shown(), at = list.indexOf(event.target as HTMLButtonElement);
     if (at < 0) return;
-    const to = event.key === "ArrowRight" || event.key === "ArrowDown" ? Math.min(list.length - 1, at + 1)
-      : event.key === "ArrowLeft" || event.key === "ArrowUp" ? Math.max(0, at - 1)
+    const reflected = className === "local-directory-field" && !!element.closest(`[${READS_ATTRIBUTE}="usesFirst"]`);
+    const forward = reflected ? "ArrowLeft" : "ArrowRight";
+    const backward = reflected ? "ArrowRight" : "ArrowLeft";
+    const to = event.key === forward || event.key === "ArrowDown" ? Math.min(list.length - 1, at + 1)
+      : event.key === backward || event.key === "ArrowUp" ? Math.max(0, at - 1)
         : event.key === "Home" ? 0 : event.key === "End" ? list.length - 1 : -1;
     if (to < 0) return;
     event.preventDefault();

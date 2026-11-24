@@ -13,6 +13,7 @@ import type { ExplorerNodePayload } from "../../shared/types";
 import { requireElement } from "../dom";
 import type { PathHop, Reach } from "../pathfind";
 import { destinationScope, type SearchHit, type SearchIndex, type SearchScope } from "./graph-search";
+import { disambiguateHopContexts } from "./path-hops";
 import { createSearchField } from "./search-field";
 
 /** The words a field shows for a pinned thing or a destination: its name, and where it stands for the tooltip. */
@@ -171,6 +172,7 @@ export function createSearchBar(options: SearchBarOptions): SearchBar {
         return;
       }
       strip.setAttribute("aria-label", told === "uses" ? "Path files, each uses the next" : "Path files, each is used by the next");
+      const contexts = disambiguateHopContexts(hops.map(hop => hop.node.id));
       hops.forEach((hop, index) => {
         const item = document.createElement("li");
         item.className = "pathfind-path-item";
@@ -194,6 +196,13 @@ export function createSearchBar(options: SearchBarOptions): SearchBar {
         name.textContent = hop.node.id.split("/").pop() || hop.node.id;
         name.title = hop.node.id;
         element.append(name);
+        const context = contexts.get(hop.node.id);
+        if (context) {
+          const qualifier = document.createElement("span");
+          qualifier.className = "pathfind-path-hop-context";
+          qualifier.textContent = context;
+          element.append(qualifier);
+        }
         if (hop.symbol) {
           const symbol = document.createElement("span");
           symbol.className = "pathfind-path-hop-symbol";

@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/explorer/src/client/views/localView/layout-measure.ts`
-- Generated At: 2026-11-21T12:03:24.049Z
+- Generated At: 2026-11-24T11:19:16.945Z
 
 ## Authored
 ### Purpose
@@ -158,19 +158,22 @@ Which edges of the frame the picture continues past, by more than `tolerance` px
 
 #### `computePathFitTransform` {#symbol-computepathfittransform}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/layout-measure.ts#L342)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/layout-measure.ts#L345)
 - Returns: [`MapTransform`](./types.ts.mdmd.md#symbol-maptransform)
-- Parameters: `content`: [`Bounds`](#symbol-bounds); `frame`: [`Frame`](#symbol-frame)
+- Parameters: `content`: [`Bounds`](#symbol-bounds); `frame`: [`Frame`](#symbol-frame); `firstCard`: [`Bounds`](#symbol-bounds)
 
 ##### `computePathFitTransform` — Summary
-The camera for a drawn path: reading size, level with the frame's middle,
-centred when the whole path fits and otherwise with its first file at the
-left edge. A path is read from its first file, so what the frame cannot hold
-lies to the right, one pan away, and never the start.
+The camera for a drawn path: reading size, centred horizontally when the whole
+path fits and otherwise with its first file at the left edge. Vertically,
+centred on the whole path when it fits inside the frame's paddings; otherwise
+centred on the first file (with its immediate directory label when that union
+fits), clamped to the path's vertical extent so no dead void opens outside
+the content while the first file stays whole inside the frame (or aligned at
+the top padding when the first file itself is taller than the frame).
 
 #### `applyContainerDimensions` {#symbol-applycontainerdimensions}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/layout-measure.ts#L356)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/layout-measure.ts#L385)
 - Parameters: `content`: [`Bounds`](#symbol-bounds)
 
 ##### `applyContainerDimensions` — Summary

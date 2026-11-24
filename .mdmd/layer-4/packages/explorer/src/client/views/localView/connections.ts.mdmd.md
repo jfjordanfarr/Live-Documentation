@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/explorer/src/client/views/localView/connections.ts`
-- Generated At: 2026-11-24T09:10:39.328Z
+- Generated At: 2026-11-24T11:19:16.794Z
 
 ## Authored
 ### Purpose
@@ -114,6 +114,7 @@ Takes every wire off the overlay and forgets the layer; the next drawing makes a
 - [`overview-files.OVERVIEW_FILES_ATTRIBUTE`](./overview-files.ts.mdmd.md#symbol-overview_files_attribute)
 - [`overview-files.OVERVIEW_LINES_ATTRIBUTE`](./overview-files.ts.mdmd.md#symbol-overview_lines_attribute)
 - [`reading-direction.LayoutSpan`](./reading-direction.ts.mdmd.md#symbol-layoutspan) (type-only)
+- [`reading-direction.effectiveReads`](./reading-direction.ts.mdmd.md#symbol-effectivereads)
 - [`reading-direction.isMirrored`](./reading-direction.ts.mdmd.md#symbol-ismirrored)
 - [`reading-direction.shownSpan`](./reading-direction.ts.mdmd.md#symbol-shownspan)
 - [`reading-direction.spanInLayout`](./reading-direction.ts.mdmd.md#symbol-spaninlayout)

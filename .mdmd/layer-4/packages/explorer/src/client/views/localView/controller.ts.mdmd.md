@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/explorer/src/client/views/localView/controller.ts`
-- Generated At: 2026-11-24T09:10:39.375Z
+- Generated At: 2026-11-24T11:19:16.838Z
 
 ## Authored
 ### Purpose
@@ -74,7 +74,7 @@ Since 2026-11-15 ([Turn 1 of the November 15 record](../../../../../../../../AI-
 ### Public Symbols
 #### `LocalViewController` {#symbol-localviewcontroller}
 - Type: class
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/controller.ts#L92)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/controller.ts#L95)
 - Implements: [`LocalViewApi`](./types.ts.mdmd.md#symbol-localviewapi)
 
 ##### `LocalViewController` — Summary
@@ -153,6 +153,9 @@ Coordinates the native Local Map, independent exploration pins and explicit FROM
 - [`layout-measure.computeLayoutExtents`](./layout-measure.ts.mdmd.md#symbol-computelayoutextents)
 - [`layout-measure.computePathFitTransform`](./layout-measure.ts.mdmd.md#symbol-computepathfittransform)
 - [`layout-measure.focusTransform`](./layout-measure.ts.mdmd.md#symbol-focustransform)
+- [`layout-measure.framePadding`](./layout-measure.ts.mdmd.md#symbol-framepadding)
+- [`layout-measure.measureElementBounds`](./layout-measure.ts.mdmd.md#symbol-measureelementbounds)
+- [`layout-measure.measureElementsBounds`](./layout-measure.ts.mdmd.md#symbol-measureelementsbounds)
 - [`layout-measure.settleTransform`](./layout-measure.ts.mdmd.md#symbol-settletransform)
 - [`layout-measure.wholeTransform`](./layout-measure.ts.mdmd.md#symbol-wholetransform)
 - [`layout-measure.withTransformReset`](./layout-measure.ts.mdmd.md#symbol-withtransformreset)
@@ -173,6 +176,7 @@ Coordinates the native Local Map, independent exploration pins and explicit FROM
 - [`pan-zoom.zoomAtPoint`](./pan-zoom.ts.mdmd.md#symbol-zoomatpoint)
 - [`pan-zoom.zoomByFactor`](./pan-zoom.ts.mdmd.md#symbol-zoombyfactor)
 - [`reading-direction.READS_ATTRIBUTE`](./reading-direction.ts.mdmd.md#symbol-reads_attribute)
+- [`reading-direction.effectiveReads`](./reading-direction.ts.mdmd.md#symbol-effectivereads)
 - [`reading-direction.isMirrored`](./reading-direction.ts.mdmd.md#symbol-ismirrored)
 - [`reading-direction.writeReads`](./reading-direction.ts.mdmd.md#symbol-writereads)
 - [`runtime.clearAnchorRegistry`](./runtime.ts.mdmd.md#symbol-clearanchorregistry)

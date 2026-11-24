@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/explorer/src/client/types.ts`
-- Generated At: 2026-11-24T05:59:35.819Z
+- Generated At: 2026-11-24T11:19:16.178Z
 
 ## Authored
 ### Purpose
@@ -649,7 +649,7 @@ Root state object for the Explorer client, managed by
 
 #### `TestCoverageMap` {#symbol-testcoveragemap}
 - Type: type
-- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L790)
+- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L796)
 
 ##### `TestCoverageMap` — Summary
 Map from implementation file path → covering test node(s).

@@ -238,12 +238,44 @@ test.describe("The way down from the World Map", () => {
       const parted = await page.locator("#pathfind-path .pathfind-path-relation").allTextContents();
       expect(parted).toHaveLength(hops.length - 1);
       expect(new Set(parted)).toEqual(new Set([from === "portal" ? "uses" : "is used by"]));
-      // The drawing is the same from either end: what offers first, the database's file at the left.
+      // The underlying layout stays offers-first (Database/SqlServer first), and when asked from the portal the 2D view
+      // draws mirrored transiently (`data-reads="usesFirst"`) so the picture and strip both read left-to-right from `from` to `to`.
       const drawn = await page.locator("#map-container .path-node").evaluateAll(columns => columns
         .sort((a, b) => Number((a as HTMLElement).dataset.column) - Number((b as HTMLElement).dataset.column))
         .map(column => column.querySelector<HTMLElement>(".node-card")!.dataset.id!));
       expect(drawn).toEqual(from === "portal" ? [...hops].reverse() : hops);
       expect(drawn[0].startsWith("Database/SqlServer/")).toBe(true);
+      const viewport = page.locator("#map-viewport");
+      const mirrorBtn = page.getByRole("button", { name: "Mirror the map", exact: true });
+      if (from === "portal") {
+        await expect(viewport).toHaveAttribute("data-reads", "usesFirst");
+        await expect(mirrorBtn).toHaveAttribute("aria-pressed", "true");
+      } else {
+        await expect(viewport).not.toHaveAttribute("data-reads", /.*/u);
+        await expect(mirrorBtn).toHaveAttribute("aria-pressed", "false");
+      }
+      const onScreen = await page.locator("#map-container .path-node .node-card").evaluateAll(cards => cards
+        .map(card => ({ id: (card as HTMLElement).dataset.id!, x: card.getBoundingClientRect().left }))
+        .sort((a, b) => a.x - b.x));
+      expect(onScreen.map(card => card.id), `screen left-to-right order matches asked direction (${from} -> ${to})`).toEqual(hops);
+      // The visual first card stands whole inside the unobstructed frame at reading scale (k = 1; no exploration arrival pull-back).
+      const firstFit = await page.evaluate(id => {
+        const view = document.querySelector("#view-map")!.getBoundingClientRect();
+        const report = document.querySelector<HTMLElement>("#path-report");
+        const top = report && !report.hidden ? Math.max(view.top, report.getBoundingClientRect().bottom) : view.top;
+        const controls = [document.querySelector<HTMLElement>("#controls"), document.querySelector<HTMLElement>(".perspective-controls")]
+          .filter((el): el is HTMLElement => !!el && !el.hidden && getComputedStyle(el).display !== "none");
+        const bottom = controls.reduce((min, el) => Math.min(min, el.getBoundingClientRect().top), view.bottom);
+        const viewport = document.querySelector<HTMLElement>("#map-viewport")!;
+        const scale = new DOMMatrix(getComputedStyle(viewport).transform).a || 1;
+        const box = document.querySelector<HTMLElement>(`#map-container .node-card[data-id="${CSS.escape(id)}"]`)!.getBoundingClientRect();
+        return {
+          scale,
+          whole: box.left >= view.left - 0.5 && box.right <= view.right + 0.5 && box.top >= top - 0.5 && box.bottom <= bottom + 0.5
+        };
+      }, hops[0]);
+      expect(firstFit.scale, `path from ${from} to ${to} arrives at reading scale`).toBeCloseTo(1, 2);
+      expect(firstFit.whole, `first card ${hops[0]} is whole inside unobstructed frame`).toBe(true);
       // The address is the Local Map's own: the thing asked from its one retained thing, the other its destination.
       const snapshot = currentSnapshot(page);
       expect([...snapshot.openDirectories]).toEqual([folder[from]]);
@@ -253,8 +285,12 @@ test.describe("The way down from the World Map", () => {
       const elsewhere = await browser.newContext({ viewport: { width: 1280, height: 800 }, deviceScaleFactor: 1 });
       const cold = await elsewhere.newPage();
       await cold.goto(page.url());
+      await cold.waitForSelector("#view-map.active .node-card");
+      await localMapStill(cold);
       await expect(cold.locator("#pathfind-status")).toHaveText(await status.textContent() ?? "");
       expect(await cold.locator("#pathfind-path .pathfind-path-hop").evaluateAll(buttons => buttons.map(button => button.getAttribute("title")!))).toEqual(hops);
+      if (from === "portal") await expect(cold.locator("#map-viewport")).toHaveAttribute("data-reads", "usesFirst");
+      else await expect(cold.locator("#map-viewport")).not.toHaveAttribute("data-reads", /.*/u);
       await elsewhere.close();
       // Back returns to the board with the thing the question started from still pinned.
       await page.goBack();

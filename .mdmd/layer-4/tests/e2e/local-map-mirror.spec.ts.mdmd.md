@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: `tests/e2e/local-map-mirror.spec.ts`
-- Generated At: 2026-11-22T04:50:14.379Z
+- Generated At: 2026-11-24T11:59:35.643Z
 
 ## Authored
 ### Purpose
@@ -38,6 +38,7 @@ _No public symbols detected_
 - [`judgments.LAWS`](./scenarios/judgments.ts.mdmd.md#symbol-laws)
 - [`judgments.routesForward`](./scenarios/judgments.ts.mdmd.md#symbol-routesforward)
 - [`judgments.usesLeftOfferingsRight`](./scenarios/judgments.ts.mdmd.md#symbol-usesleftofferingsright)
+- [`search-bar.pathAddress`](./search-bar.ts.mdmd.md#symbol-pathaddress)
 - [`still-picture.displayNames`](./still-picture.ts.mdmd.md#symbol-displaynames)
 - [`still-picture.loadGraph`](./still-picture.ts.mdmd.md#symbol-loadgraph)
 - [`still-picture.localMapStill`](./still-picture.ts.mdmd.md#symbol-localmapstill)

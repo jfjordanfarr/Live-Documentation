@@ -27,6 +27,9 @@ import {
   computeFitTransform,
   computePathFitTransform,
   applyContainerDimensions,
+  framePadding,
+  measureElementBounds,
+  measureElementsBounds,
   settleTransform,
   focusTransform,
   cardReadingTransform,
@@ -50,7 +53,7 @@ import {
   handleWheel as handleWheelFn,
   startDrag
 } from "./pan-zoom";
-import { isMirrored, READS_ATTRIBUTE, writeReads } from "./reading-direction";
+import { effectiveReads, isMirrored, READS_ATTRIBUTE, writeReads } from "./reading-direction";
 import {
   clearAnchorRegistry,
   createRuntime,
@@ -829,9 +832,13 @@ export class LocalViewController implements LocalViewApi {
     this.container.toggleAttribute(OVERVIEW_FILES_ATTRIBUTE, overviewFilesShown(this.options.state.tuning.localMap, this.look));
     this.reading?.updatePresentation(this.readingVisible);
     const stage = this.stage ?? (this.stage = createStage(root));
-    // A picture not yet drawn takes the stored reading with nothing to hold in place (applyReads, for a change under a shown one).
-    if (keepStage) this.applyReads();
-    else if (this.container.parentElement) writeReads(this.container.parentElement, this.options.state.tuning.appearance.reads);
+    // Every full render applies the effective reading direction synchronously before branches and fit measure the page;
+    // Mirror Turn animations run only on in-place applyReads() calls when the scene itself stays put.
+    const layer = this.container.parentElement;
+    if (layer) {
+      this.mirrorMotion?.end();
+      writeReads(layer, effectiveReads(this.options.state));
+    }
     renderBranches(this, stage);
     this.applyHistoryEmphasis();
     if (path) this.fitMapToPath();
@@ -1600,7 +1607,13 @@ export class LocalViewController implements LocalViewApi {
   applyReads(): void {
     const layer = this.container.parentElement;
     if (!layer) return;
-    const reads = this.options.state.tuning.appearance.reads, mirrored = isMirrored(reads);
+    const reads = effectiveReads(this.options.state), mirrored = isMirrored(reads);
+    // A full re-render is already queued (e.g. leaving or switching path mode): end any stale turn and let render()
+    // write the new scene's reading direction cleanly rather than spinning the outgoing cards.
+    if (this.pendingRender !== 0) {
+      this.mirrorMotion?.end();
+      return;
+    }
     // Asked again for what the motion under way is already going to: nothing to do. A press while the picture still
     // moves: that motion ends at once where it was going, so that the picture is never left between its two states,
     // and this change starts from there.
@@ -1614,11 +1627,21 @@ export class LocalViewController implements LocalViewApi {
     if (layer.hasAttribute(READS_ATTRIBUTE) === mirrored) return;
     const root = this.isShown() ? this.contentRoot : null;
     if (!root) { writeReads(layer, reads); return; }
+    const frame = this.frameRect(), rootRect = root.getBoundingClientRect();
     const newest = this.pins.entries.at(-1)?.nodeId;
-    const held = this.actedOnElement()?.closest<HTMLElement>(".node-card")
+    const candidate = this.actedOnElement()?.closest<HTMLElement>(".node-card")
       ?? root.querySelector<HTMLElement>(".node-card.local-focus")
       ?? (newest ? root.querySelector<HTMLElement>(`.node-card[data-id="${CSS.escape(newest)}"]`) : null);
-    const frame = this.frameRect(), rootRect = root.getBoundingClientRect(), heldRect = held?.getBoundingClientRect();
+    const path = this.getActivePath();
+    const inFrame = (card: HTMLElement | null): HTMLElement | null => {
+      if (!card) return null;
+      const rect = card.getBoundingClientRect();
+      return rect.width > 0 && rect.right > frame.left && rect.left < frame.left + frame.width ? card : null;
+    };
+    const pathStartId = path ? (!mirrored ? path.nodeIds[path.nodeIds.length - 1] : path.nodeIds[0]) : undefined;
+    const pathStart = pathStartId ? root.querySelector<HTMLElement>(`.node-card[data-id="${CSS.escape(pathStartId)}"]`) : null;
+    const held = path ? (inFrame(candidate) ?? inFrame(pathStart)) : candidate;
+    const heldRect = held?.getBoundingClientRect();
     const holdAt = heldRect ? heldRect.left + heldRect.width / 2 : frame.left + frame.width / 2;
     // The layout's own edge on the page: the root's box lies to its right as laid out and to its left mirrored.
     const rootEdge = mirrored ? rootRect.left : rootRect.right;
@@ -2810,12 +2833,48 @@ export class LocalViewController implements LocalViewApi {
   }
 
   /**
-   * Frames a drawn path: reading size, its first file at the left edge when the
-   * path is wider than the frame, centred when it is not.
+   * Frames a drawn path: reading size, its visual first file held whole inside
+   * the frame (with its immediate directory label when their union fits), at
+   * the left edge when the path is wider than the frame and centred when it fits.
    */
   fitMapToPath(): void {
+    // A path owns its arrival at reading scale: cancel any pending exploration pull-back so it cannot zoom the path out later.
+    this.cancelArrival();
+    this.arrivalPending = false;
+    this.arrivalFocus = false;
+    this.linesArrival = null;
+    this.stepNewcomer = null;
     this.readingFrameTarget = null;
-    this.fitMap((extents, frame) => computePathFitTransform(extents.content, frame));
+    this.fitMap((extents, frame) => {
+      const path = this.getActivePath();
+      const firstId = path
+        ? (isMirrored(effectiveReads(this.options.state)) ? path.nodeIds[path.nodeIds.length - 1] : path.nodeIds[0])
+        : null;
+      const firstCard = firstId ? this.measurePathStartBounds(firstId, frame) : null;
+      return computePathFitTransform(extents.content, frame, firstCard);
+    });
+  }
+
+  /**
+   * Measures the visual first card of a drawn path in unscaled container coordinates,
+   * including its immediate enclosing directory label when their combined height fits
+   * inside the frame's vertical paddings.
+   */
+  private measurePathStartBounds(nodeId: string, frame: Frame): Bounds | null {
+    const card = this.contentRoot?.querySelector<HTMLElement>(`.node-card[data-id="${CSS.escape(nodeId)}"]`) ?? null;
+    if (!card) return null;
+    return withTransformReset(this.container, containerRect => {
+      const cardBounds = measureElementBounds(card, containerRect);
+      if (!cardBounds) return null;
+      const band = card.closest<HTMLElement>(".local-directory-band");
+      const label = band?.querySelector<HTMLElement>(":scope > .local-directory-label") ?? null;
+      if (label) {
+        const combined = measureElementsBounds([label, card], containerRect);
+        const { vertical } = framePadding(frame);
+        if (combined && combined.height + vertical * 2 <= frame.height) return combined;
+      }
+      return cardBounds;
+    });
   }
 
   /**

@@ -1,22 +1,22 @@
 import { test, expect, type Page } from "@playwright/test";
 
+import { PERSISTED_UI_KEY } from "../../packages/explorer/src/client/persistence/local-storage";
 import { describeRetained, retainedItems, retainedKey } from "../../packages/explorer/src/client/views/retained-state";
 import { AA_SMALL_TEXT, backdrop, contrastRatio, parseColour } from "./contrast";
 import { choose, currentSnapshot, newestKey, pathAddress } from "./search-bar";
-import { LOCAL_MAP, boxOf, centerDistance, displayNames, loadGraph, localMapSettled, panIntoView, readPicture, scoreExpanded, symbolCounts } from "./still-picture";
+import { LOCAL_MAP, boxOf, centerDistance, displayNames, loadGraph, localMapSettled, localMapStill, panIntoView, readPicture, scoreExpanded, symbolCounts } from "./still-picture";
 
 /**
- * The Local Map's path mode draws a path only in the map's reading direction:
- * what offers stands left of what uses it, every wire leaves a blue pin and
- * enters a green one (the owner's rule of 2025-12-18, which still governs the
- * drawing). Until 2026-11-22 a path asked the other way round drew nothing and
- * offered the reverse question as a link; since the owner's word of that day
- * it is answered whichever way it runs, drawn the same and told as asked: the
- * bar keeps the two ends as given and the report names the files from the end
- * asked from, saying of each that it uses the next. A path is
- * asked through the search bar (2026-10-14): the newest pin is where it starts,
- * the destination field, shown once anything is pinned, is where it ends, and
- * clearing the destination returns to the exploration.
+ * The Local Map's path mode keeps the wire grammar in either direction: every
+ * wire leaves a blue (offers) pin and enters a green (uses) pin with nothing
+ * reaching backwards. Until 2026-11-22 a path asked from the end that uses drew
+ * nothing and offered the reverse question as a link; on 2026-11-22 it began
+ * answering either way and telling the strip as asked; since 2026-11-24 a route
+ * asked from the using end also mirrors the 2D picture transiently via
+ * `#map-viewport[data-reads="usesFirst"]` so both the strip and the 2D map read
+ * left-to-right from the asked start at reading scale (`k = 1`), with the first
+ * card held whole inside the unobstructed frame and colliding basenames told
+ * apart on the strip.
  *
  * Over the estate sample, whose chain GatewayClient.cs -> PaymentsController.cs
  * -> HubProxy.cs -> IPaymentHub.cs runs from the file that depends to the
@@ -70,6 +70,39 @@ const pathFiles = (page: Page): Promise<string[]> =>
   page.locator("#map-container .path-node").evaluateAll(columns => columns
     .sort((a, b) => Number((a as HTMLElement).dataset.column) - Number((b as HTMLElement).dataset.column))
     .map(column => column.querySelector<HTMLElement>(".node-card")!.dataset.id!));
+
+/** Path cards ordered strictly by their screen x coordinate (left to right as drawn on screen). */
+const pathFilesLeftToRight = (page: Page): Promise<Array<{ id: string; x: number }>> =>
+  page.locator("#map-container .path-node .node-card").evaluateAll(cards => cards
+    .map(card => ({ id: (card as HTMLElement).dataset.id!, x: card.getBoundingClientRect().left }))
+    .sort((a, b) => a.x - b.x));
+
+/** Measure a card against the unobstructed Local Map frame (below #path-report, above #controls and .perspective-controls). */
+async function unobstructedCardFit(page: Page, nodeId: string): Promise<{
+  scale: number;
+  card: { left: number; right: number; top: number; bottom: number };
+  frame: { left: number; right: number; top: number; bottom: number };
+}> {
+  return page.evaluate(id => {
+    const view = document.querySelector("#view-map")!.getBoundingClientRect();
+    const report = document.querySelector<HTMLElement>("#path-report");
+    const reportRect = report && !report.hidden ? report.getBoundingClientRect() : null;
+    const controls = [
+      document.querySelector<HTMLElement>("#controls"),
+      document.querySelector<HTMLElement>(".perspective-controls")
+    ].filter((el): el is HTMLElement => !!el && !el.hidden && getComputedStyle(el).display !== "none");
+    const bottom = controls.reduce((min, el) => Math.min(min, el.getBoundingClientRect().top), view.bottom);
+    const top = reportRect ? Math.max(view.top, reportRect.bottom) : view.top;
+    const viewport = document.querySelector<HTMLElement>("#map-viewport")!;
+    const scale = new DOMMatrix(getComputedStyle(viewport).transform).a || 1;
+    const card = document.querySelector<HTMLElement>(`#map-container .node-card[data-id="${CSS.escape(id)}"]`)!.getBoundingClientRect();
+    return {
+      scale,
+      card: { left: card.left, right: card.right, top: card.top, bottom: card.bottom },
+      frame: { left: view.left, right: view.right, top, bottom }
+    };
+  }, nodeId);
+}
 
 /** The answer must be visible and readable, including when it has no success strip beneath it. */
 async function readablePathStatus(page: Page): Promise<void> {
@@ -214,12 +247,16 @@ for (const [base, file] of [["/", "packages/explorer/src/client/index.ts"], [BAS
 }
 
 test.describe("Local Map path mode", () => {
-  // Until 2026-11-22: "asked with the dependent first, it draws nothing and offers the reverse; the reverse pins the
-  // destination and draws blue to green". The drawing's assertions are those it made after taking the offer.
-  test("asked with the dependent first, it is answered at once: drawn blue to green, told from the dependent; clearing returns to the exploration", async ({ page }) => {
+  // Until 2026-11-22: refused with a reverse link; on 2026-11-22: drawn unmirrored and told reversed;
+  // since 2026-11-24: drawn mirrored transiently via data-reads="usesFirst" so both strip and picture read left-to-right from the asked start.
+  test("asked with the dependent first, it draws mirrored from that start, flips cleanly on Mirror without saving, and clearing restores exploration", async ({ page }) => {
     await openLocalMap(page, DEPENDENT);
     const subject = `#map-container .node-card[data-id="${DEPENDENT}"]`;
+    const mirrorBtn = page.getByRole("button", { name: "Mirror the map", exact: true });
+    const viewport = page.locator("#map-viewport");
+    const legendRoles = page.locator("#local-legend .legend-row--roles");
     await expect(page.locator("#search-destination-field")).toBeHidden();
+    await expect(viewport).not.toHaveAttribute("data-reads", /.*/u);
 
     // Choosing the subject in the bar pins it, and the destination field appears
     await choose(page, "subject", "GatewayClient", { file: DEPENDENT });
@@ -234,8 +271,7 @@ test.describe("Local Map path mode", () => {
     await choose(page, "destination", "IPaymentHub", { file: DEPENDENCY });
     await page.waitForSelector("#view-map.has-path");
     await page.waitForSelector("#map-connections .connection-path:not(.bundle-run)", { state: "attached" });
-    await localMapSettled(page);
-    await page.waitForTimeout(400);
+    await localMapStill(page);
 
     // Answered: no refusal, no link, nothing pinned to answer, and the two ends as the person gave them
     const status = page.locator("#pathfind-status");
@@ -246,41 +282,70 @@ test.describe("Local Map path mode", () => {
     await expect(page.locator("#search-subject")).toHaveValue("GatewayClient.cs");
     await expect(page.locator("#search-destination")).toHaveValue("IPaymentHub.cs");
     await expect(page.locator(".pin-tray-toggle")).toHaveText("1 pin");
-    // Drawn as the map reads, what offers first; told as asked, each file using the next
+
+    // Drawn mirrored transiently so the asked start stands leftmost on screen, while Mirror button & legend tell the truth and localStorage stays untouched
+    await expect(viewport).toHaveAttribute("data-reads", "usesFirst");
+    await expect(mirrorBtn).toHaveAttribute("aria-pressed", "true");
+    await expect(legendRoles).toHaveAttribute("data-mirrored", "");
+    expect(await page.evaluate(key => localStorage.getItem(key) ?? "", PERSISTED_UI_KEY)).not.toContain('"reads":"usesFirst"');
+
+    // Underlying layout order stays offers-first; on screen the reflected cards run left-to-right from the asked start
     expect(await pathFiles(page)).toEqual([DEPENDENCY, "Gateway/Wcf/HubProxy.cs", "Gateway/Controllers/PaymentsController.cs", DEPENDENT]);
+    const onScreen = await pathFilesLeftToRight(page);
+    expect(onScreen.map(card => card.id)).toEqual([DEPENDENT, "Gateway/Controllers/PaymentsController.cs", "Gateway/Wcf/HubProxy.cs", DEPENDENCY]);
+    for (let i = 1; i < onScreen.length; i += 1) expect(onScreen[i].x).toBeGreaterThan(onScreen[i - 1].x);
     await expect(page.locator(".path-mode.local-placed")).toBeVisible();
     expect(await page.locator("#map-container .local-membrane").count()).toBeGreaterThan(0);
     const strip = await page.locator("#pathfind-path .pathfind-path-hop-name").allTextContents();
     expect(strip).toEqual(TOLD);
     expect(await page.locator("#pathfind-path .pathfind-path-relation").allTextContents()).toEqual(["uses", "uses", "uses"]);
-    // The file asked from is in the frame, though it stands at the drawing's right end
-    const asked = await boxOf(page, subject);
-    expect(asked).not.toBeNull();
-    expect(asked!.x).toBeGreaterThanOrEqual(260);
-    expect(asked!.x + asked!.width).toBeLessThanOrEqual(FRAME.width);
+    // Unique basenames carry no cluttering disambiguation context
+    await expect(page.locator("#pathfind-path .pathfind-path-hop-context")).toHaveCount(0);
 
-    // Every wire leaves a blue (offers) pin and enters a green (uses) pin, left to right
+    // Every wire leaves a blue (offers) pin on the right and enters a green (uses) pin on the left
     const ends = await wireEnds(page);
     expect(ends.length).toBeGreaterThanOrEqual(3);
     for (const wire of ends) {
       expect(wire.startPin, "a wire leaves an offering pin").toMatch(/symbol-anchor.*outbound/);
       expect(wire.endPin, "a wire enters a using pin").toMatch(/symbol-anchor.*inbound/);
-      expect(wire.endX, "a wire runs left to right").toBeGreaterThan(wire.startX + 24);
+      expect(wire.startX, "in a mirrored route a wire runs right to left from provider to consumer").toBeGreaterThan(wire.endX + 24);
     }
-    // and the instrument reads the same: every drawn wire flows, none runs backward
+    // and the instrument reads the mirrored picture honestly: every drawn wire flows, none runs backward
     const graph = await loadGraph(page, BASE);
     const picture = await readPicture(page, LOCAL_MAP, displayNames(graph, graph.nodes.map(node => node.id)));
+    expect(picture.mirrored).toBe(true);
     const flow = scoreExpanded(picture, symbolCounts(graph)).flow;
     expect(flow.backward).toBe(0);
     expect(flow.flowing).toBe(flow.drawn);
 
-    // Clearing the destination returns to the exploration as it was: the one pin kept, the question gone from the
-    // address, the subject where it stood (until 2026-11-22 the reverse question had pinned the other end and made
-    // it the subject, so two pins and the other file were asserted here)
+    // Clicking Mirror while on a path flips it in place without rewriting localStorage
+    await mirrorBtn.click();
+    await expect(viewport).not.toHaveAttribute("data-turning", /.*/u);
+    await expect(viewport).not.toHaveAttribute("data-reads", /.*/u);
+    await expect(mirrorBtn).toHaveAttribute("aria-pressed", "false");
+    await expect(legendRoles).not.toHaveAttribute("data-mirrored", /.*/u);
+    await localMapStill(page);
+    expect(await page.evaluate(key => localStorage.getItem(key) ?? "", PERSISTED_UI_KEY)).not.toContain('"reads":"usesFirst"');
+    const flipped = await pathFilesLeftToRight(page);
+    expect(flipped.map(card => card.id)).toEqual([DEPENDENCY, "Gateway/Wcf/HubProxy.cs", "Gateway/Controllers/PaymentsController.cs", DEPENDENT]);
+    for (const wire of await wireEnds(page)) expect(wire.endX, "unmirrored path wires run left to right").toBeGreaterThan(wire.startX + 24);
+
+    // Flipping back returns to mirrored, still without touching localStorage
+    await mirrorBtn.click();
+    await expect(viewport).not.toHaveAttribute("data-turning", /.*/u);
+    await expect(viewport).toHaveAttribute("data-reads", "usesFirst");
+    await expect(mirrorBtn).toHaveAttribute("aria-pressed", "true");
+    await localMapStill(page);
+    expect(await page.evaluate(key => localStorage.getItem(key) ?? "", PERSISTED_UI_KEY)).not.toContain('"reads":"usesFirst"');
+
+    // Clearing the destination returns to exploration's own reading direction and camera
     await page.click("#search-destination-clear");
     await page.waitForSelector("#map-connections .connection-path:not(.bundle-run)", { state: "attached" });
-    await page.waitForTimeout(800);
+    await localMapStill(page);
     await expect(page.locator("#view-map")).not.toHaveClass(/has-path/);
+    await expect(viewport).not.toHaveAttribute("data-reads", /.*/u);
+    await expect(mirrorBtn).toHaveAttribute("aria-pressed", "false");
+    await expect(legendRoles).not.toHaveAttribute("data-mirrored", /.*/u);
     await expect(status).toBeHidden();
     expect(currentSnapshot(page).destination).toBeNull();
     await expect(page.locator(".pin-tray-toggle")).toHaveText("1 pin");
@@ -291,49 +356,124 @@ test.describe("Local Map path mode", () => {
   });
 
   // The owner's own telling runs page first: "the consumer payment portal talks to its API, to the WCF router …, to the
-  // databases". Until 2026-11-22 this question was refused, since the page uses and the table offers.
-  test("asked page first, the estate's route from Default.aspx to dbo.Payment.sql is answered: drawn as the map reads, told as asked", async ({ page }) => {
+  // databases". Both directions now read left-to-right from the asked start at reading scale, hold their first card whole
+  // inside the unobstructed frame, and tell colliding basenames apart on the strip.
+  test("the 12-file estate route draws left-to-right from either end at k=1, holds its first card whole, and disambiguates colliding hops on the strip", async ({ page }) => {
+    await page.setViewportSize({ width: 1280, height: 800 });
     const PAGE = "Portal/Pages/Default.aspx";
     const TABLE = "Database/SqlServer/dbo.Payment.sql";
+    const mirrorBtn = page.getByRole("button", { name: "Mirror the map", exact: true });
+    const viewport = page.locator("#map-viewport");
+    const legendRoles = page.locator("#local-legend .legend-row--roles");
+
+    // 1. Page -> Table (asked from the using end: draws mirrored, Default.aspx leftmost & whole)
     await page.goto(pathAddress(BASE, PAGE, { kind: "file", nodeId: TABLE }));
     await expect(page.locator("#view-map")).toHaveClass(/has-path/u);
     await page.waitForSelector("#map-connections .connection-path:not(.bundle-run)", { state: "attached" });
-    await localMapSettled(page);
+    await localMapStill(page);
 
-    // Answered, with no refusal and no link to another question.
     const status = page.locator("#pathfind-status");
     await expect(status).toHaveText(/^Path found: 12 files/u);
     await expect(status).not.toContainText("No path");
     await expect(page.locator("#pathfind-status a")).toHaveCount(0);
-
-    // The telling follows the asking: the bar keeps the two ends as given, and the report names the files from the
-    // end asked from to the end asked for, saying of each that it uses the next.
     await expect(page.locator("#search-subject")).toHaveValue("Default.aspx");
     await expect(page.locator("#search-destination")).toHaveValue("dbo.Payment.sql");
-    const told = await page.locator("#pathfind-path .pathfind-path-hop").evaluateAll(hops => hops.map(hop => hop.getAttribute("title")!));
-    expect(told).toHaveLength(12);
-    expect(told[0]).toBe(PAGE);
-    expect(told.at(-1)).toBe(TABLE);
+    await expect(viewport).toHaveAttribute("data-reads", "usesFirst");
+    await expect(mirrorBtn).toHaveAttribute("aria-pressed", "true");
+    await expect(legendRoles).toHaveAttribute("data-mirrored", "");
+    expect(await page.evaluate(key => localStorage.getItem(key) ?? "", PERSISTED_UI_KEY)).not.toContain('"reads":"usesFirst"');
+
+    const toldPageFirst = await page.locator("#pathfind-path .pathfind-path-hop").evaluateAll(hops => hops.map(hop => ({
+      id: hop.getAttribute("title")!,
+      name: hop.querySelector(".pathfind-path-hop-name")?.textContent ?? "",
+      context: hop.querySelector(".pathfind-path-hop-context")?.textContent ?? null
+    })));
+    expect(toldPageFirst).toHaveLength(12);
+    expect(toldPageFirst[0].id).toBe(PAGE);
+    expect(toldPageFirst.at(-1)!.id).toBe(TABLE);
     expect(await page.locator("#pathfind-path .pathfind-path-relation").allTextContents()).toEqual(Array.from({ length: 11 }, () => "uses"));
     await expect(page.locator("#pathfind-path")).toHaveAttribute("aria-label", "Path files, each uses the next");
 
-    // The drawing does not change: what offers stands before what uses it, the table at the left and the page at the
-    // right, every wire leaving an offering pin and entering a using pin, left to right, none reaching backwards.
-    const drawn = await pathFiles(page);
-    expect(drawn).toEqual([...told].reverse());
-    const ends = await wireEnds(page);
-    expect(ends.length).toBeGreaterThanOrEqual(11);
-    for (const wire of ends) {
-      expect(wire.startPin, "a wire leaves an offering pin").toMatch(/symbol-anchor.*outbound/);
-      expect(wire.endPin, "a wire enters a using pin").toMatch(/symbol-anchor.*inbound/);
-      expect(wire.endX, "a wire runs left to right").toBeGreaterThan(wire.startX + 24);
+    // Colliding hops carry shortest distinguishing directory suffix; unique basenames carry none.
+    const contextsById = Object.fromEntries(toldPageFirst.filter(hop => hop.context !== null).map(hop => [hop.id, hop.context]));
+    expect(contextsById).toEqual({
+      "Portal/Controllers/PaymentsController.cs": "Portal/Controllers",
+      "Gateway/Controllers/PaymentsController.cs": "Gateway/Controllers",
+      "Hub/App.config": "Hub",
+      "PaymentService/App.config": "PaymentService"
+    });
+    expect(toldPageFirst.filter(hop => hop.context === null)).toHaveLength(8);
+
+    // Context text meets WCAG AA small-text contrast against its hop button background.
+    const contextStyles = await page.locator("#pathfind-path .pathfind-path-hop-context").evaluateAll(elements => elements.map(el => {
+      const layers: string[] = [];
+      for (let layer: Element | null = el; layer; layer = layer.parentElement) layers.unshift(getComputedStyle(layer).backgroundColor);
+      const style = getComputedStyle(el);
+      return { text: el.textContent ?? "", colour: style.color, fontSize: parseFloat(style.fontSize), layers };
+    }));
+    expect(contextStyles).toHaveLength(4);
+    for (const item of contextStyles) {
+      expect(item.fontSize, item.text).toBeGreaterThanOrEqual(10);
+      expect(contrastRatio(parseColour(item.colour), backdrop(item.layers)), item.text).toBeGreaterThanOrEqual(AA_SMALL_TEXT);
     }
 
-    // The address is the question as asked, and nothing was pinned to answer it.
+    // Cards stand strictly left-to-right on screen from Default.aspx to dbo.Payment.sql; wires run right-to-left from blue to green.
+    const pageToTableScreen = await pathFilesLeftToRight(page);
+    expect(pageToTableScreen.map(card => card.id)).toEqual(toldPageFirst.map(hop => hop.id));
+    for (let i = 1; i < pageToTableScreen.length; i += 1) expect(pageToTableScreen[i].x).toBeGreaterThan(pageToTableScreen[i - 1].x);
+    const mirroredEnds = await wireEnds(page);
+    expect(mirroredEnds.length).toBeGreaterThanOrEqual(11);
+    for (const wire of mirroredEnds) {
+      expect(wire.startPin, "a wire leaves an offering pin").toMatch(/symbol-anchor.*outbound/);
+      expect(wire.endPin, "a wire enters a using pin").toMatch(/symbol-anchor.*inbound/);
+      expect(wire.startX, "a mirrored wire runs right to left").toBeGreaterThan(wire.endX + 24);
+    }
+
+    // First card (Default.aspx) sits 100% whole inside the unobstructed frame at reading scale k = 1.
+    const pageFit = await unobstructedCardFit(page, PAGE);
+    expect(pageFit.scale).toBeCloseTo(1, 2);
+    expect(pageFit.card.left).toBeGreaterThanOrEqual(pageFit.frame.left - 0.5);
+    expect(pageFit.card.right).toBeLessThanOrEqual(pageFit.frame.right + 0.5);
+    expect(pageFit.card.top).toBeGreaterThanOrEqual(pageFit.frame.top - 0.5);
+    expect(pageFit.card.bottom).toBeLessThanOrEqual(pageFit.frame.bottom + 0.5);
+
+    // Address preserves the asked ends and nothing extra was pinned.
     const asked = currentSnapshot(page);
     expect(asked.pinSet.entries).toEqual([{ nodeId: PAGE, symbol: "*" }]);
     expect(asked.destination).toEqual({ kind: "file", nodeId: TABLE });
     expect(asked.selectedNodeId).toBe(PAGE);
+
+    // Switching 2D -> 3D -> 2D preserves the mirrored route on return.
+    await page.getByRole("button", { name: "3D", exact: true }).click();
+    await expect(page.locator("#view-graph")).toHaveClass(/active/u);
+    await expect(page.getByRole("button", { name: "2D", exact: true })).toBeEnabled();
+    await page.getByRole("button", { name: "2D", exact: true }).click();
+    await expect(page.locator("#view-map")).toHaveClass(/active/u);
+    await localMapStill(page);
+    await expect(viewport).toHaveAttribute("data-reads", "usesFirst");
+    await expect(mirrorBtn).toHaveAttribute("aria-pressed", "true");
+
+    // 2. Table -> Page (asked from the offering end: unmirrored, dbo.Payment.sql leftmost & whole at k = 1)
+    await page.goto(pathAddress(BASE, TABLE, { kind: "file", nodeId: PAGE }));
+    await expect(page.locator("#view-map")).toHaveClass(/has-path/u);
+    await page.waitForSelector("#map-connections .connection-path:not(.bundle-run)", { state: "attached" });
+    await localMapStill(page);
+
+    await expect(viewport).not.toHaveAttribute("data-reads", /.*/u);
+    await expect(mirrorBtn).toHaveAttribute("aria-pressed", "false");
+    await expect(legendRoles).not.toHaveAttribute("data-mirrored", /.*/u);
+    const tableToPageScreen = await pathFilesLeftToRight(page);
+    expect(tableToPageScreen.map(card => card.id)).toEqual(toldPageFirst.map(hop => hop.id).reverse());
+    for (let i = 1; i < tableToPageScreen.length; i += 1) expect(tableToPageScreen[i].x).toBeGreaterThan(tableToPageScreen[i - 1].x);
+    for (const wire of await wireEnds(page)) expect(wire.endX, "unmirrored wires run left to right").toBeGreaterThan(wire.startX + 24);
+
+    // First card (dbo.Payment.sql) sits 100% whole inside the unobstructed frame at matching k = 1 (never shoved under #controls).
+    const tableFit = await unobstructedCardFit(page, TABLE);
+    expect(tableFit.scale).toBeCloseTo(1, 2);
+    expect(tableFit.card.left).toBeGreaterThanOrEqual(tableFit.frame.left - 0.5);
+    expect(tableFit.card.right).toBeLessThanOrEqual(tableFit.frame.right + 0.5);
+    expect(tableFit.card.top).toBeGreaterThanOrEqual(tableFit.frame.top - 0.5);
+    expect(tableFit.card.bottom).toBeLessThanOrEqual(tableFit.frame.bottom + 0.5);
   });
 
   test("asked in the map's direction, it draws at once, and a path from the address draws the same", async ({ page }) => {

@@ -10,10 +10,18 @@
  * @module
  */
 
-import type { MapReads } from "../../types";
+import type { ExplorerState, MapReads } from "../../types";
 
 /** The attribute on the map's layer that says which way its picture reads; the stylesheet draws the reflection from it. */
 export const READS_ATTRIBUTE = "data-reads";
+
+/**
+ * The reading direction the 2D picture currently shows: a drawn path's own reading direction while a
+ * path is active (`pathReads`), otherwise the viewer's persisted preference.
+ */
+export function effectiveReads(state: Pick<ExplorerState, "pathReads" | "tuning">): MapReads {
+  return state.pathReads ?? state.tuning.appearance.reads;
+}
 
 /** Whether the picture is the layout reflected: what uses stands first from the left. */
 export function isMirrored(reads: MapReads | undefined): boolean {

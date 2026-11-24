@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/explorer/src/client/search/search-bar.ts`
-- Generated At: 2026-11-22T07:12:54.385Z
+- Generated At: 2026-11-24T11:19:16.147Z
 
 ## Authored
 ### Purpose
@@ -29,26 +29,26 @@ Since 2026-11-19 ([Turn 14 of the November 18 record](../../../../../../../AI-Ag
 ### Public Symbols
 #### `SearchWords` {#symbol-searchwords}
 - Type: interface
-- Source: [source](../../../../../../../packages/explorer/src/client/search/search-bar.ts#L19)
+- Source: [source](../../../../../../../packages/explorer/src/client/search/search-bar.ts#L20)
 
 ##### `SearchWords` — Summary
 The words a field shows for a pinned thing or a destination: its name, and where it stands for the tooltip.
 
 #### `StatusTone` {#symbol-statustone}
 - Type: type
-- Source: [source](../../../../../../../packages/explorer/src/client/search/search-bar.ts#L29)
+- Source: [source](../../../../../../../packages/explorer/src/client/search/search-bar.ts#L30)
 
 #### `SearchBarOptions` {#symbol-searchbaroptions}
 - Type: interface
-- Source: [source](../../../../../../../packages/explorer/src/client/search/search-bar.ts#L34)
+- Source: [source](../../../../../../../packages/explorer/src/client/search/search-bar.ts#L35)
 
 #### `SearchBar` {#symbol-searchbar}
 - Type: interface
-- Source: [source](../../../../../../../packages/explorer/src/client/search/search-bar.ts#L48)
+- Source: [source](../../../../../../../packages/explorer/src/client/search/search-bar.ts#L49)
 
 #### `createSearchBar` {#symbol-createsearchbar}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/search/search-bar.ts#L77)
+- Source: [source](../../../../../../../packages/explorer/src/client/search/search-bar.ts#L78)
 - Returns: [`SearchBar`](#symbol-searchbar)
 - Parameters: `options`: [`SearchBarOptions`](#symbol-searchbaroptions)
 <!-- LIVE-DOC:END Public Symbols -->
@@ -62,6 +62,7 @@ The words a field shows for a pinned thing or a destination: its name, and where
 - [`graph-search.SearchIndex`](./graph-search.ts.mdmd.md#symbol-searchindex) (type-only)
 - [`graph-search.SearchScope`](./graph-search.ts.mdmd.md#symbol-searchscope) (type-only)
 - [`graph-search.destinationScope`](./graph-search.ts.mdmd.md#symbol-destinationscope)
+- [`path-hops.disambiguateHopContexts`](./path-hops.ts.mdmd.md#symbol-disambiguatehopcontexts)
 - [`search-field.createSearchField`](./search-field.ts.mdmd.md#symbol-createsearchfield)
 - [`types.ExplorerNodePayload`](../../shared/types.ts.mdmd.md#symbol-explorernodepayload) (type-only)
 <!-- LIVE-DOC:END Dependencies -->

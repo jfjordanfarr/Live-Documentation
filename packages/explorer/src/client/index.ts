@@ -48,6 +48,7 @@ import { defaultSpatialLayout } from "./views/forceGraphScope";
 import { createForceGraphView } from "./views/forceGraphView";
 import { createLocalView } from "./views/localView";
 import { closeDirectory as closeOpenedDirectory, openDirectory as addOpenedDirectory, under, type OpenDirectories } from "./views/localView/directory-state";
+import { effectiveReads, isMirrored } from "./views/localView/reading-direction";
 import { BACKWARD_STRENGTHS, backwardStrength, type BackwardStrength } from "./views/localView/returning-connections";
 import type { ReadingControl } from "./views/localView/types";
 import { animatePerspective, captureLocalScene, holdPerspective } from "./views/perspectiveTransition";
@@ -743,8 +744,12 @@ function startExplorer(bundle: StaticExplorerData, initialSnapshot: UrlStateSnap
   // settings and carried by no link. The glyph is the drafting sign for a reflection: two shapes facing across an axis.
   const mirrorButton = iconButton("Mirror the map", '<path d="M12 3v18" stroke-dasharray="2 3"/><path d="M8.5 7.5 3.5 16.5h5z"/><path d="M15.5 7.5l5 9h-5z" fill="currentColor"/>');
   mirrorButton.addEventListener("click", () => {
-    state.tuning.appearance.reads = state.tuning.appearance.reads === "usesFirst" ? "offersFirst" : "usesFirst";
-    schedulePersistUi();
+    if (localView.getActivePath()) {
+      state.pathReads = effectiveReads(state) === "usesFirst" ? "offersFirst" : "usesFirst";
+    } else {
+      state.tuning.appearance.reads = state.tuning.appearance.reads === "usesFirst" ? "offersFirst" : "usesFirst";
+      schedulePersistUi();
+    }
     syncPerspectiveControls();
   });
   // The key says the sides of the picture shown: side is the second sign beside colour, so once a picture can be
@@ -1234,7 +1239,7 @@ function startExplorer(bundle: StaticExplorerData, initialSnapshot: UrlStateSnap
     perspectiveControls.hidden = state.view !== "map";
     frame?.sync();
     for (const button of [fitButton, wholeButton, keyButton, tuningButton, mapButton, graphButton, connectionsButton, structureButton, historyButton]) button.disabled = changingPerspective;
-    const mirrored = state.tuning.appearance.reads === "usesFirst";
+    const mirrored = isMirrored(effectiveReads(state));
     mirrorButton.hidden = state.perspective !== "2d";
     mirrorButton.disabled = changingPerspective;
     mirrorButton.setAttribute("aria-pressed", String(mirrored));
@@ -1579,6 +1584,7 @@ function startExplorer(bundle: StaticExplorerData, initialSnapshot: UrlStateSnap
   // ==================
 
   let restoringPath = false;
+  let activePathKey: string | null = null;
   /** What the report's tooltip says of a path between two things of the board: it is a shortest connection, not a request's route. */
   const SHORTEST_CONNECTION_HELP = "The fewest files that join the two folders, one of perhaps several such routes. What runs between them may pass through other files.";
 
@@ -1593,12 +1599,13 @@ function startExplorer(bundle: StaticExplorerData, initialSnapshot: UrlStateSnap
   }
 
   /**
-   * Shows what the search found. Two words of the owner govern it. The drawing is as the rule of 2025-12-18 has it: the
-   * Local Map draws a path only in its reading direction, what offers on the left and what uses on the right, and
-   * nothing reaching backwards. The telling follows the asking (2026-11-22, "Let's go with your recommendation on it"):
-   * a path is answered whichever way it runs, the bar keeps the two ends as given, and the report names the files from
-   * the end asked from, each using the next where that runs against the drawing. Until then a path asked from the end
-   * that uses drew nothing, and the status offered the reverse question as a link.
+   * Shows what the search found. Every route is drawn in its own direction without
+   * backwards wires: asked from what offers, the 2D picture draws offers-first
+   * (`offersFirst`); asked from what uses, the 2D picture draws mirrored
+   * (`usesFirst`) via the transient `state.pathReads` override so the strip and
+   * the picture both read left-to-right from the asked start at reading scale.
+   * Clicking Mirror flips `state.pathReads` in place without mutating the viewer's
+   * persisted exploration direction, and clearing the path restores it.
    */
   const showPathResult = (result: FoundPath, ground: PathGround, draw: boolean, things: { from: string; to: string } | null = null): void => {
     // A question asked through the global bar opens the Local Map for every outcome. Restoring a saved place keeps
@@ -1614,38 +1621,49 @@ function startExplorer(bundle: StaticExplorerData, initialSnapshot: UrlStateSnap
       // Reading evidence is independent of the path being drawn.
 
       // Path mode draws over a selected file; when none is selected yet, the file asked from becomes it. An existing
-      // selection is kept, so Clear returns to the place the person was, address included.
+      // selection is kept, so Clear returns to the place the person was, address included. Mark it without running an
+      // intermediate exploration render so no exploration arrival timer starts before path mode takes over.
       if (!state.selectedNode) {
         // The file as it stands today: at a moment, a hop is named as the moment names it.
         const today = shownMoment ? shownMoment.fileReference(asked.nodeId) : asked.nodeId;
         const node = today === null ? undefined : nodesById.get(today);
-        if (node && draw) selectNode(node, { suppressDetailPanel: true });
-        else if (node) markSelected(node);
+        if (node) markSelected(node);
       }
 
-      // Told from the end asked from to the end asked for; drawn what offers first, whichever end that is.
+      // Draw routes from their asked start by reflecting offers-first layout when asked from the consumer end.
+      // Preserve an explicit Mirror click when the exact same path merely re-renders (e.g. history scrubber move).
+      const pathKey = `${against ? "usesFirst" : "offersFirst"}:${drawn[0].nodeId}->${drawn[drawn.length - 1].nodeId}`;
+      if (state.pathReads == null || activePathKey !== pathKey) {
+        state.pathReads = against ? "usesFirst" : "offersFirst";
+      }
+      activePathKey = pathKey;
+
+      // Told from the end asked from to the end asked for; drawn in the matching reading direction.
       searchBar.showPath(against ? [...drawn].reverse() : drawn, against ? "uses" : "used-by");
 
       const nodeIds = drawn.map(hop => hop.nodeId);
+      const backward = referencesAgainstPath(nodeIds, ground.links);
+      const notDrawn = backward === 0
+        ? ""
+        : `; ${backward} ${backward === 1 ? "reference" : "references"} between these files ${backward === 1 ? "runs" : "run"} the other way and ${backward === 1 ? "is" : "are"} not drawn in 2D`;
+      // Write the status strip before rendering so #path-report has its final height before fitMapToPath measures the frame.
+      // Between two things of the board (Tuning's Way Down, a trial of 2026-11-22) the report says what the route is, one
+      // shortest connection, and its tooltip what it is not; the wording is the owner's to settle.
+      const found = things ? `One shortest connection between ${things.from} and ${things.to}: ${drawn.length} files` : `Path found: ${drawn.length} files`;
+      const report = searchBar.setStatus(`${found}${notDrawn}`, "success", reportAt());
+      if (things) report.title = SHORTEST_CONNECTION_HELP;
+
       localView.setActivePath({
         nodeIds,
         fromSymbol: drawn[0].symbol,
         toSymbol: drawn[drawn.length - 1].symbol
       });
 
-      const backward = referencesAgainstPath(nodeIds, ground.links);
-      const notDrawn = backward === 0
-        ? ""
-        : `; ${backward} ${backward === 1 ? "reference" : "references"} between these files ${backward === 1 ? "runs" : "run"} the other way and ${backward === 1 ? "is" : "are"} not drawn in 2D`;
-      if (draw) renderCurrentView();
-      // A path asked against the drawing has the file asked from at the drawing's right end, where a path's own
-      // arrival, on its first file at the left, would leave it out of sight: it is framed with the file it uses.
-      if (against && draw && state.view === "map" && state.perspective === "2d") localView.arriveWithLines({ card: asked.nodeId });
-      // Between two things of the board (Tuning's Way Down, a trial of 2026-11-22) the report says what the route is, one
-      // shortest connection, and its tooltip what it is not; the wording is the owner's to settle.
-      const found = things ? `One shortest connection between ${things.from} and ${things.to}: ${drawn.length} files` : `Path found: ${drawn.length} files`;
-      const report = searchBar.setStatus(`${found}${notDrawn}`, "success", reportAt());
-      if (things) report.title = SHORTEST_CONNECTION_HELP;
+      if (draw) {
+        renderCurrentView();
+        highlightSelectedCards();
+      }
+      syncPerspectiveControls();
       return;
     }
 
@@ -1662,11 +1680,16 @@ function startExplorer(bundle: StaticExplorerData, initialSnapshot: UrlStateSnap
     if (draw) renderCurrentView("show");
   };
 
-  /** Take the path's report off the page and the path out of the Local Map; the destination asked is kept by the caller. `draw` redraws the 3D picture. */
+  /** Take the path's report off the page and the path out of the Local Map; the destination asked is kept by the caller. `draw` redraws the 3D picture and syncs the toolbar. */
   const clearPathResult = (draw = true): void => {
+    activePathKey = null;
+    state.pathReads = null;
     searchBar.clearPath();
     localView.setActivePath(null);
-    if (draw && state.view === "map" && state.perspective === "3d") forceGraphView.render();
+    if (draw) {
+      if (state.view === "map" && state.perspective === "3d") forceGraphView.render();
+      syncPerspectiveControls();
+    }
   };
 
   // The node to focus first, chosen before the first drawing so that the page draws the focused picture once, rather

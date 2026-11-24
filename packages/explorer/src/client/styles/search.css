@@ -453,6 +453,13 @@
     overflow-wrap: anywhere;
 }
 
+.pathfind-path-hop-context {
+    font-size: 10px;
+    color: var(--text-panel-muted);
+    margin-top: 2px;
+    overflow-wrap: anywhere;
+}
+
 .pathfind-path-hop-symbol {
     font-size: 10px;
     color: var(--state-selected);
