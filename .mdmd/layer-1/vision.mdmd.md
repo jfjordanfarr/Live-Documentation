@@ -1,6 +1,6 @@
 # Live Documentation
 
-_Current as of 2026-11-21. Nothing below is set in stone: the picture is on trial, and the owner's words at every fork are in [direction.md](../../AI-Agent-Workspace/Memory/direction.md)._
+_Current as of 2026-11-24. Nothing below is set in stone: the picture is on trial, and the owner's words at every fork are in [direction.md](../../AI-Agent-Workspace/Memory/direction.md)._
 
 _Design clarification, 2026-09-30: the owner has [reopened the dimensional split and separation of views](../../AI-Agent-Workspace/AgentSessionHistory/2026/09/2026-09-30/2026-09-30.2.record.md#turn-19). File symbols and system endpoints pose the same interface-display problem: show relevant connections and selectively reveal contents while preserving orientation. The September 28 picture below records the design explored then; its allocation of 2D/3D and separate renderings is under exploration, with no replacement chosen._
 
@@ -81,7 +81,7 @@ An exported map is a snapshot stamped with where it came from: repository, commi
 
 ## Correctness
 
-The map's edges are checked against oracles that share no mechanism with the analyzer: a compiler's own resolution, what actually breaks when a symbol is removed, and small hand-verified fixtures for patterns such as reflection and markup-to-code-behind. Cross-language parity, the same program written in nine languages producing the same shape, guards against regressions in any one adapter. Where an edge is inferred rather than observed, the map says so.
+The map's edges are checked against oracles that share no mechanism with the analyzer: a compiler's or language parser's own resolution, and small hand-verified fixtures for patterns such as reflection and markup-to-code-behind. Cross-language parity, the same program written in nine languages producing the same shape, guards against regressions in any one adapter. Inter-system edges carry their tier (observed from contracts, observed from configuration, or declared), and files no reader handles or ambiguous names that could refer to several declarations are reported rather than guessed.
 
 ## What it is not
 

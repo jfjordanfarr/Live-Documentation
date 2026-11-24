@@ -6,7 +6,7 @@
 - Code Path: `scripts/e2e-bundles.mjs`
 - Entry: command `e2e:bundles` of [`package.json`](../package.json.mdmd.md)
 - Entry: command `test:e2e` of [`package.json`](../package.json.mdmd.md)
-- Generated At: 2026-11-21T03:40:51.063Z
+- Generated At: 2026-11-24T05:02:05.214Z
 
 ## Authored
 ### Purpose
@@ -41,7 +41,7 @@ the unit test of this file holds the two together.
 
 #### `staleBundles` {#symbol-stalebundles}
 - Type: function
-- Source: [source](../../../scripts/e2e-bundles.mjs#L81)
+- Source: [source](../../../scripts/e2e-bundles.mjs#L83)
 
 ##### `staleBundles` — Summary
 Why the suite's bundles are not fit to test, one plain sentence each; an empty list when they are. The Explorer's
@@ -49,14 +49,14 @@ own script must be newer than every source of the client, and every sample's cop
 
 #### `refusal` {#symbol-refusal}
 - Type: function
-- Source: [source](../../../scripts/e2e-bundles.mjs#L114)
+- Source: [source](../../../scripts/e2e-bundles.mjs#L116)
 
 ##### `refusal` — Summary
 The refusal for a list of faults, naming each and the command that rebuilds the bundles; undefined for none.
 
 #### `SCANNING_PAGE` {#symbol-scanning_page}
 - Type: const
-- Source: [source](../../../scripts/e2e-bundles.mjs#L133)
+- Source: [source](../../../scripts/e2e-bundles.mjs#L135)
 
 ##### `SCANNING_PAGE` — Summary
 The scanning page of the check that the engine runs in a browser page (`tests/e2e/page-scan.spec.ts`), built apart

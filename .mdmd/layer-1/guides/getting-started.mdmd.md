@@ -1,6 +1,6 @@
 # Getting Started with Live Documentation
 
-_Current as of 2026-11-19._
+_Current as of 2026-11-24._
 
 ## Metadata
 
@@ -61,7 +61,7 @@ npx http-server dist/explorer -a 127.0.0.1 -p 8766 -c-1
 
 Then open `http://127.0.0.1:8766/`. The folder must be served: a page opened as a file cannot load its data, and says so. `http-server` comes with this checkout's `npm install`.
 
-A fresh bundle opens on the **World Map** when it carries a board (the one the configuration names as `board`, or `--board <board.md>`), otherwise on the **Local Map** at its entry point or workspace root. A shared or remembered place takes precedence. The Local Map shows files, symbols and directories in 2D, or file connectivity and directory structure in 3D; switch explicitly with the **2D** and **3D** controls. Click an entity to inspect its evidence, use **Pin** to retain its connections, and **Centre** to navigate deliberately. **Knowledge Sources** reports the inventory, entry points and what they reach. See [Visualizing Your Codebase](visualizing-codebase.mdmd.md), including its current 3D usability gaps and accepted remediation target.
+A fresh bundle opens on the **World Map** when it carries a board (the one the configuration names as `board`, or `--board <board.md>`), otherwise on the **Local Map** at its entry point or workspace root. A shared or remembered place takes precedence. The Local Map shows files, symbols and directories in 2D, or file connectivity and directory structure in 3D; switch explicitly with the **2D** and **3D** controls. Click an entity to inspect its evidence, use **Pin** to retain its connections, and **Centre** to navigate deliberately. **Knowledge Sources** reports the inventory, entry points and what they reach. See [Visualizing Your Codebase](visualizing-codebase.mdmd.md) for views, history, sharing and current limits.
 
 ### Step 3: Trace a dependency path
 
@@ -69,7 +69,7 @@ A fresh bundle opens on the **World Map** when it carries a board (the one the c
 npm run live-docs:inspect -- --from scripts/live-docs/generate.ts --to packages/engine/src/live-docs/core.ts
 ```
 
-In the Explorer, choose a subject through search, which makes it the newest pin, then use **Path to** to choose a destination from the newest pin. The 2D Local Map shows the detailed route and its direction; making the result equally discoverable in 3D is open remediation work. See [Tracing Impact](tracing-impact.mdmd.md).
+In the Explorer, choose a subject through search, which makes it the newest pin, then use **Path to** to choose a destination from the newest pin. Both 2D and 3D show the shared path report above the map with clickable hops told in the direction you asked; 2D also highlights the symbol-level connections along the route. See [Tracing Impact](tracing-impact.mdmd.md).
 
 ### Step 4: Validate the mirror
 
@@ -122,7 +122,8 @@ Put `.live-docs.config.json` at the root of the folder you document; every comma
 | `extension`            | `.md`                 | File extension for Live Docs                                                       |
 | `slugDialect`          | `github`              | Header anchor style (`github`, `azure-devops`, `gitlab`)                           |
 | `requireRelativeLinks` | `true`                | Enforce relative links so the mirror works as a repo-hosted wiki                   |
-| `glob`                 | every file            | Which files receive Live Docs; by default every file, anywhere, but documents, lock files and what git ignores |
+| `glob`                 | `["**/*"]` (every file) | Which files receive Live Docs; by default every file, anywhere, except documents, lock files and what git ignores |
+| `archetypeOverrides`   | `{}`                  | Map of workspace-relative paths or globs to explicit archetypes (`implementation`, `test`, `asset`, `stub`, `component`, `interaction`, `data-model`, `workflow`, `integration`, `testing`) overriding path inference |
 | `exclude`              | `[]`                  | Paths or globs discovery skips: a folder that documents itself, a vendored tree     |
 | `bundleExclude`        | `[]`                  | Linked markdown the Explorer bundle must leave out (large archives, private notes) |
 | `citedBy`              | `true`                | Whether each doc lists, under `Cited By`, the documents whose links name its file; `false` keeps the related documents to what the docs' own words cite |

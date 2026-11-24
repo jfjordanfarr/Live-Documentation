@@ -1,6 +1,6 @@
 # Visualizing Your Codebase
 
-_Current as of 2026-11-12. This guide describes the available controls; the known gaps below link to the accepted remediation target._
+_Current as of 2026-11-24._
 
 ## Metadata
 
@@ -36,7 +36,7 @@ Drag to pan, right-drag or Shift-drag to orbit, and scroll to zoom; drag a piece
 
 One view has two representations, chosen by the explicit **2D** and **3D** controls. The choice is remembered and travels in shared links. Scrolling zooms within the active representation; it does not switch between them.
 
-In **2D**, files are cards with public symbols as rows and directories as bands behind them. Providers stand to the left of consumers: a wire leaves the offering file's blue pin and enters the using file's green pin. Open a directory to disclose its contents; its name remains available as context. A card's framed count of connections outside the view, such as **+21 connections** beside the Pin icon, pins the file to draw them. The map arrives at reading size; **Fit current scope**, the toolbar's first control, frames everything it shows, and **Return to reading size** (bottom left) frames the subject or the newest pin as on arrival.
+In **2D**, files are cards with public symbols as rows and directories as bands behind them. Providers stand to the left of consumers: a wire leaves the offering file's blue pin and enters the using file's green pin. **Mirror** (beside Fit in 2D) exchanges the left and right sides so consumers can lead on the left while keeping blue for offers and green for uses. Resting the pointer on or clicking a wire shows **Wire Answers** — which file uses which and which symbols it carries. Opened directories default to **Flow** order (provider-to-consumer columns with pair lines between files, holding unpinned columns steady when a file is pinned). On whole-file cards, symbols with no references anywhere in the graph default to **Folded** behind a quiet `+N symbols` count; clicking it reveals every row and places a `−N symbols` control at the top of the list to refold. A card's framed count of connections outside the view, such as **+21 connections** beside the Pin icon, pins the file to draw them. The map arrives at reading size, rests briefly, then eases back to frame the neighbourhood in the connections look (waiting while the pointer or keyboard focus rests on the subject card; Tuning → Arrival also offers Reading Size and Neighbours). **Fit current scope**, the toolbar's first control, frames everything it shows, and **Return to reading size** (bottom left) frames the subject or newest pin at reading scale. When the 2D picture draws backward or cyclic connections, the **3D** button lights amber with the count in its tooltip without switching automatically.
 
 Click a file, symbol or directory name to **inspect** its evidence. The separate **Pin** action retains its connections; **Centre** deliberately changes the map subject or frames the directory. **More** exposes contextual actions. Inspection, retention and navigation are separate, so reading another file need not move the map. Retaining several files shows their relevant neighbourhoods and references together. Hovering previews connections by fading irrelevant content.
 
@@ -48,27 +48,28 @@ The filters distinguish tests, binary assets and related markdown. Text manifest
 
 ### Knowledge Sources
 
-The bundle's inventory, entry points, reachability, related documentation and exports. Entry points are declared by the docs; the engine's walk says what they reach, what only tests reach and what no entry reaches. **Not read** separates files no adapter understands from files the graph can judge unreachable. **Reachable from** asks the walk from a chosen file or directory. Counts and lists report the graph's knowledge, not a proof that an unreferenced file is dead code.
+The bundle's inventory, entry points, reachability, disconnected groups, unreferenced symbols, related documentation and exports. Entry points are declared by the docs; the engine's walk says what they reach, what only tests reach and what no entry reaches. **Not read** separates files no adapter understands from files the graph can judge unreachable. **Reachable from** asks the walk from a chosen file or directory. Counts and lists report the graph's knowledge, not a proof that an unreferenced file is dead code.
 
 ---
 
 ## Search, paths and evidence
 
-The search bar finds files, symbols and directories. Choosing a subject brings it into the Local Map and makes it the newest pin. With a pin present, **Path to** asks for a destination from the newest pin; it lists connected matches and discloses matches for which no path exists. Both Local Map representations show the answer and a row of named hops, from the end you asked from to the end you asked for. A path is answered whichever way it runs: the 2D drawing always sets what offers before what uses it, and the row says between the names which way it reads: "is used by" where your question runs as the drawing does, "uses" where it runs against it. A disconnected result says no path either way. Tab reaches recovery, Clear and the hop inspection buttons; long routes scroll to keep the focused hop visible. The 2D drawing also shows relevant symbol connections. See [Tracing Impact](tracing-impact.mdmd.md#paths-in-the-explorer).
+The search bar finds files, symbols and directories. Choosing a subject brings it into the Local Map and makes it the newest pin. With a pin present, **Path to** asks for a destination from the newest pin; it lists connected matches and discloses matches for which no path exists. Both Local Map representations show the answer and a row of named hops, from the end you asked from to the end you asked for. A path is answered whichever way it runs: the 2D drawing always sets what offers before what uses it, and the row says between the names which way it reads: "is used by" where your question runs as the drawing does, "uses" where it runs against it. A disconnected result says no path either way. Tab reaches Clear and the hop inspection buttons; long routes scroll to keep the focused hop visible. The 2D drawing also shows relevant symbol connections. See [Tracing Impact](tracing-impact.mdmd.md#paths-in-the-explorer).
 
 The reader shows authored Purpose and Notes, public symbols, dependencies and related documents. Its own navigation lets you read linked evidence while keeping the map's place. On narrow or short viewports it fills the screen and provides Close to return to the map.
 
-### Known gaps and intended behavior
+### Current limits
 
-The [accepted remediation checklist](../../layer-3/live-documentation-explorer.mdmd.md#remediation-work) records unfinished work found on October 23. The shared path report and reverse recovery are repaired in both representations. The current 3D identity/framing pass adds prioritized names, neighbourhood arrivals and explicit Fit recovery. Direction, wire depth and the legend still need correction, as do initial 2D clipping, panels, remaining label/control details, search ordering, counts and tuning.
-
-The checklist distinguishes the current identity/framing pass from the remaining outcomes, including truthful visible encodings and counts. Use 2D for the path's detailed symbol connections; its result and recovery controls are available in either representation.
+- **2D vs 3D path detail:** Both representations share the path report and clickable hop strip; use **2D** for symbol-level connections along the route, as **3D** draws aggregated file-pair lines.
+- **2D History grain:** History works in both 2D and 3D, but past moments in 2D render at file level (symbol counts rather than historical symbol rows or descriptions).
+- **World Map labels and keyboard focus:** Wires and dotted built-on lines can still pass behind World Map text labels, and wires and doors are not yet keyboard stops.
+- **3D performance:** Settle time and frame rate depend on graph size and hardware; software WebGL renderers slow down on large repositories.
 
 ---
 
 ## History
 
-When the bundle carries history, the 3D Local Map offers **History**. Its scrubber steps or plays the sequence, and its panel explains each step. The default axis follows calendar time; Tuning also offers spacing by step and tick granularity. The address can name a commit. Leaving 3D returns to today's graph. A bundle without history names the command to compute it in Knowledge Sources. See [Change over Time](../../layer-3/change-over-time.mdmd.md#current-delivery-and-remaining-work) for remaining work, including panel proportions and making absent pins clear at the point of use.
+When the bundle carries history, the **Local Map** offers **History** in both **2D** and **3D**. Its scrubber steps or plays the sequence (with track zoom and playback speed), and its collapsible step panel explains each commit. The default axis follows calendar time; Tuning also offers spacing by step and tick granularity. The address carries the selected commit, and switching between 2D and 3D holds the same historical moment continuously. In 2D, past moments render at file level: cards count their symbols then without showing today's authored prose, closed directories holding a change light up, and dragging the scrubber thumb holds cards in place with change emphasis until release. Retained pins that did not exist at the displayed commit are marked in the pin tray and search bar. Leaving the Local Map (for World Map or Knowledge Sources) returns to today's graph and closes the scrubber. A bundle without history names `npm run live-docs:history` in Knowledge Sources. See [Change over Time](../../layer-3/change-over-time.mdmd.md).
 
 ---
 
@@ -94,6 +95,7 @@ npm run live-docs:visualize
 | `explorer-data.json` | The graph index and admitted related markdown |
 | `static/` | Scripts and styles |
 | `explorer-history.json` | The selected history, when included |
+| `explorer-history-words/` | Authored and symbol text for historical steps, split by directory when history is included |
 
 Copy `dist/explorer/` to a static host. This repository's own Explorer is published to GitHub Pages by `pages.yml`. Bundle size depends on graph, admitted documents and history. Use `bundleExclude` to leave out large or private markdown, and `--history none|all|since <date>|last <n>` to choose history coverage. See [configuration](getting-started.mdmd.md#configuration). The page reads only its own site; links do not grant permission to fetch arbitrary external content.
 
@@ -117,7 +119,7 @@ Check discovery configuration and regenerate. In the page, check filters, direct
 
 ### The 3D picture is difficult to read
 
-Use **Fit current scope** to recover the relevant scene, move closer to reveal more names, or use the explicit 2D control for file and symbol detail. The reader supplies evidence. The [remediation checklist](../../layer-3/live-documentation-explorer.mdmd.md#remediation-work) tracks the remaining 3D legibility work. Performance depends on the graph and renderer; there is no fixed file-count threshold that establishes usability.
+Use **Fit current scope** to recover the relevant scene, narrow **Hops shown** or switch between **Connections** and **Structure**, move closer to reveal more names, or switch to **2D** for file and symbol detail. The reader supplies full evidence. Performance depends on graph size and hardware; software WebGL renderers slow down on large repositories, and there is no fixed file-count threshold that establishes usability.
 
 ---
 

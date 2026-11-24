@@ -29,7 +29,9 @@ export const SUITE_BUNDLES = [
     script: "live-docs:visualize:history-sample",
     folders: ["samples/history", "samples/history-window", "samples/history-collision", "samples/history-growth", "samples/history-veil"]
   },
-  { script: "live-docs:visualize:rosetta", folders: ["samples/rosetta/*"] }
+  { script: "live-docs:visualize:rosetta", folders: ["samples/rosetta/*"] },
+  { script: "live-docs:visualize:tidepool", folders: ["samples/tidepool"] },
+  { script: "live-docs:visualize:powershell", folders: ["samples/powershell"] }
 ];
 
 /** The sources whose change changes the client's built script: the client's own files, tests aside, and its builder. */

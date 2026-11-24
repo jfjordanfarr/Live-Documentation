@@ -23,8 +23,8 @@ interface Shot { name: string; site: string; file: string; reading?: boolean }
 
 const rosetta = (language: string): string => `/samples/rosetta/${language}/`;
 const ESTATE = "/samples/estate/";
-/** This repository mapped by itself, for a language no sample of its own is served for: the subject is a test program's file. */
-const REPOSITORY = "/";
+const POWERSHELL = "/samples/powershell/";
+const TIDEPOOL = "/samples/tidepool/";
 
 const all: Shot[] = [
   // The lead picture: one card read closely, on a sample's file, which does not change as this repository does.
@@ -47,9 +47,10 @@ const all: Shot[] = [
   { name: "dotnet-configuration", site: ESTATE, file: "Hub/App.config" },
   { name: "sql", site: ESTATE, file: "Database/SqlServer/dbo.usp_PostPayment.sql" },
   { name: "solutions-and-manifests", site: ESTATE, file: "Estate.sln" },
-  { name: "powershell", site: REPOSITORY, file: "tests/integration/programs/powershell/rollout/Invoke-Rollout.ps1" },
-  { name: "html", site: REPOSITORY, file: "tests/integration/programs/typescript/tidepool/index.html" },
-  { name: "css", site: REPOSITORY, file: "tests/integration/programs/typescript/tidepool/styles/main.css" }
+  // Standalone rollout and tidepool samples, so no README row depends on this moving repository.
+  { name: "powershell", site: POWERSHELL, file: "Invoke-Rollout.ps1" },
+  { name: "html", site: TIDEPOOL, file: "index.html" },
+  { name: "css", site: TIDEPOOL, file: "styles/main.css" }
 ];
 const shots = all.filter(shot => !only || shot.name.includes(only));
 

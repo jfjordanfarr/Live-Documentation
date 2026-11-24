@@ -6,8 +6,9 @@
 - Code Path: `scripts/live-docs/visualize-sample.ts`
 - Entry: command `live-docs:visualize:estate` of [`package.json`](../../package.json.mdmd.md)
 - Entry: command `live-docs:visualize:link-targets` of [`package.json`](../../package.json.mdmd.md)
+- Entry: command `live-docs:visualize:powershell` of [`package.json`](../../package.json.mdmd.md)
 - Entry: command `live-docs:visualize:tidepool` of [`package.json`](../../package.json.mdmd.md)
-- Generated At: 2026-11-19T20:14:18.642Z
+- Generated At: 2026-11-24T05:02:05.415Z
 
 ## Authored
 ### Purpose

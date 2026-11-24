@@ -1,6 +1,6 @@
 # Internal Tooling Reference
 
-_Current as of 2026-11-21._
+_Current as of 2026-11-24._
 
 ## Metadata
 
@@ -164,8 +164,9 @@ Fixture workspaces live under `tests/integration/fixtures/` (hand-authored scena
 | `npx tsx --tsconfig ./tsconfig.base.json scripts/doc-tools/merged-live-docs.ts resolve <doc…>` | At a merge that conflicts in a Live Doc: takes the incoming side inside each conflict of the metadata and the generated regions, and refuses a conflict in the Authored part. Regenerate afterwards. Never take one side's whole file: it takes that side's Authored part with it (a paragraph was lost so on 2026-11-22). `audit <base> [<ref>…]` reads every merge since `<base>` and names each Live Doc whose Authored part a merge did not keep |
 | `npm run build`                           | `tsc` for the engine, the Explorer and the generator                                                                                              |
 | `npm run lint`                            | Type-aware ESLint over the configured source and tests. |
-| `npm run live-docs:visualize:estate`      | Build the estate sample's Explorer, from a copy of it, into `dist/explorer/samples/estate/`; `test:e2e` runs it before the suite                  |
-| `npm run live-docs:visualize:tidepool`    | Build the tidepool sample's Explorer, a small TypeScript game whose directories mix implementation, tests, binary assets and documents, into `dist/explorer/samples/tidepool/`. Not part of the gate |
+| `npm run live-docs:visualize:estate`      | Build the estate sample's Explorer, from a copy of it, into `dist/explorer/samples/estate/`; `e2e:bundles` runs it before the suite                  |
+| `npm run live-docs:visualize:tidepool`    | Build the tidepool sample's Explorer, a small TypeScript game whose directories mix implementation, tests, binary assets and documents, into `dist/explorer/samples/tidepool/`; `e2e:bundles` builds it with the suite |
+| `npm run live-docs:visualize:powershell`  | Build the PowerShell rollout sample's Explorer, from a copy of it (excluding `expected/`), into `dist/explorer/samples/powershell/`; `e2e:bundles` builds it with the suite |
 | `npm run live-docs:visualize:history-sample` | Build the scripted repository's Explorer with its complete history, a last-four-commit window and a symbol-identity collision sample under `dist/explorer/samples/history/`, `history-window/` and `history-collision/`. |
 
 ### Local Map layout lab

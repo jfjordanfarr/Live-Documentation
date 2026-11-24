@@ -1,6 +1,6 @@
 # Tracing Impact with Live Documentation
 
-_Current as of 2026-10-23; example outputs are dated snapshots, not current totals._
+_Current as of 2026-11-24; example outputs are dated snapshots, not current totals._
 
 ## Metadata
 
@@ -22,16 +22,16 @@ npm run live-docs:inspect -- --from scripts/live-docs/generate.ts --to packages/
 ```
 
 ```
-Path from scripts/live-docs/generate.ts to packages/engine/src/live-docs/core.ts (2 hop(s), outbound).
-  1. scripts/live-docs/generate.ts […] -> packages/generator/src/generator.ts […]
-  2. packages/generator/src/generator.ts […] -> packages/engine/src/live-docs/core.ts […]
+Path from scripts/live-docs/generate.ts to packages/engine/src/live-docs/core.ts, 2 hop(s): each file uses the next.
+  1. scripts/live-docs/generate.ts […] uses packages/generator/src/generator.ts […]
+  2. packages/generator/src/generator.ts […] uses packages/engine/src/live-docs/core.ts […]
 ```
 
-Each hop names the file and the Live Doc the edge was read from.
+Each hop names the file and the Live Doc the edge was read from. Without `--direction`, the command searches outbound first and then inbound, telling the route as asked (`uses` or `is used by`).
 
 ### Symbol-level pathfinding
 
-Trace connections between specific symbols, not just files, with `path#Symbol`:
+Trace connections between specific symbols, not just files, with `path#Symbol` (or Windows-safe `path:Symbol`):
 
 ```bash
 npm run live-docs:inspect -- --from packages/generator/src/generator.ts#generateLiveDocs --to packages/engine/src/live-docs/core.ts#analyzeSourceFile --json
@@ -59,7 +59,7 @@ npm run live-docs:inspect -- --from packages/generator/src/generator.ts#generate
 npm run live-docs:inspect -- --from packages/engine/src/config/liveDocumentationConfig.ts --direction inbound
 ```
 
-Without `--to`, the result is a fan-out: every terminal path away from the file, up to 200 of them. For a module as widely used as the configuration loader that list is long. `--max-depth` shortens it and `--json` returns the paths as data.
+Without `--to` or `--reachable`, the command lists the file's **direct neighbours** each way asked (`outbound`, `inbound`, or `both`), sorted by path and counted, up to 200 per direction with the remainder counted (until 2026-11-22 this printed every terminal path whole). It also prints declarations named by the file's documentation and files whose documentation names it (`documentation.names` and `documentation.namedBy` in `--json`), plus related markdown (`Cites:` / `Cited by:`, `documents` in `--json`). `--max-depth` applies to `--to` and `--reachable`, not direct-neighbour listings, and a directory passed to `--from` requires `--to` or `--reachable`.
 
 ### See what a file depends on (outbound)
 
@@ -86,7 +86,7 @@ inbound (what depends on it): 13 files
   ...
 ```
 
-Where a fan-out lists paths, `--reachable` lists files: each once, with the fewest hops to it, nearest first, one list per direction. It is the same walk the Explorer's destination field runs from the newest pin, which offers these files and says how far. A fan-out runs one way only; asked for both it says so.
+Where `--from` alone lists direct neighbours, `--reachable` walks further and lists every file a path reaches: each once, with the fewest hops to it, nearest first, one list per direction (`outbound`, `inbound`, or `both`). It is the same walk the Explorer's destination field runs from the newest pin, which offers these files and says how far. Both `--from` alone and `--reachable` accept `--direction both`.
 
 ### What the entry points reach
 
@@ -148,9 +148,9 @@ npm run live-docs:inspect -- --from packages/generator/src/generator.ts --to pac
 
 Choose a file, symbol or directory in the search bar; it becomes the newest pin. **Path to** chooses the destination from that pin. Connected matches say how far they are; a fold discloses matches with no path. In both representations a successful path names its files, from the end you asked from to the end you asked for, in a shared report above the map, with the relation said between them: "is used by" where each file is used by the next, "uses" where each file uses the next. Each hop is an inspection button, reached by Tab and activated by Enter or Space; long routes scroll to reveal the focused hop. The 2D drawing adds the relevant symbol connections. The 2D drawing always sets what offers before what uses it, so a path asked from the file that depends is drawn with that file at the right and told from it. Inspecting a hop keeps the path; clearing the destination returns to exploration with the pins kept.
 
-The Explorer's provider-to-consumer direction corresponds to the CLI's **inbound** walk. The CLI's default **outbound** direction follows a consumer to what it depends on. Both use the engine's walk; their default questions differ.
+Both the Explorer and the CLI answer a path whichever way the dependency runs and tell it from the asked start to the asked destination. When no direction is forced, the Explorer searches provider-to-consumer first (the CLI's **inbound** walk) and then consumer-to-provider; the CLI searches **outbound** first and then **inbound** (passing `--direction` restricts the CLI to one way or prints both). Both use the engine's walk.
 
-The October 23 repair made results and reverse recovery visible in **both** 2D and 3D; see the [playtest](../../../AI-Agent-Workspace/AgentSessionHistory/2026/10/2026-10-23/Screenshots/path-feedback/README.md). Reverse and Clear work by keyboard. Clearing returns focus to the destination and keeps the pins. Switching representation, inspecting evidence, reloading or opening a shared link preserves the question. Navigating to World Map or Knowledge Sources hides the report without discarding it; a new destination question opens Local Map even when no path exists. Showing every alternative shortest route or every symbol chain is a separate historical proposal, not a prerequisite for making the existing route usable.
+The October 23 repair made path results visible in **both** 2D and 3D; see the [playtest](../../../AI-Agent-Workspace/AgentSessionHistory/2026/10/2026-10-23/Screenshots/path-feedback/README.md). Since 2026-11-22, paths run in either direction directly and are told as asked (`uses` or `is used by`), so no separate Reverse action is needed; each hop button and Clear work by keyboard. Clearing returns focus to the destination and keeps the pins. Switching representation, inspecting evidence, reloading or opening a shared link preserves the question. Navigating to World Map or Knowledge Sources hides the report without discarding it; a new destination question opens Local Map even when no path exists. Showing every alternative shortest route or every symbol chain is a separate historical proposal, not a prerequisite for making the existing route usable.
 
 ---
 
@@ -158,13 +158,16 @@ The October 23 repair made results and reverse recovery visible in **both** 2D a
 
 | Flag                                    | Description                                       |
 | --------------------------------------- | ------------------------------------------------- |
-| `--from <path[#symbol]>`                | Starting artifact (required for pathfinding)      |
-| `--to <path[#symbol]>`                  | Destination artifact (optional; omit for fan-out) |
-| `--reachable`                           | Every file a path reaches from `--from`, with hops |
-| `--direction <outbound\|inbound\|both>` | Traversal direction (default: `outbound`); `both` with `--to` or `--reachable` |
-| `--max-depth <n>`                       | Maximum hops (default: 25)                        |
+| `--from <path[#symbol]>`                | Starting artifact: a file, directory, or symbol (`path#Symbol` or Windows-safe `path:Symbol`); a symbol requires `--to`, and a directory requires `--to` or `--reachable` |
+| `--to <path[#symbol]>`                  | Destination artifact (file, directory, or symbol); omit with a file `--from` to list direct neighbours, documentation references, and cited docs |
+| `--reachable`                           | Every file a path reaches from `--from`, with hops; without `--from`, what the declared entry points reach |
+| `--groups`                              | List the disconnected groups of files in today's graph (standalone; takes no `--from`, `--to`, or `--direction`) |
+| `--direction <outbound\|inbound\|both>` | Traversal direction (`outbound` default for `--from` alone and `--reachable`; with `--to`, omitting `--direction` searches `outbound` then `inbound`) |
+| `--max-depth <n>`                       | Maximum hops for `--to` and `--reachable` (default: 25) |
+| `--at <commit>`                         | Inspect a recorded historical commit (`--from`, `--from` + `--to`, or `--reachable`; add `--words` with `--from` for authored prose and symbol descriptions) |
+| `--between <a> <b>`                     | Compare two recorded historical commits           |
 | `--json`                                | Machine-readable output                           |
-| `--verbose`                             | Include full symbol lists in output               |
+| `--verbose`                             | Include full symbol lists in output (default: slim) |
 
 ---
 
