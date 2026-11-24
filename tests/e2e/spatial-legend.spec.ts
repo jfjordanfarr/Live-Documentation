@@ -138,9 +138,10 @@ test("the Local Map shows the matching legend and lends neither key to another v
 
   await page.getByRole("button", { name: "2D", exact: true }).click();
   await expect(page.locator("#local-legend")).toBeVisible();
-  // The rows the 2D map's arrival shows; the gathered wires' key, "References", is drawn only at the overview band
-  // (2026-11-06), whose wires it explains, and local-map-overview.spec.ts holds it there.
-  await expect(page.locator("#local-legend .legend-word:visible")).toHaveText(["Offers", "Uses", "Test-backed"]);
+  // The rows the 2D map's arrival shows: the estate's encasing Portal handle draws blue Implementation cells under
+  // Cells under name, so Implementation stands in the kinds row; the gathered wires' key, "References", is drawn only
+  // at the overview band (2026-11-06), whose wires it explains, and local-map-overview.spec.ts holds it there.
+  await expect(page.locator("#local-legend .legend-word:visible")).toHaveText(["Offers", "Uses", "Test-backed", "Implementation"]);
   await expect(page.locator("#local-legend .legend-row--gathered")).toBeHidden();
   await expect(page.locator("#spatial-legend")).toBeHidden();
   for (const view of ["sources", "world"]) {

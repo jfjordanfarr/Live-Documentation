@@ -2,6 +2,7 @@ import { requireElement } from "../dom";
 import { activePalette, marblesDrawn, whenPaletteChanges } from "../palette";
 import { spatialNodeStyle, spatialNodeStyles } from "../views/forceGraphAppearance";
 import type { SpatialGraphData } from "../views/forceGraphData";
+import { TURNING_ATTRIBUTE } from "../views/localView/mirror-motion";
 
 /** What the 3D picture draws beyond its data: the key says only what is on screen (2026-10-30). */
 export interface SpatialLegendDrawn {
@@ -121,9 +122,13 @@ export function renderSpatialLegend(graph: SpatialGraphData, symbolScale: number
 export function watchLocalKinds(): void {
   const row = document.getElementById("local-legend-kinds"), map = document.getElementById("map-container");
   if (!row || !map) return;
+  const layer = map.parentElement;
   let pending = 0, shown = "";
   const draw = (): void => {
     pending = 0;
+    // During a 3D Mirror turn, rotateY(90deg) and edge-on opacity make checkVisibility() transiently report false; hold
+    // the standing kinds until the turn finishes instead of flickering the legend empty and back.
+    if (layer?.hasAttribute(TURNING_ATTRIBUTE)) return;
     const styles: Readonly<Record<string, SpatialLegendMark>> = spatialNodeStyles(), drawn = new Set<SpatialLegendMark>();
     for (const cell of map.querySelectorAll<SVGElement>(".local-cell")) {
       const kind = styles[cell.dataset.kind ?? ""];
@@ -134,11 +139,15 @@ export function watchLocalKinds(): void {
     shown = signature;
     row.replaceChildren(...marksOf("node", marks));
   };
-  // The cells are drawn and redrawn inside their boxes, and a look shows or hides them by the map's attributes.
-  const concerns = (node: Node): boolean => node instanceof Element && (node.matches(".local-directory-closed, .local-directory-closed *") || !!node.querySelector(".local-directory-closed"));
+  // The cells are drawn and redrawn inside closed boxes and encasing directory handles, and a look shows or hides them by the map's attributes.
+  const concerns = (node: Node): boolean => node instanceof Element
+    && (node.matches(".local-directory-closed, .local-directory-closed *, .local-handle-cells, .local-handle-cells *")
+      || !!node.querySelector(".local-directory-closed, .local-handle-cells"));
   new MutationObserver(changes => {
     if (!pending && changes.some(change => change.type === "attributes" || concerns(change.target) || [...change.addedNodes, ...change.removedNodes].some(concerns))) pending = requestAnimationFrame(draw);
   }).observe(map, { childList: true, subtree: true, attributes: true, attributeFilter: ["data-lod", "data-looks"] });
+  // Catch up once a Mirror 3D turn removes data-turning on the map's layer.
+  if (layer) new MutationObserver(() => { if (!pending && !layer.hasAttribute(TURNING_ATTRIBUTE)) pending = requestAnimationFrame(draw); }).observe(layer, { attributes: true, attributeFilter: [TURNING_ATTRIBUTE] });
   // A view put away is not drawn (shell.css), so a row drawn while the map is away finds no cell drawn and stands
   // empty until something of the map changes: it is read again whenever the map's view is shown or put away.
   const view = map.closest<HTMLElement>(".view-container");

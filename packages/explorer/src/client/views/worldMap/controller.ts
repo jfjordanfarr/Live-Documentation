@@ -372,9 +372,9 @@ export class WorldMapController {
 
   /** Draws the board and fits it to the viewport. */
   render(): void {
+    this.writeCrumbs();
     this.draw();
     this.fit();
-    this.writeCrumbs();
   }
 
     /** Removes every listener and empties the root. */
@@ -1018,9 +1018,24 @@ export class WorldMapController {
     const outlines = [...outlineOf.values()];
     // How far below its outline a piece's strands hang on the screen, which a label below the piece keeps clear of.
     const strands = LONGEST_STRAND * Math.cos(this.camera.phi) * this.screen.k;
+    // Visible HUD chrome (title crumbs, top toolbar, help button) is treated as hard obstacles with 6 px breathing room
+    // so no label ever sits on top of the toolbar or "?" control at default fit, rotated, tilted, or zoomed views.
+    const chromePad = 6;
+    const chromeBoxes: ScreenBox[] = [this.crumbs, this.tools, this.helpButton]
+      .map((node) => node.getBoundingClientRect())
+      .filter((rect) => rect.width > 0 && rect.height > 0)
+      .map((rect) => ({ left: rect.left - chromePad, top: rect.top - chromePad, right: rect.right + chromePad, bottom: rect.bottom + chromePad }));
     const placed: ScreenBox[] = [];
-    const covered = (box: ScreenBox): number =>
-      placed.reduce((sum, other) => sum + Math.max(0, Math.min(box.right, other.right) - Math.max(box.left, other.left) - 1) * Math.max(0, Math.min(box.bottom, other.bottom) - Math.max(box.top, other.top) - 1), 0)
+    // Zero-tolerance overlap for piece names, zone banners, tags, and HUD chrome (removing the old -1 px slack that let
+    // "REPOSITORY" graze "library · 207 files" and "GITHUB" graze "live-docs"). Door labels keep the original 1 px halo
+    // slack against other labels so dense door stacks stay tightly grouped beside their piece and never displace the
+    // piece's pinned evidence panel onto a neighbour.
+    const rectOverlap = (a: ScreenBox, b: ScreenBox, slack = 0): number =>
+      Math.max(0, Math.min(a.right, b.right) - Math.max(a.left, b.left) - slack)
+      * Math.max(0, Math.min(a.bottom, b.bottom) - Math.max(a.top, b.top) - slack);
+    const covered = (box: ScreenBox, labelSlack = 0): number =>
+      placed.reduce((sum, other) => sum + rectOverlap(box, other, labelSlack), 0)
+      + chromeBoxes.reduce((sum, chrome) => sum + rectOverlap(box, chrome, 0) * 4, 0)
       + outlines.reduce((sum, outline) => sum + coveredArea(box, outline), 0);
     const moved = (box: ScreenBox, dx: number, dy: number): ScreenBox => ({ left: box.left + dx, right: box.right + dx, top: box.top + dy, bottom: box.bottom + dy });
     // A region's name labels an area, not a point, so it may travel further along the region's side than the others.
@@ -1076,8 +1091,10 @@ export class WorldMapController {
         }
         const rest = Number(node.dataset.dy ?? node.getAttribute("dy") ?? "0");
         const sides = sidesOf(node);
-        // A door's label keeps to its door; any other may also move sideways, by up to half its width.
-        const shifts = node.dataset.anchor ? [0] : SHIFTS;
+        // A door's label keeps to its door; a region's banner may travel up to a full width sideways to stay clear of
+        // pieces, labels, and HUD controls on narrower viewports; any other moves by up to half its width.
+        const shifts = node.dataset.anchor ? [0] : kind === "w-zone" ? [0, -0.25, 0.25, -0.5, 0.5, -0.75, 0.75, -1, 1] : SHIFTS;
+        const labelSlack = kind === "w-doorlabel" ? 1 : 0;
         let best = { dy: rest, dx: Number(node.dataset.dx ?? "0"), cover: Number.POSITIVE_INFINITY, side: sides[0], box: resting as ScreenBox, sideDx: 0 };
         search: for (const [index, side] of sides.entries()) {
           const sideDx = Number(side?.dx ?? "0");
@@ -1096,7 +1113,7 @@ export class WorldMapController {
               const candidate = moved(box, shift * box.width, step);
               const span = own ? spanWithin(own, candidate.top, candidate.bottom) : undefined;
               const beyond = !span ? 0 : side?.anchor === "end" ? Math.min(0, span[0] - 4 - candidate.right) : Math.max(0, span[1] + 4 - candidate.left);
-              const cover = covered(moved(candidate, beyond, 0));
+              const cover = covered(moved(candidate, beyond, 0), labelSlack);
               if (cover < best.cover) {
                 best = { dy: rest + step, dx: sideDx + shift * box.width + beyond, cover, side, box, sideDx };
               }

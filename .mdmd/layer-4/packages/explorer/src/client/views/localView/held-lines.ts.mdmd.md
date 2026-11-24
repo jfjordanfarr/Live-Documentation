@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/explorer/src/client/views/localView/held-lines.ts`
-- Generated At: 2026-11-19T21:10:16.787Z
+- Generated At: 2026-11-24T04:28:06.166Z
 
 ## Authored
 ### Purpose
@@ -134,9 +134,19 @@ the next, a segment that does not fit what is left of a line starting the next, 
 line broken inside, at each line's end. A space at a line's end hangs, as the browser lets it. The count sets the box
 the name is drawn in, so that the box is as tall as the lines drawn.
 
+#### `seamLineCount` {#symbol-seamlinecount}
+- Type: function
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/held-lines.ts#L205)
+
+##### `seamLineCount` — Summary
+How many lines a wrapping symbol name takes at a width when breaking only at word seams (2026-11-24): unlike
+{@link heldLineCount}, a single indivisible segment wider than a line is never chopped mid-word onto a following line
+(preventing "Internal / s", "Intern / als", and "Process / orConfig"); instead, packing stops at that line so the
+stylesheet truncates the over-wide segment cleanly with an ellipsis on its own line.
+
 #### `chooseNameHeader` {#symbol-choosenameheader}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/held-lines.ts#L206)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/held-lines.ts#L240)
 - Returns: [`HeldHeader`](#symbol-heldheader)
 - Parameters: `room`: [`HeldRoom`](#symbol-heldroom)
 

@@ -13,7 +13,7 @@ import type { DescriptionsZoomedOut, InspectionTarget } from "../../types";
 import { drawHeldLooks } from "./card-factory";
 import { CELLS } from "./closed-looks";
 import { CLOSED_FOOT, closedFamily, HANDLE_FLOOR, HANDLE_INDENT, handleParts, type ClosedSibling } from "./directory-handle";
-import { chooseHeldHeader, chooseNameHeader, CONTROLS_GAP, HELD_BANDS, heldLineCount, heldSegments, heldTitle, rowSegments, type HeldBand, type TitleRooms } from "./held-lines";
+import { chooseHeldHeader, chooseNameHeader, CONTROLS_GAP, HELD_BANDS, heldLineCount, heldSegments, heldTitle, rowSegments, seamLineCount, type HeldBand, type TitleRooms } from "./held-lines";
 import { dotRoom, evenRows, FILE_KEPT_AIR, fileLineRoom, fitKept, fitLines, footHold, HEAD_SPACE, headHeight, HIGHLIGHT_BELOW, layoutTopOf, linesOf, NAME_LINE, nameFill, nameLinesHeld, nameWraps, pinDepth, type FootCount } from "./ladder-rooms";
 import { FIRST_STEP, LAST_STEP, ladderScales, LOOK_BANDS, LOOK_SCALES, type LadderResistances, type ZoomLook } from "./ladder-steps";
 import { oneLineName } from "./name-cut";
@@ -327,7 +327,7 @@ export class CardReading {
       card.style.removeProperty("--refold-gap");
       card.classList.remove("local-file-kept-on");
       for (const count of card.querySelectorAll(":scope > button.local-disclosure")) count.classList.remove("local-foot-held");
-      for (const row of card.querySelectorAll(".symbol-row")) row.classList.remove(...HELD_LOOKS.map(look => `local-name-lines-${look}`), "local-row-kept-on", "local-name-cut");
+      for (const row of card.querySelectorAll(".symbol-row")) row.classList.remove(...HELD_LOOKS.map(look => `local-name-lines-${look}`), ...HELD_LOOKS.map(look => `local-name-clamped-${look}`), "local-row-kept-on", "local-name-cut");
     }
     const rooms = [...this.cards.values()].flatMap(({ card }) => measureRooms(card, resistances, looks, keep));
     if (looks) rooms.push(...closedBoxWrites([...this.container.querySelectorAll<HTMLElement>(".local-directory-closed")]));
@@ -714,7 +714,7 @@ function lookHeadWrites(heads: readonly LookHead[], slotLines: number, gap: numb
   const connections = LOOK_SCALES.connections;
   const slotRow = 32 + slotLines * 17;
   const drawn = heads.filter(head => !head.internals);
-  const want = drawn.map(head => heldLineCount(head.segments, head.across(connections) / connections,
+  const want = drawn.map(head => seamLineCount(head.segments, head.across(connections) / connections,
     nameLinesHeld(Math.max(head.room, slotRow), head.nameTop, head.line, connections), head.measure));
   const headOf = (index: number, lines: number): number => headHeight(drawn[index], lines, connections);
   const room = drawn.length ? drawn[drawn.length - 1].top + drawn[drawn.length - 1].height - drawn[0].top : 0;
@@ -783,17 +783,19 @@ function lookHeadWrites(heads: readonly LookHead[], slotLines: number, gap: numb
       const wantedScale = look === "overview" ? overviewScales[index] : LOOK_SCALES[look];
       // The stylesheet's held scales at the look for a name its room cannot hold on one line, and its room across.
       const scale = Math.max(1, Math.min(nameFill(room, head.nameTop, head.nameHeight), wantedScale));
-      const count = kept?.lines || (look === "connections" && even.lines ? even.lines : heldLineCount(head.segments, across(wantedScale) / scale, linesAt(scale), head.measure));
-      writes.push([head.row, `--row-lines-${look}`, String(count)], [head.row, `local-name-lines-${look}`, count > 1]);
+      const lineWidth = across(wantedScale) / scale;
+      const count = kept?.lines || (look === "connections" && even.lines ? even.lines : seamLineCount(head.segments, lineWidth, linesAt(scale), head.measure));
+      // A name its lines cannot hold whole is cut by the stylesheet, with an ellipsis at the end of its last line; its
+      // button says it whole then too. Rows that fit completely within `count` lines keep overflow-y visible so descenders
+      // on the last line (such as "g" in "Config") are never clipped flat.
+      const short = heldLineCount(head.segments, lineWidth, Number.MAX_SAFE_INTEGER, head.measure) > count;
+      writes.push([head.row, `--row-lines-${look}`, String(count)], [head.row, `local-name-lines-${look}`, count > 1], [head.row, `local-name-clamped-${look}`, count > 1 && short]);
       if (look === "overview") writes.push([head.row, "--row-scale-overview", wantedScale.toFixed(3)]);
       // A name held to one line above its kept description is cut where its room across does not hold it (name-cut.ts):
       // the drawing only, written beside the text, whose own characters stay the name; the button's tooltip says it whole.
       if (look === "connections") {
-        const shown = always && kept?.kept ? oneLineName(head.name, head.segments, across(wantedScale) / scale, head.measure, keep === "line-middle" ? "middle" : "end") : head.name;
+        const shown = always && kept?.kept ? oneLineName(head.name, head.segments, lineWidth, head.measure, keep === "line-middle" ? "middle" : "end") : head.name;
         const cut = shown !== head.name;
-        // A name its lines cannot hold whole is cut by the stylesheet, with an ellipsis at the end of its last line; its
-        // button says it whole then too.
-        const short = heldLineCount(head.segments, across(wantedScale) / scale, Number.MAX_SAFE_INTEGER, head.measure) > count;
         writes.push([head.row, "local-name-cut", cut], [head.text, "data-name-cut", cut ? shown : ""], [head.label, "title", cut || short ? head.name : ""]);
       }
     }

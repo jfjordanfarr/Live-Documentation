@@ -154,8 +154,27 @@ test("Reading, Then Neighbours on pathfind.ts stops where names still read and c
   expect(end.look, "the connections look, where every card's names read").toBe("connections");
   expect(end.k).toBeCloseTo(readingK * ARRIVAL_FLOOR_RATIO, 6);
   const frame = await frameOf(page), subject = (await boxOf(page, card(SUBJECT)))!;
-  expect((subject.left + subject.right) / 2).toBeCloseTo((frame.left + frame.right) / 2, 0);
-  // Across, the subject is centred. Down, it is centred where its name then stands inside the frame's padding; where it
+  const padding = framePadding({ width: frame.right - frame.left, height: frame.bottom - frame.top });
+  const contentBounds = await page.evaluate(() => {
+    const rects = [...document.querySelectorAll<HTMLElement>("#map-container .node-card, #map-container .local-directory-closed, #map-container .local-directory-band")]
+      .map(el => el.getBoundingClientRect()).filter(r => r.width > 0 && r.height > 0);
+    return { left: Math.min(...rects.map(r => r.left)), right: Math.max(...rects.map(r => r.right)) };
+  });
+  // Across, the subject stays inside the frame; per-axis arrival framing (2026-11-24) centres the neighbourhood when it
+  // fits across, and when it overflows across either centres the subject or clamps the overflowing neighbourhood to the
+  // frame's padding so it never leaves dead void on one side while cutting neighbours on the other.
+  expect(subject.left >= frame.left && subject.right <= frame.right, "the subject is horizontally inside the frame").toBe(true);
+  const frameMidX = (frame.left + frame.right) / 2;
+  const contentFitsAcross = contentBounds.right - contentBounds.left <= (frame.right - frame.left) - 2 * padding.horizontal + 2;
+  if (contentFitsAcross) {
+    expect((contentBounds.left + contentBounds.right) / 2, "fitting neighbourhood centred across").toBeCloseTo(frameMidX, 0);
+  } else {
+    const acrossOffset = Math.abs((subject.left + subject.right) / 2 - frameMidX);
+    const clampedAcross = Math.abs(contentBounds.left - (frame.left + padding.horizontal)) <= 2
+      || Math.abs(contentBounds.right - (frame.right - padding.horizontal)) <= 2;
+    expect(acrossOffset <= 1 || clampedAcross, `across: offset ${acrossOffset.toFixed(1)} px, content [${contentBounds.left.toFixed(1)}, ${contentBounds.right.toFixed(1)}] vs padded frame [${(frame.left + padding.horizontal).toFixed(1)}, ${(frame.right - padding.horizontal).toFixed(1)}]`).toBe(true);
+  }
+  // Down, it is centred where its name then stands inside the frame's padding; where it
   // would not, the card as tall as the frame less its paddings or taller, the camera has moved by the least that brings
   // the name inside, its top on the padding's edge (2026-11-22: the frame an arrival ends on holds what was asked; until
   // then a tall subject was centred down too, and its name stood above the view). The case first asked only whether the
@@ -163,10 +182,9 @@ test("Reading, Then Neighbours on pathfind.ts stops where names still read and c
   // pathfind.ts stood 6 px below the centre, shorter than the frame, and the case as first written failed on it.
   const name = (await boxOf(page, `${card(SUBJECT)} .node-title`))!;
   expect(inside(name, frame), "the subject's name is inside the frame").toBe(true);
-  const padding = framePadding({ width: frame.right - frame.left, height: frame.bottom - frame.top }).vertical;
   const below = (subject.top + subject.bottom) / 2 - (frame.top + frame.bottom) / 2;
-  if (name.top - below >= frame.top + padding - 0.5) expect(below, "centred down").toBeCloseTo(0, 0);
-  else expect(Math.abs(name.top - (frame.top + padding)), "its name's top on the padding's edge").toBeLessThanOrEqual(1);
+  if (name.top - below >= frame.top + padding.vertical - 0.5) expect(below, "centred down").toBeCloseTo(0, 0);
+  else expect(Math.abs(name.top - (frame.top + padding.vertical)), "its name's top on the padding's edge").toBeLessThanOrEqual(1);
   await context.close();
 });
 
@@ -314,7 +332,23 @@ test("the default arrival rests at reading size for the rest, eases back in the 
   expect([...new Set(moving.map(frame => frame.look))], "one look through the whole motion").toEqual(["reading"]);
   expect(log.filter((frame, index) => index > 0 && frame.look !== log[index - 1].look).length, "the look changes once").toBe(1);
   const subject = (await boxOf(page, card(SUBJECT)))!, frame = await frameOf(page);
-  expect((subject.left + subject.right) / 2).toBeCloseTo((frame.left + frame.right) / 2, 0);
+  const padding = framePadding({ width: frame.right - frame.left, height: frame.bottom - frame.top });
+  const contentBounds = await page.evaluate(() => {
+    const rects = [...document.querySelectorAll<HTMLElement>("#map-container .node-card, #map-container .local-directory-closed, #map-container .local-directory-band")]
+      .map(el => el.getBoundingClientRect()).filter(r => r.width > 0 && r.height > 0);
+    return { left: Math.min(...rects.map(r => r.left)), right: Math.max(...rects.map(r => r.right)) };
+  });
+  expect(subject.left >= frame.left && subject.right <= frame.right, "the subject is horizontally inside the frame").toBe(true);
+  const frameMidX = (frame.left + frame.right) / 2;
+  const contentFitsAcross = contentBounds.right - contentBounds.left <= (frame.right - frame.left) - 2 * padding.horizontal + 2;
+  if (contentFitsAcross) {
+    expect((contentBounds.left + contentBounds.right) / 2, "fitting neighbourhood centred across").toBeCloseTo(frameMidX, 0);
+  } else {
+    const acrossOffset = Math.abs((subject.left + subject.right) / 2 - frameMidX);
+    const clampedAcross = Math.abs(contentBounds.left - (frame.left + padding.horizontal)) <= 2
+      || Math.abs(contentBounds.right - (frame.right - padding.horizontal)) <= 2;
+    expect(acrossOffset <= 1 || clampedAcross, `across: offset ${acrossOffset.toFixed(1)} px, content [${contentBounds.left.toFixed(1)}, ${contentBounds.right.toFixed(1)}] vs padded frame [${(frame.left + padding.horizontal).toFixed(1)}, ${(frame.right - padding.horizontal).toFixed(1)}]`).toBe(true);
+  }
   await context.close();
 });
 
@@ -862,5 +896,30 @@ test("a folder chosen in the search that no frame holds is entered at its label 
   expect(firstRow.length, "the folder holds cards under its label").toBeGreaterThan(0);
   for (const box of firstRow) expect(box.top, "the first row's top in view").toBeLessThan(frame.bottom);
   expect(firstRow.some(box => inside(box, frame) || (box.left < frame.right && box.top >= frame.top && box.top < frame.bottom)), "a card of the first row in view").toBe(true);
+  await context.close();
+});
+
+test("default arrival on graph.ts holds the focused card inside the frame even while continuing search runs and clamps away dead left void", async ({ browser }) => {
+  test.setTimeout(120_000);
+  const graphFile = "packages/engine/src/live-docs/graph.ts";
+  // Continuing search stays enabled (fresh visitor default) so any race between search moves and arrival easing shows up.
+  const context = await browser.newContext({ viewport: { width: 1280, height: 800 }, deviceScaleFactor: 1 });
+  const page = await context.newPage();
+  await page.goto(`/?view=local&node=${encodeURIComponent(graphFile)}`);
+  await page.waitForSelector("#map-container .node-card.local-focus", { timeout: 25_000 });
+  await expect.poll(() => arrivalOf(page), { timeout: 10_000, intervals: [20] }).not.toBeNull();
+  await still(page);
+  expect(await arrivalOf(page), "arrival completed").toBeNull();
+  const frame = await frameOf(page);
+  const subjectBox = (await boxOf(page, card(graphFile)))!;
+  const titleBox = (await boxOf(page, `${card(graphFile)} .node-title`))!;
+  expect(inside(titleBox, frame), `graph.ts title ${JSON.stringify(titleBox)} inside frame ${JSON.stringify(frame)}`).toBe(true);
+  expect(subjectBox.top, "graph.ts card stays below the frame top").toBeGreaterThanOrEqual(frame.top - 1);
+  expect(subjectBox.bottom, "graph.ts card fits inside the frame bottom").toBeLessThanOrEqual(frame.bottom + 1);
+  // Content overflows horizontally; clamping removes dead left void past the leftmost card.
+  const leftmost = await page.evaluate(() => Math.min(...[...document.querySelectorAll<HTMLElement>("#map-container .node-card")].map(el => el.getBoundingClientRect().left)));
+  expect(leftmost - frame.left, "no wide empty void left of the leftmost card while cards overflow on the right").toBeLessThan(90);
+  // Handle cells switched from under-name to beside-name on arrival pull-back: the legend must keep their kinds.
+  await expect(page.locator("#local-legend-kinds .legend-word")).toHaveText(["Implementation", "Test"]);
   await context.close();
 });

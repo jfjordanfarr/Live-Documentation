@@ -2,7 +2,7 @@ import { readFileSync } from "node:fs";
 import path from "node:path";
 import { describe, expect, it } from "vitest";
 
-import { chooseHeldHeader, chooseNameHeader, HELD_BANDS, heldLineCount, heldSegments, heldTitle, rowSegments, type HeldRoom, type TitleRooms } from "./held-lines";
+import { chooseHeldHeader, chooseNameHeader, HELD_BANDS, heldLineCount, heldSegments, heldTitle, rowSegments, seamLineCount, type HeldRoom, type TitleRooms } from "./held-lines";
 import { FIRST_STEP, LAST_STEP, LOOK_BANDS } from "./ladder-steps";
 
 /** One unit a character, as a monospaced font would measure; a line one unit tall. */
@@ -59,6 +59,29 @@ describe("heldLineCount", () => {
     expect(count("DocumentationLinkEnforcementResult", 13, 2)).toBe(2);
     expect(count("Post", 0)).toBe(1);
     expect(heldLineCount([], 10, 3, measure)).toBe(1);
+  });
+});
+
+describe("seamLineCount", () => {
+  const count = (name: string, width: number, most = 9) => seamLineCount(rowSegments(name), width, most, measure);
+
+  it("never splits an indivisible word across lines on narrow cards", () => {
+    // "Internals" (9) in width 7 stays 1 line (clean ellipsis) rather than chopping into "Internal / s".
+    expect(count("Internals", 7, 2)).toBe(1);
+    expect(count("Internals", 9, 2)).toBe(1);
+    // "ProcessorConfig" when "Processor" (9) exceeds width 8 stays 1 line rather than "Process / orConfig".
+    expect(count("ProcessorConfig", 8, 2)).toBe(1);
+  });
+
+  it("wraps cleanly at word seams when earlier segments fit and stops cleanly when a later segment exceeds a line", () => {
+    expect(count("ProcessorConfig", 9, 2)).toBe(2);
+    expect(count("ROSETTA_PROCESSOR_H", 8, 2)).toBe(2);
+    // "summarize_" overflows width 9 only by its trailing underscore; "summarize" fits whole, so it wraps to
+    // "summarize" / "_report" instead of truncating to "summari…", while a lone word still never chops mid-word.
+    expect(count("summarize_report", 9, 2)).toBe(2);
+    expect(count("summarize_report", 8, 2)).toBe(1);
+    expect(count("DocumentationLinkViolation", 20, 3)).toBe(2);
+    expect(count("DocumentationLinkEnforcementResult", 13, 2)).toBe(2);
   });
 });
 

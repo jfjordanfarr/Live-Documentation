@@ -100,6 +100,23 @@ describe("an arrival's end frame", () => {
     const content = box(-40, 12, 3100, 1700), subject = box(1000, 300, 320, 240);
     expect(arrivalEndFrame(content, subject, frame, 1)).toEqual(arrivalEndFrame({ ...content }, { ...subject }, { ...frame }, 1));
   });
+
+  it("handles each axis independently at the floor: centres an axis that fits and clamps an overflowing axis to content bounds", () => {
+    const { horizontal, vertical } = framePadding(frame);
+    // Fits across at the floor (1500 * 0.335 = 502 < 1144), overflows down (2600 * 0.335 = 871 > 744), subject near foot:
+    // centring subject blindly would slice the top while leaving dead void below content.
+    const tallContent = box(0, 0, 1500, 2600), lowSubject = box(950, 1950, 260, 400);
+    const end = arrivalEndFrame(tallContent, lowSubject, frame, 1);
+    const drawn = onScreen(tallContent, end);
+    expect((drawn.left + drawn.right) / 2, "fitting horizontal axis centres content, not subject").toBeCloseTo(frame.width / 2, 6);
+    expect(drawn.bottom, "overflowing vertical axis leaves no empty void past content's bottom edge").toBeCloseTo(frame.height - vertical, 6);
+    // Asymmetric horizontal overflow with subject near left edge: clamps content's left edge to horizontal padding.
+    const wideContent = box(0, 0, 5000, 1000), leftSubject = box(200, 300, 260, 400);
+    const wideEnd = arrivalEndFrame(wideContent, leftSubject, frame, 1);
+    const wideDrawn = onScreen(wideContent, wideEnd);
+    expect(wideDrawn.left, "no empty void past content's left edge while slicing neighbours on the right").toBeCloseTo(horizontal, 6);
+    expect((wideDrawn.top + wideDrawn.bottom) / 2, "fitting vertical axis centres content").toBeCloseTo(frame.height / 2, 6);
+  });
 });
 
 describe("when an arrival's rest at reading size is over", () => {

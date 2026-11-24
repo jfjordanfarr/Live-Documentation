@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: `packages/explorer/src/client/views/localView/held-lines.test.ts`
-- Generated At: 2026-11-22T07:12:55.975Z
+- Generated At: 2026-11-24T04:28:06.160Z
 
 ## Authored
 ### Purpose
@@ -36,6 +36,7 @@ _No public symbols detected_
 - [`held-lines.heldSegments`](./held-lines.ts.mdmd.md#symbol-heldsegments)
 - [`held-lines.heldTitle`](./held-lines.ts.mdmd.md#symbol-heldtitle)
 - [`held-lines.rowSegments`](./held-lines.ts.mdmd.md#symbol-rowsegments)
+- [`held-lines.seamLineCount`](./held-lines.ts.mdmd.md#symbol-seamlinecount)
 - [`ladder-steps.FIRST_STEP`](./ladder-steps.ts.mdmd.md#symbol-first_step)
 - [`ladder-steps.LAST_STEP`](./ladder-steps.ts.mdmd.md#symbol-last_step)
 - [`ladder-steps.LOOK_BANDS`](./ladder-steps.ts.mdmd.md#symbol-look_bands)

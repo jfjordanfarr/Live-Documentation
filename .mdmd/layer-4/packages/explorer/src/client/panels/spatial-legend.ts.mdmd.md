@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/explorer/src/client/panels/spatial-legend.ts`
-- Generated At: 2026-11-19T21:10:13.915Z
+- Generated At: 2026-11-24T04:28:05.250Z
 
 ## Authored
 ### Purpose
@@ -30,21 +30,21 @@ Since [the November 16 record](../../../../../../../AI-Agent-Workspace/AgentSess
 ### Public Symbols
 #### `SpatialLegendDrawn` {#symbol-spatiallegenddrawn}
 - Type: interface
-- Source: [source](../../../../../../../packages/explorer/src/client/panels/spatial-legend.ts#L7)
+- Source: [source](../../../../../../../packages/explorer/src/client/panels/spatial-legend.ts#L8)
 
 ##### `SpatialLegendDrawn` — Summary
 What the 3D picture draws beyond its data: the key says only what is on screen (2026-10-30).
 
 #### `SpatialLegendMark` {#symbol-spatiallegendmark}
 - Type: interface
-- Source: [source](../../../../../../../packages/explorer/src/client/panels/spatial-legend.ts#L29)
+- Source: [source](../../../../../../../packages/explorer/src/client/panels/spatial-legend.ts#L30)
 
 ##### `SpatialLegendMark` — Summary
 A sample of the key and the words beside it, two at most.
 
 #### `SpatialLegendRow` {#symbol-spatiallegendrow}
 - Type: interface
-- Source: [source](../../../../../../../packages/explorer/src/client/panels/spatial-legend.ts#L40)
+- Source: [source](../../../../../../../packages/explorer/src/client/panels/spatial-legend.ts#L41)
 
 ##### `SpatialLegendRow` — Summary
 One row of the key (2026-11-16): the sample the stylesheet draws from its shape, the mark's words, and the sentence
@@ -54,7 +54,7 @@ with its one word.
 
 #### `spatialLegendRows` {#symbol-spatiallegendrows}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/panels/spatial-legend.ts#L50)
+- Source: [source](../../../../../../../packages/explorer/src/client/panels/spatial-legend.ts#L51)
 - Returns: [`SpatialLegendRow`](#symbol-spatiallegendrow)[]
 - Parameters: `graph`: [`SpatialGraphData`](../views/forceGraphData.ts.mdmd.md#symbol-spatialgraphdata); `drawn`: [`SpatialLegendDrawn`](#symbol-spatiallegenddrawn)
 
@@ -63,7 +63,7 @@ The rows of the key for a filtered graph at the moment shown, in reading order; 
 
 #### `renderSpatialLegend` {#symbol-renderspatiallegend}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/panels/spatial-legend.ts#L97)
+- Source: [source](../../../../../../../packages/explorer/src/client/panels/spatial-legend.ts#L98)
 - Parameters: `graph`: [`SpatialGraphData`](../views/forceGraphData.ts.mdmd.md#symbol-spatialgraphdata); `drawn`: [`SpatialLegendDrawn`](#symbol-spatiallegenddrawn)
 
 ##### `renderSpatialLegend` — Summary
@@ -71,7 +71,7 @@ Describe the spatial map's filtered, current-moment encodings without changing i
 
 #### `watchLocalKinds` {#symbol-watchlocalkinds}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/panels/spatial-legend.ts#L121)
+- Source: [source](../../../../../../../packages/explorer/src/client/panels/spatial-legend.ts#L122)
 
 ##### `watchLocalKinds` — Summary
 The 2D map's kinds (2026-11-16): the template's `local-legend-kinds` row, where the template has one, holds a mark
@@ -90,6 +90,7 @@ palette chosen later draws the row again in its colours.
 - [`forceGraphAppearance.spatialNodeStyle`](../views/forceGraphAppearance.ts.mdmd.md#symbol-spatialnodestyle-function)
 - [`forceGraphAppearance.spatialNodeStyles`](../views/forceGraphAppearance.ts.mdmd.md#symbol-spatialnodestyles)
 - [`forceGraphData.SpatialGraphData`](../views/forceGraphData.ts.mdmd.md#symbol-spatialgraphdata) (type-only)
+- [`mirror-motion.TURNING_ATTRIBUTE`](../views/localView/mirror-motion.ts.mdmd.md#symbol-turning_attribute)
 - [`template.local-legend-kinds`](../../shared/template.html.mdmd.md#symbol-local-legend-kinds)
 - [`template.map-container`](../../shared/template.html.mdmd.md#symbol-map-container)
 <!-- LIVE-DOC:END Dependencies -->

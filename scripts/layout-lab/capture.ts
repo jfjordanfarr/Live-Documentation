@@ -128,6 +128,8 @@ export interface CardConstants {
   titlePaddingRight: number;
   titlePaddingTop?: number;
   symbolsMarginTop: number;
+  /** Bottom margin beneath `.node-symbols > .node-meta` ("No public symbols") keeping it clear of Internals (2026-11-24). */
+  metaMarginBottom?: number;
   gridRowGap: number;
   gridColumnGap: number;
   gridSideColumn: number;
@@ -404,7 +406,7 @@ function readCapture(page: Page): Promise<PageCapture & { titleChecks: TitleChec
     // the ordinary card/text measurements: per-card append/read/remove cycles invalidate the whole scene's styles.
     const probeReadings = new Map<HTMLElement, {
       dotHeight: number; testsStyle: CSSStyleDeclaration; badgeStyle: CSSStyleDeclaration;
-      disclosureStyle: CSSStyleDeclaration;
+      disclosureStyle: CSSStyleDeclaration; metaStyle: CSSStyleDeclaration;
       internalsDot: CSSStyleDeclaration; placeholder: CSSStyleDeclaration;
     }>();
     const probes: HTMLElement[] = [];
@@ -426,15 +428,17 @@ function readCapture(page: Page): Promise<PageCapture & { titleChecks: TitleChec
       const staged = wrappers.flatMap(wrapper => {
         const card = wrapper.querySelector<HTMLElement>(".node-card");
         if (!card) return [];
-        const grid = card.querySelector<HTMLElement>(":scope > .node-symbols > .symbol-grid")!;
+        const symbols = card.querySelector<HTMLElement>(":scope > .node-symbols")!;
+        const grid = symbols.querySelector<HTMLElement>(":scope > .symbol-grid")!;
         return [{ card, dot: probeOf("symbol-anchor dot inbound", grid), tests: probeOf("node-tests", card),
           badge: probeOf("type-badge", card), disclosure: probeOf("local-disclosure", card),
+          meta: probeOf("node-meta", symbols),
           internals: probeOf("symbol-anchor dot inbound internals-anchor", grid),
           placeholder: probeOf("symbol-anchor-placeholder", grid) }];
       });
       for (const probe of staged) probeReadings.set(probe.card, {
         dotHeight: unit(probe.dot.getBoundingClientRect().height / scale), testsStyle: styleOf(probe.tests),
-        badgeStyle: styleOf(probe.badge), disclosureStyle: styleOf(probe.disclosure),
+        badgeStyle: styleOf(probe.badge), disclosureStyle: styleOf(probe.disclosure), metaStyle: styleOf(probe.meta),
         internalsDot: styleOf(probe.internals), placeholder: styleOf(probe.placeholder)
       });
     } finally {
@@ -513,7 +517,7 @@ function readCapture(page: Page): Promise<PageCapture & { titleChecks: TitleChec
       });
       {
         // A dot of the stylesheet's size, from a probe rather than this card's first dot, which may be collapsed to nothing.
-        const { dotHeight, testsStyle, badgeStyle, disclosureStyle, internalsDot, placeholder } = probeReadings.get(card)!;
+        const { dotHeight, testsStyle, badgeStyle, disclosureStyle, metaStyle, internalsDot, placeholder } = probeReadings.get(card)!;
         const gridStyle = getComputedStyle(grid);
         const titleStyle = getComputedStyle(title);
         constants = {
@@ -523,6 +527,7 @@ function readCapture(page: Page): Promise<PageCapture & { titleChecks: TitleChec
           titlePaddingRight: px(titleStyle.paddingRight),
           titlePaddingTop: px(titleStyle.paddingTop),
           symbolsMarginTop: px(getComputedStyle(symbols).marginTop),
+          metaMarginBottom: px(metaStyle.marginBottom),
           gridRowGap: px(gridStyle.rowGap),
           gridColumnGap: px(gridStyle.columnGap),
           gridSideColumn: px(gridStyle.gridTemplateColumns.split(" ")[0]),

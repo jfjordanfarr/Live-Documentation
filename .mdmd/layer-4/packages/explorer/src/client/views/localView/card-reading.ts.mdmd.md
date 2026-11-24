@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/explorer/src/client/views/localView/card-reading.ts`
-- Generated At: 2026-11-24T01:00:15.455Z
+- Generated At: 2026-11-24T04:28:06.005Z
 
 ## Authored
 ### Purpose
@@ -96,7 +96,7 @@ while names open full descriptions in the reader.
 
 #### `markFirstPin` {#symbol-markfirstpin}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/card-reading.ts#L1066)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/card-reading.ts#L1068)
 
 ##### `markFirstPin` — Summary
 Write the pin depths for a card whose rows were just ordered, and its held name's lines at the overview band, whose
@@ -137,6 +137,7 @@ room they bound, from the card's last reading: no layout is read.
 - [`held-lines.heldSegments`](./held-lines.ts.mdmd.md#symbol-heldsegments)
 - [`held-lines.heldTitle`](./held-lines.ts.mdmd.md#symbol-heldtitle)
 - [`held-lines.rowSegments`](./held-lines.ts.mdmd.md#symbol-rowsegments)
+- [`held-lines.seamLineCount`](./held-lines.ts.mdmd.md#symbol-seamlinecount)
 - [`ladder-rooms.FILE_KEPT_AIR`](./ladder-rooms.ts.mdmd.md#symbol-file_kept_air)
 - [`ladder-rooms.FootCount`](./ladder-rooms.ts.mdmd.md#symbol-footcount) (type-only)
 - [`ladder-rooms.HEAD_SPACE`](./ladder-rooms.ts.mdmd.md#symbol-head_space)

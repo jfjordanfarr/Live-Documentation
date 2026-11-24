@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `scripts/layout-lab/capture.ts`
-- Generated At: 2026-11-24T01:00:16.184Z
+- Generated At: 2026-11-24T04:28:06.855Z
 
 ## Authored
 ### Purpose
@@ -95,14 +95,14 @@ The page's constants the card model composes with, read from computed styles.
 
 #### `Capture` {#symbol-capture}
 - Type: interface
-- Source: [source](../../../../scripts/layout-lab/capture.ts#L148)
+- Source: [source](../../../../scripts/layout-lab/capture.ts#L150)
 
 ##### `Capture` — Summary
 A scope's capture: the fonts, the constants, every card, every label, the page's truth and the warnings.
 
 #### `captureScope` {#symbol-capturescope}
 - Type: function
-- Source: [source](../../../../scripts/layout-lab/capture.ts#L174)
+- Source: [source](../../../../scripts/layout-lab/capture.ts#L176)
 - Parameters: `run`: [`ScopeRun`](./scopes.ts.mdmd.md#symbol-scoperun); `preset`: [`LayoutPreset`](../../packages/explorer/src/client/layout-presets.ts.mdmd.md#symbol-layoutpreset)
 
 ##### `captureScope` — Summary
@@ -110,7 +110,7 @@ Opens the scope in a browser of the lab's own over the built bundle and reads th
 
 #### `captureFromPage` {#symbol-capturefrompage}
 - Type: function
-- Source: [source](../../../../scripts/layout-lab/capture.ts#L195)
+- Source: [source](../../../../scripts/layout-lab/capture.ts#L197)
 - Parameters: `page`: `Page`; `run`: [`ScopeRun`](./scopes.ts.mdmd.md#symbol-scoperun)
 
 ##### `captureFromPage` — Summary
@@ -122,7 +122,7 @@ page's Content-Security-Policy runs no script written into it.
 
 #### `writeCapture` {#symbol-writecapture}
 - Type: function
-- Source: [source](../../../../scripts/layout-lab/capture.ts#L645)
+- Source: [source](../../../../scripts/layout-lab/capture.ts#L650)
 - Parameters: `capture`: [`Capture`](#symbol-capture)
 
 ##### `writeCapture` — Summary
@@ -130,7 +130,7 @@ Writes a capture as compact JSON.
 
 #### `readCaptureFile` {#symbol-readcapturefile}
 - Type: function
-- Source: [source](../../../../scripts/layout-lab/capture.ts#L651)
+- Source: [source](../../../../scripts/layout-lab/capture.ts#L656)
 
 ##### `readCaptureFile` — Summary
 Reads a capture written by `writeCapture`.

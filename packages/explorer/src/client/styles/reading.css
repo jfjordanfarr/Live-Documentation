@@ -324,7 +324,10 @@
    drawing is the held element's generated content, and the button's label and the card's title carry the full name for
    assistive technology and on hover. The page's find does not meet the name in these bands: the layout's copy is
    hidden, and find does not search generated content. */
-.local-slot-card { --title-line: 15; }
+/* Minimum card width for fixed-slot 2D cards so short words like "Internals" and common identifier segments like
+   "Processor" and "summarize" fit whole beside More at the connections look's 2.2x without clipping or chopping
+   mid-word, while keeping 3-column opened directories whole inside a 1280 px viewport (2026-11-24). */
+.local-slot-card { --title-line: 15; min-width: min(232px, var(--reading-card-width, 232px)); }
 /* A node-level hub follows the look as a row's dot does: as large as the look's controls, no taller than a line of the
    held name, at whose first line it stands (view-shared.css; 2026-11-19). Its box is 12 px. */
 .local-slot-card { --hub-scale: clamp(1, var(--control-scale, 1), calc(var(--title-line) * var(--title-scale, 1) / 12)); }
@@ -550,10 +553,17 @@
     -webkit-line-clamp: var(--row-lines);
     white-space: normal;
     overflow-wrap: break-word;
-    overflow: clip;
+    overflow-x: clip;
+    overflow-y: visible;
     line-height: calc(var(--row-line) * 1px);
     height: calc(var(--row-lines) * var(--row-line) * 1px);
     margin-bottom: calc((1 - var(--row-lines)) * var(--row-line) * 1px);
+}
+/* Only rows whose wrapped name actually overflows --row-lines clip vertically so hidden lines never bleed; complete
+   multi-line names keep overflow-y visible so descenders ("g" in "Config") are never sliced flat. */
+[data-looks="three"][data-lod="far"] .local-slot-card .symbol-row.local-name-clamped-connections .symbol-label .symbol-label-text,
+[data-looks="three"][data-lod="overview"] .local-slot-card .symbol-row.local-name-clamped-overview .symbol-label .symbol-label-text {
+    overflow: clip;
 }
 [data-looks="three"][data-lod="far"] .local-slot-card .symbol-row.local-name-lines-connections .symbol-label .symbol-label-text wbr,
 [data-looks="three"][data-lod="overview"] .local-slot-card .symbol-row.local-name-lines-overview .symbol-label .symbol-label-text wbr { display: inline; }

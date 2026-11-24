@@ -118,4 +118,38 @@ test.describe("World Map labels clear the pieces", () => {
       });
     }
   }
+
+  for (const board of boards) {
+    for (const viewport of [{ width: 1440, height: 900 }, { width: 1280, height: 800 }] as const) {
+      test(`${board.name} at ${viewport.width}x${viewport.height}: no label overlaps HUD controls or another label`, async ({ page }) => {
+        await page.setViewportSize(viewport);
+        await openWorldMap(page, board.address);
+        const faults = await page.evaluate(() => {
+          const chrome = [...document.querySelectorAll("#view-world .world-crumbs, #view-world .world-tools, #view-world .world-help-btn")]
+            .map(el => ({ name: el.className, rect: el.getBoundingClientRect() }))
+            .filter(item => item.rect.width > 0 && item.rect.height > 0);
+          const labels = [...document.querySelectorAll<SVGElement>("#view-world svg text")]
+            .filter(el => el.style.display !== "none" && el.getBoundingClientRect().width > 0)
+            .map(el => ({ text: el.textContent ?? "", rect: el.getBoundingClientRect() }));
+          const hits: string[] = [];
+          const area = (a: DOMRect, b: DOMRect) =>
+            Math.max(0, Math.min(a.right, b.right) - Math.max(a.left, b.left)) * Math.max(0, Math.min(a.bottom, b.bottom) - Math.max(a.top, b.top));
+          for (const label of labels) {
+            for (const hud of chrome) {
+              const overlap = area(label.rect, hud.rect);
+              if (overlap > 0) hits.push(`"${label.text}" overlaps ${hud.name} (${Math.round(overlap)}px²)`);
+            }
+          }
+          for (let i = 0; i < labels.length; i += 1) {
+            for (let j = i + 1; j < labels.length; j += 1) {
+              const overlap = area(labels[i].rect, labels[j].rect);
+              if (overlap > 0) hits.push(`"${labels[i].text}" overlaps "${labels[j].text}" (${Math.round(overlap)}px²)`);
+            }
+          }
+          return hits;
+        });
+        expect(faults).toEqual([]);
+      });
+    }
+  }
 });

@@ -1246,11 +1246,12 @@ function scheduleSearch(controller: LocalViewController, stage: BranchStage): vo
   search.handle = typeof requestIdleCallback === "function" ? requestIdleCallback(run, { timeout: 1000 }) : window.setTimeout(run, 32);
 }
 
-/** Whether a search may step now: the map is the view shown and the page is visible. */
+/** Whether a search may step now: the map is the view shown, not easing an arrival, and the page is visible. */
 const searchAllowed = (controller: LocalViewController): boolean => controller.isShown()
   // Files only at the overview is the same branches drawn compact: the search waits for the rows' picture to return.
   && !controller.getContainer().hasAttribute(OVERVIEW_FILES_ATTRIBUTE)
-  && !controller.runtime.mapAnimationTarget && controller.options.state.inspection?.presentation !== "reading"
+  && !controller.runtime.mapAnimationTarget && !controller.isArrivalEasing()
+  && controller.options.state.inspection?.presentation !== "reading"
   && document.visibilityState !== "hidden";
 
 /** Ends the stage's search, if one runs, and lets any waiting step go. */

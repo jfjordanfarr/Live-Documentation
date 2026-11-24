@@ -197,6 +197,40 @@ export function heldLineCount(segments: readonly string[], width: number, most: 
 }
 
 /**
+ * How many lines a wrapping symbol name takes at a width when breaking only at word seams (2026-11-24): unlike
+ * {@link heldLineCount}, a single indivisible segment wider than a line is never chopped mid-word onto a following line
+ * (preventing "Internal / s", "Intern / als", and "Process / orConfig"); instead, packing stops at that line so the
+ * stylesheet truncates the over-wide segment cleanly with an ellipsis on its own line.
+ */
+export function seamLineCount(segments: readonly string[], width: number, most: number, measure: (text: string) => number): number {
+  const cap = Math.max(1, Math.floor(most));
+  if (!segments.length || !(width > 0)) return 1;
+  const fits = (text: string): boolean => measure(text.trimEnd()) <= width + 1e-6;
+  let lines = 1, current = "";
+  for (let index = 0; index < segments.length; index += 1) {
+    const segment = segments[index];
+    if (fits(current + segment)) { current += segment; continue; }
+    if (current) {
+      if (lines >= cap) return cap;
+      lines += 1;
+    }
+    if (fits(segment)) { current = segment; continue; }
+    // A separator-terminated segment like "summarize_" followed by another word that only overflows because of its
+    // trailing delimiter breaks cleanly before that delimiter ("summarize" / "_report") rather than truncating early.
+    const stem = segment.replace(/[/._-]+$/u, "");
+    if (index < segments.length - 1 && stem && stem !== segment && fits(stem)) {
+      if (lines >= cap) return cap;
+      lines += 1;
+      current = segment.slice(stem.length);
+      continue;
+    }
+    // Indivisible segment wider than a line: stay on this line for clean ellipsis rather than chopping mid-word.
+    return lines;
+  }
+  return Math.min(cap, lines);
+}
+
+/**
  * A file's name's header ({@link chooseHeldHeader}) without its extension standing alone on its last line where the same
  * room carries it with the segment before it (2026-11-13): the split before a short extension's dot fills a first line
  * beside More ("branch-renderer" / ".ts"), but where the name takes three lines it left ".ts" alone on the third

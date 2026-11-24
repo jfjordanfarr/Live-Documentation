@@ -146,7 +146,7 @@ export function cardMetrics(capture: Capture, card: CardCapture, width: number, 
   // A slot card's Purpose has a fixed allotment, whatever its text (2026-11-06).
   if (card.purpose) y += card.slot ? card.slot.purposeHeight : readingHeight(card.purpose, content);
   y += c.symbolsMarginTop;
-  if (card.meta) y += text(card.meta, content);
+  if (card.meta) y += text(card.meta, content) + (c.metaMarginBottom ?? 0);
   const cell = content - 2 * c.gridSideColumn - 2 * c.gridColumnGap;
   const centres = new Map<RowCapture, number>();
   view.rows.forEach((row, i) => {

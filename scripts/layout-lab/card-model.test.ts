@@ -76,6 +76,15 @@ describe("the lab's card model, the parts that need no page", () => {
     // The public row's dot stands at the middle of its first track, the 10 px line, not of the 66 px allotment.
     expect(metrics.pins.get("inbound:X")).toBe(10 + 10 + 55 + 5);
     expect(metrics.pins.get("inbound:__internals__")).toBe(10 + 10 + 55 + 66 + 5);
+    // "No public symbols" (.node-meta) adds its text height plus metaMarginBottom before Internals.
+    const withMeta = cardMetrics(
+      { ...capture, constants: { ...constants, metaMarginBottom: 8 } } as unknown as Capture,
+      { ...card, meta: label } as unknown as CardCapture,
+      208,
+      view
+    );
+    expect(withMeta.height - metrics.height).toBe(18);
+    expect(withMeta.pins.get("inbound:__internals__")! - metrics.pins.get("inbound:__internals__")!).toBe(18);
   });
 
   it("sizes a title as the header lays it out: the room for the controls after the name, on its last line or a line of its own (2026-11-08)", () => {

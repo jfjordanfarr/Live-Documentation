@@ -1940,7 +1940,7 @@ export class LocalViewController implements LocalViewApi {
     this.edgeSigns.update(this.contentRoot ? this.contentBounds : null, this.mapTransform, this.framePlace());
     this.sayCut();
     this.answerWires();
-    if (!this.runtime.mapAnimationTarget && !this.stage?.move) this.stage?.search?.resume();
+    if (!this.runtime.mapAnimationTarget && !this.stage?.move && !this.isArrivalEasing()) this.stage?.search?.resume();
     // From this frame's own scale, not the animation's destination: the owner saw the fonts "jump up in size before
     // the viewport has actually reached its terminal zoom destination" (2026-11-06, Turn 12).
     const ratio = this.mapTransform.k / this.readingReferenceScale;
@@ -2445,6 +2445,12 @@ export class LocalViewController implements LocalViewApi {
           arrival.frame = requestAnimationFrame(tick);
           return;
         }
+        // Wait for any in-flight layout move (e.g. a continuing search step adopted during the rest) to settle before
+        // measuring the picture's bounds and starting the ease, so arrival.end is never computed from mid-tween positions.
+        if (runtime.mapAnimationTarget || this.stage?.move || runtime.isDragging || runtime.mapInertiaFrame) {
+          arrival.frame = requestAnimationFrame(tick);
+          return;
+        }
         arrival.waiting = false;
         // The end is measured when the ease begins, on the picture as it has settled.
         const content = this.measureLayoutExtents()?.content;
@@ -2498,12 +2504,18 @@ export class LocalViewController implements LocalViewApi {
         this.mapInitialTransform = { ...pose.transform };
         this.drawConnections();
         this.watchCamera();
+        if (!this.runtime.mapAnimationTarget && !this.stage?.move) this.stage?.search?.resume();
         return;
       }
       arrival.frame = requestAnimationFrame(tick);
     };
     arrival.frame = requestAnimationFrame(tick);
     this.sayArrival();
+  }
+
+  /** Whether an arrival's pull-back ease is actively moving the camera (pauses background search adoption until it lands). */
+  isArrivalEasing(): boolean {
+    return !!this.arrival?.releasedAt;
   }
 
   /**

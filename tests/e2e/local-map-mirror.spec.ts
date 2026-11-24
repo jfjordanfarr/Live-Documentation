@@ -337,3 +337,43 @@ test("a step's cut is counted again when the picture is mirrored: the signs say 
   expect(back.said).toEqual(back.shown);
 });
 
+test("the sidebar legend kinds stay steady through a Mirror 3D turn and never flicker empty mid-rotation", async ({ page }) => {
+  await page.goto("/?view=local&dir=scripts");
+  await page.waitForSelector("#map-container .local-directory-closed", { timeout: 20_000 });
+  await localMapStill(page);
+  const row = page.locator("#local-legend-kinds");
+  await expect(row.locator(".legend-mark")).not.toHaveCount(0);
+  const expected = await row.locator(".legend-word").allInnerTexts();
+  expect(expected.length).toBeGreaterThan(0);
+  await page.evaluate(() => {
+    const legend = document.getElementById("local-legend-kinds")!;
+    const layerEl = document.getElementById("map-viewport")!;
+    const mapEl = document.getElementById("map-container")!;
+    const drops: string[] = [];
+    (window as unknown as { __legendDrops: string[] }).__legendDrops = drops;
+    let nudged = false;
+    const record = () => {
+      const words = [...legend.querySelectorAll(".legend-word")].map(el => el.textContent?.trim() ?? "");
+      if (words.length === 0) drops.push(`empty while turning=${layerEl.getAttribute("data-turning") ?? "none"}`);
+    };
+    new MutationObserver(record).observe(legend, { childList: true, subtree: true });
+    // Trigger a data-lod attribute mutation mid-turn so watchLocalKinds's observer fires during rotation.
+    const watch = () => {
+      record();
+      if (!nudged && layerEl.hasAttribute("data-turning")) {
+        nudged = true;
+        const lod = mapEl.getAttribute("data-lod");
+        if (lod) mapEl.setAttribute("data-lod", lod);
+      }
+      if (document.body.contains(legend)) requestAnimationFrame(watch);
+    };
+    requestAnimationFrame(watch);
+  });
+  await button(page).click();
+  await atRest(page, true);
+  const drops = await page.evaluate(() => (window as unknown as { __legendDrops: string[] }).__legendDrops);
+  expect(drops, "legend kinds must never drop mid-turn").toEqual([]);
+  await expect(row.locator(".legend-word")).toHaveText(expected);
+});
+
+

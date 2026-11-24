@@ -209,6 +209,11 @@
     flex-wrap: wrap;
 }
 
+/* "No public symbols" stands directly above .symbol-grid (whose .internals-label uses a -2px top margin), so keep clear air below it. */
+.node-symbols > .node-meta {
+    margin-bottom: 8px;
+}
+
 .node-tests {
     margin-top: 8px;
     margin-bottom: 4px;
