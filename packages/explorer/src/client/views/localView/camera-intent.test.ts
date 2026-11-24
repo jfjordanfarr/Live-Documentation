@@ -117,6 +117,31 @@ describe("an arrival's end frame", () => {
     expect(wideDrawn.left, "no empty void past content's left edge while slicing neighbours on the right").toBeCloseTo(horizontal, 6);
     expect((wideDrawn.top + wideDrawn.bottom) / 2, "fitting vertical axis centres content").toBeCloseTo(frame.height / 2, 6);
   });
+
+  it("centres an axis whose floor-clamped extent fits inside the frame even within the padding band, keeping both edges inside", () => {
+    const { horizontal, vertical } = framePadding(frame);
+    const roomW = frame.width - 2 * horizontal, roomH = frame.height - 2 * vertical;
+    // Horizontal: roomW < width * floor <= frame.width, subject near right edge.
+    const acrossWidth = (roomW + frame.width) / (2 * ARRIVAL_FLOOR_RATIO);
+    const acrossContent = box(0, 0, acrossWidth, 800), rightSubject = box(acrossWidth - 400, 200, 300, 200);
+    const acrossEnd = arrivalEndFrame(acrossContent, rightSubject, frame, 1);
+    const acrossDrawn = onScreen(acrossContent, acrossEnd);
+    expect(acrossContent.width * acrossEnd.k).toBeGreaterThan(roomW);
+    expect(acrossContent.width * acrossEnd.k).toBeLessThanOrEqual(frame.width);
+    expect(acrossDrawn.left, "left edge stays inside frame").toBeGreaterThan(0);
+    expect(acrossDrawn.right, "right edge stays inside frame").toBeLessThan(frame.width);
+    expect(acrossDrawn.left, "symmetric horizontal margins").toBeCloseTo(frame.width - acrossDrawn.right, 6);
+    // Vertical: roomH < height * floor <= frame.height, subject near bottom edge.
+    const downHeight = (roomH + frame.height) / (2 * ARRIVAL_FLOOR_RATIO);
+    const downContent = box(0, 0, 1000, downHeight), bottomSubject = box(300, downHeight - 300, 300, 200);
+    const downEnd = arrivalEndFrame(downContent, bottomSubject, frame, 1);
+    const downDrawn = onScreen(downContent, downEnd);
+    expect(downContent.height * downEnd.k).toBeGreaterThan(roomH);
+    expect(downContent.height * downEnd.k).toBeLessThanOrEqual(frame.height);
+    expect(downDrawn.top, "top edge stays inside frame").toBeGreaterThan(0);
+    expect(downDrawn.bottom, "bottom edge stays inside frame").toBeLessThan(frame.height);
+    expect(downDrawn.top, "symmetric vertical margins").toBeCloseTo(frame.height - downDrawn.bottom, 6);
+  });
 });
 
 describe("when an arrival's rest at reading size is over", () => {

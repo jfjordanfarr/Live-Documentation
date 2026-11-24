@@ -92,10 +92,13 @@ export const FILES_FLOOR_RATIO = STEP_RATIO ** -10;
 /**
  * Where an arrival comes to rest when it frames the neighbours: what Fit frames (the whole picture, centred inside the
  * frame's padding), but never closer than reading scale and never farther than {@link ARRIVAL_FLOOR_RATIO} of it. Along
- * each axis independently, when the picture fits the padded frame at that scale it is centred in the frame; when it
- * overflows, the subject is centred and clamped against the picture's bounds so no dead void opens past one edge while
- * cutting neighbours on the opposite edge. Content and subject are in the picture's own units, the frame in the
- * screen's; the result depends on nothing else, so that two screens of one size land on one frame.
+ * each axis independently, when the picture fits inside the frame at that scale (including inside the padding margin
+ * when `k` is clamped up to `floor`) it is centred in the frame so both edges stay inside `[0, frame.width]` /
+ * `[0, frame.height]` with symmetric margin rather than shoving one edge off-screen to preserve full padding on the
+ * opposite side; when it overflows the frame, the subject is centred and clamped against the picture's bounds so no
+ * dead void opens past one edge while cutting neighbours on the opposite edge. Content and subject are in the picture's
+ * own units, the frame in the screen's; the result depends on nothing else, so that two screens of one size land on one
+ * frame.
  *
  * The frame holds what was asked ({@link holdAsked}; the root's rule of 2026-11-22, after a sweep of the browser suite on
  * the pull-back as the default found a tall file's name above the view and a symbol chosen in the search outside it):
@@ -109,10 +112,10 @@ export function arrivalEndFrame(content: Bounds, subject: Bounds, frame: Frame, 
   const whole = Math.min(roomW / Math.max(1, content.width), roomH / Math.max(1, content.height));
   const floor = readingScale * ARRIVAL_FLOOR_RATIO;
   const k = clamp(whole, floor, readingScale);
-  const x = content.width * k <= roomW + 1e-6
+  const x = content.width * k <= frame.width + 1e-6
     ? frame.width / 2 - (content.left + content.width / 2) * k
     : clamp(frame.width / 2 - (subject.left + subject.width / 2) * k, frame.width - horizontal - content.right * k, horizontal - content.left * k);
-  const y = content.height * k <= roomH + 1e-6
+  const y = content.height * k <= frame.height + 1e-6
     ? frame.height / 2 - (content.top + content.height / 2) * k
     : clamp(frame.height / 2 - (subject.top + subject.height / 2) * k, frame.height - vertical - content.bottom * k, vertical - content.top * k);
   return holdAsked({ x, y, k }, asked, frame);

@@ -818,6 +818,12 @@ export class LocalViewController implements LocalViewApi {
       this.mapInitialTransform = null;
       this.lastInteracted = centeredId;
       this.lastInteractedSymbol = null;
+      // Replacing an unpinned subject (e.g. clicking a relationship menu item or pressing Browser Back with 0 pins and
+      // 0 open directories) starts a fresh arrival and must produce the canonical, history-independent layout rather
+      // than biasing the new subject's candidate order with the departing subject's previousTops.
+      if (this.pins.entries.length === 0 && this.openDirectories.size === 0) {
+        this.previousTops = null;
+      }
     }
 
     const root = keepStage ? this.stage!.root : document.createElement("div");
