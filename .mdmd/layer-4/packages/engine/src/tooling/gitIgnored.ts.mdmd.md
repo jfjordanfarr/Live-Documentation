@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/engine/src/tooling/gitIgnored.ts`
-- Generated At: 2026-11-20T17:18:44.558Z
+- Generated At: 2026-11-24T07:54:04.519Z
 
 ## Authored
 ### Purpose
@@ -23,31 +23,22 @@ What git ignores, read from git itself: `gitIgnores` asks git once for its listi
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `GitIgnoreAnswer` {#symbol-gitignoreanswer}
-- Type: interface
-- Source: [source](../../../../../../packages/engine/src/tooling/gitIgnored.ts#L46)
+- Type: type (type-only)
+- Source: [source](../../../../../../packages/engine/src/tooling/gitIgnored.ts#L47)
 
-##### `GitIgnoreAnswer` — Summary
-What git says of a list of paths: which it ignores, which it cannot judge, and which lie in no repository.
-
-#### `GitIgnores (interface)` {#symbol-gitignores-interface}
-- Type: interface
-- Source: [source](../../../../../../packages/engine/src/tooling/gitIgnored.ts#L64)
-
-##### `GitIgnores (interface)` — Summary
-Git's word on what it ignores in a workspace, from one listing.
+#### `GitIgnores (type)` {#symbol-gitignores-type}
+- Type: type (type-only)
+- Source: [source](../../../../../../packages/engine/src/tooling/gitIgnored.ts#L47)
 
 #### `GitUnanswered` {#symbol-gitunanswered}
-- Type: interface
-- Source: [source](../../../../../../packages/engine/src/tooling/gitIgnored.ts#L72)
-
-##### `GitUnanswered` — Summary
-Why git gave no listing of what it ignores in a folder that lies in a repository.
+- Type: type (type-only)
+- Source: [source](../../../../../../packages/engine/src/tooling/gitIgnored.ts#L47)
 
 #### `gitIgnores (function)` {#symbol-gitignores-function}
 - Type: function
-- Source: [source](../../../../../../packages/engine/src/tooling/gitIgnored.ts#L127)
-- Returns: [`GitIgnores`](#symbol-gitignores-interface)
-- Parameters: `why`: [`GitUnanswered`](#symbol-gitunanswered)
+- Source: [source](../../../../../../packages/engine/src/tooling/gitIgnored.ts#L99)
+- Returns: [`GitIgnores`](./workspaceFiles.ts.mdmd.md#symbol-gitignores)
+- Parameters: `why`: [`GitUnanswered`](./workspaceFiles.ts.mdmd.md#symbol-gitunanswered)
 
 ##### `gitIgnores (function)` — Summary
 Git's word on what it ignores in the workspace at `workspaceRoot`, or `null`
@@ -95,7 +86,7 @@ no `.git` or one git climbs past (2026-11-20). The cases, tried on git
 
 #### `gitIgnored` {#symbol-gitignored}
 - Type: function
-- Source: [source](../../../../../../packages/engine/src/tooling/gitIgnored.ts#L207)
+- Source: [source](../../../../../../packages/engine/src/tooling/gitIgnored.ts#L179)
 
 ##### `gitIgnored` — Summary
 The paths among `relativePaths` (relative to `workspaceRoot`, forward
@@ -105,7 +96,7 @@ or one that lies in no repository, is not among them.
 
 #### `gitIgnoresCase` {#symbol-gitignorescase}
 - Type: function
-- Source: [source](../../../../../../packages/engine/src/tooling/gitIgnored.ts#L217)
+- Source: [source](../../../../../../packages/engine/src/tooling/gitIgnored.ts#L189)
 
 ##### `gitIgnoresCase` — Summary
 Whether git matches names without regard to case in the repository that
@@ -115,7 +106,7 @@ when the setting is false or absent, or git cannot answer.
 
 #### `foldersReadAsEmpty` {#symbol-foldersreadasempty}
 - Type: function
-- Source: [source](../../../../../../packages/engine/src/tooling/gitIgnored.ts#L237)
+- Source: [source](../../../../../../packages/engine/src/tooling/gitIgnored.ts#L209)
 - Returns: `FSOption`
 - Parameters: `folders`: `ReadonlySet`; `error`: `NodeJS.ErrnoException`
 
@@ -136,7 +127,7 @@ silence (2026-11-20).
 
 #### `liesInNoRepository` {#symbol-liesinnorepository}
 - Type: function
-- Source: [source](../../../../../../packages/engine/src/tooling/gitIgnored.ts#L337)
+- Source: [source](../../../../../../packages/engine/src/tooling/gitIgnored.ts#L309)
 
 ##### `liesInNoRepository` — Summary
 Whether `folder` lies in no repository by its own structure: no `.git` in it or in any folder above it, and none
@@ -155,4 +146,7 @@ and that git could not be asked).
 - `node:fs` - `fs`
 - `node:path` - `path`
 - `node:process` - `process`
+- [`workspaceFiles.GitIgnoreAnswer`](./workspaceFiles.ts.mdmd.md#symbol-gitignoreanswer) (type-only)
+- [`workspaceFiles.GitIgnores`](./workspaceFiles.ts.mdmd.md#symbol-gitignores) (type-only)
+- [`workspaceFiles.GitUnanswered`](./workspaceFiles.ts.mdmd.md#symbol-gitunanswered) (type-only)
 <!-- LIVE-DOC:END Dependencies -->

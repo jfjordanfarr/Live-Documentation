@@ -181,20 +181,6 @@
         "relative"
       ]
     },
-    "packages/engine/src/live-docs/adapters/treeSitter.ts": {
-      "(global)": [
-        "__dirname",
-        "require.resolve"
-      ],
-      "node:fs": [
-        "statSync"
-      ],
-      "node:path": [
-        "dirname",
-        "join",
-        "resolve"
-      ]
-    },
     "packages/engine/src/live-docs/archetype.ts": {
       "node:path": [
         "basename",
@@ -226,21 +212,13 @@
         "resolve"
       ]
     },
-    "packages/engine/src/live-docs/discovery.ts": {
+    "packages/engine/src/live-docs/discoveryCore.ts": {
       "node:path": [
         "extname",
         "isAbsolute",
         "join",
         "relative",
         "resolve"
-      ]
-    },
-    "packages/engine/src/live-docs/gitUtils.ts": {
-      "(global)": [
-        "process.env"
-      ],
-      "node:child_process": [
-        "execFile"
       ]
     },
     "packages/engine/src/live-docs/graphFiles.ts": {
@@ -272,28 +250,6 @@
       "node:path": [
         "extname",
         "relative"
-      ]
-    },
-    "packages/engine/src/tooling/gitIgnored.ts": {
-      "node:child_process": [
-        "spawnSync"
-      ],
-      "node:fs": [
-        "lstatSync",
-        "readdir",
-        "readdirSync",
-        "statSync"
-      ],
-      "node:path": [
-        "dirname",
-        "join",
-        "relative",
-        "resolve",
-        "sep"
-      ],
-      "node:process": [
-        "env",
-        "nextTick"
       ]
     },
     "packages/engine/src/tooling/nodeHost.ts": {
@@ -330,7 +286,7 @@
         "resolve"
       ]
     },
-    "packages/generator/src/generator.ts": {
+    "packages/generator/src/generatorCore.ts": {
       "node:fs/promises": [
         "mkdir",
         "readFile",
@@ -350,24 +306,13 @@
     }
   },
   "standIns": {
-    "(global)": [
-      "__dirname",
-      "process.env",
-      "require.resolve"
-    ],
-    "node:child_process": [
-      "execFile",
-      "spawnSync"
-    ],
     "node:fs": [
-      "lstatSync",
       "promises.mkdir",
       "promises.open",
       "promises.readFile",
       "promises.readdir",
       "promises.stat",
       "promises.writeFile",
-      "readdir",
       "readdirSync",
       "statSync"
     ],
@@ -395,18 +340,10 @@
       "relative",
       "resolve",
       "sep"
-    ],
-    "node:process": [
-      "env",
-      "nextTick"
     ]
   },
   "hostedByNode": {},
-  "globals": {
-    "__dirname": "a constant the build defines for adapters/treeSitter.ts",
-    "process": "nothing: a page has no global process, and a call throws",
-    "require": "require.resolve only, by the stand-in require-resolve.mjs"
-  },
+  "globals": {},
   "packages": {
     "typescript": {
       "crypto": "unresolved: a call throws in the page",

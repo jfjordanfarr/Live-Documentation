@@ -42,37 +42,9 @@ import fs from "node:fs";
 import path from "node:path";
 import process from "node:process";
 
-/** What git says of a list of paths: which it ignores, which it cannot judge, and which lie in no repository. */
-export interface GitIgnoreAnswer {
-  /** The paths git ignores: each, or a folder above it, is in the listing of the repository that holds it. */
-  ignored: Set<string>;
-  /**
-   * The paths git cannot judge: each passes through a link that git does not ignore to a folder that is not a
-   * repository's top (a plain folder, or one in the middle of a repository), and a path beyond a link is no path of the
-   * repository around to git; or lies in a folder holding a `.git` whose git could not be asked, or of which git said
-   * nothing.
-   */
-  unjudged: Set<string>;
-  /**
-   * The paths that lie in no repository, in a workspace that lies in none: git has no word on them, and none was
-   * wanted, so the caller's rule for no git judges them with nothing to warn of.
-   */
-  outside: Set<string>;
-}
+import type { GitIgnoreAnswer, GitIgnores, GitUnanswered } from "./workspaceFiles";
 
-/** Git's word on what it ignores in a workspace, from one listing. */
-export interface GitIgnores {
-  /** The folders git ignores whole, workspace-relative with forward slashes; `""` when it ignores the workspace itself. */
-  readonly folders: ReadonlySet<string>;
-  /** What git says of each of the paths (workspace-relative, forward slashes; `.` or `""` for the workspace itself). */
-  answer(relativePaths: readonly string[]): GitIgnoreAnswer;
-}
-
-/** Why git gave no listing of what it ignores in a folder that lies in a repository. */
-export interface GitUnanswered {
-  /** Git's own first line of complaint, or that git could not be started, or its answer passed the buffer. */
-  readonly reason: string;
-}
+export type { GitIgnoreAnswer, GitIgnores, GitUnanswered };
 
 /** A repository the judging has met: the folder at its top, workspace-relative, and its listing. */
 interface Repository {

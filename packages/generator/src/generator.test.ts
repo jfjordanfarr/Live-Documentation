@@ -16,10 +16,12 @@ import { UNREAD_NOTE } from "@live-documentation/engine/live-docs/document";
 import { readLiveDocGraph } from "@live-documentation/engine/live-docs/graphFiles";
 import { summarizeGraph } from "@live-documentation/engine/live-docs/history/summary";
 import { machineFailure } from "@live-documentation/engine/live-docs/processMark";
+import { NODE_GRAMMAR_HOST } from "@live-documentation/engine/tooling/nodeGrammars";
 import { NODE_FILE_HOST } from "@live-documentation/engine/tooling/nodeHost";
 import type { FileHost } from "@live-documentation/engine/tooling/workspaceFiles";
 
 import { generateLiveDocs } from "./generator";
+import { runLiveDocs } from "./generatorCore";
 
 describe("a source whose doc's path the disk cannot hold", () => {
   // A name of 250 characters is a file the disk holds; its doc's name, eight characters longer, is not. Until
@@ -1014,6 +1016,43 @@ describe("generateLiveDocs with explicit leaveOut and (left out) dependencies", 
         ["../generated/types", ["left out"]],
         ["./does-not-exist", []]
       ]);
+    } finally {
+      await fs.rm(root, { recursive: true, force: true });
+    }
+  });
+});
+
+describe("runLiveDocs without git or scansAbove ports (browser host shape)", () => {
+  it("warns once about ancestor scans, judges by root .gitignore, parses tree-sitter languages via host.grammars, and rejects --changed", async () => {
+    const root = await fs.mkdtemp(path.join(os.tmpdir(), "run-live-docs-page-host-"));
+    const config = normalizeLiveDocumentationConfig({ root: ".mdmd", baseLayer: "layer-4", extension: ".mdmd.md" });
+    const warnings: string[] = [];
+    const logger = { info: () => undefined, warn: (message: string) => { warnings.push(message); }, error: () => undefined };
+    try {
+      await fs.mkdir(path.join(root, "src"), { recursive: true });
+      await fs.mkdir(path.join(root, "dist"), { recursive: true });
+      await fs.writeFile(path.join(root, ".gitignore"), "dist/\n", "utf8");
+      await fs.writeFile(path.join(root, "src", "app.ts"), "export const answer = 42;\n", "utf8");
+      await fs.writeFile(path.join(root, "src", "helper.py"), "def greet(name):\n    return name\n", "utf8");
+      await fs.writeFile(path.join(root, "dist", "bundle.js"), "export const built = 1;\n", "utf8");
+
+      const pageShapedHost: FileHost = {
+        read: (file) => NODE_FILE_HOST.read(file),
+        head: (file, limit) => NODE_FILE_HOST.head(file, limit),
+        entries: (folder) => NODE_FILE_HOST.entries(folder),
+        grammars: NODE_GRAMMAR_HOST
+      };
+
+      const result = await runLiveDocs({ workspaceRoot: root, config, host: pageShapedHost, logger });
+      expect(result.files.map((file) => file.sourcePath)).toEqual([".gitignore", "src/app.ts", "src/helper.py"]);
+      expect(warnings).toEqual(["Whether this folder lies inside another scan cannot be seen from a page."]);
+
+      const pyDoc = await fs.readFile(path.join(root, ".mdmd", "layer-4", "src", "helper.py.mdmd.md"), "utf8");
+      expect(pyDoc).toContain("#### `greet`");
+
+      await expect(
+        runLiveDocs({ workspaceRoot: root, config, host: pageShapedHost, changedOnly: true, logger })
+      ).rejects.toThrow(/Cannot use --changed.*this host has no Git access/u);
     } finally {
       await fs.rm(root, { recursive: true, force: true });
     }

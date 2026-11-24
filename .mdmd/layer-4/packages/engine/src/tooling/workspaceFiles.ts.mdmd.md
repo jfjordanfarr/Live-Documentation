@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/engine/src/tooling/workspaceFiles.ts`
-- Generated At: 2026-11-24T07:15:06.318Z
+- Generated At: 2026-11-24T07:54:04.590Z
 
 ## Authored
 ### Purpose
@@ -29,23 +29,67 @@ Makes a scan read each file once. The generator builds the run's reads over the 
 ##### `FolderEntries` — Summary
 A folder's immediate entries, by name, sorted: its files (links to files included), its real subfolders, and any links to folders.
 
-#### `FileHost` {#symbol-filehost}
+#### `GrammarHost` {#symbol-grammarhost}
 - Type: interface
 - Source: [source](../../../../../../packages/engine/src/tooling/workspaceFiles.ts#L36)
 
+##### `GrammarHost` — Summary
+Provides the tree-sitter WebAssembly runtime and compiled language grammars as raw bytes.
+
+#### `GitIgnoreAnswer` {#symbol-gitignoreanswer}
+- Type: interface
+- Source: [source](../../../../../../packages/engine/src/tooling/workspaceFiles.ts#L44)
+
+##### `GitIgnoreAnswer` — Summary
+What git says of a list of paths: which it ignores, which it cannot judge, and which lie in no repository.
+
+#### `GitIgnores` {#symbol-gitignores}
+- Type: interface
+- Source: [source](../../../../../../packages/engine/src/tooling/workspaceFiles.ts#L62)
+
+##### `GitIgnores` — Summary
+Git's word on what it ignores in a workspace, from one listing.
+
+#### `GitUnanswered` {#symbol-gitunanswered}
+- Type: interface
+- Source: [source](../../../../../../packages/engine/src/tooling/workspaceFiles.ts#L70)
+
+##### `GitUnanswered` — Summary
+Why git gave no listing of what it ignores in a folder that lies in a repository.
+
+#### `GitHost` {#symbol-githost}
+- Type: interface
+- Source: [source](../../../../../../packages/engine/src/tooling/workspaceFiles.ts#L76)
+
+##### `GitHost` — Summary
+Optional version-control port supplied by hosts that can run git (such as Node); omitted in browser pages.
+
+#### `ScansAboveFn` {#symbol-scansabovefn}
+- Type: type
+- Source: [source](../../../../../../packages/engine/src/tooling/workspaceFiles.ts#L88)
+
+##### `ScansAboveFn` — Summary
+Checks ancestor folders above `workspaceRoot` for outer scans. Returns the outer scan folders when the host can
+inspect ancestors (Node), or `undefined` when the host cannot see above the workspace (a browser page).
+
+#### `FileHost` {#symbol-filehost}
+- Type: interface
+- Source: [source](../../../../../../packages/engine/src/tooling/workspaceFiles.ts#L97)
+
 ##### `FileHost` — Summary
-What runs the engine gives it of a workspace: a file's bytes, its first bytes, and a folder's entries. Paths are absolute, as the readers hold them.
+What runs the engine gives it of a workspace: a file's bytes, its first bytes, a folder's entries, and optional
+ports for grammars, git, and ancestor scans. Paths are absolute, as the readers hold them.
 
 #### `WorkspaceReads (interface)` {#symbol-workspacereads-interface}
 - Type: interface
-- Source: [source](../../../../../../packages/engine/src/tooling/workspaceFiles.ts#L46)
+- Source: [source](../../../../../../packages/engine/src/tooling/workspaceFiles.ts#L113)
 
 ##### `WorkspaceReads (interface)` — Summary
 A run's reads: each file read once through the host, decoded once, and kept for the run.
 
 #### `workspaceReads (function)` {#symbol-workspacereads-function}
 - Type: function
-- Source: [source](../../../../../../packages/engine/src/tooling/workspaceFiles.ts#L66)
+- Source: [source](../../../../../../packages/engine/src/tooling/workspaceFiles.ts#L133)
 - Returns: [`WorkspaceReads`](#symbol-workspacereads-interface)
 
 ##### `workspaceReads (function)` — Summary

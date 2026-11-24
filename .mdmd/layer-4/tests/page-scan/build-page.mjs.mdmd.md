@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: `tests/page-scan/build-page.mjs`
-- Generated At: 2026-11-24T07:15:10.764Z
+- Generated At: 2026-11-24T07:54:08.447Z
 
 ## Authored
 ### Purpose
@@ -21,38 +21,38 @@ Builds the scanning page: the engine and generator as they stand, bundled by esb
 ### Public Symbols
 #### `REPO` {#symbol-repo}
 - Type: const
-- Source: [source](../../../../tests/page-scan/build-page.mjs#L23)
+- Source: [source](../../../../tests/page-scan/build-page.mjs#L22)
 
 #### `STAND_INS` {#symbol-stand_ins}
 - Type: const
-- Source: [source](../../../../tests/page-scan/build-page.mjs#L32)
+- Source: [source](../../../../tests/page-scan/build-page.mjs#L31)
 
 ##### `STAND_INS` — Summary
-The stand-in that answers in the page for each of Node's modules the scan's path imports, and for `glob`. A module
-of the engine or the generator that imports any other of Node's modules stops the build, naming both: that is a new
+The stand-in that answers in the page for each of Node's modules the scan's path still imports. A module of the
+engine or the generator that imports any other of Node's modules stops the build, naming both: that is a new
 dependence on Node, to be given a stand-in and listed. A package from `node_modules` may import others (TypeScript
 does, for its command line's file system, which `createSourceFile` never touches); they are left unresolved, so
 that a call of one throws in the page, and `node-needs.json` lists them.
 
 #### `GRAMMARS` {#symbol-grammars}
 - Type: const
-- Source: [source](../../../../tests/page-scan/build-page.mjs#L45)
+- Source: [source](../../../../tests/page-scan/build-page.mjs#L42)
 
 ##### `GRAMMARS` — Summary
 The `.wasm` files the readers load, repository-relative: the tree-sitter runtime, the engine's own build of the
-PowerShell grammar, and the bundled grammars the other readers name (`readTree("<grammar>", …)`). The page puts each
-at `ENGINE_ROOT/<this path>`, which is where the engine looks.
+PowerShell grammar, and the bundled grammars the other readers name (`readTree("<grammar>", …)`). The page inflates
+each into `PAGE_GRAMMARS` by its `data-grammar` key (`"runtime"` or `<grammar>`).
 
 #### `bundleScanner` {#symbol-bundlescanner}
 - Type: function
-- Source: [source](../../../../tests/page-scan/build-page.mjs#L73)
+- Source: [source](../../../../tests/page-scan/build-page.mjs#L70)
 
 ##### `bundleScanner` — Summary
 The bundle of the page's script, built in memory: its text and esbuild's metafile.
 
 #### `bundleInputs` {#symbol-bundleinputs}
 - Type: function
-- Source: [source](../../../../tests/page-scan/build-page.mjs#L100)
+- Source: [source](../../../../tests/page-scan/build-page.mjs#L92)
 
 ##### `bundleInputs` — Summary
 The files a bundle was built from, repository-relative, each with the digest of its bytes, to tell a page built
@@ -61,7 +61,7 @@ package's `browser` field turns off), which are left out.
 
 #### `buildScanPage` {#symbol-buildscanpage}
 - Type: function
-- Source: [source](../../../../tests/page-scan/build-page.mjs#L105)
+- Source: [source](../../../../tests/page-scan/build-page.mjs#L97)
 
 ##### `buildScanPage` — Summary
 Writes `page.html` and `inputs.json` into `out`; returns the page's path.
@@ -76,5 +76,4 @@ Writes `page.html` and `inputs.json` into `out`; returns the page's path.
 - `node:path` - `path`
 - `node:url` - `fileURLToPath`, `pathToFileURL`
 - `node:zlib` - `gzipSync`
-- [`engine-root.ENGINE_ROOT`](./stand-ins/engine-root.mjs.mdmd.md#symbol-engine_root)
 <!-- LIVE-DOC:END Dependencies -->

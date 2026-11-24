@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/engine/src/live-docs/adapters/treeSitter.ts`
-- Generated At: 2026-11-21T21:13:43.752Z
+- Generated At: 2026-11-24T07:54:04.073Z
 
 ## Authored
 ### Purpose
@@ -18,30 +18,53 @@ Loads the tree-sitter grammars the adapters parse with: one `web-tree-sitter` pa
 - Since 2026-11-20 `grammarFile` probes the engine's own grammar with `statSync` and `throwIfNoEntry: false`, a failure of the machine's thrown by `throwIfMachineFailure` ([sourceText.ts](../../tooling/sourceText.ts.mdmd.md)), so that the load fails and is dropped and the next ask loads the engine's own. Before, `existsSync` read such a failure as no build of the engine's: the bundled, unpatched grammar was loaded and kept for the process's life, and every later file of that language in that worker read by it. The structural case `sourceText.boundary.test.ts` found it; `treeSitter.test.ts` holds it.
 - Since 2026-11-21 `rangesOf` and `writtenOver` are the shared step by which a reader that finds a construct by a pattern over a language's text reads nothing a comment holds, the grammar telling a comment from a string ([the comment guard](./commentGuard.test.ts.mdmd.md)): C#'s patterns and Ruby's use it.
 - Since the evening of 2026-11-21 `writtenOver` writes through `inSpaces` (`spaces.ts`), one space for each UTF-16 unit, and takes its ranges in order and apart, as `rangesOf` gives them ([the record](../../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-21/Probes/readers-batch/README.md#the-second-round-after-an-independent-review)).
+- Since 2026-11-24 (Step 7 of [the road to one engine for a page and a command line](../../../../../../layer-3/engine-and-hosts.mdmd.md#6-the-road)) this module takes its runtime and language `.wasm` binaries solely as bytes from the active `GrammarHost` (`setGrammarHost` / `getGrammarHost`), holding no `node:fs`, `node:path`, `__dirname` or `require.resolve` calls. `Parser.init` receives `{ wasmBinary, locateFile: (name) => name }` so Emscripten never builds a URL from `import.meta.url` in a classic browser script; Node's disk loader lives in [`nodeGrammars.ts`](../../tooling/nodeGrammars.ts.mdmd.md).
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
+#### `GrammarHost` {#symbol-grammarhost}
+- Type: type (type-only)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/treeSitter.ts#L14)
+
 #### `SyntaxNode` {#symbol-syntaxnode}
 - Type: type
-- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/treeSitter.ts#L19)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/treeSitter.ts#L17)
 - Returns: `Node`
 
 ##### `SyntaxNode` — Summary
 A node of a parsed tree; the runtime's own name for it collides with the DOM type.
 
+#### `getGrammarHost` {#symbol-getgrammarhost}
+- Type: function
+- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/treeSitter.ts#L30)
+- Returns: [`GrammarHost`](../../tooling/workspaceFiles.ts.mdmd.md#symbol-grammarhost)
+
+##### `getGrammarHost` — Summary
+Returns the currently active {@link GrammarHost}, if one has been registered.
+
+#### `setGrammarHost` {#symbol-setgrammarhost}
+- Type: function
+- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/treeSitter.ts#L39)
+- Parameters: `host`: [`GrammarHost`](../../tooling/workspaceFiles.ts.mdmd.md#symbol-grammarhost)
+
+##### `setGrammarHost` — Summary
+Registers the {@link GrammarHost} that supplies the tree-sitter runtime and language `.wasm` bytes.
+Passing the host already active is a no-op so cached parsers stay warm across runs; passing a different host or
+`undefined` clears the runtime promise and cached parsers cleanly.
+
 #### `grammarParser` {#symbol-grammarparser}
 - Type: function
-- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/treeSitter.ts#L51)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/treeSitter.ts#L52)
 
 ##### `grammarParser` — Summary
-One parser per grammar, created on first use and kept for the life of the process; a load that fails, the
-runtime's or the grammar's, is dropped, so that the next file asks again and a process that lives across many
-generations never fails a file for a failure of the past.
+One parser per grammar, created on first use and kept for the life of the process (or until the active
+{@link GrammarHost} changes); a load that fails, the runtime's or the grammar's, is dropped, so that the next file
+asks again and a process that lives across many generations never fails a file for a failure of the past.
 
 #### `readTree` {#symbol-readtree}
 - Type: function
-- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/treeSitter.ts#L94)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/treeSitter.ts#L107)
 - Returns: `T`
 - Parameters: `root`: [`SyntaxNode`](#symbol-syntaxnode)
 
@@ -65,7 +88,7 @@ depth is measured since a later review of that day.
 
 #### `COMMENT_NODES` {#symbol-comment_nodes}
 - Type: const
-- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/treeSitter.ts#L139)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/treeSitter.ts#L152)
 - Returns: `ReadonlySet`
 
 ##### `COMMENT_NODES` — Summary
@@ -73,7 +96,7 @@ The node a grammar gives a comment: C#'s, Ruby's (`#` and `=begin` … `=end` al
 
 #### `rangesOf` {#symbol-rangesof}
 - Type: function
-- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/treeSitter.ts#L148)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/treeSitter.ts#L161)
 - Parameters: `root`: [`SyntaxNode`](#symbol-syntaxnode); `types`: `ReadonlySet`
 
 ##### `rangesOf` — Summary
@@ -85,7 +108,7 @@ telling a comment from a string as the language does (the guard of 2026-11-21, `
 
 #### `writtenOver` {#symbol-writtenover}
 - Type: function
-- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/treeSitter.ts#L172)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/treeSitter.ts#L185)
 
 ##### `writtenOver` — Summary
 The text with each range of `ranges` (pairs of start and end, in order and apart, as {@link rangesOf} gives them)
@@ -95,17 +118,16 @@ the same in the text.
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
-- `node:fs` - `statSync`
-- `node:path` - `path`
 - [`spaces.inSpaces`](./spaces.ts.mdmd.md#symbol-inspaces)
 - [`processMark.TREE_DEPTH`](../processMark.ts.mdmd.md#symbol-tree_depth)
 - [`processMark.markProcess`](../processMark.ts.mdmd.md#symbol-markprocess)
-- [`sourceText.throwIfMachineFailure`](../../tooling/sourceText.ts.mdmd.md#symbol-throwifmachinefailure)
+- [`workspaceFiles.GrammarHost`](../../tooling/workspaceFiles.ts.mdmd.md#symbol-grammarhost) (type-only)
 - `web-tree-sitter` - `Language`, `Node`, `Parser`, `Tree`
 <!-- LIVE-DOC:END Dependencies -->
 
 <!-- LIVE-DOC:BEGIN Cited By -->
 ### Cited By
 - [`.mdmd/layer-3/architectural-decisions.mdmd.md`](../../../../../../layer-3/architectural-decisions.mdmd.md)
+- [`.mdmd/layer-3/engine-and-hosts.mdmd.md`](../../../../../../layer-3/engine-and-hosts.mdmd.md)
 - [`.mdmd/layer-3/polyglot-adapters.mdmd.md`](../../../../../../layer-3/polyglot-adapters.mdmd.md)
 <!-- LIVE-DOC:END Cited By -->

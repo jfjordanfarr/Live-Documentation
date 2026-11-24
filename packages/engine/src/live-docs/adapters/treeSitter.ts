@@ -1,65 +1,78 @@
 /**
- * Loads tree-sitter grammars for the adapters.
+ * Loads tree-sitter grammars for the adapters from raw WebAssembly bytes supplied by a {@link GrammarHost}.
  *
- * The runtime is `web-tree-sitter`. A grammar is the engine's own build when
- * the package carries one, `grammars/<name>/tree-sitter-<name>.wasm`, built
- * from an upstream grammar with a patch that upstream has not yet taken;
- * otherwise it comes from `@vscode/tree-sitter-wasm`, whose own JavaScript
- * entry point cannot be required from Node, so only its `.wasm` files are used.
+ * The runtime is `web-tree-sitter`. Neither the runtime nor any grammar is fetched from the file system here: the host
+ * running the engine hands in their bytes (`NODE_GRAMMAR_HOST` from disk under Node, or inlined bytes in a browser
+ * page), keeping this module free of Node imports and globals (Step 7 of `.mdmd/layer-3/engine-and-hosts.mdmd.md`).
  */
-import { statSync } from "node:fs";
-import path from "node:path";
 import { Language, Parser, type Node, type Tree } from "web-tree-sitter";
 
-import { throwIfMachineFailure } from "../../tooling/sourceText";
+import type { GrammarHost } from "../../tooling/workspaceFiles";
 import { markProcess, TREE_DEPTH } from "../processMark";
 import { inSpaces } from "./spaces";
+
+export type { GrammarHost };
 
 /** A node of a parsed tree; the runtime's own name for it collides with the DOM type. */
 export type SyntaxNode = Node;
 
-/** The engine's own grammars, at the package root: this module lies three folders down, in `src` or in `dist`. */
-const OWN_GRAMMARS = path.resolve(__dirname, "..", "..", "..", "grammars");
-const BUNDLED_GRAMMARS = path.join(path.dirname(require.resolve("@vscode/tree-sitter-wasm/package.json")), "wasm");
+// Store the active host in a shared symbol slot on `globalThis` so a fresh module instance (such as under Vitest's
+// `vi.resetModules()`) inherits the host registered for the process while still keeping `runtime` and `parsers`
+// isolated to each module instance.
+const GRAMMAR_HOST_SLOT = Symbol.for("@live-documentation/engine/grammarHost");
+type HostCarrier = typeof globalThis & { [GRAMMAR_HOST_SLOT]?: GrammarHost };
 
-/**
- * The `.wasm` file a grammar is loaded from: the engine's own build when there is one, the bundled one otherwise. A
- * probe of the engine's own that fails for a cause of the machine's throws, so that the load fails and is dropped
- * (`grammarParser`): until 2026-11-20 `existsSync` read it as no build of the engine's, and the bundled, unpatched
- * grammar was loaded and kept for the process's life, reading every later file of that language by another grammar.
- */
-function grammarFile(grammar: string): string {
-  const own = path.join(OWN_GRAMMARS, grammar, `tree-sitter-${grammar}.wasm`);
-  try {
-    // `throwIfNoEntry: false` answers nothing for a file not there, or a path through something not a folder.
-    if (statSync(own, { throwIfNoEntry: false }) !== undefined) return own;
-  } catch (error) {
-    // A name too long, or a loop of links, is not there either; any other failure is the machine's.
-    throwIfMachineFailure(error);
-  }
-  return path.join(BUNDLED_GRAMMARS, `tree-sitter-${grammar}.wasm`);
-}
-
+let activeHost: GrammarHost | undefined = (globalThis as HostCarrier)[GRAMMAR_HOST_SLOT];
 let runtime: Promise<void> | undefined;
 const parsers = new Map<string, Promise<Parser>>();
 
+/** Returns the currently active {@link GrammarHost}, if one has been registered. */
+export function getGrammarHost(): GrammarHost | undefined {
+  return activeHost;
+}
+
 /**
- * One parser per grammar, created on first use and kept for the life of the process; a load that fails, the
- * runtime's or the grammar's, is dropped, so that the next file asks again and a process that lives across many
- * generations never fails a file for a failure of the past.
+ * Registers the {@link GrammarHost} that supplies the tree-sitter runtime and language `.wasm` bytes.
+ * Passing the host already active is a no-op so cached parsers stay warm across runs; passing a different host or
+ * `undefined` clears the runtime promise and cached parsers cleanly.
+ */
+export function setGrammarHost(host: GrammarHost | undefined): void {
+  (globalThis as HostCarrier)[GRAMMAR_HOST_SLOT] = host;
+  if (host === activeHost) return;
+  activeHost = host;
+  runtime = undefined;
+  parsers.clear();
+}
+
+/**
+ * One parser per grammar, created on first use and kept for the life of the process (or until the active
+ * {@link GrammarHost} changes); a load that fails, the runtime's or the grammar's, is dropped, so that the next file
+ * asks again and a process that lives across many generations never fails a file for a failure of the past.
  */
 export function grammarParser(grammar: string): Promise<Parser> {
+  const host = activeHost;
+  if (!host) {
+    return Promise.reject(
+      new Error("No tree-sitter GrammarHost is configured: pass host.grammars or call setGrammarHost(...) before parsing.")
+    );
+  }
   let pending = parsers.get(grammar);
   if (!pending) {
     const loading = (async () => {
-      const started = (runtime ??= Parser.init());
+      const started = (runtime ??= (async () => {
+        const wasmBinary = await host.runtime();
+        // `locateFile` keeps Emscripten from building a URL from `import.meta.url`, which a classic browser script
+        // lacks; `wasmBinary` supplies the runtime bytes directly so nothing is fetched.
+        await Parser.init({ wasmBinary, locateFile: (name: string) => name });
+      })());
       try {
         await started;
       } catch (error) {
         if (runtime === started) runtime = undefined;
         throw error;
       }
-      const language = await Language.load(grammarFile(grammar));
+      const bytes = await host.grammar(grammar);
+      const language = await Language.load(bytes);
       const parser   = new Parser();
       parser.setLanguage(language);
       return parser;

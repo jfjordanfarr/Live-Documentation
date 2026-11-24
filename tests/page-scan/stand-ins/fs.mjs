@@ -196,21 +196,9 @@ export const promises = {
   open: counted("fs.promises.open", async (path) => handleOn(path))
 };
 
-/** Node's way of answering a callback: after the caller's own turn has ended. */
-const later = (callback, ...args) => queueMicrotask(() => callback(...args));
-
-export const readdir = counted("fs.readdir", (path, options, callback) => {
-  const answer = typeof options === "function" ? options : callback;
-  try {
-    later(answer, null, entriesOf(path, typeof options === "function" ? undefined : options));
-  } catch (error) {
-    later(answer, error);
-  }
-});
-
 export const readdirSync = counted("fs.readdirSync", (path, options) => entriesOf(path, options));
 
-/** `statSync` and `lstatSync` answer nothing for a path not there when told `throwIfNoEntry: false`, as Node does. */
+/** `statSync` answers nothing for a path not there when told `throwIfNoEntry: false`, as Node does. */
 function statOrNothing(path, options, syscall) {
   try {
     return statOf(path, syscall);
@@ -220,7 +208,6 @@ function statOrNothing(path, options, syscall) {
   }
 }
 export const statSync = counted("fs.statSync", (path, options) => statOrNothing(path, options, "stat"));
-export const lstatSync = counted("fs.lstatSync", (path, options) => statOrNothing(path, options, "lstat"));
 
 /** The page's own hand on the tree, uncounted: to fill it, empty it, and read back what the scan wrote and read. */
 export const tree = {
@@ -255,4 +242,4 @@ export const tree = {
   entries: (path) => entriesOf(path, { withFileTypes: true })
 };
 
-export default { promises, readdir, readdirSync, statSync, lstatSync };
+export default { promises, readdirSync, statSync };

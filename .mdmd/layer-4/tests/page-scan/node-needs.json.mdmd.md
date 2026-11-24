@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: `tests/page-scan/node-needs.json`
-- Generated At: 2026-11-24T07:15:10.777Z
+- Generated At: 2026-11-24T07:54:08.458Z
 
 ## Authored
 ### Purpose
@@ -164,18 +164,6 @@ The committed list of what of Node the scanning page's bundle needs: by engine a
 #### `engine:packages/engine/src/live-docs/adapters/sql.ts:node:path` {#symbol-enginepackagesenginesrclive-docsadapterssqltsnodepath}
 - Type: key
 
-#### `engine:packages/engine/src/live-docs/adapters/treeSitter.ts` {#symbol-enginepackagesenginesrclive-docsadapterstreesitterts}
-- Type: key
-
-#### `engine:packages/engine/src/live-docs/adapters/treeSitter.ts:(global)` {#symbol-enginepackagesenginesrclive-docsadapterstreesittertsglobal}
-- Type: key
-
-#### `engine:packages/engine/src/live-docs/adapters/treeSitter.ts:node:fs` {#symbol-enginepackagesenginesrclive-docsadapterstreesittertsnodefs}
-- Type: key
-
-#### `engine:packages/engine/src/live-docs/adapters/treeSitter.ts:node:path` {#symbol-enginepackagesenginesrclive-docsadapterstreesittertsnodepath}
-- Type: key
-
 #### `engine:packages/engine/src/live-docs/archetype.ts` {#symbol-enginepackagesenginesrclive-docsarchetypets}
 - Type: key
 
@@ -200,19 +188,10 @@ The committed list of what of Node the scanning page's bundle needs: by engine a
 #### `engine:packages/engine/src/live-docs/dependencies.ts:node:path` {#symbol-enginepackagesenginesrclive-docsdependenciestsnodepath}
 - Type: key
 
-#### `engine:packages/engine/src/live-docs/discovery.ts` {#symbol-enginepackagesenginesrclive-docsdiscoveryts}
+#### `engine:packages/engine/src/live-docs/discoveryCore.ts` {#symbol-enginepackagesenginesrclive-docsdiscoverycorets}
 - Type: key
 
-#### `engine:packages/engine/src/live-docs/discovery.ts:node:path` {#symbol-enginepackagesenginesrclive-docsdiscoverytsnodepath}
-- Type: key
-
-#### `engine:packages/engine/src/live-docs/gitUtils.ts` {#symbol-enginepackagesenginesrclive-docsgitutilsts}
-- Type: key
-
-#### `engine:packages/engine/src/live-docs/gitUtils.ts:(global)` {#symbol-enginepackagesenginesrclive-docsgitutilstsglobal}
-- Type: key
-
-#### `engine:packages/engine/src/live-docs/gitUtils.ts:node:child_process` {#symbol-enginepackagesenginesrclive-docsgitutilstsnodechild_process}
+#### `engine:packages/engine/src/live-docs/discoveryCore.ts:node:path` {#symbol-enginepackagesenginesrclive-docsdiscoverycoretsnodepath}
 - Type: key
 
 #### `engine:packages/engine/src/live-docs/graphFiles.ts` {#symbol-enginepackagesenginesrclive-docsgraphfilests}
@@ -234,21 +213,6 @@ The committed list of what of Node the scanning page's bundle needs: by engine a
 - Type: key
 
 #### `engine:packages/engine/src/live-docs/sourceAnalysis.ts:node:path` {#symbol-enginepackagesenginesrclive-docssourceanalysistsnodepath}
-- Type: key
-
-#### `engine:packages/engine/src/tooling/gitIgnored.ts` {#symbol-enginepackagesenginesrctoolinggitignoredts}
-- Type: key
-
-#### `engine:packages/engine/src/tooling/gitIgnored.ts:node:child_process` {#symbol-enginepackagesenginesrctoolinggitignoredtsnodechild_process}
-- Type: key
-
-#### `engine:packages/engine/src/tooling/gitIgnored.ts:node:fs` {#symbol-enginepackagesenginesrctoolinggitignoredtsnodefs}
-- Type: key
-
-#### `engine:packages/engine/src/tooling/gitIgnored.ts:node:path` {#symbol-enginepackagesenginesrctoolinggitignoredtsnodepath}
-- Type: key
-
-#### `engine:packages/engine/src/tooling/gitIgnored.ts:node:process` {#symbol-enginepackagesenginesrctoolinggitignoredtsnodeprocess}
 - Type: key
 
 #### `engine:packages/engine/src/tooling/nodeHost.ts` {#symbol-enginepackagesenginesrctoolingnodehostts}
@@ -278,22 +242,16 @@ The committed list of what of Node the scanning page's bundle needs: by engine a
 #### `engine:packages/engine/src/tooling/workspaceWalk.ts:node:path` {#symbol-enginepackagesenginesrctoolingworkspacewalktsnodepath}
 - Type: key
 
-#### `engine:packages/generator/src/generator.ts` {#symbol-enginepackagesgeneratorsrcgeneratorts}
+#### `engine:packages/generator/src/generatorCore.ts` {#symbol-enginepackagesgeneratorsrcgeneratorcorets}
 - Type: key
 
-#### `engine:packages/generator/src/generator.ts:node:fs/promises` {#symbol-enginepackagesgeneratorsrcgeneratortsnodefspromises}
+#### `engine:packages/generator/src/generatorCore.ts:node:fs/promises` {#symbol-enginepackagesgeneratorsrcgeneratorcoretsnodefspromises}
 - Type: key
 
-#### `engine:packages/generator/src/generator.ts:node:path` {#symbol-enginepackagesgeneratorsrcgeneratortsnodepath}
+#### `engine:packages/generator/src/generatorCore.ts:node:path` {#symbol-enginepackagesgeneratorsrcgeneratorcoretsnodepath}
 - Type: key
 
 #### `standIns` {#symbol-standins}
-- Type: key
-
-#### `standIns:(global)` {#symbol-standinsglobal}
-- Type: key
-
-#### `standIns:node:child_process` {#symbol-standinsnodechild_process}
 - Type: key
 
 #### `standIns:node:fs` {#symbol-standinsnodefs}
@@ -305,22 +263,10 @@ The committed list of what of Node the scanning page's bundle needs: by engine a
 #### `standIns:node:path` {#symbol-standinsnodepath}
 - Type: key
 
-#### `standIns:node:process` {#symbol-standinsnodeprocess}
-- Type: key
-
 #### `hostedByNode` {#symbol-hostedbynode}
 - Type: key
 
 #### `globals` {#symbol-globals}
-- Type: key
-
-#### `globals:__dirname` {#symbol-globals__dirname}
-- Type: key
-
-#### `globals:process` {#symbol-globalsprocess}
-- Type: key
-
-#### `globals:require` {#symbol-globalsrequire}
 - Type: key
 
 #### `packages` {#symbol-packages}

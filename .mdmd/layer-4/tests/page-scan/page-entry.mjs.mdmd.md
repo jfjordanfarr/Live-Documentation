@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: `tests/page-scan/page-entry.mjs`
-- Generated At: 2026-11-24T07:15:10.790Z
+- Generated At: 2026-11-24T07:54:08.470Z
 
 ## Authored
 ### Purpose
@@ -23,10 +23,9 @@ _No public symbols detected_
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
-- [`generator.generateLiveDocs`](../../packages/generator/src/generator.ts.mdmd.md#symbol-generatelivedocs)
+- [`generatorCore.runLiveDocs`](../../packages/generator/src/generatorCore.ts.mdmd.md#symbol-runlivedocs)
 - [`calls.callCounts`](./stand-ins/calls.mjs.mdmd.md#symbol-callcounts)
 - [`calls.resetCalls`](./stand-ins/calls.mjs.mdmd.md#symbol-resetcalls)
-- [`child_process.asked`](./stand-ins/child_process.mjs.mdmd.md#symbol-asked)
 - [`fs.tree`](./stand-ins/fs.mjs.mdmd.md#symbol-tree)
 <!-- LIVE-DOC:END Dependencies -->
 

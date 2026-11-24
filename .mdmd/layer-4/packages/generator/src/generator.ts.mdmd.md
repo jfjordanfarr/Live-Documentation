@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: `packages/generator/src/generator.ts`
 - Entry: module of [`packages/generator/package.json`](../package.json.mdmd.md)
-- Generated At: 2026-11-24T07:15:08.335Z
+- Generated At: 2026-11-24T07:54:06.084Z
 
 ## Authored
 ### Purpose
@@ -32,30 +32,29 @@ Coordinates Live Documentation generation: analyzes source files, carries author
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
+#### `GenerateLiveDocsOptions` {#symbol-generatelivedocsoptions}
+- Type: type (type-only)
+- Source: [source](../../../../../packages/generator/src/generator.ts#L32)
+
+#### `LiveDocGeneratorLogger` {#symbol-livedocgeneratorlogger}
+- Type: type (type-only)
+- Source: [source](../../../../../packages/generator/src/generator.ts#L32)
+
 #### `LiveDocGeneratorResult` {#symbol-livedocgeneratorresult}
-- Type: interface
-- Source: [source](../../../../../packages/generator/src/generator.ts#L72)
-
-##### `LiveDocGeneratorResult` — Summary
-Summary returned by {@link generateLiveDocs} after processing all target files.
-
-The caller uses `written` and `deleted` counts for progress reporting, while
-the `files` array gives per-file detail for dry-run previews and CI checks.
+- Type: type (type-only)
+- Source: [source](../../../../../packages/generator/src/generator.ts#L32)
 
 #### `SourceReadings` {#symbol-sourcereadings}
-- Type: interface
-- Source: [source](../../../../../packages/generator/src/generator.ts#L93)
-
-##### `SourceReadings` — Summary
-The files the one reading step read as UTF-16 or as Windows-1252, and those it did not read as text, by source path.
+- Type: type (type-only)
+- Source: [source](../../../../../packages/generator/src/generator.ts#L32)
 
 #### `generateLiveDocs` {#symbol-generatelivedocs}
 - Type: function
-- Source: [source](../../../../../packages/generator/src/generator.ts#L134)
-- Parameters: `options`: `GenerateLiveDocsOptions`
+- Source: [source](../../../../../packages/generator/src/generator.ts#L56)
+- Parameters: `options`: [`GenerateLiveDocsOptions`](./generatorCore.ts.mdmd.md#symbol-generatelivedocsoptions)
 
 ##### `generateLiveDocs` — Summary
-Entry point for the Live Documentation generation pipeline.
+Entry point for the Live Documentation generation pipeline on Node.
 
 Discovers all workspace files matching the configured globs, analyses each for
 public symbols and dependencies, and renders deterministic markdown docs under
@@ -70,8 +69,9 @@ modes. Stale Live Docs whose sources no longer exist are pruned; a
 changed-only run restricts pruning to changed source paths.
 
 Created 2025-11-09; extended with symbol index (2026-01-14), JSON adapter
-(2026-01-28), cross-platform hash fix (2026-02-03) and the entry index
-behind the `Entry` lines (2026-10-15).
+(2026-01-28), cross-platform hash fix (2026-02-03), the entry index behind
+the `Entry` lines (2026-10-15), and host ports for grammars, git, and outer
+scans (2026-11-24).
 
 ##### `generateLiveDocs` — Parameters
 - `options`: Generation configuration including workspace root, config overrides, and logger.
@@ -81,64 +81,25 @@ behind the `Entry` lines (2026-10-15).
 ### Dependencies
 - `node:fs/promises`
 - `node:path` - `path`
-- [`LiveDocumentationConfig`](../../engine/src/config/liveDocumentationConfig.ts.mdmd.md#symbol-livedocumentationconfig) (type-only)
-- [`liveDocumentationConfig.hasReader`](../../engine/src/config/liveDocumentationConfig.ts.mdmd.md#symbol-hasreader)
-- [`liveDocumentationConfig.noReaderHandles`](../../engine/src/config/liveDocumentationConfig.ts.mdmd.md#symbol-noreaderhandles)
-- [`liveDocumentationConfig.normalizeLiveDocumentationConfig`](../../engine/src/config/liveDocumentationConfig.ts.mdmd.md#symbol-normalizelivedocumentationconfig)
-- [`core.BINARY_SNIFF_BYTES`](../../engine/src/live-docs/core.ts.mdmd.md#symbol-binary_sniff_bytes)
-- [`core.SourceAnalysisResult`](../../engine/src/live-docs/core.ts.mdmd.md#symbol-sourceanalysisresult) (type-only)
-- [`core.WorkspaceEntryIndex`](../../engine/src/live-docs/core.ts.mdmd.md#symbol-workspaceentryindex) (type-only)
-- [`core.WorkspaceFileIndex`](../../engine/src/live-docs/core.ts.mdmd.md#symbol-workspacefileindex) (type-only)
-- [`core.WorkspaceSymbolIndex`](../../engine/src/live-docs/core.ts.mdmd.md#symbol-workspacesymbolindex) (type-only)
-- [`core.WorkspaceTestIndex`](../../engine/src/live-docs/core.ts.mdmd.md#symbol-workspacetestindex) (type-only)
 - [`core.analyzeSourceFile`](../../engine/src/live-docs/core.ts.mdmd.md#symbol-analyzesourcefile)
-- [`core.buildWorkspaceIndexes`](../../engine/src/live-docs/core.ts.mdmd.md#symbol-buildworkspaceindexes)
-- [`core.composeCitedBy`](../../engine/src/live-docs/core.ts.mdmd.md#symbol-composecitedby)
-- [`core.composeDependencies`](../../engine/src/live-docs/core.ts.mdmd.md#symbol-composedependencies)
-- [`core.composeEntries`](../../engine/src/live-docs/core.ts.mdmd.md#symbol-composeentries)
-- [`core.composeReExports`](../../engine/src/live-docs/core.ts.mdmd.md#symbol-composereexports)
-- [`core.composeSymbolBlocks`](../../engine/src/live-docs/core.ts.mdmd.md#symbol-composesymbolblocks)
-- [`core.computePublicSymbolHeadingInfo`](../../engine/src/live-docs/core.ts.mdmd.md#symbol-computepublicsymbolheadinginfo)
-- [`core.discoverDocuments`](../../engine/src/live-docs/core.ts.mdmd.md#symbol-discoverdocuments)
-- [`core.discoverTargetFiles`](../../engine/src/live-docs/core.ts.mdmd.md#symbol-discovertargetfiles)
-- [`core.discoverWorkspaceTargetFiles`](../../engine/src/live-docs/core.ts.mdmd.md#symbol-discoverworkspacetargetfiles)
-- [`core.hasMeaningfulAuthoredContent`](../../engine/src/live-docs/core.ts.mdmd.md#symbol-hasmeaningfulauthoredcontent)
-- [`core.isBinaryContent`](../../engine/src/live-docs/core.ts.mdmd.md#symbol-isbinarycontent)
-- [`core.resolveArchetype`](../../engine/src/live-docs/core.ts.mdmd.md#symbol-resolvearchetype)
-- [`discovery.inWorkspaceOrder`](../../engine/src/live-docs/discovery.ts.mdmd.md#symbol-inworkspaceorder)
-- [`document.DEFAULT_AUTHORED_BLOCK`](../../engine/src/live-docs/document.ts.mdmd.md#symbol-default_authored_block)
-- [`document.LiveDoc`](../../engine/src/live-docs/document.ts.mdmd.md#symbol-livedoc) (type-only)
-- [`document.LiveDocSyntaxError`](../../engine/src/live-docs/document.ts.mdmd.md#symbol-livedocsyntaxerror)
-- [`document.UNREAD_AUTHORED_BLOCK`](../../engine/src/live-docs/document.ts.mdmd.md#symbol-unread_authored_block)
-- [`document.authoredBlockOf`](../../engine/src/live-docs/document.ts.mdmd.md#symbol-authoredblockof)
-- [`document.parseLiveDoc`](../../engine/src/live-docs/document.ts.mdmd.md#symbol-parselivedoc)
-- [`document.renderLiveDoc`](../../engine/src/live-docs/document.ts.mdmd.md#symbol-renderlivedoc)
-- [`gitUtils.detectChangedFiles`](../../engine/src/live-docs/gitUtils.ts.mdmd.md#symbol-detectchangedfiles)
-- [`graphFiles.readLiveDocGraph`](../../engine/src/live-docs/graphFiles.ts.mdmd.md#symbol-readlivedocgraph)
-- [`graphFiles.writeLiveDocGraph`](../../engine/src/live-docs/graphFiles.ts.mdmd.md#symbol-writelivedocgraph)
-- [`processMark.markProcess`](../../engine/src/live-docs/processMark.ts.mdmd.md#symbol-markprocess)
-- [`relatedDocs.DocumentText`](../../engine/src/live-docs/relatedDocs.ts.mdmd.md#symbol-documenttext) (type-only)
-- [`relatedDocs.citingDocuments`](../../engine/src/live-docs/relatedDocs.ts.mdmd.md#symbol-citingdocuments)
-- [`relatedDocs.isMarkdownDocument`](../../engine/src/live-docs/relatedDocs.ts.mdmd.md#symbol-ismarkdowndocument)
 - [`gitIgnored`](../../engine/src/tooling/gitIgnored.ts.mdmd.md#symbol-gitignored)
-- [`gitIgnored.gitIgnores`](../../engine/src/tooling/gitIgnored.ts.mdmd.md#symbol-gitignores-function)
-- [`leaveOut.LeaveOutInput`](../../engine/src/tooling/leaveOut.ts.mdmd.md#symbol-leaveoutinput) (type-only)
-- [`leaveOut`](../../engine/src/tooling/leaveOut.ts.mdmd.md#symbol-leaveout-function)
+- [`nodeGitHost.NODE_GIT_HOST`](../../engine/src/tooling/nodeGitHost.ts.mdmd.md#symbol-node_git_host)
+- [`nodeGrammars.NODE_GRAMMAR_HOST`](../../engine/src/tooling/nodeGrammars.ts.mdmd.md#symbol-node_grammar_host)
 - [`nodeHost.NODE_FILE_HOST`](../../engine/src/tooling/nodeHost.ts.mdmd.md#symbol-node_file_host)
 - [`pathUtils.normalizeWorkspacePath`](../../engine/src/tooling/pathUtils.ts.mdmd.md#symbol-normalizeworkspacepath)
-- [`pathUtils.toWorkspaceRelativePath`](../../engine/src/tooling/pathUtils.ts.mdmd.md#symbol-toworkspacerelativepath)
-- [`sourceText.SourceTextReading`](../../engine/src/tooling/sourceText.ts.mdmd.md#symbol-sourcetextreading) (type-only)
-- [`sourceText.readSourceReading`](../../engine/src/tooling/sourceText.ts.mdmd.md#symbol-readsourcereading)
 - [`sourceText.throwIfMachineFailure`](../../engine/src/tooling/sourceText.ts.mdmd.md#symbol-throwifmachinefailure)
 - [`workspaceFiles.FileHost`](../../engine/src/tooling/workspaceFiles.ts.mdmd.md#symbol-filehost) (type-only)
-- [`workspaceFiles.WorkspaceReads`](../../engine/src/tooling/workspaceFiles.ts.mdmd.md#symbol-workspacereads-interface) (type-only)
-- [`workspaceFiles.workspaceReads`](../../engine/src/tooling/workspaceFiles.ts.mdmd.md#symbol-workspacereads-function)
-- [`workspaceListing`](../../engine/src/tooling/workspaceListing.ts.mdmd.md#symbol-workspacelisting-function)
-- [`workspaceWalk.walkWorkspace`](../../engine/src/tooling/workspaceWalk.ts.mdmd.md#symbol-walkworkspace)
+- [`generatorCore.GenerateLiveDocsOptions`](./generatorCore.ts.mdmd.md#symbol-generatelivedocsoptions) (type-only)
+- [`generatorCore.LiveDocGeneratorLogger`](./generatorCore.ts.mdmd.md#symbol-livedocgeneratorlogger) (type-only)
+- [`generatorCore.LiveDocGeneratorResult`](./generatorCore.ts.mdmd.md#symbol-livedocgeneratorresult) (type-only)
+- [`generatorCore.SourceReadings`](./generatorCore.ts.mdmd.md#symbol-sourcereadings) (type-only)
+- [`generatorCore.runLiveDocs`](./generatorCore.ts.mdmd.md#symbol-runlivedocs)
+- [`generatorCore.scanMarkers`](./generatorCore.ts.mdmd.md#symbol-scanmarkers)
 <!-- LIVE-DOC:END Dependencies -->
 
 <!-- LIVE-DOC:BEGIN Cited By -->
 ### Cited By
 - [`.mdmd/layer-3/architectural-decisions.mdmd.md`](../../../../layer-3/architectural-decisions.mdmd.md)
+- [`.mdmd/layer-3/engine-and-hosts.mdmd.md`](../../../../layer-3/engine-and-hosts.mdmd.md)
 - [`.mdmd/layer-3/live-documentation-pipeline.mdmd.md`](../../../../layer-3/live-documentation-pipeline.mdmd.md)
 <!-- LIVE-DOC:END Cited By -->

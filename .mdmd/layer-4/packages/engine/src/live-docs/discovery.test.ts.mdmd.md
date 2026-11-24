@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: `packages/engine/src/live-docs/discovery.test.ts`
-- Generated At: 2026-11-24T07:15:05.749Z
+- Generated At: 2026-11-24T07:54:04.185Z
 
 ## Authored
 ### Purpose
@@ -37,6 +37,7 @@ _No public symbols detected_
 - [`discovery.discoverTargetFiles`](./discovery.ts.mdmd.md#symbol-discovertargetfiles)
 - [`discovery.discoverWorkspaceTargetFiles`](./discovery.ts.mdmd.md#symbol-discoverworkspacetargetfiles)
 - [`discovery.inWorkspaceOrder`](./discovery.ts.mdmd.md#symbol-inworkspaceorder)
+- [`discoveryCore.discoverWorkspaceTargetFilesWithHost`](./discoveryCore.ts.mdmd.md#symbol-discoverworkspacetargetfileswithhost)
 - [`processMark.machineFailure`](./processMark.ts.mdmd.md#symbol-machinefailure)
 - [`gitIgnored.gitIgnores`](../tooling/gitIgnored.ts.mdmd.md#symbol-gitignores-function)
 - [`workspaceFiles.FileHost`](../tooling/workspaceFiles.ts.mdmd.md#symbol-filehost) (type-only)

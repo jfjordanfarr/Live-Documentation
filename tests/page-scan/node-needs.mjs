@@ -26,9 +26,9 @@ export const NEEDS_FILE = path.join(path.dirname(fileURLToPath(import.meta.url))
 const GLOBALS = {
   process: "nothing: a page has no global process, and a call throws",
   Buffer: "nothing: a page has no Buffer, and a call throws",
-  __dirname: "a constant the build defines for adapters/treeSitter.ts",
+  __dirname: "nothing",
   __filename: "nothing",
-  require: "require.resolve only, by the stand-in require-resolve.mjs",
+  require: "nothing",
   setImmediate: "nothing",
   global: "nothing"
 };

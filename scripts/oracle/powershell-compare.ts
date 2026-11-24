@@ -50,6 +50,9 @@ import process from "node:process";
 
 import { powershellAdapter } from "@live-documentation/engine/live-docs/adapters/powershell";
 import type { SourceAnalysisResult } from "@live-documentation/engine/live-docs/core";
+import { registerNodeGrammars } from "@live-documentation/engine/tooling/nodeGrammars";
+
+registerNodeGrammars();
 
 import { isDataFileFacts, parsePowerShellFixture, type PowerShellAst } from "./powershell-edges";
 import { readVerdicts, scoreVerdicts, type HandVerdict, type VerdictScore } from "./powershell-verdicts";

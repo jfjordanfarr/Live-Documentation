@@ -40,6 +40,9 @@ import process from "node:process";
 
 import { csharpAdapter } from "@live-documentation/engine/live-docs/adapters/csharp";
 import { crefLinkTarget } from "@live-documentation/engine/live-docs/adapters/csharp.xmldoc";
+import { registerNodeGrammars } from "@live-documentation/engine/tooling/nodeGrammars";
+
+registerNodeGrammars();
 
 import { folderFiles } from "./powershell-compare";
 import { msbuildProjectReferences } from "./scip-edges";

@@ -52,12 +52,12 @@ const READS = new Set([
  * says what is true.
  */
 const ALLOWED: Record<string, string> = {
-  "packages/generator/src/generator.ts › generateLiveDocs":
+  "packages/generator/src/generatorCore.ts › runLiveDocs":
     "The per-file catch every other hands to: it names the file in `failed`, with the error, by which a person's run says why and a history worker publishes nothing.",
-  "packages/generator/src/generator.ts › cleanupEmptyParents":
+  "packages/generator/src/generatorCore.ts › cleanupEmptyParents":
     "Tidying after a pruned doc: no doc and no fact is read from an empty folder, a run stopped here would pass on a second try with nothing mended (the doc is gone, the folder never visited again), and on Windows a folder another program holds is ordinary. Any failure leaves the folder.",
-  "packages/engine/src/live-docs/discovery.ts › buildWorkspaceIndexes":
-    "The index pass keeps the failure for the file (`unmapped`), and the per-file pass throws it again into the per-file catch (`unindexed` in `generator.ts`).",
+  "packages/engine/src/live-docs/discoveryCore.ts › buildWorkspaceIndexes":
+    "The index pass keeps the failure for the file (`unmapped`), and the per-file pass throws it again into the per-file catch (`unindexed` in `generatorCore.ts`).",
   "packages/engine/src/live-docs/history/textStore.ts › putTexts":
     "A text the probe cannot see is written, and the store is addressed by content: writing it again is harmless, and a write that fails throws its own failure.",
   "packages/generator/src/history/computeHistory.ts › holdLock": "The time a lock was taken, for the message naming its holder; nothing of a file is read.",

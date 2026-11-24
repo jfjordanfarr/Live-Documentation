@@ -110,26 +110,28 @@ describe("the grammar loader", () => {
 
   // Until 2026-11-20 the probe of the engine's own grammar was `existsSync`, which reads every failure as "no such
   // file": a probe that failed for a cause of the machine's loaded the bundled, unpatched grammar, kept for the process's
-  // life, so that every later PowerShell file was read by another grammar than a fresh process reads it by.
-  it("fails a load whose probe of the engine's own grammar fails for a cause of the machine's, and the next ask loads the engine's own", async () => {
+  // life, so that every later PowerShell file was read by another grammar than a fresh process reads it by. Under
+  // Step 7 (`nodeGrammars.ts`) the engine's own build is read directly as bytes, and a machine failure still stops the load.
+  it("fails a load whose read of the engine's own grammar fails for a cause of the machine's, and the next ask loads the engine's own", async () => {
     const own = path.resolve(__dirname, "..", "..", "..", "grammars", "powershell", "tree-sitter-powershell.wasm");
-    const statSync = nodeFs.statSync;
+    const ownBytes = await fs.readFile(own);
+    const readFile = nodeFs.promises.readFile;
     let armed = true;
-    const probe = vi.spyOn(nodeFs, "statSync").mockImplementation(((...args: unknown[]) => {
+    const probe = vi.spyOn(nodeFs.promises, "readFile").mockImplementation(((...args: unknown[]) => {
       if (armed && String(args[0]) === own) {
         armed = false;
-        throw Object.assign(new Error(`EMFILE: too many open files, stat '${own}'`), { code: "EMFILE", syscall: "stat", errno: -24 });
+        return Promise.reject(Object.assign(new Error(`EMFILE: too many open files, open '${own}'`), { code: "EMFILE", syscall: "open", errno: -24 }));
       }
-      return Reflect.apply(statSync, nodeFs, args);
-    }) as typeof nodeFs.statSync);
-    // `treeSitter.ts` imports `statSync` by name, a binding that follows the module's object only when synced.
+      return Reflect.apply(readFile, nodeFs.promises, args);
+    }) as typeof nodeFs.promises.readFile);
     syncBuiltinESMExports();
     const load = vi.spyOn(Language, "load");
     try {
-      await expect(grammarParser("powershell")).rejects.toThrow("EMFILE: too many open files, stat");
+      await expect(grammarParser("powershell")).rejects.toThrow("EMFILE: too many open files, open");
       expect(load).not.toHaveBeenCalled();
       await grammarParser("powershell");
-      expect(load.mock.calls.map(([file]) => file)).toEqual([own]);
+      expect(load).toHaveBeenCalledTimes(1);
+      expect(Buffer.from(load.mock.calls[0][0] as Uint8Array).equals(ownBytes)).toBe(true);
     } finally {
       load.mockRestore();
       probe.mockRestore();

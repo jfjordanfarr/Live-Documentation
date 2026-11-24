@@ -1,14 +1,14 @@
-// The scanning page's script: the generator as it stands, bundled with the stand-ins, run over a folder the page is
-// handed through its `<input webkitdirectory>`. It puts the folder's files into the stand-in for `node:fs` at `/ws`,
-// runs `generateLiveDocs` there with the page's own host of the files' bytes (`PAGE_HOST`), and keeps what the scan
-// wrote, what it read and what it asked of the stand-ins, for `tests/e2e/page-scan.spec.ts` to read as
+// The scanning page's script: the pure host-driven generator core (`generatorCore.ts`), bundled with the remaining
+// stand-ins, run over a folder the page is handed through its `<input webkitdirectory>`. It puts the folder's files
+// into the stand-in for `node:fs` at `/ws`, runs `runLiveDocs` there with the page's own host (`PAGE_HOST`: file
+// reads, folder listings, and inlined WebAssembly grammar bytes, with no git or ancestor-scan access), and keeps what
+// the scan wrote, what it read and what it asked of the stand-ins, for `tests/e2e/page-scan.spec.ts` to read as
 // `window.pageScan`. Test scaffolding, not the product.
-import { generateLiveDocs } from "../../packages/generator/src/generator";
+import { runLiveDocs } from "../../packages/generator/src/generatorCore";
 import { callCounts, resetCalls } from "./stand-ins/calls.mjs";
-import { asked } from "./stand-ins/child_process.mjs";
 import { tree } from "./stand-ins/fs.mjs";
 
-/** The calls the engine's modules made of the stand-ins as they loaded, before any scan (`adapters/treeSitter.ts` finding its grammars). */
+/** The calls the engine's modules made of the stand-ins as they loaded, before any scan. */
 const callsOnLoading = callCounts();
 
 /** Where the folder is put in the stand-in's tree. */
@@ -20,11 +20,27 @@ const WORKSPACE = "/ws";
  */
 const LEFT_OUT = new Set([".git", "node_modules"]);
 
+/** Inlined tree-sitter runtime and language `.wasm` bytes, inflated once when the page loads. */
+const grammarBytes = new Map();
+
+/** The page's `GrammarHost`: supplies the tree-sitter runtime and language grammars directly as bytes. */
+const PAGE_GRAMMARS = {
+  runtime: async () => {
+    const bytes = grammarBytes.get("runtime");
+    if (!bytes) throw new Error("the scanning page holds no tree-sitter runtime wasm");
+    return bytes;
+  },
+  grammar: async (name) => {
+    const bytes = grammarBytes.get(name);
+    if (!bytes) throw new Error(`the scanning page holds no grammar for ${name}: add it to the grammars of tests/page-scan/build-page.mjs`);
+    return bytes;
+  }
+};
+
 /**
- * The page's host of the scan's files (`FileHost`, `packages/engine/src/tooling/workspaceFiles.ts`): their bytes from the
- * folder the page was handed, read without Node's `fs`, so that the calls of the stand-in for it count only what the
- * engine still asks of Node; each read is counted with the scan's reads. The page holds every file already, so a head
- * is cut from the whole.
+ * The page's host of the scan's files and grammars (`FileHost`, `packages/engine/src/tooling/workspaceFiles.ts`):
+ * reads, folder listings, and grammar bytes without Node's `fs`, `child_process`, or `require.resolve`, and with no
+ * `git` or `scansAbove` port. Each read is counted with the scan's reads.
  */
 const PAGE_HOST = {
   read: async (path) => tree.read(path),
@@ -37,19 +53,20 @@ const PAGE_HOST = {
       else if (entry.isDirectory()) folders.push(entry.name);
     }
     return { files, folders };
-  }
+  },
+  grammars: PAGE_GRAMMARS
 };
 
 const log = (line) => {
   document.getElementById("log").textContent += `${line}\n`;
 };
 
-/** Inflates each grammar inlined in the page and puts it into the tree at the path the engine looks for it. */
+/** Inflates each grammar inlined in the page into `grammarBytes` by its `data-grammar` key. */
 async function putGrammars() {
-  for (const node of document.querySelectorAll('script[type="application/octet-stream"][data-path]')) {
+  for (const node of document.querySelectorAll('script[type="application/octet-stream"][data-grammar]')) {
     const packed = Uint8Array.from(atob(node.textContent.trim()), (character) => character.charCodeAt(0));
     const stream = new Blob([packed]).stream().pipeThrough(new DecompressionStream("gzip"));
-    tree.put(node.dataset.path, new Uint8Array(await new Response(stream).arrayBuffer()));
+    grammarBytes.set(node.dataset.grammar, new Uint8Array(await new Response(stream).arrayBuffer()));
   }
 }
 
@@ -71,17 +88,16 @@ async function putFolder(fileList) {
 
 /**
  * Scans the folder: the docs and the index it wrote, workspace-relative, with their text; what it read, how often;
- * the calls it made of the stand-ins; the files it could not map; and how long `generateLiveDocs` took.
+ * the calls it made of the stand-ins; the files it could not map; and how long `runLiveDocs` took.
  */
 async function scan(fileList, now) {
   const { put, bytes } = await putFolder(fileList);
   const given = new Set(put);
   resetCalls();
   tree.resetReads();
-  asked.length = 0;
   const warnings = [];
   const started = performance.now();
-  const result = await generateLiveDocs({
+  const result = await runLiveDocs({
     workspaceRoot: WORKSPACE,
     host: PAGE_HOST,
     now: () => new Date(now),
@@ -96,7 +112,7 @@ async function scan(fileList, now) {
   return {
     ms, files: put.length, bytes, processed: result.processed, written,
     failed: result.failed.map((entry) => ({ sourcePath: entry.sourcePath, reason: entry.reason })),
-    warnings, reads, calls: callCounts(), callsOnLoading, asked: [...asked]
+    warnings, reads, calls: callCounts(), callsOnLoading, asked: []
   };
 }
 

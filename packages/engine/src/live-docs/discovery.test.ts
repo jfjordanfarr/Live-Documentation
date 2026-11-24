@@ -10,6 +10,7 @@ import { normalizeLiveDocumentationConfig, type LiveDocumentationConfigInput } f
 import { gitIgnores } from "../tooling/gitIgnored";
 import type { FileHost, FolderEntries } from "../tooling/workspaceFiles";
 import { buildWorkspaceIndexes, discoverDocuments, discoverTargetFiles, discoverWorkspaceTargetFiles, inWorkspaceOrder } from "./discovery";
+import { discoverWorkspaceTargetFilesWithHost } from "./discoveryCore";
 import { machineFailure } from "./processMark";
 
 const foldersGitIgnoresWhole = (root: string): ReadonlySet<string> => gitIgnores(root)?.folders ?? new Set();
@@ -981,5 +982,50 @@ describe("explicit leaveOut list over a host", () => {
     const result = await discoverWorkspaceTargetFiles({ workspaceRoot: root, config, include: new Set(), changedOnly: false, host: host2, leaveOut: { list: "packages/\nlocked/\n", ignoreCase: true } });
     expect(result.files.map((file) => path.relative(root, file))).toEqual(["a.ts"]);
     expect(listed2).toEqual([""]);
+  });
+
+  it("judges via root .gitignore without spawning git when host.git is absent, skips absent .gitignore reads, and refuses --changed cleanly", async () => {
+    const root = "/virtual/browser-host";
+    const reads: string[] = [];
+    const files: Record<string, string> = { ".gitignore": "dist/\n*.gen.ts\n" };
+    const tree: Record<string, FolderEntries> = {
+      "": { files: [".gitignore", "app.ts", "skip.gen.ts"], folders: ["dist", "src"] },
+      "dist": { files: ["bundle.js"], folders: [] },
+      "src": { files: ["main.ts"], folders: [] }
+    };
+    const host: FileHost = {
+      read: async (absolutePath) => {
+        const rel = path.relative(root, absolutePath).split(path.sep).join("/");
+        reads.push(rel);
+        if (Object.hasOwn(files, rel)) return new TextEncoder().encode(files[rel]);
+        throw Object.assign(new Error(`ENOENT: ${rel}`), { code: "ENOENT", syscall: "open" });
+      },
+      head: () => Promise.reject(new Error("unexpected head")),
+      entries: async (absoluteFolder) => {
+        const rel = path.relative(root, absoluteFolder).split(path.sep).join("/");
+        return tree[rel === "." ? "" : rel] ?? { files: [], folders: [] };
+      }
+    };
+    const warnings: string[] = [];
+    const config = normalizeLiveDocumentationConfig({});
+    const result = await discoverWorkspaceTargetFilesWithHost({ workspaceRoot: root, config, include: new Set(), changedOnly: false, host, warn: (message) => warnings.push(message) });
+    expect(result.files.map((file) => path.relative(root, file).split(path.sep).join("/"))).toEqual([".gitignore", "app.ts", "src/main.ts"]);
+    expect(result.isLeftOut("dist/bundle.js")).toBe(true);
+    expect(result.isLeftOut("skip.gen.ts")).toBe(true);
+    expect(result.isLeftOut("src/missing.ts")).toBe(false);
+    expect(reads).toEqual([".gitignore"]);
+    expect(warnings).toEqual([]);
+
+    // When root has no `.gitignore`, `host.read` is never called at all.
+    reads.length = 0;
+    tree[""] = { files: ["app.ts"], folders: ["src"] };
+    const noIgnore = await discoverWorkspaceTargetFilesWithHost({ workspaceRoot: root, config, include: new Set(), changedOnly: false, host });
+    expect(noIgnore.files.map((file) => path.relative(root, file).split(path.sep).join("/"))).toEqual(["app.ts", "src/main.ts"]);
+    expect(reads).toEqual([]);
+
+    // Requesting `--changed` without `host.git` fails clearly instead of touching `node:child_process`.
+    await expect(
+      discoverWorkspaceTargetFilesWithHost({ workspaceRoot: root, config, include: new Set(), changedOnly: true, host })
+    ).rejects.toThrow(/Cannot use --changed.*this host has no Git access/u);
   });
 });
