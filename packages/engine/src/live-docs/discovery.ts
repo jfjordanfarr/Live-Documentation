@@ -8,8 +8,10 @@
  *
  * @module
  */
+import path from "node:path";
+
 import { NODE_GIT_HOST } from "../tooling/nodeGitHost";
-import { NODE_FILE_HOST } from "../tooling/nodeHost";
+import { NODE_FILE_HOST, registerNodeDiskFallback } from "../tooling/nodeHost";
 import type { FileHost } from "../tooling/workspaceFiles";
 import {
   buildWorkspaceIndexes,
@@ -21,6 +23,8 @@ import {
   type DiscoverOptions,
   type WorkspaceIndexes
 } from "./discoveryCore";
+
+registerNodeDiskFallback();
 
 export { buildWorkspaceIndexes, docsRootWithin, inWorkspaceOrder, type DiscoveredTargets, type DiscoverOptions, type WorkspaceIndexes };
 
@@ -38,7 +42,11 @@ function withNodeDefaults(host?: FileHost): FileHost {
  * and a predicate answering whether an unresolved path was deliberately left out by the scan's active rules.
  */
 export async function discoverWorkspaceTargetFiles(options: DiscoverOptions): Promise<DiscoveredTargets> {
-  return discoverWorkspaceTargetFilesWithHost({ ...options, host: withNodeDefaults(options.host) });
+  return discoverWorkspaceTargetFilesWithHost({
+    ...options,
+    workspaceRoot: path.resolve(options.workspaceRoot),
+    host: withNodeDefaults(options.host)
+  });
 }
 
 /**
@@ -58,5 +66,9 @@ export async function discoverTargetFiles(options: DiscoverOptions): Promise<str
 export async function discoverDocuments(
   options: Pick<DiscoverOptions, "workspaceRoot" | "config" | "host" | "reads" | "leaveOut" | "warn">
 ): Promise<string[]> {
-  return discoverDocumentsWithHost({ ...options, host: withNodeDefaults(options.host) });
+  return discoverDocumentsWithHost({
+    ...options,
+    workspaceRoot: path.resolve(options.workspaceRoot),
+    host: withNodeDefaults(options.host)
+  });
 }

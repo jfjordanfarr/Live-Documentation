@@ -18,13 +18,12 @@
  * The program's entry point is a `main` the launcher can run (JEP 512): `void`,
  * not private, static or instance, taking one `String[]` or nothing.
  */
-import path from "node:path";
-
 import { javaSyntax } from "../../languages";
 import { compareText } from "../../tooling/compareText";
-import { listFilesOnDisk } from "../../tooling/nodeHost";
+import path from "../../tooling/enginePath";
 import { normalizeWorkspacePath } from "../../tooling/pathUtils";
 import { readSourceText, type SourceReads, throwIfMachineFailure } from "../../tooling/sourceText";
+import { requireDiskFallback } from "../../tooling/workspaceFiles";
 import type { DependencyEntry, PublicSymbolEntry, SourceAnalysisResult, SymbolDocumentation, TypeReference } from "../core";
 import type { ProgramEntry } from "../coreTypes";
 import type { LanguageAdapter, WorkspaceFileIndex } from "./index";
@@ -534,7 +533,7 @@ async function listJavaFiles(workspaceRoot: string, fileIndex: WorkspaceFileInde
   if (fileIndex) {
     return Array.from(fileIndex).filter((file) => file.endsWith(".java")).sort();
   }
-  return listFilesOnDisk(workspaceRoot, ".java", STANDALONE_IGNORED_FOLDERS);
+  return requireDiskFallback("javaAdapter").listFilesOnDisk(workspaceRoot, ".java", STANDALONE_IGNORED_FOLDERS);
 }
 
 function tableType(table: TypeTable, packageName: string, file: string, type: DeclaredType): void {

@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: `packages/engine/src/tooling/workspaceFiles.test.ts`
-- Generated At: 2026-11-22T07:12:53.587Z
+- Generated At: 2026-11-24T10:31:38.961Z
 
 ## Authored
 ### Purpose
@@ -21,8 +21,13 @@ _No public symbols detected_
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
+- [`sourceText.readSourceReading`](./sourceText.ts.mdmd.md#symbol-readsourcereading)
 - [`sourceText.readSourceText`](./sourceText.ts.mdmd.md#symbol-readsourcetext)
 - [`workspaceFiles.FileHost`](./workspaceFiles.ts.mdmd.md#symbol-filehost) (type-only)
+- [`workspaceFiles.getDiskFallback`](./workspaceFiles.ts.mdmd.md#symbol-getdiskfallback)
+- [`workspaceFiles.setDiskFallback`](./workspaceFiles.ts.mdmd.md#symbol-setdiskfallback)
 - [`workspaceFiles.workspaceReads`](./workspaceFiles.ts.mdmd.md#symbol-workspacereads-function)
+- [`workspaceProbes.folderChildren`](./workspaceProbes.ts.mdmd.md#symbol-folderchildren)
+- [`workspaceProbes.pathKind`](./workspaceProbes.ts.mdmd.md#symbol-pathkind)
 - `vitest` - `describe`, `expect`, `it`
 <!-- LIVE-DOC:END Dependencies -->

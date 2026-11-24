@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/engine/src/live-docs/sourceAnalysis.ts`
-- Generated At: 2026-11-22T07:12:53.377Z
+- Generated At: 2026-11-24T10:31:38.826Z
 
 ## Authored
 ### Purpose
@@ -54,7 +54,6 @@ if (analysis.symbols.length === 0) {
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
-- `node:path` - `path`
 - [`index.WorkspaceFileIndex`](./adapters/index.ts.mdmd.md#symbol-workspacefileindex) (type-only)
 - [`index.analyzeWithLanguageAdapters`](./adapters/index.ts.mdmd.md#symbol-analyzewithlanguageadapters)
 - [`coreConstants.SUPPORTED_SCRIPT_EXTENSIONS`](./coreConstants.ts.mdmd.md#symbol-supported_script_extensions)
@@ -73,6 +72,7 @@ if (analysis.symbols.length === 0) {
 - [`symbolExtraction.collectExportedSymbols`](./symbolExtraction.ts.mdmd.md#symbol-collectexportedsymbols)
 - [`symbolExtraction.inferScriptKind`](./symbolExtraction.ts.mdmd.md#symbol-inferscriptkind)
 - [`compareText`](../tooling/compareText.ts.mdmd.md#symbol-comparetext)
+- [`enginePath.path`](../tooling/enginePath.ts.mdmd.md)
 - [`pathUtils.normalizeWorkspacePath`](../tooling/pathUtils.ts.mdmd.md#symbol-normalizeworkspacepath)
 - [`sourceText.readSourceText`](../tooling/sourceText.ts.mdmd.md#symbol-readsourcetext)
 - `typescript` - `ts`

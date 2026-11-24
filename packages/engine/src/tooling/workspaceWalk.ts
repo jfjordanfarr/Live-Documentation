@@ -12,9 +12,8 @@
  *
  * @module
  */
-import path from "node:path";
-
 import { machineFailure } from "../live-docs/processMark";
+import path from "./enginePath";
 import type { FileHost, FolderEntries } from "./workspaceFiles";
 
 /** A file found by a walk: its absolute path and its workspace-relative path with forward slashes. */

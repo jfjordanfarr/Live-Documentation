@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/engine/src/live-docs/adapters/css.ts`
-- Generated At: 2026-11-22T07:12:51.936Z
+- Generated At: 2026-11-24T10:31:38.092Z
 
 ## Authored
 ### Purpose
@@ -25,7 +25,7 @@ Language adapter that extracts dependency relationships from CSS files by parsin
 ### Public Symbols
 #### `withoutCssComments` {#symbol-withoutcsscomments}
 - Type: function
-- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/css.ts#L54)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/css.ts#L53)
 
 ##### `withoutCssComments` — Summary
 The style sheet with every comment written over in spaces, its line breaks kept, so that positions keep: a comment
@@ -37,7 +37,7 @@ no string. `//` is no comment in CSS. A comment left open runs to the end. The g
 
 #### `cssAdapter` {#symbol-cssadapter}
 - Type: const
-- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/css.ts#L336)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/css.ts#L335)
 - Returns: [`LanguageAdapter`](./index.ts.mdmd.md#symbol-languageadapter)
 
 ##### `cssAdapter` — Summary
@@ -46,12 +46,12 @@ Language adapter for CSS (`.css`). Extracts `@import` and `url()` dependencies, 
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
-- `node:path` - `path`
 - [`index.LanguageAdapter`](./index.ts.mdmd.md#symbol-languageadapter) (type-only)
 - [`spaces.inSpaces`](./spaces.ts.mdmd.md#symbol-inspaces)
 - [`core.DependencyEntry`](../core.ts.mdmd.md#symbol-dependencyentry) (type-only)
 - [`core.SourceAnalysisResult`](../core.ts.mdmd.md#symbol-sourceanalysisresult) (type-only)
 - [`compareText`](../../tooling/compareText.ts.mdmd.md#symbol-comparetext)
+- [`enginePath.path`](../../tooling/enginePath.ts.mdmd.md)
 - [`pathUtils.normalizeWorkspacePath`](../../tooling/pathUtils.ts.mdmd.md#symbol-normalizeworkspacepath)
 - [`sourceText.readSourceText`](../../tooling/sourceText.ts.mdmd.md#symbol-readsourcetext)
 - [`workspaceProbes.ListedFiles`](../../tooling/workspaceProbes.ts.mdmd.md#symbol-listedfiles) (type-only)

@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: `scripts/oracle/plsql-compare.ts`
 - Entry: command `oracle:plsql` of [`package.json`](../../package.json.mdmd.md)
-- Generated At: 2026-11-21T02:15:32.548Z
+- Generated At: 2026-11-24T10:31:41.314Z
 
 ## Authored
 ### Purpose
@@ -20,28 +20,28 @@ Grades the SQL reader on PL/SQL against a parser that is not ours: `npm run orac
 ### Public Symbols
 #### `GRAMMAR_COMMIT` {#symbol-grammar_commit}
 - Type: const
-- Source: [source](../../../../scripts/oracle/plsql-compare.ts#L57)
+- Source: [source](../../../../scripts/oracle/plsql-compare.ts#L60)
 
 ##### `GRAMMAR_COMMIT` — Summary
 The grammars-v4 commit the grammar is read at: the last change to `sql/plsql` as of 2026-11-19.
 
 #### `SQLPLUS_LINE` {#symbol-sqlplus_line}
 - Type: const
-- Source: [source](../../../../scripts/oracle/plsql-compare.ts#L70)
+- Source: [source](../../../../scripts/oracle/plsql-compare.ts#L73)
 
 ##### `SQLPLUS_LINE` — Summary
 A SQL*Plus line: a command SQL*Plus runs itself, never sent to the database as SQL.
 
 #### `withoutSqlPlus` {#symbol-withoutsqlplus}
 - Type: function
-- Source: [source](../../../../scripts/oracle/plsql-compare.ts#L73)
+- Source: [source](../../../../scripts/oracle/plsql-compare.ts#L76)
 
 ##### `withoutSqlPlus` — Summary
 A text with every SQL*Plus line blanked, each line kept, so that lines still count.
 
 #### `gradePlSql` {#symbol-gradeplsql}
 - Type: function
-- Source: [source](../../../../scripts/oracle/plsql-compare.ts#L134)
+- Source: [source](../../../../scripts/oracle/plsql-compare.ts#L137)
 
 ##### `gradePlSql` — Summary
 Grades the adapter's reading of the prepared files against the parser's record.
@@ -57,4 +57,5 @@ Grades the adapter's reading of the prepared files against the parser's record.
 - `node:process` - `process`
 - [`sql.sqlAdapter`](../../packages/engine/src/live-docs/adapters/sql.ts.mdmd.md#symbol-sqladapter)
 - [`coreTypes.WorkspaceSymbolIndex`](../../packages/engine/src/live-docs/coreTypes.ts.mdmd.md#symbol-workspacesymbolindex) (type-only)
+- [`nodeHost.registerNodeDiskFallback`](../../packages/engine/src/tooling/nodeHost.ts.mdmd.md#symbol-registernodediskfallback)
 <!-- LIVE-DOC:END Dependencies -->

@@ -26,10 +26,10 @@
  * entry point; the guard inside a function or a class, or in a string or a
  * comment, is not.
  */
-import path from "node:path";
 
 import { pythonSyntax } from "../../languages";
 import { compareText } from "../../tooling/compareText";
+import path from "../../tooling/enginePath";
 import { normalizeWorkspacePath } from "../../tooling/pathUtils";
 import { readSourceText, type SourceReads } from "../../tooling/sourceText";
 import { folderChildren, type ListedFiles } from "../../tooling/workspaceProbes";

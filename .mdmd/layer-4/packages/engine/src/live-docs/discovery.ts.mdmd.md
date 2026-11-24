@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/engine/src/live-docs/discovery.ts`
-- Generated At: 2026-11-24T07:54:04.189Z
+- Generated At: 2026-11-24T10:31:38.516Z
 
 ## Authored
 ### Purpose
@@ -36,31 +36,31 @@ File discovery and the workspace-wide indexes for Live Documentation. Locates wo
 ### Public Symbols
 #### `buildWorkspaceIndexes` {#symbol-buildworkspaceindexes}
 - Type: unknown
-- Source: [source](../../../../../../packages/engine/src/live-docs/discovery.ts#L25)
+- Source: [source](../../../../../../packages/engine/src/live-docs/discovery.ts#L29)
 
 #### `docsRootWithin` {#symbol-docsrootwithin}
 - Type: unknown
-- Source: [source](../../../../../../packages/engine/src/live-docs/discovery.ts#L25)
+- Source: [source](../../../../../../packages/engine/src/live-docs/discovery.ts#L29)
 
 #### `inWorkspaceOrder` {#symbol-inworkspaceorder}
 - Type: unknown
-- Source: [source](../../../../../../packages/engine/src/live-docs/discovery.ts#L25)
+- Source: [source](../../../../../../packages/engine/src/live-docs/discovery.ts#L29)
 
 #### `DiscoveredTargets` {#symbol-discoveredtargets}
 - Type: type (type-only)
-- Source: [source](../../../../../../packages/engine/src/live-docs/discovery.ts#L25)
+- Source: [source](../../../../../../packages/engine/src/live-docs/discovery.ts#L29)
 
 #### `DiscoverOptions` {#symbol-discoveroptions}
 - Type: type (type-only)
-- Source: [source](../../../../../../packages/engine/src/live-docs/discovery.ts#L25)
+- Source: [source](../../../../../../packages/engine/src/live-docs/discovery.ts#L29)
 
 #### `WorkspaceIndexes` {#symbol-workspaceindexes}
 - Type: type (type-only)
-- Source: [source](../../../../../../packages/engine/src/live-docs/discovery.ts#L25)
+- Source: [source](../../../../../../packages/engine/src/live-docs/discovery.ts#L29)
 
 #### `discoverWorkspaceTargetFiles` {#symbol-discoverworkspacetargetfiles}
 - Type: function
-- Source: [source](../../../../../../packages/engine/src/live-docs/discovery.ts#L40)
+- Source: [source](../../../../../../packages/engine/src/live-docs/discovery.ts#L44)
 - Parameters: `options`: [`DiscoverOptions`](./discoveryCore.ts.mdmd.md#symbol-discoveroptions)
 
 ##### `discoverWorkspaceTargetFiles` — Summary
@@ -69,7 +69,7 @@ and a predicate answering whether an unresolved path was deliberately left out b
 
 #### `discoverTargetFiles` {#symbol-discovertargetfiles}
 - Type: function
-- Source: [source](../../../../../../packages/engine/src/live-docs/discovery.ts#L49)
+- Source: [source](../../../../../../packages/engine/src/live-docs/discovery.ts#L57)
 - Parameters: `options`: [`DiscoverOptions`](./discoveryCore.ts.mdmd.md#symbol-discoveroptions)
 
 ##### `discoverTargetFiles` — Summary
@@ -80,7 +80,7 @@ Locates workspace files that should receive Live Documentation generation, retur
 
 #### `discoverDocuments` {#symbol-discoverdocuments}
 - Type: function
-- Source: [source](../../../../../../packages/engine/src/live-docs/discovery.ts#L58)
+- Source: [source](../../../../../../packages/engine/src/live-docs/discovery.ts#L66)
 
 ##### `discoverDocuments` — Summary
 Discovers the workspace's prose documents, held to the same leave-out, git, and configuration rules as source files.
@@ -91,6 +91,7 @@ Workspace-relative paths with forward slashes, sorted.
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
+- `node:path` - `path`
 - [`discoveryCore.DiscoverOptions`](./discoveryCore.ts.mdmd.md#symbol-discoveroptions) (type-only)
 - [`discoveryCore.DiscoveredTargets`](./discoveryCore.ts.mdmd.md#symbol-discoveredtargets) (type-only)
 - [`discoveryCore.WorkspaceIndexes`](./discoveryCore.ts.mdmd.md#symbol-workspaceindexes) (type-only)
@@ -101,6 +102,7 @@ Workspace-relative paths with forward slashes, sorted.
 - [`discoveryCore.inWorkspaceOrder`](./discoveryCore.ts.mdmd.md#symbol-inworkspaceorder)
 - [`nodeGitHost.NODE_GIT_HOST`](../tooling/nodeGitHost.ts.mdmd.md#symbol-node_git_host)
 - [`nodeHost.NODE_FILE_HOST`](../tooling/nodeHost.ts.mdmd.md#symbol-node_file_host)
+- [`nodeHost.registerNodeDiskFallback`](../tooling/nodeHost.ts.mdmd.md#symbol-registernodediskfallback)
 - [`workspaceFiles.FileHost`](../tooling/workspaceFiles.ts.mdmd.md#symbol-filehost) (type-only)
 <!-- LIVE-DOC:END Dependencies -->
 

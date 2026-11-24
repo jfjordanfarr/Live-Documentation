@@ -21,8 +21,7 @@
  *
  * @module dotnetProjects
  */
-import path from "node:path";
-
+import path from "../../tooling/enginePath";
 import { readSourceText, throwIfMachineFailure } from "../../tooling/sourceText";
 import { folderOf, isProjectFile, joinWorkspacePath, nearestProjectFolder, workspaceFile } from "./dotnetPaths";
 import { withoutXmlComments } from "./dotnetXml";

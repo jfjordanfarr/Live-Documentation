@@ -1,7 +1,8 @@
 import { describe, expect, it } from "vitest";
 
-import { readSourceText } from "./sourceText";
-import { type FileHost, workspaceReads } from "./workspaceFiles";
+import { readSourceReading, readSourceText } from "./sourceText";
+import { type FileHost, getDiskFallback, setDiskFallback, workspaceReads } from "./workspaceFiles";
+import { folderChildren, pathKind } from "./workspaceProbes";
 
 /** A host over files held in memory, counting what it is asked; a file named in `failing` fails once with EMFILE. */
 function countingHost(files: Record<string, Uint8Array>, failing = new Set<string>()): FileHost & { asked: string[] } {
@@ -92,5 +93,19 @@ describe("a run's reads of its files", () => {
     const reads = workspaceReads(countingHost({ "/ws/blob.dat": Uint8Array.from([0x41, 0, 0x42]) }), 8);
     expect((await reads.readingOf("/ws/blob.dat")).encoding).toBe("unread");
     expect(await readSourceText("/ws/blob.dat", reads)).toBe("");
+  });
+});
+
+describe("standalone disk fallback slot", () => {
+  it("throws a clear diagnostic when readSourceReading, pathKind, or folderChildren are called without a run and no DiskFallback is registered", async () => {
+    const previous = getDiskFallback();
+    setDiskFallback(undefined);
+    try {
+      await expect(readSourceReading("/ws/a.ts")).rejects.toThrow(/readSourceReading.*no DiskFallback is registered/u);
+      expect(() => pathKind("/ws/a.ts")).toThrow(/pathKind.*no DiskFallback is registered/u);
+      expect(() => folderChildren("/ws")).toThrow(/folderChildren.*no DiskFallback is registered/u);
+    } finally {
+      setDiskFallback(previous);
+    }
   });
 });

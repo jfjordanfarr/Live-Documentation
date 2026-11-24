@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/engine/src/live-docs/adapters/c.ts`
-- Generated At: 2026-11-22T07:12:51.740Z
+- Generated At: 2026-11-24T10:31:37.976Z
 
 ## Authored
 ### Purpose
@@ -68,7 +68,6 @@ Language adapter for C and C++: tree-sitter symbols, `#include` dependencies wit
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
-- `node:path` - `path`
 - [`index.cSyntax`](../../languages/index.ts.mdmd.md#symbol-csyntax)
 - [`index.LanguageAdapter`](./index.ts.mdmd.md#symbol-languageadapter) (type-only)
 - [`index.WorkspaceFileIndex`](./index.ts.mdmd.md#symbol-workspacefileindex) (type-only)
@@ -82,6 +81,7 @@ Language adapter for C and C++: tree-sitter symbols, `#include` dependencies wit
 - [`core.SymbolDocumentationParameter`](../core.ts.mdmd.md#symbol-symboldocumentationparameter) (type-only)
 - [`coreTypes.ProgramEntry`](../coreTypes.ts.mdmd.md#symbol-programentry) (type-only)
 - [`compareText`](../../tooling/compareText.ts.mdmd.md#symbol-comparetext)
+- [`enginePath.path`](../../tooling/enginePath.ts.mdmd.md)
 - [`pathUtils.normalizeWorkspacePath`](../../tooling/pathUtils.ts.mdmd.md#symbol-normalizeworkspacepath)
 - [`sourceText.SourceReads`](../../tooling/sourceText.ts.mdmd.md#symbol-sourcereads) (type-only)
 - [`sourceText.readSourceText`](../../tooling/sourceText.ts.mdmd.md#symbol-readsourcetext)

@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: `packages/generator/src/generator.ts`
 - Entry: module of [`packages/generator/package.json`](../package.json.mdmd.md)
-- Generated At: 2026-11-24T10:03:08.241Z
+- Generated At: 2026-11-24T10:31:40.714Z
 
 ## Authored
 ### Purpose
@@ -86,6 +86,7 @@ scans (2026-11-24).
 - [`nodeGitHost.NODE_GIT_HOST`](../../engine/src/tooling/nodeGitHost.ts.mdmd.md#symbol-node_git_host)
 - [`nodeGrammars.NODE_GRAMMAR_HOST`](../../engine/src/tooling/nodeGrammars.ts.mdmd.md#symbol-node_grammar_host)
 - [`nodeHost.NODE_FILE_HOST`](../../engine/src/tooling/nodeHost.ts.mdmd.md#symbol-node_file_host)
+- [`nodeHost.registerNodeDiskFallback`](../../engine/src/tooling/nodeHost.ts.mdmd.md#symbol-registernodediskfallback)
 - [`nodeOutputSink.createNodeOutputSink`](../../engine/src/tooling/nodeOutputSink.ts.mdmd.md#symbol-createnodeoutputsink)
 - [`pathUtils.normalizeWorkspacePath`](../../engine/src/tooling/pathUtils.ts.mdmd.md#symbol-normalizeworkspacepath)
 - [`sourceText.throwIfMachineFailure`](../../engine/src/tooling/sourceText.ts.mdmd.md#symbol-throwifmachinefailure)

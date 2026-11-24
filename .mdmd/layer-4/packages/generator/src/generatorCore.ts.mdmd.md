@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/generator/src/generatorCore.ts`
-- Generated At: 2026-11-24T10:03:08.256Z
+- Generated At: 2026-11-24T10:31:40.732Z
 
 ## Authored
 ### Purpose
@@ -89,7 +89,6 @@ public symbols and dependencies, renders deterministic markdown docs, prunes sta
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
-- `node:path` - `path`
 - [`LiveDocumentationConfig`](../../engine/src/config/liveDocumentationConfig.ts.mdmd.md#symbol-livedocumentationconfig) (type-only)
 - [`liveDocumentationConfig.hasReader`](../../engine/src/config/liveDocumentationConfig.ts.mdmd.md#symbol-hasreader)
 - [`liveDocumentationConfig.noReaderHandles`](../../engine/src/config/liveDocumentationConfig.ts.mdmd.md#symbol-noreaderhandles)
@@ -129,6 +128,7 @@ public symbols and dependencies, renders deterministic markdown docs, prunes sta
 - [`relatedDocs.citingDocuments`](../../engine/src/live-docs/relatedDocs.ts.mdmd.md#symbol-citingdocuments)
 - [`relatedDocs.isMarkdownDocument`](../../engine/src/live-docs/relatedDocs.ts.mdmd.md#symbol-ismarkdowndocument)
 - [`sourceAnalysis.analyzeSourceFile`](../../engine/src/live-docs/sourceAnalysis.ts.mdmd.md#symbol-analyzesourcefile)
+- [`enginePath.path`](../../engine/src/tooling/enginePath.ts.mdmd.md)
 - [`leaveOut.LeaveOutInput`](../../engine/src/tooling/leaveOut.ts.mdmd.md#symbol-leaveoutinput) (type-only)
 - [`leaveOut`](../../engine/src/tooling/leaveOut.ts.mdmd.md#symbol-leaveout-function)
 - [`pathUtils.normalizeWorkspacePath`](../../engine/src/tooling/pathUtils.ts.mdmd.md#symbol-normalizeworkspacepath)

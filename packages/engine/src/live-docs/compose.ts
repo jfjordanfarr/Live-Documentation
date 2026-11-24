@@ -11,11 +11,11 @@
  * @module
  */
 
-import path from "node:path";
 
 import type { LiveDocumentationConfig } from "../config/liveDocumentationConfig";
 import { getSyntaxByPath } from "../languages";
 import { compareText } from "../tooling/compareText";
+import path from "../tooling/enginePath";
 import { slug } from "../tooling/githubSlugger";
 import { matchesPathPattern } from "./archetype";
 import { RESERVED_HEADING_NAMES } from "./coreConstants";

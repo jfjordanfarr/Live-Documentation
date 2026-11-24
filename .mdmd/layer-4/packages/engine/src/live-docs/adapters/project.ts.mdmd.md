@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/engine/src/live-docs/adapters/project.ts`
-- Generated At: 2026-11-21T20:21:42.397Z
+- Generated At: 2026-11-24T10:31:38.278Z
 
 ## Authored
 ### Purpose
@@ -21,21 +21,21 @@ The adapter for .NET project files: what a project stands on. The project is the
 ### Public Symbols
 #### `projectSdk` {#symbol-projectsdk}
 - Type: function
-- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/project.ts#L45)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/project.ts#L44)
 
 ##### `projectSdk` — Summary
 The SDK a project file's `Project` element names, or `""` for a project of the classic format, which names none.
 
 #### `projectKind` {#symbol-projectkind}
 - Type: function
-- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/project.ts#L50)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/project.ts#L49)
 
 ##### `projectKind` — Summary
 What the project builds, read from a project file's text, what its comments hold set aside.
 
 #### `projectAdapter` {#symbol-projectadapter}
 - Type: const
-- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/project.ts#L66)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/project.ts#L65)
 - Returns: [`LanguageAdapter`](./index.ts.mdmd.md#symbol-languageadapter)
 
 ##### `projectAdapter` — Summary
@@ -43,14 +43,14 @@ Language adapter for .NET project files: the project as a symbol, and what it re
 
 #### `projectStem` {#symbol-projectstem}
 - Type: function
-- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/project.ts#L119)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/project.ts#L118)
 
 ##### `projectStem` — Summary
 The name a project reference stands for when its file cannot be found: the file's stem.
 
 #### `referencedProjectName` {#symbol-referencedprojectname}
 - Type: function
-- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/project.ts#L124)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/project.ts#L123)
 - Parameters: `symbolIndex`: [`WorkspaceSymbolIndex`](../coreTypes.ts.mdmd.md#symbol-workspacesymbolindex)
 
 ##### `referencedProjectName` — Summary
@@ -59,7 +59,6 @@ The name the referenced project publishes, from the index when it is there, else
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
-- `node:path` - `path`
 - [`dotnetPaths.folderOf`](./dotnetPaths.ts.mdmd.md#symbol-folderof)
 - [`dotnetPaths.joinWorkspacePath`](./dotnetPaths.ts.mdmd.md#symbol-joinworkspacepath)
 - [`dotnetPaths.workspaceFile`](./dotnetPaths.ts.mdmd.md#symbol-workspacefile)
@@ -71,6 +70,7 @@ The name the referenced project publishes, from the index when it is there, else
 - [`core.WorkspaceSymbolIndex`](../core.ts.mdmd.md#symbol-workspacesymbolindex) (type-only)
 - [`openings.PROJECT_KINDS`](../openings.ts.mdmd.md#symbol-project_kinds)
 - [`compareText`](../../tooling/compareText.ts.mdmd.md#symbol-comparetext)
+- [`enginePath.path`](../../tooling/enginePath.ts.mdmd.md)
 - [`pathUtils.normalizeWorkspacePath`](../../tooling/pathUtils.ts.mdmd.md#symbol-normalizeworkspacepath)
 - [`sourceText.readSourceText`](../../tooling/sourceText.ts.mdmd.md#symbol-readsourcetext)
 <!-- LIVE-DOC:END Dependencies -->

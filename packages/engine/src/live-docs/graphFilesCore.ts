@@ -8,8 +8,7 @@
  *
  * @module
  */
-import path from "node:path";
-
+import path from "../tooling/enginePath";
 import type { OutputSink } from "../tooling/workspaceFiles";
 import { LiveDocSyntaxError, parseLiveDoc } from "./document";
 import { GRAPH_INDEX_FILE, deriveLiveDocGraph, type DocLocation, type LiveDocGraph } from "./graph";

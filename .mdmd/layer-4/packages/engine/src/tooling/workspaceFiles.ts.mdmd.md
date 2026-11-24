@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/engine/src/tooling/workspaceFiles.ts`
-- Generated At: 2026-11-24T10:03:06.702Z
+- Generated At: 2026-11-24T10:31:38.965Z
 
 ## Authored
 ### Purpose
@@ -29,44 +29,92 @@ Makes a scan read each file once. The generator builds the run's reads over the 
 ##### `FolderEntries` — Summary
 A folder's immediate entries, by name, sorted: its files (links to files included), its real subfolders, and any links to folders.
 
+#### `PathKind` {#symbol-pathkind}
+- Type: type
+- Source: [source](../../../../../../packages/engine/src/tooling/workspaceFiles.ts#L36)
+
+##### `PathKind` — Summary
+What lies at a path: a file, or a folder.
+
+#### `FolderChildren` {#symbol-folderchildren}
+- Type: interface
+- Source: [source](../../../../../../packages/engine/src/tooling/workspaceFiles.ts#L39)
+
+##### `FolderChildren` — Summary
+A folder's entries by name: its files, and its folders.
+
+#### `DiskFallback` {#symbol-diskfallback}
+- Type: interface
+- Source: [source](../../../../../../packages/engine/src/tooling/workspaceFiles.ts#L50)
+
+##### `DiskFallback` — Summary
+Process-level disk fallback registered by Node entry points (`registerNodeDiskFallback` in `nodeHost.ts`) for
+standalone reader calls that omit a run's `WorkspaceFileIndex` / `WorkspaceReads` (such as adapter unit tests and
+standalone CLI/oracle tools). Browser scans never register a disk fallback and never bundle `nodeHost.ts`
+(Step 9 of `.mdmd/layer-3/engine-and-hosts.mdmd.md`).
+
+#### `setDiskFallback` {#symbol-setdiskfallback}
+- Type: function
+- Source: [source](../../../../../../packages/engine/src/tooling/workspaceFiles.ts#L68)
+- Parameters: `fallback`: [`DiskFallback`](#symbol-diskfallback)
+
+##### `setDiskFallback` — Summary
+Registers (or clears) the standalone disk fallback used when a reader is called without a run's `FileHost`/`fileIndex`.
+
+#### `getDiskFallback` {#symbol-getdiskfallback}
+- Type: function
+- Source: [source](../../../../../../packages/engine/src/tooling/workspaceFiles.ts#L73)
+- Returns: [`DiskFallback`](#symbol-diskfallback)
+
+##### `getDiskFallback` — Summary
+Returns the currently registered {@link DiskFallback}, if any.
+
+#### `requireDiskFallback` {#symbol-requirediskfallback}
+- Type: function
+- Source: [source](../../../../../../packages/engine/src/tooling/workspaceFiles.ts#L78)
+- Returns: [`DiskFallback`](#symbol-diskfallback)
+
+##### `requireDiskFallback` — Summary
+Returns the active {@link DiskFallback} or throws a clear diagnostic telling the caller to pass the run's `fileIndex`/`reads` or register Node's fallback.
+
 #### `GrammarHost` {#symbol-grammarhost}
 - Type: interface
-- Source: [source](../../../../../../packages/engine/src/tooling/workspaceFiles.ts#L36)
+- Source: [source](../../../../../../packages/engine/src/tooling/workspaceFiles.ts#L89)
 
 ##### `GrammarHost` — Summary
 Provides the tree-sitter WebAssembly runtime and compiled language grammars as raw bytes.
 
 #### `GitIgnoreAnswer` {#symbol-gitignoreanswer}
 - Type: interface
-- Source: [source](../../../../../../packages/engine/src/tooling/workspaceFiles.ts#L44)
+- Source: [source](../../../../../../packages/engine/src/tooling/workspaceFiles.ts#L97)
 
 ##### `GitIgnoreAnswer` — Summary
 What git says of a list of paths: which it ignores, which it cannot judge, and which lie in no repository.
 
 #### `GitIgnores` {#symbol-gitignores}
 - Type: interface
-- Source: [source](../../../../../../packages/engine/src/tooling/workspaceFiles.ts#L62)
+- Source: [source](../../../../../../packages/engine/src/tooling/workspaceFiles.ts#L115)
 
 ##### `GitIgnores` — Summary
 Git's word on what it ignores in a workspace, from one listing.
 
 #### `GitUnanswered` {#symbol-gitunanswered}
 - Type: interface
-- Source: [source](../../../../../../packages/engine/src/tooling/workspaceFiles.ts#L70)
+- Source: [source](../../../../../../packages/engine/src/tooling/workspaceFiles.ts#L123)
 
 ##### `GitUnanswered` — Summary
 Why git gave no listing of what it ignores in a folder that lies in a repository.
 
 #### `GitHost` {#symbol-githost}
 - Type: interface
-- Source: [source](../../../../../../packages/engine/src/tooling/workspaceFiles.ts#L76)
+- Source: [source](../../../../../../packages/engine/src/tooling/workspaceFiles.ts#L129)
 
 ##### `GitHost` — Summary
 Optional version-control port supplied by hosts that can run git (such as Node); omitted in browser pages.
 
 #### `OutputSink` {#symbol-outputsink}
 - Type: interface
-- Source: [source](../../../../../../packages/engine/src/tooling/workspaceFiles.ts#L89)
+- Source: [source](../../../../../../packages/engine/src/tooling/workspaceFiles.ts#L142)
 
 ##### `OutputSink` — Summary
 Host port for reading, listing, writing, and pruning generated Live Docs and the derived graph index
@@ -75,7 +123,7 @@ in a browser page, backed by an in-memory map without touching any `node:fs` sta
 
 #### `ScansAboveFn` {#symbol-scansabovefn}
 - Type: type
-- Source: [source](../../../../../../packages/engine/src/tooling/workspaceFiles.ts#L106)
+- Source: [source](../../../../../../packages/engine/src/tooling/workspaceFiles.ts#L159)
 
 ##### `ScansAboveFn` — Summary
 Checks ancestor folders above `workspaceRoot` for outer scans. Returns the outer scan folders when the host can
@@ -83,7 +131,7 @@ inspect ancestors (Node), or `undefined` when the host cannot see above the work
 
 #### `FileHost` {#symbol-filehost}
 - Type: interface
-- Source: [source](../../../../../../packages/engine/src/tooling/workspaceFiles.ts#L115)
+- Source: [source](../../../../../../packages/engine/src/tooling/workspaceFiles.ts#L168)
 
 ##### `FileHost` — Summary
 What runs the engine gives it of a workspace: a file's bytes, its first bytes, a folder's entries, and optional
@@ -91,14 +139,14 @@ ports for grammars, git, ancestor scans, and generated-doc output. Paths are abs
 
 #### `WorkspaceReads (interface)` {#symbol-workspacereads-interface}
 - Type: interface
-- Source: [source](../../../../../../packages/engine/src/tooling/workspaceFiles.ts#L133)
+- Source: [source](../../../../../../packages/engine/src/tooling/workspaceFiles.ts#L186)
 
 ##### `WorkspaceReads (interface)` — Summary
 A run's reads: each file read once through the host, decoded once, and kept for the run.
 
 #### `workspaceReads (function)` {#symbol-workspacereads-function}
 - Type: function
-- Source: [source](../../../../../../packages/engine/src/tooling/workspaceFiles.ts#L153)
+- Source: [source](../../../../../../packages/engine/src/tooling/workspaceFiles.ts#L206)
 - Returns: [`WorkspaceReads`](#symbol-workspacereads-interface)
 
 ##### `workspaceReads (function)` — Summary

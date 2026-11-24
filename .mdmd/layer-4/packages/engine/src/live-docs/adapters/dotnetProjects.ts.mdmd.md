@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/engine/src/live-docs/adapters/dotnetProjects.ts`
-- Generated At: 2026-11-21T04:54:07.656Z
+- Generated At: 2026-11-24T10:31:38.111Z
 
 ## Authored
 ### Purpose
@@ -20,14 +20,14 @@ Says which projects a C# file's names can bind to, the way the compiler sees the
 ### Public Symbols
 #### `ProjectReach (interface)` {#symbol-projectreach-interface}
 - Type: interface
-- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/dotnetProjects.ts#L44)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/dotnetProjects.ts#L43)
 
 ##### `ProjectReach (interface)` — Summary
 The projects of a workspace, and what a file's project lets it see.
 
 #### `projectReach (function)` {#symbol-projectreach-function}
 - Type: function
-- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/dotnetProjects.ts#L54)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/dotnetProjects.ts#L53)
 - Parameters: `fileIndex`: [`WorkspaceFileIndex`](./index.ts.mdmd.md#symbol-workspacefileindex)
 
 ##### `projectReach (function)` — Summary
@@ -35,7 +35,7 @@ The workspace's project graph, read once per file index.
 
 #### `readProjectReferences` {#symbol-readprojectreferences}
 - Type: function
-- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/dotnetProjects.ts#L65)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/dotnetProjects.ts#L64)
 - Parameters: `fileIndex`: [`WorkspaceFileIndex`](./index.ts.mdmd.md#symbol-workspacefileindex)
 
 ##### `readProjectReferences` — Summary
@@ -44,7 +44,6 @@ The project folders a project file references for its compiler, and whether it p
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
-- `node:path` - `path`
 - [`dotnetPaths.folderOf`](./dotnetPaths.ts.mdmd.md#symbol-folderof)
 - [`dotnetPaths.isProjectFile`](./dotnetPaths.ts.mdmd.md#symbol-isprojectfile)
 - [`dotnetPaths.joinWorkspacePath`](./dotnetPaths.ts.mdmd.md#symbol-joinworkspacepath)
@@ -52,6 +51,7 @@ The project folders a project file references for its compiler, and whether it p
 - [`dotnetPaths.workspaceFile`](./dotnetPaths.ts.mdmd.md#symbol-workspacefile)
 - [`dotnetXml.withoutXmlComments`](./dotnetXml.ts.mdmd.md#symbol-withoutxmlcomments)
 - [`index.WorkspaceFileIndex`](./index.ts.mdmd.md#symbol-workspacefileindex) (type-only)
+- [`enginePath.path`](../../tooling/enginePath.ts.mdmd.md)
 - [`sourceText.readSourceText`](../../tooling/sourceText.ts.mdmd.md#symbol-readsourcetext)
 - [`sourceText.throwIfMachineFailure`](../../tooling/sourceText.ts.mdmd.md#symbol-throwifmachinefailure)
 <!-- LIVE-DOC:END Dependencies -->

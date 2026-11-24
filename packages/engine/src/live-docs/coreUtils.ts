@@ -9,10 +9,10 @@
  * @module
  */
 
-import path from "node:path";
 import ts from "typescript";
 
 import { compareText } from "../tooling/compareText";
+import path from "../tooling/enginePath";
 import { slug } from "../tooling/githubSlugger";
 import type { DependencyEntry, LocationInfo } from "./coreTypes";
 

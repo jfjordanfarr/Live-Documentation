@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/engine/src/live-docs/graphFiles.ts`
-- Generated At: 2026-11-24T10:03:06.338Z
+- Generated At: 2026-11-24T10:31:38.588Z
 
 ## Authored
 ### Purpose
@@ -21,7 +21,7 @@ The graph on disk: `readLiveDocGraph` reads every doc under the configured root 
 ### Public Symbols
 #### `readLiveDocGraph` {#symbol-readlivedocgraph}
 - Type: function
-- Source: [source](../../../../../../packages/engine/src/live-docs/graphFiles.ts#L27)
+- Source: [source](../../../../../../packages/engine/src/live-docs/graphFiles.ts#L29)
 
 ##### `readLiveDocGraph` — Summary
 Reads every Live Doc under the configured root and derives the graph.
@@ -31,14 +31,14 @@ nobody may hand-edit can only be malformed by a generator bug.
 
 #### `EstateReading` {#symbol-estatereading}
 - Type: interface
-- Source: [source](../../../../../../packages/engine/src/live-docs/graphFiles.ts#L33)
+- Source: [source](../../../../../../packages/engine/src/live-docs/graphFiles.ts#L35)
 
 ##### `EstateReading` — Summary
 What reading an estate found: its graph, the scans it read, and what it found wanting.
 
 #### `readEstateGraph` {#symbol-readestategraph}
 - Type: function
-- Source: [source](../../../../../../packages/engine/src/live-docs/graphFiles.ts#L52)
+- Source: [source](../../../../../../packages/engine/src/live-docs/graphFiles.ts#L54)
 
 ##### `readEstateGraph` — Summary
 Reads the graph of the estate a board describes.
@@ -53,7 +53,7 @@ them what each left unlinked. One scan at the root is today's single graph.
 
 #### `writeLiveDocGraph` {#symbol-writelivedocgraph}
 - Type: function
-- Source: [source](../../../../../../packages/engine/src/live-docs/graphFiles.ts#L100)
+- Source: [source](../../../../../../packages/engine/src/live-docs/graphFiles.ts#L102)
 - Parameters: `graph`: [`LiveDocGraph`](./graph.ts.mdmd.md#symbol-livedocgraph); `output`: [`OutputSink`](../tooling/workspaceFiles.ts.mdmd.md#symbol-outputsink)
 
 ##### `writeLiveDocGraph` — Summary
@@ -77,6 +77,7 @@ The workspace-relative path written.
 - [`graphFilesCore.readLiveDocGraphWithHost`](./graphFilesCore.ts.mdmd.md#symbol-readlivedocgraphwithhost)
 - [`graphFilesCore.writeLiveDocGraphWithHost`](./graphFilesCore.ts.mdmd.md#symbol-writelivedocgraphwithhost)
 - [`nodeHost.NODE_FILE_HOST`](../tooling/nodeHost.ts.mdmd.md#symbol-node_file_host)
+- [`nodeHost.registerNodeDiskFallback`](../tooling/nodeHost.ts.mdmd.md#symbol-registernodediskfallback)
 - [`nodeOutputSink.NODE_OUTPUT_SINK`](../tooling/nodeOutputSink.ts.mdmd.md#symbol-node_output_sink)
 - [`nodeOutputSink.createNodeOutputSink`](../tooling/nodeOutputSink.ts.mdmd.md#symbol-createnodeoutputsink)
 - [`sourceText.throwIfMachineFailure`](../tooling/sourceText.ts.mdmd.md#symbol-throwifmachinefailure)

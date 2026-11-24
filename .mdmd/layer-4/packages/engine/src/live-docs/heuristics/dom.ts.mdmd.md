@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/engine/src/live-docs/heuristics/dom.ts`
-- Generated At: 2026-11-22T07:12:52.953Z
+- Generated At: 2026-11-24T10:31:38.596Z
 
 ## Authored
 ### Purpose
@@ -38,9 +38,9 @@ the raw text).
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
-- `node:path` - `path`
 - [`aspnet.markupWithoutComments`](../adapters/aspnet.ts.mdmd.md#symbol-markupwithoutcomments)
 - [`core.DependencyEntry`](../core.ts.mdmd.md#symbol-dependencyentry) (type-only)
+- [`enginePath.path`](../../tooling/enginePath.ts.mdmd.md)
 - [`pathUtils.normalizeWorkspacePath`](../../tooling/pathUtils.ts.mdmd.md#symbol-normalizeworkspacepath)
 - [`sourceText.SourceReads`](../../tooling/sourceText.ts.mdmd.md#symbol-sourcereads) (type-only)
 - [`sourceText.readSourceText`](../../tooling/sourceText.ts.mdmd.md#symbol-readsourcetext)

@@ -28,8 +28,7 @@
  *
  * @module
  */
-import path from "node:path";
-
+import path from "../../tooling/enginePath";
 import type { DeclaredEntry, SourceAnalysisResult } from "../coreTypes";
 import type { LanguageAdapter } from "./index";
 import {

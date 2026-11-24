@@ -13,9 +13,8 @@
  * a map can show a door to something outside the scan and a map of several
  * scans can match it; the database engine's own catalog is never kept.
  */
-import path from "node:path";
-
 import { compareText } from "../../tooling/compareText";
+import path from "../../tooling/enginePath";
 import { normalizeWorkspacePath } from "../../tooling/pathUtils";
 import { readSourceText } from "../../tooling/sourceText";
 import type { DependencyEntry, PublicSymbolEntry, SourceAnalysisResult } from "../core";

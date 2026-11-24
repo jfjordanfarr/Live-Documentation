@@ -9,9 +9,8 @@
  * on the address each client endpoint points at. A `packages.config` lists the
  * packages the project stands on.
  */
-import path from "node:path";
-
 import { compareText } from "../../tooling/compareText";
+import path from "../../tooling/enginePath";
 import { normalizeWorkspacePath } from "../../tooling/pathUtils";
 import { readSourceText } from "../../tooling/sourceText";
 import type { DependencyEntry, PublicSymbolEntry, SourceAnalysisResult, WorkspaceSymbolIndex } from "../core";

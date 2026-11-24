@@ -8,7 +8,7 @@
 import { promises as fs } from "node:fs";
 import path from "node:path";
 
-import { NODE_FILE_HOST } from "../tooling/nodeHost";
+import { NODE_FILE_HOST, registerNodeDiskFallback } from "../tooling/nodeHost";
 import { createNodeOutputSink, NODE_OUTPUT_SINK } from "../tooling/nodeOutputSink";
 import { throwIfMachineFailure } from "../tooling/sourceText";
 import type { FileHost, OutputSink } from "../tooling/workspaceFiles";
@@ -18,6 +18,8 @@ import { contains, deriveEstateGraph, type EstateScan } from "./estateGraph";
 import type { DocLocation, LiveDocGraph } from "./graph";
 import { readLiveDocGraphWithHost, writeLiveDocGraphWithHost } from "./graphFilesCore";
 
+registerNodeDiskFallback();
+
 /**
  * Reads every Live Doc under the configured root and derives the graph.
  *
@@ -26,7 +28,7 @@ import { readLiveDocGraphWithHost, writeLiveDocGraphWithHost } from "./graphFile
  */
 export async function readLiveDocGraph(args: { workspaceRoot: string; config: DocLocation; host?: FileHost }): Promise<LiveDocGraph> {
   const output = args.host?.output ?? createNodeOutputSink(args.host ?? NODE_FILE_HOST);
-  return readLiveDocGraphWithHost({ workspaceRoot: args.workspaceRoot, config: args.config, output });
+  return readLiveDocGraphWithHost({ workspaceRoot: path.resolve(args.workspaceRoot), config: args.config, output });
 }
 
 /** What reading an estate found: its graph, the scans it read, and what it found wanting. */
@@ -98,5 +100,5 @@ export async function readEstateGraph(args: { workspaceRoot: string; config: Doc
  * @returns The workspace-relative path written.
  */
 export async function writeLiveDocGraph(graph: LiveDocGraph, workspaceRoot: string, output: OutputSink = NODE_OUTPUT_SINK): Promise<string> {
-  return writeLiveDocGraphWithHost(graph, workspaceRoot, output);
+  return writeLiveDocGraphWithHost(graph, path.resolve(workspaceRoot), output);
 }

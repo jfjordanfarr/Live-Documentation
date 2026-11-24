@@ -13,10 +13,10 @@
  *
  * @module
  */
-import path from "node:path";
 import { parse as parseToml } from "smol-toml";
 
 import { compareText } from "../../tooling/compareText";
+import path from "../../tooling/enginePath";
 import { normalizeWorkspacePath } from "../../tooling/pathUtils";
 import { readSourceText, type SourceReads, throwIfMachineFailure } from "../../tooling/sourceText";
 import type { DeclaredEntry, DependencyEntry, PublicSymbolEntry, ResolvedSymbolLocation, WorkspaceSymbolIndex } from "../coreTypes";

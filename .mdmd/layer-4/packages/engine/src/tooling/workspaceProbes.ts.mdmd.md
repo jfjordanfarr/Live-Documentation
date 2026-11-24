@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/engine/src/tooling/workspaceProbes.ts`
-- Generated At: 2026-11-24T07:15:06.324Z
+- Generated At: 2026-11-24T10:31:38.971Z
 
 ## Authored
 ### Purpose
@@ -31,7 +31,7 @@ A run's listing, where a run hands one: the file index a reader is handed carrie
 - Parameters: `files`: [`ListedFiles`](#symbol-listedfiles)
 
 ##### `pathKind` — Summary
-What lies at a path: a kept file or a folder holding kept files, from the run's listing; else on the disk.
+What lies at a path: a kept file or a folder holding kept files, from the run's listing; else via the registered disk fallback.
 
 #### `folderChildren` {#symbol-folderchildren}
 - Type: function
@@ -40,13 +40,12 @@ What lies at a path: a kept file or a folder holding kept files, from the run's 
 - Parameters: `files`: [`ListedFiles`](#symbol-listedfiles)
 
 ##### `folderChildren` — Summary
-A folder's files and folders by name, from the run's listing; else on the disk. Nothing when there is no such folder.
+A folder's files and folders by name, from the run's listing; else via the registered disk fallback. Nothing when there is no such folder.
 <!-- LIVE-DOC:END Public Symbols -->
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
-- [`nodeHost.childrenOnDisk`](./nodeHost.ts.mdmd.md#symbol-childrenondisk)
-- [`nodeHost.kindOnDisk`](./nodeHost.ts.mdmd.md#symbol-kindondisk)
+- [`workspaceFiles.requireDiskFallback`](./workspaceFiles.ts.mdmd.md#symbol-requirediskfallback)
 - [`workspaceListing.FolderChildren`](./workspaceListing.ts.mdmd.md#symbol-folderchildren) (type-only)
 - [`workspaceListing.PathKind`](./workspaceListing.ts.mdmd.md#symbol-pathkind) (type-only)
 - [`WorkspaceListing`](./workspaceListing.ts.mdmd.md#symbol-workspacelisting-interface) (type-only)

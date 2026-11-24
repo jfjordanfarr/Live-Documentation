@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: `tests/page-scan/node-needs.test.ts`
-- Generated At: 2026-11-21T19:30:08.295Z
+- Generated At: 2026-11-24T10:31:43.730Z
 
 ## Authored
 ### Purpose
@@ -28,7 +28,8 @@ _No public symbols detected_
 - [`build-page.GRAMMARS`](./build-page.mjs.mdmd.md#symbol-grammars)
 - [`build-page.REPO`](./build-page.mjs.mdmd.md#symbol-repo)
 - [`build-page.STAND_INS`](./build-page.mjs.mdmd.md#symbol-stand_ins)
+- [`build-page.bundleScanner`](./build-page.mjs.mdmd.md#symbol-bundlescanner)
 - [`node-needs.NEEDS_FILE`](./node-needs.mjs.mdmd.md#symbol-needs_file)
-- [`node-needs.nodeNeeds`](./node-needs.mjs.mdmd.md#symbol-nodeneeds)
+- [`node-needs.nodeNeedsOf`](./node-needs.mjs.mdmd.md#symbol-nodeneedsof)
 - `vitest` - `describe`, `expect`, `it`
 <!-- LIVE-DOC:END Dependencies -->

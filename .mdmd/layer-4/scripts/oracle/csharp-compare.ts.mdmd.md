@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: `scripts/oracle/csharp-compare.ts`
 - Entry: command `oracle:csharp` of [`package.json`](../../package.json.mdmd.md)
-- Generated At: 2026-11-24T07:54:06.569Z
+- Generated At: 2026-11-24T10:31:41.288Z
 
 ## Authored
 ### Purpose
@@ -22,14 +22,14 @@ Grades the C# reader on a whole folder against the C# compiler's own binding: `n
 ### Public Symbols
 #### `CompilerRecord` {#symbol-compilerrecord}
 - Type: interface
-- Source: [source](../../../../scripts/oracle/csharp-compare.ts#L56)
+- Source: [source](../../../../scripts/oracle/csharp-compare.ts#L58)
 
 ##### `CompilerRecord` — Summary
 What the compiler program printed of a folder.
 
 #### `DocumentationReference` {#symbol-documentationreference}
 - Type: interface
-- Source: [source](../../../../scripts/oracle/csharp-compare.ts#L76)
+- Source: [source](../../../../scripts/oracle/csharp-compare.ts#L78)
 
 ##### `DocumentationReference` — Summary
 One `cref` of a documentation comment: the file and line it stands on, the element that carries it (`see`, `seealso`,
@@ -39,21 +39,21 @@ symbol, a reason it could not choose among several candidates (`Ambiguous`, for 
 
 #### `Declaration` {#symbol-declaration}
 - Type: interface
-- Source: [source](../../../../scripts/oracle/csharp-compare.ts#L89)
+- Source: [source](../../../../scripts/oracle/csharp-compare.ts#L91)
 
 ##### `Declaration` — Summary
 A declaration: the file and the line of the name it declares.
 
 #### `DocumentationPairs (interface)` {#symbol-documentationpairs-interface}
 - Type: interface
-- Source: [source](../../../../scripts/oracle/csharp-compare.ts#L95)
+- Source: [source](../../../../scripts/oracle/csharp-compare.ts#L97)
 
 ##### `DocumentationPairs (interface)` — Summary
 The file pairs documentation references make, set beside the pairs the code binds.
 
 #### `documentationPairs (function)` {#symbol-documentationpairs-function}
 - Type: function
-- Source: [source](../../../../scripts/oracle/csharp-compare.ts#L114)
+- Source: [source](../../../../scripts/oracle/csharp-compare.ts#L116)
 - Returns: [`DocumentationPairs`](#symbol-documentationpairs-interface)
 - Parameters: `record`: [`CompilerRecord`](#symbol-compilerrecord)
 
@@ -64,14 +64,14 @@ opens one declares it.
 
 #### `compiledSources` {#symbol-compiledsources}
 - Type: function
-- Source: [source](../../../../scripts/oracle/csharp-compare.ts#L137)
+- Source: [source](../../../../scripts/oracle/csharp-compare.ts#L139)
 
 ##### `compiledSources` — Summary
 The files a compilation of the folder is made from: its C# files, and its project files, from which its references are read.
 
 #### `compileFolder` {#symbol-compilefolder}
 - Type: function
-- Source: [source](../../../../scripts/oracle/csharp-compare.ts#L156)
+- Source: [source](../../../../scripts/oracle/csharp-compare.ts#L158)
 - Returns: [`CompilerRecord`](#symbol-compilerrecord)
 
 ##### `compileFolder` — Summary
@@ -79,7 +79,7 @@ Runs the compiler program over the folder; `dotnet` must be on the path.
 
 #### `DOCUMENTATION_CAUSES` {#symbol-documentation_causes}
 - Type: const
-- Source: [source](../../../../scripts/oracle/csharp-compare.ts#L182)
+- Source: [source](../../../../scripts/oracle/csharp-compare.ts#L184)
 
 ##### `DOCUMENTATION_CAUSES` — Summary
 Why the reader and the compiler part on a documentation reference, declaration by declaration. Each reference the
@@ -88,21 +88,21 @@ declarations each names are then set side by side, a reference within its own fi
 
 #### `DocumentationRelation` {#symbol-documentationrelation}
 - Type: interface
-- Source: [source](../../../../scripts/oracle/csharp-compare.ts#L198)
+- Source: [source](../../../../scripts/oracle/csharp-compare.ts#L200)
 
 ##### `DocumentationRelation` — Summary
 The reader's documentation references set beside the compiler's, declaration by declaration.
 
 #### `ReaderReference` {#symbol-readerreference}
 - Type: interface
-- Source: [source](../../../../scripts/oracle/csharp-compare.ts#L209)
+- Source: [source](../../../../scripts/oracle/csharp-compare.ts#L211)
 
 ##### `ReaderReference` — Summary
 One reference as the reader read it: the file, the line of the symbol whose documentation writes it, the name as the Live Doc writes it, and the declarations it links.
 
 #### `writesUndeclaredParameter` {#symbol-writesundeclaredparameter}
 - Type: function
-- Source: [source](../../../../scripts/oracle/csharp-compare.ts#L224)
+- Source: [source](../../../../scripts/oracle/csharp-compare.ts#L226)
 - Parameters: `declared`: `ReadonlySet`
 
 ##### `writesUndeclaredParameter` — Summary
@@ -112,7 +112,7 @@ The oracle's own reading of the syntax, kept apart from the reader's.
 
 #### `compareDocumentation` {#symbol-comparedocumentation}
 - Type: function
-- Source: [source](../../../../scripts/oracle/csharp-compare.ts#L243)
+- Source: [source](../../../../scripts/oracle/csharp-compare.ts#L245)
 - Returns: [`DocumentationRelation`](#symbol-documentationrelation)
 - Parameters: `record`: [`CompilerRecord`](#symbol-compilerrecord); `shown`: `ReadonlySet`
 
@@ -126,14 +126,14 @@ through another.
 
 #### `CSharpReport` {#symbol-csharpreport}
 - Type: interface
-- Source: [source](../../../../scripts/oracle/csharp-compare.ts#L311)
+- Source: [source](../../../../scripts/oracle/csharp-compare.ts#L313)
 
 ##### `CSharpReport` — Summary
 The comparison of one folder: what was read, how its projects' references were, and the edges side by side.
 
 #### `compareCSharp` {#symbol-comparecsharp}
 - Type: function
-- Source: [source](../../../../scripts/oracle/csharp-compare.ts#L343)
+- Source: [source](../../../../scripts/oracle/csharp-compare.ts#L345)
 - Parameters: `kept`: [`CompilerRecord`](#symbol-compilerrecord)
 
 ##### `compareCSharp` — Summary
@@ -149,6 +149,7 @@ Reads the folder both ways, or the compiler's kept record of it, and sets the ed
 - [`csharp.csharpAdapter`](../../packages/engine/src/live-docs/adapters/csharp.ts.mdmd.md#symbol-csharpadapter)
 - [`csharp.xmldoc.crefLinkTarget`](../../packages/engine/src/live-docs/adapters/csharp.xmldoc.ts.mdmd.md#symbol-creflinktarget)
 - [`nodeGrammars.registerNodeGrammars`](../../packages/engine/src/tooling/nodeGrammars.ts.mdmd.md#symbol-registernodegrammars)
+- [`nodeHost.registerNodeDiskFallback`](../../packages/engine/src/tooling/nodeHost.ts.mdmd.md#symbol-registernodediskfallback)
 - [`powershell-compare.folderFiles`](./powershell-compare.ts.mdmd.md#symbol-folderfiles)
 - [`scip-edges.msbuildProjectReferences`](./scip-edges.ts.mdmd.md#symbol-msbuildprojectreferences)
 - [`sources.sourceDigests`](./sources.ts.mdmd.md#symbol-sourcedigests)

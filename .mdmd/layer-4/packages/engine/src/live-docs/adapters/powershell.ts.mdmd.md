@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/engine/src/live-docs/adapters/powershell.ts`
-- Generated At: 2026-11-22T07:12:52.295Z
+- Generated At: 2026-11-24T10:31:38.270Z
 
 ## Authored
 ### Purpose
@@ -55,7 +55,6 @@ Language adapter for PowerShell (`.ps1`, `.psm1`, `.psd1`): published functions 
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
-- `node:path` - `path`
 - [`liveDocumentationConfig.DEFAULT_LIVE_DOCUMENTATION_CONFIG`](../../config/liveDocumentationConfig.ts.mdmd.md#symbol-default_live_documentation_config)
 - [`index.powershellSyntax`](../../languages/index.ts.mdmd.md#symbol-powershellsyntax)
 - [`index.LanguageAdapter`](./index.ts.mdmd.md#symbol-languageadapter) (type-only)
@@ -75,6 +74,7 @@ Language adapter for PowerShell (`.ps1`, `.psm1`, `.psd1`): published functions 
 - [`coreTypes.DeclaredEntry`](../coreTypes.ts.mdmd.md#symbol-declaredentry) (type-only)
 - [`coreTypes.ReExportedSymbolInfo`](../coreTypes.ts.mdmd.md#symbol-reexportedsymbolinfo) (type-only)
 - [`coreTypes.SourceNotice`](../coreTypes.ts.mdmd.md#symbol-sourcenotice) (type-only)
+- [`enginePath.path`](../../tooling/enginePath.ts.mdmd.md)
 - [`pathUtils.normalizeWorkspacePath`](../../tooling/pathUtils.ts.mdmd.md#symbol-normalizeworkspacepath)
 - [`sourceText.readSourceText`](../../tooling/sourceText.ts.mdmd.md#symbol-readsourcetext)
 - [`sourceText.throwIfMachineFailure`](../../tooling/sourceText.ts.mdmd.md#symbol-throwifmachinefailure)

@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/engine/src/live-docs/adapters/dotnetConfig.ts`
-- Generated At: 2026-11-21T04:54:07.641Z
+- Generated At: 2026-11-24T10:31:38.100Z
 
 ## Authored
 ### Purpose
@@ -21,7 +21,7 @@ The adapter for .NET configuration files. A `Web.config` or `App.config` publish
 ### Public Symbols
 #### `dotnetConfigAdapter` {#symbol-dotnetconfigadapter}
 - Type: const
-- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/dotnetConfig.ts#L72)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/dotnetConfig.ts#L71)
 - Returns: [`LanguageAdapter`](./index.ts.mdmd.md#symbol-languageadapter)
 
 ##### `dotnetConfigAdapter` — Summary
@@ -30,7 +30,6 @@ Language adapter for `.config` files: configuration names and service addresses 
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
-- `node:path` - `path`
 - [`csharp.resolveWorkspaceTypes`](./csharp.ts.mdmd.md#symbol-resolveworkspacetypes)
 - [`dotnetXml.withoutXmlComments`](./dotnetXml.ts.mdmd.md#symbol-withoutxmlcomments)
 - [`index.LanguageAdapter`](./index.ts.mdmd.md#symbol-languageadapter) (type-only)
@@ -40,6 +39,7 @@ Language adapter for `.config` files: configuration names and service addresses 
 - [`core.WorkspaceSymbolIndex`](../core.ts.mdmd.md#symbol-workspacesymbolindex) (type-only)
 - [`openings.ADDRESS_KIND`](../openings.ts.mdmd.md#symbol-address_kind)
 - [`compareText`](../../tooling/compareText.ts.mdmd.md#symbol-comparetext)
+- [`enginePath.path`](../../tooling/enginePath.ts.mdmd.md)
 - [`pathUtils.normalizeWorkspacePath`](../../tooling/pathUtils.ts.mdmd.md#symbol-normalizeworkspacepath)
 - [`sourceText.readSourceText`](../../tooling/sourceText.ts.mdmd.md#symbol-readsourcetext)
 <!-- LIVE-DOC:END Dependencies -->

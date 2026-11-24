@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/engine/src/tooling/workspaceWalk.ts`
-- Generated At: 2026-11-24T07:15:06.335Z
+- Generated At: 2026-11-24T10:31:38.980Z
 
 ## Authored
 ### Purpose
@@ -21,14 +21,14 @@ Walks a workspace top-down over `FileHost.entries()` and matches glob patterns i
 ### Public Symbols
 #### `WalkedFile` {#symbol-walkedfile}
 - Type: interface
-- Source: [source](../../../../../../packages/engine/src/tooling/workspaceWalk.ts#L21)
+- Source: [source](../../../../../../packages/engine/src/tooling/workspaceWalk.ts#L20)
 
 ##### `WalkedFile` — Summary
 A file found by a walk: its absolute path and its workspace-relative path with forward slashes.
 
 #### `UnreadableFolder` {#symbol-unreadablefolder}
 - Type: interface
-- Source: [source](../../../../../../packages/engine/src/tooling/workspaceWalk.ts#L27)
+- Source: [source](../../../../../../packages/engine/src/tooling/workspaceWalk.ts#L26)
 - Extends: [`WalkedFile`](#symbol-walkedfile)
 
 ##### `UnreadableFolder` — Summary
@@ -36,28 +36,28 @@ A folder the walk could not read for a cause of the machine's: its paths and the
 
 #### `WalkWorkspaceOptions` {#symbol-walkworkspaceoptions}
 - Type: interface
-- Source: [source](../../../../../../packages/engine/src/tooling/workspaceWalk.ts#L32)
+- Source: [source](../../../../../../packages/engine/src/tooling/workspaceWalk.ts#L31)
 
 ##### `WalkWorkspaceOptions` — Summary
 Options for {@link walkWorkspace}.
 
 #### `WalkWorkspaceResult` {#symbol-walkworkspaceresult}
 - Type: interface
-- Source: [source](../../../../../../packages/engine/src/tooling/workspaceWalk.ts#L45)
+- Source: [source](../../../../../../packages/engine/src/tooling/workspaceWalk.ts#L44)
 
 ##### `WalkWorkspaceResult` — Summary
 Result of {@link walkWorkspace}: matched files in workspace order, unreadable folders, and the root's file names.
 
 #### `CompiledGlob` {#symbol-compiledglob}
 - Type: interface
-- Source: [source](../../../../../../packages/engine/src/tooling/workspaceWalk.ts#L60)
+- Source: [source](../../../../../../packages/engine/src/tooling/workspaceWalk.ts#L59)
 
 ##### `CompiledGlob` — Summary
 One brace-expanded glob pattern split into compiled segments.
 
 #### `expandGlobBraces` {#symbol-expandglobbraces}
 - Type: function
-- Source: [source](../../../../../../packages/engine/src/tooling/workspaceWalk.ts#L72)
+- Source: [source](../../../../../../packages/engine/src/tooling/workspaceWalk.ts#L71)
 
 ##### `expandGlobBraces` — Summary
 Expands top-level and nested `{a,b}` brace groups in a glob pattern into alternative patterns.
@@ -65,7 +65,7 @@ An unclosed `{` or a `{...}` containing no comma is kept literally.
 
 #### `compileGlobPatterns` {#symbol-compileglobpatterns}
 - Type: function
-- Source: [source](../../../../../../packages/engine/src/tooling/workspaceWalk.ts#L152)
+- Source: [source](../../../../../../packages/engine/src/tooling/workspaceWalk.ts#L151)
 - Returns: [`CompiledGlob`](#symbol-compiledglob)[]
 
 ##### `compileGlobPatterns` — Summary
@@ -73,21 +73,21 @@ Normalizes and compiles a list of glob patterns (stripping leading `./`, expandi
 
 #### `matchGlobPattern` {#symbol-matchglobpattern}
 - Type: function
-- Source: [source](../../../../../../packages/engine/src/tooling/workspaceWalk.ts#L219)
+- Source: [source](../../../../../../packages/engine/src/tooling/workspaceWalk.ts#L218)
 
 ##### `matchGlobPattern` — Summary
 True when `relativePath` (forward slashes) matches a single glob pattern.
 
 #### `matchesAnyGlob` {#symbol-matchesanyglob}
 - Type: function
-- Source: [source](../../../../../../packages/engine/src/tooling/workspaceWalk.ts#L224)
+- Source: [source](../../../../../../packages/engine/src/tooling/workspaceWalk.ts#L223)
 
 ##### `matchesAnyGlob` — Summary
 True when `relativePath` (forward slashes) matches at least one compiled file glob pattern.
 
 #### `walkWorkspace` {#symbol-walkworkspace}
 - Type: function
-- Source: [source](../../../../../../packages/engine/src/tooling/workspaceWalk.ts#L257)
+- Source: [source](../../../../../../packages/engine/src/tooling/workspaceWalk.ts#L256)
 - Parameters: `options`: [`WalkWorkspaceOptions`](#symbol-walkworkspaceoptions)
 
 ##### `walkWorkspace` — Summary
@@ -101,8 +101,8 @@ on a symlink target is rethrown immediately. Missing folders (`ENOENT`) and non-
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
-- `node:path` - `path`
 - [`processMark.machineFailure`](../live-docs/processMark.ts.mdmd.md#symbol-machinefailure)
+- [`enginePath.path`](./enginePath.ts.mdmd.md)
 - [`workspaceFiles.FileHost`](./workspaceFiles.ts.mdmd.md#symbol-filehost) (type-only)
 - [`workspaceFiles.FolderEntries`](./workspaceFiles.ts.mdmd.md#symbol-folderentries) (type-only)
 <!-- LIVE-DOC:END Dependencies -->

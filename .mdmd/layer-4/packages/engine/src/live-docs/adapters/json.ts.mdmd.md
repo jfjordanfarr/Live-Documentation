@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/engine/src/live-docs/adapters/json.ts`
-- Generated At: 2026-11-22T07:12:52.145Z
+- Generated At: 2026-11-24T10:31:38.203Z
 
 ## Authored
 ### Purpose
@@ -85,7 +85,6 @@ Language adapter for JSON and JSONC files. Publishes key paths as public symbols
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
-- `node:path` - `path`
 - [`index.LanguageAdapter`](./index.ts.mdmd.md#symbol-languageadapter) (type-only)
 - [`index.WorkspaceFileIndex`](./index.ts.mdmd.md#symbol-workspacefileindex) (type-only)
 - [`manifest.ManifestContext`](./manifest.ts.mdmd.md#symbol-manifestcontext-interface) (type-only)
@@ -105,6 +104,7 @@ Language adapter for JSON and JSONC files. Publishes key paths as public symbols
 - [`processMark.markProcess`](../processMark.ts.mdmd.md#symbol-markprocess)
 - [`processMark.nestingBeyondDepth`](../processMark.ts.mdmd.md#symbol-nestingbeyonddepth)
 - [`compareText`](../../tooling/compareText.ts.mdmd.md#symbol-comparetext)
+- [`enginePath.path`](../../tooling/enginePath.ts.mdmd.md)
 - [`pathUtils.normalizeWorkspacePath`](../../tooling/pathUtils.ts.mdmd.md#symbol-normalizeworkspacepath)
 - [`sourceText.SourceReads`](../../tooling/sourceText.ts.mdmd.md#symbol-sourcereads) (type-only)
 - [`sourceText.readSourceReading`](../../tooling/sourceText.ts.mdmd.md#symbol-readsourcereading)

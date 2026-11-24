@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/engine/src/live-docs/adapters/html.ts`
-- Generated At: 2026-11-22T07:12:52.039Z
+- Generated At: 2026-11-24T10:31:38.149Z
 
 ## Authored
 ### Purpose
@@ -26,7 +26,7 @@ Language adapter that extracts dependency relationships from HTML files by parsi
 ### Public Symbols
 #### `withoutHtmlComments` {#symbol-withouthtmlcomments}
 - Type: function
-- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/html.ts#L69)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/html.ts#L68)
 
 ##### `withoutHtmlComments` — Summary
 The markup with what HTML makes no element of written over in spaces ({@link inSpaces}), so that positions keep:
@@ -42,7 +42,7 @@ of 2026-11-21, `commentGuard.test.ts`). A `<noscript>`'s text, raw to a browser 
 
 #### `extractElementIds` {#symbol-extractelementids}
 - Type: function
-- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/html.ts#L409)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/html.ts#L408)
 
 ##### `extractElementIds` — Summary
 Every element id in a markup file, sorted and unique. Shared with the ASP.NET
@@ -51,7 +51,7 @@ target doc actually publishes, whatever the markup dialect.
 
 #### `htmlAdapter` {#symbol-htmladapter}
 - Type: const
-- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/html.ts#L430)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/html.ts#L429)
 - Returns: [`LanguageAdapter`](./index.ts.mdmd.md#symbol-languageadapter)
 
 ##### `htmlAdapter` — Summary
@@ -60,12 +60,12 @@ Language adapter for HTML (`.html`, `.htm`). Extracts resource attributes such a
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
-- `node:path` - `path`
 - [`index.LanguageAdapter`](./index.ts.mdmd.md#symbol-languageadapter) (type-only)
 - [`spaces.inSpaces`](./spaces.ts.mdmd.md#symbol-inspaces)
 - [`core.DependencyEntry`](../core.ts.mdmd.md#symbol-dependencyentry) (type-only)
 - [`core.SourceAnalysisResult`](../core.ts.mdmd.md#symbol-sourceanalysisresult) (type-only)
 - [`compareText`](../../tooling/compareText.ts.mdmd.md#symbol-comparetext)
+- [`enginePath.path`](../../tooling/enginePath.ts.mdmd.md)
 - [`pathUtils.normalizeWorkspacePath`](../../tooling/pathUtils.ts.mdmd.md#symbol-normalizeworkspacepath)
 - [`sourceText.readSourceText`](../../tooling/sourceText.ts.mdmd.md#symbol-readsourcetext)
 - [`workspaceProbes.ListedFiles`](../../tooling/workspaceProbes.ts.mdmd.md#symbol-listedfiles) (type-only)

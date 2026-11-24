@@ -14,9 +14,8 @@
  * project, go to the first pass's test index (`tests`), by which a file of a
  * test project's folder is a test.
  */
-import path from "node:path";
-
 import { compareText } from "../../tooling/compareText";
+import path from "../../tooling/enginePath";
 import { normalizeWorkspacePath } from "../../tooling/pathUtils";
 import { readSourceText } from "../../tooling/sourceText";
 import type { DependencyEntry, PublicSymbolEntry, SourceAnalysisResult, WorkspaceSymbolIndex } from "../core";

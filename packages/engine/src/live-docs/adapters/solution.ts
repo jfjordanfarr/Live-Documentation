@@ -9,9 +9,8 @@
  * name no file, so they are not read. Configurations, platforms and the items
  * a solution folder lists are not dependencies.
  */
-import path from "node:path";
-
 import { compareText } from "../../tooling/compareText";
+import path from "../../tooling/enginePath";
 import { normalizeWorkspacePath } from "../../tooling/pathUtils";
 import { readSourceText } from "../../tooling/sourceText";
 import type { DependencyEntry, SourceAnalysisResult } from "../core";

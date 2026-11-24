@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: `packages/engine/src/live-docs/adapters/json.test.ts`
-- Generated At: 2026-11-20T14:44:17.859Z
+- Generated At: 2026-11-24T10:46:52.898Z
 
 ## Authored
 ### Purpose
@@ -30,5 +30,7 @@ _No public symbols detected_
 - `node:path`
 - [`index.WorkspaceFileIndex`](./index.ts.mdmd.md#symbol-workspacefileindex) (type-only)
 - [`json.jsonAdapter`](./json.ts.mdmd.md#symbol-jsonadapter)
+- [`workspaceFiles.getDiskFallback`](../../tooling/workspaceFiles.ts.mdmd.md#symbol-getdiskfallback)
+- [`workspaceFiles.setDiskFallback`](../../tooling/workspaceFiles.ts.mdmd.md#symbol-setdiskfallback)
 - `vitest` - `afterEach`, `beforeEach`, `describe`, `expect`, `it`, `vi`
 <!-- LIVE-DOC:END Dependencies -->

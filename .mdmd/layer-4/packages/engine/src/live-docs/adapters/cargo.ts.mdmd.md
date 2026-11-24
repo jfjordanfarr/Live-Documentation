@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/engine/src/live-docs/adapters/cargo.ts`
-- Generated At: 2026-11-22T07:12:51.762Z
+- Generated At: 2026-11-24T10:31:37.986Z
 
 ## Authored
 ### Purpose
@@ -22,7 +22,7 @@ The adapter for Cargo manifests (`Cargo.toml`, matched by its exact name): the c
 ### Public Symbols
 #### `cargoAdapter` {#symbol-cargoadapter}
 - Type: const
-- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/cargo.ts#L51)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/cargo.ts#L50)
 - Returns: [`LanguageAdapter`](./index.ts.mdmd.md#symbol-languageadapter)
 
 ##### `cargoAdapter` — Summary
@@ -31,7 +31,6 @@ Language adapter for Cargo manifests: the crate as a symbol, its dependencies, a
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
-- `node:path` - `path`
 - [`index.LanguageAdapter`](./index.ts.mdmd.md#symbol-languageadapter) (type-only)
 - [`manifest.ManifestContext`](./manifest.ts.mdmd.md#symbol-manifestcontext-interface) (type-only)
 - [`manifest.ManifestDependencies`](./manifest.ts.mdmd.md#symbol-manifestdependencies)
@@ -46,6 +45,7 @@ Language adapter for Cargo manifests: the crate as a symbol, its dependencies, a
 - [`manifest.workspaceFile`](./manifest.ts.mdmd.md#symbol-workspacefile)
 - [`coreTypes.DeclaredEntry`](../coreTypes.ts.mdmd.md#symbol-declaredentry) (type-only)
 - [`coreTypes.SourceAnalysisResult`](../coreTypes.ts.mdmd.md#symbol-sourceanalysisresult) (type-only)
+- [`enginePath.path`](../../tooling/enginePath.ts.mdmd.md)
 <!-- LIVE-DOC:END Dependencies -->
 
 <!-- LIVE-DOC:BEGIN Cited By -->

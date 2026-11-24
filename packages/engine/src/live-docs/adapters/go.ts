@@ -21,13 +21,12 @@
  * The program's entry point is reported too: a top-level `func main` in
  * `package main`.
  */
-import path from "node:path";
-
 import { goSyntax } from "../../languages";
 import { compareText } from "../../tooling/compareText";
-import { listFilesOnDisk } from "../../tooling/nodeHost";
+import path from "../../tooling/enginePath";
 import { normalizeWorkspacePath } from "../../tooling/pathUtils";
 import { readSourceText, type SourceReads, throwIfMachineFailure } from "../../tooling/sourceText";
+import { requireDiskFallback } from "../../tooling/workspaceFiles";
 import { type ListedFiles, pathKind } from "../../tooling/workspaceProbes";
 import type { DependencyEntry, PublicSymbolEntry, SourceAnalysisResult, SymbolDocumentation, TypeReference } from "../core";
 import type { ProgramEntry } from "../coreTypes";
@@ -460,7 +459,7 @@ const STANDALONE_IGNORED_FOLDERS: ReadonlySet<string> = new Set(["node_modules",
 
 async function listGoFiles(workspaceRoot: string, fileIndex: WorkspaceFileIndex | undefined): Promise<string[]> {
   if (fileIndex) return Array.from(fileIndex).filter((file) => file.endsWith(".go")).sort();
-  return listFilesOnDisk(workspaceRoot, ".go", STANDALONE_IGNORED_FOLDERS);
+  return requireDiskFallback("goAdapter").listFilesOnDisk(workspaceRoot, ".go", STANDALONE_IGNORED_FOLDERS);
 }
 
 async function buildPackageTable(workspaceRoot: string, fileIndex: WorkspaceFileIndex | undefined): Promise<PackageTable> {

@@ -15,8 +15,7 @@ import { promises as fs, readdirSync, statSync } from "node:fs";
 import path from "node:path";
 
 import { throwIfMachineFailure } from "./sourceText";
-import type { FileHost, FolderEntries } from "./workspaceFiles";
-import type { FolderChildren, PathKind } from "./workspaceListing";
+import { setDiskFallback, type DiskFallback, type FileHost, type FolderChildren, type FolderEntries, type PathKind } from "./workspaceFiles";
 
 const byCodeUnit = (a: string, b: string): number => (a < b ? -1 : a > b ? 1 : 0);
 
@@ -133,3 +132,16 @@ export function childrenOnDisk(absoluteFolder: string): FolderChildren | undefin
 
 /** The disk, as Node reads it. */
 export const NODE_FILE_HOST: FileHost = { read: readFileBytes, head: readFileHead, entries: listFolderEntries };
+
+/** Node's standalone disk fallback for readers called outside a run (Step 9 of `.mdmd/layer-3/engine-and-hosts.mdmd.md`). */
+export const NODE_DISK_FALLBACK: DiskFallback = {
+  readFileBytes,
+  kindOnDisk,
+  childrenOnDisk,
+  listFilesOnDisk
+};
+
+/** Registers {@link NODE_DISK_FALLBACK} for the process so standalone Node callers and tests can invoke readers without a run's `fileIndex`. */
+export function registerNodeDiskFallback(): void {
+  setDiskFallback(NODE_DISK_FALLBACK);
+}

@@ -1,6 +1,5 @@
-import path from "node:path";
-
 import type { LiveDocumentationArchetype } from "../../config/liveDocumentationConfig";
+import path from "../../tooling/enginePath";
 import type { WorkspaceReads } from "../../tooling/workspaceFiles";
 import type { WorkspaceListing } from "../../tooling/workspaceListing";
 import type { SourceAnalysisResult, WorkspaceSymbolIndex } from "../core";

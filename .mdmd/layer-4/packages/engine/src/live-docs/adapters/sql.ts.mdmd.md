@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/engine/src/live-docs/adapters/sql.ts`
-- Generated At: 2026-11-21T20:21:42.561Z
+- Generated At: 2026-11-24T10:31:38.384Z
 
 ## Authored
 ### Purpose
@@ -24,7 +24,7 @@ The adapter for SQL scripts. What a script creates, a procedure, a table, a view
 ### Public Symbols
 #### `sqlAdapter` {#symbol-sqladapter}
 - Type: const
-- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/sql.ts#L26)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/sql.ts#L25)
 - Returns: [`LanguageAdapter`](./index.ts.mdmd.md#symbol-languageadapter)
 
 ##### `sqlAdapter` — Summary
@@ -33,7 +33,6 @@ Language adapter for SQL scripts: created objects as symbols, named objects as d
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
-- `node:path` - `path`
 - [`index.LanguageAdapter`](./index.ts.mdmd.md#symbol-languageadapter) (type-only)
 - [`core.DependencyEntry`](../core.ts.mdmd.md#symbol-dependencyentry) (type-only)
 - [`core.PublicSymbolEntry`](../core.ts.mdmd.md#symbol-publicsymbolentry) (type-only)
@@ -45,6 +44,7 @@ Language adapter for SQL scripts: created objects as symbols, named objects as d
 - [`openings.sqlObjectName`](../openings.ts.mdmd.md#symbol-sqlobjectname-function)
 - [`openings.tsqltTestClasses`](../openings.ts.mdmd.md#symbol-tsqlttestclasses)
 - [`compareText`](../../tooling/compareText.ts.mdmd.md#symbol-comparetext)
+- [`enginePath.path`](../../tooling/enginePath.ts.mdmd.md)
 - [`pathUtils.normalizeWorkspacePath`](../../tooling/pathUtils.ts.mdmd.md#symbol-normalizeworkspacepath)
 - [`sourceText.readSourceText`](../../tooling/sourceText.ts.mdmd.md#symbol-readsourcetext)
 <!-- LIVE-DOC:END Dependencies -->

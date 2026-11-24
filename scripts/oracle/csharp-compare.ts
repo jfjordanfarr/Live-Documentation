@@ -41,8 +41,10 @@ import process from "node:process";
 import { csharpAdapter } from "@live-documentation/engine/live-docs/adapters/csharp";
 import { crefLinkTarget } from "@live-documentation/engine/live-docs/adapters/csharp.xmldoc";
 import { registerNodeGrammars } from "@live-documentation/engine/tooling/nodeGrammars";
+import { registerNodeDiskFallback } from "@live-documentation/engine/tooling/nodeHost";
 
 registerNodeGrammars();
+registerNodeDiskFallback();
 
 import { folderFiles } from "./powershell-compare";
 import { msbuildProjectReferences } from "./scip-edges";

@@ -14,8 +14,7 @@
  *
  * @module dotnetPaths
  */
-import path from "node:path";
-
+import path from "../../tooling/enginePath";
 import type { WorkspaceFileIndex } from "./index";
 
 /** A written path looked up in the workspace's files. */

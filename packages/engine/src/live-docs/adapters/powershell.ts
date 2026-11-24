@@ -76,10 +76,10 @@
  * The rules are measured against PowerShell's own parser, whose record of
  * each PowerShell fixture is `expected/powershell-ast.json`.
  */
-import path from "node:path";
 
 import { DEFAULT_LIVE_DOCUMENTATION_CONFIG } from "../../config/liveDocumentationConfig";
 import { powershellSyntax } from "../../languages";
+import path from "../../tooling/enginePath";
 import { normalizeWorkspacePath } from "../../tooling/pathUtils";
 import { readSourceText, throwIfMachineFailure } from "../../tooling/sourceText";
 import { resolveArchetype } from "../archetype";

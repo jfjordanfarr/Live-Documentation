@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/engine/src/live-docs/adapters/ruby.ts`
-- Generated At: 2026-11-22T07:12:52.414Z
+- Generated At: 2026-11-24T10:31:38.339Z
 
 ## Authored
 ### Purpose
@@ -21,7 +21,7 @@ Provides the Ruby analyzer that maps YARD-style line and block comments, mixins,
 ### Public Symbols
 #### `rubyAdapter` {#symbol-rubyadapter}
 - Type: const
-- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/ruby.ts#L69)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/ruby.ts#L68)
 - Returns: [`LanguageAdapter`](./index.ts.mdmd.md#symbol-languageadapter)
 
 ##### `rubyAdapter` — Summary
@@ -36,7 +36,6 @@ the guard, the data and the heredocs alone for the symbols, whose documentation 
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
-- `node:path` - `path`
 - [`index.LanguageAdapter`](./index.ts.mdmd.md#symbol-languageadapter) (type-only)
 - [`treeSitter.COMMENT_NODES`](./treeSitter.ts.mdmd.md#symbol-comment_nodes)
 - [`treeSitter.rangesOf`](./treeSitter.ts.mdmd.md#symbol-rangesof)
@@ -53,6 +52,7 @@ the guard, the data and the heredocs alone for the symbols, whose documentation 
 - [`core.SymbolDocumentationParameter`](../core.ts.mdmd.md#symbol-symboldocumentationparameter) (type-only)
 - [`core.TypeReference`](../core.ts.mdmd.md#symbol-typereference) (type-only)
 - [`compareText`](../../tooling/compareText.ts.mdmd.md#symbol-comparetext)
+- [`enginePath.path`](../../tooling/enginePath.ts.mdmd.md)
 - [`sourceText.readSourceText`](../../tooling/sourceText.ts.mdmd.md#symbol-readsourcetext)
 - [`workspaceProbes.ListedFiles`](../../tooling/workspaceProbes.ts.mdmd.md#symbol-listedfiles) (type-only)
 - [`workspaceProbes.pathKind`](../../tooling/workspaceProbes.ts.mdmd.md#symbol-pathkind)

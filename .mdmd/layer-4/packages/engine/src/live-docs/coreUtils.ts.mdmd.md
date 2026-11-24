@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/engine/src/live-docs/coreUtils.ts`
-- Generated At: 2026-11-19T21:10:11.298Z
+- Generated At: 2026-11-24T10:31:38.471Z
 
 ## Authored
 ### Purpose
@@ -231,10 +231,10 @@ Priority: non-barrel > barrel, then closer directory > distant, then deeper > sh
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
-- `node:path` - `path`
 - [`coreTypes.DependencyEntry`](./coreTypes.ts.mdmd.md#symbol-dependencyentry) (type-only)
 - [`coreTypes.LocationInfo`](./coreTypes.ts.mdmd.md#symbol-locationinfo) (type-only)
 - [`compareText`](../tooling/compareText.ts.mdmd.md#symbol-comparetext)
+- [`enginePath.path`](../tooling/enginePath.ts.mdmd.md)
 - [`githubSlugger.slug`](../tooling/githubSlugger.ts.mdmd.md#symbol-slug)
 - `typescript` - `ts`
 <!-- LIVE-DOC:END Dependencies -->

@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/engine/src/live-docs/adapters/pyproject.ts`
-- Generated At: 2026-11-22T07:12:52.321Z
+- Generated At: 2026-11-24T10:31:38.286Z
 
 ## Authored
 ### Purpose
@@ -21,21 +21,21 @@ The adapter for Python project manifests (`pyproject.toml`, matched by its exact
 ### Public Symbols
 #### `normalizeDistributionName` {#symbol-normalizedistributionname}
 - Type: function
-- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/pyproject.ts#L44)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/pyproject.ts#L43)
 
 ##### `normalizeDistributionName` — Summary
 A distribution name as Python compares them: lowercase, with every run of `-`, `_` and `.` one `-` (PEP 503).
 
 #### `Requirement` {#symbol-requirement}
 - Type: interface
-- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/pyproject.ts#L49)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/pyproject.ts#L48)
 
 ##### `Requirement` — Summary
 A requirement reduced to what the docs write.
 
 #### `parseRequirement` {#symbol-parserequirement}
 - Type: function
-- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/pyproject.ts#L58)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/pyproject.ts#L57)
 - Returns: [`Requirement`](#symbol-requirement)
 
 ##### `parseRequirement` — Summary
@@ -43,7 +43,7 @@ Reads a PEP 508 requirement: the name, then the specifier or the direct referenc
 
 #### `pyprojectAdapter` {#symbol-pyprojectadapter}
 - Type: const
-- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/pyproject.ts#L72)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/pyproject.ts#L71)
 - Returns: [`LanguageAdapter`](./index.ts.mdmd.md#symbol-languageadapter)
 
 ##### `pyprojectAdapter` — Summary
@@ -52,7 +52,6 @@ Language adapter for `pyproject.toml`: the distribution as a symbol, its require
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
-- `node:path` - `path`
 - [`index.LanguageAdapter`](./index.ts.mdmd.md#symbol-languageadapter) (type-only)
 - [`manifest.ManifestContext`](./manifest.ts.mdmd.md#symbol-manifestcontext-interface) (type-only)
 - [`manifest.ManifestDependencies`](./manifest.ts.mdmd.md#symbol-manifestdependencies)
@@ -67,6 +66,7 @@ Language adapter for `pyproject.toml`: the distribution as a symbol, its require
 - [`manifest.workspaceFile`](./manifest.ts.mdmd.md#symbol-workspacefile)
 - [`coreTypes.DeclaredEntry`](../coreTypes.ts.mdmd.md#symbol-declaredentry) (type-only)
 - [`coreTypes.SourceAnalysisResult`](../coreTypes.ts.mdmd.md#symbol-sourceanalysisresult) (type-only)
+- [`enginePath.path`](../../tooling/enginePath.ts.mdmd.md)
 <!-- LIVE-DOC:END Dependencies -->
 
 <!-- LIVE-DOC:BEGIN Cited By -->

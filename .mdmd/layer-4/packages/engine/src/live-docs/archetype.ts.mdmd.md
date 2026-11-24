@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/engine/src/live-docs/archetype.ts`
-- Generated At: 2026-11-21T20:21:42.603Z
+- Generated At: 2026-11-24T10:31:38.409Z
 
 ## Authored
 ### Purpose
@@ -121,7 +121,6 @@ git ignores case in the repository (`ignoreCase`).
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
-- `node:path` - `path`
 - [`liveDocumentationConfig.LiveDocumentationArchetype`](../config/liveDocumentationConfig.ts.mdmd.md#symbol-livedocumentationarchetype) (type-only)
 - [`LiveDocumentationConfig`](../config/liveDocumentationConfig.ts.mdmd.md#symbol-livedocumentationconfig) (type-only)
 - [`c.cSyntax`](../languages/c.ts.mdmd.md#symbol-csyntax)
@@ -135,6 +134,7 @@ git ignores case in the repository (`ignoreCase`).
 - [`coreConstants.SUPPORTED_SCRIPT_EXTENSIONS`](./coreConstants.ts.mdmd.md#symbol-supported_script_extensions)
 - [`coreTypes.WorkspaceTestIndex`](./coreTypes.ts.mdmd.md#symbol-workspacetestindex) (type-only)
 - [`document.UNREAD_NOTE`](./document.ts.mdmd.md#symbol-unread_note)
+- [`enginePath.path`](../tooling/enginePath.ts.mdmd.md)
 - [`sourceText.unmarkedUtf16`](../tooling/sourceText.ts.mdmd.md#symbol-unmarkedutf16)
 <!-- LIVE-DOC:END Dependencies -->
 

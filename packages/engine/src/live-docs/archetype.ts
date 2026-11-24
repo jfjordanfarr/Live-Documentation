@@ -11,7 +11,6 @@
  * @module
  */
 
-import path from "node:path";
 
 import type {
   LiveDocumentationConfig,
@@ -25,6 +24,7 @@ import { powershellSyntax } from "../languages/powershell";
 import { pythonSyntax } from "../languages/python";
 import { rubySyntax } from "../languages/ruby";
 import { rustSyntax } from "../languages/rust";
+import path from "../tooling/enginePath";
 import { unmarkedUtf16 } from "../tooling/sourceText";
 import { SUPPORTED_SCRIPT_EXTENSIONS } from "./coreConstants";
 import type { WorkspaceTestIndex } from "./coreTypes";

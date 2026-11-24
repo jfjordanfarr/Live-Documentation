@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: `tests/vitest-setup.ts`
-- Generated At: 2026-11-24T07:54:08.484Z
+- Generated At: 2026-11-24T10:31:43.741Z
 
 ## Authored
 ### Purpose
@@ -22,4 +22,5 @@ _No public symbols detected_
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
 - [`nodeGrammars.registerNodeGrammars`](../packages/engine/src/tooling/nodeGrammars.ts.mdmd.md#symbol-registernodegrammars)
+- [`nodeHost.registerNodeDiskFallback`](../packages/engine/src/tooling/nodeHost.ts.mdmd.md#symbol-registernodediskfallback)
 <!-- LIVE-DOC:END Dependencies -->

@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/engine/src/live-docs/discoveryCore.ts`
-- Generated At: 2026-11-24T07:54:04.199Z
+- Generated At: 2026-11-24T10:31:38.527Z
 
 ## Authored
 ### Purpose
@@ -139,7 +139,6 @@ re-exports it, with no mark and no warning.
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
-- `node:path` - `path`
 - [`LiveDocumentationConfig`](../config/liveDocumentationConfig.ts.mdmd.md#symbol-livedocumentationconfig) (type-only)
 - [`index.WorkspaceFileIndex`](./adapters/index.ts.mdmd.md#symbol-workspacefileindex) (type-only)
 - [`index.analyzeWithLanguageAdapters`](./adapters/index.ts.mdmd.md#symbol-analyzewithlanguageadapters)
@@ -160,6 +159,7 @@ re-exports it, with no mark and no warning.
 - [`dependencies.collectDependencies`](./dependencies.ts.mdmd.md#symbol-collectdependencies)
 - [`symbolExtraction.collectExportedSymbols`](./symbolExtraction.ts.mdmd.md#symbol-collectexportedsymbols)
 - [`symbolExtraction.inferScriptKind`](./symbolExtraction.ts.mdmd.md#symbol-inferscriptkind)
+- [`enginePath.path`](../tooling/enginePath.ts.mdmd.md)
 - [`LeaveOut`](../tooling/leaveOut.ts.mdmd.md#symbol-leaveout-interface) (type-only)
 - [`leaveOut.LeaveOutInput`](../tooling/leaveOut.ts.mdmd.md#symbol-leaveoutinput) (type-only)
 - [`leaveOut.fromGitignores`](../tooling/leaveOut.ts.mdmd.md#symbol-fromgitignores)

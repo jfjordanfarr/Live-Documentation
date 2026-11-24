@@ -12,10 +12,10 @@
  * @module
  */
 
-import path from "node:path";
 import ts from "typescript";
 
 import type { LiveDocumentationConfig } from "../config/liveDocumentationConfig";
+import path from "../tooling/enginePath";
 import { fromGitignores, leaveOut, type LeaveOut, type LeaveOutInput } from "../tooling/leaveOut";
 import { normalizeWorkspacePath } from "../tooling/pathUtils";
 import { decodeSourceText, readSourceText, throwIfMachineFailure } from "../tooling/sourceText";

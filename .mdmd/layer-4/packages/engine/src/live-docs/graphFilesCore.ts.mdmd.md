@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/engine/src/live-docs/graphFilesCore.ts`
-- Generated At: 2026-11-24T10:03:06.342Z
+- Generated At: 2026-11-24T10:31:38.591Z
 
 ## Authored
 ### Purpose
@@ -18,7 +18,7 @@ Pure host-driven Live Doc graph reading (`readLiveDocGraphWithHost`) and index w
 ### Public Symbols
 #### `readLiveDocGraphWithHost` {#symbol-readlivedocgraphwithhost}
 - Type: function
-- Source: [source](../../../../../../packages/engine/src/live-docs/graphFilesCore.ts#L23)
+- Source: [source](../../../../../../packages/engine/src/live-docs/graphFilesCore.ts#L22)
 
 ##### `readLiveDocGraphWithHost` — Summary
 Reads every Live Doc under the configured root through `output` and derives the graph.
@@ -28,7 +28,7 @@ nobody may hand-edit can only be malformed by a generator bug.
 
 #### `writeLiveDocGraphWithHost` {#symbol-writelivedocgraphwithhost}
 - Type: function
-- Source: [source](../../../../../../packages/engine/src/live-docs/graphFilesCore.ts#L56)
+- Source: [source](../../../../../../packages/engine/src/live-docs/graphFilesCore.ts#L55)
 - Parameters: `graph`: [`LiveDocGraph`](./graph.ts.mdmd.md#symbol-livedocgraph); `output`: [`OutputSink`](../tooling/workspaceFiles.ts.mdmd.md#symbol-outputsink)
 
 ##### `writeLiveDocGraphWithHost` — Summary
@@ -40,13 +40,13 @@ The workspace-relative path written.
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
-- `node:path` - `path`
 - [`document.LiveDocSyntaxError`](./document.ts.mdmd.md#symbol-livedocsyntaxerror)
 - [`document.parseLiveDoc`](./document.ts.mdmd.md#symbol-parselivedoc)
 - [`graph.DocLocation`](./graph.ts.mdmd.md#symbol-doclocation) (type-only)
 - [`graph.GRAPH_INDEX_FILE`](./graph.ts.mdmd.md#symbol-graph_index_file)
 - [`graph.LiveDocGraph`](./graph.ts.mdmd.md#symbol-livedocgraph) (type-only)
 - [`graph.deriveLiveDocGraph`](./graph.ts.mdmd.md#symbol-derivelivedocgraph)
+- [`enginePath.path`](../tooling/enginePath.ts.mdmd.md)
 - [`workspaceFiles.OutputSink`](../tooling/workspaceFiles.ts.mdmd.md#symbol-outputsink) (type-only)
 <!-- LIVE-DOC:END Dependencies -->
 

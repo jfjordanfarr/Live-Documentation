@@ -10,7 +10,7 @@
  *
  * @module
  */
-import { childrenOnDisk, kindOnDisk } from "./nodeHost";
+import { requireDiskFallback } from "./workspaceFiles";
 import type { FolderChildren, PathKind, WorkspaceListing } from "./workspaceListing";
 
 /** A run's listing, where a run hands one: the file index a reader is handed carries it. */
@@ -19,12 +19,12 @@ export type ListedFiles = Partial<WorkspaceListing> & {
   isLeftOut?: (relativePath: string) => boolean;
 };
 
-/** What lies at a path: a kept file or a folder holding kept files, from the run's listing; else on the disk. */
+/** What lies at a path: a kept file or a folder holding kept files, from the run's listing; else via the registered disk fallback. */
 export function pathKind(absolutePath: string, files?: ListedFiles): PathKind | undefined {
-  return files?.kindOf ? files.kindOf(absolutePath) : kindOnDisk(absolutePath);
+  return files?.kindOf ? files.kindOf(absolutePath) : requireDiskFallback("pathKind").kindOnDisk(absolutePath);
 }
 
-/** A folder's files and folders by name, from the run's listing; else on the disk. Nothing when there is no such folder. */
+/** A folder's files and folders by name, from the run's listing; else via the registered disk fallback. Nothing when there is no such folder. */
 export function folderChildren(absoluteFolder: string, files?: ListedFiles): FolderChildren | undefined {
-  return files?.childrenOf ? files.childrenOf(absoluteFolder) : childrenOnDisk(absoluteFolder);
+  return files?.childrenOf ? files.childrenOf(absoluteFolder) : requireDiskFallback("folderChildren").childrenOnDisk(absoluteFolder);
 }

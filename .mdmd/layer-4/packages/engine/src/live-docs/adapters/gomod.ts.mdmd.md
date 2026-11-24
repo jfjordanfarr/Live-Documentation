@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/engine/src/live-docs/adapters/gomod.ts`
-- Generated At: 2026-11-19T22:40:09.960Z
+- Generated At: 2026-11-24T10:31:38.138Z
 
 ## Authored
 ### Purpose
@@ -20,21 +20,21 @@ The adapter for Go module files (`go.mod`, matched by its exact name): the `modu
 ### Public Symbols
 #### `GoDirective` {#symbol-godirective}
 - Type: interface
-- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/gomod.ts#L31)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/gomod.ts#L30)
 
 ##### `GoDirective` — Summary
 One directive of a `go.mod`: its verb, its arguments unquoted, and whether its comment marks it indirect.
 
 #### `GoModFile` {#symbol-gomodfile}
 - Type: interface
-- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/gomod.ts#L38)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/gomod.ts#L37)
 
 ##### `GoModFile` — Summary
 What a `go.mod` says, as far as the docs need it.
 
 #### `goDirectives` {#symbol-godirectives}
 - Type: function
-- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/gomod.ts#L45)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/gomod.ts#L44)
 - Returns: [`GoDirective`](#symbol-godirective)[]
 
 ##### `goDirectives` — Summary
@@ -42,7 +42,7 @@ Reads a `go.mod` into its directives, a block's lines each given the block's ver
 
 #### `readGoMod` {#symbol-readgomod}
 - Type: function
-- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/gomod.ts#L78)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/gomod.ts#L77)
 - Returns: [`GoModFile`](#symbol-gomodfile)
 
 ##### `readGoMod` — Summary
@@ -50,7 +50,7 @@ The module, its direct requirements and its replacements.
 
 #### `goModAdapter` {#symbol-gomodadapter}
 - Type: const
-- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/gomod.ts#L101)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/gomod.ts#L100)
 - Returns: [`LanguageAdapter`](./index.ts.mdmd.md#symbol-languageadapter)
 
 ##### `goModAdapter` — Summary
@@ -59,7 +59,6 @@ Language adapter for `go.mod`: the module as a symbol and the modules it require
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
-- `node:path` - `path`
 - [`index.LanguageAdapter`](./index.ts.mdmd.md#symbol-languageadapter) (type-only)
 - [`manifest.ManifestDependencies`](./manifest.ts.mdmd.md#symbol-manifestdependencies)
 - [`manifest.manifestContext`](./manifest.ts.mdmd.md#symbol-manifestcontext-function)
@@ -67,6 +66,7 @@ Language adapter for `go.mod`: the module as a symbol and the modules it require
 - [`manifest.packageSymbols`](./manifest.ts.mdmd.md#symbol-packagesymbols)
 - [`manifest.publishedName`](./manifest.ts.mdmd.md#symbol-publishedname)
 - [`coreTypes.SourceAnalysisResult`](../coreTypes.ts.mdmd.md#symbol-sourceanalysisresult) (type-only)
+- [`enginePath.path`](../../tooling/enginePath.ts.mdmd.md)
 - [`sourceText.readSourceText`](../../tooling/sourceText.ts.mdmd.md#symbol-readsourcetext)
 <!-- LIVE-DOC:END Dependencies -->
 

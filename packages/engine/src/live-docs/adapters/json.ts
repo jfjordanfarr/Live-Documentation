@@ -24,10 +24,10 @@
  * @module
  */
 
-import path from "node:path";
 import ts from "typescript";
 
 import { compareText } from "../../tooling/compareText";
+import path from "../../tooling/enginePath";
 import { normalizeWorkspacePath } from "../../tooling/pathUtils";
 import { readSourceReading, readSourceText, type SourceReads, throwIfMachineFailure } from "../../tooling/sourceText";
 import { type ListedFiles, pathKind } from "../../tooling/workspaceProbes";

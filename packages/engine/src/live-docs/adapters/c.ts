@@ -30,10 +30,10 @@
  * The program's entry point is a definition of `main`, `wmain`, `WinMain` or
  * `wWinMain` with a body, in a file that is not a header.
  */
-import path from "node:path";
 
 import { cSyntax } from "../../languages";
 import { compareText } from "../../tooling/compareText";
+import path from "../../tooling/enginePath";
 import { normalizeWorkspacePath } from "../../tooling/pathUtils";
 import { readSourceText, type SourceReads, throwIfMachineFailure } from "../../tooling/sourceText";
 import { folderChildren, type ListedFiles } from "../../tooling/workspaceProbes";

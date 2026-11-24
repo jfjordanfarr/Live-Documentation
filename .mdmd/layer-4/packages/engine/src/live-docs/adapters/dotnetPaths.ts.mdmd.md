@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/engine/src/live-docs/adapters/dotnetPaths.ts`
-- Generated At: 2026-11-21T02:51:58.830Z
+- Generated At: 2026-11-24T10:31:38.106Z
 
 ## Authored
 ### Purpose
@@ -19,14 +19,14 @@ Resolves a path written in a .NET Framework file (a directive, a project referen
 ### Public Symbols
 #### `WorkspacePathLookup` {#symbol-workspacepathlookup}
 - Type: type
-- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/dotnetPaths.ts#L22)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/dotnetPaths.ts#L21)
 
 ##### `WorkspacePathLookup` — Summary
 A written path looked up in the workspace's files.
 
 #### `lookUpWorkspaceFile` {#symbol-lookupworkspacefile}
 - Type: function
-- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/dotnetPaths.ts#L43)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/dotnetPaths.ts#L42)
 - Returns: [`WorkspacePathLookup`](#symbol-workspacepathlookup)
 - Parameters: `fileIndex`: [`WorkspaceFileIndex`](./index.ts.mdmd.md#symbol-workspacefileindex)
 
@@ -35,7 +35,7 @@ The workspace file a workspace-relative path names: its exact spelling, else the
 
 #### `workspaceFile` {#symbol-workspacefile}
 - Type: function
-- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/dotnetPaths.ts#L52)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/dotnetPaths.ts#L51)
 - Parameters: `fileIndex`: [`WorkspaceFileIndex`](./index.ts.mdmd.md#symbol-workspacefileindex)
 
 ##### `workspaceFile` — Summary
@@ -43,7 +43,7 @@ The workspace file a workspace-relative path names, or undefined when none does 
 
 #### `joinWorkspacePath` {#symbol-joinworkspacepath}
 - Type: function
-- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/dotnetPaths.ts#L62)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/dotnetPaths.ts#L61)
 
 ##### `joinWorkspacePath` — Summary
 A path written relative to a workspace folder, as a workspace-relative path
@@ -52,28 +52,28 @@ Undefined when it climbs out of the workspace or is absolute.
 
 #### `folderOf` {#symbol-folderof}
 - Type: function
-- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/dotnetPaths.ts#L71)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/dotnetPaths.ts#L70)
 
 ##### `folderOf` — Summary
 The folder of a workspace-relative path, `""` for the workspace root.
 
 #### `PROJECT_FILE_EXTENSIONS` {#symbol-project_file_extensions}
 - Type: const
-- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/dotnetPaths.ts#L77)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/dotnetPaths.ts#L76)
 
 ##### `PROJECT_FILE_EXTENSIONS` — Summary
 The project file extensions of .NET.
 
 #### `isProjectFile` {#symbol-isprojectfile}
 - Type: function
-- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/dotnetPaths.ts#L80)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/dotnetPaths.ts#L79)
 
 ##### `isProjectFile` — Summary
 True when the path names a .NET project file.
 
 #### `projectFolders` {#symbol-projectfolders}
 - Type: function
-- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/dotnetPaths.ts#L88)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/dotnetPaths.ts#L87)
 - Parameters: `fileIndex`: [`WorkspaceFileIndex`](./index.ts.mdmd.md#symbol-workspacefileindex)
 
 ##### `projectFolders` — Summary
@@ -81,7 +81,7 @@ The folders of the workspace that hold a .NET project file.
 
 #### `nearestProjectFolder` {#symbol-nearestprojectfolder}
 - Type: function
-- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/dotnetPaths.ts#L98)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/dotnetPaths.ts#L97)
 - Parameters: `fileIndex`: [`WorkspaceFileIndex`](./index.ts.mdmd.md#symbol-workspacefileindex)
 
 ##### `nearestProjectFolder` — Summary
@@ -90,6 +90,6 @@ The nearest folder at or above a file's own that holds a .NET project file.
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
-- `node:path` - `path`
 - [`index.WorkspaceFileIndex`](./index.ts.mdmd.md#symbol-workspacefileindex) (type-only)
+- [`enginePath.path`](../../tooling/enginePath.ts.mdmd.md)
 <!-- LIVE-DOC:END Dependencies -->

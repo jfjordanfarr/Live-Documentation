@@ -15,7 +15,7 @@ import { analyzeSourceFile } from "@live-documentation/engine/live-docs/core";
 import { gitIgnored } from "@live-documentation/engine/tooling/gitIgnored";
 import { NODE_GIT_HOST } from "@live-documentation/engine/tooling/nodeGitHost";
 import { NODE_GRAMMAR_HOST } from "@live-documentation/engine/tooling/nodeGrammars";
-import { NODE_FILE_HOST } from "@live-documentation/engine/tooling/nodeHost";
+import { NODE_FILE_HOST, registerNodeDiskFallback } from "@live-documentation/engine/tooling/nodeHost";
 import { createNodeOutputSink } from "@live-documentation/engine/tooling/nodeOutputSink";
 import { normalizeWorkspacePath } from "@live-documentation/engine/tooling/pathUtils";
 import { throwIfMachineFailure } from "@live-documentation/engine/tooling/sourceText";
@@ -57,6 +57,8 @@ export type { GenerateLiveDocsOptions, LiveDocGeneratorLogger, LiveDocGeneratorR
 export async function generateLiveDocs(
   options: GenerateLiveDocsOptions
 ): Promise<LiveDocGeneratorResult> {
+  registerNodeDiskFallback();
+  const workspaceRoot = path.resolve(options.workspaceRoot);
   const baseHost = options.host ?? NODE_FILE_HOST;
   const host: FileHost = {
     ...baseHost,
@@ -65,7 +67,7 @@ export async function generateLiveDocs(
     scansAbove: options.host && "scansAbove" in options.host ? options.host.scansAbove : nodeScansAbove,
     output: baseHost.output ?? createNodeOutputSink(baseHost)
   };
-  return runLiveDocs({ ...options, host, analyze: analyzeSourceFile });
+  return runLiveDocs({ ...options, workspaceRoot, host, analyze: analyzeSourceFile });
 }
 
 /** The ancestor folders that are scans of their own: a docs root or a configuration file of this tool above the workspace. */

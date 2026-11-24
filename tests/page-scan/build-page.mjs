@@ -1,9 +1,9 @@
 #!/usr/bin/env node
 // Builds the scanning page of the standing check that the engine runs in a browser page: the engine and generator core
-// as they stand, bundled by esbuild for a browser with the remaining stand-ins of this folder in place of Node's `fs`
-// and `path`, the grammars the readers load inlined as gzip in base64 keyed by `data-grammar`, and one inline script
-// admitted by its hash. The page is test scaffolding, opened from disk by `tests/e2e/page-scan.spec.ts`; nothing here
-// is the product.
+// as they stand, bundled by esbuild for a browser with ZERO Node stand-ins (Step 9 of
+// `.mdmd/layer-3/engine-and-hosts.mdmd.md`), the grammars the readers load inlined as gzip in base64 keyed by
+// `data-grammar`, and one inline script admitted by its hash. The page is test scaffolding, opened from disk by
+// `tests/e2e/page-scan.spec.ts`; nothing here is the product.
 //
 //   node tests/page-scan/build-page.mjs --out <folder>      writes page.html and inputs.json there
 //
@@ -28,10 +28,7 @@ export const REPO = path.resolve(here, "..", "..");
  * does, for its command line's file system, which `createSourceFile` never touches); they are left unresolved, so
  * that a call of one throws in the page, and `node-needs.json` lists them.
  */
-export const STAND_INS = {
-  fs: "fs.mjs",
-  path: "path.mjs"
-};
+export const STAND_INS = {};
 
 /**
  * The `.wasm` files the readers load, repository-relative: the tree-sitter runtime, the engine's own build of the

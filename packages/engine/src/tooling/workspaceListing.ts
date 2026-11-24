@@ -19,16 +19,10 @@
  *
  * @module
  */
-import path from "node:path";
+import path from "./enginePath";
+import type { FolderChildren, PathKind } from "./workspaceFiles";
 
-/** What lies at a path: a file, or a folder. */
-export type PathKind = "file" | "folder";
-
-/** A folder's entries by name: its files, and its folders. */
-export interface FolderChildren {
-  files: ReadonlySet<string>;
-  folders: ReadonlySet<string>;
-}
+export type { FolderChildren, PathKind };
 
 /** A run's listing: what lies at a path, and what a folder holds, among the files the scan keeps. */
 export interface WorkspaceListing {

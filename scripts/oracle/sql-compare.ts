@@ -120,6 +120,9 @@ import process from "node:process";
 import { sqlAdapter } from "@live-documentation/engine/live-docs/adapters/sql";
 import type { DependencyEntry, PublicSymbolEntry } from "@live-documentation/engine/live-docs/core";
 import type { WorkspaceSymbolIndex } from "@live-documentation/engine/live-docs/coreTypes";
+import { registerNodeDiskFallback } from "@live-documentation/engine/tooling/nodeHost";
+
+registerNodeDiskFallback();
 
 import { listFixtureFiles } from "./fixture";
 import { sourceDigests, sourcesDiffer } from "./sources";

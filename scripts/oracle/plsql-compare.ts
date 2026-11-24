@@ -52,6 +52,9 @@ import process from "node:process";
 
 import { sqlAdapter } from "@live-documentation/engine/live-docs/adapters/sql";
 import type { WorkspaceSymbolIndex } from "@live-documentation/engine/live-docs/coreTypes";
+import { registerNodeDiskFallback } from "@live-documentation/engine/tooling/nodeHost";
+
+registerNodeDiskFallback();
 
 /** The grammars-v4 commit the grammar is read at: the last change to `sql/plsql` as of 2026-11-19. */
 export const GRAMMAR_COMMIT = "de38599628d221099c046e92962f70204d852b54";

@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/engine/src/live-docs/adapters/go.ts`
-- Generated At: 2026-11-24T07:15:05.254Z
+- Generated At: 2026-11-24T10:31:38.131Z
 
 ## Authored
 ### Purpose
@@ -22,7 +22,7 @@ The Go adapter: tree-sitter symbols (exported declarations, methods, fields and 
 ### Public Symbols
 #### `goAdapter` {#symbol-goadapter}
 - Type: const
-- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/go.ts#L638)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/go.ts#L637)
 - Returns: [`LanguageAdapter`](./index.ts.mdmd.md#symbol-languageadapter)
 
 ##### `goAdapter` — Summary
@@ -31,7 +31,6 @@ Language adapter for Go (`.go`): tree-sitter symbols and package-aware name reso
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
-- `node:path` - `path`
 - [`index.goSyntax`](../../languages/index.ts.mdmd.md#symbol-gosyntax)
 - [`index.LanguageAdapter`](./index.ts.mdmd.md#symbol-languageadapter) (type-only)
 - [`index.WorkspaceFileIndex`](./index.ts.mdmd.md#symbol-workspacefileindex) (type-only)
@@ -44,11 +43,12 @@ Language adapter for Go (`.go`): tree-sitter symbols and package-aware name reso
 - [`core.TypeReference`](../core.ts.mdmd.md#symbol-typereference) (type-only)
 - [`coreTypes.ProgramEntry`](../coreTypes.ts.mdmd.md#symbol-programentry) (type-only)
 - [`compareText`](../../tooling/compareText.ts.mdmd.md#symbol-comparetext)
-- [`nodeHost.listFilesOnDisk`](../../tooling/nodeHost.ts.mdmd.md#symbol-listfilesondisk)
+- [`enginePath.path`](../../tooling/enginePath.ts.mdmd.md)
 - [`pathUtils.normalizeWorkspacePath`](../../tooling/pathUtils.ts.mdmd.md#symbol-normalizeworkspacepath)
 - [`sourceText.SourceReads`](../../tooling/sourceText.ts.mdmd.md#symbol-sourcereads) (type-only)
 - [`sourceText.readSourceText`](../../tooling/sourceText.ts.mdmd.md#symbol-readsourcetext)
 - [`sourceText.throwIfMachineFailure`](../../tooling/sourceText.ts.mdmd.md#symbol-throwifmachinefailure)
+- [`workspaceFiles.requireDiskFallback`](../../tooling/workspaceFiles.ts.mdmd.md#symbol-requirediskfallback)
 - [`workspaceProbes.ListedFiles`](../../tooling/workspaceProbes.ts.mdmd.md#symbol-listedfiles) (type-only)
 - [`workspaceProbes.pathKind`](../../tooling/workspaceProbes.ts.mdmd.md#symbol-pathkind)
 <!-- LIVE-DOC:END Dependencies -->

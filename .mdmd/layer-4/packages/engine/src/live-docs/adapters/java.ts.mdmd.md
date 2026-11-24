@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/engine/src/live-docs/adapters/java.ts`
-- Generated At: 2026-11-24T07:15:05.304Z
+- Generated At: 2026-11-24T10:31:38.176Z
 
 ## Authored
 ### Purpose
@@ -21,7 +21,7 @@ The Java adapter: tree-sitter symbols (types, nested types and the members they 
 ### Public Symbols
 #### `javaAdapter` {#symbol-javaadapter}
 - Type: const
-- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/java.ts#L692)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/java.ts#L691)
 - Returns: [`LanguageAdapter`](./index.ts.mdmd.md#symbol-languageadapter)
 
 ##### `javaAdapter` — Summary
@@ -30,7 +30,6 @@ Language adapter for Java (`.java`): tree-sitter symbols and javac-style name re
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
-- `node:path` - `path`
 - [`index.javaSyntax`](../../languages/index.ts.mdmd.md#symbol-javasyntax)
 - [`index.LanguageAdapter`](./index.ts.mdmd.md#symbol-languageadapter) (type-only)
 - [`index.WorkspaceFileIndex`](./index.ts.mdmd.md#symbol-workspacefileindex) (type-only)
@@ -44,11 +43,12 @@ Language adapter for Java (`.java`): tree-sitter symbols and javac-style name re
 - [`core.TypeReference`](../core.ts.mdmd.md#symbol-typereference) (type-only)
 - [`coreTypes.ProgramEntry`](../coreTypes.ts.mdmd.md#symbol-programentry) (type-only)
 - [`compareText`](../../tooling/compareText.ts.mdmd.md#symbol-comparetext)
-- [`nodeHost.listFilesOnDisk`](../../tooling/nodeHost.ts.mdmd.md#symbol-listfilesondisk)
+- [`enginePath.path`](../../tooling/enginePath.ts.mdmd.md)
 - [`pathUtils.normalizeWorkspacePath`](../../tooling/pathUtils.ts.mdmd.md#symbol-normalizeworkspacepath)
 - [`sourceText.SourceReads`](../../tooling/sourceText.ts.mdmd.md#symbol-sourcereads) (type-only)
 - [`sourceText.readSourceText`](../../tooling/sourceText.ts.mdmd.md#symbol-readsourcetext)
 - [`sourceText.throwIfMachineFailure`](../../tooling/sourceText.ts.mdmd.md#symbol-throwifmachinefailure)
+- [`workspaceFiles.requireDiskFallback`](../../tooling/workspaceFiles.ts.mdmd.md#symbol-requirediskfallback)
 <!-- LIVE-DOC:END Dependencies -->
 
 <!-- LIVE-DOC:BEGIN Cited By -->

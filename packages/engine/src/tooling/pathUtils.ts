@@ -1,4 +1,4 @@
-import path from "node:path";
+import path from "./enginePath";
 
 /**
  * A file's path relative to the workspace, with forward slashes, or undefined when it lies outside the workspace or is
@@ -8,7 +8,7 @@ import path from "node:path";
  */
 export function toWorkspaceRelativePath(candidate: string, workspaceRoot: string): string | undefined {
   const relative = path.relative(workspaceRoot, path.resolve(workspaceRoot, candidate));
-  if (!relative || relative.startsWith("..")) {
+  if (!relative || relative === ".." || relative.startsWith("../") || path.isAbsolute(relative)) {
     return undefined;
   }
 
@@ -19,7 +19,7 @@ export function toWorkspaceRelativePath(candidate: string, workspaceRoot: string
  * Normalise a path so directory separators are POSIX-style.
  */
 export function normalizeWorkspacePath(candidate: string): string {
-  return candidate.split(path.sep).join("/");
+  return candidate.replace(/\\/gu, "/");
 }
 
 /**

@@ -33,7 +33,7 @@
  * @module
  */
 import { failedCall, machineFailure } from "../live-docs/processMark";
-import { readFileBytes } from "./nodeHost";
+import { requireDiskFallback } from "./workspaceFiles";
 
 /** How a file's bytes became text, or why they did not. */
 export type SourceTextReading =
@@ -108,7 +108,7 @@ export interface SourceReads {
  */
 export async function readSourceReading(absolutePath: string, reads?: SourceReads): Promise<SourceTextReading> {
   if (reads?.readingOf) return reads.readingOf(absolutePath);
-  return decodeSourceText(await readFileBytes(absolutePath));
+  return decodeSourceText(await requireDiskFallback("readSourceReading").readFileBytes(absolutePath));
 }
 
 /**

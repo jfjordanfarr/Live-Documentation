@@ -32,6 +32,59 @@ export interface FolderEntries {
   linkedFolders?: readonly string[];
 }
 
+/** What lies at a path: a file, or a folder. */
+export type PathKind = "file" | "folder";
+
+/** A folder's entries by name: its files, and its folders. */
+export interface FolderChildren {
+  files: ReadonlySet<string>;
+  folders: ReadonlySet<string>;
+}
+
+/**
+ * Process-level disk fallback registered by Node entry points (`registerNodeDiskFallback` in `nodeHost.ts`) for
+ * standalone reader calls that omit a run's `WorkspaceFileIndex` / `WorkspaceReads` (such as adapter unit tests and
+ * standalone CLI/oracle tools). Browser scans never register a disk fallback and never bundle `nodeHost.ts`
+ * (Step 9 of `.mdmd/layer-3/engine-and-hosts.mdmd.md`).
+ */
+export interface DiskFallback {
+  readFileBytes(absolutePath: string): Promise<Uint8Array>;
+  kindOnDisk(absolutePath: string): PathKind | undefined;
+  childrenOnDisk(absoluteFolder: string): FolderChildren | undefined;
+  listFilesOnDisk(
+    workspaceRoot: string,
+    extension: string,
+    ignoredFolders: ReadonlySet<string>,
+    caseInsensitive?: boolean
+  ): Promise<string[]>;
+}
+
+// Store the active fallback on a shared globalThis symbol slot (matching GrammarHost in adapters/treeSitter.ts) so
+// fresh module instances under Vitest `vi.resetModules()` inherit the process registration cleanly.
+const DISK_FALLBACK_SLOT = Symbol.for("@live-documentation/engine/diskFallback");
+type DiskFallbackCarrier = typeof globalThis & { [DISK_FALLBACK_SLOT]?: DiskFallback };
+
+/** Registers (or clears) the standalone disk fallback used when a reader is called without a run's `FileHost`/`fileIndex`. */
+export function setDiskFallback(fallback: DiskFallback | undefined): void {
+  (globalThis as DiskFallbackCarrier)[DISK_FALLBACK_SLOT] = fallback;
+}
+
+/** Returns the currently registered {@link DiskFallback}, if any. */
+export function getDiskFallback(): DiskFallback | undefined {
+  return (globalThis as DiskFallbackCarrier)[DISK_FALLBACK_SLOT];
+}
+
+/** Returns the active {@link DiskFallback} or throws a clear diagnostic telling the caller to pass the run's `fileIndex`/`reads` or register Node's fallback. */
+export function requireDiskFallback(caller: string): DiskFallback {
+  const fallback = getDiskFallback();
+  if (!fallback) {
+    throw new Error(
+      `${caller} was called without a run's fileIndex/reads and no DiskFallback is registered: pass the run's fileIndex/reads or call registerNodeDiskFallback() under Node.`
+    );
+  }
+  return fallback;
+}
+
 /** Provides the tree-sitter WebAssembly runtime and compiled language grammars as raw bytes. */
 export interface GrammarHost {
   /** Bytes of the `web-tree-sitter.wasm` runtime. */

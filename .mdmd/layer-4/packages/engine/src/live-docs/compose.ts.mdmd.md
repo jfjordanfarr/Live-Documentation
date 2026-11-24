@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/engine/src/live-docs/compose.ts`
-- Generated At: 2026-11-24T07:15:05.646Z
+- Generated At: 2026-11-24T10:31:38.451Z
 
 ## Authored
 ### Purpose
@@ -159,7 +159,6 @@ uses that provider's actual indexed heading when the workspace index is present.
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
-- `node:path` - `path`
 - [`LiveDocumentationConfig`](../config/liveDocumentationConfig.ts.mdmd.md#symbol-livedocumentationconfig) (type-only)
 - [`index.getSyntaxByPath`](../languages/index.ts.mdmd.md#symbol-getsyntaxbypath)
 - [`archetype.matchesPathPattern`](./archetype.ts.mdmd.md#symbol-matchespathpattern)
@@ -195,6 +194,7 @@ uses that provider's actual indexed heading when the workspace index is present.
 - [`openings.OPENING_KINDS`](./openings.ts.mdmd.md#symbol-opening_kinds)
 - [`openings.isToolingFile`](./openings.ts.mdmd.md#symbol-istoolingfile)
 - [`compareText`](../tooling/compareText.ts.mdmd.md#symbol-comparetext)
+- [`enginePath.path`](../tooling/enginePath.ts.mdmd.md)
 - [`githubSlugger.slug`](../tooling/githubSlugger.ts.mdmd.md#symbol-slug)
 <!-- LIVE-DOC:END Dependencies -->
 

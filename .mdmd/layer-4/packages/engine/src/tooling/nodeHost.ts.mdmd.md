@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/engine/src/tooling/nodeHost.ts`
-- Generated At: 2026-11-24T07:15:06.297Z
+- Generated At: 2026-11-24T10:31:38.938Z
 
 ## Authored
 ### Purpose
@@ -19,21 +19,21 @@ Where the command line reads a source file from the disk: a file's bytes, and it
 ### Public Symbols
 #### `readFileBytes` {#symbol-readfilebytes}
 - Type: function
-- Source: [source](../../../../../../packages/engine/src/tooling/nodeHost.ts#L24)
+- Source: [source](../../../../../../packages/engine/src/tooling/nodeHost.ts#L23)
 
 ##### `readFileBytes` — Summary
 A file's bytes, from the disk.
 
 #### `readFileHead` {#symbol-readfilehead}
 - Type: function
-- Source: [source](../../../../../../packages/engine/src/tooling/nodeHost.ts#L29)
+- Source: [source](../../../../../../packages/engine/src/tooling/nodeHost.ts#L28)
 
 ##### `readFileHead` — Summary
 The first `bytes` of a file, for the content's say on what the file is; fewer when the file is shorter.
 
 #### `listFolderEntries` {#symbol-listfolderentries}
 - Type: function
-- Source: [source](../../../../../../packages/engine/src/tooling/nodeHost.ts#L45)
+- Source: [source](../../../../../../packages/engine/src/tooling/nodeHost.ts#L44)
 
 ##### `listFolderEntries` — Summary
 A folder's immediate files and subfolders on the disk, sorted by name. Symbolic links are inspected with `stat`: a
@@ -42,7 +42,7 @@ passes through a file is skipped, and a failure of the machine's (permission den
 
 #### `listFilesOnDisk` {#symbol-listfilesondisk}
 - Type: function
-- Source: [source](../../../../../../packages/engine/src/tooling/nodeHost.ts#L76)
+- Source: [source](../../../../../../packages/engine/src/tooling/nodeHost.ts#L75)
 - Parameters: `ignoredFolders`: `ReadonlySet`
 
 ##### `listFilesOnDisk` — Summary
@@ -51,8 +51,8 @@ name, sorted. Used only when a language reader is called standalone without a ru
 
 #### `kindOnDisk` {#symbol-kindondisk}
 - Type: function
-- Source: [source](../../../../../../packages/engine/src/tooling/nodeHost.ts#L111)
-- Returns: [`PathKind`](./workspaceListing.ts.mdmd.md#symbol-pathkind)
+- Source: [source](../../../../../../packages/engine/src/tooling/nodeHost.ts#L110)
+- Returns: [`PathKind`](./workspaceFiles.ts.mdmd.md#symbol-pathkind)
 
 ##### `kindOnDisk` — Summary
 What lies at a path on the disk, links followed: a file, a folder, or nothing. A failure of the machine's is thrown;
@@ -61,19 +61,34 @@ as a reader's own tests call it (`pathKind` in `workspaceProbes.ts`).
 
 #### `childrenOnDisk` {#symbol-childrenondisk}
 - Type: function
-- Source: [source](../../../../../../packages/engine/src/tooling/nodeHost.ts#L122)
-- Returns: [`FolderChildren`](./workspaceListing.ts.mdmd.md#symbol-folderchildren)
+- Source: [source](../../../../../../packages/engine/src/tooling/nodeHost.ts#L121)
+- Returns: [`FolderChildren`](./workspaceFiles.ts.mdmd.md#symbol-folderchildren)
 
 ##### `childrenOnDisk` — Summary
 A folder's files and folders on the disk, by name, links followed; nothing when it is no folder (`folderChildren`).
 
 #### `NODE_FILE_HOST` {#symbol-node_file_host}
 - Type: const
-- Source: [source](../../../../../../packages/engine/src/tooling/nodeHost.ts#L135)
+- Source: [source](../../../../../../packages/engine/src/tooling/nodeHost.ts#L134)
 - Returns: [`FileHost`](./workspaceFiles.ts.mdmd.md#symbol-filehost)
 
 ##### `NODE_FILE_HOST` — Summary
 The disk, as Node reads it.
+
+#### `NODE_DISK_FALLBACK` {#symbol-node_disk_fallback}
+- Type: const
+- Source: [source](../../../../../../packages/engine/src/tooling/nodeHost.ts#L137)
+- Returns: [`DiskFallback`](./workspaceFiles.ts.mdmd.md#symbol-diskfallback)
+
+##### `NODE_DISK_FALLBACK` — Summary
+Node's standalone disk fallback for readers called outside a run (Step 9 of `.mdmd/layer-3/engine-and-hosts.mdmd.md`).
+
+#### `registerNodeDiskFallback` {#symbol-registernodediskfallback}
+- Type: function
+- Source: [source](../../../../../../packages/engine/src/tooling/nodeHost.ts#L145)
+
+##### `registerNodeDiskFallback` — Summary
+Registers {@link NODE_DISK_FALLBACK} for the process so standalone Node callers and tests can invoke readers without a run's `fileIndex`.
 <!-- LIVE-DOC:END Public Symbols -->
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
@@ -81,10 +96,12 @@ The disk, as Node reads it.
 - `node:fs` - `promises`, `readdirSync`, `statSync`
 - `node:path` - `path`
 - [`sourceText.throwIfMachineFailure`](./sourceText.ts.mdmd.md#symbol-throwifmachinefailure)
+- [`workspaceFiles.DiskFallback`](./workspaceFiles.ts.mdmd.md#symbol-diskfallback) (type-only)
 - [`workspaceFiles.FileHost`](./workspaceFiles.ts.mdmd.md#symbol-filehost) (type-only)
+- [`workspaceFiles.FolderChildren`](./workspaceFiles.ts.mdmd.md#symbol-folderchildren) (type-only)
 - [`workspaceFiles.FolderEntries`](./workspaceFiles.ts.mdmd.md#symbol-folderentries) (type-only)
-- [`workspaceListing.FolderChildren`](./workspaceListing.ts.mdmd.md#symbol-folderchildren) (type-only)
-- [`workspaceListing.PathKind`](./workspaceListing.ts.mdmd.md#symbol-pathkind) (type-only)
+- [`workspaceFiles.PathKind`](./workspaceFiles.ts.mdmd.md#symbol-pathkind) (type-only)
+- [`workspaceFiles.setDiskFallback`](./workspaceFiles.ts.mdmd.md#symbol-setdiskfallback)
 <!-- LIVE-DOC:END Dependencies -->
 
 <!-- LIVE-DOC:BEGIN Cited By -->

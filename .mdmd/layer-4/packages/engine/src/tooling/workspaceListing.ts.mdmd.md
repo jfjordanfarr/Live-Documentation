@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/engine/src/tooling/workspaceListing.ts`
-- Generated At: 2026-11-22T05:07:09.874Z
+- Generated At: 2026-11-24T10:31:38.969Z
 
 ## Authored
 ### Purpose
@@ -18,30 +18,24 @@ Answers a reader's two questions about other files, at once and without reading 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
-#### `PathKind` {#symbol-pathkind}
-- Type: type
+#### `FolderChildren` {#symbol-folderchildren}
+- Type: type (type-only)
 - Source: [source](../../../../../../packages/engine/src/tooling/workspaceListing.ts#L25)
 
-##### `PathKind` — Summary
-What lies at a path: a file, or a folder.
-
-#### `FolderChildren` {#symbol-folderchildren}
-- Type: interface
-- Source: [source](../../../../../../packages/engine/src/tooling/workspaceListing.ts#L28)
-
-##### `FolderChildren` — Summary
-A folder's entries by name: its files, and its folders.
+#### `PathKind` {#symbol-pathkind}
+- Type: type (type-only)
+- Source: [source](../../../../../../packages/engine/src/tooling/workspaceListing.ts#L25)
 
 #### `WorkspaceListing (interface)` {#symbol-workspacelisting-interface}
 - Type: interface
-- Source: [source](../../../../../../packages/engine/src/tooling/workspaceListing.ts#L34)
+- Source: [source](../../../../../../packages/engine/src/tooling/workspaceListing.ts#L28)
 
 ##### `WorkspaceListing (interface)` — Summary
 A run's listing: what lies at a path, and what a folder holds, among the files the scan keeps.
 
 #### `workspaceListing (function)` {#symbol-workspacelisting-function}
 - Type: function
-- Source: [source](../../../../../../packages/engine/src/tooling/workspaceListing.ts#L42)
+- Source: [source](../../../../../../packages/engine/src/tooling/workspaceListing.ts#L36)
 - Returns: [`WorkspaceListing`](#symbol-workspacelisting-interface)
 - Parameters: `relativePaths`: `Iterable`
 
@@ -51,7 +45,9 @@ The listing of the files a scan keeps, given as paths relative to the workspace 
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
-- `node:path` - `path`
+- [`enginePath.path`](./enginePath.ts.mdmd.md)
+- [`workspaceFiles.FolderChildren`](./workspaceFiles.ts.mdmd.md#symbol-folderchildren) (type-only)
+- [`workspaceFiles.PathKind`](./workspaceFiles.ts.mdmd.md#symbol-pathkind) (type-only)
 <!-- LIVE-DOC:END Dependencies -->
 
 <!-- LIVE-DOC:BEGIN Cited By -->

@@ -17,7 +17,6 @@
  *
  * @module
  */
-import path from "node:path";
 
 import {
   hasReader,
@@ -62,6 +61,7 @@ import { readLiveDocGraphWithHost, writeLiveDocGraphWithHost } from "@live-docum
 import { markProcess } from "@live-documentation/engine/live-docs/processMark";
 import { citingDocuments, isMarkdownDocument, type DocumentText } from "@live-documentation/engine/live-docs/relatedDocs";
 import { analyzeSourceFile as defaultAnalyzeSourceFile } from "@live-documentation/engine/live-docs/sourceAnalysis";
+import path from "@live-documentation/engine/tooling/enginePath";
 import { leaveOut, type LeaveOutInput } from "@live-documentation/engine/tooling/leaveOut";
 import { normalizeWorkspacePath, toWorkspaceRelativePath } from "@live-documentation/engine/tooling/pathUtils";
 import { readSourceReading, type SourceTextReading } from "@live-documentation/engine/tooling/sourceText";

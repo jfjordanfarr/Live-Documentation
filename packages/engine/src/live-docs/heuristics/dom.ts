@@ -1,6 +1,6 @@
-import path from "node:path";
 import ts from "typescript";
 
+import path from "../../tooling/enginePath";
 import { normalizeWorkspacePath } from "../../tooling/pathUtils";
 import { readSourceText, type SourceReads, throwIfMachineFailure } from "../../tooling/sourceText";
 import { folderChildren, type ListedFiles } from "../../tooling/workspaceProbes";

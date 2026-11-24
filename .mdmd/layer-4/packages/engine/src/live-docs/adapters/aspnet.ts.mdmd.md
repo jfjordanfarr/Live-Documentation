@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/engine/src/live-docs/adapters/aspnet.ts`
-- Generated At: 2026-11-21T21:13:42.657Z
+- Generated At: 2026-11-24T10:31:37.951Z
 
 ## Authored
 ### Purpose
@@ -26,7 +26,7 @@ Surfaces script and code-behind dependencies for ASP.NET markup assets so the LD
 ### Public Symbols
 #### `aspNetMarkupAdapter` {#symbol-aspnetmarkupadapter}
 - Type: const
-- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/aspnet.ts#L65)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/aspnet.ts#L64)
 - Returns: [`LanguageAdapter`](./index.ts.mdmd.md#symbol-languageadapter)
 
 ##### `aspNetMarkupAdapter` — Summary
@@ -40,7 +40,7 @@ symbols are element ids, server controls and plain HTML alike.
 
 #### `withoutMarkupComments` {#symbol-withoutmarkupcomments}
 - Type: function
-- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/aspnet.ts#L106)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/aspnet.ts#L105)
 
 ##### `withoutMarkupComments` — Summary
 The markup with every comment written over in spaces, its line breaks kept, so that positions keep: first the
@@ -52,7 +52,7 @@ literal text to it ({@link readDirectives}).
 
 #### `markupWithoutComments` {#symbol-markupwithoutcomments}
 - Type: function
-- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/aspnet.ts#L128)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/aspnet.ts#L127)
 
 ##### `markupWithoutComments` — Summary
 A markup file's text with its comments written over, by its kind: Web Forms' and Razor's markup by
@@ -61,14 +61,14 @@ not read itself, as the DOM heuristic looks for an element's id.
 
 #### `Directive` {#symbol-directive}
 - Type: interface
-- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/aspnet.ts#L185)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/aspnet.ts#L184)
 
 ##### `Directive` — Summary
 One `<%@ … %>` directive: its name, lowercased, and its attributes by lowercased name.
 
 #### `readDirectives` {#symbol-readdirectives}
 - Type: function
-- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/aspnet.ts#L191)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/aspnet.ts#L190)
 - Returns: [`Directive`](#symbol-directive)[]
 
 ##### `readDirectives` — Summary
@@ -76,21 +76,21 @@ The directives of a markup file, by Microsoft's documented syntax; a directive w
 
 #### `DIRECTIVE_REASONS` {#symbol-directive_reasons}
 - Type: const
-- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/aspnet.ts#L234)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/aspnet.ts#L233)
 
 ##### `DIRECTIVE_REASONS` — Summary
 Why a directive's path has no link.
 
 #### `DirectivePath` {#symbol-directivepath}
 - Type: type
-- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/aspnet.ts#L242)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/aspnet.ts#L241)
 
 ##### `DirectivePath` — Summary
 A directive's path, resolved to a workspace file or left unlinked for a reason.
 
 #### `resolveDirectivePath` {#symbol-resolvedirectivepath}
 - Type: function
-- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/aspnet.ts#L267)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/aspnet.ts#L266)
 - Parameters: `fileIndex`: [`WorkspaceFileIndex`](./index.ts.mdmd.md#symbol-workspacefileindex)
 
 ##### `resolveDirectivePath` — Summary
@@ -119,7 +119,6 @@ from the web roots of the applications it may be deployed into, as above.
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
-- `node:path` - `path`
 - [`dotnetPaths.folderOf`](./dotnetPaths.ts.mdmd.md#symbol-folderof)
 - [`dotnetPaths.isProjectFile`](./dotnetPaths.ts.mdmd.md#symbol-isprojectfile)
 - [`dotnetPaths.joinWorkspacePath`](./dotnetPaths.ts.mdmd.md#symbol-joinworkspacepath)
@@ -136,6 +135,7 @@ from the web roots of the applications it may be deployed into, as above.
 - [`core.DependencyEntry`](../core.ts.mdmd.md#symbol-dependencyentry) (type-only)
 - [`core.SourceAnalysisResult`](../core.ts.mdmd.md#symbol-sourceanalysisresult) (type-only)
 - [`coreTypes.SourceNotice`](../coreTypes.ts.mdmd.md#symbol-sourcenotice) (type-only)
+- [`enginePath.path`](../../tooling/enginePath.ts.mdmd.md)
 - [`pathUtils.normalizeWorkspacePath`](../../tooling/pathUtils.ts.mdmd.md#symbol-normalizeworkspacepath)
 - [`sourceText.readSourceText`](../../tooling/sourceText.ts.mdmd.md#symbol-readsourcetext)
 - [`sourceText.throwIfMachineFailure`](../../tooling/sourceText.ts.mdmd.md#symbol-throwifmachinefailure)

@@ -18,8 +18,7 @@
  *
  * @module
  */
-import path from "node:path";
-
+import path from "../../tooling/enginePath";
 import { readSourceText } from "../../tooling/sourceText";
 import type { SourceAnalysisResult } from "../coreTypes";
 import type { LanguageAdapter } from "./index";

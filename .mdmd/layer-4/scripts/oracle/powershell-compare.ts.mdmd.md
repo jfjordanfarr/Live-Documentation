@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: `scripts/oracle/powershell-compare.ts`
 - Entry: command `oracle:powershell` of [`package.json`](../../package.json.mdmd.md)
-- Generated At: 2026-11-24T07:54:06.604Z
+- Generated At: 2026-11-24T10:31:41.328Z
 
 ## Authored
 ### Purpose
@@ -21,14 +21,14 @@ Grades the PowerShell reader on a whole folder against PowerShell's own parser: 
 ### Public Symbols
 #### `folderFiles` {#symbol-folderfiles}
 - Type: function
-- Source: [source](../../../../scripts/oracle/powershell-compare.ts#L68)
+- Source: [source](../../../../scripts/oracle/powershell-compare.ts#L70)
 
 ##### `folderFiles` — Summary
 Every file of a folder, folder-relative with `/`, but those of the folders left out.
 
 #### `parserReading` {#symbol-parserreading}
 - Type: function
-- Source: [source](../../../../scripts/oracle/powershell-compare.ts#L103)
+- Source: [source](../../../../scripts/oracle/powershell-compare.ts#L105)
 - Returns: [`Reading`](../../tests/e2e/scenarios/reading.ts.mdmd.md#symbol-reading)
 - Parameters: `ast`: [`PowerShellAst`](./powershell-edges.ts.mdmd.md#symbol-powershellast); `shipped`: [`ShippedNames`](./powershell-wires.ts.mdmd.md#symbol-shippednames)
 
@@ -37,7 +37,7 @@ What the parser's facts make of the folder under the rules of `powershell-wires.
 
 #### `adapterReading` {#symbol-adapterreading}
 - Type: function
-- Source: [source](../../../../scripts/oracle/powershell-compare.ts#L119)
+- Source: [source](../../../../scripts/oracle/powershell-compare.ts#L121)
 - Returns: [`Reading`](../../tests/e2e/scenarios/reading.ts.mdmd.md#symbol-reading)
 
 ##### `adapterReading` — Summary
@@ -45,21 +45,21 @@ What the adapter's analyses of the folder's files make of it, read as the parser
 
 #### `PowerShellReport` {#symbol-powershellreport}
 - Type: interface
-- Source: [source](../../../../scripts/oracle/powershell-compare.ts#L149)
+- Source: [source](../../../../scripts/oracle/powershell-compare.ts#L151)
 
 ##### `PowerShellReport` — Summary
 The comparison of one folder: what was read, and each measure set side by side.
 
 #### `VerdictsOption` {#symbol-verdictsoption}
 - Type: interface
-- Source: [source](../../../../scripts/oracle/powershell-compare.ts#L164)
+- Source: [source](../../../../scripts/oracle/powershell-compare.ts#L166)
 
 ##### `VerdictsOption` — Summary
 The hand reading to hold the readings to: its rows, and the name the table gives the folder's corpus.
 
 #### `comparePowerShell` {#symbol-comparepowershell}
 - Type: function
-- Source: [source](../../../../scripts/oracle/powershell-compare.ts#L174)
+- Source: [source](../../../../scripts/oracle/powershell-compare.ts#L176)
 - Parameters: `ast`: [`PowerShellAst`](./powershell-edges.ts.mdmd.md#symbol-powershellast); `names`: [`ShippedNames`](./powershell-wires.ts.mdmd.md#symbol-shippednames); `verdicts`: [`VerdictsOption`](#symbol-verdictsoption)
 
 ##### `comparePowerShell` — Summary
@@ -76,6 +76,7 @@ Given the hand reading, its rows of the folder's corpus are scored against both 
 - [`powershell.powershellAdapter`](../../packages/engine/src/live-docs/adapters/powershell.ts.mdmd.md#symbol-powershelladapter)
 - [`core.SourceAnalysisResult`](../../packages/engine/src/live-docs/core.ts.mdmd.md#symbol-sourceanalysisresult) (type-only)
 - [`nodeGrammars.registerNodeGrammars`](../../packages/engine/src/tooling/nodeGrammars.ts.mdmd.md#symbol-registernodegrammars)
+- [`nodeHost.registerNodeDiskFallback`](../../packages/engine/src/tooling/nodeHost.ts.mdmd.md#symbol-registernodediskfallback)
 - [`powershell-edges.PowerShellAst`](./powershell-edges.ts.mdmd.md#symbol-powershellast) (type-only)
 - [`powershell-edges.isDataFileFacts`](./powershell-edges.ts.mdmd.md#symbol-isdatafilefacts)
 - [`powershell-edges.parsePowerShellFixture`](./powershell-edges.ts.mdmd.md#symbol-parsepowershellfixture)

@@ -3,8 +3,8 @@ import path from "node:path";
 import { pathToFileURL } from "node:url";
 import { describe, expect, it } from "vitest";
 
-import { GRAMMARS, REPO, STAND_INS } from "./build-page.mjs";
-import { NEEDS_FILE, nodeNeeds } from "./node-needs.mjs";
+import { bundleScanner, GRAMMARS, REPO, STAND_INS } from "./build-page.mjs";
+import { NEEDS_FILE, nodeNeedsOf } from "./node-needs.mjs";
 
 /**
  * The first level of the check that the engine runs in a page, which needs no browser: the scanning page's bundle
@@ -39,9 +39,17 @@ function reach(module: Record<string, unknown>, chain: string): unknown {
 describe("what of Node the scan's path needs", () => {
   let derived: Needs;
 
-  it("is read from a bundle of the engine as it stands, built with the check's stand-ins", async () => {
-    derived = (await nodeNeeds()) as Needs;
-    expect(Object.keys(derived.engine).length).toBeGreaterThan(0);
+  it("is read from a bundle of the engine as it stands, built with zero Node stand-ins", async () => {
+    const { metafile } = await bundleScanner({ minify: false });
+    const inputs = Object.keys(metafile.inputs);
+    expect(inputs.some((input) => input.startsWith("packages/engine/src/"))).toBe(true);
+    expect(inputs.some((input) => input.startsWith("packages/generator/src/"))).toBe(true);
+    derived = nodeNeedsOf(metafile) as Needs;
+    expect(STAND_INS).toEqual({});
+    expect(derived.engine).toEqual({});
+    expect(derived.standIns).toEqual({});
+    expect(derived.hostedByNode).toEqual({});
+    expect(derived.globals).toEqual({});
   }, 60_000);
 
   it("is the committed list, so that a new dependence on Node changes a file in review", () => {

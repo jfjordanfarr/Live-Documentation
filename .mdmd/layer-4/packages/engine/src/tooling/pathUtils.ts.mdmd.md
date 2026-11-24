@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/engine/src/tooling/pathUtils.ts`
-- Generated At: 2026-11-22T01:22:03.010Z
+- Generated At: 2026-11-24T10:31:38.945Z
 
 ## Authored
 ### Purpose
@@ -52,5 +52,5 @@ history command's own process otherwise never loads.
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
-- `node:path` - `path`
+- [`enginePath.path`](./enginePath.ts.mdmd.md)
 <!-- LIVE-DOC:END Dependencies -->

@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/engine/src/tooling/sourceText.ts`
-- Generated At: 2026-11-22T01:36:21.196Z
+- Generated At: 2026-11-24T10:31:38.957Z
 
 ## Authored
 ### Purpose
@@ -86,5 +86,5 @@ swallowed the machine's failures too, and a file read in one went into a summary
 ### Dependencies
 - [`processMark.failedCall`](../live-docs/processMark.ts.mdmd.md#symbol-failedcall)
 - [`processMark.machineFailure`](../live-docs/processMark.ts.mdmd.md#symbol-machinefailure)
-- [`nodeHost.readFileBytes`](./nodeHost.ts.mdmd.md#symbol-readfilebytes)
+- [`workspaceFiles.requireDiskFallback`](./workspaceFiles.ts.mdmd.md#symbol-requirediskfallback)
 <!-- LIVE-DOC:END Dependencies -->

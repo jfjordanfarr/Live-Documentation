@@ -3,6 +3,7 @@ import * as os from "node:os";
 import * as path from "node:path";
 import { describe, expect, it, beforeEach, afterEach, vi } from "vitest";
 
+import { getDiskFallback, setDiskFallback } from "../../tooling/workspaceFiles";
 import type { WorkspaceFileIndex } from "./index";
 import { jsonAdapter } from "./json";
 
@@ -60,32 +61,30 @@ describe("JSON Adapter", () => {
 
   // `ts.sys.readFile`, which read the tsconfig until 2026-11-20, reads every failure as no file.
   it("throws a failure of the machine's in reading the tsconfig beside a manifest, and reads one of the file's as no tsconfig", async () => {
-    vi.resetModules();
     const failing = path.join(tempDir, "tsconfig.json");
-    // The tsconfig is read ahead through the run's reads, from the disk by the Node host (`tooling/nodeHost.ts`), since
-    // 2026-11-22; before, TypeScript's host read it with `readFileSync`, which this stood in for until then.
-    vi.doMock("node:fs", async (importOriginal) => {
-      const actual = await importOriginal<typeof import("node:fs")>();
-      const readFile = ((file: fs.PathLike, ...rest: unknown[]) =>
+    // The tsconfig is read ahead through the run's reads (`tooling/sourceText.ts`), falling back to the registered
+    // `DiskFallback` since 2026-11-24 (step 9 of `.mdmd/layer-3/engine-and-hosts.mdmd.md`), when `sourceText.ts`
+    // stopped importing `nodeHost.ts` directly.
+    const previous = getDiskFallback()!;
+    setDiskFallback({
+      ...previous,
+      readFileBytes: (file) =>
         file === failing && fs.existsSync(`${failing}.fail`)
           ? Promise.reject(Object.assign(new Error(`EMFILE: too many open files, open '${failing}'`), { code: "EMFILE", syscall: "open", errno: -24 }))
-          : (actual.promises.readFile as (...given: unknown[]) => unknown)(file, ...rest)) as typeof actual.promises.readFile;
-      const promises = { ...actual.promises, readFile };
-      return { ...actual, default: { ...actual, promises }, promises };
+          : previous.readFileBytes(file)
     });
     try {
-      const { jsonAdapter: own } = await vi.importActual<typeof import("./json")>("./json");
       const input = manifestBesideTsconfig(compiled(""));
-      expect((await own.analyze(input))?.declares).toEqual([{ reason: "command", file: "src/cli.ts", name: "start" }]);
+      expect((await jsonAdapter.analyze(input))?.declares).toEqual([{ reason: "command", file: "src/cli.ts", name: "start" }]);
       fs.writeFileSync(`${failing}.fail`, "");
-      await expect(own.analyze(input)).rejects.toThrow("EMFILE: too many open files");
+      await expect(jsonAdapter.analyze(input)).rejects.toThrow("EMFILE: too many open files");
       // A tsconfig that is a folder: the disk's word on the name, read as no tsconfig, so `dist/cli.js` maps to nothing.
       fs.rmSync(`${failing}.fail`);
       fs.rmSync(failing);
       fs.mkdirSync(failing);
-      expect((await own.analyze(input))?.declares).toBeUndefined();
+      expect((await jsonAdapter.analyze(input))?.declares).toBeUndefined();
     } finally {
-      vi.doUnmock("node:fs");
+      setDiskFallback(previous);
     }
   });
 

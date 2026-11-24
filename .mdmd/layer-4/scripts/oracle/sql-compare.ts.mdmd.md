@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: `scripts/oracle/sql-compare.ts`
 - Entry: command `oracle:sql` of [`package.json`](../../package.json.mdmd.md)
-- Generated At: 2026-11-22T07:12:58.067Z
+- Generated At: 2026-11-24T10:31:41.402Z
 
 ## Authored
 ### Purpose
@@ -25,7 +25,7 @@ Grades the SQL reader against ScriptDom: `npm run oracle:sql -- <folder>` reads 
 ### Public Symbols
 #### `GRADED_HOWS` {#symbol-graded_hows}
 - Type: const
-- Source: [source](../../../../scripts/oracle/sql-compare.ts#L140)
+- Source: [source](../../../../scripts/oracle/sql-compare.ts#L143)
 - Returns: `ReadonlySet`
 
 ##### `GRADED_HOWS` — Summary
@@ -33,7 +33,7 @@ The ways of naming an object the grading counts as a use.
 
 #### `readFacts` {#symbol-readfacts}
 - Type: function
-- Source: [source](../../../../scripts/oracle/sql-compare.ts#L153)
+- Source: [source](../../../../scripts/oracle/sql-compare.ts#L156)
 - Returns: `ReadFacts`
 
 ##### `readFacts` — Summary
@@ -41,7 +41,7 @@ The parser's facts of a file, and of every string it executes that is written ou
 
 #### `writtenPart` {#symbol-writtenpart}
 - Type: function
-- Source: [source](../../../../scripts/oracle/sql-compare.ts#L190)
+- Source: [source](../../../../scripts/oracle/sql-compare.ts#L193)
 
 ##### `writtenPart` — Summary
 One name part as the product writes it in a symbol or a kept name: bare, or
@@ -51,7 +51,7 @@ product's documented form, not imported from it.
 
 #### `writtenName` {#symbol-writtenname}
 - Type: function
-- Source: [source](../../../../scripts/oracle/sql-compare.ts#L195)
+- Source: [source](../../../../scripts/oracle/sql-compare.ts#L198)
 - Parameters: `name`: [`ScriptDomName`](./sql-scriptdom.ts.mdmd.md#symbol-scriptdomname)
 
 ##### `writtenName` — Summary
@@ -59,21 +59,21 @@ A parser's name in the product's written form: the parts written, from the first
 
 #### `partsOfWritten` {#symbol-partsofwritten}
 - Type: function
-- Source: [source](../../../../scripts/oracle/sql-compare.ts#L202)
+- Source: [source](../../../../scripts/oracle/sql-compare.ts#L205)
 
 ##### `partsOfWritten` — Summary
 Reads a name the product wrote back into its parts: dots outside brackets split it, brackets come off and `]]` is `]`.
 
 #### `isSqlServerOwn` {#symbol-issqlserverown}
 - Type: function
-- Source: [source](../../../../scripts/oracle/sql-compare.ts#L255)
+- Source: [source](../../../../scripts/oracle/sql-compare.ts#L258)
 
 ##### `isSqlServerOwn` — Summary
 Whether a used name is SQL Server's own: a system schema, or an `xml` method on a column.
 
 #### `searchedSchemas` {#symbol-searchedschemas}
 - Type: function
-- Source: [source](../../../../scripts/oracle/sql-compare.ts#L275)
+- Source: [source](../../../../scripts/oracle/sql-compare.ts#L278)
 
 ##### `searchedSchemas` — Summary
 The schemas, in the order T-SQL searches them, in which a used name may bind, each case folded; a schema not written
@@ -81,7 +81,7 @@ is the default one. None when the name is on a linked server and omits its schem
 
 #### `bindName` {#symbol-bindname}
 - Type: function
-- Source: [source](../../../../scripts/oracle/sql-compare.ts#L288)
+- Source: [source](../../../../scripts/oracle/sql-compare.ts#L291)
 - Returns: `Created`[]
 - Parameters: `created`: `Created`[]
 
@@ -91,21 +91,21 @@ without a written schema is in its creator's default schema, taken as `dbo`.
 
 #### `SqlReport` {#symbol-sqlreport}
 - Type: interface
-- Source: [source](../../../../scripts/oracle/sql-compare.ts#L427)
+- Source: [source](../../../../scripts/oracle/sql-compare.ts#L430)
 
 ##### `SqlReport` — Summary
 What the comparison found.
 
 #### `drawSample` {#symbol-drawsample}
 - Type: function
-- Source: [source](../../../../scripts/oracle/sql-compare.ts#L475)
+- Source: [source](../../../../scripts/oracle/sql-compare.ts#L478)
 
 ##### `drawSample` — Summary
 Draws `count` of the files, in a Fisher–Yates shuffle of their sorted list by the seed, returned sorted.
 
 #### `compareSql` {#symbol-comparesql}
 - Type: function
-- Source: [source](../../../../scripts/oracle/sql-compare.ts#L493)
+- Source: [source](../../../../scripts/oracle/sql-compare.ts#L496)
 - Parameters: `record`: [`ScriptDomRecord`](./sql-scriptdom.ts.mdmd.md#symbol-scriptdomrecord)
 
 ##### `compareSql` — Summary
@@ -113,7 +113,7 @@ Sets the adapter's reading of the graded files beside the parser's record.
 
 #### `sqlSources` {#symbol-sqlsources}
 - Type: function
-- Source: [source](../../../../scripts/oracle/sql-compare.ts#L657)
+- Source: [source](../../../../scripts/oracle/sql-compare.ts#L660)
 
 ##### `sqlSources` — Summary
 The files of a folder ScriptDom reads: every `.sql` file, but a fixture's build outputs and its own records.
@@ -128,6 +128,7 @@ The files of a folder ScriptDom reads: every `.sql` file, but a fixture's build 
 - [`core.DependencyEntry`](../../packages/engine/src/live-docs/core.ts.mdmd.md#symbol-dependencyentry) (type-only)
 - [`core.PublicSymbolEntry`](../../packages/engine/src/live-docs/core.ts.mdmd.md#symbol-publicsymbolentry) (type-only)
 - [`coreTypes.WorkspaceSymbolIndex`](../../packages/engine/src/live-docs/coreTypes.ts.mdmd.md#symbol-workspacesymbolindex) (type-only)
+- [`nodeHost.registerNodeDiskFallback`](../../packages/engine/src/tooling/nodeHost.ts.mdmd.md#symbol-registernodediskfallback)
 - [`fixture.listFixtureFiles`](./fixture.ts.mdmd.md#symbol-listfixturefiles)
 - [`sources.sourceDigests`](./sources.ts.mdmd.md#symbol-sourcedigests)
 - [`sources.sourcesDiffer`](./sources.ts.mdmd.md#symbol-sourcesdiffer)

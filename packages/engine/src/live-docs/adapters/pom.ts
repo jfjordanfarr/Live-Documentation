@@ -30,8 +30,7 @@
  *
  * @module
  */
-import path from "node:path";
-
+import path from "../../tooling/enginePath";
 import { readSourceText } from "../../tooling/sourceText";
 import type { DeclaredEntry, SourceAnalysisResult } from "../coreTypes";
 import { nestingBeyondDepth, TREE_DEPTH } from "../processMark";
