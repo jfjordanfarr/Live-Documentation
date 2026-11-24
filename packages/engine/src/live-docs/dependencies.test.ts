@@ -99,6 +99,59 @@ describe("collectDependencies", () => {
     const reExports = (await augmentWithReExportedSymbols({ sourceAbsolute: absolutePath, workspaceRoot: workspace, dependencies: merged, existingSymbols: collectExportedSymbols(bothSource) })).reExports;
     expect(reExports.map((entry) => entry.name)).toEqual(["Item"]);
   });
+
+  it("marks unresolved relative imports to left-out paths without mislabelling missing files or compiled-JS ignore rules", async () => {
+    const absolutePath = path.join(workspace, "src", "entry.ts");
+    const content = [
+      'import { a } from "../generated/types";',
+      'export * from "../generated/api";',
+      'import logo from "../assets/logo.png";',
+      'import { nope } from "./missing";',
+      'import { nopeJs } from "./missing.js";',
+      'import { distVal } from "../dist/bundle.js";',
+      'import pkg from "external-pkg";',
+      'export const load = () => import("../generated/lazy");',
+      "export const used = [a, logo, nope, nopeJs, distVal, pkg];"
+    ].join("\n");
+    const sourceFile = ts.createSourceFile(absolutePath, content, ts.ScriptTarget.Latest, true, ts.ScriptKind.TS);
+    const leftOutRules = (relative: string): boolean =>
+      relative.startsWith("generated/") ||
+      relative.startsWith("assets/") ||
+      relative.startsWith("dist/") ||
+      relative.endsWith(".js");
+
+    const dependencies = await collectDependencies({
+      sourceFile,
+      absolutePath,
+      workspaceRoot: workspace,
+      files: { isLeftOut: leftOutRules }
+    });
+    const bySpecifier = new Map(dependencies.map((entry) => [entry.specifier, entry]));
+    expect(bySpecifier.get("../generated/types")?.leftOut).toBe(true);
+    expect(bySpecifier.get("../generated/api")?.leftOut).toBe(true);
+    expect(bySpecifier.get("../assets/logo.png")?.leftOut).toBe(true);
+    expect(bySpecifier.get("../generated/lazy")?.leftOut).toBe(true);
+    expect(bySpecifier.get("../dist/bundle.js")?.leftOut).toBe(true);
+    // Missing TS files are NOT marked left out even when compiled `.js` artifacts are gitignored.
+    expect(bySpecifier.get("./missing")?.leftOut).toBeUndefined();
+    expect(bySpecifier.get("./missing.js")?.leftOut).toBeUndefined();
+    expect(bySpecifier.get("external-pkg")?.leftOut).toBeUndefined();
+
+    // A JavaScript importer referencing a left-out `.js` file IS marked left out.
+    const jsPath = path.join(workspace, "src", "entry.js");
+    const jsSource = ts.createSourceFile(jsPath, 'import { x } from "./ignored.js";\nexport { x };\n', ts.ScriptTarget.Latest, true, ts.ScriptKind.JS);
+    const jsDeps = await collectDependencies({ sourceFile: jsSource, absolutePath: jsPath, workspaceRoot: workspace, files: { isLeftOut: leftOutRules } });
+    expect(jsDeps[0].leftOut).toBe(true);
+
+    // Merging preserves `leftOut` when combining duplicate unresolved entries for the same specifier.
+    const mergedLeftOut = mergeDependencyEntries(
+      [{ specifier: "../generated/types", symbols: ["a"], kind: "import" }],
+      [{ specifier: "../generated/types", symbols: ["b"], kind: "import", leftOut: true }]
+    );
+    expect(mergedLeftOut).toHaveLength(1);
+    expect(mergedLeftOut[0].leftOut).toBe(true);
+    expect(mergedLeftOut[0].symbols).toEqual(["a", "b"]);
+  });
 });
 
 describe("the reader of a provider behind `export *`", () => {

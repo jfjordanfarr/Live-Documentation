@@ -16,6 +16,8 @@ import { UNREAD_NOTE } from "@live-documentation/engine/live-docs/document";
 import { readLiveDocGraph } from "@live-documentation/engine/live-docs/graphFiles";
 import { summarizeGraph } from "@live-documentation/engine/live-docs/history/summary";
 import { machineFailure } from "@live-documentation/engine/live-docs/processMark";
+import { NODE_FILE_HOST } from "@live-documentation/engine/tooling/nodeHost";
+import type { FileHost } from "@live-documentation/engine/tooling/workspaceFiles";
 
 import { generateLiveDocs } from "./generator";
 
@@ -937,5 +939,83 @@ describe("a probe of the run's own folders that fails for a cause of the machine
     expect(result.deletedFiles).toEqual([".mdmd/layer-4/src/gone/b.ts.mdmd.md"]);
     expect(nodeFs.existsSync(staleDoc)).toBe(false);
     expect(nodeFs.existsSync(left)).toBe(true);
+  });
+});
+
+describe("generateLiveDocs with explicit leaveOut and (left out) dependencies", () => {
+  it("prunes left-out folders before listing, marks left-out imports (left out), leaves missing imports unmarked, and separates notices", async () => {
+    const root = await fs.mkdtemp(path.join(os.tmpdir(), "generate-leave-out-"));
+    const config = normalizeLiveDocumentationConfig({ root: ".mdmd", baseLayer: "layer-4", extension: ".mdmd.md" });
+    const quiet = (): undefined => undefined;
+    const logger = { info: quiet, warn: quiet, error: quiet };
+    try {
+      await fs.mkdir(path.join(root, "src"), { recursive: true });
+      await fs.mkdir(path.join(root, "generated"), { recursive: true });
+      await fs.mkdir(path.join(root, "packages", "Newtonsoft.Json"), { recursive: true });
+      await fs.mkdir(path.join(root, "assets"), { recursive: true });
+      await fs.writeFile(
+        path.join(root, "src", "index.ts"),
+        [
+          'export * from "../generated/api";',
+          'import { thing } from "../generated/types";',
+          'import logo from "../assets/logo.png";',
+          'import { absent } from "./does-not-exist";',
+          "export const used = [thing, logo, absent];",
+          ""
+        ].join("\n"),
+        "utf8"
+      );
+      await fs.writeFile(path.join(root, "generated", "api.ts"), "export const api = 1;\n", "utf8");
+      await fs.writeFile(path.join(root, "generated", "types.ts"), "export const thing = 2;\n", "utf8");
+      await fs.writeFile(path.join(root, "packages", "Newtonsoft.Json", "lib.ts"), "export const pkg = 3;\n", "utf8");
+      await fs.writeFile(path.join(root, "assets", "logo.png"), "png\n", "utf8");
+
+      const listed: string[] = [];
+      const host: FileHost = {
+        read: (file) => NODE_FILE_HOST.read(file),
+        head: (file, limit) => NODE_FILE_HOST.head(file, limit),
+        entries: async (folder) => {
+          listed.push(path.relative(root, folder).split(path.sep).join("/"));
+          return NODE_FILE_HOST.entries(folder);
+        }
+      };
+
+      const result = await generateLiveDocs({
+        workspaceRoot: root,
+        config,
+        host,
+        leaveOut: { list: "generated/\npackages/\nassets/\n", ignoreCase: true },
+        logger
+      });
+
+      expect(result.files.map((file) => file.sourcePath)).toEqual(["src/index.ts"]);
+      expect(listed).not.toContain("generated");
+      expect(listed).not.toContain("packages");
+      expect(listed).not.toContain("assets");
+
+      const docText = await fs.readFile(path.join(root, ".mdmd", "layer-4", "src", "index.ts.mdmd.md"), "utf8");
+      expect(docText).toContain("- `../assets/logo.png` - `logo` (left out)\n");
+      expect(docText).toContain("- `../generated/api` (re-export, left out)\n");
+      expect(docText).toContain("- `../generated/types` - `thing` (left out)\n");
+      expect(docText).toContain("- `./does-not-exist` - `absent`\n");
+      expect(docText).not.toContain("`./does-not-exist` - `absent` (left out)");
+
+      expect(result.notices).toEqual([
+        { reason: "imports of a path the scan left out, left unread and marked (left out)", subjects: ["src/index.ts: ../assets/logo.png", "src/index.ts: ../generated/types"] },
+        { reason: "re-exports of everything a path the scan left out offers, their names unknown", subjects: ["src/index.ts: ../generated/api"] },
+        { reason: "imports of a path where the scan finds no file, left unread and labelled as written", subjects: ["src/index.ts: ./does-not-exist"] }
+      ]);
+
+      // The generated doc with `(left out)` qualifiers parses cleanly into the graph through the same host.
+      const graph = await readLiveDocGraph({ workspaceRoot: root, config, host });
+      expect(graph.files["src/index.ts"].dependencies.map((dep) => [dep.label, dep.qualifiers])).toEqual([
+        ["../assets/logo.png", ["left out"]],
+        ["../generated/api", ["re-export", "left out"]],
+        ["../generated/types", ["left out"]],
+        ["./does-not-exist", []]
+      ]);
+    } finally {
+      await fs.rm(root, { recursive: true, force: true });
+    }
   });
 });

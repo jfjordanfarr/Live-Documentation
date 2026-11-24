@@ -8,7 +8,8 @@ import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 import { normalizeLiveDocumentationConfig, type LiveDocumentationConfigInput } from "../config/liveDocumentationConfig";
 import { gitIgnores } from "../tooling/gitIgnored";
-import { buildWorkspaceIndexes, discoverDocuments, discoverTargetFiles, inWorkspaceOrder } from "./discovery";
+import type { FileHost, FolderEntries } from "../tooling/workspaceFiles";
+import { buildWorkspaceIndexes, discoverDocuments, discoverTargetFiles, discoverWorkspaceTargetFiles, inWorkspaceOrder } from "./discovery";
 import { machineFailure } from "./processMark";
 
 const foldersGitIgnoresWhole = (root: string): ReadonlySet<string> => gitIgnores(root)?.folders ?? new Set();
@@ -326,17 +327,17 @@ describe("the folders git ignores whole", () => {
   it("never reads a folder git ignores whole, and reads one that holds a tracked file", async () => {
     const root = await repository({ ".gitignore": "build/\nmixed/\n", "a.ts": "", "README.md": "", "build/deep/b.ts": "", "mixed/kept.ts": "", "mixed/sub/c.ts": "" });
     git(root, "add", "-f", "mixed/kept.ts");
-    // Every folder the shortened walks read, they read through the file system they hand glob, which reads the others
-    // with `fs.readdir`; walks that shortened nothing would read none through it, and are red here too.
+    // Every folder the shortened walks read, they read through the Node host (`fs.promises.readdir`); walks that
+    // shortened nothing would read `build/` too, and are red here as well.
     const read: string[] = [];
     const note = (folder: unknown): void => {
       read.push(path.relative(root, String(folder)).split(path.sep).join("/"));
     };
-    const readdir = nodeFs.readdir;
-    const spy = vi.spyOn(nodeFs, "readdir").mockImplementation(((...args: unknown[]) => {
+    const readdir = nodeFs.promises.readdir;
+    const spy = vi.spyOn(nodeFs.promises, "readdir").mockImplementation(((...args: unknown[]) => {
       note(args[0]);
-      return Reflect.apply(readdir, nodeFs, args);
-    }) as unknown as typeof nodeFs.readdir);
+      return Reflect.apply(readdir, nodeFs.promises, args);
+    }) as unknown as typeof nodeFs.promises.readdir);
     let result: { files: string[]; documents: string[] };
     try {
       result = await found(root);
@@ -520,16 +521,16 @@ describe("the folders git ignores whole", () => {
     const root = await repository({ ".gitignore": "dist/\n", "a.ts": "" });
     // A stand-in for a build: the walk's first read of a folder makes `dist/` and a file in it, after the listing that
     // shortens the walk and before the one that judges it.
-    const readdir = nodeFs.readdir;
+    const readdir = nodeFs.promises.readdir;
     let built = false;
-    const spy = vi.spyOn(nodeFs, "readdir").mockImplementation(((...args: unknown[]) => {
+    const spy = vi.spyOn(nodeFs.promises, "readdir").mockImplementation(((...args: unknown[]) => {
       if (!built) {
         built = true;
         nodeFs.mkdirSync(path.join(root, "dist"));
         nodeFs.writeFileSync(path.join(root, "dist", "out.js"), "");
       }
-      return Reflect.apply(readdir, nodeFs, args);
-    }) as unknown as typeof nodeFs.readdir);
+      return Reflect.apply(readdir, nodeFs.promises, args);
+    }) as unknown as typeof nodeFs.promises.readdir);
     try {
       // Judged by the listing taken before the walk, `dist/out.js` was kept: a build output given a doc.
       expect((await found(root)).files).toEqual([".gitignore", "a.ts"]);
@@ -663,15 +664,15 @@ describe("the folders git ignores whole", () => {
     expect(listing()).toBe("gen/\0");
     // A stand-in for a person or a tool: the walk's first read of a folder tracks `gen/out.ts`, after the listing that
     // left `gen/` unread and before the one that judges.
-    const readdir = nodeFs.readdir;
+    const readdir = nodeFs.promises.readdir;
     let added = false;
-    const spy = vi.spyOn(nodeFs, "readdir").mockImplementation(((...args: unknown[]) => {
+    const spy = vi.spyOn(nodeFs.promises, "readdir").mockImplementation(((...args: unknown[]) => {
       if (!added) {
         added = true;
         git(root, "add", "-f", "gen/out.ts");
       }
-      return Reflect.apply(readdir, nodeFs, args);
-    }) as unknown as typeof nodeFs.readdir);
+      return Reflect.apply(readdir, nodeFs.promises, args);
+    }) as unknown as typeof nodeFs.promises.readdir);
     let result: string[];
     try {
       result = (await found(root)).files;
@@ -686,17 +687,15 @@ describe("the folders git ignores whole", () => {
 
   it("stops the walk where a folder cannot be read for a cause of the machine's, and reads an absent one as empty", async () => {
     const root = await repository({ ".gitignore": "build/\n", "a.ts": "", "src/b.ts": "", "build/c.ts": "" });
-    const readdir = nodeFs.readdir;
+    const readdir = nodeFs.promises.readdir;
     const failing = (code: string): (() => void) => {
-      const spy = vi.spyOn(nodeFs, "readdir").mockImplementation(((...args: unknown[]) => {
+      const spy = vi.spyOn(nodeFs.promises, "readdir").mockImplementation(((...args: unknown[]) => {
         const folder = String(args[0]);
         if (path.relative(root, folder) === "src") {
-          const callback = args[args.length - 1] as (error: NodeJS.ErrnoException) => void;
-          process.nextTick(callback, Object.assign(new Error(`${code}: failed, scandir '${folder}'`), { code, syscall: "scandir", path: folder }));
-          return;
+          return Promise.reject(Object.assign(new Error(`${code}: failed, scandir '${folder}'`), { code, syscall: "scandir", path: folder }));
         }
-        return Reflect.apply(readdir, nodeFs, args);
-      }) as unknown as typeof nodeFs.readdir);
+        return Reflect.apply(readdir, nodeFs.promises, args);
+      }) as unknown as typeof nodeFs.promises.readdir);
       return () => spy.mockRestore();
     };
     const config = normalizeLiveDocumentationConfig({});
@@ -899,5 +898,88 @@ describe("the index pass", () => {
     } finally {
       restore();
     }
+  });
+});
+
+describe("explicit leaveOut list over a host", () => {
+  const virtualHost = (root: string, tree: Record<string, FolderEntries | Error>): { host: FileHost; listed: string[] } => {
+    const resolved = path.resolve(root);
+    const listed: string[] = [];
+    const host: FileHost = {
+      read: () => Promise.reject(new Error("unexpected host.read")),
+      head: () => Promise.reject(new Error("unexpected host.head")),
+      entries: async (absoluteFolder) => {
+        const relative = path.relative(resolved, absoluteFolder).split(path.sep).join("/");
+        const key = relative === "." ? "" : relative;
+        listed.push(key);
+        const value = tree[key];
+        if (value instanceof Error) throw value;
+        return value ?? { files: [], folders: [] };
+      }
+    };
+    return { host, listed };
+  };
+
+  it("prunes left-out folders before listing them, answers isLeftOut accurately, and never touches the disk", async () => {
+    const root = "/virtual/tfs-solution";
+    const { host, listed } = virtualHost(root, {
+      "": { files: ["README.md", "app.ts", "package-lock.json"], folders: [".git", ".live-documentation", "docs", "node_modules", "packages", "src"] },
+      "packages": { files: ["Newtonsoft.Json.dll"], folders: ["Newtonsoft.Json"] },
+      "packages/Newtonsoft.Json": { files: ["lib.cs"], folders: [] },
+      "src": { files: ["index.ts", "schema.gen.ts"], folders: ["bin"] },
+      "src/bin": { files: ["out.dll"], folders: [] },
+      "docs": { files: ["guide.md"], folders: [] }
+    });
+    const config = normalizeLiveDocumentationConfig({ exclude: ["src/bin/**"] });
+    const leaveOut = { list: "packages/\n*.gen.ts\n", ignoreCase: true };
+
+    const result = await discoverWorkspaceTargetFiles({ workspaceRoot: root, config, include: new Set(), changedOnly: false, host, leaveOut });
+    expect(result.files.map((file) => path.relative(root, file).split(path.sep).join("/"))).toEqual(["app.ts", "src/index.ts"]);
+    // None of the left-out, excluded, or never-documented folders were ever asked of `host.entries`.
+    expect(listed).toEqual(["", "docs", "src"]);
+    expect(listed).not.toContain("packages");
+    expect(listed).not.toContain("src/bin");
+    expect(listed).not.toContain(".git");
+    expect(listed).not.toContain("node_modules");
+    expect(listed).not.toContain(".live-documentation");
+
+    // `isLeftOut` distinguishes left-out/excluded/never-documented paths from genuinely missing ones.
+    expect(result.isLeftOut("packages/Newtonsoft.Json/lib.cs")).toBe(true);
+    expect(result.isLeftOut("PACKAGES/Any/file.ts")).toBe(true);
+    expect(result.isLeftOut("src/schema.gen.ts")).toBe(true);
+    expect(result.isLeftOut("src/bin/out.dll")).toBe(true);
+    expect(result.isLeftOut("README.md")).toBe(true);
+    expect(result.isLeftOut("package-lock.json")).toBe(true);
+    expect(result.isLeftOut("src/missing.ts")).toBe(false);
+
+    // Document discovery also prunes left-out folders without listing them.
+    listed.length = 0;
+    const docs = await discoverDocuments({ workspaceRoot: root, config, host, leaveOut });
+    expect(docs).toEqual(["README.md", "docs/guide.md"]);
+    expect(listed).not.toContain("packages");
+    expect(listed).not.toContain("src/bin");
+  });
+
+  it("stops on an unreadable kept folder naming the leave-out list, and passes over an unreadable left-out folder", async () => {
+    const root = "/virtual/tfs-locked";
+    const lockedError = Object.assign(new Error("EACCES: permission denied, scandir"), { code: "EACCES", syscall: "scandir" });
+    const tree: Record<string, FolderEntries | Error> = {
+      "": { files: ["a.ts"], folders: ["locked", "packages"] },
+      "locked": lockedError,
+      "packages": lockedError
+    };
+    const config = normalizeLiveDocumentationConfig({});
+
+    // `packages/` is pruned before `host.entries` is ever called; `locked/` is kept and stops the walk.
+    const { host } = virtualHost(root, tree);
+    await expect(
+      discoverWorkspaceTargetFiles({ workspaceRoot: root, config, include: new Set(), changedOnly: false, host, leaveOut: { list: "packages/\n", ignoreCase: true } })
+    ).rejects.toThrow(/add locked\/ to the leave-out list/u);
+
+    // Adding `locked/` to the leave-out list passes over both without reading either.
+    const { host: host2, listed: listed2 } = virtualHost(root, tree);
+    const result = await discoverWorkspaceTargetFiles({ workspaceRoot: root, config, include: new Set(), changedOnly: false, host: host2, leaveOut: { list: "packages/\nlocked/\n", ignoreCase: true } });
+    expect(result.files.map((file) => path.relative(root, file))).toEqual(["a.ts"]);
+    expect(listed2).toEqual([""]);
   });
 });

@@ -60,10 +60,12 @@ export async function collectDependencies(params: {
       const specifier = statement.moduleSpecifier.text;
       const symbols = extractImportNames(statement.importClause);
       const resolvedPath = await resolveDependency(specifier, params.absolutePath, params.workspaceRoot, params.files);
+      const leftOut = !resolvedPath && isLeftOutDependency(specifier, params.absolutePath, params.workspaceRoot, params.files);
       const typeOnlySymbols = typedImportNames(statement.importClause);
       entries.push({
         specifier,
         resolvedPath,
+        ...(leftOut ? { leftOut: true } : {}),
         symbols,
         kind: "import",
         isTypeOnly: statement.importClause ? statement.importClause.isTypeOnly || (symbols.length > 0 && typeOnlySymbols.length === symbols.length) : undefined,
@@ -92,6 +94,7 @@ export async function collectDependencies(params: {
             })
           : [];
       const resolvedPath = await resolveDependency(specifier, params.absolutePath, params.workspaceRoot, params.files);
+      const leftOut = !resolvedPath && isLeftOutDependency(specifier, params.absolutePath, params.workspaceRoot, params.files);
       const exportIsTypeOnly = Boolean(
         statement.isTypeOnly ||
           (statement.exportClause &&
@@ -102,6 +105,7 @@ export async function collectDependencies(params: {
       entries.push({
         specifier,
         resolvedPath,
+        ...(leftOut ? { leftOut: true } : {}),
         symbols,
         kind: "export",
         isTypeOnly: exportIsTypeOnly,
@@ -115,9 +119,12 @@ export async function collectDependencies(params: {
 
   for (const call of dynamicImports(params.sourceFile)) {
     const specifier = call.specifier.text;
+    const resolvedPath = await resolveDependency(specifier, params.absolutePath, params.workspaceRoot, params.files);
+    const leftOut = !resolvedPath && isLeftOutDependency(specifier, params.absolutePath, params.workspaceRoot, params.files);
     entries.push({
       specifier,
-      resolvedPath: await resolveDependency(specifier, params.absolutePath, params.workspaceRoot, params.files),
+      resolvedPath,
+      ...(leftOut ? { leftOut: true } : {}),
       symbols: [],
       kind: "import",
       location: getNodeLocation(call.node, params.sourceFile)
@@ -224,6 +231,9 @@ export function mergeDependencyEntries(
 
       if (!existing.resolvedPath && entry.resolvedPath) {
         existing.resolvedPath = entry.resolvedPath;
+        delete existing.leftOut;
+      } else if (!existing.resolvedPath && entry.leftOut) {
+        existing.leftOut = true;
       }
 
       if (entry.symbolTargets) {
@@ -262,7 +272,8 @@ function cloneDependency(entry: DependencyEntry): DependencyEntry {
     location: entry.location ? { ...entry.location } : undefined,
     symbolTargets: entry.symbolTargets ? { ...entry.symbolTargets } : undefined,
     reExportAll: entry.reExportAll,
-    basis: entry.basis
+    basis: entry.basis,
+    ...(entry.leftOut ? { leftOut: true } : {})
   };
 }
 
@@ -401,7 +412,10 @@ const TYPESCRIPT_SOURCES_FOR: Record<string, string[]> = {
   ".cjs": [".cts"]
 };
 
-function resolveWithExtensions(basePath: string, files?: ListedFiles): string | undefined {
+const TYPESCRIPT_EXTENSIONS: ReadonlySet<string> = new Set([".ts", ".tsx", ".mts", ".cts"]);
+const JAVASCRIPT_EXTENSIONS: ReadonlySet<string> = new Set([".js", ".jsx", ".mjs", ".cjs"]);
+
+function candidatePathsFor(basePath: string): string[] {
   const attempts: string[] = [];
   const explicitExt = path.extname(basePath);
 
@@ -419,13 +433,72 @@ function resolveWithExtensions(basePath: string, files?: ListedFiles): string | 
     }
   }
 
-  for (const candidate of attempts) {
+  return attempts;
+}
+
+function resolveWithExtensions(basePath: string, files?: ListedFiles): string | undefined {
+  for (const candidate of candidatePathsFor(basePath)) {
     if (pathKind(candidate, files) === "file") {
       return candidate;
     }
   }
 
   return undefined;
+}
+
+/**
+ * True when an unresolved relative specifier points at a workspace path left out by the scan's active leave-out,
+ * `exclude`, `.gitignore`, or never-documented rules (as opposed to simply missing on disk).
+ */
+function isLeftOutDependency(
+  specifier: string,
+  fromFile: string,
+  workspaceRoot: string,
+  files: ListedFiles | undefined
+): boolean {
+  if (!files?.isLeftOut || !specifier.startsWith(".")) {
+    return false;
+  }
+  const base = path.resolve(path.dirname(fromFile), specifier);
+  const toRelative = (candidate: string): string | undefined => {
+    const rel = normalizeWorkspacePath(path.relative(workspaceRoot, candidate));
+    if (rel === "" || rel === ".." || rel.startsWith("../") || path.isAbsolute(rel)) return undefined;
+    return rel;
+  };
+  const baseRelative = toRelative(base);
+  if (baseRelative === undefined) return false;
+
+  const explicitExt = path.extname(base).toLowerCase();
+  const fromExt = path.extname(fromFile).toLowerCase();
+  const isScriptExtension = explicitExt !== "" && MODULE_RESOLUTION_EXTENSIONS.includes(explicitExt);
+  const isJsSpecifierFromTs = TYPESCRIPT_EXTENSIONS.has(fromExt) && explicitExt in TYPESCRIPT_SOURCES_FOR;
+
+  // Explicit non-script asset/document/data path (e.g. "../assets/logo.png", "./README.md", "./package-lock.json")
+  // or an explicit `.ts`/`.tsx` path (or `.js` from a `.js` file) can be checked directly.
+  if (explicitExt !== "" && !isJsSpecifierFromTs && files.isLeftOut(baseRelative)) return true;
+
+  if (explicitExt !== "" && !isScriptExtension) {
+    return false;
+  }
+
+  const candidates = candidatePathsFor(base)
+    .map((candidate) => ({ relative: toRelative(candidate), ext: path.extname(candidate).toLowerCase() }))
+    .filter((entry): entry is { relative: string; ext: string } => entry.relative !== undefined);
+  if (candidates.length === 0) return false;
+
+  // If every candidate extension/index path is left out (for example a left-out folder like `generated/**` or `dist/`),
+  // the target is unambiguously left out.
+  if (candidates.every((entry) => files.isLeftOut!(entry.relative))) return true;
+
+  // Check candidates matching the importer's language family so a `.gitignore` pattern for compiled JS artifacts
+  // (`packages/**/src/**/*.js`) never mislabels a missing TypeScript import (`./missing` or `./missing.js`) as left out.
+  const primary = TYPESCRIPT_EXTENSIONS.has(fromExt)
+    ? candidates.filter((entry) => TYPESCRIPT_EXTENSIONS.has(entry.ext))
+    : JAVASCRIPT_EXTENSIONS.has(fromExt)
+      ? candidates.filter((entry) => JAVASCRIPT_EXTENSIONS.has(entry.ext))
+      : candidates;
+  const check = primary.length > 0 ? primary : candidates;
+  return check.some((entry) => files.isLeftOut!(entry.relative));
 }
 
 // ============================================================================

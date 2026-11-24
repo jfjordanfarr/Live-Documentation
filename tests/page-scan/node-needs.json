@@ -30,9 +30,6 @@
       ]
     },
     "packages/engine/src/live-docs/adapters/csharp.ts": {
-      "glob": [
-        "glob"
-      ],
       "node:path": [
         "join",
         "relative"
@@ -64,9 +61,6 @@
       ]
     },
     "packages/engine/src/live-docs/adapters/go.ts": {
-      "glob": [
-        "glob"
-      ],
       "node:path": [
         "dirname",
         "join",
@@ -94,9 +88,6 @@
       ]
     },
     "packages/engine/src/live-docs/adapters/java.ts": {
-      "glob": [
-        "glob"
-      ],
       "node:path": [
         "join",
         "relative"
@@ -171,9 +162,6 @@
       ]
     },
     "packages/engine/src/live-docs/adapters/rust.ts": {
-      "glob": [
-        "glob"
-      ],
       "node:path": [
         "basename",
         "dirname",
@@ -232,19 +220,13 @@
       "node:path": [
         "dirname",
         "extname",
+        "isAbsolute",
         "join",
         "relative",
         "resolve"
       ]
     },
     "packages/engine/src/live-docs/discovery.ts": {
-      "glob": [
-        "glob"
-      ],
-      "node:fs/promises": [
-        "readFile",
-        "stat"
-      ],
       "node:path": [
         "extname",
         "isAbsolute",
@@ -262,9 +244,6 @@
       ]
     },
     "packages/engine/src/live-docs/graphFiles.ts": {
-      "glob": [
-        "glob"
-      ],
       "node:fs": [
         "promises.mkdir",
         "promises.readFile",
@@ -321,6 +300,8 @@
       "node:fs": [
         "promises.open",
         "promises.readFile",
+        "promises.readdir",
+        "promises.stat",
         "readdirSync",
         "statSync"
       ],
@@ -343,10 +324,13 @@
         "sep"
       ]
     },
+    "packages/engine/src/tooling/workspaceWalk.ts": {
+      "node:path": [
+        "join",
+        "resolve"
+      ]
+    },
     "packages/generator/src/generator.ts": {
-      "glob": [
-        "glob"
-      ],
       "node:fs/promises": [
         "mkdir",
         "readFile",
@@ -371,9 +355,6 @@
       "process.env",
       "require.resolve"
     ],
-    "glob": [
-      "glob"
-    ],
     "node:child_process": [
       "execFile",
       "spawnSync"
@@ -383,6 +364,7 @@
       "promises.mkdir",
       "promises.open",
       "promises.readFile",
+      "promises.readdir",
       "promises.stat",
       "promises.writeFile",
       "readdir",

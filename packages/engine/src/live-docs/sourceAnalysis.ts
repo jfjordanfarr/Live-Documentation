@@ -147,20 +147,26 @@ export async function analyzeSourceFile(
   };
 }
 
-/** Why a relative import has no file: the scan keeps none at its path, left out or absent, and never reads one it does not keep. */
-const UNKEPT_IMPORT = "imports of a path where the scan keeps no file, left unread and labelled as written";
-/** Why a re-export of everything a path offers names nothing: what the scan does not keep is never read. */
-const UNKEPT_RE_EXPORT = "re-exports of everything a path offers where the scan keeps no file, their names unknown";
+/** Why a relative import was not linked: the scan's rules deliberately left the path out. */
+const LEFT_OUT_IMPORT = "imports of a path the scan left out, left unread and marked (left out)";
+/** Why a bare `export *` from a left-out path names nothing: what the scan leaves out is never read. */
+const LEFT_OUT_RE_EXPORT = "re-exports of everything a path the scan left out offers, their names unknown";
+/** Why a relative import has no file: no file stands at its path in the listing and no active rule left it out. */
+const MISSING_IMPORT = "imports of a path where the scan finds no file, left unread and labelled as written";
+/** Why a bare `export *` from a missing path names nothing: no file stands at its path in the listing. */
+const MISSING_RE_EXPORT = "re-exports of everything a path offers where the scan finds no file, their names unknown";
 
 /**
  * The relative imports the run's listing holds no file for, each said once by its specifier, for the run to count at its
- * end (2026-11-22): what the scan leaves out is never read, so its names stay unknown and its label is the kept file's.
+ * end: left-out paths are distinguished from absent paths now that the leave-out rules answer for paths never entered.
  */
 function unreadPathNotices(dependencies: readonly DependencyEntry[]): SourceNotice[] {
   const notices = new Map<string, SourceNotice>();
   for (const dependency of dependencies) {
     if (dependency.resolvedPath || dependency.basis || !dependency.specifier.startsWith(".")) continue;
-    const reason = dependency.reExportAll ? UNKEPT_RE_EXPORT : UNKEPT_IMPORT;
+    const reason = dependency.leftOut
+      ? (dependency.reExportAll ? LEFT_OUT_RE_EXPORT : LEFT_OUT_IMPORT)
+      : (dependency.reExportAll ? MISSING_RE_EXPORT : MISSING_IMPORT);
     notices.set(`${reason}\u0000${dependency.specifier}`, { reason, subject: dependency.specifier });
   }
   return [...notices.values()];

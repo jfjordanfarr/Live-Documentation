@@ -19,6 +19,20 @@ function countingHost(files: Record<string, Uint8Array>, failing = new Set<strin
       asked.push(`head ${file}`);
       if (!(file in files)) throw absent(file);
       return files[file].subarray(0, bytes);
+    },
+    async entries(folder) {
+      asked.push(`entries ${folder}`);
+      const prefix = folder.endsWith("/") ? folder : `${folder}/`;
+      const foundFiles = new Set<string>();
+      const foundFolders = new Set<string>();
+      for (const file of Object.keys(files)) {
+        if (!file.startsWith(prefix)) continue;
+        const rest = file.slice(prefix.length);
+        const slash = rest.indexOf("/");
+        if (slash === -1) foundFiles.add(rest);
+        else foundFolders.add(rest.slice(0, slash));
+      }
+      return { files: [...foundFiles].sort(), folders: [...foundFolders].sort() };
     }
   };
 }

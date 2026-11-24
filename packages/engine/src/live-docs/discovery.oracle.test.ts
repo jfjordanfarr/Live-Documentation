@@ -22,8 +22,9 @@
  * repositories git takes for repositories of their own but whose git refuses to answer, one whose configuration does
  * not parse and one whose owner git does not trust (git's `GIT_TEST_ASSUME_DIFFERENT_OWNER`, with `safe.directory`
  * naming every other repository and no global or system configuration), have no word of git's: their files are
- * expected judged by the workspace's own `.gitignore` alone, the rule for no git, read here with the same `ignore`
- * package discovery reads it with; each holds an `x.refused` that `.gitignore` names, so that every seed sees them.
+ * expected judged by the workspace's own `.gitignore` alone, the rule for no git, read here with the same `leaveOut`
+ * matcher discovery reads it with (held to `git check-ignore` by `leaveOut.oracle.test.ts`); each holds an `x.refused`
+ * that `.gitignore` names, so that every seed sees them.
  * A third property makes workspaces that lie in no repository, a folder of clones: random files outside every
  * repository, judged by the workspace's own `.gitignore` alone; two repositories within it, at the top and below a
  * plain folder, each judged by its own status, each holding a tracked `x.cfg` that `.gitignore` names and a `z.only`
@@ -44,7 +45,6 @@
  * whose contents git never sees (held by their own cases in `discovery.test.ts` and `gitIgnored.test.ts`). The record
  * of 2026-11-20 under `AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-19/Probes/walk-prune/` says why.
  */
-import ignore from "ignore";
 import { execFileSync, spawnSync } from "node:child_process";
 import { appendFileSync, existsSync, mkdirSync, mkdtempSync, readdirSync, readFileSync, realpathSync, renameSync, rmSync, statSync, unlinkSync, writeFileSync } from "node:fs";
 import os from "node:os";
@@ -52,6 +52,7 @@ import path from "node:path";
 import { afterEach, describe, expect, it } from "vitest";
 
 import { normalizeLiveDocumentationConfig } from "../config/liveDocumentationConfig";
+import { fromGitignores, leaveOut } from "../tooling/leaveOut";
 import { discoverDocuments, discoverTargetFiles } from "./discovery";
 
 const folders: string[] = [];
@@ -294,9 +295,12 @@ describe("discovery against git status, over random repositories", () => {
     try {
       const outer = ignoredByStatus(root);
       const inner = new Map(nested.map((folder) => [folder, ignoredByStatus(path.join(root, folder))]));
-      const rootRules = existsSync(path.join(root, ".gitignore")) ? ignore().add(readFileSync(path.join(root, ".gitignore"), "utf8")) : ignore();
+      const rootIgnoreCase = git(root, "config", "--get", "core.ignorecase").trim() === "true";
+      const rootRules = existsSync(path.join(root, ".gitignore"))
+        ? leaveOut({ list: fromGitignores([{ path: ".gitignore", text: readFileSync(path.join(root, ".gitignore"), "utf8") }]).lines.join("\n"), ignoreCase: rootIgnoreCase })
+        : null;
       const kept = onDisk(root).filter((file) => {
-        if (refusing.some((folder) => file.startsWith(`${folder}/`))) return !ignoredBy(outer, `${file.split("/")[0]}/`) && !rootRules.ignores(file);
+        if (refusing.some((folder) => file.startsWith(`${folder}/`))) return !ignoredBy(outer, `${file.split("/")[0]}/`) && (rootRules === null || rootRules.file(file).kept);
         const folder = nested.find((candidate) => file.startsWith(`${candidate}/`));
         if (folder === undefined) return !ignoredBy(outer, file);
         return !ignoredBy(outer, `${folder}/`) && !ignoredBy(outer, folder) && !ignoredBy(inner.get(folder) ?? [], file.slice(folder.length + 1));
@@ -375,10 +379,10 @@ describe("discovery against git status, over random repositories", () => {
     // Git's own word: no repository at the workspace, nor in any of those.
     for (const folder of ["", ...unanswered]) expect(spawnSync("git", ["-C", path.join(root, folder), "rev-parse"], { stdio: "ignore" }).status, `seed ${seed}: ${folder}`).toBe(128);
     const inner = new Map(repositories.map((folder) => [folder, ignoredByStatus(path.join(root, folder))]));
-    const rootRules = ignore().add(readFileSync(path.join(root, ".gitignore"), "utf8"));
+    const rootRules = leaveOut({ list: fromGitignores([{ path: ".gitignore", text: readFileSync(path.join(root, ".gitignore"), "utf8") }]).lines.join("\n"), ignoreCase: false });
     const kept = onDisk(root).filter((file) => {
       const folder = repositories.find((candidate) => file.startsWith(`${candidate}/`));
-      return folder === undefined ? !rootRules.ignores(file) : !ignoredBy(inner.get(folder) ?? [], file.slice(folder.length + 1));
+      return folder === undefined ? rootRules.file(file).kept : !ignoredBy(inner.get(folder) ?? [], file.slice(folder.length + 1));
     });
     expect(await documented(root), `seed ${seed}`).toEqual(split(kept));
   });

@@ -102,6 +102,24 @@ describe("the Live Doc grammar", () => {
     expect(renderLiveDoc(parseLiveDoc(text))).toBe(text);
   });
 
+  it("renders and reads back (left out) dependency qualifiers on imports, type-only imports and re-exports", () => {
+    const doc: LiveDoc = {
+      ...EMPTY,
+      codePath: "src/index.ts",
+      archetype: "implementation",
+      dependencies: [
+        { label: "../assets/logo.png", qualifiers: ["left out"] },
+        { label: "../generated/api", qualifiers: ["re-export", "left out"] },
+        { label: "../generated/types", symbols: ["Thing"], qualifiers: ["type-only", "left out"] }
+      ]
+    };
+    const text = renderLiveDoc(doc);
+    expect(text).toContain("- `../assets/logo.png` (left out)\n");
+    expect(text).toContain("- `../generated/api` (re-export, left out)\n");
+    expect(text).toContain("- `../generated/types` - `Thing` (type-only, left out)\n");
+    expect(parseLiveDoc(text)).toEqual(doc);
+  });
+
   it("renders an empty doc with the placeholder lines and reads it back", () => {
     const text = renderLiveDoc(EMPTY);
     expect(text).toContain("_No public symbols detected_");

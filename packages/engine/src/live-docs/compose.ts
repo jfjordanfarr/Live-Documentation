@@ -657,10 +657,12 @@ export function composeDependencies(args: {
     // Type-only by a written `type`, each name's own or its statement's (2026-11-22): a line of one name is type-only
     // when every statement of the group that brings the name types it, and a line of the whole module when every
     // statement of the group brings only types. Before, the group's first statement's modifier stood for every line.
+    const leftOut = !dependency.resolvedPath && bucket.entries.some((entry) => entry.leftOut);
     const qualifiersOf = (typeOnly: boolean): string[] => [
       ...(dependency.kind === "export" ? ["re-export"] : []),
       ...(typeOnly ? ["type-only"] : []),
-      ...(dependency.basis ? [dependency.basis] : [])
+      ...(dependency.basis ? [dependency.basis] : []),
+      ...(leftOut ? ["left out"] : [])
     ];
     const qualifiers = qualifiersOf(bucket.entries.every((entry) => entry.isTypeOnly));
     const nameQualifiers = (name: string): string[] =>

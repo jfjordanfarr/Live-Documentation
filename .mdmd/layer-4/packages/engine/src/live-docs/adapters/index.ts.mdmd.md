@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/engine/src/live-docs/adapters/index.ts`
-- Generated At: 2026-11-22T04:48:21.730Z
+- Generated At: 2026-11-24T07:15:05.281Z
 
 ## Authored
 ### Purpose
@@ -42,7 +42,7 @@ object: what a reader keeps of a run is kept by it (a `WeakMap` keyed by it).
 
 #### `LanguageAdapter` {#symbol-languageadapter}
 - Type: interface
-- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/index.ts#L56)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/index.ts#L60)
 
 ##### `LanguageAdapter` — Summary
 Contract for a language-specific source analyser.
@@ -56,14 +56,14 @@ the first whose `extensions` include its extension.
 
 #### `LANGUAGE_ADAPTERS` {#symbol-language_adapters}
 - Type: const
-- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/index.ts#L86)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/index.ts#L90)
 
 ##### `LANGUAGE_ADAPTERS` — Summary
 Every language adapter, in the order they are asked: the first whose file names include a file's name reads it, else the first whose extensions include its extension.
 
 #### `analyzeWithLanguageAdapters` {#symbol-analyzewithlanguageadapters}
 - Type: function
-- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/index.ts#L118)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/index.ts#L122)
 
 ##### `analyzeWithLanguageAdapters` — Summary
 Attempts to analyse a source file using the configured language adapters.

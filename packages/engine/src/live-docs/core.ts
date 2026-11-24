@@ -38,6 +38,7 @@ export { BINARY_SNIFF_BYTES, hasMeaningfulAuthoredContent, isBinaryContent, reso
 export {
   discoverDocuments,
   discoverTargetFiles,
+  discoverWorkspaceTargetFiles,
   buildWorkspaceIndexes
 } from "./discovery";
 

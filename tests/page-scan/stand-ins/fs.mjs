@@ -251,7 +251,7 @@ export const tree = {
   },
   /** Each file the scan read, with the number of times it read it. */
   reads: () => Object.fromEntries([...reads].sort(([a], [b]) => (a < b ? -1 : a > b ? 1 : 0))),
-  /** Each folder's entries, uncounted, for the stand-in for `glob`, whose walk is its own and not the scan's call of `fs`. */
+  /** Each folder's entries, uncounted, for the page's own host (`PAGE_HOST` in `page-entry.mjs`). */
   entries: (path) => entriesOf(path, { withFileTypes: true })
 };
 

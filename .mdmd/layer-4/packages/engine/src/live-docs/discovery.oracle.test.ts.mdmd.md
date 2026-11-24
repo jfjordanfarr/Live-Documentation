@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: `packages/engine/src/live-docs/discovery.oracle.test.ts`
-- Generated At: 2026-11-20T15:50:31.763Z
+- Generated At: 2026-11-24T07:15:05.718Z
 
 ## Authored
 ### Purpose
@@ -25,7 +25,6 @@ _No public symbols detected_
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
-- `ignore` - `ignore`
 - `node:child_process` - `execFileSync`, `spawnSync`
 - `node:fs` - `appendFileSync`, `existsSync`, `mkdirSync`, `mkdtempSync`, `readFileSync`, `readdirSync`, `realpathSync`, `renameSync`, `rmSync`, `statSync`, `unlinkSync`, `writeFileSync`
 - `node:os` - `os`
@@ -33,5 +32,7 @@ _No public symbols detected_
 - [`liveDocumentationConfig.normalizeLiveDocumentationConfig`](../config/liveDocumentationConfig.ts.mdmd.md#symbol-normalizelivedocumentationconfig)
 - [`discovery.discoverDocuments`](./discovery.ts.mdmd.md#symbol-discoverdocuments)
 - [`discovery.discoverTargetFiles`](./discovery.ts.mdmd.md#symbol-discovertargetfiles)
+- [`leaveOut.fromGitignores`](../tooling/leaveOut.ts.mdmd.md#symbol-fromgitignores)
+- [`leaveOut`](../tooling/leaveOut.ts.mdmd.md#symbol-leaveout-function)
 - `vitest` - `afterEach`, `describe`, `expect`, `it`
 <!-- LIVE-DOC:END Dependencies -->

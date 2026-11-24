@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/engine/src/live-docs/discovery.ts`
-- Generated At: 2026-11-22T07:12:52.795Z
+- Generated At: 2026-11-24T07:19:17.207Z
 
 ## Authored
 ### Purpose
@@ -34,9 +34,23 @@ File discovery and the workspace-wide indexes for Live Documentation. Locates wo
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
+#### `DiscoverOptions` {#symbol-discoveroptions}
+- Type: interface
+- Source: [source](../../../../../../packages/engine/src/live-docs/discovery.ts#L47)
+
+##### `DiscoverOptions` — Summary
+Options for discovering target source files and workspace documents.
+
+#### `DiscoveredTargets` {#symbol-discoveredtargets}
+- Type: interface
+- Source: [source](../../../../../../packages/engine/src/live-docs/discovery.ts#L71)
+
+##### `DiscoveredTargets` — Summary
+Result of {@link discoverWorkspaceTargetFiles}: the kept files and a predicate answering whether a path was left out.
+
 #### `docsRootWithin` {#symbol-docsrootwithin}
 - Type: function
-- Source: [source](../../../../../../packages/engine/src/live-docs/discovery.ts#L179)
+- Source: [source](../../../../../../packages/engine/src/live-docs/discovery.ts#L212)
 - Parameters: `config`: [`LiveDocumentationConfig`](../config/liveDocumentationConfig.ts.mdmd.md#symbol-livedocumentationconfig)
 
 ##### `docsRootWithin` — Summary
@@ -45,15 +59,15 @@ configuration spells it (`.mdmd`, `./.mdmd/`, an absolute path), or
 `undefined` when it is not a folder within the workspace: the workspace
 itself, or somewhere outside it.
 
-#### `discoverTargetFiles` {#symbol-discovertargetfiles}
+#### `discoverWorkspaceTargetFiles` {#symbol-discoverworkspacetargetfiles}
 - Type: function
-- Source: [source](../../../../../../packages/engine/src/live-docs/discovery.ts#L226)
-- Parameters: `options`: `DiscoverOptions`
+- Source: [source](../../../../../../packages/engine/src/live-docs/discovery.ts#L259)
+- Parameters: `options`: [`DiscoverOptions`](#symbol-discoveroptions)
 
-##### `discoverTargetFiles` — Summary
+##### `discoverWorkspaceTargetFiles` — Summary
 Locates workspace files that should receive Live Documentation generation.
 
-##### `discoverTargetFiles` — Remarks
+##### `discoverWorkspaceTargetFiles` — Remarks
 The configured globs, or the include set when one is given, are matched
 over the whole workspace in one walk, hidden files and folders included, so
 that `.devcontainer/devcontainer.json` or `.vscode/settings.json` is read
@@ -69,17 +83,17 @@ alone), and that the configuration's `exclude` names by path or glob. When
 `options.changedOnly` is `true`, the result is intersected with the files
 git marks as changed, for quick iterations over touched files.
 
-##### `discoverTargetFiles` — Parameters
+##### `discoverWorkspaceTargetFiles` — Parameters
 - `options.changedOnly`: When `true`, restricts results to files with local modifications.
 - `options.config`: Live Documentation configuration describing default globs and overrides.
 - `options.include`: Optional override set limiting discovery to pre-selected relative paths.
 - `options.warn`: Told when git cannot judge some of the files found ({@link keptByGitAndConfiguration}).
 - `options.workspaceRoot`: Absolute path to the repository root the CLI is operating in.
 
-##### `discoverTargetFiles` — Returns
+##### `discoverWorkspaceTargetFiles` — Returns
 A sorted array of absolute, workspace-resolved file paths ready for analysis.
 
-##### `discoverTargetFiles` — Examples
+##### `discoverWorkspaceTargetFiles` — Examples
 ```ts
 const files = await discoverTargetFiles({
   workspaceRoot,
@@ -89,12 +103,23 @@ const files = await discoverTargetFiles({
 });
 ```
 
-##### `discoverTargetFiles` — Links
+##### `discoverWorkspaceTargetFiles` — Links
 - `detectChangedFiles` — *
+
+#### `discoverTargetFiles` {#symbol-discovertargetfiles}
+- Type: function
+- Source: [source](../../../../../../packages/engine/src/live-docs/discovery.ts#L289)
+- Parameters: `options`: [`DiscoverOptions`](#symbol-discoveroptions)
+
+##### `discoverTargetFiles` — Summary
+Locates workspace files that should receive Live Documentation generation, returning only the sorted absolute paths.
+
+##### `discoverTargetFiles` — Links
+- `discoverWorkspaceTargetFiles`
 
 #### `discoverDocuments` {#symbol-discoverdocuments}
 - Type: function
-- Source: [source](../../../../../../packages/engine/src/live-docs/discovery.ts#L253)
+- Source: [source](../../../../../../packages/engine/src/live-docs/discovery.ts#L307)
 
 ##### `discoverDocuments` — Summary
 The workspace's documents ({@link isDocument}), which never get a doc of
@@ -113,7 +138,7 @@ Workspace-relative paths with forward slashes, sorted.
 
 #### `inWorkspaceOrder` {#symbol-inworkspaceorder}
 - Type: function
-- Source: [source](../../../../../../packages/engine/src/live-docs/discovery.ts#L375)
+- Source: [source](../../../../../../packages/engine/src/live-docs/discovery.ts#L443)
 - Returns: `T`[]
 - Parameters: `files`: `T`[]
 
@@ -125,14 +150,14 @@ the one in which files register their symbols, so it must not depend on the plat
 
 #### `WorkspaceIndexes` {#symbol-workspaceindexes}
 - Type: interface
-- Source: [source](../../../../../../packages/engine/src/live-docs/discovery.ts#L445)
+- Source: [source](../../../../../../packages/engine/src/live-docs/discovery.ts#L497)
 
 ##### `WorkspaceIndexes` — Summary
 The indexes the first pass builds: the symbols every file publishes, the files manifests declare as entries, and what readers say exists for the tests.
 
 #### `buildWorkspaceIndexes` {#symbol-buildworkspaceindexes}
 - Type: function
-- Source: [source](../../../../../../packages/engine/src/live-docs/discovery.ts#L491)
+- Source: [source](../../../../../../packages/engine/src/live-docs/discovery.ts#L543)
 
 ##### `buildWorkspaceIndexes` — Summary
 Builds the workspace-wide indexes for cross-Live-Doc resolution in one pass
@@ -171,9 +196,6 @@ re-exports it, with no mark and no warning.
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
-- `glob` - `glob`
-- `ignore` - `Ignore`, `ignore`
-- `node:fs/promises`
 - `node:path` - `path`
 - [`LiveDocumentationConfig`](../config/liveDocumentationConfig.ts.mdmd.md#symbol-livedocumentationconfig) (type-only)
 - [`index.WorkspaceFileIndex`](./adapters/index.ts.mdmd.md#symbol-workspacefileindex) (type-only)
@@ -194,18 +216,28 @@ re-exports it, with no mark and no warning.
 - [`dependencies.augmentWithReExportedSymbols`](./dependencies.ts.mdmd.md#symbol-augmentwithreexportedsymbols)
 - [`dependencies.collectDependencies`](./dependencies.ts.mdmd.md#symbol-collectdependencies)
 - [`gitUtils.detectChangedFiles`](./gitUtils.ts.mdmd.md#symbol-detectchangedfiles)
-- [`processMark.machineFailure`](./processMark.ts.mdmd.md#symbol-machinefailure)
 - [`symbolExtraction.collectExportedSymbols`](./symbolExtraction.ts.mdmd.md#symbol-collectexportedsymbols)
 - [`symbolExtraction.inferScriptKind`](./symbolExtraction.ts.mdmd.md#symbol-inferscriptkind)
 - [`gitIgnored.GitIgnoreAnswer`](../tooling/gitIgnored.ts.mdmd.md#symbol-gitignoreanswer) (type-only)
 - [`gitIgnored.GitIgnores`](../tooling/gitIgnored.ts.mdmd.md#symbol-gitignores-interface) (type-only)
 - [`gitIgnored.GitUnanswered`](../tooling/gitIgnored.ts.mdmd.md#symbol-gitunanswered) (type-only)
-- [`gitIgnored.foldersReadAsEmpty`](../tooling/gitIgnored.ts.mdmd.md#symbol-foldersreadasempty)
 - [`gitIgnored.gitIgnores`](../tooling/gitIgnored.ts.mdmd.md#symbol-gitignores-function)
 - [`gitIgnored.gitIgnoresCase`](../tooling/gitIgnored.ts.mdmd.md#symbol-gitignorescase)
+- [`gitIgnored.liesInNoRepository`](../tooling/gitIgnored.ts.mdmd.md#symbol-liesinnorepository)
+- [`LeaveOut`](../tooling/leaveOut.ts.mdmd.md#symbol-leaveout-interface) (type-only)
+- [`leaveOut.LeaveOutInput`](../tooling/leaveOut.ts.mdmd.md#symbol-leaveoutinput) (type-only)
+- [`leaveOut.fromGitignores`](../tooling/leaveOut.ts.mdmd.md#symbol-fromgitignores)
+- [`leaveOut`](../tooling/leaveOut.ts.mdmd.md#symbol-leaveout-function)
+- [`nodeHost.NODE_FILE_HOST`](../tooling/nodeHost.ts.mdmd.md#symbol-node_file_host)
 - [`pathUtils.normalizeWorkspacePath`](../tooling/pathUtils.ts.mdmd.md#symbol-normalizeworkspacepath)
+- [`sourceText.decodeSourceText`](../tooling/sourceText.ts.mdmd.md#symbol-decodesourcetext)
 - [`sourceText.readSourceText`](../tooling/sourceText.ts.mdmd.md#symbol-readsourcetext)
 - [`sourceText.throwIfMachineFailure`](../tooling/sourceText.ts.mdmd.md#symbol-throwifmachinefailure)
+- [`workspaceFiles.FileHost`](../tooling/workspaceFiles.ts.mdmd.md#symbol-filehost) (type-only)
+- [`workspaceFiles.WorkspaceReads`](../tooling/workspaceFiles.ts.mdmd.md#symbol-workspacereads-interface) (type-only)
+- [`workspaceWalk.UnreadableFolder`](../tooling/workspaceWalk.ts.mdmd.md#symbol-unreadablefolder) (type-only)
+- [`workspaceWalk.WalkedFile`](../tooling/workspaceWalk.ts.mdmd.md#symbol-walkedfile) (type-only)
+- [`workspaceWalk.walkWorkspace`](../tooling/workspaceWalk.ts.mdmd.md#symbol-walkworkspace)
 - `typescript` - `ts`
 <!-- LIVE-DOC:END Dependencies -->
 

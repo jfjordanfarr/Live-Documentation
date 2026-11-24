@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/engine/src/tooling/workspaceFiles.ts`
-- Generated At: 2026-11-22T07:12:53.591Z
+- Generated At: 2026-11-24T07:15:06.318Z
 
 ## Authored
 ### Purpose
@@ -17,29 +17,36 @@ Makes a scan read each file once. The generator builds the run's reads over the 
 - What a run keeps of each file read whole: its reading (its text, or why it is not text) and its first bytes, up to the binary test's measure. A file never read whole (a picture, a font) is asked of the host for its first bytes alone.
 - The first bytes are copied, never cut with `slice`: on Node's `Buffer` that is a view of the same memory, and until it was found later on 2026-11-22 every kept head held its whole file, about 250 MB at the peak of a scan of the whole of DNN. A unit case fails on the view.
 - On 2026-11-22 a budget on what a run keeps was built at root's ruling, and deleted the same day. Past the budget, a file was held only until the next was read. Measured under Node on the whole of DNN and in a page slowed four times on its Library, no budget moved the time beyond the machine's noise or the peak beyond its spread ([the measurements](../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-22/Probes/engine-hosts/README.md#2026-11-22-last-the-budget-measured-in-a-slowed-page-and-deleted)). Every file read whole is kept for the run.
+- Extended on 2026-11-24 for Step 5 of [the road to one engine for a page and a command line](../../../../../layer-3/engine-and-hosts.mdmd.md#6-the-road): `FileHost` now also supplies `entries(folder)` returning sorted `FolderEntries` (`files`, `folders`, and optional `linkedFolders`) so the pure walker (`workspaceWalk.ts`) lists workspaces through the host without `glob`.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
-#### `FileHost` {#symbol-filehost}
+#### `FolderEntries` {#symbol-folderentries}
 - Type: interface
 - Source: [source](../../../../../../packages/engine/src/tooling/workspaceFiles.ts#L28)
 
+##### `FolderEntries` — Summary
+A folder's immediate entries, by name, sorted: its files (links to files included), its real subfolders, and any links to folders.
+
+#### `FileHost` {#symbol-filehost}
+- Type: interface
+- Source: [source](../../../../../../packages/engine/src/tooling/workspaceFiles.ts#L36)
+
 ##### `FileHost` — Summary
-What runs the engine gives it of a file: its bytes, and its first bytes. Paths are absolute, as the readers hold them.
+What runs the engine gives it of a workspace: a file's bytes, its first bytes, and a folder's entries. Paths are absolute, as the readers hold them.
 
 #### `WorkspaceReads (interface)` {#symbol-workspacereads-interface}
 - Type: interface
-- Source: [source](../../../../../../packages/engine/src/tooling/workspaceFiles.ts#L36)
+- Source: [source](../../../../../../packages/engine/src/tooling/workspaceFiles.ts#L46)
 
 ##### `WorkspaceReads (interface)` — Summary
 A run's reads: each file read once through the host, decoded once, and kept for the run.
 
 #### `workspaceReads (function)` {#symbol-workspacereads-function}
 - Type: function
-- Source: [source](../../../../../../packages/engine/src/tooling/workspaceFiles.ts#L56)
+- Source: [source](../../../../../../packages/engine/src/tooling/workspaceFiles.ts#L66)
 - Returns: [`WorkspaceReads`](#symbol-workspacereads-interface)
-- Parameters: `host`: [`FileHost`](#symbol-filehost)
 
 ##### `workspaceReads (function)` — Summary
 The reads of one run over a host. Of each whole read the first `keptHead` bytes are kept with its reading, so that a

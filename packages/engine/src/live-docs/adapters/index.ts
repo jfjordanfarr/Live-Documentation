@@ -41,7 +41,11 @@ import { sqlAdapter } from "./sql";
  * test's, has neither, and its reader reads the disk. It is the run's own
  * object: what a reader keeps of a run is kept by it (a `WeakMap` keyed by it).
  */
-export type WorkspaceFileIndex = Set<string> & { archetypeOf?: (path: string) => LiveDocumentationArchetype } & Partial<WorkspaceReads> & Partial<WorkspaceListing>;
+export type WorkspaceFileIndex = Set<string> & {
+  archetypeOf?: (path: string) => LiveDocumentationArchetype;
+  /** True when the scan's active leave-out, exclude, gitignore, or never-documented rules left this workspace-relative path out. */
+  isLeftOut?: (relativePath: string) => boolean;
+} & Partial<WorkspaceReads> & Partial<WorkspaceListing>;
 
 /**
  * Contract for a language-specific source analyser.

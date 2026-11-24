@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/engine/src/live-docs/graphFiles.ts`
-- Generated At: 2026-11-22T07:12:52.944Z
+- Generated At: 2026-11-24T07:15:05.867Z
 
 ## Authored
 ### Purpose
@@ -21,7 +21,7 @@ The graph on disk: `readLiveDocGraph` reads every doc under the configured root 
 ### Public Symbols
 #### `readLiveDocGraph` {#symbol-readlivedocgraph}
 - Type: function
-- Source: [source](../../../../../../packages/engine/src/live-docs/graphFiles.ts#L25)
+- Source: [source](../../../../../../packages/engine/src/live-docs/graphFiles.ts#L27)
 
 ##### `readLiveDocGraph` — Summary
 Reads every Live Doc under the configured root and derives the graph.
@@ -31,14 +31,14 @@ nobody may hand-edit can only be malformed by a generator bug.
 
 #### `EstateReading` {#symbol-estatereading}
 - Type: interface
-- Source: [source](../../../../../../packages/engine/src/live-docs/graphFiles.ts#L46)
+- Source: [source](../../../../../../packages/engine/src/live-docs/graphFiles.ts#L53)
 
 ##### `EstateReading` — Summary
 What reading an estate found: its graph, the scans it read, and what it found wanting.
 
 #### `readEstateGraph` {#symbol-readestategraph}
 - Type: function
-- Source: [source](../../../../../../packages/engine/src/live-docs/graphFiles.ts#L65)
+- Source: [source](../../../../../../packages/engine/src/live-docs/graphFiles.ts#L72)
 
 ##### `readEstateGraph` — Summary
 Reads the graph of the estate a board describes.
@@ -53,7 +53,7 @@ them what each left unlinked. One scan at the root is today's single graph.
 
 #### `writeLiveDocGraph` {#symbol-writelivedocgraph}
 - Type: function
-- Source: [source](../../../../../../packages/engine/src/live-docs/graphFiles.ts#L113)
+- Source: [source](../../../../../../packages/engine/src/live-docs/graphFiles.ts#L120)
 - Parameters: `graph`: [`LiveDocGraph`](./graph.ts.mdmd.md#symbol-livedocgraph)
 
 ##### `writeLiveDocGraph` — Summary
@@ -65,7 +65,6 @@ The workspace-relative path written.
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
-- `glob` - `glob`
 - `node:fs` - `promises`
 - `node:path` - `path`
 - [`Board`](./board.ts.mdmd.md#symbol-board) (type-only)
@@ -79,7 +78,10 @@ The workspace-relative path written.
 - [`graph.GRAPH_INDEX_FILE`](./graph.ts.mdmd.md#symbol-graph_index_file)
 - [`graph.LiveDocGraph`](./graph.ts.mdmd.md#symbol-livedocgraph) (type-only)
 - [`graph.deriveLiveDocGraph`](./graph.ts.mdmd.md#symbol-derivelivedocgraph)
+- [`nodeHost.NODE_FILE_HOST`](../tooling/nodeHost.ts.mdmd.md#symbol-node_file_host)
 - [`sourceText.throwIfMachineFailure`](../tooling/sourceText.ts.mdmd.md#symbol-throwifmachinefailure)
+- [`workspaceFiles.FileHost`](../tooling/workspaceFiles.ts.mdmd.md#symbol-filehost) (type-only)
+- [`workspaceWalk.walkWorkspace`](../tooling/workspaceWalk.ts.mdmd.md#symbol-walkworkspace)
 <!-- LIVE-DOC:END Dependencies -->
 
 <!-- LIVE-DOC:BEGIN Cited By -->

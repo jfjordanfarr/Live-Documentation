@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/engine/src/live-docs/dependencies.ts`
-- Generated At: 2026-11-22T07:12:52.710Z
+- Generated At: 2026-11-24T07:15:05.704Z
 
 ## Authored
 ### Purpose
@@ -49,7 +49,7 @@ A sorted list of dependency entries describing specifiers and imported symbols.
 
 #### `mergeDependencyEntries` {#symbol-mergedependencyentries}
 - Type: function
-- Source: [source](../../../../../../packages/engine/src/live-docs/dependencies.ts#L197)
+- Source: [source](../../../../../../packages/engine/src/live-docs/dependencies.ts#L204)
 - Returns: [`DependencyEntry`](./coreTypes.ts.mdmd.md#symbol-dependencyentry)[]
 - Parameters: `base`: [`DependencyEntry`](./coreTypes.ts.mdmd.md#symbol-dependencyentry)[]; `extras`: [`DependencyEntry`](./coreTypes.ts.mdmd.md#symbol-dependencyentry)[]
 
@@ -65,7 +65,7 @@ A merged, sorted dependency list
 
 #### `resolveDependency` {#symbol-resolvedependency}
 - Type: function
-- Source: [source](../../../../../../packages/engine/src/live-docs/dependencies.ts#L294)
+- Source: [source](../../../../../../packages/engine/src/live-docs/dependencies.ts#L305)
 - Parameters: `files`: [`ListedFiles`](../tooling/workspaceProbes.ts.mdmd.md#symbol-listedfiles)
 
 ##### `resolveDependency` — Summary
@@ -84,14 +84,14 @@ The normalised relative path when resolution succeeds, otherwise `undefined`.
 
 #### `shouldInferDomDependencies` {#symbol-shouldinferdomdependencies}
 - Type: function
-- Source: [source](../../../../../../packages/engine/src/live-docs/dependencies.ts#L438)
+- Source: [source](../../../../../../packages/engine/src/live-docs/dependencies.ts#L511)
 
 ##### `shouldInferDomDependencies` — Summary
 Checks if DOM dependency inference should run for a file type.
 
 #### `augmentWithReExportedSymbols` {#symbol-augmentwithreexportedsymbols}
 - Type: function
-- Source: [source](../../../../../../packages/engine/src/live-docs/dependencies.ts#L462)
+- Source: [source](../../../../../../packages/engine/src/live-docs/dependencies.ts#L535)
 
 ##### `augmentWithReExportedSymbols` — Summary
 Augments symbol list with re-exported symbols from star exports.

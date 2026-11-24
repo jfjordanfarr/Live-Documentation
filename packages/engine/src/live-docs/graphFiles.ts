@@ -5,11 +5,13 @@
  * @module
  */
 
-import { glob } from "glob";
 import { promises as fs } from "node:fs";
 import path from "node:path";
 
+import { NODE_FILE_HOST } from "../tooling/nodeHost";
 import { throwIfMachineFailure } from "../tooling/sourceText";
+import type { FileHost } from "../tooling/workspaceFiles";
+import { walkWorkspace } from "../tooling/workspaceWalk";
 import type { Board } from "./board";
 import { folderOf } from "./boardGraph";
 import { LiveDocSyntaxError, parseLiveDoc } from "./document";
@@ -22,11 +24,16 @@ import { GRAPH_INDEX_FILE, deriveLiveDocGraph, type DocLocation, type LiveDocGra
  * A doc the grammar refuses stops the read with its path and line, since a doc
  * nobody may hand-edit can only be malformed by a generator bug.
  */
-export async function readLiveDocGraph(args: { workspaceRoot: string; config: DocLocation }): Promise<LiveDocGraph> {
+export async function readLiveDocGraph(args: { workspaceRoot: string; config: DocLocation; host?: FileHost }): Promise<LiveDocGraph> {
   const workspaceRoot = path.resolve(args.workspaceRoot);
-  const pattern = path.posix.join(args.config.root, args.config.baseLayer, "**", `*${args.config.extension}`);
-  // `dot`, since a hidden file's doc lives under a hidden path segment (`.vscode/settings.json`).
-  const absolutePaths = await glob(pattern, { cwd: workspaceRoot, absolute: true, nodir: true, dot: true, windowsPathsNoEscape: true });
+  const baseLayerRoot = path.resolve(workspaceRoot, args.config.root, args.config.baseLayer);
+  const walked = await walkWorkspace({ workspaceRoot: baseLayerRoot, host: args.host ?? NODE_FILE_HOST });
+  if (walked.unreadable.length > 0) {
+    throw walked.unreadable[0].error;
+  }
+  const absolutePaths = walked.files
+    .filter((entry) => entry.relative.endsWith(args.config.extension))
+    .map((entry) => entry.absolute);
   const docs = await Promise.all(
     absolutePaths.map(async (absolutePath) => {
       const docPath = path.relative(workspaceRoot, absolutePath).split(path.sep).join("/");

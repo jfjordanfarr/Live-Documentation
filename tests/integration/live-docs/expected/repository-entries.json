@@ -104,6 +104,7 @@
     "scripts/live-docs/visualize-sample.ts": [
       "command live-docs:visualize:estate of package.json",
       "command live-docs:visualize:link-targets of package.json",
+      "command live-docs:visualize:powershell of package.json",
       "command live-docs:visualize:tidepool of package.json"
     ],
     "scripts/live-docs/visualize-static.ts": [

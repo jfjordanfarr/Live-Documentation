@@ -37,10 +37,10 @@
  * against scip-dotnet on the C# fixtures, and `npm run oracle:csharp` against
  * the C# compiler's own binding on any folder.
  */
-import { glob } from "glob";
 import path from "node:path";
 
 import { compareText } from "../../tooling/compareText";
+import { listFilesOnDisk } from "../../tooling/nodeHost";
 import { normalizeWorkspacePath } from "../../tooling/pathUtils";
 import { readSourceText, type SourceReads, throwIfMachineFailure } from "../../tooling/sourceText";
 import type {
@@ -1186,17 +1186,13 @@ interface TypeTable {
 
 const tableCache = new WeakMap<WorkspaceFileIndex, Promise<TypeTable>>();
 
+const STANDALONE_IGNORED_FOLDERS: ReadonlySet<string> = new Set(["node_modules", "bin", "obj"]);
+
 async function listCSharpFiles(workspaceRoot: string, fileIndex: WorkspaceFileIndex | undefined): Promise<string[]> {
   if (fileIndex) {
     return Array.from(fileIndex).filter((file) => file.toLowerCase().endsWith(".cs")).sort();
   }
-  const files = await glob("**/*.cs", {
-    cwd:                 workspaceRoot,
-    ignore:              ["**/node_modules/**", "**/bin/**", "**/obj/**"],
-    nodir:               true,
-    windowsPathsNoEscape: true
-  });
-  return files.map((file) => normalizeWorkspacePath(file)).sort();
+  return listFilesOnDisk(workspaceRoot, ".cs", STANDALONE_IGNORED_FOLDERS, true);
 }
 
 async function buildTypeTable(workspaceRoot: string, fileIndex: WorkspaceFileIndex | undefined): Promise<TypeTable> {

@@ -24,12 +24,22 @@
  */
 import { decodeSourceText, type SourceTextReading } from "./sourceText";
 
-/** What runs the engine gives it of a file: its bytes, and its first bytes. Paths are absolute, as the readers hold them. */
+/** A folder's immediate entries, by name, sorted: its files (links to files included), its real subfolders, and any links to folders. */
+export interface FolderEntries {
+  files: readonly string[];
+  folders: readonly string[];
+  /** Subfolder names that are symbolic links to directories: not entered by a bare `**` walk, entered only when a pattern walks through them. */
+  linkedFolders?: readonly string[];
+}
+
+/** What runs the engine gives it of a workspace: a file's bytes, its first bytes, and a folder's entries. Paths are absolute, as the readers hold them. */
 export interface FileHost {
   /** A file's bytes. A failure is thrown as the host met it, so that it is read as the machine's or the file's. */
   read(absolutePath: string): Promise<Uint8Array>;
   /** A file's first `bytes` bytes, fewer when it is shorter. A host may answer it by reading the whole file. */
   head(absolutePath: string, bytes: number): Promise<Uint8Array>;
+  /** A folder's immediate files and subfolders, sorted by name. A failure is thrown as the host met it. */
+  entries(absoluteFolder: string): Promise<FolderEntries>;
 }
 
 /** A run's reads: each file read once through the host, decoded once, and kept for the run. */
@@ -53,7 +63,7 @@ interface Kept {
  * 2026-11-22, under Node on the whole of DNN and in a slowed page on its Library, and deleted the same day: no budget
  * moved the time beyond the machine's noise or the peak beyond its spread.
  */
-export function workspaceReads(host: FileHost, keptHead: number): WorkspaceReads {
+export function workspaceReads(host: Pick<FileHost, "read" | "head">, keptHead: number): WorkspaceReads {
   const whole = new Map<string, Promise<Kept>>();
   const heads = new Map<string, Promise<Uint8Array>>();
   const readWhole = (absolutePath: string): Promise<Kept> => {

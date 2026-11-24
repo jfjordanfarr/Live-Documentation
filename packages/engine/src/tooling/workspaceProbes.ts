@@ -14,7 +14,10 @@ import { childrenOnDisk, kindOnDisk } from "./nodeHost";
 import type { FolderChildren, PathKind, WorkspaceListing } from "./workspaceListing";
 
 /** A run's listing, where a run hands one: the file index a reader is handed carries it. */
-export type ListedFiles = Partial<WorkspaceListing>;
+export type ListedFiles = Partial<WorkspaceListing> & {
+  /** True when the scan's active leave-out, exclude, gitignore, or never-documented rules left this workspace-relative path out. */
+  isLeftOut?: (relativePath: string) => boolean;
+};
 
 /** What lies at a path: a kept file or a folder holding kept files, from the run's listing; else on the disk. */
 export function pathKind(absolutePath: string, files?: ListedFiles): PathKind | undefined {

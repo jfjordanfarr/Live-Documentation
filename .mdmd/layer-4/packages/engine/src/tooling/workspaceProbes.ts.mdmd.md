@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/engine/src/tooling/workspaceProbes.ts`
-- Generated At: 2026-11-22T05:07:09.880Z
+- Generated At: 2026-11-24T07:15:06.324Z
 
 ## Authored
 ### Purpose
@@ -26,7 +26,7 @@ A run's listing, where a run hands one: the file index a reader is handed carrie
 
 #### `pathKind` {#symbol-pathkind}
 - Type: function
-- Source: [source](../../../../../../packages/engine/src/tooling/workspaceProbes.ts#L20)
+- Source: [source](../../../../../../packages/engine/src/tooling/workspaceProbes.ts#L23)
 - Returns: [`PathKind`](./workspaceListing.ts.mdmd.md#symbol-pathkind)
 - Parameters: `files`: [`ListedFiles`](#symbol-listedfiles)
 
@@ -35,7 +35,7 @@ What lies at a path: a kept file or a folder holding kept files, from the run's 
 
 #### `folderChildren` {#symbol-folderchildren}
 - Type: function
-- Source: [source](../../../../../../packages/engine/src/tooling/workspaceProbes.ts#L25)
+- Source: [source](../../../../../../packages/engine/src/tooling/workspaceProbes.ts#L28)
 - Returns: [`FolderChildren`](./workspaceListing.ts.mdmd.md#symbol-folderchildren)
 - Parameters: `files`: [`ListedFiles`](#symbol-listedfiles)
 

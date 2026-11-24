@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/engine/src/live-docs/core.ts`
-- Generated At: 2026-11-22T07:12:52.654Z
+- Generated At: 2026-11-24T07:15:05.658Z
 
 ## Authored
 ### Purpose
@@ -105,41 +105,45 @@ The engine's analysis facade: the names that consumers import through `core` rat
 - Type: unknown
 - Source: [source](../../../../../../packages/engine/src/live-docs/core.ts#L40)
 
-#### `buildWorkspaceIndexes` {#symbol-buildworkspaceindexes}
+#### `discoverWorkspaceTargetFiles` {#symbol-discoverworkspacetargetfiles}
 - Type: unknown
 - Source: [source](../../../../../../packages/engine/src/live-docs/core.ts#L41)
 
+#### `buildWorkspaceIndexes` {#symbol-buildworkspaceindexes}
+- Type: unknown
+- Source: [source](../../../../../../packages/engine/src/live-docs/core.ts#L42)
+
 #### `collectExportedSymbols` {#symbol-collectexportedsymbols}
 - Type: unknown
-- Source: [source](../../../../../../packages/engine/src/live-docs/core.ts#L44)
+- Source: [source](../../../../../../packages/engine/src/live-docs/core.ts#L45)
 
 #### `computePublicSymbolHeadingInfo` {#symbol-computepublicsymbolheadinginfo}
 - Type: unknown
-- Source: [source](../../../../../../packages/engine/src/live-docs/core.ts#L47)
+- Source: [source](../../../../../../packages/engine/src/live-docs/core.ts#L48)
 
 #### `composeCitedBy` {#symbol-composecitedby}
 - Type: unknown
-- Source: [source](../../../../../../packages/engine/src/live-docs/core.ts#L48)
+- Source: [source](../../../../../../packages/engine/src/live-docs/core.ts#L49)
 
 #### `composeEntries` {#symbol-composeentries}
 - Type: unknown
-- Source: [source](../../../../../../packages/engine/src/live-docs/core.ts#L49)
+- Source: [source](../../../../../../packages/engine/src/live-docs/core.ts#L50)
 
 #### `composeSymbolBlocks` {#symbol-composesymbolblocks}
 - Type: unknown
-- Source: [source](../../../../../../packages/engine/src/live-docs/core.ts#L50)
+- Source: [source](../../../../../../packages/engine/src/live-docs/core.ts#L51)
 
 #### `composeDependencies` {#symbol-composedependencies}
 - Type: unknown
-- Source: [source](../../../../../../packages/engine/src/live-docs/core.ts#L51)
+- Source: [source](../../../../../../packages/engine/src/live-docs/core.ts#L52)
 
 #### `composeReExports` {#symbol-composereexports}
 - Type: unknown
-- Source: [source](../../../../../../packages/engine/src/live-docs/core.ts#L52)
+- Source: [source](../../../../../../packages/engine/src/live-docs/core.ts#L53)
 
 #### `analyzeSourceFile` {#symbol-analyzesourcefile}
 - Type: unknown
-- Source: [source](../../../../../../packages/engine/src/live-docs/core.ts#L55)
+- Source: [source](../../../../../../packages/engine/src/live-docs/core.ts#L56)
 <!-- LIVE-DOC:END Public Symbols -->
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
@@ -172,6 +176,7 @@ The engine's analysis facade: the names that consumers import through `core` rat
 - [`discovery.buildWorkspaceIndexes`](./discovery.ts.mdmd.md#symbol-buildworkspaceindexes) (re-export)
 - [`discovery.discoverDocuments`](./discovery.ts.mdmd.md#symbol-discoverdocuments) (re-export)
 - [`discovery.discoverTargetFiles`](./discovery.ts.mdmd.md#symbol-discovertargetfiles) (re-export)
+- [`discovery.discoverWorkspaceTargetFiles`](./discovery.ts.mdmd.md#symbol-discoverworkspacetargetfiles) (re-export)
 - [`sourceAnalysis.analyzeSourceFile`](./sourceAnalysis.ts.mdmd.md#symbol-analyzesourcefile) (re-export)
 - [`symbolExtraction.collectExportedSymbols`](./symbolExtraction.ts.mdmd.md#symbol-collectexportedsymbols) (re-export)
 <!-- LIVE-DOC:END Dependencies -->

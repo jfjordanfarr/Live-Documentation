@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/engine/src/tooling/nodeHost.ts`
-- Generated At: 2026-11-22T04:48:23.839Z
+- Generated At: 2026-11-24T07:15:06.297Z
 
 ## Authored
 ### Purpose
@@ -19,21 +19,39 @@ Where the command line reads a source file from the disk: a file's bytes, and it
 ### Public Symbols
 #### `readFileBytes` {#symbol-readfilebytes}
 - Type: function
-- Source: [source](../../../../../../packages/engine/src/tooling/nodeHost.ts#L22)
+- Source: [source](../../../../../../packages/engine/src/tooling/nodeHost.ts#L24)
 
 ##### `readFileBytes` — Summary
 A file's bytes, from the disk.
 
 #### `readFileHead` {#symbol-readfilehead}
 - Type: function
-- Source: [source](../../../../../../packages/engine/src/tooling/nodeHost.ts#L27)
+- Source: [source](../../../../../../packages/engine/src/tooling/nodeHost.ts#L29)
 
 ##### `readFileHead` — Summary
 The first `bytes` of a file, for the content's say on what the file is; fewer when the file is shorter.
 
+#### `listFolderEntries` {#symbol-listfolderentries}
+- Type: function
+- Source: [source](../../../../../../packages/engine/src/tooling/nodeHost.ts#L45)
+
+##### `listFolderEntries` — Summary
+A folder's immediate files and subfolders on the disk, sorted by name. Symbolic links are inspected with `stat`: a
+link to a file joins `files`, a link to a folder joins `linkedFolders`, a link whose target is absent, loops or
+passes through a file is skipped, and a failure of the machine's (permission denied, too many open files) is thrown.
+
+#### `listFilesOnDisk` {#symbol-listfilesondisk}
+- Type: function
+- Source: [source](../../../../../../packages/engine/src/tooling/nodeHost.ts#L76)
+- Parameters: `ignoredFolders`: `ReadonlySet`
+
+##### `listFilesOnDisk` — Summary
+Workspace-relative paths of files matching `extension` on the disk, skipping `.git` and `ignoredFolders` by folder
+name, sorted. Used only when a language reader is called standalone without a run's `WorkspaceFileIndex`.
+
 #### `kindOnDisk` {#symbol-kindondisk}
 - Type: function
-- Source: [source](../../../../../../packages/engine/src/tooling/nodeHost.ts#L43)
+- Source: [source](../../../../../../packages/engine/src/tooling/nodeHost.ts#L111)
 - Returns: [`PathKind`](./workspaceListing.ts.mdmd.md#symbol-pathkind)
 
 ##### `kindOnDisk` — Summary
@@ -43,7 +61,7 @@ as a reader's own tests call it (`pathKind` in `workspaceProbes.ts`).
 
 #### `childrenOnDisk` {#symbol-childrenondisk}
 - Type: function
-- Source: [source](../../../../../../packages/engine/src/tooling/nodeHost.ts#L54)
+- Source: [source](../../../../../../packages/engine/src/tooling/nodeHost.ts#L122)
 - Returns: [`FolderChildren`](./workspaceListing.ts.mdmd.md#symbol-folderchildren)
 
 ##### `childrenOnDisk` — Summary
@@ -51,7 +69,7 @@ A folder's files and folders on the disk, by name, links followed; nothing when 
 
 #### `NODE_FILE_HOST` {#symbol-node_file_host}
 - Type: const
-- Source: [source](../../../../../../packages/engine/src/tooling/nodeHost.ts#L67)
+- Source: [source](../../../../../../packages/engine/src/tooling/nodeHost.ts#L135)
 - Returns: [`FileHost`](./workspaceFiles.ts.mdmd.md#symbol-filehost)
 
 ##### `NODE_FILE_HOST` — Summary
@@ -64,6 +82,7 @@ The disk, as Node reads it.
 - `node:path` - `path`
 - [`sourceText.throwIfMachineFailure`](./sourceText.ts.mdmd.md#symbol-throwifmachinefailure)
 - [`workspaceFiles.FileHost`](./workspaceFiles.ts.mdmd.md#symbol-filehost) (type-only)
+- [`workspaceFiles.FolderEntries`](./workspaceFiles.ts.mdmd.md#symbol-folderentries) (type-only)
 - [`workspaceListing.FolderChildren`](./workspaceListing.ts.mdmd.md#symbol-folderchildren) (type-only)
 - [`workspaceListing.PathKind`](./workspaceListing.ts.mdmd.md#symbol-pathkind) (type-only)
 <!-- LIVE-DOC:END Dependencies -->

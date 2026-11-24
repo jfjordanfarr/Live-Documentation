@@ -101,7 +101,7 @@ export interface Dependency {
   link?: string;
   /** For an external dependency, the symbols taken from it. */
   symbols?: string[];
-  /** `re-export`, `type-only`, and the basis of an edge not observed from source: `contract`, `configuration`. */
+  /** `re-export`, `type-only`, `left out`, and the basis of an edge not observed from source: `contract`, `configuration`. */
   qualifiers: string[];
 }
 

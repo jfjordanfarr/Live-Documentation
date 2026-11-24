@@ -34,8 +34,7 @@ export const STAND_INS = {
   "fs/promises": "fs-promises.mjs",
   path: "path.mjs",
   process: "process.mjs",
-  child_process: "child_process.mjs",
-  glob: "glob.mjs"
+  child_process: "child_process.mjs"
 };
 
 /**
@@ -52,14 +51,13 @@ export const GRAMMARS = [
 const standIn = (name) => path.join(here, "stand-ins", name);
 const inside = (file, folder) => !path.relative(path.join(REPO, folder), file).startsWith("..");
 
-/** The plugin that puts the stand-ins in place of Node's modules and of `glob`, and refuses a new dependence on Node. */
+/** The plugin that puts the stand-ins in place of Node's modules, and refuses a new dependence on Node. */
 const standIns = {
   name: "stand-ins",
   setup(builder) {
     builder.onResolve({ filter: /.*/ }, (args) => {
       if (args.path === "real-web-tree-sitter") return { path: path.join(REPO, "node_modules/web-tree-sitter/web-tree-sitter.js") };
       if (args.path === "web-tree-sitter") return { path: standIn("web-tree-sitter.mjs") };
-      if (args.path === "glob") return { path: standIn(STAND_INS.glob) };
       if (!isBuiltin(args.path)) return undefined;
       const name = args.path.replace(/^node:/u, "");
       if (STAND_INS[name]) return { path: standIn(STAND_INS[name]) };

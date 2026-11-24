@@ -15,8 +15,10 @@ import { promises as fs, readdirSync, statSync } from "node:fs";
 import path from "node:path";
 
 import { throwIfMachineFailure } from "./sourceText";
-import type { FileHost } from "./workspaceFiles";
+import type { FileHost, FolderEntries } from "./workspaceFiles";
 import type { FolderChildren, PathKind } from "./workspaceListing";
+
+const byCodeUnit = (a: string, b: string): number => (a < b ? -1 : a > b ? 1 : 0);
 
 /** A file's bytes, from the disk. */
 export async function readFileBytes(absolutePath: string): Promise<Uint8Array> {
@@ -33,6 +35,72 @@ export async function readFileHead(absolutePath: string, bytes: number): Promise
   } finally {
     await handle.close();
   }
+}
+
+/**
+ * A folder's immediate files and subfolders on the disk, sorted by name. Symbolic links are inspected with `stat`: a
+ * link to a file joins `files`, a link to a folder joins `linkedFolders`, a link whose target is absent, loops or
+ * passes through a file is skipped, and a failure of the machine's (permission denied, too many open files) is thrown.
+ */
+export async function listFolderEntries(absoluteFolder: string): Promise<FolderEntries> {
+  const dirents = await fs.readdir(absoluteFolder, { withFileTypes: true });
+  const files: string[] = [];
+  const folders: string[] = [];
+  const linkedFolders: string[] = [];
+  for (const entry of dirents) {
+    if (entry.isFile()) {
+      files.push(entry.name);
+    } else if (entry.isDirectory()) {
+      folders.push(entry.name);
+    } else if (entry.isSymbolicLink()) {
+      try {
+        const stats = await fs.stat(path.join(absoluteFolder, entry.name));
+        if (stats.isFile()) files.push(entry.name);
+        else if (stats.isDirectory()) linkedFolders.push(entry.name);
+      } catch (error) {
+        throwIfMachineFailure(error);
+      }
+    }
+  }
+  files.sort(byCodeUnit);
+  folders.sort(byCodeUnit);
+  if (linkedFolders.length === 0) return { files, folders };
+  linkedFolders.sort(byCodeUnit);
+  return { files, folders, linkedFolders };
+}
+
+/**
+ * Workspace-relative paths of files matching `extension` on the disk, skipping `.git` and `ignoredFolders` by folder
+ * name, sorted. Used only when a language reader is called standalone without a run's `WorkspaceFileIndex`.
+ */
+export async function listFilesOnDisk(
+  workspaceRoot: string,
+  extension: string,
+  ignoredFolders: ReadonlySet<string>,
+  caseInsensitive = false
+): Promise<string[]> {
+  const target = caseInsensitive ? extension.toLowerCase() : extension;
+  const matches = (name: string): boolean => (caseInsensitive ? name.toLowerCase() : name).endsWith(target);
+  const found: string[] = [];
+  const visit = async (relative: string): Promise<void> => {
+    const absolute = relative === "" ? workspaceRoot : path.join(workspaceRoot, relative);
+    let entries: FolderEntries;
+    try {
+      entries = await listFolderEntries(absolute);
+    } catch (error) {
+      throwIfMachineFailure(error);
+      return;
+    }
+    for (const file of entries.files) {
+      if (matches(file)) found.push(relative === "" ? file : `${relative}/${file}`);
+    }
+    for (const folder of entries.folders) {
+      if (folder === ".git" || ignoredFolders.has(folder)) continue;
+      await visit(relative === "" ? folder : `${relative}/${folder}`);
+    }
+  };
+  await visit("");
+  return found.sort(byCodeUnit);
 }
 
 /**
@@ -64,4 +132,4 @@ export function childrenOnDisk(absoluteFolder: string): FolderChildren | undefin
 }
 
 /** The disk, as Node reads it. */
-export const NODE_FILE_HOST: FileHost = { read: readFileBytes, head: readFileHead };
+export const NODE_FILE_HOST: FileHost = { read: readFileBytes, head: readFileHead, entries: listFolderEntries };

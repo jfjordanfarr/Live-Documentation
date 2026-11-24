@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: `packages/generator/src/generator.ts`
 - Entry: module of [`packages/generator/package.json`](../package.json.mdmd.md)
-- Generated At: 2026-11-22T07:12:56.986Z
+- Generated At: 2026-11-24T07:15:08.335Z
 
 ## Authored
 ### Purpose
@@ -34,7 +34,7 @@ Coordinates Live Documentation generation: analyzes source files, carries author
 ### Public Symbols
 #### `LiveDocGeneratorResult` {#symbol-livedocgeneratorresult}
 - Type: interface
-- Source: [source](../../../../../packages/generator/src/generator.ts#L66)
+- Source: [source](../../../../../packages/generator/src/generator.ts#L72)
 
 ##### `LiveDocGeneratorResult` — Summary
 Summary returned by {@link generateLiveDocs} after processing all target files.
@@ -44,14 +44,14 @@ the `files` array gives per-file detail for dry-run previews and CI checks.
 
 #### `SourceReadings` {#symbol-sourcereadings}
 - Type: interface
-- Source: [source](../../../../../packages/generator/src/generator.ts#L87)
+- Source: [source](../../../../../packages/generator/src/generator.ts#L93)
 
 ##### `SourceReadings` — Summary
 The files the one reading step read as UTF-16 or as Windows-1252, and those it did not read as text, by source path.
 
 #### `generateLiveDocs` {#symbol-generatelivedocs}
 - Type: function
-- Source: [source](../../../../../packages/generator/src/generator.ts#L128)
+- Source: [source](../../../../../packages/generator/src/generator.ts#L134)
 - Parameters: `options`: `GenerateLiveDocsOptions`
 
 ##### `generateLiveDocs` — Summary
@@ -79,7 +79,6 @@ behind the `Entry` lines (2026-10-15).
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
-- `glob` - `glob`
 - `node:fs/promises`
 - `node:path` - `path`
 - [`LiveDocumentationConfig`](../../engine/src/config/liveDocumentationConfig.ts.mdmd.md#symbol-livedocumentationconfig) (type-only)
@@ -102,6 +101,7 @@ behind the `Entry` lines (2026-10-15).
 - [`core.computePublicSymbolHeadingInfo`](../../engine/src/live-docs/core.ts.mdmd.md#symbol-computepublicsymbolheadinginfo)
 - [`core.discoverDocuments`](../../engine/src/live-docs/core.ts.mdmd.md#symbol-discoverdocuments)
 - [`core.discoverTargetFiles`](../../engine/src/live-docs/core.ts.mdmd.md#symbol-discovertargetfiles)
+- [`core.discoverWorkspaceTargetFiles`](../../engine/src/live-docs/core.ts.mdmd.md#symbol-discoverworkspacetargetfiles)
 - [`core.hasMeaningfulAuthoredContent`](../../engine/src/live-docs/core.ts.mdmd.md#symbol-hasmeaningfulauthoredcontent)
 - [`core.isBinaryContent`](../../engine/src/live-docs/core.ts.mdmd.md#symbol-isbinarycontent)
 - [`core.resolveArchetype`](../../engine/src/live-docs/core.ts.mdmd.md#symbol-resolvearchetype)
@@ -121,6 +121,9 @@ behind the `Entry` lines (2026-10-15).
 - [`relatedDocs.citingDocuments`](../../engine/src/live-docs/relatedDocs.ts.mdmd.md#symbol-citingdocuments)
 - [`relatedDocs.isMarkdownDocument`](../../engine/src/live-docs/relatedDocs.ts.mdmd.md#symbol-ismarkdowndocument)
 - [`gitIgnored`](../../engine/src/tooling/gitIgnored.ts.mdmd.md#symbol-gitignored)
+- [`gitIgnored.gitIgnores`](../../engine/src/tooling/gitIgnored.ts.mdmd.md#symbol-gitignores-function)
+- [`leaveOut.LeaveOutInput`](../../engine/src/tooling/leaveOut.ts.mdmd.md#symbol-leaveoutinput) (type-only)
+- [`leaveOut`](../../engine/src/tooling/leaveOut.ts.mdmd.md#symbol-leaveout-function)
 - [`nodeHost.NODE_FILE_HOST`](../../engine/src/tooling/nodeHost.ts.mdmd.md#symbol-node_file_host)
 - [`pathUtils.normalizeWorkspacePath`](../../engine/src/tooling/pathUtils.ts.mdmd.md#symbol-normalizeworkspacepath)
 - [`pathUtils.toWorkspaceRelativePath`](../../engine/src/tooling/pathUtils.ts.mdmd.md#symbol-toworkspacerelativepath)
@@ -128,8 +131,10 @@ behind the `Entry` lines (2026-10-15).
 - [`sourceText.readSourceReading`](../../engine/src/tooling/sourceText.ts.mdmd.md#symbol-readsourcereading)
 - [`sourceText.throwIfMachineFailure`](../../engine/src/tooling/sourceText.ts.mdmd.md#symbol-throwifmachinefailure)
 - [`workspaceFiles.FileHost`](../../engine/src/tooling/workspaceFiles.ts.mdmd.md#symbol-filehost) (type-only)
+- [`workspaceFiles.WorkspaceReads`](../../engine/src/tooling/workspaceFiles.ts.mdmd.md#symbol-workspacereads-interface) (type-only)
 - [`workspaceFiles.workspaceReads`](../../engine/src/tooling/workspaceFiles.ts.mdmd.md#symbol-workspacereads-function)
 - [`workspaceListing`](../../engine/src/tooling/workspaceListing.ts.mdmd.md#symbol-workspacelisting-function)
+- [`workspaceWalk.walkWorkspace`](../../engine/src/tooling/workspaceWalk.ts.mdmd.md#symbol-walkworkspace)
 <!-- LIVE-DOC:END Dependencies -->
 
 <!-- LIVE-DOC:BEGIN Cited By -->

@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/engine/src/live-docs/adapters/csharp.ts`
-- Generated At: 2026-11-22T07:28:48.634Z
+- Generated At: 2026-11-24T07:15:05.185Z
 
 ## Authored
 ### Purpose
@@ -28,14 +28,14 @@ Harvests public symbols, XML doc comments, and dependency edges from C# sources,
 ### Public Symbols
 #### `TYPE_NAME_REASONS` {#symbol-type_name_reasons}
 - Type: const
-- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/csharp.ts#L1268)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/csharp.ts#L1264)
 
 ##### `TYPE_NAME_REASONS` — Summary
 Why a type name has no link although the workspace declares it.
 
 #### `resolveWorkspaceTypes` {#symbol-resolveworkspacetypes}
 - Type: function
-- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/csharp.ts#L1910)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/csharp.ts#L1906)
 - Parameters: `fileIndex`: [`WorkspaceFileIndex`](./index.ts.mdmd.md#symbol-workspacefileindex)
 
 ##### `resolveWorkspaceTypes` — Summary
@@ -43,7 +43,7 @@ The workspace files that declare a qualified type name, for adapters of other fi
 
 #### `csharpAdapter` {#symbol-csharpadapter}
 - Type: const
-- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/csharp.ts#L1921)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/csharp.ts#L1917)
 - Returns: [`LanguageAdapter`](./index.ts.mdmd.md#symbol-languageadapter)
 
 ##### `csharpAdapter` — Summary
@@ -52,7 +52,6 @@ Language adapter for C# (`.cs`): tree-sitter symbols and compiler-style name res
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
-- `glob` - `glob`
 - `node:path` - `path`
 - [`csharp.dependencies.ConfigReference`](./csharp.dependencies.ts.mdmd.md#symbol-configreference) (type-only)
 - [`csharp.dependencies.ResolvedTypeTarget`](./csharp.dependencies.ts.mdmd.md#symbol-resolvedtypetarget) (type-only)
@@ -88,6 +87,7 @@ Language adapter for C# (`.cs`): tree-sitter symbols and compiler-style name res
 - [`openings.sqlObjectName`](../openings.ts.mdmd.md#symbol-sqlobjectname-function)
 - [`openings.sqlReferences`](../openings.ts.mdmd.md#symbol-sqlreferences)
 - [`compareText`](../../tooling/compareText.ts.mdmd.md#symbol-comparetext)
+- [`nodeHost.listFilesOnDisk`](../../tooling/nodeHost.ts.mdmd.md#symbol-listfilesondisk)
 - [`pathUtils.normalizeWorkspacePath`](../../tooling/pathUtils.ts.mdmd.md#symbol-normalizeworkspacepath)
 - [`sourceText.SourceReads`](../../tooling/sourceText.ts.mdmd.md#symbol-sourcereads) (type-only)
 - [`sourceText.readSourceText`](../../tooling/sourceText.ts.mdmd.md#symbol-readsourcetext)

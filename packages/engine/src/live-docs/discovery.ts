@@ -9,16 +9,17 @@
  * @module
  */
 
-import { glob } from "glob";
-import ignore, { type Ignore } from "ignore";
-import * as fs from "node:fs/promises";
 import path from "node:path";
 import ts from "typescript";
 
 import type { LiveDocumentationConfig } from "../config/liveDocumentationConfig";
-import { foldersReadAsEmpty, gitIgnores, gitIgnoresCase, type GitIgnoreAnswer, type GitIgnores, type GitUnanswered } from "../tooling/gitIgnored";
+import { gitIgnores, gitIgnoresCase, liesInNoRepository, type GitIgnoreAnswer, type GitIgnores, type GitUnanswered } from "../tooling/gitIgnored";
+import { fromGitignores, leaveOut, type LeaveOut, type LeaveOutInput } from "../tooling/leaveOut";
+import { NODE_FILE_HOST } from "../tooling/nodeHost";
 import { normalizeWorkspacePath } from "../tooling/pathUtils";
-import { readSourceText, throwIfMachineFailure } from "../tooling/sourceText";
+import { decodeSourceText, readSourceText, throwIfMachineFailure } from "../tooling/sourceText";
+import type { FileHost, WorkspaceReads } from "../tooling/workspaceFiles";
+import { walkWorkspace, type UnreadableFolder, type WalkedFile } from "../tooling/workspaceWalk";
 import { analyzeWithLanguageAdapters, type WorkspaceFileIndex } from "./adapters";
 import { matchesPathPattern } from "./archetype";
 import { anchorReExports, computePublicSymbolHeadingInfo } from "./compose";
@@ -36,18 +37,27 @@ import type {
 } from "./coreTypes";
 import { collectDependencies, augmentWithReExportedSymbols } from "./dependencies";
 import { detectChangedFiles } from "./gitUtils";
-import { machineFailure } from "./processMark";
 import { inferScriptKind, collectExportedSymbols } from "./symbolExtraction";
 
 // ============================================================================
 // Discovery Options
 // ============================================================================
 
-interface DiscoverOptions {
+/** Options for discovering target source files and workspace documents. */
+export interface DiscoverOptions {
   workspaceRoot: string;
   config: LiveDocumentationConfig;
   include: Set<string>;
   changedOnly: boolean;
+  /** What discovery lists folders and reads `.gitignore` through; defaults to the Node disk host. */
+  host?: FileHost;
+  /** Optional shared per-run file reads so `.gitignore` is never read more than once in a scan. */
+  reads?: WorkspaceReads;
+  /**
+   * Optional explicit leave-out pattern list (the owner's one list). When provided, it decides folder pruning and file
+   * filtering directly on the host listing, bypassing git ignore rules.
+   */
+  leaveOut?: LeaveOutInput;
   /**
    * Told when the rule for no git judges what git should have: every file, where git could not be asked in the
    * repository that holds the workspace, or some, reached through a link that git does not ignore to a folder that is
@@ -57,25 +67,48 @@ interface DiscoverOptions {
   warn?: (message: string) => void;
 }
 
+/** Result of {@link discoverWorkspaceTargetFiles}: the kept files and a predicate answering whether a path was left out. */
+export interface DiscoveredTargets {
+  files: string[];
+  /** True when the scan's active leave-out, exclude, gitignore, or never-documented rules left this workspace-relative path out. */
+  isLeftOut: (relativePath: string) => boolean;
+}
+
 // ============================================================================
-// Gitignore Filtering
+// Root .gitignore Reading via Host + leaveOut.ts
 // ============================================================================
 
 /**
- * Creates an `ignore` instance seeded with the workspace's `.gitignore` patterns.
+ * Reads the workspace's root `.gitignore` through the host (or the run's shared reads) and compiles it with
+ * {@link fromGitignores} and {@link leaveOut}.
  *
- * @param workspaceRoot - Absolute path to the repository root.
- * @returns An `Ignore` instance if `.gitignore` exists, or `null` if there is none.
  * @throws A read of `.gitignore` that fails for a cause of the machine's (a permission refused, too many open files):
  * read as no `.gitignore`, it would map what that file names (since 2026-11-20).
  */
-async function createGitignoreFilter(workspaceRoot: string): Promise<Ignore | null> {
+async function loadRootGitignore(
+  workspaceRoot: string,
+  host: FileHost,
+  reads: WorkspaceReads | undefined,
+  ignoreCase: boolean,
+  rootFiles: ReadonlySet<string> | undefined
+): Promise<LeaveOut | null> {
+  // When the root listing already showed no `.gitignore`, avoid a wasted host probe.
+  if (rootFiles !== undefined && !rootFiles.has(".gitignore")) {
+    return null;
+  }
   const gitignorePath = path.join(workspaceRoot, ".gitignore");
   try {
-    const content = await fs.readFile(gitignorePath, "utf-8");
-    const ig = ignore();
-    ig.add(content);
-    return ig;
+    let text: string;
+    if (reads) {
+      const reading = await reads.readingOf(gitignorePath);
+      text = reading.encoding === "unread" ? "" : reading.text;
+    } else {
+      const bytes = await host.read(gitignorePath);
+      const reading = decodeSourceText(bytes);
+      text = reading.encoding === "unread" ? "" : reading.text;
+    }
+    const taken = fromGitignores([{ path: ".gitignore", text }]);
+    return leaveOut({ list: taken.lines.join("\n"), ignoreCase });
   } catch (error) {
     throwIfMachineFailure(error);
     // No `.gitignore`, or a name the disk cannot hold: nothing to ignore.
@@ -223,17 +256,38 @@ export function docsRootWithin(workspaceRoot: string, config: LiveDocumentationC
  * });
  * ```
  */
-export async function discoverTargetFiles(options: DiscoverOptions): Promise<string[]> {
+export async function discoverWorkspaceTargetFiles(options: DiscoverOptions): Promise<DiscoveredTargets> {
   const patterns = options.include.size > 0 ? Array.from(options.include) : options.config.glob;
   const docsRoot = docsRootWithin(options.workspaceRoot, options.config);
-  // Not walked at all: what isNeverDocumented would drop file by file, `node_modules` above all.
-  const kept = await walkedAndKept(options.workspaceRoot, patterns, docsRoot !== undefined ? [`${docsRoot}/**`] : [],
-    (entry) => !isNeverDocumented(entry.relative, docsRoot), options.config, options.warn);
+  const { kept, isLeftOut } = await walkedAndKept({
+    workspaceRoot: options.workspaceRoot,
+    patterns,
+    neverWalkedFolder: docsRoot,
+    considers: (entry) => !isNeverDocumented(entry.relative, docsRoot),
+    neverDocumented: (relative) => isNeverDocumented(relative, docsRoot),
+    config: options.config,
+    host: options.host ?? NODE_FILE_HOST,
+    reads: options.reads,
+    leaveOutInput: options.leaveOut,
+    warn: options.warn
+  });
   if (!options.changedOnly) {
-    return kept.map((entry) => entry.absolute);
+    return { files: kept.map((entry) => entry.absolute), isLeftOut };
   }
   const changed = await detectChangedFiles(options.workspaceRoot);
-  return kept.filter((entry) => changed.has(entry.relative)).map((entry) => entry.absolute);
+  return {
+    files: kept.filter((entry) => changed.has(entry.relative)).map((entry) => entry.absolute),
+    isLeftOut
+  };
+}
+
+/**
+ * Locates workspace files that should receive Live Documentation generation, returning only the sorted absolute paths.
+ *
+ * @see discoverWorkspaceTargetFiles
+ */
+export async function discoverTargetFiles(options: DiscoverOptions): Promise<string[]> {
+  return (await discoverWorkspaceTargetFiles(options)).files;
 }
 
 /**
@@ -250,120 +304,134 @@ export async function discoverTargetFiles(options: DiscoverOptions): Promise<str
  *
  * @returns Workspace-relative paths with forward slashes, sorted.
  */
-export async function discoverDocuments(options: Pick<DiscoverOptions, "workspaceRoot" | "config" | "warn">): Promise<string[]> {
+export async function discoverDocuments(options: Pick<DiscoverOptions, "workspaceRoot" | "config" | "host" | "reads" | "leaveOut" | "warn">): Promise<string[]> {
   const docsRoot = docsRootWithin(options.workspaceRoot, options.config);
   const baseLayer = docsRoot === undefined ? undefined : normalizeWorkspacePath(path.join(docsRoot, options.config.baseLayer));
-  const kept = await walkedAndKept(options.workspaceRoot, ["**/*"], baseLayer !== undefined ? [`${baseLayer}/**`] : [], (entry) => {
-    const segments = entry.relative.split("/");
-    return !segments.includes(".git") && !segments.includes("node_modules") && isDocument(segments[segments.length - 1]);
-  }, options.config, options.warn);
+  const { kept } = await walkedAndKept({
+    workspaceRoot: options.workspaceRoot,
+    patterns: ["**/*"],
+    neverWalkedFolder: baseLayer,
+    considers: (entry) => {
+      const segments = entry.relative.split("/");
+      return !segments.includes(".git") && !segments.includes("node_modules") && isDocument(segments[segments.length - 1]);
+    },
+    neverDocumented: () => false,
+    config: options.config,
+    host: options.host ?? NODE_FILE_HOST,
+    reads: options.reads,
+    leaveOutInput: options.leaveOut,
+    warn: options.warn
+  });
   return kept.map((entry) => entry.relative);
 }
 
+/** True when `relative` is `folder` itself or lies beneath `folder/`. */
+function withinFolder(relative: string, folder: string | undefined): boolean {
+  return folder !== undefined && (relative === folder || relative.startsWith(`${folder}/`));
+}
+
 /**
- * The files the patterns match that `considers` takes and git and the configuration keep
- * ({@link keptByGitAndConfiguration}), found without reading the folders git ignores whole.
- *
- * @remarks
- * Until 2026-11-20 the walk read every folder git ignores, file by file, only for the filter to throw each file away:
- * in the main checkout, with its builders' worktrees under `.claude/worktrees/`, the walk of the files took 64 s where
- * a clean worktree took 1.4 s, as a repository's `bin/`, `obj/`, `target/` or `.venv/` costs every scan. Now git is
- * asked for what it ignores ({@link gitIgnores}) before the walk, which reads the folders it ignores whole as empty,
- * and again after it, to judge the files found as git judges them once the walk is done: a folder a build makes
- * during the walk is walked and then judged ignored, as it was before the walk was shortened. Where a folder the first
- * listing left unread is not ignored whole by the second (a file in it tracked during the walk), the walk is made again
- * by the second, so that no file is lost because its folder was left unwalked (2026-11-20). Where git cannot answer,
- * the walk is whole and the rule for no git judges it, and the run is told. The measurements and every case, each held
- * by a test: the probe of 2026-11-20 under `AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-19/Probes/walk-prune/`.
+ * The files the patterns match that `considers` takes and the active leave-out / git / configuration rules keep,
+ * found via a top-down walk over `host.entries()` that never enters ignored, excluded, or never-documented folders.
  */
-async function walkedAndKept(
-  workspaceRoot: string,
-  patterns: readonly string[],
-  neverWalked: readonly string[],
-  considers: (entry: WalkedFile) => boolean,
-  config: LiveDocumentationConfig,
-  warn?: (message: string) => void
-): Promise<WalkedFile[]> {
+async function walkedAndKept(args: {
+  workspaceRoot: string;
+  patterns: readonly string[];
+  neverWalkedFolder: string | undefined;
+  considers: (entry: WalkedFile) => boolean;
+  neverDocumented: (relative: string) => boolean;
+  config: LiveDocumentationConfig;
+  host: FileHost;
+  reads: WorkspaceReads | undefined;
+  leaveOutInput: LeaveOutInput | undefined;
+  warn?: (message: string) => void;
+}): Promise<{ kept: WalkedFile[]; isLeftOut: (relativePath: string) => boolean }> {
+  const { workspaceRoot, patterns, neverWalkedFolder, considers, neverDocumented, config, host, reads, leaveOutInput, warn } = args;
+
+  // Explicit leave-out list path (the owner's one list): bypasses git completely and prunes folders before listing.
+  if (leaveOutInput !== undefined) {
+    const ownOutput = [...(leaveOutInput.ownOutput ?? []), ...(neverWalkedFolder !== undefined ? [neverWalkedFolder] : [])];
+    const decider = leaveOut({ ...leaveOutInput, ownOutput });
+    const ignoreCase = leaveOutInput.ignoreCase;
+    const excluded = (relative: string): boolean => config.exclude.some((pattern) => matchesPathPattern(relative, pattern, ignoreCase));
+    const excludedWhole = (folder: string): boolean =>
+      folder !== "" && config.exclude.some((pattern) => [`${folder}/\0`, `${folder}/\0/\0`].every((probe) => matchesPathPattern(probe, pattern, ignoreCase)));
+    const found = await walkWorkspace({
+      workspaceRoot,
+      host,
+      patterns,
+      shouldEnter: (relative) => {
+        if (relative === "") return true;
+        const name = relative.slice(relative.lastIndexOf("/") + 1);
+        if (name === ".git" || name === "node_modules") return false;
+        if (withinFolder(relative, neverWalkedFolder)) return false;
+        if (decider.folder(relative).prunable) return false;
+        if (excludedWhole(relative)) return false;
+        return true;
+      }
+    });
+    const blocked = found.unreadable.find(({ relative }) => decider.folder(relative).kept && !excludedWhole(relative));
+    if (blocked) {
+      throw new Error(`cannot read the folder ${blocked.absolute} (${blocked.error.message}), and the scan cannot tell that everything in it would be left out: make it readable, add ${blocked.relative}/ to the leave-out list, or name ${blocked.relative}/** in the configuration's exclude.`, { cause: blocked.error });
+    }
+    const kept = found.files.filter(considers).filter(({ relative }) => decider.file(relative).kept && !excluded(relative));
+    const isLeftOut = (relative: string): boolean =>
+      neverDocumented(relative) || excluded(relative) || !decider.file(relative).kept;
+    return { kept, isLeftOut };
+  }
+
+  // Standard path: git when in a repository, else root `.gitignore` read through the host and judged by `leaveOut.ts`.
+  const ignoreCase = (config.exclude.length > 0 || !liesInNoRepository(workspaceRoot)) && gitIgnoresCase(workspaceRoot);
+  const excluded = (relative: string): boolean => config.exclude.some((pattern) => matchesPathPattern(relative, pattern, ignoreCase));
+  const excludedWhole = (folder: string): boolean =>
+    folder !== "" && config.exclude.some((pattern) => [`${folder}/\0`, `${folder}/\0/\0`].every((probe) => matchesPathPattern(probe, pattern, ignoreCase)));
+
+  const doWalk = (unread: ReadonlySet<string> | undefined) => walkWorkspace({
+    workspaceRoot,
+    host,
+    patterns,
+    shouldEnter: (relative) => {
+      if (unread?.has(relative)) return false;
+      if (relative === "") return true;
+      const name = relative.slice(relative.lastIndexOf("/") + 1);
+      if (name === ".git" || name === "node_modules") return false;
+      if (withinFolder(relative, neverWalkedFolder)) return false;
+      if (excludedWhole(relative)) return false;
+      return true;
+    }
+  });
+
   let unanswered: GitUnanswered | undefined;
   const told = (why: GitUnanswered): void => {
     unanswered = why;
   };
   const pruning = gitIgnores(workspaceRoot, told);
-  let found = await walk(workspaceRoot, patterns, neverWalked, pruning?.folders);
+  let found = await doWalk(pruning?.folders);
   // Judged by a listing taken after the walk, so that a folder a build made while the walk ran is judged as git judges
   // it now. Where a folder left unread is not ignored whole by that listing, or it fails, the walk is made again with
   // that listing's folders unread, or whole, for the rule for no git.
   const judging = pruning && gitIgnores(workspaceRoot, told);
   const unread = [...(pruning?.folders ?? [])];
-  if (unread.length > 0 && judging?.answer(unread).ignored.size !== unread.length) found = await walk(workspaceRoot, patterns, neverWalked, judging?.folders);
+  if (unread.length > 0 && judging?.answer(unread).ignored.size !== unread.length) {
+    found = await doWalk(judging?.folders);
+  }
   if (!judging && unanswered) {
     warn?.(`git could not be asked what it ignores in ${workspaceRoot}${pruning ? " after the walk" : ""} (${unanswered.reason}): so only ${path.join(workspaceRoot, ".gitignore")} is read, by which a file the repository tracks may be left out, and what another .gitignore, .git/info/exclude or the global excludes hide gets docs; mend git, or name it in the configuration's exclude.`);
   }
-  return keptByGitAndConfiguration(found.files.filter(considers), found.unreadable, workspaceRoot, config, judging, warn);
-}
-
-/** A file the walk found: its absolute path and its workspace-relative path with forward slashes. */
-interface WalkedFile {
-  absolute: string;
-  relative: string;
-}
-
-/** A folder the walk could not read for a cause of the machine's: its paths, and the failure. */
-interface UnreadableFolder extends WalkedFile {
-  error: NodeJS.ErrnoException;
-}
-
-/**
- * One walk of the workspace: the patterns matched over the whole of it, hidden
- * files and folders included, so that `.devcontainer/devcontainer.json` or
- * `.vscode/settings.json` is read like any other file; `.git`, `node_modules`
- * and the folders named are not walked at all, and the folders in `unread`
- * read as empty ({@link foldersReadAsEmpty}) and are not read. A folder whose
- * read fails for a cause of the machine's is named in `unreadable`, for the
- * judging to pass it over where its files would have been left out, and else
- * to stop the scan: glob reads it as empty, and its files would be missing
- * from the scan, and their docs pruned as stale, in silence (2026-11-20).
- * Absence, and a link that loops or passes through a file, are the folder's
- * own answer, read as glob reads them.
- */
-async function walk(workspaceRoot: string, patterns: readonly string[], neverWalked: readonly string[], unread: ReadonlySet<string> | undefined): Promise<{ files: WalkedFile[]; unreadable: UnreadableFolder[] }> {
-  const unreadable: UnreadableFolder[] = [];
-  const matches = await glob([...patterns], {
-    cwd: workspaceRoot,
-    nodir: true,
-    withFileTypes: true,
-    dot: true,
-    windowsPathsNoEscape: true,
-    ignore: ["**/.git/**", "**/node_modules/**", ...neverWalked],
-    fs: foldersReadAsEmpty(workspaceRoot, unread ?? new Set(), (error) => {
-      if (machineFailure(error) && error.code !== "ENOENT") {
-        const absolute = path.resolve(workspaceRoot, error.path ?? "");
-        unreadable.push({ absolute, relative: normalizeWorkspacePath(path.relative(workspaceRoot, absolute)), error });
-      }
-    })
+  return keptByGitAndConfiguration({
+    considered: found.files.filter(considers),
+    unreadable: found.unreadable,
+    rootFiles: found.rootFiles,
+    workspaceRoot,
+    host,
+    reads,
+    ignoreCase,
+    excluded,
+    excludedWhole,
+    neverDocumented,
+    gitIgnoresHere: judging,
+    warn
   });
-  const files: WalkedFile[] = [];
-  for (const match of matches) {
-    const absolute = match.fullpath();
-    // `nodir` excludes directory entries, but a symlink can still name a
-    // directory. Read its target's kind without following directory links
-    // during the walk. A link whose target is absent, loops (`loop -> loop`)
-    // or passes through a file (`through -> file.ts/x`) leads to nothing to
-    // document; until 2026-11-20 the last two stopped the whole walk. A
-    // failure of the machine's is rethrown.
-    if (match.isSymbolicLink()) {
-      try {
-        if (!(await fs.stat(absolute)).isFile()) continue;
-      } catch (error) {
-        throwIfMachineFailure(error);
-        continue;
-      }
-    } else if (!match.isFile()) {
-      continue;
-    }
-    files.push({ absolute, relative: normalizeWorkspacePath(path.relative(workspaceRoot, absolute)) });
-  }
-  return { files: inWorkspaceOrder(files), unreadable };
 }
 
 /**
@@ -376,44 +444,21 @@ export function inWorkspaceOrder<T extends { relative: string }>(files: T[]): T[
   return files.sort((a, b) => (a.relative < b.relative ? -1 : a.relative > b.relative ? 1 : 0));
 }
 
-/**
- * The files git does not ignore and the configuration does not exclude, in
- * the order given. What git ignores is read by git's own word when the
- * workspace is a repository, from git's listing taken after the walk
- * ({@link gitIgnores}): a nested `.gitignore`, `.git/info/exclude` and the
- * global excludes file count, a tracked file is never ignored, as git itself
- * has it (committing a file under an ignored folder is a decision), and a
- * nested repository's files, one reached through a link to its top among
- * them, are judged by its own git, and so are a repository's files in a
- * workspace that lies in none, a folder of several clones. Without git, and
- * for the files that lie in no repository, the workspace's `.gitignore`
- * alone; and so too for a path git cannot judge, one that passes through a
- * link git does not ignore to a folder that is not a repository's top, or lies
- * in a folder holding a `.git` that git cannot be asked about or said nothing
- * of, which `warn` is told of, since there a file its repository ignores may
- * get a doc and one its repository tracks may be left out.
- *
- * A folder the walk could not read is judged by the same rules, as a folder:
- * where its files would have been left out (its own repository's git ignores
- * it, or `exclude` names everything in it) it is passed over in silence, as
- * they would have been, a database's unreadable volume beside the code among
- * them. Any other stops the scan, which is not to say its files would be kept:
- * git cannot read the folder either, so a rule for its contents (`cache/*`)
- * never names it, and the scan cannot tell. The error names the folder, the
- * system's reason and three ways past it that work: make it readable, have git
- * ignore the folder itself (`<folder>/`), or name `<folder>/**` in `exclude`,
- * which in the configuration's glob language names everything in it, where
- * `<folder>`, `<folder>/` and `<folder>/*` do not. It keeps the system's
- * failure as its cause, so that it is still read as the machine's (2026-11-20).
- */
-async function keptByGitAndConfiguration(
-  considered: readonly WalkedFile[],
-  unreadable: readonly UnreadableFolder[],
-  workspaceRoot: string,
-  config: LiveDocumentationConfig,
-  gitIgnoresHere: GitIgnores | null,
-  warn?: (message: string) => void
-): Promise<WalkedFile[]> {
+async function keptByGitAndConfiguration(args: {
+  considered: readonly WalkedFile[];
+  unreadable: readonly UnreadableFolder[];
+  rootFiles: ReadonlySet<string> | undefined;
+  workspaceRoot: string;
+  host: FileHost;
+  reads: WorkspaceReads | undefined;
+  ignoreCase: boolean;
+  excluded: (relative: string) => boolean;
+  excludedWhole: (folder: string) => boolean;
+  neverDocumented: (relative: string) => boolean;
+  gitIgnoresHere: GitIgnores | null;
+  warn?: (message: string) => void;
+}): Promise<{ kept: WalkedFile[]; isLeftOut: (relativePath: string) => boolean }> {
+  const { considered, unreadable, rootFiles, workspaceRoot, host, reads, ignoreCase, excluded, excludedWhole, neverDocumented, gitIgnoresHere, warn } = args;
   const git = gitIgnoresHere?.answer(considered.map((entry) => entry.relative)) ?? null;
   if (git !== null && git.unjudged.size > 0) {
     const [first] = git.unjudged;
@@ -421,20 +466,27 @@ async function keptByGitAndConfiguration(
   }
   const folders = gitIgnoresHere?.answer(unreadable.map((entry) => entry.relative)) ?? null;
   const byRootRules = (answer: GitIgnoreAnswer | null): boolean => answer === null || answer.unjudged.size > 0 || answer.outside.size > 0;
-  const gitignoreFilter = byRootRules(git) || (unreadable.length > 0 && byRootRules(folders)) ? await createGitignoreFilter(workspaceRoot) : null;
+  const rootLeaveOut = byRootRules(git) || (unreadable.length > 0 && byRootRules(folders))
+    ? await loadRootGitignore(workspaceRoot, host, reads, ignoreCase, rootFiles)
+    : null;
   const ignored = (answer: GitIgnoreAnswer | null, relative: string, folder: boolean): boolean =>
-    answer !== null && !answer.unjudged.has(relative) && !answer.outside.has(relative) ? answer.ignored.has(relative) : gitignoreFilter?.ignores(folder ? `${relative}/` : relative) === true;
-  // `exclude` matches as git matches names in this repository: in any case where its `core.ignorecase` is true, as on
-  // a clone made on Windows, else exactly (2026-11-19).
-  const ignoreCase = config.exclude.length > 0 && gitIgnoresCase(workspaceRoot);
-  const excluded = (relative: string): boolean => config.exclude.some((pattern) => matchesPathPattern(relative, pattern, ignoreCase));
-  // A folder is excluded whole when a pattern matches every path below it: one segment and two, of a name no pattern holds.
-  const excludedWhole = (folder: string): boolean => config.exclude.some((pattern) => [`${folder}/\0`, `${folder}/\0/\0`].every((probe) => matchesPathPattern(probe, pattern, ignoreCase)));
-  const kept = unreadable.find(({ relative }) => !ignored(folders, relative, true) && !excludedWhole(relative));
-  if (kept) {
-    throw new Error(`cannot read the folder ${kept.absolute} (${kept.error.message}), and the scan cannot tell that everything in it would be left out: make it readable, have git ignore the folder itself (${kept.relative}/), or name ${kept.relative}/** in the configuration's exclude.`, { cause: kept.error });
+    answer !== null && !answer.unjudged.has(relative) && !answer.outside.has(relative)
+      ? answer.ignored.has(relative)
+      : rootLeaveOut !== null && !(folder ? rootLeaveOut.folder(relative).kept : rootLeaveOut.file(relative).kept);
+  const blocked = unreadable.find(({ relative }) => !ignored(folders, relative, true) && !excludedWhole(relative));
+  if (blocked) {
+    throw new Error(`cannot read the folder ${blocked.absolute} (${blocked.error.message}), and the scan cannot tell that everything in it would be left out: make it readable, have git ignore the folder itself (${blocked.relative}/), or name ${blocked.relative}/** in the configuration's exclude.`, { cause: blocked.error });
   }
-  return considered.filter(({ relative }) => !ignored(git, relative, false) && !excluded(relative));
+  const kept = considered.filter(({ relative }) => !ignored(git, relative, false) && !excluded(relative));
+  const isLeftOut = (relative: string): boolean => {
+    if (neverDocumented(relative) || excluded(relative)) return true;
+    if (gitIgnoresHere !== null) {
+      const verdict = gitIgnoresHere.answer([relative]);
+      if (!verdict.unjudged.has(relative) && !verdict.outside.has(relative)) return verdict.ignored.has(relative);
+    }
+    return rootLeaveOut !== null && !rootLeaveOut.file(relative).kept;
+  };
+  return { kept, isLeftOut };
 }
 
 // ============================================================================

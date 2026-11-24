@@ -348,6 +348,8 @@ export interface DependencyEntry {
   reExportAll?: boolean;
   /** How the dependency was observed, when not from source. */
   basis?: DependencyBasis;
+  /** True when the unresolved specifier points at a workspace path left out by the scan's active ignore, exclude or never-documented rules. */
+  leftOut?: boolean;
 }
 
 /**

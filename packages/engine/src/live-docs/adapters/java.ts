@@ -18,11 +18,11 @@
  * The program's entry point is a `main` the launcher can run (JEP 512): `void`,
  * not private, static or instance, taking one `String[]` or nothing.
  */
-import { glob } from "glob";
 import path from "node:path";
 
 import { javaSyntax } from "../../languages";
 import { compareText } from "../../tooling/compareText";
+import { listFilesOnDisk } from "../../tooling/nodeHost";
 import { normalizeWorkspacePath } from "../../tooling/pathUtils";
 import { readSourceText, type SourceReads, throwIfMachineFailure } from "../../tooling/sourceText";
 import type { DependencyEntry, PublicSymbolEntry, SourceAnalysisResult, SymbolDocumentation, TypeReference } from "../core";
@@ -528,17 +528,13 @@ interface TypeTable {
 
 const tableCache = new WeakMap<WorkspaceFileIndex, Promise<TypeTable>>();
 
+const STANDALONE_IGNORED_FOLDERS: ReadonlySet<string> = new Set(["node_modules", "target", "build", "out"]);
+
 async function listJavaFiles(workspaceRoot: string, fileIndex: WorkspaceFileIndex | undefined): Promise<string[]> {
   if (fileIndex) {
     return Array.from(fileIndex).filter((file) => file.endsWith(".java")).sort();
   }
-  const files = await glob("**/*.java", {
-    cwd:                  workspaceRoot,
-    ignore:               ["**/node_modules/**", "**/target/**", "**/build/**", "**/out/**"],
-    nodir:                true,
-    windowsPathsNoEscape: true
-  });
-  return files.map((file) => normalizeWorkspacePath(file)).sort();
+  return listFilesOnDisk(workspaceRoot, ".java", STANDALONE_IGNORED_FOLDERS);
 }
 
 function tableType(table: TypeTable, packageName: string, file: string, type: DeclaredType): void {

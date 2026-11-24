@@ -1,4 +1,3 @@
-import { glob } from "glob";
 import * as fs from "node:fs/promises";
 import path from "node:path";
 
@@ -8,7 +7,7 @@ import {
   noReaderHandles,
   normalizeLiveDocumentationConfig
 } from "@live-documentation/engine/config/liveDocumentationConfig";
-import { analyzeSourceFile, BINARY_SNIFF_BYTES, buildWorkspaceIndexes, composeCitedBy, composeDependencies, composeEntries, composeReExports, composeSymbolBlocks, computePublicSymbolHeadingInfo, discoverDocuments, discoverTargetFiles, hasMeaningfulAuthoredContent, isBinaryContent, resolveArchetype, type SourceAnalysisResult, type WorkspaceEntryIndex, type WorkspaceFileIndex, type WorkspaceSymbolIndex, type WorkspaceTestIndex } from "@live-documentation/engine/live-docs/core";
+import { analyzeSourceFile, BINARY_SNIFF_BYTES, buildWorkspaceIndexes, composeCitedBy, composeDependencies, composeEntries, composeReExports, composeSymbolBlocks, computePublicSymbolHeadingInfo, discoverDocuments, discoverTargetFiles, discoverWorkspaceTargetFiles, hasMeaningfulAuthoredContent, isBinaryContent, resolveArchetype, type SourceAnalysisResult, type WorkspaceEntryIndex, type WorkspaceFileIndex, type WorkspaceSymbolIndex, type WorkspaceTestIndex } from "@live-documentation/engine/live-docs/core";
 import { inWorkspaceOrder } from "@live-documentation/engine/live-docs/discovery";
 import {
   DEFAULT_AUTHORED_BLOCK,
@@ -23,12 +22,14 @@ import { detectChangedFiles } from "@live-documentation/engine/live-docs/gitUtil
 import { readLiveDocGraph, writeLiveDocGraph } from "@live-documentation/engine/live-docs/graphFiles";
 import { markProcess } from "@live-documentation/engine/live-docs/processMark";
 import { citingDocuments, isMarkdownDocument, type DocumentText } from "@live-documentation/engine/live-docs/relatedDocs";
-import { gitIgnored } from "@live-documentation/engine/tooling/gitIgnored";
+import { gitIgnored, gitIgnores } from "@live-documentation/engine/tooling/gitIgnored";
+import { leaveOut, type LeaveOutInput } from "@live-documentation/engine/tooling/leaveOut";
 import { NODE_FILE_HOST } from "@live-documentation/engine/tooling/nodeHost";
 import { normalizeWorkspacePath, toWorkspaceRelativePath } from "@live-documentation/engine/tooling/pathUtils";
 import { readSourceReading, throwIfMachineFailure, type SourceTextReading } from "@live-documentation/engine/tooling/sourceText";
-import { type FileHost, workspaceReads } from "@live-documentation/engine/tooling/workspaceFiles";
+import { type FileHost, type WorkspaceReads, workspaceReads } from "@live-documentation/engine/tooling/workspaceFiles";
 import { workspaceListing } from "@live-documentation/engine/tooling/workspaceListing";
+import { walkWorkspace } from "@live-documentation/engine/tooling/workspaceWalk";
 
 interface GenerateLiveDocsOptions {
   workspaceRoot: string;
@@ -45,10 +46,15 @@ interface GenerateLiveDocsOptions {
    */
   keepAuthoredStaleDocs?: boolean;
   /**
-   * What the scan reads the workspace's files through: the disk, by Node, unless another host is handed, as the check
-   * that the engine runs in a page hands one over the folder a person picked (2026-11-22).
+   * What the scan reads the workspace's files and lists its folders through: the disk, by Node, unless another host is
+   * handed, as the check that the engine runs in a page hands one over the folder a person picked (2026-11-22).
    */
   host?: FileHost;
+  /**
+   * Optional explicit leave-out pattern list (the owner's one list). When provided, it decides folder pruning and file
+   * filtering directly on the host listing, bypassing git ignore rules.
+   */
+  leaveOut?: LeaveOutInput;
 }
 
 interface LiveDocGeneratorLogger {
@@ -134,6 +140,8 @@ export async function generateLiveDocs(
   const now = options.now ?? (() => new Date());
 
   const includeSet = new Set<string>((options.include ?? []).map((entry) => normalizeWorkspacePath(entry)));
+  const host = options.host ?? NODE_FILE_HOST;
+  const reads = workspaceReads(host, BINARY_SNIFF_BYTES);
 
   // A scan never lies inside another scan: say so when this one would, either way round, and write the docs all the
   // same, for the generator warns and the estate reader refuses (the World Map's first ticket, 2026-10-09). The
@@ -141,19 +149,22 @@ export async function generateLiveDocs(
   for (const outer of await scansAbove(workspaceRoot, normalizedConfig)) {
     logger.warn(`This folder lies inside the scan at ${outer}. Its docs are written all the same, but a scan never lies inside another: a board that names both reads only the scan at ${outer}.`);
   }
-  for (const inner of await scansWithin(workspaceRoot, normalizedConfig)) {
+  for (const inner of await scansWithin(workspaceRoot, normalizedConfig, host, options.leaveOut)) {
     logger.warn(`A scan lies inside this folder at ${inner}. This folder's docs are written all the same, but a scan never lies inside another: a board that names both reads only the scan of this folder.`);
   }
 
-  const workspaceFiles = await discoverTargetFiles({
+  const { files: workspaceFiles, isLeftOut } = await discoverWorkspaceTargetFiles({
     workspaceRoot,
     config: normalizedConfig,
     include: new Set(),
     changedOnly: false,
+    host,
+    reads,
+    leaveOut: options.leaveOut,
     warn: (message) => logger.warn(message)
   });
   const includedFiles = includeSet.size > 0
-    ? await discoverTargetFiles({ workspaceRoot, config: normalizedConfig, include: includeSet, changedOnly: false, warn: (message) => logger.warn(message) })
+    ? await discoverTargetFiles({ workspaceRoot, config: normalizedConfig, include: includeSet, changedOnly: false, host, reads, leaveOut: options.leaveOut, warn: (message) => logger.warn(message) })
     : workspaceFiles;
   // An explicit include may name a source outside the configured globs. It is
   // still part of the workspace context for this run, but only included files
@@ -172,12 +183,12 @@ export async function generateLiveDocs(
   // the host (2026-11-22; before, each file was read three to five times).
   const gathered: { tests?: WorkspaceTestIndex } = {};
   // And it answers a reader's probes, what lies at a path and what a folder holds, from the listing of the kept files
-  // alone, so that no reader sees a file the scan leaves out (2026-11-22, `workspaceListing.ts`).
-  const reads = workspaceReads(options.host ?? NODE_FILE_HOST, BINARY_SNIFF_BYTES);
+  // alone, so that no reader sees a file the scan leaves out (2026-11-22, `workspaceListing.ts`), and whether an
+  // unresolved path was deliberately left out by the scan's rules (`isLeftOut`, 2026-11-24).
   const keptPaths = allTargetFiles.map((absPath) => normalizeWorkspacePath(path.relative(workspaceRoot, absPath)));
   const fileIndex: WorkspaceFileIndex = Object.assign(
     new Set(keptPaths),
-    { archetypeOf: (file: string) => resolveArchetype(file, normalizedConfig, false, gathered.tests) },
+    { archetypeOf: (file: string) => resolveArchetype(file, normalizedConfig, false, gathered.tests), isLeftOut },
     reads,
     workspaceListing(workspaceRoot, keptPaths)
   );
@@ -200,7 +211,7 @@ export async function generateLiveDocs(
   // The documents that cite each file, for the `Cited By` sections, read from every markdown document discovery finds
   // whatever subset this run renders, so that a section says the same whichever run wrote it.
   const citedByIndex = normalizedConfig.citedBy
-    ? citingDocuments(await readMarkdownDocuments(workspaceRoot, normalizedConfig, (message) => logger.warn(message)), fileIndex, normalizedConfig, normalizedConfig.bundleExclude)
+    ? citingDocuments(await readMarkdownDocuments(workspaceRoot, normalizedConfig, host, reads, options.leaveOut, (message) => logger.warn(message)), fileIndex, normalizedConfig, normalizedConfig.bundleExclude)
     : new Map<string, string[]>();
   if (normalizedConfig.citedBy) {
     logger.info(`Read the documents' links: ${[...citedByIndex.values()].reduce((sum, documents) => sum + documents.length, 0)} citations of ${citedByIndex.size} files`);
@@ -355,13 +366,14 @@ export async function generateLiveDocs(
       candidateSourcePaths: changedPaths,
       dryRun: options.dryRun ?? false,
       keepAuthored: options.keepAuthoredStaleDocs ?? true,
+      host,
       logger
     });
   }
 
   let index: string | undefined;
   if (!options.dryRun) {
-    index = await writeLiveDocGraph(await readLiveDocGraph({ workspaceRoot, config: normalizedConfig }), workspaceRoot);
+    index = await writeLiveDocGraph(await readLiveDocGraph({ workspaceRoot, config: normalizedConfig, host }), workspaceRoot);
     logger.info(`Wrote the graph index to ${index}`);
   }
 
@@ -427,8 +439,15 @@ async function removeDocOfUnmapped(docAbsolutePath: string): Promise<void> {
 }
 
 /** The workspace's markdown documents with their text, as discovery finds them; another kind of document has no markdown links. */
-async function readMarkdownDocuments(workspaceRoot: string, config: LiveDocumentationConfig, warn: (message: string) => void): Promise<DocumentText[]> {
-  const documents = (await discoverDocuments({ workspaceRoot, config, warn })).filter(isMarkdownDocument);
+async function readMarkdownDocuments(
+  workspaceRoot: string,
+  config: LiveDocumentationConfig,
+  host: FileHost,
+  reads: WorkspaceReads,
+  leaveOutInput: LeaveOutInput | undefined,
+  warn: (message: string) => void
+): Promise<DocumentText[]> {
+  const documents = (await discoverDocuments({ workspaceRoot, config, host, reads, leaveOut: leaveOutInput, warn })).filter(isMarkdownDocument);
   return Promise.all(documents.map(async (relative) => ({ path: relative, text: await fs.readFile(path.join(workspaceRoot, relative), "utf8") })));
 }
 
@@ -460,20 +479,55 @@ function scanMarkers(config: LiveDocumentationConfig): { docsRoot: string; confi
 }
 
 /** The folders below the workspace that are scans of their own, as workspace-relative paths. */
-async function scansWithin(workspaceRoot: string, config: LiveDocumentationConfig): Promise<string[]> {
+async function scansWithin(
+  workspaceRoot: string,
+  config: LiveDocumentationConfig,
+  host: FileHost,
+  leaveOutInput?: LeaveOutInput
+): Promise<string[]> {
   const { docsRoot, configurationFile } = scanMarkers(config);
-  const patterns = [`**/${docsRoot}`, `**/${configurationFile}`];
-  const matches = (await glob(patterns, { cwd: workspaceRoot, dot: true, ignore: ["**/node_modules/**", `${config.root}/**`], windowsPathsNoEscape: true }))
-    .map((match) => normalizeWorkspacePath(match));
+  const rootFolder = normalizeWorkspacePath(config.root);
+  const decider = leaveOutInput ? leaveOut({ ...leaveOutInput, ownOutput: [...(leaveOutInput.ownOutput ?? []), rootFolder] }) : undefined;
+  const prunedFolders = decider ? undefined : gitIgnores(workspaceRoot)?.folders;
+  const matches: string[] = [];
+
+  const visit = async (relativeFolder: string): Promise<void> => {
+    const absoluteFolder = relativeFolder === "" ? workspaceRoot : path.join(workspaceRoot, relativeFolder);
+    let entries;
+    try {
+      entries = await host.entries(absoluteFolder);
+    } catch {
+      return;
+    }
+    if (relativeFolder !== "" && entries.files.includes(configurationFile)) {
+      matches.push(`${relativeFolder}/${configurationFile}`);
+    }
+    for (const folder of entries.folders) {
+      if (folder === "node_modules" || folder === ".git") continue;
+      const childRelative = relativeFolder === "" ? folder : `${relativeFolder}/${folder}`;
+      if (childRelative === rootFolder || childRelative.startsWith(`${rootFolder}/`)) continue;
+      if (decider?.folder(childRelative).prunable || prunedFolders?.has(childRelative)) continue;
+      if (childRelative.endsWith(`/${docsRoot}`)) {
+        matches.push(childRelative);
+      }
+      await visit(childRelative);
+    }
+  };
+
+  if (!prunedFolders?.has("")) {
+    await visit("");
+  }
+  if (matches.length === 0) return [];
   // What git ignores is never part of the map (the owner, 2026-10-19), so a docs root or a configuration there, as in
   // another agent's worktree, makes no scan; without git, every one counts.
-  const ignored = gitIgnored(workspaceRoot, matches);
+  const ignored = decider ? null : gitIgnored(workspaceRoot, matches);
   const folders = new Set<string>();
   for (const relative of matches) {
-    if (ignored?.has(relative)) {
+    const isDocsMarker = relative.endsWith(`/${docsRoot}`);
+    if (decider ? !(isDocsMarker ? decider.folder(relative).kept : decider.file(relative).kept) : ignored?.has(relative)) {
       continue;
     }
-    const folder = relative.endsWith(docsRoot) ? relative.slice(0, -docsRoot.length).replace(/\/$/u, "") : path.posix.dirname(relative);
+    const folder = isDocsMarker ? relative.slice(0, -docsRoot.length).replace(/\/$/u, "") : path.posix.dirname(relative);
     if (folder !== "" && folder !== ".") {
       folders.add(folder);
     }
@@ -520,6 +574,7 @@ async function pruneStaleLiveDocs(args: {
   candidateSourcePaths?: Set<string>;
   dryRun: boolean;
   keepAuthored: boolean;
+  host: FileHost;
   logger: LiveDocGeneratorLogger;
 }): Promise<string[]> {
   const baseLayerRoot = path.resolve(args.workspaceRoot, args.config.root, args.config.baseLayer);
@@ -528,16 +583,14 @@ async function pruneStaleLiveDocs(args: {
     return [];
   }
 
-  const files = await glob(`**/*${args.config.extension}`, {
-    cwd: baseLayerRoot,
-    absolute: true,
-    nodir: true,
-    // A hidden file's doc lives under a hidden path segment (`.vscode/settings.json`), and is pruned like any other.
-    dot: true,
-    windowsPathsNoEscape: true
-  });
-
-  files.sort();
+  const walked = await walkWorkspace({ workspaceRoot: baseLayerRoot, host: args.host });
+  if (walked.unreadable.length > 0) {
+    throw walked.unreadable[0].error;
+  }
+  const files = walked.files
+    .filter((entry) => entry.relative.endsWith(args.config.extension))
+    .map((entry) => entry.absolute)
+    .sort();
 
   const removed: string[] = [];
 

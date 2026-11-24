@@ -28,7 +28,16 @@ const LEFT_OUT = new Set([".git", "node_modules"]);
  */
 const PAGE_HOST = {
   read: async (path) => tree.read(path),
-  head: async (path, bytes) => tree.read(path).subarray(0, bytes)
+  head: async (path, bytes) => tree.read(path).subarray(0, bytes),
+  entries: async (folder) => {
+    const files = [];
+    const folders = [];
+    for (const entry of tree.entries(folder)) {
+      if (entry.isFile()) files.push(entry.name);
+      else if (entry.isDirectory()) folders.push(entry.name);
+    }
+    return { files, folders };
+  }
 };
 
 const log = (line) => {

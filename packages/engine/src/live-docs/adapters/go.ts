@@ -21,11 +21,11 @@
  * The program's entry point is reported too: a top-level `func main` in
  * `package main`.
  */
-import { glob } from "glob";
 import path from "node:path";
 
 import { goSyntax } from "../../languages";
 import { compareText } from "../../tooling/compareText";
+import { listFilesOnDisk } from "../../tooling/nodeHost";
 import { normalizeWorkspacePath } from "../../tooling/pathUtils";
 import { readSourceText, type SourceReads, throwIfMachineFailure } from "../../tooling/sourceText";
 import { type ListedFiles, pathKind } from "../../tooling/workspaceProbes";
@@ -456,10 +456,11 @@ type PackageTable = Map<string, PackageFile[]>;
 
 const tableCache = new WeakMap<WorkspaceFileIndex, Promise<PackageTable>>();
 
+const STANDALONE_IGNORED_FOLDERS: ReadonlySet<string> = new Set(["node_modules", "vendor"]);
+
 async function listGoFiles(workspaceRoot: string, fileIndex: WorkspaceFileIndex | undefined): Promise<string[]> {
   if (fileIndex) return Array.from(fileIndex).filter((file) => file.endsWith(".go")).sort();
-  const files = await glob("**/*.go", { cwd: workspaceRoot, ignore: ["**/node_modules/**", "**/vendor/**"], nodir: true, windowsPathsNoEscape: true });
-  return files.map((file) => normalizeWorkspacePath(file)).sort();
+  return listFilesOnDisk(workspaceRoot, ".go", STANDALONE_IGNORED_FOLDERS);
 }
 
 async function buildPackageTable(workspaceRoot: string, fileIndex: WorkspaceFileIndex | undefined): Promise<PackageTable> {

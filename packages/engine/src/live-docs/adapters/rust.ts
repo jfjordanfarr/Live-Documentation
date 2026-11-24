@@ -22,11 +22,11 @@
  * The program's entry point is reported too: a top-level `fn main` in a binary
  * crate root, an example's among them.
  */
-import { glob } from "glob";
 import path from "node:path";
 
 import { rustSyntax } from "../../languages";
 import { compareText } from "../../tooling/compareText";
+import { listFilesOnDisk } from "../../tooling/nodeHost";
 import { normalizeWorkspacePath } from "../../tooling/pathUtils";
 import { readSourceText, type SourceReads, throwIfMachineFailure } from "../../tooling/sourceText";
 import { type ListedFiles, pathKind } from "../../tooling/workspaceProbes";
@@ -597,10 +597,11 @@ interface ModuleTable {
 
 const tableCache = new WeakMap<WorkspaceFileIndex, Promise<ModuleTable>>();
 
+const STANDALONE_IGNORED_FOLDERS: ReadonlySet<string> = new Set(["node_modules", "target"]);
+
 async function listRustFiles(workspaceRoot: string, fileIndex: WorkspaceFileIndex | undefined): Promise<string[]> {
   if (fileIndex) return Array.from(fileIndex).filter((file) => file.endsWith(".rs")).sort();
-  const files = await glob("**/*.rs", { cwd: workspaceRoot, ignore: ["**/node_modules/**", "**/target/**"], nodir: true, windowsPathsNoEscape: true });
-  return files.map((file) => normalizeWorkspacePath(file)).sort();
+  return listFilesOnDisk(workspaceRoot, ".rs", STANDALONE_IGNORED_FOLDERS);
 }
 
 interface CrateRoot {
