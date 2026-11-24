@@ -58,8 +58,10 @@ test("a card's text stands in three tones, names leading the prose, each legible
   await page.addInitScript(({ key, value }) => localStorage.setItem(key, value), {
     key: PERSISTED_UI_KEY, value: JSON.stringify({ version: PERSISTED_UI_VERSION, tuning: { localMap: { ...AT_READING_SIZE, searchStarts: 0 } } })
   });
-  await open(page, estate(), payment);
-  const card = `.node-card[data-id="${payment}"]`;
+  // Use an annotated file (word-seams.ts) that has both authored Purpose prose and described symbols; unannotated
+  // estate files omit the empty .local-reading-purpose block (2026-11-24).
+  await open(page, `/?s=${compressSnapshot({ ...DEFAULT_SNAPSHOT, view: "map", perspective: "2d", selectedNodeId: wordSeams })}`, wordSeams);
+  const card = `.node-card[data-id="${wordSeams}"]`;
   const tones = {
     file: await toneOf(page, `${card} .local-file-name-text`),
     symbol: await toneOf(page, `${card} .symbol-row:not(.internals-row) .symbol-label-text`),

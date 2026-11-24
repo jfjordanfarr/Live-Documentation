@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/explorer/src/client/persistence/local-storage.ts`
-- Generated At: 2026-11-24T05:59:35.755Z
+- Generated At: 2026-11-24T16:42:55.533Z
 
 ## Authored
 ### Purpose
@@ -220,9 +220,11 @@ Inspecting a different file never replaces the remembered subject.
 - [`reading-state.readReadingChoices`](../reading-state.ts.mdmd.md#symbol-readreadingchoices)
 - [`types.ARRIVALS`](../types.ts.mdmd.md#symbol-arrivals)
 - [`types.ARRIVAL_WAITS`](../types.ts.mdmd.md#symbol-arrival_waits)
+- [`types.BEYOND_HOPS`](../types.ts.mdmd.md#symbol-beyond_hops)
 - [`types.CHANGE_EMPHASES`](../types.ts.mdmd.md#symbol-change_emphases)
 - [`types.CUT_COUNTED`](../types.ts.mdmd.md#symbol-cut_counted)
 - [`types.ChangeEmphasis`](../types.ts.mdmd.md#symbol-changeemphasis) (type-only)
+- [`types.DESCRIPTIONS_ZOOMED_OUT`](../types.ts.mdmd.md#symbol-descriptions_zoomed_out)
 - [`types.DIRECTION_MARKS`](../types.ts.mdmd.md#symbol-direction_marks)
 - [`types.DiscoveryTarget`](../types.ts.mdmd.md#symbol-discoverytarget) (type-only)
 - [`types.ExplorerFilters`](../types.ts.mdmd.md#symbol-explorerfilters) (type-only)

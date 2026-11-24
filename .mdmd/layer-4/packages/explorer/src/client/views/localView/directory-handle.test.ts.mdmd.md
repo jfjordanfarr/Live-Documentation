@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: `packages/explorer/src/client/views/localView/directory-handle.test.ts`
-- Generated At: 2026-11-22T07:12:55.934Z
+- Generated At: 2026-11-24T17:39:08.420Z
 
 ## Authored
 ### Purpose
@@ -31,6 +31,7 @@ _No public symbols detected_
 - [`directory-handle.StripBox`](./directory-handle.ts.mdmd.md#symbol-stripbox) (type-only)
 - [`directory-handle.closedFamily`](./directory-handle.ts.mdmd.md#symbol-closedfamily-function)
 - [`directory-handle.fitHandle`](./directory-handle.ts.mdmd.md#symbol-fithandle)
+- [`directory-handle.fitParentPath`](./directory-handle.ts.mdmd.md#symbol-fitparentpath)
 - [`directory-handle.handleParts`](./directory-handle.ts.mdmd.md#symbol-handleparts)
 - [`directory-handle.handleReach`](./directory-handle.ts.mdmd.md#symbol-handlereach)
 - [`directory-handle.inEverySibling`](./directory-handle.ts.mdmd.md#symbol-ineverysibling)

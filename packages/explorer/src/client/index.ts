@@ -1230,13 +1230,29 @@ function startExplorer(bundle: StaticExplorerData, initialSnapshot: UrlStateSnap
     return null;
   }
 
+  /** Write a path into the sidebar context bar with clean wrap opportunities after each slash. */
+  function setContextName(element: HTMLElement | null, text: string): void {
+    if (!element) return;
+    const parts = text.split("/");
+    if (parts.length <= 1) {
+      element.textContent = text;
+      return;
+    }
+    const nodes: Array<string | HTMLElement> = [];
+    parts.forEach((part, index) => {
+      if (index < parts.length - 1) nodes.push(`${part}/`, document.createElement("wbr"));
+      else if (part) nodes.push(part);
+    });
+    element.replaceChildren(...nodes);
+  }
+
   function syncPerspectiveControls(): void {
     const contextName = document.getElementById("context-name");
     const selectedPath = state.selectedNode ? shownMoment?.fileAt(state.selectedNode.id) ?? state.selectedNode.codeRelativePath : null;
     const discoveredPath = state.discovery?.kind === "directory" ? shownMoment?.directoryAt(state.discovery.directory) ?? state.discovery.directory
       : state.discovery?.kind === "file" ? shownMoment?.fileAt(state.discovery.nodeId) ?? nodesById.get(state.discovery.nodeId)?.codeRelativePath : null;
-    if (contextName) contextName.textContent = selectedPath
-      ?? ([...(state.openDirectories ?? [])].map(path => (shownMoment?.directoryAt(path) ?? path) || "Scan root").join(", ") || discoveredPath || "Scan root");
+    setContextName(contextName, selectedPath
+      ?? ([...(state.openDirectories ?? [])].map(path => (shownMoment?.directoryAt(path) ?? path) || "Scan root").join(", ") || discoveredPath || "Scan root"));
     perspectiveControls.hidden = state.view !== "map";
     frame?.sync();
     for (const button of [fitButton, wholeButton, keyButton, tuningButton, mapButton, graphButton, connectionsButton, structureButton, historyButton]) button.disabled = changingPerspective;
@@ -1887,7 +1903,7 @@ function startExplorer(bundle: StaticExplorerData, initialSnapshot: UrlStateSnap
     state.selectedNode = node;
     const contextName = document.getElementById("context-name");
     if (node && contextName instanceof HTMLElement) {
-      contextName.textContent = node.codeRelativePath;
+      setContextName(contextName, node.codeRelativePath);
     }
     state.destination = exploration.destination;
     state.reachFrom = exploration.reachFrom;
@@ -1919,7 +1935,7 @@ function startExplorer(bundle: StaticExplorerData, initialSnapshot: UrlStateSnap
     state.selectedNode = node;
     const contextName = document.getElementById("context-name");
     if (contextName instanceof HTMLElement) {
-      contextName.textContent = node.codeRelativePath;
+      setContextName(contextName, node.codeRelativePath);
     }
   }
 

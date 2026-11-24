@@ -561,6 +561,9 @@ export interface HiddenCellActions {
   open(directory: string): void;
 }
 
+/** Maximum width of inline hidden-file cells in a directory header line so wide headers fade cleanly into a veil instead of forming long dot strings. */
+const MAX_INLINE_CELLS_WIDTH = 88;
+
 /**
  * What a directory drawn only around the pinned picture does not draw, as marks in its handle's line in place of the
  * count's words (the Hidden Files trial, 2026-11-17; the owner: "Could those be represented as cute little cells that
@@ -580,7 +583,8 @@ export function createHiddenCells(directory: string, hidden: HiddenContents, sty
     }
     return { field: drawn.field, places, width: Math.max(0, width - CELLS_LEAD), height: height || HANDLE_LINE };
   });
-  line.style.maxWidth = `${(CELLS_LEAD + lineMarks(contents, { width: Infinity, height: HANDLE_LINE }).natural).toFixed(2)}px`;
+  const natural = lineMarks(contents, { width: Infinity, height: HANDLE_LINE }).natural;
+  line.style.maxWidth = `${(CELLS_LEAD + Math.min(MAX_INLINE_CELLS_WIDTH, natural)).toFixed(2)}px`;
   return line;
 }
 

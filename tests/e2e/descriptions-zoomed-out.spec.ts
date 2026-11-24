@@ -38,9 +38,8 @@ type Choice = "hidden" | "first-line" | "line-end" | "line-middle";
  */
 const withReading = (reading: { nodeId: string; symbol?: string; open: boolean }[], choice: Choice): string =>
   `/?s=${compressSnapshot({ ...DEFAULT_SNAPSHOT, view: "map", perspective: "2d", selectedNodeId: SUBJECT, reading,
-    // The arrival is among those defaults since 2026-11-22: a link that carries the choice says too that the case begins
-    // at reading size, as the stored state says it for the link that carries nothing.
-    ...(choice === "hidden" ? {} : { layout: { localMap: { descriptionsZoomedOut: choice, arrival: "reading" as const, unconnected: "shown" as const } } }) })}`;
+    // Carry layout overrides whenever the choice differs from the default (first-line since 2026-11-24).
+    ...(choice === "first-line" ? {} : { layout: { localMap: { descriptionsZoomedOut: choice, arrival: "reading" as const, unconnected: "shown" as const } } }) })}`;
 
 async function visit(browser: Browser, choice: Choice, lines: "fallback" | "segoe", presses: number, address = `/?view=local&node=${SUBJECT}`) {
   const context = await browser.newContext({ viewport: { width: 1440, height: 900 }, deviceScaleFactor: 1 });

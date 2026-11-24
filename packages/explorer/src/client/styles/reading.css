@@ -120,6 +120,10 @@
 /* Hidden facts must not keep the margin the reading card gives prose beneath them: every slot is the same height. */
 .local-reading-slot .local-reading-types + .local-reading-prose:not(:empty) { margin-top: 0; }
 .local-slot-card .local-reading-purpose { padding: 6px 0 8px; }
+/* The path under the file name and the directory membrane already name where a file lives; hide the redundant italic footer on slot cards. */
+.local-slot-card .node-directory { display: none; }
+/* Minimal zoom-independent room under .node-path when an unannotated card's file name wraps to two lines at connections look. */
+.local-slot-card .node-path { padding-bottom: calc(var(--head-gap, 0) * 1px); }
 /* A slot card's lines are the stylesheet's, not the platform font's (2026-11-13): the app's font is "Segoe UI",
    sans-serif, and the normal line of Segoe UI, on the owner's Windows browser, is 1.33 of the font's size, where the
    fallback font of a machine without it is about 1.09 to 1.16. A symbol's name was a 15 px line there and a 12 px line
@@ -301,13 +305,17 @@
 /* The compact card is as tall as its name needs whole at the look's size (the card reading's --files-card-h); its name
    is held at the card reading's scale for it, as every card's is in the overview look (below). */
 [data-overview-files] .node-card.local-slot-card { min-height: calc(var(--files-card-h, 0) * 1px); }
-[data-overview-files] .node-card.local-slot-card .node-directory { padding-bottom: 0; }
-[data-overview-files] .node-card.local-slot-card > .local-refold-symbols { display: none; }
+[data-overview-files] .node-card.local-slot-card .node-path { padding-bottom: 0; }
+[data-overview-files] .node-card.local-slot-card > .node-symbols { padding-bottom: 0; }
+[data-overview-files] .node-card.local-slot-card > :is(.local-refold-symbols, .node-symbols-unconnected) { display: none; }
 /* Extra zoom-independent room above held footer counts so "+N symbols" and "+N connections" stand clear of Internals
    and the header at the connections look's 2.2x without shrinking or colliding (2026-11-24). Padding never collapses
-   with the disclosure button's 8 px top margin; the expanded card's refold control sits above .node-symbols. */
-.local-slot-card .node-directory { padding-bottom: calc(var(--foot-gap, 0) * 1px); }
+   with the disclosure button's 8 px top margin; on an expanded card the refold control stands between connected rows
+   (and Internals) and .node-symbols-unconnected. */
+.local-slot-card > .node-symbols { padding-bottom: calc(var(--foot-gap, 0) * 1px); }
+.local-slot-card > .node-symbols.local-symbols-split { padding-bottom: 0; }
 .local-slot-card > .local-refold-symbols { margin-top: calc(8px + var(--refold-gap, 0) * 1px); }
+.node-symbols-unconnected { margin-top: 10px; }
 
 /* The card's header from the middle band out, ordered under six principles (the header round of 2026-11-08, the
    November 7 record's Turns 3 and 4; held-lines.ts states them): the file's name leads on the header's first line, held

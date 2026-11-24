@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/explorer/src/client/views/localView/branch-renderer.ts`
-- Generated At: 2026-11-24T05:59:36.215Z
+- Generated At: 2026-11-24T17:39:08.120Z
 
 ## Authored
 ### Purpose
@@ -160,6 +160,14 @@ competition begins from the new picture.
 #### `BAND_BORDER` {#symbol-band_border}
 - Type: unknown
 - Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/branch-renderer.ts#L620)
+
+#### `syncHandleParents` {#symbol-synchandleparents}
+- Type: function
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/branch-renderer.ts#L829)
+- Parameters: `stage`: [`BranchStage`](#symbol-branchstage)
+
+##### `syncHandleParents` — Summary
+Re-fit every directory handle's segment-aware parent path after a zoom look or LOD scale change.
 <!-- LIVE-DOC:END Public Symbols -->
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
@@ -241,6 +249,7 @@ competition begins from the new picture.
 - [`directory-handle.HANDLE_STRIP`](./directory-handle.ts.mdmd.md#symbol-handle_strip)
 - [`directory-handle.Standing`](./directory-handle.ts.mdmd.md#symbol-standing) (type-only)
 - [`directory-handle.chevronMarkup`](./directory-handle.ts.mdmd.md#symbol-chevronmarkup)
+- [`directory-handle.fitParentPath`](./directory-handle.ts.mdmd.md#symbol-fitparentpath)
 - [`directory-handle.handleParts`](./directory-handle.ts.mdmd.md#symbol-handleparts)
 - [`directory-handle.handleReach`](./directory-handle.ts.mdmd.md#symbol-handlereach)
 - [`ladder-rooms.layoutTopOf`](./ladder-rooms.ts.mdmd.md#symbol-layouttopof)

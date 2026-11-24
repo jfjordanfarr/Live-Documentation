@@ -131,8 +131,9 @@ export class CardReading {
     const file = this.options.links.files[node.id];
     if (!file) return;
     const summary = purposeOf(file);
-    // With fixed slots every card has its Purpose slot and every symbol its slot, filled or not: the same allotment.
-    const purpose = summary || this.slots ? this.block(node, undefined, summary, false) : null;
+    // Only create the Purpose slot when the file actually has authored Purpose prose; unannotated files skip the empty
+    // block and divider border, reserving only minimal --head-gap if a two-line file name needs room at connections look.
+    const purpose = summary ? this.block(node, undefined, summary, false) : null;
     purpose?.element.classList.add("local-reading-purpose");
     if (purpose) card.querySelector(".node-path")?.after(purpose.element);
     // Descriptions Zoomed Out (2026-11-15): the Purpose's first line as plain text, which the connections look may draw
@@ -326,6 +327,7 @@ export class CardReading {
     // What the zoom looks drew from the last reading, a name wrapped below its line and the foot's counts held, is taken
     // back first, all at once, so that every box is read as the layout put it (a reading may come between renders).
     for (const { card } of this.cards.values()) {
+      card.style.removeProperty("--head-gap");
       card.style.removeProperty("--foot-gap");
       card.style.removeProperty("--refold-gap");
       card.classList.remove("local-file-kept-on");
@@ -510,6 +512,7 @@ function measureRooms(card: HTMLElement, resistances: LadderResistances, looks: 
   const heights = new Map<HTMLElement, number>();
   const heads: LookHead[] = [];
   let internalsBottom = 0;
+  let internalsExtraGap = 0;
   for (const row of card.querySelectorAll<HTMLElement>(".symbol-row")) {
     const wrapper = row.querySelector<HTMLElement>(".symbol-label-wrapper"), label = row.querySelector<HTMLElement>(".symbol-label");
     if (!wrapper || !label || !label.offsetHeight) continue;
@@ -526,16 +529,20 @@ function measureRooms(card: HTMLElement, resistances: LadderResistances, looks: 
     const moreTop = moreButton ? (moreButton.getBoundingClientRect().top - rowRect.top) / k - new DOMMatrix(getComputedStyle(moreButton).transform).f : 0;
     const moreHeight = moreButton?.offsetHeight || 17;
     // With the zoom looks, the Internals row (the card's last) is held at the connections look's scale, taller than its
-    // one-line layout box. When footer counts stand below it, bound its room to what its held head needs and record its
-    // drawn bottom so the footer counts keep clear air beneath it; otherwise it keeps the room to the card's content bottom.
+    // one-line layout box. When footer counts or a refold control stand below it, bound its room to what its held head
+    // needs and record its drawn bottom so those controls keep clear air beneath it; when nothing stands below it and
+    // the card's unpadded content bottom is shorter than its held head, reserve the exact deficit via --foot-gap so
+    // Internals stays full connections-look size without overflowing the card.
     let rowHeight = row.clientHeight;
     if (looks && row.classList.contains("internals-row") && !row.nextElementSibling) {
-      if (footCounts.length) {
-        const needed = Math.ceil(headHeight({ nameTop, line: nameHeight / Math.max(1, text.lines), moreTop, moreHeight }, 1, LOOK_SCALES.connections));
+      const needed = Math.ceil(headHeight({ nameTop, line: nameHeight / Math.max(1, text.lines), moreTop, moreHeight }, 1, LOOK_SCALES.connections));
+      if (footCounts.length || refold) {
         rowHeight = Math.max(row.clientHeight, needed);
         internalsBottom = (rowRect.top - cardRect.top) / k + rowHeight;
       } else {
-        rowHeight = Math.max(row.clientHeight, Math.floor((contentBottom - rowRect.top) / k));
+        const avail = Math.floor((contentBottom - rowRect.top) / k);
+        rowHeight = Math.max(row.clientHeight, avail, needed);
+        if (!filesOnly && needed > avail) internalsExtraGap = Math.max(internalsExtraGap, Math.ceil(needed - avail));
       }
     }
     // The button's own width, without the reach the far looks give it: a reading made in a far look must measure what
@@ -602,7 +609,15 @@ function measureRooms(card: HTMLElement, resistances: LadderResistances, looks: 
       [row, "local-name-wraps", nameWraps(text.lines, text.width, labelWidth)]
     );
   }
-  if (looks) writes.push(...lookHeadWrites(heads, parseFloat(cardStyle.getPropertyValue("--slot-lines")) || 2, rowsGap, keep));
+  if (looks) {
+    const slotLines = parseFloat(cardStyle.getPropertyValue("--slot-lines")) || 2;
+    const byGrid = new Map<HTMLElement | null, LookHead[]>();
+    for (const head of heads) {
+      const parent = head.row.parentElement;
+      (byGrid.get(parent) ?? byGrid.set(parent, []).get(parent)!).push(head);
+    }
+    for (const group of byGrid.values()) writes.push(...lookHeadWrites(group, slotLines, rowsGap, keep));
+  }
   writes.push(...pinDepthWrites(card, heights, rowsGap));
   const title = card.querySelector<HTMLElement>(".local-file-name"), header = card.querySelector<HTMLElement>(".node-title");
   const grid = card.querySelector<HTMLElement>(".symbol-grid"), actions = card.querySelector<HTMLElement>(".local-card-actions");
@@ -615,7 +630,7 @@ function measureRooms(card: HTMLElement, resistances: LadderResistances, looks: 
   const kept = [...actions.children].filter(control => !control.classList.contains("local-file-read")).length;
   const rooms: TitleRooms = {
     roomW: fixed((headerRect.right - titleRect.left) / k),
-    headH: fixed(((refold ? refold.getBoundingClientRect().top : grid.getBoundingClientRect().top) - titleRect.top) / k),
+    headH: fixed((grid.getBoundingClientRect().top - titleRect.top) / k),
     cardH: fixed((contentBottom - titleRect.top) / k),
     // The controls that stay at each band follow the name at the header's right edge: those above at the middle band,
     // More alone further out. Their width is counted from their number, since the farther bands hide all but More.
@@ -626,6 +641,21 @@ function measureRooms(card: HTMLElement, resistances: LadderResistances, looks: 
     line: parseFloat(cardStyle.getPropertyValue("--title-line")) || 15
   };
   const held = title.querySelector<HTMLElement>(".local-file-name-held");
+  let headGap = 0;
+  if (looks && !filesOnly && held && !card.querySelector(":scope > .local-reading-purpose")) {
+    const measureName = textMeasure(getComputedStyle(held));
+    const twoLineRooms: TitleRooms = { ...rooms, headH: Math.max(rooms.headH, 2 * rooms.line * LOOK_SCALES.connections) };
+    const connTitle = heldTitle(twoLineRooms, "far", { text: LOOK_SCALES.connections, control: LOOK_SCALES.connections }, null);
+    const connHeader = chooseNameHeader(held.dataset.name ?? "", connTitle.room, measureName);
+    // Keep 6 px of air below a 2-line held name so it clears the first symbol row's -2 px wrapper both at rest and mid-morph.
+    const neededHeadH = Math.max(connHeader.lines.length * connTitle.room.line, connHeader.controls.top + connTitle.room.controlsHeight) * connTitle.scale + 6;
+    if (neededHeadH > rooms.headH + 0.5) {
+      headGap = Math.ceil(neededHeadH - rooms.headH);
+      rooms.headH = fixed(rooms.headH + headGap);
+      rooms.cardH = fixed(rooms.cardH + headGap);
+    }
+  }
+  writes.push([card, "--head-gap", headGap > 0 ? String(headGap) : ""]);
   // At the overview look a file's name is not broken inside a word while a smaller size would keep its pieces whole
   // (2026-11-13 for files only; 2026-11-15 for a card that keeps its size too): it is held at the look's size, or smaller
   // where the widest of its segments would not fit across, never below the connections look's (filesNameScale).
@@ -660,9 +690,19 @@ function measureRooms(card: HTMLElement, resistances: LadderResistances, looks: 
       const header = connectionsHeaderHeight(name);
       const kept = fileKeptWrites(card, name, keep, { x: (titleRect.left - cardRect.left) / k - card.clientLeft, y: (titleRect.top - cardRect.top) / k - card.clientTop });
       const keptOn = kept.some(([, prop, val]) => prop === "local-file-kept-on" && val === true);
-      const refoldFree = (titleRect.top - cardRect.top) / k + header + (keptOn ? FILE_KEPT_AIR + NAME_LINE * LOOK_SCALES.connections : 0);
-      const refoldOut = refoldWrites(card, refold, { k, cardRect, free: refoldFree });
-      const foot = footWrites(card, footCounts, { k, cardRect, grid, internalsBottom, titleTop: titleRect.top, header });
+      const primaryDrawn = [...grid.querySelectorAll<HTMLElement>(".symbol-row")].some(row => row.offsetHeight > 0);
+      const refoldFree = primaryDrawn
+        ? Math.max((grid.getBoundingClientRect().bottom - cardRect.top) / k, internalsBottom) + headGap
+        : (titleRect.top - cardRect.top) / k + header + (keptOn ? FILE_KEPT_AIR + NAME_LINE * LOOK_SCALES.connections : 0);
+      const refoldOut = refoldWrites(card, refold, { k, cardRect, free: refoldFree, shift: headGap });
+      const lastGrid = [...card.querySelectorAll<HTMLElement>(".symbol-grid")].at(-1) ?? grid;
+      const foot = footWrites(card, footCounts, {
+        k, cardRect, grid: lastGrid,
+        internalsBottom: lastGrid === grid ? internalsBottom : 0,
+        internalsExtraGap: lastGrid === grid ? internalsExtraGap : 0,
+        titleTop: titleRect.top, header,
+        shift: headGap + refoldOut.extraGap
+      });
       const added = refoldOut.extraGap + foot.extraGap;
       if (added > 0 && !filesOnly) rooms.cardH = fixed(rooms.cardH + added);
       writes.push(...kept, ...refoldOut.writes, ...foot.writes);
@@ -889,18 +929,18 @@ function connectionsHeaderHeight(name: HeldName): number {
 }
 
 /**
- * An expanded card's refold control ("−N symbols", above `.node-symbols`) in the connections look: held at the look's
- * scale about its own foot so it never touches the first symbol row below it, with `--refold-gap` adding any extra room
- * needed to keep clear air below the held file name (and kept Purpose line, if shown).
+ * An expanded card's refold control ("−N symbols", between the connected rows + Internals and `.node-symbols-unconnected`)
+ * in the connections look: held at the look's scale about its own foot so it stays clear of the unconnected rows below,
+ * with `--refold-gap` adding any extra room needed above it to clear Internals (or the held header when no primary rows stand).
  */
-function refoldWrites(card: HTMLElement, refold: HTMLElement | null, at: { k: number; cardRect: DOMRect; free: number }): { writes: RoomWrite[]; extraGap: number } {
+function refoldWrites(card: HTMLElement, refold: HTMLElement | null, at: { k: number; cardRect: DOMRect; free: number; shift: number }): { writes: RoomWrite[]; extraGap: number } {
   if (!refold) return { writes: [[card, "--refold-gap", ""]], extraGap: 0 };
   const { k } = at, scale = LOOK_SCALES.connections;
   const style = getComputedStyle(card);
   const top = at.cardRect.top, left = at.cardRect.left;
   const right = (at.cardRect.right - left) / k - parseFloat(style.borderRightWidth) - parseFloat(style.paddingRight);
   const rect = refold.getBoundingClientRect();
-  const box: FootCount = { top: (rect.top - top) / k, bottom: (rect.bottom - top) / k, left: (rect.left - left) / k, width: rect.width / k, frame: 0 };
+  const box: FootCount = { top: (rect.top - top) / k + at.shift, bottom: (rect.bottom - top) / k + at.shift, left: (rect.left - left) / k, width: rect.width / k, frame: 2 };
   const { held, above, extraGap } = footHold([box], at.free, right, scale, 0, CONTROLS_GAP);
   return {
     writes: [
@@ -919,29 +959,34 @@ function refoldWrites(card: HTMLElement, refold: HTMLElement | null, at: { k: nu
  * the look's held size, from the last held count's foot upward: never at the map's own size, where five presses out they
  * were five pixels tall. Their room starts below what the look draws — its drawn rows (accounting for Internals' held
  * height) or, on a card with none, its held file name; across, the card's content. Where the card's unpadded layout
- * leaves less room than the held counts need, `--foot-gap` adds the exact whole pixels to `.node-directory` in the
+ * leaves less room than the held counts need, `--foot-gap` adds the exact whole pixels to the last `.node-symbols` in the
  * card's zoom-independent layout so every count that fits across stands clear.
  */
-function footWrites(card: HTMLElement, counts: readonly HTMLElement[], at: { k: number; cardRect: DOMRect; grid: HTMLElement; internalsBottom: number; titleTop: number; header: number }): { writes: RoomWrite[]; extraGap: number } {
-  if (!counts.length) return { writes: [[card, "--foot-gap", ""]], extraGap: 0 };
+function footWrites(card: HTMLElement, counts: readonly HTMLElement[], at: { k: number; cardRect: DOMRect; grid: HTMLElement; internalsBottom: number; internalsExtraGap: number; titleTop: number; header: number; shift: number }): { writes: RoomWrite[]; extraGap: number } {
+  if (!counts.length) {
+    return {
+      writes: [[card, "--foot-gap", at.internalsExtraGap > 0 ? String(at.internalsExtraGap) : ""]],
+      extraGap: at.internalsExtraGap
+    };
+  }
   const { k } = at, scale = LOOK_SCALES.connections;
   const style = getComputedStyle(card);
   // Every box in the map's own units from the card's top and left.
   const top = at.cardRect.top, left = at.cardRect.left;
   const right = (at.cardRect.right - left) / k - parseFloat(style.borderRightWidth) - parseFloat(style.paddingRight);
-  // Only the framed "+N connections" control carries a 3 px outer frame (local.css); plain disclosure counts do not.
+  // Framed disclosure controls carry outer pseudo-element frames (3 px on "+N connections", 2 px on "+N symbols").
   const boxes: FootCount[] = counts.map(count => {
     const rect = count.getBoundingClientRect();
     return {
-      top: (rect.top - top) / k,
-      bottom: (rect.bottom - top) / k,
+      top: (rect.top - top) / k + at.shift,
+      bottom: (rect.bottom - top) / k + at.shift,
       left: (rect.left - left) / k,
       width: rect.width / k,
-      frame: count.classList.contains("local-reveal-connections") ? 3 : 0
+      frame: count.classList.contains("local-reveal-connections") ? 3 : 2
     };
   });
   const drawnRows = [...at.grid.querySelectorAll<HTMLElement>(".symbol-row")].some(row => row.offsetHeight > 0);
-  const free = drawnRows ? Math.max((at.grid.getBoundingClientRect().bottom - top) / k, at.internalsBottom) : (at.titleTop - top) / k + at.header;
+  const free = drawnRows ? Math.max((at.grid.getBoundingClientRect().bottom - top) / k, at.internalsBottom) + at.shift : (at.titleTop - top) / k + at.header;
   const { held, above, extraGap } = footHold(boxes, free, right, scale, 3, CONTROLS_GAP);
   const writes: RoomWrite[] = [[card, "--foot-scale", String(scale)], [card, "--foot-gap", extraGap > 0 ? String(extraGap) : ""]];
   for (const [index, count] of counts.entries()) writes.push([count, "local-foot-held", held[index]], [count, "--foot-y", above[index].toFixed(2)]);
@@ -1076,23 +1121,26 @@ export function markFirstPin(card: HTMLElement): void {
   const name = heldNames.get(card);
   if (!name?.held.isConnected) return;
   for (const write of heldLineWrites(name, ["overview"], pinDepths(card))) applyRoomWrite(write);
-  // The rows' order sets where each head's even place is from its own: their shares stay, their shifts are found again.
+  // The rows' order sets where each head's even place is from its own: their shares stay, their shifts are found again, per grid.
   if (!name.looks) return;
   const gap = parseFloat(card.dataset.rowsGap ?? "") || 0;
-  const drawn = [...card.querySelectorAll<HTMLElement>(".symbol-row:not(.internals-row)")]
-    .filter(row => !row.classList.contains("branch-symbol-hidden") && !row.classList.contains("symbol-collapsed"));
-  let top = 0;
-  const bands = drawn.map(row => {
-    const height = parseFloat(row.dataset.layoutHeight ?? "") || 0;
-    const band = { top, height, head: parseFloat(row.dataset.headH ?? "") || height };
-    top += height + gap;
-    return band;
-  });
-  evenRows(bands, gap).forEach(({ shift }, index) => applyRoomWrite([drawn[index], "--row-even-y", shift.toFixed(2)]));
-  // The connections look's own places, where rows keep a description's first line (2026-11-13), likewise.
-  if (!drawn.some(row => row.dataset.headConnections)) return;
-  const kept = bands.map((band, index) => ({ ...band, head: parseFloat(drawn[index].dataset.headConnections ?? "") || band.head }));
-  evenRows(kept, gap).forEach(({ shift }, index) => applyRoomWrite([drawn[index], "--row-even-y-connections", shift.toFixed(2)]));
+  for (const gridEl of card.querySelectorAll<HTMLElement>(".symbol-grid")) {
+    const drawn = [...gridEl.querySelectorAll<HTMLElement>(":scope > .symbol-row:not(.internals-row)")]
+      .filter(row => !row.classList.contains("branch-symbol-hidden") && !row.classList.contains("symbol-collapsed"));
+    if (!drawn.length) continue;
+    let top = 0;
+    const bands = drawn.map(row => {
+      const height = parseFloat(row.dataset.layoutHeight ?? "") || 0;
+      const band = { top, height, head: parseFloat(row.dataset.headH ?? "") || height };
+      top += height + gap;
+      return band;
+    });
+    evenRows(bands, gap).forEach(({ shift }, index) => applyRoomWrite([drawn[index], "--row-even-y", shift.toFixed(2)]));
+    // The connections look's own places, where rows keep a description's first line (2026-11-13), likewise.
+    if (!drawn.some(row => row.dataset.headConnections)) continue;
+    const kept = bands.map((band, index) => ({ ...band, head: parseFloat(drawn[index].dataset.headConnections ?? "") || band.head }));
+    evenRows(kept, gap).forEach(({ shift }, index) => applyRoomWrite([drawn[index], "--row-even-y-connections", shift.toFixed(2)]));
+  }
 }
 
 /** A write's name says what it sets: a `data-` attribute, a custom property, or else a class. */

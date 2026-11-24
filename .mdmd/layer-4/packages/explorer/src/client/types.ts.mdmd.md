@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/explorer/src/client/types.ts`
-- Generated At: 2026-11-24T11:19:16.178Z
+- Generated At: 2026-11-24T16:42:55.630Z
 
 ## Authored
 ### Purpose
@@ -239,10 +239,10 @@ Every wrapper choice, in the order the control offers them.
 
 ##### `BeyondHops` — Summary
 What the 3D Local Map draws of the files beyond the hops shown, with Group Wrappers on in the Connections layout while
-something is asked about (a trial, 2026-11-18): everything, today's picture and the default, every other file of a
-group shown in part held in a shell and every unreached group's seed standing past the hops; or the next step, the
-horizon, only the files one step past what stands in the picture, in shells or alone, and nothing farther until a step
-brings it to the edge (`forceGraphShells.ts`).
+something is asked about (a trial of 2026-11-18, default Next step since 2026-11-24): "next-step", the horizon, only
+the files one step past what stands in the picture, in shells or alone, and nothing farther until a step brings it to
+the edge (`forceGraphShells.ts`); or "everything", every other file of a group shown in part held in a shell and every
+unreached group's seed standing past the hops.
 
 #### `BEYOND_HOPS` {#symbol-beyond_hops}
 - Type: const
@@ -457,44 +457,43 @@ Every Framing choice, in the order the control offers them; the first, by hand, 
 
 #### `StepFraming` {#symbol-stepframing}
 - Type: type
-- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L534)
+- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L533)
 
 ##### `StepFraming` — Summary
-What the 2D camera frames after a step: the newcomer's start by the least pan, the newcomer whole, or the newcomer
-with what its lines reach (a trial, 2026-11-21; a fourth value, the least pan with the cut counted at the edges, is to
-follow).
+What the 2D camera frames after a step: the newcomer with what its lines reach (default since 2026-11-24), the
+newcomer whole, or the newcomer's start by the least pan.
 
 #### `STEPS` {#symbol-steps}
 - Type: const
-- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L537)
+- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L536)
 
 ##### `STEPS` — Summary
-Every Step choice, in the order the control offers them; the first, the least pan, is the default until the owner has seen the others.
+Every Step choice, in the order the control offers them; the first, with its lines, is the default since 2026-11-24.
 
 #### `CutCounted` {#symbol-cutcounted}
 - Type: type
-- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L540)
+- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L539)
 
 ##### `CutCounted` — Summary
-Whether the cut is said at the edges after a step: off, the default, or on (a trial, 2026-11-21).
+Whether the cut is said at the edges after a step: on (default since 2026-11-24), or off.
 
 #### `CUT_COUNTED` {#symbol-cut_counted}
 - Type: const
-- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L543)
+- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L542)
 
 ##### `CUT_COUNTED` — Summary
-Every Cut Counted choice, in the order the control offers them; the first, off, is the default until the owner has seen the other.
+Every Cut Counted choice, in the order the control offers them; the first, on, is the default since 2026-11-24.
 
 #### `WireAnswersChoice` {#symbol-wireanswerschoice}
 - Type: type
-- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L546)
+- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L545)
 
 ##### `WireAnswersChoice` — Summary
 Whether a 2D wire answers a rested pointer, a press and the keyboard's focus: on or off.
 
 #### `WIRE_ANSWERS` {#symbol-wire_answers}
 - Type: const
-- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L552)
+- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L551)
 
 ##### `WIRE_ANSWERS` — Summary
 Every Wire Answers choice, in the order the control offers them; the first is the default: on since 2026-11-22, by the
@@ -502,35 +501,35 @@ owner's eye ("Yeah the Wire Answers \"On\" is really awesome"). Off was the defa
 
 #### `DirectionMarks` {#symbol-directionmarks}
 - Type: type
-- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L555)
+- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L554)
 
 ##### `DirectionMarks` — Summary
 The way a 2D wire's marks point: none drawn, along the owner's rule, or against it (a trial, 2026-11-21).
 
 #### `DIRECTION_MARKS` {#symbol-direction_marks}
 - Type: const
-- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L558)
+- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L557)
 
 ##### `DIRECTION_MARKS` — Summary
 Every Direction Marks choice, in the order the control offers them; the first, none, is the default.
 
 #### `WayDown` {#symbol-waydown}
 - Type: type
-- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L561)
+- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L560)
 
 ##### `WayDown` — Summary
 What a way down from the World Map brings: the thing's folder alone, or the question asked on the board (a trial, 2026-11-22).
 
 #### `WAY_DOWNS` {#symbol-way_downs}
 - Type: const
-- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L564)
+- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L563)
 
 ##### `WAY_DOWNS` — Summary
 Every Way Down choice, in the order the control offers them; the first, the folder alone, is the default until the owner has seen the other.
 
 #### `MirrorTurn` {#symbol-mirrorturn}
 - Type: type
-- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L572)
+- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L571)
 
 ##### `MirrorTurn` — Summary
 How the 2D picture moves between as laid out and mirrored (a trial, 2026-11-22, mirror-turn.ts): the turn, its plane
@@ -540,7 +539,7 @@ always gets.
 
 #### `MIRROR_TURNS` {#symbol-mirror_turns}
 - Type: const
-- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L581)
+- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L580)
 
 ##### `MIRROR_TURNS` — Summary
 Every Mirror Turn choice, in the order the control offers them; the first, the turn, is the default: the owner played
@@ -551,21 +550,21 @@ three quarters of a second, which the design system's motion rule records.
 
 #### `UnconnectedRows` {#symbol-unconnectedrows}
 - Type: type
-- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L584)
+- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L583)
 
 ##### `UnconnectedRows` — Summary
 What a card that draws every row does with its unconnected symbols' rows: folds them into its count, fades them, or shows them (default Folded since 2026-11-24).
 
 #### `UNCONNECTED_ROWS` {#symbol-unconnected_rows}
 - Type: const
-- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L587)
+- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L586)
 
 ##### `UNCONNECTED_ROWS` — Summary
 Every Unconnected choice, in the order the control offers them; the first, folded, is the default (owner, 2026-11-23).
 
 #### `MapReads` {#symbol-mapreads}
 - Type: type
-- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L593)
+- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L592)
 
 ##### `MapReads` — Summary
 Which way a 2D picture reads (2026-11-22): what offers first from the left, the rule since December 2025, or what
@@ -573,14 +572,14 @@ uses first, the same picture mirrored. The colours never change with it.
 
 #### `MAP_READS` {#symbol-map_reads}
 - Type: const
-- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L596)
+- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L595)
 
 ##### `MAP_READS` — Summary
 Both ways a 2D picture reads; the first is the default.
 
 #### `OverviewFiles` {#symbol-overviewfiles}
 - Type: type
-- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L602)
+- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L601)
 
 ##### `OverviewFiles` — Summary
 What the 2D map's overview look draws: files only, as in Flow, or cards at their size. Files only was a trial of
@@ -588,14 +587,14 @@ What the 2D map's overview look draws: files only, as in Flow, or cards at their
 
 #### `OVERVIEW_FILES` {#symbol-overview_files}
 - Type: const
-- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L605)
+- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L604)
 
 ##### `OVERVIEW_FILES` — Summary
 Every Zoomed Out Fully choice, in the order the control offers them, the default first.
 
 #### `DescriptionsZoomedOut` {#symbol-descriptionszoomedout}
 - Type: type
-- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L614)
+- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L613)
 
 ##### `DescriptionsZoomedOut` — Summary
 What a described row keeps of its description in the connections look: nothing; its first line where its name leaves
@@ -606,42 +605,42 @@ line").
 
 #### `DESCRIPTIONS_ZOOMED_OUT` {#symbol-descriptions_zoomed_out}
 - Type: const
-- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L617)
+- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L616)
 
 ##### `DESCRIPTIONS_ZOOMED_OUT` — Summary
-Every Descriptions Zoomed Out choice, in the order the control offers them; the first, nothing kept, is the default.
+Every Descriptions Zoomed Out choice, in the order the control offers them; the first, first line where the name leaves room, is the default since 2026-11-24.
 
 #### `ForceGraphTuning` {#symbol-forcegraphtuning}
 - Type: interface
-- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L620)
+- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L619)
 
 ##### `ForceGraphTuning` — Summary
 The 3D Local Map's packing and stable visual encodings, shared with the headless layout lab.
 
 #### `PathDestination` {#symbol-pathdestination}
 - Type: type
-- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L743)
+- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L742)
 
 ##### `PathDestination` — Summary
 The end of a path a person asked for: a file, perhaps one symbol of it, or a directory. The path starts at the newest pin (2026-10-14).
 
 #### `InspectionTarget` {#symbol-inspectiontarget}
 - Type: type
-- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L748)
+- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L747)
 
 ##### `InspectionTarget` — Summary
 The evidence explicitly open in the reader, independent of the Local Map subject and its pins.
 
 #### `DiscoveryTarget` {#symbol-discoverytarget}
 - Type: type
-- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L755)
+- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L754)
 
 ##### `DiscoveryTarget` — Summary
 The latest discovery remains in the map after its evidence closes; a new discovery replaces it and Pin keeps it.
 
 #### `ExplorerState` {#symbol-explorerstate}
 - Type: interface
-- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L761)
+- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L760)
 
 ##### `ExplorerState` — Summary
 Root state object for the Explorer client, managed by
@@ -649,7 +648,7 @@ Root state object for the Explorer client, managed by
 
 #### `TestCoverageMap` {#symbol-testcoveragemap}
 - Type: type
-- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L796)
+- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L795)
 
 ##### `TestCoverageMap` — Summary
 Map from implementation file path → covering test node(s).

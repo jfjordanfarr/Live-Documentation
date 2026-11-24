@@ -154,9 +154,9 @@ export function applyLayoutSettings(tuning: TuningConfig, settings: LayoutSettin
   const directory = settings?.localMap ? { directoryLayout: DIRECTORY_LAYOUTS[0], flowAncestors: FLOW_ANCESTORS[0] } : null;
   const looks = settings?.localMap ? { zoomLooks: ZOOM_LOOKS[0], overviewFiles: OVERVIEW_FILES[0] } : null;
   const closed = settings?.localMap ? { closedDirectory: CLOSED_DIRECTORY_LOOKS[0], closedShape: CLOSED_DIRECTORY_SHAPES[0], closedCells: CLOSED_CELL_COLOURS[0], hiddenFiles: HIDDEN_FILES_LOOKS[0], arrival: ARRIVALS[0], arrivalWaits: ARRIVAL_WAITS[0], arrivalRest: ARRIVAL_REST_S, framing: FRAMINGS[0], step: STEPS[0], cutCounted: CUT_COUNTED[0], wireAnswers: WIRE_ANSWERS[0], directionMarks: DIRECTION_MARKS[0], wayDown: WAY_DOWNS[0], mirrorTurn: MIRROR_TURNS[0], unconnected: UNCONNECTED_ROWS[0] } : null;
-  // Descriptions Zoomed Out likewise (2026-11-13): only a value that keeps a line is written, and its absence reads as hidden.
+  // Descriptions Zoomed Out (2026-11-13, default first-line since 2026-11-24): only non-default values are written.
   const descriptions = settings?.localMap ? { descriptionsZoomedOut: DESCRIPTIONS_ZOOMED_OUT[0] } : null;
-  // Beyond the Hops likewise (2026-11-18): only the next step is written, and its absence reads as everything.
+  // Beyond the Hops (2026-11-18, default next-step since 2026-11-24): only non-default values are written.
   // The scan trial likewise (2026-11-22): only an order and the slower pace are written, and their absence reads as off, as measured.
   // Structure Lines likewise (2026-11-24): only hover-file or none is written, and its absence reads as on-demand.
   const beyond = settings?.forceGraph ? { beyondHops: BEYOND_HOPS[0], scanGrowth: SCAN_GROWTHS[0], scanPace: SCAN_PACES[0], structureLines: STRUCTURE_LINES[0] } : null;

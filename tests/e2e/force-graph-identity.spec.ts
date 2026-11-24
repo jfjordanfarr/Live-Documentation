@@ -213,9 +213,10 @@ test.describe("names beside visible rings", () => {
       });
       await testInfo.attach(`${name}-geometry`, { body: JSON.stringify(picture, null, 2), contentType: "application/json" });
       if (wrappers === "skin") {
-        // The shells' names stand, and no sphere wears a ring: until 2026-11-18 five did here, beside the shells.
-        expect(picture.labels.map(label => label.id), `${name} names its shells`)
-          .toEqual(expect.arrayContaining(["shell:Gateway", "shell:Hub", "shell:Portal/Models", "shell:Portal/Pages"]));
+        // Under the default Beyond the Hops = Next step (promoted 2026-11-24), only shells one step past the open
+        // directory (shell:Gateway) stand on the horizon, and no sphere wears a ring.
+        expect(picture.labels.map(label => label.id), `${name} names its next-step shell`)
+          .toEqual(expect.arrayContaining(["shell:Gateway"]));
         expect(picture.rings.map(ring => ring.id), `${name} draws no ring with the wrappers on`).toEqual([]);
       } else {
         expect(picture.rings.length, `${name}: with the wrappers Off the frontier wears its rings`).toBeGreaterThan(0);

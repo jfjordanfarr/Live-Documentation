@@ -141,7 +141,7 @@ export function cardMetrics(capture: Capture, card: CardCapture, width: number, 
   const text = (t: PreparedText, w: number): number => textHeight(capture, t, w);
   let y = edge;
   y += titleTextHeight(capture, card.title, content - c.titlePaddingRight, card.titleRoom) + c.titleMarginBottom + (c.titlePaddingTop ?? 0);
-  y += text(card.path, content);
+  y += text(card.path, content) + (card.headGap ?? 0);
   if (card.footer?.position === "after-path") y += card.footer.top + chipsHeight(card.footer.items, content, card.footer.gap) + (card.footer.bottom ?? 0);
   // A slot card's Purpose has a fixed allotment, whatever its text (2026-11-06).
   if (card.purpose) y += card.slot ? card.slot.purposeHeight : readingHeight(card.purpose, content);
@@ -166,13 +166,14 @@ export function cardMetrics(capture: Capture, card: CardCapture, width: number, 
     y += height;
     if (row.reading && !card.slot) y += c.gridRowGap + readingHeight(row.reading, cell);
   });
+  y += card.footGap ?? 0;
   if (card.tests) {
     y += c.testsMarginTop + chipsHeight([card.tests.label, ...card.tests.chips], content, c.testsGap);
     y += Math.max(c.testsMarginBottom, card.directoryHidden ? 0 : c.directoryMarginTop);
   } else if (!card.directoryHidden) {
     y += c.directoryMarginTop;
   }
-  if (!card.directoryHidden) y += text(card.directory, content) + (card.footGap ?? 0);
+  if (!card.directoryHidden) y += text(card.directory, content);
   const hasBottomFooter = !!card.footer && card.footer.position !== "after-path";
   if (hasBottomFooter) y += card.footer!.top + chipsHeight(card.footer!.items, content, card.footer!.gap) + (card.footer!.bottom ?? 0)
     - (card.directoryHidden && card.tests ? Math.min(c.testsMarginBottom, card.footer!.marginTop) : 0);

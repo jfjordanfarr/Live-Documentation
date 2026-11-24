@@ -68,7 +68,7 @@ for (const [base, subject] of [["/", generator], ["/samples/estate/", "Contracts
     await setSlider(page, "tuning-force-link-gap", LAYOUT_PRESETS.relaxed.forceGraph.linkGap);
     await expect(coupling).toHaveValue("1.1");
     await expect(page.locator("#tuning-force-node-size")).toHaveValue("4.25");
-    await expect(page.locator("#tuning-force-link-width")).toHaveValue("1.1");
+    await expect(page.locator("#tuning-force-link-width")).toHaveValue("1.6");
     await expect(page.locator("#tuning-force-node-zoom-resistance")).toHaveValue("0.35");
     await expect(page.locator("#tuning-force-wire-zoom-resistance")).toHaveValue("0.95");
     await page.locator("#filter-toggle-related-docs").check();
@@ -81,7 +81,7 @@ for (const [base, subject] of [["/", generator], ["/samples/estate/", "Contracts
     // to show the same cards, each only when it is not its default (Zoom Looks since its default became the three
     // looks, 2026-11-13): here none.
     expect(settings.localMap).toEqual({ ...LAYOUT_PRESETS.relaxed.localMap, returnCost: DEFAULT_RETURN_COST });
-    expect(settings.forceGraph).toMatchObject({ ...LAYOUT_PRESETS.relaxed.forceGraph, coupling: 1.1, nodeSize: 4.25, symbolScale: 1, linkWidth: 1.1, nodeZoomResistance: 0.35, wireZoomResistance: 0.95 });
+    expect(settings.forceGraph).toMatchObject({ ...LAYOUT_PRESETS.relaxed.forceGraph, coupling: 1.1, nodeSize: 4.25, symbolScale: 1, linkWidth: 1.6, nodeZoomResistance: 0.35, wireZoomResistance: 0.95 });
     const shared = page.url();
     // A share must stand on its own. Close the publisher before starting the
     // recipient instead of running two unnecessary WebGL simulations at once.
@@ -96,7 +96,7 @@ for (const [base, subject] of [["/", generator], ["/samples/estate/", "Contracts
       await fresh.getByRole("button", { name: "2D", exact: true }).click();
       await localMapSettled(fresh);
       await expect(fresh.locator("#tuning-force-coupling")).toHaveValue("1.1");
-      await expect(fresh.locator("#tuning-force-link-width")).toHaveValue("1.1");
+      await expect(fresh.locator("#tuning-force-link-width")).toHaveValue("1.6");
       await expect(fresh.locator("#tuning-force-node-zoom-resistance")).toHaveValue("0.35");
       await expect(fresh.locator("#tuning-force-wire-zoom-resistance")).toHaveValue("0.95");
     } finally { await fresh.close(); }

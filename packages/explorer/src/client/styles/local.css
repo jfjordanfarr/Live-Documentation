@@ -284,7 +284,12 @@
 .local-file-name { display: block; width: 100%; padding: 0; border: 0; background: transparent; color: inherit; font: inherit; text-align: inherit; overflow-wrap: inherit; cursor: pointer; }
 .local-file-name:hover { color: var(--state-selected); }
 .local-disclosure { display: block; margin-top: 8px; padding: 0; border: 0; background: none; color: var(--text-panel-subtle); cursor: pointer; text-align: left; font: inherit; font-size: 11px; }
-button.local-disclosure:hover { color: var(--state-selected); }
+button.local-disclosure:not(.local-reveal-connections) { position: relative; width: fit-content; max-width: 100%; padding-inline: 5px; color: var(--text-panel-muted); }
+button.local-disclosure:not(.local-reveal-connections)::before { content: ""; position: absolute; inset: -2px 0; border: 1px solid rgba(var(--ground-sheen-rgb), 0.14); border-radius: 4px; background: rgba(var(--ground-sheen-rgb), 0.03); pointer-events: none; transition: border-color 0.15s, background-color 0.15s; }
+button.local-disclosure:not(.local-reveal-connections):hover { color: var(--state-selected); }
+button.local-disclosure:not(.local-reveal-connections):hover::before { border-color: var(--state-selected); background: var(--selected-subtle); }
+button.local-disclosure:not(.local-reveal-connections):focus-visible { outline: none; }
+button.local-disclosure:not(.local-reveal-connections):focus-visible::before { inset: -3px -1px; border: 2px solid var(--state-selected); border-radius: 5px; }
 span.local-disclosure { cursor: default; }
 /* The connections outside the view, a control that pins the file to reveal them (2026-11-12): drawn as the directory's
    Open is, the card's own frame for "press me", in the colour of its text rather than the faint grey of the facts beside
@@ -300,7 +305,7 @@ span.local-disclosure { cursor: default; }
 .local-reveal-connections:focus-visible::before { inset: -4px -1px; border: 2px solid var(--state-selected); border-radius: 5px; }
 .branch-symbol-hidden > * { display: none; }
 .branch-mode .local-column-label:empty { min-height: 13px; }
-.local-file-name:focus-visible, .local-column .symbol-label:focus-visible, .local-column .type-badge:focus-visible, .local-card-actions button:focus-visible, .local-symbol-pin:focus-visible, .local-symbol-more:focus-visible, button.local-disclosure:not(.local-reveal-connections):focus-visible { outline: 2px solid var(--state-selected); outline-offset: 3px; border-radius: 3px; }
+.local-file-name:focus-visible, .local-column .symbol-label:focus-visible, .local-column .type-badge:focus-visible, .local-card-actions button:focus-visible, .local-symbol-pin:focus-visible, .local-symbol-more:focus-visible { outline: 2px solid var(--state-selected); outline-offset: 3px; border-radius: 3px; }
 
 /* The open history scrubber takes the bottom of the map; the controls and the tray stand above it by the room it asks for. */
 #main { --history-room: 0px; }
@@ -437,7 +442,7 @@ span.local-disclosure { cursor: default; }
 .local-directory-label { --dir-clip: 2px; }
 .local-directory-caption { display: flex; flex-wrap: wrap; align-items: center; align-content: flex-start; flex: 0 1 auto; min-width: 0; height: calc(var(--dir-line, 15) * 1px); padding-block: var(--dir-clip); margin-block: calc(-1 * var(--dir-clip)); overflow: hidden; }
 .local-directory-caption > .local-directory-chevron { height: calc(var(--dir-line, 15) * 1px); margin-right: 4px; }
-.local-directory-parent { flex: 1 1 0; min-width: 0; max-width: max-content; overflow-x: clip; overflow-y: visible; text-overflow: ellipsis; direction: rtl; text-align: left; }
+.local-directory-parent { flex: 1 1 0; min-width: 0; max-width: max-content; overflow-x: clip; overflow-y: visible; text-align: left; }
 .local-directory-leaf { flex: none; max-width: calc(100% - 16px); overflow-x: clip; overflow-y: visible; text-overflow: ellipsis; color: var(--text-card-file-name); font-weight: 600; }
 /* The count is drawn where the line's room (--dir-room, in the map's units, over the held scale) holds what the name and
    the count need (--dir-need) beside the controls after them (--dir-controls: More and the ancestry control with their
@@ -459,7 +464,7 @@ span.local-disclosure { cursor: default; }
    pointer or the keyboard's focus, where a ring in the selection's colour shows that it can be pressed. A press reaches
    over the mark's whole pitch at the line's full height; the air past the last mark pans. */
 .local-directory-row--cells > .local-directory-handle { flex: 1000000 1 calc(var(--dir-name, 0) * 1px + 1px); max-width: max-content; }
-.local-directory-row > .local-directory-cells { position: relative; display: block; flex: 1 1000000 calc(var(--cells-words, 0) * 1px); min-width: 0; height: 100%; margin-left: -4px; pointer-events: none; --cells-quiet: .5; }
+.local-directory-row > .local-directory-cells { position: relative; display: block; flex: 1 1000000 min(var(--cells-words, 0) * 1px, 56px); min-width: 0; height: 100%; margin-left: -4px; pointer-events: none; --cells-quiet: .5; }
 .local-directory-cells-words { position: absolute; left: 0; top: 0; margin-left: .5em; white-space: nowrap; visibility: hidden; pointer-events: none; }
 /* Cells under name (2026-11-17): at the reading look the marks stand under the line, as a closed directory's field, in
    the height the strip keeps free there: from the line's foot down to the air above the first card (--dir-air), across

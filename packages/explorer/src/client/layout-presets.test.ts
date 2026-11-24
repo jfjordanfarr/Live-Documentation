@@ -68,18 +68,19 @@ describe("shared packing preferences", () => {
     expect(applyLayoutSettings(getDefaultTuning(), restored.layout).forceGraph.groupWrappers).toBe("skin");
   });
 
-  it("carries Beyond the Hops only at the next step, and opens a link that does not say it at everything (2026-11-18)", () => {
-    const everything = getDefaultTuning();
-    expect(everything.forceGraph.beyondHops).toBe("everything");
-    expect(layoutSettingsOf(everything).forceGraph).not.toHaveProperty("beyondHops");
-    expect(readLayoutSettings({ forceGraph: { beyondHops: "far" } })).toBeUndefined();
+  it("carries Beyond the Hops only at everything, and opens a link that does not say it at next-step (default since 2026-11-24)", () => {
     const horizon = getDefaultTuning();
-    horizon.forceGraph.beyondHops = "next-step";
-    expect(layoutSettingsOf(horizon).forceGraph?.beyondHops).toBe("next-step");
-    const restored = decompressSnapshot(compressSnapshot({ ...DEFAULT_SNAPSHOT, perspective: "3d", layout: layoutSettingsOf(horizon) }));
-    expect(applyLayoutSettings(getDefaultTuning(), restored.layout).forceGraph.beyondHops).toBe("next-step");
-    // A link made at everything opens at everything in a browser whose own tuning holds the next step.
-    expect(applyLayoutSettings(horizon, layoutSettingsOf(everything)).forceGraph.beyondHops).toBe("everything");
+    expect(horizon.forceGraph.beyondHops).toBe("next-step");
+    expect(layoutSettingsOf(horizon).forceGraph).not.toHaveProperty("beyondHops");
+    expect(readLayoutSettings({ forceGraph: { beyondHops: "next-step" } })).toBeUndefined();
+    expect(readLayoutSettings({ forceGraph: { beyondHops: "far" } })).toBeUndefined();
+    const everything = getDefaultTuning();
+    everything.forceGraph.beyondHops = "everything";
+    expect(layoutSettingsOf(everything).forceGraph?.beyondHops).toBe("everything");
+    const restored = decompressSnapshot(compressSnapshot({ ...DEFAULT_SNAPSHOT, perspective: "3d", layout: layoutSettingsOf(everything) }));
+    expect(applyLayoutSettings(getDefaultTuning(), restored.layout).forceGraph.beyondHops).toBe("everything");
+    // A link made at next-step opens at next-step in a browser whose own tuning holds everything.
+    expect(applyLayoutSettings(everything, layoutSettingsOf(horizon)).forceGraph.beyondHops).toBe("next-step");
   });
 
   it("opens a link that says a Drag, either value, with the value unread, since a drag swings since 2026-11-23", () => {
@@ -143,20 +144,38 @@ describe("shared packing preferences", () => {
     }
   });
 
-  it("carries Descriptions Zoomed Out only when it keeps the first line, and reads its absence as hidden (2026-11-13)", () => {
-    const hidden = getDefaultTuning();
-    expect(hidden.localMap.descriptionsZoomedOut).toBe("hidden");
-    expect(layoutSettingsOf(hidden).localMap).not.toHaveProperty("descriptionsZoomedOut");
-    expect(readLayoutSettings({ localMap: { descriptionsZoomedOut: "hidden" } })).toBeUndefined();
-    expect(readLayoutSettings({ localMap: { descriptionsZoomedOut: "all" } })).toBeUndefined();
+  it("carries Descriptions Zoomed Out only when away from first-line, and reads its absence as first-line (default since 2026-11-24)", () => {
     const kept = getDefaultTuning();
-    kept.localMap.descriptionsZoomedOut = "first-line";
-    const restored = decompressSnapshot(compressSnapshot({ ...DEFAULT_SNAPSHOT, layout: layoutSettingsOf(kept) }));
-    expect(applyLayoutSettings(getDefaultTuning(), restored.layout).localMap.descriptionsZoomedOut).toBe("first-line");
-    // A link made with it hidden shows it hidden in a browser whose own tuning keeps the first line.
-    const plain = decompressSnapshot(compressSnapshot({ ...DEFAULT_SNAPSHOT, layout: layoutSettingsOf(hidden) }));
-    expect(applyLayoutSettings(kept, plain.layout).localMap.descriptionsZoomedOut).toBe("hidden");
-    expect(applyLayoutSettings(kept, undefined).localMap.descriptionsZoomedOut).toBe("first-line");
+    expect(kept.localMap.descriptionsZoomedOut).toBe("first-line");
+    expect(layoutSettingsOf(kept).localMap).not.toHaveProperty("descriptionsZoomedOut");
+    expect(readLayoutSettings({ localMap: { descriptionsZoomedOut: "first-line" } })).toBeUndefined();
+    expect(readLayoutSettings({ localMap: { descriptionsZoomedOut: "all" } })).toBeUndefined();
+    const hidden = getDefaultTuning();
+    hidden.localMap.descriptionsZoomedOut = "hidden";
+    const restored = decompressSnapshot(compressSnapshot({ ...DEFAULT_SNAPSHOT, layout: layoutSettingsOf(hidden) }));
+    expect(applyLayoutSettings(getDefaultTuning(), restored.layout).localMap.descriptionsZoomedOut).toBe("hidden");
+    // A link made with the default shows first-line in a browser whose own tuning hides descriptions.
+    const plain = decompressSnapshot(compressSnapshot({ ...DEFAULT_SNAPSHOT, layout: layoutSettingsOf(kept) }));
+    expect(applyLayoutSettings(hidden, plain.layout).localMap.descriptionsZoomedOut).toBe("first-line");
+    expect(applyLayoutSettings(hidden, undefined).localMap.descriptionsZoomedOut).toBe("hidden");
+  });
+
+  it("carries Step and Cut Counted only when away from lines and on (defaults since 2026-11-24)", () => {
+    const plain = getDefaultTuning();
+    expect([plain.localMap.step, plain.localMap.cutCounted]).toEqual(["lines", "on"]);
+    expect(layoutSettingsOf(plain).localMap).not.toHaveProperty("step");
+    expect(layoutSettingsOf(plain).localMap).not.toHaveProperty("cutCounted");
+    expect(readLayoutSettings({ localMap: { step: "lines", cutCounted: "on" } })).toBeUndefined();
+    for (const step of ["whole", "least"] as const) {
+      const chosen = getDefaultTuning();
+      chosen.localMap.step = step;
+      chosen.localMap.cutCounted = "off";
+      const carried = decompressSnapshot(compressSnapshot({ ...DEFAULT_SNAPSHOT, layout: layoutSettingsOf(chosen) }));
+      expect(carried.layout?.localMap).toMatchObject({ step, cutCounted: "off" });
+      expect(applyLayoutSettings(getDefaultTuning(), carried.layout).localMap).toMatchObject({ step, cutCounted: "off" });
+      const unsaid = decompressSnapshot(compressSnapshot({ ...DEFAULT_SNAPSHOT, layout: layoutSettingsOf(plain) }));
+      expect(applyLayoutSettings(chosen, unsaid.layout).localMap).toMatchObject({ step: "lines", cutCounted: "on" });
+    }
   });
 
   it("carries the skin's shape and its cells' colour only when they are not the defaults: the tab, and the kinds' colours, the owner's choice of 2026-11-16", () => {

@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/explorer/src/client/views/localView/controller.ts`
-- Generated At: 2026-11-24T15:35:03.116Z
+- Generated At: 2026-11-24T16:42:56.381Z
 
 ## Authored
 ### Purpose
@@ -95,6 +95,7 @@ Coordinates the native Local Map, independent exploration pins and explicit FROM
 - [`branch-renderer.refreshReadingGeometry`](./branch-renderer.ts.mdmd.md#symbol-refreshreadinggeometry)
 - [`branch-renderer.refreshReadingPresentation`](./branch-renderer.ts.mdmd.md#symbol-refreshreadingpresentation)
 - [`branch-renderer.renderBranches`](./branch-renderer.ts.mdmd.md#symbol-renderbranches)
+- [`branch-renderer.syncHandleParents`](./branch-renderer.ts.mdmd.md#symbol-synchandleparents)
 - [`branches.BranchGraph`](./branches.ts.mdmd.md#symbol-branchgraph) (type-only)
 - [`camera-intent.ARRIVAL_ENDING_INPUTS`](./camera-intent.ts.mdmd.md#symbol-arrival_ending_inputs)
 - [`camera-intent.ARRIVAL_FLOOR_RATIO`](./camera-intent.ts.mdmd.md#symbol-arrival_floor_ratio)

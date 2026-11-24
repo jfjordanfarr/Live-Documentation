@@ -98,7 +98,9 @@ export interface CardCapture {
   purpose?: ReadingFlow;
   overflow?: ReadingFlow;
   directoryHidden?: boolean;
-  /** Extra zoom-independent bottom padding on `.node-directory` (`--foot-gap`) keeping held footer counts clear of Internals. */
+  /** Extra zoom-independent bottom padding on `.node-path` (`--head-gap`) keeping unannotated 2-line file names whole at connections look. */
+  headGap?: number;
+  /** Extra zoom-independent bottom padding on `.node-symbols` / `.node-directory` (`--foot-gap`) keeping held footer counts clear of Internals. */
   footGap?: number;
   /** Relationship counts; older captures place them after the rows. */
   footer?: { items: ChipCapture[]; gap: number; top: number; marginTop: number; bottom?: number; position?: "after-path" };
@@ -553,7 +555,10 @@ function readCapture(page: Page): Promise<PageCapture & { titleChecks: TitleChec
         if (!r.width && !r.height) continue;
         const direction = anchor.classList.contains("inbound") ? "inbound" : "outbound";
         const symbol = anchor.classList.contains("hub") ? "*" : anchor.dataset.symbol ?? "*";
-        pins[`${direction}:${symbol}`] = round((r.top - wrapperRect.top + r.height / 2) / scale);
+        // Put the transformed single-precision DOMRect reading back on Chromium's 1/64 px layout grid before rounding
+        // half-pixel pin centres (matching branch-renderer.ts's anchorCentre / onLayoutGrid): far down tall pictures
+        // (>16,384 px) float32 noise exceeds 1e-3 px and otherwise flips a .50 pin down by 1 px.
+        pins[`${direction}:${symbol}`] = round(unit((r.top - wrapperRect.top + r.height / 2) / scale));
       }
       // A dot's horizontal place, from a dot the page shows; a card whose rows are all collapsed has none, and then the
       // grid's geometry says where one would be: the dot starts at its 16 px column's edge, inside the border and padding.
@@ -593,7 +598,8 @@ function readCapture(page: Page): Promise<PageCapture & { titleChecks: TitleChec
           return shownFlows.get(button)!;
         })(),
         directoryHidden: getComputedStyle(directory).display === "none",
-        footGap: px(getComputedStyle(directory).paddingBottom) || undefined,
+        headGap: px(getComputedStyle(pathElement).paddingBottom) || undefined,
+        footGap: (px(getComputedStyle(directory).paddingBottom) + px(getComputedStyle([...card.querySelectorAll<HTMLElement>(":scope > .node-symbols")].at(-1) ?? symbols).paddingBottom)) || undefined,
         // The hub's centre as laid out, at the name's first line since 2026-11-19 (half way down a slot card before).
         hubY: px(getComputedStyle(hub!).top) + px(cardStyle.borderTopWidth) + hub!.offsetHeight / 2,
         footer: (() => {

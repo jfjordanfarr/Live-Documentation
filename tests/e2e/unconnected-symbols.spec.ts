@@ -208,6 +208,16 @@ test("on the owner's 138-symbol file at default pull-back, +138 symbols stands v
   expect(expanded.buttonTop, "−138 symbols stands inside viewport").toBeGreaterThanOrEqual(expanded.viewTop);
   expect(expanded.buttonBottom, "−138 symbols stays above viewport bottom").toBeLessThanOrEqual(expanded.viewBottom);
   expect(Math.abs(expanded.buttonHeight - before.buttonHeight), "−138 symbols matches +138 symbols screen height").toBeLessThan(2);
+  // Connected rows (Internals) stay in the primary block above −138 symbols so all 6 wired neighbours stay on-screen while expanded!
+  expect(expanded.neighbours.every(n => n.inView), "all connected neighbours remain in view while expanded").toBe(true);
+  const expandedOrder = await ownerCard.evaluate(element => {
+    const internals = element.querySelector<HTMLElement>(".internals-row .internals-label")!.getBoundingClientRect();
+    const refold = element.querySelector<HTMLElement>(":scope > button.local-refold-symbols")!.getBoundingClientRect();
+    const firstUnconnected = element.querySelector<HTMLElement>(".node-symbols-unconnected .symbol-row")!.getBoundingClientRect();
+    return { internalsBottom: internals.bottom, refoldTop: refold.top, refoldBottom: refold.bottom, firstUnconnectedTop: firstUnconnected.top };
+  });
+  expect(expandedOrder.refoldTop, "−138 symbols stands below Internals").toBeGreaterThan(expandedOrder.internalsBottom);
+  expect(expandedOrder.firstUnconnectedTop, "unconnected rows stand below −138 symbols").toBeGreaterThan(expandedOrder.refoldBottom);
 
   // Pressing −138 symbols folds the rows back and returns cleanly to the pre-expand camera and neighbourhood framing.
   await disclosure.click();

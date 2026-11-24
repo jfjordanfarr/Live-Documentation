@@ -555,9 +555,12 @@ test("what the connections look shows does not depend on the platform font's lin
  */
 const headsOf = (page: Page, id: string) => page.evaluate(cardId => {
   const card = document.querySelector<HTMLElement>(`.node-card[data-id="${cardId}"]`)!;
-  const shown = (element: Element): boolean => getComputedStyle(element).visibility === "visible" && element.getBoundingClientRect().height > 0;
+  const shown = (element: Element): boolean => {
+    const style = getComputedStyle(element);
+    return style.display !== "none" && style.visibility === "visible" && element.getBoundingClientRect().height > 0;
+  };
   return [...card.querySelectorAll<HTMLElement>(".symbol-row:not(.internals-row)")].filter(row => row.offsetHeight > 0).map(row => {
-    const parts = [...row.querySelectorAll<HTMLElement>(".symbol-label-text, .local-symbol-more, .symbol-anchor.dot")].filter(shown).map(part => part.getBoundingClientRect());
+    const parts = [...row.querySelectorAll<HTMLElement>(".symbol-label-text, .local-symbol-more, .symbol-anchor.dot, .local-row-kept")].filter(shown).map(part => part.getBoundingClientRect());
     const wrapper = row.querySelector<HTMLElement>(".symbol-label-wrapper")!;
     const layer = getComputedStyle(wrapper, "::before");
     const k = wrapper.getBoundingClientRect().height / wrapper.offsetHeight;

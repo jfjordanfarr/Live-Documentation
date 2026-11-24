@@ -78,6 +78,7 @@ export function createItemMenu(): {
           detail.textContent = command.detail;
           button.append(detail);
         }
+        button.addEventListener("pointerenter", () => { button.focus({ preventScroll: true }); });
         button.addEventListener("click", () => { close(); command.run(); });
         return button;
       }));

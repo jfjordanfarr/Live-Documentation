@@ -72,7 +72,7 @@ Grouped by the value each issue serves first (the owner, 2026-11-22: "Sure! Meta
 
 | Order | Issue | State | What it rests on |
 | --- | --- | --- | --- |
-| 20 | [A scan leaves no trace in the repository it maps](scan-leaves-no-trace.md) | active | The scan writing docs into the folder; and, since 2026-11-21, a person choosing what is left out before the scan by one list, built as a function and a trial page and not yet wired into a scan |
+| 20 | [A scan leaves no trace in the repository it maps](scan-leaves-no-trace.md) | active | The scan writing docs into the folder; `leaveOut.ts` is wired into discovery (`0d6a8c25d`, on `main` at `b7401c967`), while the interactive leave-out screen is built as a trial page awaiting the scanning page |
 
 **It meets you where you are**
 

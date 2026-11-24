@@ -49,20 +49,22 @@
     color: var(--text-strong);
 }
 
-/* Back and Forward between places; a button with nowhere to go is shown faint rather than hidden, so the pair never shifts. */
+/* Back and Forward between places; a button with nowhere to go uses the disabled token rather than near-invisible opacity, so the pair stays legible without competing with enabled controls. */
 .history-btn {
     font-size: 15px;
     padding: 2px 6px;
+    color: var(--text-secondary);
 }
 
 .history-btn:disabled {
-    opacity: 0.3;
+    color: var(--text-disabled);
+    opacity: 1;
     cursor: default;
 }
 
 .history-btn:disabled:hover {
     background: transparent;
-    color: var(--text-muted);
+    color: var(--text-disabled);
 }
 
 .sidebar-header {
@@ -124,8 +126,7 @@
     display: flex;
     flex-direction: column;
     gap: 6px;
-    word-break: break-word;
-    overflow-wrap: anywhere;
+    overflow-wrap: break-word;
 }
 
 #context-bar span {
@@ -528,9 +529,16 @@
     cursor: pointer;
 }
 .item-menu button:hover,
+.item-menu button:focus {
+    background: var(--selected-subtle);
+    color: var(--text-strong);
+    outline: none;
+}
 .item-menu button:focus-visible {
     background: var(--selected-subtle);
+    color: var(--text-strong);
     outline: 1px solid var(--state-selected);
+    outline-offset: -1px;
 }
 
 @media (max-width: 760px) {

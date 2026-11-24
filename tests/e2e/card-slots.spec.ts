@@ -457,3 +457,63 @@ test("exact symbol arrivals reveal their heading, while refreshing the same targ
   await body.locator('.symbol-badge[data-symbol="PaymentsContext (class)"]').click();
   await atHeading("PaymentsContext (class)");
 });
+
+test("unannotated slot cards omit the empty Purpose block and redundant directory footer while keeping two-line file names whole at connections look", async ({ page }) => {
+  const estateService = "PaymentService/PaymentService.cs";
+  const estateModel = "PaymentService/Data/Payment.cs";
+  await page.goto(`/samples/estate${url({ selectedNodeId: estateService, pinSet: { entries: [{ nodeId: estateService, symbol: "*" }, { nodeId: estateModel, symbol: "*" }] } })}`);
+  const serviceCard = card(page, estateService);
+  const modelCard = card(page, estateModel);
+  await serviceCard.waitFor();
+  await modelCard.waitFor();
+  await still(page);
+  // B1: No empty .local-reading-purpose box or orphaned divider border on unannotated files.
+  await expect(serviceCard.locator(".local-reading-purpose")).toHaveCount(0);
+  await expect(modelCard.locator(".local-reading-purpose")).toHaveCount(0);
+  // B2: Redundant italic .node-directory footer is hidden on every slot card.
+  await expect(serviceCard.locator(".node-directory")).toBeHidden();
+  await expect(modelCard.locator(".node-directory")).toBeHidden();
+  // Short 1-line unannotated filename reserves zero extra --head-gap.
+  expect(await modelCard.evaluate(el => el.style.getPropertyValue("--head-gap"))).toBe("");
+  // Zoom out to connections look: 2-line unannotated PaymentService.cs stays whole (not truncated with ellipsis).
+  for (let press = 0; press < 3; press += 1) await page.getByRole("button", { name: "Zoom Out", exact: true }).click();
+  await still(page);
+  await expect(page.locator("#map-container")).toHaveAttribute("data-look", "connections");
+  const heldText = await serviceCard.locator(".local-file-name-held").evaluate(el => el.getAttribute("data-lines-look-connections") ?? "");
+  expect(heldText.replaceAll("\n", ""), "PaymentService.cs stays whole at connections look").toBe("PaymentService.cs");
+  expect(heldText).not.toContain("\u2026");
+});
+
+test("zero-footer cards ending in Internals hold Internals at full connections-look scale inside the card box", async ({ page }) => {
+  await page.goto(url({ selectedNodeId: pathfind }));
+  const subject = card(page, pathfind);
+  await subject.waitFor();
+  await still(page);
+  for (let press = 0; press < 3; press += 1) await page.getByRole("button", { name: "Zoom Out", exact: true }).click();
+  await still(page);
+  await expect(page.locator("#map-container")).toHaveAttribute("data-look", "connections");
+  const measured = await page.evaluate(() => {
+    const read = (id: string) => {
+      const el = document.querySelector<HTMLElement>(`.node-card[data-id="${CSS.escape(id)}"]`)!;
+      const label = el.querySelector<HTMLElement>(".internals-row .symbol-label-text")!;
+      const cardRect = el.getBoundingClientRect();
+      const labelRect = label.getBoundingClientRect();
+      const scale = new DOMMatrix(getComputedStyle(label).transform).a || 1;
+      const footerCount = el.querySelectorAll(":scope > button.local-disclosure:not(.local-back-references)").length;
+      return { id, footerCount, scale, labelBottom: labelRect.bottom, cardBottom: cardRect.bottom };
+    };
+    return {
+      zeroFooter: read("packages/engine/src/live-docs/pathfind.test.ts"),
+      overlapping: read("packages/engine/src/live-docs/pathfind.overlapping-ends.test.ts"),
+      withFooter: read("packages/engine/src/live-docs/history/queries.test.ts")
+    };
+  });
+  expect(measured.zeroFooter.footerCount).toBe(0);
+  expect(measured.overlapping.footerCount).toBe(0);
+  expect(measured.withFooter.footerCount).toBeGreaterThan(0);
+  for (const item of [measured.zeroFooter, measured.overlapping]) {
+    expect(item.scale, `${item.id} holds full connections-look Internals scale`).toBeCloseTo(measured.withFooter.scale, 2);
+    expect(item.scale, `${item.id} does not shrink Internals to 1.0`).toBeGreaterThan(2.0);
+    expect(item.labelBottom, `${item.id} Internals stays inside card bottom border`).toBeLessThanOrEqual(item.cardBottom - 1);
+  }
+});

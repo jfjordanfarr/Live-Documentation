@@ -74,14 +74,13 @@ const cameraOf = (page: Page) => page.evaluate(() => ({
 
 const card = (id: string): string => `#map-container .node-card[data-id="${id}"]`;
 
-test("a cell's press brings its new card wholly into view at the same scale, or its top where it is taller than the view, and marks it", async ({ browser }) => {
+test("a cell's press brings its new card wholly into view at the same scale under Least Pan, or its top where it is taller than the view, and marks it", async ({ browser }) => {
   test.setTimeout(120_000);
   // The owner's case: the reading look at pathfind.ts, a cell under live-docs/history. Its first cell's card was placed
   // past the view's right edge; its sixteenth cell's card is taller than the view at this scale.
   for (const index of [0, 15]) {
-    // The step is the subject here, taken from reading size as the owner took it: the arrival is held there.
-    const { context, page } = await visit(browser, `/?view=local&node=${encodeURIComponent(SUBJECT)}`, "reading");
-    await still(page);
+    // Least Pan is the subject here, taken from reading size as the owner took it: the arrival is held there.
+    const { context, page } = await visitStep(browser, "least");
     const cell = page.locator(`.local-directory-label[data-directory="${HISTORY}"] .local-directory-field .local-directory-cell--file:not([hidden])`).nth(index);
     const path = (await cell.getAttribute("data-path"))!;
     const before = await cameraOf(page);
@@ -529,7 +528,7 @@ const ROW = "PaymentService/Data/PostPaymentRow.cs";
 async function visitFraming(browser: Browser, address: string, framing: CameraFraming) {
   const context = await browser.newContext({ viewport: { width: 1440, height: 900 }, deviceScaleFactor: 1 });
   await context.addInitScript(({ key, value }) => localStorage.setItem(key, value), {
-    key: PERSISTED_UI_KEY, value: JSON.stringify({ version: PERSISTED_UI_VERSION, tuning: { localMap: { ...AT_READING_SIZE, searchStarts: 0, framing } } })
+    key: PERSISTED_UI_KEY, value: JSON.stringify({ version: PERSISTED_UI_VERSION, tuning: { localMap: { ...AT_READING_SIZE, searchStarts: 0, step: "least", framing } } })
   });
   const page = await context.newPage();
   await page.goto(address);
@@ -838,9 +837,9 @@ test("Cut Counted: the edges past which an opened directory goes on each say how
 test("a link carries Step: a fresh browser opens the link's choice", async ({ browser }) => {
   const context = await browser.newContext({ viewport: { width: 1280, height: 800 }, deviceScaleFactor: 1 });
   const page = await context.newPage();
-  await page.goto(`${ESTATE}?s=${compressSnapshot({ ...DEFAULT_SNAPSHOT, selectedNodeId: PAYMENTS, layout: { localMap: { step: "lines" } } })}`);
+  await page.goto(`${ESTATE}?s=${compressSnapshot({ ...DEFAULT_SNAPSHOT, selectedNodeId: PAYMENTS, layout: { localMap: { step: "least" } } })}`);
   await page.waitForSelector("#map-container .node-card.local-focus", { timeout: 20_000 });
-  await expect(page.locator("#tuning-step")).toHaveValue("lines");
+  await expect(page.locator("#tuning-step")).toHaveValue("least");
   await context.close();
 });
 

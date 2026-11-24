@@ -8,7 +8,7 @@
 import { LAYOUT_PRESETS, readLayoutSettings } from "../layout-presets";
 import { DEFAULT_PALETTE, isPaletteName } from "../palette";
 import { readReadingChoices, type ReadingChoice } from "../reading-state";
-import { ARRIVAL_WAITS, ARRIVALS, CUT_COUNTED, DIRECTION_MARKS, FLOW_ANCESTORS, MAP_READS, MIRROR_TURNS, STRUCTURE_LINES, UNCONNECTED_ROWS, WAY_DOWNS, WIRE_ANSWERS, FRAMINGS, STEPS, CHANGE_EMPHASES, HIDDEN_FILES_LOOKS, FRAME_CHOICES, HISTORY_GRANULARITIES, MARBLE_CHOICES, type ChangeEmphasis, type DiscoveryTarget, type HistoryAxis, type HistoryGranularity, type InspectionTarget, type LocalMapPerspective, type ExplorerFilters, type SpatialLayout, type SymbolOrder, type TuningConfig, type ViewName } from "../types";
+import { ARRIVAL_WAITS, ARRIVALS, BEYOND_HOPS, CUT_COUNTED, DESCRIPTIONS_ZOOMED_OUT, DIRECTION_MARKS, FLOW_ANCESTORS, MAP_READS, MIRROR_TURNS, STRUCTURE_LINES, UNCONNECTED_ROWS, WAY_DOWNS, WIRE_ANSWERS, FRAMINGS, STEPS, CHANGE_EMPHASES, HIDDEN_FILES_LOOKS, FRAME_CHOICES, HISTORY_GRANULARITIES, MARBLE_CHOICES, type ChangeEmphasis, type DiscoveryTarget, type HistoryAxis, type HistoryGranularity, type InspectionTarget, type LocalMapPerspective, type ExplorerFilters, type SpatialLayout, type SymbolOrder, type TuningConfig, type ViewName } from "../types";
 import { ARRIVAL_REST_S } from "../views/localView/camera-intent";
 import { DEFAULT_RETURN_COST } from "../views/localView/cycle-order";
 import { readPerspective, readSpatialLayout, readView } from "./navigation";
@@ -88,7 +88,7 @@ export const getDefaultTuning = (): TuningConfig => ({
     mirrorTurn: MIRROR_TURNS[0],
     unconnected: UNCONNECTED_ROWS[0],
     overviewFiles: "files",
-    descriptionsZoomedOut: "hidden",
+    descriptionsZoomedOut: DESCRIPTIONS_ZOOMED_OUT[0],
     slotLines: 2,
     textResistance: 1,
     controlResistance: 1,
@@ -109,7 +109,7 @@ export const getDefaultTuning = (): TuningConfig => ({
     membraneDepth: null,
     ...LAYOUT_PRESETS.relaxed.localMap
   },
-  forceGraph: { ...LAYOUT_PRESETS.relaxed.forceGraph, coupling: 1, nodeSize: 4, symbolScale: 1, linkWidth: 1, nodeZoomResistance: 0.3, wireZoomResistance: 0.9, gravity: 0.025, componentSeparation: 0.2, chargeRange: 0, approximation: 0.3, linkStrength: 0.5, updateEnergy: 1, tether: 0.02, settleHold: 0, citedByPull: 1, hops: 1, revealFrames: 60, nameAt: 18, groupWrappers: "skin", shellDepth: 2, beyondHops: "everything", scanGrowth: "off", scanPace: "measured", structureLines: STRUCTURE_LINES[0] },
+  forceGraph: { ...LAYOUT_PRESETS.relaxed.forceGraph, coupling: 1, nodeSize: 4, symbolScale: 1, linkWidth: 1.5, nodeZoomResistance: 0.3, wireZoomResistance: 0.9, gravity: 0.025, componentSeparation: 0.2, chargeRange: 0, approximation: 0.3, linkStrength: 0.5, updateEnergy: 1, tether: 0.02, settleHold: 0, citedByPull: 1, hops: 1, revealFrames: 60, nameAt: 12, groupWrappers: "skin", shellDepth: 2, beyondHops: BEYOND_HOPS[0], scanGrowth: "off", scanPace: "measured", structureLines: STRUCTURE_LINES[0] },
   // The history's scrubber: steps laid out by date, linear time in which no month counts for more than another (the
   // owner, 2026-10-22), the ticks chosen by the number of steps, two steps a second when played, and, while the history
   // is shown, the files a step did not change dimmed so that the changed keep their own colour (Dim since 2026-11-15,

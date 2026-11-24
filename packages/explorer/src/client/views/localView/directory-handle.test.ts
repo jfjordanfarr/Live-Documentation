@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 
-import { closedFamily, fitHandle, HANDLE_AIR, HANDLE_HOLD, HANDLE_LINE, HANDLE_FLOOR, HANDLE_STRIP, handleParts, handleReach, inEverySibling, stripColumns, wholeAtSeams, type ClosedSibling, type StripBox } from "./directory-handle";
+import { closedFamily, fitHandle, fitParentPath, HANDLE_AIR, HANDLE_HOLD, HANDLE_LINE, HANDLE_FLOOR, HANDLE_STRIP, handleParts, handleReach, inEverySibling, stripColumns, wholeAtSeams, type ClosedSibling, type StripBox } from "./directory-handle";
 import type { HeldRoom } from "./held-lines";
 import { LOOK_SCALES } from "./ladder-steps";
 import { seamsOf } from "./word-seams";
@@ -26,6 +26,20 @@ describe("a directory's path as its handle draws it", () => {
   it("parts the directory's own name from its parent's path", () => {
     expect(handleParts("packages/explorer/src/client")).toEqual({ parent: "packages/explorer/src/", leaf: "client" });
     expect(handleParts("scripts")).toEqual({ parent: "", leaf: "scripts" });
+  });
+
+  it("truncates parent paths on whole path segments and never chops mid-word", () => {
+    const parent = "packages/explorer/src/";
+    // Full parent fits (22 chars = 220 units).
+    expect(fitParentPath(parent, 220, measure)).toBe("packages/explorer/src/");
+    // Drops "packages" cleanly to "…/explorer/src/" (15 chars = 150 units), never chopping mid-word.
+    expect(fitParentPath(parent, 160, measure)).toBe("\u2026/explorer/src/");
+    // Drops "packages/explorer" cleanly to "…/src/" (6 chars = 60 units).
+    expect(fitParentPath(parent, 80, measure)).toBe("\u2026/src/");
+    // Below shortest whole segment (60): hides parent cleanly instead of mid-word fragments like "…rc/".
+    expect(fitParentPath(parent, 45, measure)).toBe("");
+    expect(fitParentPath(parent, 25, measure)).toBe("");
+    expect(fitParentPath("", 200, measure)).toBe("");
   });
 });
 

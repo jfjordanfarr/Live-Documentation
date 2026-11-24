@@ -62,6 +62,27 @@ export function handleParts(directory: string): { parent: string; leaf: string }
   return { parent: directory.slice(0, slash + 1), leaf: directory.slice(slash + 1) };
 }
 
+/**
+ * Fit a directory handle's parent path (e.g. `"packages/explorer/src/"`) into `available` width (in the
+ * span's own unscaled CSS pixels) by dropping whole leading path segments (`"…/explorer/src/"`, `"…/src/"`).
+ * Never chops mid-word (`"…odules/"`, `"…rer/"`): if even the innermost segment (`"…/<last>/"`) does not
+ * fit, returns `""` so the directory's own name stands clean (its full path remains on hover/title).
+ */
+export function fitParentPath(
+  parent: string,
+  available: number,
+  measure: (text: string) => number
+): string {
+  if (!parent || !(available > 0)) return "";
+  if (measure(parent) <= available + 0.5) return parent;
+  const parts = parent.split("/").filter(Boolean);
+  for (let start = 1; start < parts.length; start += 1) {
+    const candidate = `\u2026/${parts.slice(start).join("/")}/`;
+    if (measure(candidate) <= available + 0.5) return candidate;
+  }
+  return "";
+}
+
 /** What the strip's run reads of a box of the picture: its columns, its row among its siblings, and the boxes around and inside it. */
 export interface StripBox {
   key: string;

@@ -450,9 +450,9 @@ test("direct labels release independent pins, preserve required neighbors, and s
   // The pointer's preview still owns the released label until it leaves; then the released seed is dimmed as the frontier.
   const away = await emptyPoint(page);
   await page.mouse.move(away.x, away.y);
-  // Released, the solution stays in the picture as its own group's seed, dimmed beyond the frontier (2026-11-02): the most
-  // connected file of the group it makes with its five projects since the .NET reader of 2026-11-21, a lone file before.
-  await expect.poll(async () => (await renderedNodes(page)).find(node => node.id === solution)?.opacity).toBeLessThan(0.5);
+  // Under the default Beyond the Hops = Next step (promoted 2026-11-24), releasing an unreached disconnected group's
+  // seed removes it from the horizon rather than leaving it dimmed beside the remaining pinned group.
+  await expect.poll(async () => (await renderedNodes(page)).find(node => node.id === solution)).toBeUndefined();
   const shared = await browser.newPage();
   try {
     await shared.goto(page.url());

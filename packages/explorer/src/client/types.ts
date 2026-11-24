@@ -396,15 +396,15 @@ export const GROUP_WRAPPERS: readonly GroupWrappers[] = ["off", "skin", "cloud",
 
 /**
  * What the 3D Local Map draws of the files beyond the hops shown, with Group Wrappers on in the Connections layout while
- * something is asked about (a trial, 2026-11-18): everything, today's picture and the default, every other file of a
- * group shown in part held in a shell and every unreached group's seed standing past the hops; or the next step, the
- * horizon, only the files one step past what stands in the picture, in shells or alone, and nothing farther until a step
- * brings it to the edge (`forceGraphShells.ts`).
+ * something is asked about (a trial of 2026-11-18, default Next step since 2026-11-24): "next-step", the horizon, only
+ * the files one step past what stands in the picture, in shells or alone, and nothing farther until a step brings it to
+ * the edge (`forceGraphShells.ts`); or "everything", every other file of a group shown in part held in a shell and every
+ * unreached group's seed standing past the hops.
  */
 export type BeyondHops = "everything" | "next-step";
 
 /** Every choice of what stands beyond the hops, the default first, in the order the control offers them. */
-export const BEYOND_HOPS: readonly BeyondHops[] = ["everything", "next-step"];
+export const BEYOND_HOPS: readonly BeyondHops[] = ["next-step", "everything"];
 
 /**
  * Whether the 3D Local Map, opened with nothing asked about, plays a scan (a trial for the owner's eye, 2026-11-22: "let
@@ -527,20 +527,19 @@ export type CameraFraming = "hand" | "follows" | "follows-files";
 export const FRAMINGS: readonly CameraFraming[] = ["hand", "follows", "follows-files"];
 
 /**
- * What the 2D camera frames after a step: the newcomer's start by the least pan, the newcomer whole, or the newcomer
- * with what its lines reach (a trial, 2026-11-21; a fourth value, the least pan with the cut counted at the edges, is to
- * follow).
+ * What the 2D camera frames after a step: the newcomer with what its lines reach (default since 2026-11-24), the
+ * newcomer whole, or the newcomer's start by the least pan.
  */
 export type StepFraming = "least" | "whole" | "lines";
 
-/** Every Step choice, in the order the control offers them; the first, the least pan, is the default until the owner has seen the others. */
-export const STEPS: readonly StepFraming[] = ["least", "whole", "lines"];
+/** Every Step choice, in the order the control offers them; the first, with its lines, is the default since 2026-11-24. */
+export const STEPS: readonly StepFraming[] = ["lines", "whole", "least"];
 
-/** Whether the cut is said at the edges after a step: off, the default, or on (a trial, 2026-11-21). */
+/** Whether the cut is said at the edges after a step: on (default since 2026-11-24), or off. */
 export type CutCounted = "off" | "on";
 
-/** Every Cut Counted choice, in the order the control offers them; the first, off, is the default until the owner has seen the other. */
-export const CUT_COUNTED: readonly CutCounted[] = ["off", "on"];
+/** Every Cut Counted choice, in the order the control offers them; the first, on, is the default since 2026-11-24. */
+export const CUT_COUNTED: readonly CutCounted[] = ["on", "off"];
 
 /** Whether a 2D wire answers a rested pointer, a press and the keyboard's focus: on or off. */
 export type WireAnswersChoice = "off" | "on";
@@ -613,8 +612,8 @@ export const OVERVIEW_FILES: readonly OverviewFiles[] = ["files", "keep"];
  */
 export type DescriptionsZoomedOut = "hidden" | "first-line" | "line-end" | "line-middle";
 
-/** Every Descriptions Zoomed Out choice, in the order the control offers them; the first, nothing kept, is the default. */
-export const DESCRIPTIONS_ZOOMED_OUT: readonly DescriptionsZoomedOut[] = ["hidden", "first-line", "line-end", "line-middle"];
+/** Every Descriptions Zoomed Out choice, in the order the control offers them; the first, first line where the name leaves room, is the default since 2026-11-24. */
+export const DESCRIPTIONS_ZOOMED_OUT: readonly DescriptionsZoomedOut[] = ["first-line", "hidden", "line-end", "line-middle"];
 
 /** The 3D Local Map's packing and stable visual encodings, shared with the headless layout lab. */
 export interface ForceGraphTuning {

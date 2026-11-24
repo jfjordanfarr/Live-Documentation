@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/explorer/src/client/views/localView/card-factory.ts`
-- Generated At: 2026-11-24T11:59:33.948Z
+- Generated At: 2026-11-24T16:46:23.838Z
 
 ## Authored
 ### Purpose
@@ -164,7 +164,7 @@ What a handle's marks do when pressed: a file's cell pins the file, a directory'
 
 #### `createHiddenCells` {#symbol-createhiddencells}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/card-factory.ts#L573)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/card-factory.ts#L576)
 - Parameters: `hidden`: [`HiddenContents`](./branches.ts.mdmd.md#symbol-hiddencontents); `style`: [`ClosedStyle`](#symbol-closedstyle); `actions`: [`HiddenCellActions`](#symbol-hiddencellactions)
 
 ##### `createHiddenCells` — Summary
@@ -178,7 +178,7 @@ whole line is held at the file names' size. What the marks are and do is {@link 
 
 #### `createHiddenField` {#symbol-createhiddenfield}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/card-factory.ts#L597)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/card-factory.ts#L601)
 - Parameters: `hidden`: [`HiddenContents`](./branches.ts.mdmd.md#symbol-hiddencontents); `style`: [`ClosedStyle`](#symbol-closedstyle); `actions`: [`HiddenCellActions`](#symbol-hiddencellactions)
 
 ##### `createHiddenField` — Summary
@@ -193,7 +193,7 @@ reading look and the line's marks from the connections look out.
 
 #### `countsOf` {#symbol-countsof}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/card-factory.ts#L751)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/card-factory.ts#L755)
 
 ##### `countsOf` — Summary
 "3 files, 2 directories", either part left out at zero; "empty" when both are.

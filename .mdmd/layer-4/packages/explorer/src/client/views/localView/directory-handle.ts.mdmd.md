@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/explorer/src/client/views/localView/directory-handle.ts`
-- Generated At: 2026-11-22T07:12:55.945Z
+- Generated At: 2026-11-24T17:39:08.425Z
 
 ## Authored
 ### Purpose
@@ -103,16 +103,26 @@ The chevron's drawing for a state, hidden from assistive technology: its button 
 A directory's path as its handle draws it: the directory's own name, which is cut last, and the path of its parent
 before it, with its closing slash, which is drawn muted and gives way first, from its start.
 
+#### `fitParentPath` {#symbol-fitparentpath}
+- Type: function
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/directory-handle.ts#L71)
+
+##### `fitParentPath` — Summary
+Fit a directory handle's parent path (e.g. `"packages/explorer/src/"`) into `available` width (in the
+span's own unscaled CSS pixels) by dropping whole leading path segments (`"…/explorer/src/"`, `"…/src/"`).
+Never chops mid-word (`"…odules/"`, `"…rer/"`): if even the innermost segment (`"…/<last>/"`) does not
+fit, returns `""` so the directory's own name stands clean (its full path remains on hover/title).
+
 #### `StripBox` {#symbol-stripbox}
 - Type: interface
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/directory-handle.ts#L66)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/directory-handle.ts#L87)
 
 ##### `StripBox` — Summary
 What the strip's run reads of a box of the picture: its columns, its row among its siblings, and the boxes around and inside it.
 
 #### `stripColumns` {#symbol-stripcolumns}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/directory-handle.ts#L86)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/directory-handle.ts#L107)
 - Parameters: `box`: [`StripBox`](#symbol-stripbox)
 
 ##### `stripColumns` — Summary
@@ -125,14 +135,14 @@ decision of 2026-11-15, after a strip in every column had left that row 79 units
 
 #### `Standing` {#symbol-standing}
 - Type: interface
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/directory-handle.ts#L102)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/directory-handle.ts#L123)
 
 ##### `Standing` — Summary
 Something standing in a membrane, as placed: a card, a closed box, or a column of a membrane or a lane inside it.
 
 #### `handleReach` {#symbol-handlereach}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/directory-handle.ts#L117)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/directory-handle.ts#L138)
 
 ##### `handleReach` — Summary
 The handle's room across, from its membrane's segments as placed, left to right: from the leftmost's left edge to
@@ -149,7 +159,7 @@ wires place higher takes the room back.
 
 #### `wholeAtSeams` {#symbol-wholeatseams}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/directory-handle.ts#L133)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/directory-handle.ts#L154)
 - Parameters: `header`: [`HeldHeader`](./held-lines.ts.mdmd.md#symbol-heldheader)
 
 ##### `wholeAtSeams` — Summary
@@ -157,14 +167,14 @@ Whether a held header draws the name whole and broken only at its seams.
 
 #### `HandleFit` {#symbol-handlefit}
 - Type: interface
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/directory-handle.ts#L143)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/directory-handle.ts#L164)
 
 ##### `HandleFit` — Summary
 A held name's scale and the header drawn at it.
 
 #### `fitHandle` {#symbol-fithandle}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/directory-handle.ts#L157)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/directory-handle.ts#L178)
 - Returns: [`HeldRoom`](./held-lines.ts.mdmd.md#symbol-heldroom), [`HandleFit`](#symbol-handlefit)
 
 ##### `fitHandle` — Summary
@@ -175,49 +185,49 @@ scale); and at the floor, where it still does not, broken inside a word as it mu
 
 #### `HELD_CELLS_GAP` {#symbol-held_cells_gap}
 - Type: const
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/directory-handle.ts#L168)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/directory-handle.ts#L189)
 
 ##### `HELD_CELLS_GAP` — Summary
 The air between a held name and the row of cells held under it, in the name's own units.
 
 #### `ClosedRoom` {#symbol-closedroom}
 - Type: interface
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/directory-handle.ts#L171)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/directory-handle.ts#L192)
 
 ##### `ClosedRoom` — Summary
 A closed box's room for its held name, in the map's own units, as the box is laid out.
 
 #### `ClosedSibling` {#symbol-closedsibling}
 - Type: interface
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/directory-handle.ts#L181)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/directory-handle.ts#L202)
 
 ##### `ClosedSibling` — Summary
 A closed box among its siblings: its name's segments, its room, and the measure of its name's type.
 
 #### `ClosedHeld` {#symbol-closedheld}
 - Type: interface
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/directory-handle.ts#L188)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/directory-handle.ts#L209)
 
 ##### `ClosedHeld` — Summary
 A closed box as a far look holds it: its name's own scale and lines, and the room left under the name, in the map's units.
 
 #### `ClosedFamily (interface)` {#symbol-closedfamily-interface}
 - Type: interface
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/directory-handle.ts#L195)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/directory-handle.ts#L216)
 
 ##### `ClosedFamily (interface)` — Summary
 A family of closed boxes at a far look: each box's own name, and whether the cells' row is drawn in them.
 
 #### `inEverySibling` {#symbol-ineverysibling}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/directory-handle.ts#L201)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/directory-handle.ts#L222)
 
 ##### `inEverySibling` — Summary
 In every sibling or in none: what one box of a family draws only where each of them has the room for it.
 
 #### `closedFamily (function)` {#symbol-closedfamily-function}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/directory-handle.ts#L219)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/directory-handle.ts#L240)
 - Returns: [`ClosedFamily`](#symbol-closedfamily-interface)
 
 ##### `closedFamily (function)` — Summary

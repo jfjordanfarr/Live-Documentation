@@ -157,12 +157,13 @@ async function expectConnectionsControls(page: Page, least: number): Promise<voi
     const card = button.closest(".node-card")!;
     const style = getComputedStyle(button), frame = getComputedStyle(button, "::before");
     const directory = card.querySelector<HTMLElement>(".node-directory")!;
+    const pathEl = card.querySelector<HTMLElement>(".node-path")!;
     const above = card.querySelector<HTMLElement>(":scope > .local-disclosure:not(.local-reveal-connections)");
     return {
       drawn: (button as HTMLElement).innerText, name: button.getAttribute("aria-label") ?? "", title: (button as HTMLElement).title,
       glyph: !!button.querySelector("svg path"), colour: style.color, layers, fact: getComputedStyle(directory).color,
       frame: [frame.position, frame.borderTopStyle, frame.borderTopWidth],
-      left: button.getBoundingClientRect().left, column: directory.getBoundingClientRect().left,
+      left: button.getBoundingClientRect().left, column: pathEl.getBoundingClientRect().left,
       box: [style.marginTop, style.paddingTop, style.paddingBottom, style.borderTopWidth],
       height: button.getBoundingClientRect().height, above: above?.getBoundingClientRect().height ?? null
     };

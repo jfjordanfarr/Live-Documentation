@@ -12,7 +12,7 @@ import {
   buildNormalizedAnchorKey,
   tryBuildNormalizedKeyFromAnchorKey
 } from "../symbolAnchors";
-import { createStage, dropStage, refreshReadingGeometry, refreshReadingPresentation, renderBranches, type BranchStage } from "./branch-renderer";
+import { createStage, dropStage, refreshReadingGeometry, refreshReadingPresentation, renderBranches, syncHandleParents, type BranchStage } from "./branch-renderer";
 import type { BranchGraph } from "./branches";
 import { ARRIVAL_ENDING_INPUTS, ARRIVAL_FLOOR_RATIO, ARRIVAL_LOOK_LEAD_MS, arrivalLookChange, FILES_FLOOR_RATIO, framingTravel, keepFrame, smoothZoom, arrivalEndedBy, arrivalEndFrame, arrivalPose, arrivalReleased, arrivalRestStartsAgain, easeInOutCubic, framingEaseMs, pinsFrame, poseBetween, revealPan, sameCamera, STEP_FLOOR_RATIO, cutPan, stepLinesFrame, stepWholeFrame, STEP_MARK_MS, unionOf, type FramingTarget, type PinsFraming } from "./camera-intent";
 import type { CardContext } from "./card-factory";
@@ -2107,8 +2107,9 @@ export class LocalViewController implements LocalViewApi {
     style.setProperty("--text-scale", text);
     style.setProperty("--name-growth", growth);
     style.setProperty("--control-scale", control);
-    // Slot prose follows the band; keep its reading controls in sync with what the stylesheet now shows.
+    // Slot prose follows the band; keep its reading controls and segment-aware directory handles in sync with the new scale.
     if (bandChanged) this.reading?.updatePresentation(this.readingVisible);
+    if (this.stage) syncHandleParents(this.stage);
   }
 
   /**

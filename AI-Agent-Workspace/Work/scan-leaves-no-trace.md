@@ -1,6 +1,6 @@
 ---
 kind: issue
-state: open
+state: active
 milestone: december-showing
 order: 20
 opened: 2026-11-20
@@ -34,8 +34,8 @@ Offered and never imposed, by the owner's word that what a scan takes is theirs 
 
 ### Choosing what a scan leaves out, before it scans, on either surface
 - state: active
-- holds: the function that decides is on the day branch since 2026-11-21 (three legs, the last merged as `8fb921234`, [`leaveOut.ts`](../../packages/engine/src/tooling/leaveOut.ts), nothing calling it yet); the choice a person sees is drawn as a trial page in two layouts (grouped by reason, and as a folder tree with boxes) and as text for a terminal, on the day branch (fourth leg `3e8813006`, fifth `e1a1dd502`) and nothing of it in the product; forty blind runs on its two layouts are in (By reason right in sixteen of sixteen, the tree short on every reading of what is left out); a sixth leg made By reason the one screen, with leaving out by pointing in its right column (`d38bc03cd`); neither the owner's eye nor a stranger has judged that screen yet
-- evidence:
+- holds: `leaveOut.ts` is on `main` and wired into pure host-driven discovery since 2026-11-24 (`0d6a8c25d`, landed at `b7401c967`: evaluates root `.gitignore` or explicit `leaveOut` patterns before `host.entries()` descends, and marks unresolved relative imports to excluded files `(left out)`). The interactive leave-out screen (one-list trial page, 10 legs, 32/32 on round-2 blind runs) is on `main` awaiting integration into the scanning page and CLI configuration (and profiling its ~8 s edit latency on 103k files under 4× slowdown).
+- evidence: `0d6a8c25d`, [the leave-out record](../AgentSessionHistory/2026/11/2026-11-21/Probes/leave-out/README.md), [blind playtests](../AgentSessionHistory/2026/11/2026-11-21/Probes/blind-playtests/README.md#one-list-tried-on-strangers)
 
 The owner's ask of 2026-11-21. A scan in two steps: the folder is listed and nothing is read; the person sees what would be scanned, by folder and by kind with counts, and what is left out and by which rule (the folder's own `.gitignore` or `.tfignore`, the starting configuration above, a pattern of their own); they change it; then the scan reads only what is left. The same listing and the same patterns on the command line and in the page, the patterns kept where the next scan finds them. With over a hundred thousand files in a TFS clone, most of them packages, a page must not read a file's bytes before this choice is made. To be designed with pictures and tried by strangers before it is built in.
 

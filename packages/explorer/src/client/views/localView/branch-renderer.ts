@@ -16,7 +16,7 @@ import type { LocalViewController } from "./controller";
 import { cycleOrdersOf, horizontalWire, nextCycleTrial, returningLinks, standingOrders, type CycleTrial } from "./cycle-trials";
 import { ancestryButton } from "./directory-ancestry";
 import { isPairLine, NARROW_SHAPE, nominalMeasurer, searchFlowShape, shapeRecord, type FlowShape, type ShapeSearch } from "./directory-flow";
-import { chevronMarkup, handleParts, handleReach, HANDLE_AIR, HANDLE_FLOOR, HANDLE_HOLD, HANDLE_INDENT, HANDLE_LINE, HANDLE_STRIP, type Standing } from "./directory-handle";
+import { chevronMarkup, fitParentPath, handleParts, handleReach, HANDLE_AIR, HANDLE_FLOOR, HANDLE_HOLD, HANDLE_INDENT, HANDLE_LINE, HANDLE_STRIP, type Standing } from "./directory-handle";
 import { layoutTopOf } from "./ladder-rooms";
 import { membranePath } from "./membrane-outline";
 import { OVERVIEW_FILES_ATTRIBUTE, OVERVIEW_LINES_ATTRIBUTE, type PictureSize } from "./overview-files";
@@ -677,7 +677,8 @@ function fillLabel(controller: LocalViewController, label: HTMLElement, director
   if (parent) {
     const path = document.createElement("span");
     path.className = "local-directory-parent";
-    path.textContent = `\u200e${parent}\u200e`;
+    path.dataset.fullParent = parent;
+    path.textContent = parent;
     caption.append(path);
   }
   const own = document.createElement("span");
@@ -763,18 +764,87 @@ function fillLabel(controller: LocalViewController, label: HTMLElement, director
  * parent's path (the root's rule of 2026-11-17: the marks stand in the count's room, and cost the path no more than its
  * words did; local.css).
  */
+let handleCanvas: CanvasRenderingContext2D | undefined;
+const handleWidths = new Map<string, Map<string, number>>();
+
+/** Cached canvas width measurer for directory handle parent paths (no layout reads). */
+function handleTextMeasure(style: CSSStyleDeclaration): (text: string) => number {
+  const font = `${style.fontStyle} ${style.fontWeight} ${style.fontSize} ${style.fontFamily}`;
+  const spacing = style.letterSpacing === "normal" ? "0px" : style.letterSpacing;
+  const key = `${font}|${spacing}`;
+  let widths = handleWidths.get(key);
+  if (!widths) handleWidths.set(key, widths = new Map<string, number>());
+  const known = widths;
+  return text => {
+    let width = known.get(text);
+    if (width === undefined) {
+      handleCanvas ??= document.createElement("canvas").getContext("2d")!;
+      handleCanvas.font = font;
+      handleCanvas.letterSpacing = spacing;
+      known.set(text, width = handleCanvas.measureText(text).width);
+    }
+    return width;
+  };
+}
+
+/**
+ * Keep a directory handle's parent path cleanly truncated on whole path segments (`…/engine/src/`)
+ * instead of chopping mid-word (`…rer/`, `…owershell/`). Computes available width directly from
+ * the row's own unscaled width so zooming back in always restores full parent segments.
+ */
+function syncHandleParent(label: HTMLElement): void {
+  const path = label.querySelector<HTMLElement>(".local-directory-parent");
+  const full = path?.dataset.fullParent;
+  if (!path || !full) return;
+  const row = label.querySelector<HTMLElement>(".local-directory-row");
+  const controls = label.querySelector<HTMLElement>(".local-directory-controls");
+  if (!row || !controls) return;
+  const rowWidth = parseFloat(getComputedStyle(row).width);
+  if (!(rowWidth > 0)) return;
+  const controlsWidth = controls.offsetWidth + 4;
+  const nameWidth = parseFloat(label.style.getPropertyValue("--dir-name")) || 0;
+  const budget = Math.max(0, rowWidth - controlsWidth - nameWidth);
+  const measure = handleTextMeasure(getComputedStyle(path));
+  const count = label.querySelector<HTMLElement>(".local-directory-more");
+  const cells = label.querySelector<HTMLElement>(".local-directory-cells");
+  let available = budget;
+  if (count && count.offsetWidth) {
+    const need = parseFloat(label.style.getPropertyValue("--dir-need")) || 0;
+    if (rowWidth - controlsWidth >= need + 1) {
+      const countWidth = count.offsetWidth + (parseFloat(getComputedStyle(count).marginLeft) || 0);
+      available = Math.max(0, budget - countWidth);
+    }
+  } else if (cells && getComputedStyle(cells).display !== "none") {
+    const cellsWords = parseFloat(label.style.getPropertyValue("--cells-words")) || 0;
+    const cellsMax = parseFloat(cells.style.maxWidth) || Infinity;
+    const cellsBasis = Math.min(cellsWords, 56, cellsMax);
+    const fullWidth = measure(full);
+    available = Math.max(0, Math.min(fullWidth, rowWidth - controlsWidth - cellsBasis - nameWidth));
+  }
+  const nextText = fitParentPath(full, available, measure);
+  if (path.textContent !== nextText) path.textContent = nextText;
+}
+
+/** Re-fit every directory handle's segment-aware parent path after a zoom look or LOD scale change. */
+export function syncHandleParents(stage: BranchStage): void {
+  for (const label of stage.labels.values()) syncHandleParent(label);
+}
+
 function writeHandleNeeds(label: HTMLElement): void {
   const count = label.querySelector<HTMLElement>(".local-directory-more"), leaf = label.querySelector<HTMLElement>(".local-directory-leaf");
   if (!leaf || !leaf.scrollWidth) return;
-  if (!label.style.getPropertyValue("--dir-name")) label.style.setProperty("--dir-name", String(HANDLE_INDENT + leaf.scrollWidth));
+  const nameWidth = HANDLE_INDENT + leaf.scrollWidth;
+  if (!label.style.getPropertyValue("--dir-name")) label.style.setProperty("--dir-name", String(nameWidth));
   const words = label.querySelector<HTMLElement>(".local-directory-cells-words"), row = label.querySelector<HTMLElement>(".local-directory-row");
   if (words && row && !label.style.getPropertyValue("--cells-words")) {
     // Read in the line's own units: the drawn width over the scale the row and the camera draw it at.
     const drawn = row.getBoundingClientRect().width, own = parseFloat(getComputedStyle(row).width);
     if (drawn > 0 && own > 0) label.style.setProperty("--cells-words", (words.getBoundingClientRect().width * own / drawn + (parseFloat(getComputedStyle(words).marginLeft) || 0)).toFixed(3));
   }
-  if (label.style.getPropertyValue("--dir-need") || !count || !count.offsetWidth) return;
-  label.style.setProperty("--dir-need", String(Math.ceil(HANDLE_INDENT + leaf.scrollWidth + count.offsetWidth + (parseFloat(getComputedStyle(count).marginLeft) || 0))));
+  if (!label.style.getPropertyValue("--dir-need") && count && count.offsetWidth) {
+    label.style.setProperty("--dir-need", String(Math.ceil(nameWidth + count.offsetWidth + (parseFloat(getComputedStyle(count).marginLeft) || 0))));
+  }
+  syncHandleParent(label);
 }
 
 /**
@@ -1533,6 +1603,7 @@ function rowsOf(controller: LocalViewController, stage: BranchStage, scale: numb
     let internals: string | null = null;
     let header = 0;
     for (const [row, key] of rowKeys(card)) {
+      if (row.closest(".node-symbols-unconnected")) continue;
       // A row with a box of its own is read by that box, which is its allotment whatever stands in it: a slot row is as
       // tall as its slot lines and a short row as its head (2026-11-13), while their children may be hidden, taken out
       // or drawn smaller. Read through its children, a short row, whose slot is taken out, was found shorter than it
@@ -1705,6 +1776,7 @@ function dressCards(controller: LocalViewController, cards: readonly HTMLElement
       const state = presentRow(id, row.dataset.symbol);
       row.classList.toggle("branch-symbol-hidden", state.hidden);
       row.classList.toggle("branch-symbol-muted", state.muted);
+      row.classList.toggle("branch-symbol-expanded-unconnected", !row.classList.contains("internals-row") && state.foldable);
       // The Internals row stands for the file's private contents, not for a symbol: it is not counted on the reveal.
       if (!row.classList.contains("internals-row")) {
         if (state.hidden) hidden++;
@@ -1741,10 +1813,23 @@ function dressCards(controller: LocalViewController, cards: readonly HTMLElement
       refold.addEventListener("click", event => {
         event.stopPropagation(); controller.toggleCardExpansion(id, false);
       });
-      // Place the refold control right above the symbol grid so even on a 138-row expanded card it stays in view beside the header.
-      const symbols = card.querySelector(":scope > .node-symbols");
-      if (symbols) card.insertBefore(refold, symbols);
-      else card.append(refold);
+      // Keep connected rows + Internals in the primary .node-symbols block at the top of the card so wired
+      // neighbours stay on-screen, then place the refold control cleanly between them and the expanded unconnected rows.
+      const symbols = card.querySelector<HTMLElement>(":scope > .node-symbols");
+      if (symbols) {
+        symbols.classList.add("local-symbols-split");
+        const unconnected = document.createElement("div");
+        unconnected.className = "node-symbols node-symbols-unconnected";
+        const unconnectedGrid = document.createElement("div");
+        unconnectedGrid.className = "symbol-grid";
+        for (const row of symbols.querySelectorAll<HTMLElement>(".symbol-row.branch-symbol-expanded-unconnected")) {
+          unconnectedGrid.append(row);
+        }
+        unconnected.append(unconnectedGrid);
+        symbols.after(refold, unconnected);
+      } else {
+        card.append(refold);
+      }
     }
     const outside = exploration.hiddenConnections.get(id) ?? 0;
     if (outside) {

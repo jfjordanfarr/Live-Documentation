@@ -415,9 +415,9 @@ Counted from the stylesheets on 2026-11-18. Every word on screen is set in CSS; 
 
 **Rule: a 3D name appears at the last second, then keeps its size.**
 
-- **The rule.** A file's name in the 3D map is drawn when its sphere is drawn at 18 px (Name At, a Tuning lever), on hover, or for things the person asked about. A drawn name keeps its reading size.
-- **Why.** Owner, 2026-11-02: "we don't draw a node's name (unless hovered over) until _the very last second_ ... our current system is overexcited to draw text".
-- **Where.** `persistence/local-storage.ts:99` (`nameAt: 18`) and `views/forceGraphLabels.ts`.
+- **The rule.** A file's name in the 3D map is drawn when its sphere is drawn at 12 px (Name At, a Tuning lever; 18 px until 2026-11-24), on hover, or for things the person asked about. A drawn name keeps its reading size.
+- **Why.** Owner, 2026-11-02: "we don't draw a node's name (unless hovered over) until _the very last second_ ... our current system is overexcited to draw text". Lowered from 18 px to 12 px on 2026-11-24 after the Tuning defaults sweep showed primary nearby spheres remaining unlabeled at ordinary 3D orbit distances.
+- **Where.** `persistence/local-storage.ts` (`nameAt: 12`) and `views/forceGraphLabels.ts`.
 - **Checked by.** `forceGraphLabels.test.ts`.
 - **Status.** Holds.
 

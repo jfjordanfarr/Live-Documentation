@@ -27,10 +27,10 @@ const ESTATE_PIN = "PaymentService/PaymentService.cs";
 const entry = (base: string, pin: string): string => `${base}?s=${compressSnapshot({ ...DEFAULT_SNAPSHOT, perspective: "3d", spatialLayout: "connections",
   filters: { showTests: true, showAssets: false }, pinSet: { entries: [{ nodeId: pin, symbol: "*" }] } })}`;
 
-/** Choose the wrappers and the shells' depth before the page starts, as saved Tuning choices, keeping the suite's still Local Map search and its arrival at reading size (still-picture.ts, AT_READING_SIZE, written out here because the page runs this). */
+/** Choose the wrappers and the shells' depth before the page starts, as saved Tuning choices, keeping the suite's still Local Map search, its arrival at reading size, and full-group shells (beyondHops: "everything") for full-tree shell geometry checks. */
 async function choose(page: Page, look: GroupWrappers, shellDepth = getDefaultTuning().forceGraph.shellDepth): Promise<void> {
   await page.addInitScript(([key, version, wrappers, depth]) => {
-    localStorage.setItem(key, JSON.stringify({ version, tuning: { localMap: { searchStarts: 0, arrival: "reading" }, forceGraph: { groupWrappers: wrappers, shellDepth: depth } } }));
+    localStorage.setItem(key, JSON.stringify({ version, tuning: { localMap: { searchStarts: 0, arrival: "reading" }, forceGraph: { groupWrappers: wrappers, shellDepth: depth, beyondHops: "everything" } } }));
   }, [PERSISTED_UI_KEY, PERSISTED_UI_VERSION, look, shellDepth] as const);
 }
 
@@ -289,13 +289,14 @@ test("the one file of a directory beyond the hops stands as itself, dimmed like 
  * the default, the picture is today's. This repository pinned on the view at one hop, the lever chosen as a saved tuning
  * and then moved in Tuning.
  */
-test("Beyond the Hops at the next step holds only what is one step past the picture and draws no unreached seed; at everything the picture is today's", async ({ page }) => {
+test("Beyond the Hops at the next step (default) holds only what is one step past the picture and draws no unreached seed; at everything all hidden files are shelled", async ({ page }) => {
   test.setTimeout(150_000);
   await observeGraph(page);
   await page.addInitScript(([key, version]) => {
-    localStorage.setItem(key, JSON.stringify({ version, tuning: { localMap: { searchStarts: 0, arrival: "reading" }, forceGraph: { groupWrappers: "skin", beyondHops: "next-step" } } }));
+    localStorage.setItem(key, JSON.stringify({ version, tuning: { localMap: { searchStarts: 0, arrival: "reading" }, forceGraph: { groupWrappers: "skin" } } }));
   }, [PERSISTED_UI_KEY, PERSISTED_UI_VERSION] as const);
   await page.goto(entry("/", REPO_PIN));
+  await expect(page.locator("#tuning-force-beyond-hops")).toHaveValue("next-step");
   const graph = await loadGraph(page, "/");
   const data = spatialGraphOf(graph, node => (node.archetype || "").toLowerCase() !== "asset", [], "connections");
   const pulls = (link: { kind?: string }): boolean => linkPulls(link, "connections");
