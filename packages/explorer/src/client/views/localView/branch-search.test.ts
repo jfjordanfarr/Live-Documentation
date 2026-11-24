@@ -222,4 +222,27 @@ describe("a card's rows measured once", () => {
     expect(pinFor(report, ["lines", "add", "report", "builder", "build"], "inbound", "lines")).toBe(63);
     expect(pinFor(report, ["lines", "add", "report", "builder", "build"], "inbound", "__internals__")).toBe(167);
   });
+
+  it("measures expanded unconnected rows in their secondary grid without displacing Internals", () => {
+    const expanded: CardRows = {
+      header: 56, gap: 6, internals: "__internals__\u00000",
+      rows: [{ key: "run\u00000", height: 20 }, { key: "__internals__\u00000", height: 18 }],
+      unconnected: {
+        header: 140, gap: 6,
+        rows: [{ key: "alpha\u00000", height: 20 }, { key: "summarize\u00000", height: 20 }]
+      },
+      endpoints: new Map([
+        [endpointKey("outbound", "run"), { row: "run\u00000", offset: 10 }],
+        [endpointKey("inbound", undefined), { row: "__internals__\u00000", offset: 11 }],
+        [endpointKey("outbound", "summarize"), { row: "summarize\u00000", offset: 10 }]
+      ])
+    };
+    expect(pinFor(expanded, undefined, "outbound", "run")).toBe(66);
+    expect(pinFor(expanded, undefined, "inbound", undefined)).toBe(93);
+    expect(pinFor(expanded, undefined, "outbound", "summarize")).toBe(176);
+    // Reordering rows keeps Internals at the end of the primary grid and reorders unconnected rows inside their own grid.
+    expect(pinFor(expanded, ["summarize", "run", "alpha"], "outbound", "run")).toBe(66);
+    expect(pinFor(expanded, ["summarize", "run", "alpha"], "inbound", undefined)).toBe(93);
+    expect(pinFor(expanded, ["summarize", "run", "alpha"], "outbound", "summarize")).toBe(150);
+  });
 });

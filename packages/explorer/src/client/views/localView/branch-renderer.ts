@@ -1567,15 +1567,16 @@ function rowsOf(controller: LocalViewController, stage: BranchStage, scale: numb
     const card = wrapper.querySelector<HTMLElement>(".node-card");
     if (!card) continue;
     const cardTop = wrapper.getBoundingClientRect().top;
-    const grid = card.querySelector<HTMLElement>(".symbol-grid");
+    const grid = card.querySelector<HTMLElement>(":scope > .node-symbols:not(.node-symbols-unconnected) > .symbol-grid") ?? card.querySelector<HTMLElement>(".symbol-grid");
     const gap = grid ? Number.parseFloat(getComputedStyle(grid).rowGap) || 0 : 0;
     const rows: RowMeasure[] = [];
+    const unconnectedRows: RowMeasure[] = [];
     const rowPositions = new Map<HTMLElement, { key: string; top: number }>();
     let internals: string | null = null;
     let header = 0;
+    let unconnectedHeader = 0;
     for (const [row, key] of rowKeys(card)) {
-      // A folded-away row is never a wire's end (never among the relevant or joined symbols), so it carries no pin to read.
-      if (row.closest(".node-symbols-unconnected")) continue;
+      const inUnconnected = Boolean(row.closest(".node-symbols-unconnected"));
       // A row with a box of its own is read by that box, which is its allotment whatever stands in it: a slot row is as
       // tall as its slot lines and a short row as its head (2026-11-13), while their children may be hidden, taken out
       // or drawn smaller. Read through its children, a short row, whose slot is taken out, was found shorter than it
@@ -1590,11 +1591,20 @@ function rowsOf(controller: LocalViewController, stage: BranchStage, scale: numb
           marginTop: Number.parseFloat(style.marginTop) || 0, marginBottom: Number.parseFloat(style.marginBottom) || 0 }];
       })) : ownBounds(row, cardTop, scale);
       if (!bounds) continue;
-      if (!rows.length) header = bounds.top;
       rowPositions.set(row, { key, top: bounds.top });
-      rows.push({ key, height: bounds.bottom - bounds.top });
-      if (row.classList.contains("internals-row")) internals = key;
+      if (inUnconnected) {
+        if (!unconnectedRows.length) unconnectedHeader = bounds.top;
+        unconnectedRows.push({ key, height: bounds.bottom - bounds.top });
+      } else {
+        if (!rows.length) header = bounds.top;
+        rows.push({ key, height: bounds.bottom - bounds.top });
+        if (row.classList.contains("internals-row")) internals = key;
+      }
     }
+    const unconnectedGrid = unconnectedRows.length ? card.querySelector<HTMLElement>(".node-symbols-unconnected > .symbol-grid") : null;
+    const unconnected = unconnectedRows.length
+      ? { header: unconnectedHeader, gap: unconnectedGrid ? Number.parseFloat(getComputedStyle(unconnectedGrid).rowGap) || 0 : gap, rows: unconnectedRows }
+      : undefined;
     const endpoints = new Map<string, ResolvedPin | null>();
     for (const [key, { direction, symbol }] of requests.get(id) ?? []) {
       const anchor = controller.getAnchor(id, "center", direction, symbol);
@@ -1606,7 +1616,7 @@ function rowsOf(controller: LocalViewController, stage: BranchStage, scale: numb
       const box = laidOutBox(anchor, scale);
       endpoints.set(key, { row: at?.key ?? null, offset: onLayoutGrid(((box.top + box.bottom) / 2 - cardTop) / scale) - (at?.top ?? 0) });
     }
-    measured.set(id, { header, gap, rows, internals, endpoints });
+    measured.set(id, { header, gap, rows, internals, ...(unconnected ? { unconnected } : {}), endpoints });
   }
   return measured;
 }

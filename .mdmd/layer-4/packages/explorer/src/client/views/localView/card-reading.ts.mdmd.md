@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/explorer/src/client/views/localView/card-reading.ts`
-- Generated At: 2026-11-24T19:42:48.524Z
+- Generated At: 2026-11-24T22:19:10.783Z
 
 ## Authored
 ### Purpose
@@ -96,7 +96,7 @@ while names open full descriptions in the reader.
 
 #### `textMeasure` {#symbol-textmeasure}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/card-reading.ts#L1062)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/card-reading.ts#L1094)
 - Parameters: `style`: `CSSStyleDeclaration`
 
 ##### `textMeasure` — Summary
@@ -106,7 +106,7 @@ and step, mostly in the same pieces.
 
 #### `markFirstPin` {#symbol-markfirstpin}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/card-reading.ts#L1124)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/card-reading.ts#L1156)
 
 ##### `markFirstPin` — Summary
 Write the pin depths for a card whose rows were just ordered, and its held name's lines at the overview band, whose

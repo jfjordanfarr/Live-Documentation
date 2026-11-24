@@ -479,9 +479,37 @@ export class CardReading {
  * header's right edge and down to the first row, to the card's bottom and the row pitch for the overview band, and the
  * card's buttons' widths and overhang, which intrude on its first lines at their held size.
  */
+/** Vertical offset of `element`'s border box from `reference`'s border box in untransformed CSS layout pixels. */
+function layoutTopFrom(element: HTMLElement, reference: HTMLElement): number {
+  const trace = (node: HTMLElement): number => {
+    let top = 0;
+    for (let cur: HTMLElement | null = node; cur; cur = cur.offsetParent as HTMLElement | null) {
+      top += cur.offsetTop;
+      if (cur.offsetParent) top += (cur.offsetParent as HTMLElement).clientTop;
+    }
+    return top;
+  };
+  return trace(element) - trace(reference);
+}
+
+/** Horizontal offset of `element`'s border box from `reference`'s border box in untransformed CSS layout pixels. */
+function layoutLeftFrom(element: HTMLElement, reference: HTMLElement): number {
+  const trace = (node: HTMLElement): number => {
+    let left = 0;
+    for (let cur: HTMLElement | null = node; cur; cur = cur.offsetParent as HTMLElement | null) {
+      left += cur.offsetLeft;
+      if (cur.offsetParent) left += (cur.offsetParent as HTMLElement).clientLeft;
+    }
+    return left;
+  };
+  return trace(element) - trace(reference);
+}
+
 function measureRooms(card: HTMLElement, resistances: LadderResistances, looks: boolean, keep: DescriptionsZoomedOut = "hidden"): RoomWrite[] {
   const writes: RoomWrite[] = [];
-  const k = card.offsetHeight ? card.getBoundingClientRect().height / card.offsetHeight : 0;
+  const viewport = card.closest<HTMLElement>("#map-viewport");
+  const viewportScale = viewport ? new DOMMatrix(getComputedStyle(viewport).transform).a : 0;
+  const k = viewportScale > 0 ? viewportScale : (card.offsetHeight ? card.getBoundingClientRect().height / card.offsetHeight : 0);
   if (!(k > 0)) return writes;
   // Across the card, from its border box's left edge: the inner edges of its border, which no dot may cross.
   const cardRect = card.getBoundingClientRect();
@@ -496,9 +524,9 @@ function measureRooms(card: HTMLElement, resistances: LadderResistances, looks: 
     const lines = Math.max(1, linesOf([...range.getClientRects()]));
     return { width: range.getBoundingClientRect().width / (k * own), lines };
   };
-  // The card's content's bottom edge on screen, inside its border and padding.
+  // The card's content's bottom edge from its border box top, in untransformed CSS layout pixels (zoom-invariant).
   const cardStyle = getComputedStyle(card);
-  const contentBottom = cardRect.bottom - (parseFloat(cardStyle.borderBottomWidth) + parseFloat(cardStyle.paddingBottom)) * k;
+  const cardContentBottom = card.offsetHeight - parseFloat(cardStyle.borderBottomWidth) - parseFloat(cardStyle.paddingBottom);
   const rowsGrid = card.querySelector<HTMLElement>(".symbol-grid");
   const rowsGap = rowsGrid ? parseFloat(getComputedStyle(rowsGrid).rowGap) || 0 : 0;
   const filesOnly = card.closest(`[${OVERVIEW_FILES_ATTRIBUTE}]`) !== null;
@@ -535,12 +563,17 @@ function measureRooms(card: HTMLElement, resistances: LadderResistances, looks: 
     // Internals stays full connections-look size without overflowing the card.
     let rowHeight = row.clientHeight;
     if (looks && row.classList.contains("internals-row") && !row.nextElementSibling) {
-      const needed = Math.ceil(headHeight({ nameTop, line: nameHeight / Math.max(1, text.lines), moreTop, moreHeight }, 1, LOOK_SCALES.connections));
+      // Compute Internals' held height and available bottom room from untransformed CSSOM layout offsets so that
+      // --foot-gap never drifts by 1 px across zoom levels under float32 DOMRect division.
+      const rowTop = layoutTopFrom(row, card);
+      const internalsNameTop = layoutTopFrom(label, row);
+      const internalsMoreTop = moreButton ? layoutTopFrom(moreButton, row) : 0;
+      const needed = Math.ceil(headHeight({ nameTop: internalsNameTop, line: nameHeight / Math.max(1, text.lines), moreTop: internalsMoreTop, moreHeight }, 1, LOOK_SCALES.connections));
       if (footCounts.length || refold) {
         rowHeight = Math.max(row.clientHeight, needed);
-        internalsBottom = (rowRect.top - cardRect.top) / k + rowHeight;
+        internalsBottom = rowTop + rowHeight;
       } else {
-        const avail = Math.floor((contentBottom - rowRect.top) / k);
+        const avail = Math.floor(cardContentBottom - rowTop);
         rowHeight = Math.max(row.clientHeight, avail, needed);
         if (!filesOnly && needed > avail) internalsExtraGap = Math.max(internalsExtraGap, Math.ceil(needed - avail));
       }
@@ -623,15 +656,16 @@ function measureRooms(card: HTMLElement, resistances: LadderResistances, looks: 
   const grid = card.querySelector<HTMLElement>(".symbol-grid"), actions = card.querySelector<HTMLElement>(".local-card-actions");
   if (!title || !header || !grid || !actions || !title.offsetHeight) return writes;
   const headerRect = header.getBoundingClientRect(), titleRect = title.getBoundingClientRect();
+  const titleTopInCard = layoutTopFrom(title, card);
   const more = card.querySelector<HTMLElement>(".local-file-more");
   // Each room as the stylesheet reads it, rounded as written, so that the lines chosen below are the lines it draws.
   const fixed = (value: number): number => Number(value.toFixed(1));
   // The controls that stay at the middle band: all but the book, which leaves with the descriptions it folds (2026-11-13).
   const kept = [...actions.children].filter(control => !control.classList.contains("local-file-read")).length;
   const rooms: TitleRooms = {
-    roomW: fixed((headerRect.right - titleRect.left) / k),
-    headH: fixed((grid.getBoundingClientRect().top - titleRect.top) / k),
-    cardH: fixed((contentBottom - titleRect.top) / k),
+    roomW: fixed(layoutLeftFrom(header, card) + header.offsetWidth - layoutLeftFrom(title, card)),
+    headH: fixed(layoutTopFrom(grid, card) - titleTopInCard),
+    cardH: fixed(cardContentBottom - titleTopInCard),
     // The controls that stay at each band follow the name at the header's right edge: those above at the middle band,
     // More alone further out. Their width is counted from their number, since the farther bands hide all but More.
     actionsW: kept * (more?.offsetWidth ?? 0) + Math.max(0, kept - 1) * (parseFloat(getComputedStyle(actions).columnGap) || 0),
@@ -690,13 +724,13 @@ function measureRooms(card: HTMLElement, resistances: LadderResistances, looks: 
       const header = connectionsHeaderHeight(name);
       const kept = fileKeptWrites(card, name, keep, { x: (titleRect.left - cardRect.left) / k - card.clientLeft, y: (titleRect.top - cardRect.top) / k - card.clientTop });
       const keptOn = kept.some(([, prop, val]) => prop === "local-file-kept-on" && val === true);
-      const below = { k, top: cardRect.top, titleTop: titleRect.top, header, keptOn };
-      const refoldOut = refoldWrites(card, refold, { k, cardRect, free: freeBelow(grid, internalsBottom, headGap, below), shift: headGap });
+      const below = { titleTop: titleTopInCard, header, keptOn };
+      const refoldOut = refoldWrites(card, refold, { free: freeBelow(card, grid, internalsBottom, headGap, below), shift: headGap });
       const lastGrid = [...card.querySelectorAll<HTMLElement>(".symbol-grid")].at(-1) ?? grid;
       const shift = headGap + refoldOut.extraGap;
       const foot = footWrites(card, footCounts, {
-        k, cardRect, shift,
-        free: freeBelow(lastGrid, lastGrid === grid ? internalsBottom : 0, shift, below),
+        shift,
+        free: freeBelow(card, lastGrid, lastGrid === grid ? internalsBottom : 0, shift, below),
         internalsExtraGap: lastGrid === grid ? internalsExtraGap : 0
       });
       const added = refoldOut.extraGap + foot.extraGap;
@@ -929,10 +963,10 @@ function connectionsHeaderHeight(name: HeldName): number {
  * top: below a grid's drawn rows (and Internals' held height), moved by `shift`; or, on a card that draws none, below
  * its held name and, where it keeps one, its kept line.
  */
-function freeBelow(grid: HTMLElement, internalsBottom: number, shift: number, at: { k: number; top: number; titleTop: number; header: number; keptOn: boolean }): number {
+function freeBelow(card: HTMLElement, grid: HTMLElement, internalsBottom: number, shift: number, at: { titleTop: number; header: number; keptOn: boolean }): number {
   return [...grid.querySelectorAll<HTMLElement>(".symbol-row")].some(row => row.offsetHeight > 0)
-    ? Math.max((grid.getBoundingClientRect().bottom - at.top) / at.k, internalsBottom) + shift
-    : (at.titleTop - at.top) / at.k + at.header + (at.keptOn ? FILE_KEPT_AIR + NAME_LINE * LOOK_SCALES.connections : 0);
+    ? Math.max(layoutTopFrom(grid, card) + grid.offsetHeight, internalsBottom) + shift
+    : at.titleTop + at.header + (at.keptOn ? FILE_KEPT_AIR + NAME_LINE * LOOK_SCALES.connections : 0);
 }
 
 /**
@@ -940,14 +974,13 @@ function freeBelow(grid: HTMLElement, internalsBottom: number, shift: number, at
  * in the connections look: held at the look's scale about its own foot so it stays clear of the unconnected rows below,
  * with `--refold-gap` adding any extra room needed above it to clear Internals (or the held header when no primary rows stand).
  */
-function refoldWrites(card: HTMLElement, refold: HTMLElement | null, at: { k: number; cardRect: DOMRect; free: number; shift: number }): { writes: RoomWrite[]; extraGap: number } {
+function refoldWrites(card: HTMLElement, refold: HTMLElement | null, at: { free: number; shift: number }): { writes: RoomWrite[]; extraGap: number } {
   if (!refold) return { writes: [[card, "--refold-gap", ""]], extraGap: 0 };
-  const { k } = at, scale = LOOK_SCALES.connections;
+  const scale = LOOK_SCALES.connections;
   const style = getComputedStyle(card);
-  const top = at.cardRect.top, left = at.cardRect.left;
-  const right = (at.cardRect.right - left) / k - parseFloat(style.borderRightWidth) - parseFloat(style.paddingRight);
-  const rect = refold.getBoundingClientRect();
-  const box: FootCount = { top: (rect.top - top) / k + at.shift, bottom: (rect.bottom - top) / k + at.shift, left: (rect.left - left) / k, width: rect.width / k, frame: 2 };
+  const right = card.offsetWidth - parseFloat(style.borderRightWidth) - parseFloat(style.paddingRight);
+  const top = layoutTopFrom(refold, card) + at.shift;
+  const box: FootCount = { top, bottom: top + refold.offsetHeight, left: layoutLeftFrom(refold, card), width: refold.offsetWidth, frame: 2 };
   const { held, above, extraGap } = footHold([box], at.free, right, scale, 0, CONTROLS_GAP);
   return {
     writes: [
@@ -969,26 +1002,25 @@ function refoldWrites(card: HTMLElement, refold: HTMLElement | null, at: { k: nu
  * leaves less room than the held counts need, `--foot-gap` adds the exact whole pixels to the last `.node-symbols` in the
  * card's zoom-independent layout so every count that fits across stands clear.
  */
-function footWrites(card: HTMLElement, counts: readonly HTMLElement[], at: { k: number; cardRect: DOMRect; free: number; internalsExtraGap: number; shift: number }): { writes: RoomWrite[]; extraGap: number } {
+function footWrites(card: HTMLElement, counts: readonly HTMLElement[], at: { free: number; internalsExtraGap: number; shift: number }): { writes: RoomWrite[]; extraGap: number } {
   if (!counts.length) {
     return {
       writes: [[card, "--foot-gap", at.internalsExtraGap > 0 ? String(at.internalsExtraGap) : ""]],
       extraGap: at.internalsExtraGap
     };
   }
-  const { k } = at, scale = LOOK_SCALES.connections;
+  const scale = LOOK_SCALES.connections;
   const style = getComputedStyle(card);
-  // Every box in the map's own units from the card's top and left.
-  const top = at.cardRect.top, left = at.cardRect.left;
-  const right = (at.cardRect.right - left) / k - parseFloat(style.borderRightWidth) - parseFloat(style.paddingRight);
+  // Every box in untransformed CSS layout pixels from the card's top and left (zoom-invariant).
+  const right = card.offsetWidth - parseFloat(style.borderRightWidth) - parseFloat(style.paddingRight);
   // Framed disclosure controls carry outer pseudo-element frames (3 px on "+N connections", 2 px on "+N symbols").
   const boxes: FootCount[] = counts.map(count => {
-    const rect = count.getBoundingClientRect();
+    const top = layoutTopFrom(count, card) + at.shift;
     return {
-      top: (rect.top - top) / k + at.shift,
-      bottom: (rect.bottom - top) / k + at.shift,
-      left: (rect.left - left) / k,
-      width: rect.width / k,
+      top,
+      bottom: top + count.offsetHeight,
+      left: layoutLeftFrom(count, card),
+      width: count.offsetWidth,
       frame: count.classList.contains("local-reveal-connections") ? 3 : 2
     };
   });

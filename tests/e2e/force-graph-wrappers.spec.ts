@@ -229,10 +229,10 @@ test("hovering a wrapper names its group; a click pops it open into its files, a
   await expect(page.locator(".pin-tray-toggle")).toHaveText("1 pin");
   await expect.poll(async () => (await drawnWrappers(page)).seeds.includes(chosen), { timeout: 5_000 }).toBe(false);
   await expect.poll(async () => (await drawnWrappers(page)).popping, { timeout: 5_000 }).toEqual([]);
-  // The pinned group, shown now in part, holds its hidden files in directory shells (experiment 2, 2026-11-05): the other
-  // groups' wrappers are as they were.
-  expect((await drawnWrappers(page)).seeds.filter(seed => !seed.startsWith("shell:"))).toEqual(wrapped.filter(id => id !== chosen));
-  await expect.poll(async () => (await renderedNodes(page)).length, { message: "the group grows by its hops", timeout: 5_000 }).toBeGreaterThan(seeds.length);
+  // Under the default next-step horizon (beyondHops: "next-step"), opening one group hides the other unreached island
+  // wrappers until the pin is released, while the opened group grows from its single seed into its hops and directory shells.
+  expect((await drawnWrappers(page)).seeds.filter(seed => !seed.startsWith("shell:"))).toEqual([]);
+  await expect.poll(async () => (await renderedNodes(page)).filter(node => !node.id.startsWith("shell:")).length, { message: "the group grows from its seed by its hops", timeout: 5_000 }).toBeGreaterThan(1);
   // The group's files enter where its skin showed them (2026-11-06, second round), under the pointer that popped it: the
   // pointer leaves, so that its hover of one of them takes no part in the release.
   await page.mouse.move(2, 2);

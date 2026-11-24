@@ -168,10 +168,34 @@ test("both perspective changes keep the subject at its screen anchor during moti
   expect(samples.length).toBeGreaterThan(4);
   expect(Math.max(...samples.map(p => Math.hypot(p.x - anchor.x, p.y - anchor.y)))).toBeLessThan(3);
   await expect(page.locator(".force-graph-focus")).toHaveAttribute("data-node-id", `${ROOT}helpers.ts`);
+  // After the 2D -> 3D transition ends, settleIntoFrame() eases the 3D subject into the viewport center; wait for that
+  // settle to rest and read where the 3D sphere stands right before clicking 2D.
+  const anchor3d = await page.evaluate(async () => {
+    const read = (): { x: number; y: number } => {
+      const container = document.querySelector<HTMLElement>("#view-graph.active #graph-svg")!;
+      const label = container.querySelector<HTMLElement>(".force-graph-focus:not([hidden])")!;
+      const rect = container.getBoundingClientRect();
+      return { x: rect.left + parseFloat(label.style.left), y: rect.top + parseFloat(label.style.top) };
+    };
+    const started = performance.now();
+    let prev = read(), steady = 0;
+    await new Promise<void>(resolve => {
+      const tick = (): void => {
+        const now = read();
+        if (Math.hypot(now.x - prev.x, now.y - prev.y) < 0.2) steady += 1;
+        else steady = 0;
+        prev = now;
+        if (steady >= 4 || performance.now() - started > 3000) resolve();
+        else requestAnimationFrame(tick);
+      };
+      requestAnimationFrame(tick);
+    });
+    return prev;
+  });
   await page.getByRole("button", { name: "2D", exact: true }).click();
   // Back in 2D the subject's title is held where its sphere stood through the motion...
   const after = (await title.boundingBox())!;
-  expect(Math.hypot(after.x + after.width / 2 - anchor.x, after.y + after.height / 2 - anchor.y)).toBeLessThan(3);
+  expect(Math.hypot(after.x + after.width / 2 - anchor3d.x, after.y + after.height / 2 - anchor3d.y)).toBeLessThan(3);
   // ...and once the motion ends, the picture slides the least that brings it into the frame: inside the padding where
   // it fits, the frame full where it does not (the owner's choice, 2026-10-30; before, the hold alone could leave a
   // card cut at the edge with the rest of the frame empty).

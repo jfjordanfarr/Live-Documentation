@@ -341,7 +341,7 @@ test("the panel hides by its own button and comes back by the scrubber's toggle,
   const hide = panel(page).getByRole("button", { name: "Hide step details", exact: true });
   await expect(panel(page)).toBeVisible();
   await expect(toggle).toHaveAttribute("aria-pressed", "true");
-  await expect(toggle).toHaveAttribute("title", "Step details");
+  await expect(toggle).toHaveAttribute("title", "Show or hide step details");
   await expect(hide).toHaveAttribute("title", "Hide step details");
 
   // The panel's button: the panel goes, the scrubber stays, the toggle unpressed and holding the focus.

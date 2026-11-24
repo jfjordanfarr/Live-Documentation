@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/explorer/src/client/views/localView/branch-search.ts`
-- Generated At: 2026-11-19T21:10:16.090Z
+- Generated At: 2026-11-24T22:19:10.660Z
 
 ## Authored
 ### Purpose
@@ -121,7 +121,7 @@ A card's rows as measured once, in the order they stood; a pin's place for any o
 
 #### `orderedRows` {#symbol-orderedrows}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/branch-search.ts#L162)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/branch-search.ts#L185)
 - Returns: [`RowMeasure`](#symbol-rowmeasure)[]
 - Parameters: `card`: [`CardRows`](#symbol-cardrows)
 
@@ -133,7 +133,7 @@ with no order named, the rows as they stand.
 
 #### `pinFor` {#symbol-pinfor}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/branch-search.ts#L191)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/branch-search.ts#L197)
 - Parameters: `card`: [`CardRows`](#symbol-cardrows)
 
 ##### `pinFor` — Summary

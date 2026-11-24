@@ -25,7 +25,11 @@ import { loadGraph } from "./still-picture";
 test.use({ viewport: { width: 1440, height: 900 } });
 
 const PIN = "packages/engine/src/live-docs/graph.ts";
-const entry = `/?s=${compressSnapshot({ ...DEFAULT_SNAPSHOT, perspective: "3d", spatialLayout: "connections", pinSet: { entries: [{ nodeId: PIN, symbol: "*" }] } })}`;
+// Keep the archipelago picture (beyondHops: "everything") on which the 2026-11-23 swinging baseline (kept ~0.70,
+// median ~1.16) was measured: under next-step's sole 64-node component with no surrounding islands, origin gravity
+// (gravity * (1 - componentSeparation) = 0.02) matches tether (0.02) and pulls the released component halfway back
+// toward the origin (kept ~0.314 regardless of drag distance or speed).
+const entry = `/?s=${compressSnapshot({ ...DEFAULT_SNAPSHOT, perspective: "3d", spatialLayout: "connections", layout: { forceGraph: { beyondHops: "everything" } }, pinSet: { entries: [{ nodeId: PIN, symbol: "*" }] } })}`;
 const map = (page: Page) => page.locator("#graph-svg");
 /**
  * The share of its own way a tied file has come, at the median, when the hand arrives. Measured on 2026-11-22 with an

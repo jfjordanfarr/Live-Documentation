@@ -149,8 +149,31 @@ export interface CardRows {
   rows: RowMeasure[];
   /** The key of the Internals row, which stands last whatever the order; null when the card has none. */
   internals: string | null;
+  /** An expanded card's secondary `.node-symbols-unconnected` grid, standing below the primary grid and refold control. */
+  unconnected?: { header: number; gap: number; rows: RowMeasure[] };
   /** The actual runtime resolution of every endpoint requested by the placement, including hidden or absent anchors. */
   endpoints: ReadonlyMap<string, ResolvedPin | null>;
+}
+
+function orderSection(rows: readonly RowMeasure[], order: readonly string[] | undefined, internals: string | null): RowMeasure[] {
+  // No order named leaves the rows as they stand, as the renderer does.
+  if (!order) return [...rows];
+  const byName = new Map<string, RowMeasure[]>();
+  for (const row of rows) {
+    const name = row.key.slice(0, row.key.indexOf("\0"));
+    (byName.get(name) ?? byName.set(name, []).get(name)!).push(row);
+  }
+  const ordered: RowMeasure[] = [];
+  for (const name of order) {
+    const row = byName.get(name)?.shift();
+    if (row) ordered.push(row);
+  }
+  for (const list of byName.values()) ordered.push(...list);
+  if (internals) {
+    const at = ordered.findIndex(row => row.key === internals);
+    if (at >= 0) ordered.push(...ordered.splice(at, 1));
+  }
+  return ordered;
 }
 
 /**
@@ -160,24 +183,7 @@ export interface CardRows {
  * with no order named, the rows as they stand.
  */
 export function orderedRows(card: CardRows, order: readonly string[] | undefined): RowMeasure[] {
-  // No order named leaves the rows as they stand, as the renderer does.
-  if (!order) return [...card.rows];
-  const byName = new Map<string, RowMeasure[]>();
-  for (const row of card.rows) {
-    const name = row.key.slice(0, row.key.indexOf("\0"));
-    (byName.get(name) ?? byName.set(name, []).get(name)!).push(row);
-  }
-  const ordered: RowMeasure[] = [];
-  for (const name of order ?? []) {
-    const row = byName.get(name)?.shift();
-    if (row) ordered.push(row);
-  }
-  for (const rows of byName.values()) ordered.push(...rows);
-  if (card.internals) {
-    const at = ordered.findIndex(row => row.key === card.internals);
-    if (at >= 0) ordered.push(...ordered.splice(at, 1));
-  }
-  return ordered;
+  return orderSection(card.rows, order, card.internals);
 }
 
 /**
@@ -198,6 +204,13 @@ export function pinFor(card: CardRows, order: readonly string[] | undefined, dir
   for (const row of orderedRows(card, order)) {
     if (row.key === pin.row) return Math.round(top + pin.offset + 1e-3);
     top += row.height + card.gap;
+  }
+  if (card.unconnected) {
+    let unconnectedTop = card.unconnected.header;
+    for (const row of orderSection(card.unconnected.rows, order, null)) {
+      if (row.key === pin.row) return Math.round(unconnectedTop + pin.offset + 1e-3);
+      unconnectedTop += row.height + card.unconnected.gap;
+    }
   }
   throw new Error(`The cached endpoint ${JSON.stringify(symbol ?? "*")} resolves to missing row ${JSON.stringify(pin.row)}.`);
 }
