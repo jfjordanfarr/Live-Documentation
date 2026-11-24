@@ -76,7 +76,7 @@ import { placeSpatialLabels, type SpatialLabel, type SpatialLabelBody, type Labe
 import { linkPulls, motionForce, placeNewSpheres, spatialNodeRadius, symbolCountOf, type MotionForce, type MotionStart, type Placed } from "./forceGraphLayout";
 import { SPATIAL_DRAG_SLOP, SpatialRenderer } from "./forceGraphRenderer";
 import { nextRevealCount, REVEAL, revealCorresponding, revealLayers } from "./forceGraphReveal";
-import { componentLandmarks, connectedNeighbours, directoryHubOf, directoryMembersWithinHops, spatialScope, startHops, startOf, withoutUnreachedSeeds } from "./forceGraphScope";
+import { componentLandmarks, connectedNeighbours, directoryHubOf, directoryMembersWithinHops, spatialScope, startHops, startOf, structureSeeds, withoutUnreachedSeeds } from "./forceGraphScope";
 import { bodySteps, pictureVeils, poppedAfter, releaseOf, shellId, shellPicture, structureCells, structureSpokes, veiledUnits, type BodyBuilding, type DirectoryShell, type Spoke,
   type StructureCell } from "./forceGraphShells";
 import { spatialSizeScale } from "./forceGraphSizing";
@@ -265,6 +265,7 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
   let heldLinks: readonly ForceGraphLink[] = [];
   let strength = 1;
   let shownLayout: string | null = null;
+  let shownWholeRoot = false;
   // The moment of the history shown in place of today, the renames to re-key the caches by before the next render,
   // and the energy that render feeds the change at (ticket C4, 2026-10-18).
   let moment: HistoryMoment | null = null;
@@ -484,6 +485,8 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
   };
   let actionStrip: HTMLDivElement | null = null;
   let actionTargetId: string | null = null;
+  /** Nodes currently lit by hover or active path attention, shared with label styling. */
+  let attentionNodes: Set<string> | null = null;
   let menuTargetId: string | null = null;
   let menuEpoch = 0;
   let inspectedActionId: string | null = null;
@@ -845,9 +848,15 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
       camera.updateMatrixWorld();
       const subject = focusedId ? nodeCache.get(focusedId) : undefined;
       const ids = pathScope.length || retainedScope.size || focusedId || focusedDirectory !== null ? framingIds() : null;
+      const sphereScale = spatialSizeScale(controls.target, camera, instance.height(), state.tuning.forceGraph.nodeZoomResistance);
       const spheres = instance.graphData().nodes.filter(node => (!ids || ids.has(node.id)) && Number.isFinite(node.x))
-        .map(node => ({ center: { x: node.x!, y: node.y!, z: node.z! }, radius: Math.max(spatialNodeRadius(node, state.tuning.forceGraph)
-          * spatialSizeScale(controls.target, camera, instance.height(), state.tuning.forceGraph.nodeZoomResistance), isWrapped(node.id) ? hullOf(node.id)!.radius * fitOf(node.id) : 0) }));
+        .map(node => {
+          const base = spatialNodeRadius(node, state.tuning.forceGraph);
+          // A shell is drawn at its body's true size regardless of zoom resistance; include its packing radius before its hull builds.
+          const drawn = node.shellFiles !== undefined ? base : base * sphereScale;
+          const wrappedRadius = isWrapped(node.id) ? (hullOf(node.id)?.radius ?? shapeOf(node.id)?.radius ?? 0) * fitOf(node.id) : 0;
+          return { center: { x: node.x!, y: node.y!, z: node.z! }, radius: Math.max(drawn, wrappedRadius) };
+        });
       const centered = !fittingScope && focusedDirectory === null && subject && Number.isFinite(subject.x)
         ? { x: subject.x!, y: subject.y!, z: subject.z! } : undefined;
       const framing = camera instanceof PerspectiveCamera
@@ -871,8 +880,14 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
       camera.updateMatrixWorld();
       if (subjectAnchor && advanceCamera) alignSubject(point);
     }
-    positionActionStrip();
-    positionNames();
+    const targetIsShell = !!actionTargetId && nodeCache.get(actionTargetId)?.shellFiles !== undefined;
+    if (targetIsShell) {
+      positionNames();
+      positionActionStrip();
+    } else {
+      positionActionStrip();
+      positionNames();
+    }
   }
 
   /** Project the names at reading size, placing the important identities before contextual names. */
@@ -885,11 +900,15 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
     camera.lookAt((instance.controls() as { target: Vector3 }).target);
     camera.updateMatrixWorld();
     const obstacles: LabelBox[] = [];
+    const targetIsShell = !!actionTargetId && nodeCache.get(actionTargetId)?.shellFiles !== undefined;
     for (const element of document.querySelectorAll<HTMLElement>(".perspective-controls, .pin-tray, .pin-tray-toggle, #detail-panel.visible, .history-scrubber, .history-step-panel, .force-graph-actions, .spatial-wire-tooltip")) {
+      // A shell's action strip anchors beside its own placed label pill, so it must not push that label away on the next frame.
+      if (targetIsShell && element === actionStrip) continue;
       const box = element.getBoundingClientRect();
       if (box.width && box.height && getComputedStyle(element).visibility !== "hidden") obstacles.push({ x: box.left - frame.left, y: box.top - frame.top, width: box.width, height: box.height });
     }
     const nameState = JSON.stringify([pictureRevision, focusedId, hoveredId, inspectedActionId,
+      attentionNodes ? [...attentionNodes].sort() : null,
       state.tuning.forceGraph.nodeZoomResistance, frame.x, frame.y, frame.width, frame.height,
       camera.matrixWorld.elements.map(Math.fround), camera.projectionMatrix.elements.map(Math.fround), instance.controls().target.toArray(), obstacles]);
     if (nameState === placedNames) return;
@@ -911,8 +930,11 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
       if (projected.z < -1 || projected.z > 1) continue;
       edge.copy(point).addScaledVector(right, spatialNodeRadius(node, state.tuning.forceGraph)).applyMatrix4(projection);
       const perspectiveRadius = Math.abs(edge.x - projected.x) * frame.width / 2;
+      const isHovered = node.id === hoveredId || node.id === inspectedActionId;
+      const isPartner = !isHovered && !!hoveredId && !!attentionNodes?.has(node.id);
+      const isFadedByHover = !!hoveredId && !!attentionNodes && !attentionNodes.has(node.id);
       const basePriority = labelPriorities.get(node.id) ?? 5;
-      const priority = node.id === focusedId ? 0 : node.id === hoveredId || node.id === inspectedActionId ? 1 : basePriority;
+      const priority = node.id === focusedId ? 0 : isHovered ? 1 : isPartner ? Math.min(basePriority, 2) : basePriority;
       // A shell is drawn at its body's size, whatever the zoom's resistance does to a sphere. A ring belongs to the
       // same visible identity and extends beyond its sphere; use the renderer's outer edge for both label clearances.
       const radius = (node.shellFiles !== undefined ? perspectiveRadius
@@ -962,7 +984,9 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
       if (action) label.setAttribute("aria-pressed", String(retained || discovered));
       else label.removeAttribute("aria-pressed");
       label.dataset.priority = String(priority);
-      label.dataset.context = String(atFrontier(node.id));
+      label.dataset.hovered = String(isHovered);
+      label.dataset.lit = String(isHovered || isPartner);
+      label.dataset.context = String(isHovered || isPartner ? false : isFadedByHover || atFrontier(node.id));
       const size = labelSizes.get(label);
       if (!size || size.text !== name || size.availableWidth !== frame.width) label.hidden = false;
       measuring.push({ id: node.id, x, y, radius, priority, label, name });
@@ -1233,6 +1257,55 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
     const camera = instance.camera();
     camera.lookAt((instance.controls() as { target: Vector3 }).target);
     camera.updateMatrixWorld();
+    // Anchor a shell's single Open button directly beside its placed label pill rather than floating hundreds of
+    // pixels away over the huge translucent sphere cloud (2026-11-24).
+    if (node.shellFiles !== undefined) {
+      const pill = actionTargetId === focusedId ? focusLabel : nameLabels.get(actionTargetId);
+      if (pill && !pill.hidden) {
+        const frame = requireElement("graph-svg").getBoundingClientRect();
+        const pillRect = pill.getBoundingClientRect();
+        if (pillRect.width > 0 && pillRect.height > 0) {
+          actionStrip.hidden = false;
+          const width = actionStrip.offsetWidth;
+          const height = actionStrip.offsetHeight;
+          const pLeft = pillRect.left - frame.left, pRight = pillRect.right - frame.left;
+          const pTop = pillRect.top - frame.top, pBottom = pillRect.bottom - frame.top;
+          const pMidX = (pLeft + pRight) / 2, pMidY = (pTop + pBottom) / 2;
+          const gap = 6;
+          const obstacles: LabelBox[] = [];
+          for (const element of document.querySelectorAll<HTMLElement>(".force-graph-label, .force-graph-focus, .perspective-controls, .pin-tray, .pin-tray-toggle, #detail-panel.visible, .history-scrubber, .history-step-panel, .spatial-wire-tooltip")) {
+            if (element === pill || element.hidden) continue;
+            const box = element.getBoundingClientRect();
+            if (box.width && box.height && getComputedStyle(element).visibility !== "hidden") {
+              obstacles.push({ x: box.left - frame.left, y: box.top - frame.top, width: box.width, height: box.height });
+            }
+          }
+          const clampSpot = (left: number, top: number): { left: number; top: number } => ({
+            left: Math.max(8, Math.min(instance.width() - width - 8, left)),
+            top: Math.max(8, Math.min(instance.height() - height - 8, top))
+          });
+          const overlapArea = (spot: { left: number; top: number }, box: LabelBox): number =>
+            Math.max(0, Math.min(spot.left + width, box.x + box.width) - Math.max(spot.left, box.x))
+            * Math.max(0, Math.min(spot.top + height, box.y + box.height) - Math.max(spot.top, box.y));
+          const pillBox: LabelBox = { x: pLeft, y: pTop, width: pillRect.width, height: pillRect.height };
+          const candidates = [
+            clampSpot(pRight + gap, pMidY - height / 2),
+            clampSpot(pLeft - width - gap, pMidY - height / 2),
+            clampSpot(pMidX - width / 2, pTop - height - gap),
+            clampSpot(pMidX - width / 2, pBottom + gap)
+          ];
+          let best = { spot: candidates[0], own: Number.POSITIVE_INFINITY, others: Number.POSITIVE_INFINITY };
+          for (const spot of candidates) {
+            const own = overlapArea(spot, pillBox);
+            const others = obstacles.reduce((sum, box) => sum + overlapArea(spot, box), 0);
+            if (own < best.own || (own === best.own && others < best.others)) best = { spot, own, others };
+          }
+          actionStrip.style.left = `${best.spot.left + width / 2}px`;
+          actionStrip.style.top = `${best.spot.top}px`;
+          return;
+        }
+      }
+    }
     const point = new Vector3(node.x, node.y, node.z);
     const depth = point.clone().project(camera).z;
     const screen = instance.graph2ScreenCoords(point.x, point.y, point.z);
@@ -1241,15 +1314,20 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
       return;
     }
     actionStrip.hidden = false;
-    const worldRadius = spatialNodeRadius(node, state.tuning.forceGraph) * spatialSizeScale(instance.controls().target, camera, instance.height(), state.tuning.forceGraph.nodeZoomResistance);
+    const baseRadius = spatialNodeRadius(node, state.tuning.forceGraph);
+    const worldRadius = (node.shellFiles !== undefined ? baseRadius
+      : baseRadius * spatialSizeScale(instance.controls().target, camera, instance.height(), state.tuning.forceGraph.nodeZoomResistance))
+      * (hasRing(node.id) ? SPATIAL_RING_OUTER_RADIUS : 1);
     const edge = point.clone().add(new Vector3(worldRadius, 0, 0).applyQuaternion(camera.quaternion));
     const rim = instance.graph2ScreenCoords(edge.x, edge.y, edge.z);
     const radius = Math.abs(rim.x - screen.x);
     const width = actionStrip.offsetWidth;
     const height = actionStrip.offsetHeight;
     const x = Math.max(width / 2 + 8, Math.min(instance.width() - width / 2 - 8, screen.x));
-    const above = screen.y - Math.max(8, radius * 0.7) - height;
-    const below = screen.y + Math.max(8, radius * 0.7);
+    // Clear the full sphere cap (plus 10 px of air) so the strip never bites into the top rim of the hovered sphere.
+    const clearance = Math.max(10, radius + 10);
+    const above = screen.y - clearance - height;
+    const below = screen.y + clearance;
     actionStrip.style.left = `${x}px`;
     actionStrip.style.top = `${Math.max(8, Math.min(instance.height() - height - 8, above >= 8 ? above : below))}px`;
   }
@@ -1299,6 +1377,7 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
     }
     moreAction.title = moreAction.getAttribute("aria-label")!;
     actionStrip.dataset.nodeId = id;
+    if (action.kind === "shell") positionNames();
     positionActionStrip();
   }
 
@@ -1326,6 +1405,24 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
       for (const link of data.links) {
         const a = resolveLinkEndpoint(link.source), b = resolveLinkEndpoint(link.target);
         if (a === focusedId || b === focusedId) { ids.add(a); ids.add(b); }
+      }
+      if (state.spatialLayout === "structure" && nodeCache.get(focusedId)?.directoryPath === undefined) {
+        // In Structure, a file's containment neighbourhood stands on its parent directory hub: include the parent's
+        // direct children so framing holds the file's siblings and child folders together (2026-11-24).
+        for (const link of data.links) {
+          if (link.kind !== "containment") continue;
+          const parent = resolveLinkEndpoint(link.source), child = resolveLinkEndpoint(link.target);
+          if (ids.has(parent)) ids.add(child);
+        }
+      } else if (state.spatialLayout === "connections") {
+        // Include next-step directory shells attached to the focused file's 1-hop neighbourhood so frontier shells
+        // (e.g. Hub · 2, SqlServer · 2) frame wholly inside the canvas margins (2026-11-24).
+        const direct = new Set(ids);
+        for (const link of data.links) {
+          const a = resolveLinkEndpoint(link.source), b = resolveLinkEndpoint(link.target);
+          if (direct.has(a) && nodeCache.get(b)?.shellFiles !== undefined) ids.add(b);
+          else if (direct.has(b) && nodeCache.get(a)?.shellFiles !== undefined) ids.add(a);
+        }
       }
       return ids;
     }
@@ -1505,7 +1602,10 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
     // something is asked about, the unreached groups' seeds are not drawn and the shells hold only the files one step
     // past what stands (`nextStepFiles`). The start, the structure layout and Group Wrappers Off are as before.
     const horizon = hasQuestion && wrapping() && state.spatialLayout === "connections" && state.tuning.forceGraph.beyondHops === "next-step";
-    const reached = spatialScope(data.nodes, data.links, new Set([...asked, ...members]), hopsShown, pulls);
+    const scopeSeeds = state.spatialLayout === "structure" && hasQuestion && !path?.length
+      ? new Set([...structureSeeds(data.nodes, data.links, asked), ...members])
+      : new Set([...asked, ...members]);
+    const reached = spatialScope(data.nodes, data.links, scopeSeeds, hopsShown, pulls);
     const scope = horizon ? withoutUnreachedSeeds(reached, hopsShown) : reached;
     // While a scan fills the picture, a group's seed is whichever of its files is the most connected so far, so a group
     // changes its seed as it grows and two groups become one under a third file. The new seed is born where the group
@@ -1546,7 +1646,9 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
         if (!absentRequest) {
           ({ cells: heldCells, lone } = structureCells(data.nodes, data.links, new Set(scope.hops.keys())));
           const still = new Set(heldCells.map(cell => cell.id));
-          for (const id of cells.keys()) if (!still.has(id) && scope.hops.has(id)) popCell(id);
+          // When Whole opens every directory recursively at once, place newly revealed subtrees along structureSpokes
+          // rather than cramming multi-level children into departing bubble shells (2026-11-24).
+          if (!wholeRoot) for (const id of cells.keys()) if (!still.has(id) && scope.hops.has(id)) popCell(id);
         }
         for (const cell of heldCells) named.push({ id: cell.id, key: `cell\0${cell.directory}\0${keyOf(cell.files)}`, files: cell.files, directory: cell.directory });
       } else {
@@ -1824,8 +1926,10 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
       // A wholly new neighborhood has no meaningful places to preserve. Holding its arbitrary seed makes the
       // field fight its anchors; surviving or previously visited positions still use the normal held update.
       const placed = graphNodes.some(node => Number.isFinite(node.x) && Number.isFinite(node.y) && Number.isFinite(node.z));
-      const start: MotionStart = !placed || shownLayout !== null && shownLayout !== state.spatialLayout ? "unfold" : "hold";
+      const start: MotionStart = !placed || shownLayout !== null && shownLayout !== state.spatialLayout
+        || (cellsMode && wholeRoot !== shownWholeRoot) ? "unfold" : "hold";
       shownLayout = state.spatialLayout;
+      shownWholeRoot = wholeRoot;
       const shown = shownData();
       setPiece(shown);
       move(energy ?? state.tuning.forceGraph.updateEnergy, start);
@@ -2048,6 +2152,8 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
       ]);
       if (attentionSettings === nextAttention) { drawLegend(); return; }
       attentionSettings = nextAttention;
+      attentionNodes = attention;
+      placedNames = "";
       pictureChanged();
       drawLegend();
       const frontier = atFrontier;
@@ -2187,6 +2293,7 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
     refreshWrappers();
     simulation.tick(REVEAL.warmup);
     shownLayout = state.spatialLayout;
+    shownWholeRoot = wholeRoot;
     membership = nextMembership;
     focusLabel = document.createElement("button");
     focusLabel.type = "button";

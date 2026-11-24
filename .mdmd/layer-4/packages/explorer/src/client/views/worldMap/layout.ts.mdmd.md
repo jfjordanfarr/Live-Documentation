@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/explorer/src/client/views/worldMap/layout.ts`
-- Generated At: 2026-11-22T07:12:56.831Z
+- Generated At: 2026-11-24T18:30:18.290Z
 
 ## Authored
 ### Purpose
@@ -317,7 +317,7 @@ that covers the subject least, then what it is asked to avoid least. Before
 
 #### `clamp` {#symbol-clamp}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/worldMap/layout.ts#L421)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/worldMap/layout.ts#L434)
 
 ##### `clamp` — Summary
 The value held within the bounds.

@@ -11,13 +11,23 @@
 .history-scrubber button { display: inline-flex; align-items: center; justify-content: center; min-width: 32px; padding: 6px; border: 1px solid transparent; border-radius: 4px; background: transparent; color: var(--text-normal); cursor: pointer; font: inherit; }
 .history-scrubber button:hover { background: var(--selected-subtle); }
 .history-scrubber button:focus-visible { outline: 2px solid var(--state-selected); }
-.history-scrubber button[aria-pressed="true"], .history-play.is-playing { border-color: var(--state-selected); color: var(--state-selected); }
+.history-scrubber button[aria-pressed="true"], .history-play.is-playing { border-color: var(--state-selected); color: var(--state-selected); background: var(--selected-subtle); }
 .history-scrubber button[hidden] { display: none; }
 .history-scrubber button:disabled { opacity: .35; cursor: default; }
 .history-playback { display: flex; flex: none; gap: 0; }
-.history-scrubber .history-readout { position: relative; padding-right: 24px; }
-.history-readout::after { content: ""; position: absolute; right: 8px; top: 12px; width: 7px; height: 7px; border: 1.5px solid currentColor; border-radius: 50%; }
-.history-readout::before { content: ""; position: absolute; right: 5px; top: 22px; width: 6px; height: 1.5px; background: currentColor; transform: rotate(45deg); }
+/* Frame the commit readout + find glyph as one cohesive interactive button, and give the panel/author toggles clear
+   resting borders so every bottom-right scrubber control reads unmistakably as clickable (2026-11-24). */
+.history-scrubber .history-readout { position: relative; padding: 4px 26px 4px 8px; border-color: var(--line-border); background: rgba(var(--ground-sheen-rgb), 0.03); }
+.history-scrubber .history-readout:hover,
+.history-scrubber .history-readout[aria-expanded="true"] { border-color: var(--state-selected); background: var(--selected-subtle); }
+.history-scrubber :is(.history-details, .history-authors) { border-color: var(--line-border); }
+.history-scrubber :is(.history-details, .history-authors):hover { border-color: var(--state-selected); }
+.history-readout::after { content: ""; position: absolute; right: 9px; top: calc(50% - 5px); width: 7px; height: 7px; border: 1.5px solid currentColor; border-radius: 50%; opacity: .82; }
+.history-readout::before { content: ""; position: absolute; right: 6px; top: calc(50% + 4px); width: 6px; height: 1.5px; background: currentColor; transform: rotate(45deg); opacity: .82; }
+.history-readout:hover::after,
+.history-readout:hover::before,
+.history-readout[aria-expanded="true"]::after,
+.history-readout[aria-expanded="true"]::before { opacity: 1; }
 .history-finder { position: absolute; right: 0; bottom: calc(100% + 8px); width: min(460px, 100%); box-sizing: border-box; padding: 12px; background: var(--ground-deep); border: 1px solid var(--line-border); border-radius: 8px; box-shadow: 0 8px 24px rgba(var(--ground-shade-rgb), 0.4); }
 .history-finder[hidden] { display: none; }
 .history-finder input { width: 100%; box-sizing: border-box; padding: 8px 10px; border: 1px solid var(--line-border); border-radius: 4px; font: inherit; font-size: 13px; color: var(--text-normal); background: var(--ground-deep); }

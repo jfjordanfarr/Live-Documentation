@@ -125,6 +125,9 @@
 .force-graph-label { left: 0; top: 0; font-size: 13px; padding: 3px 6px; background: rgba(var(--scene-label-ground-rgb), 0.909804); border-color: var(--scene-label-line); }
 .force-graph-label[data-kind="directory"] { color: var(--scene-directory-label); border-color: var(--scene-directory-label-line); }
 .force-graph-label[data-context="true"] { opacity: .45; }
+.force-graph-label[data-lit="true"] { opacity: 1; color: var(--scene-label-text); border-color: var(--scene-chip-line); }
+.force-graph-label[data-kind="directory"][data-lit="true"] { color: var(--scene-directory-label); border-color: var(--scene-directory-label); }
+.force-graph-label[data-hovered="true"] { opacity: 1; color: var(--scene-chip-text); background: var(--ground-surface); border-color: var(--state-selected); }
 .force-graph-focus[aria-pressed="true"], .force-graph-label[aria-pressed="true"] { border-color: var(--state-selected); }
 .force-graph-focus[hidden], .force-graph-label[hidden] { display: none; }
 

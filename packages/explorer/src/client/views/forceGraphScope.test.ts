@@ -2,7 +2,7 @@ import { describe, expect, it } from "vitest";
 
 import { getDefaultTuning } from "../persistence/local-storage";
 import { linkPulls, type SpatialLink } from "./forceGraphLayout";
-import { componentLandmarks, componentMembers, connectedNeighbours, defaultSpatialLayout, directoryHubOf, directoryMembersWithinHops, spatialScope, startHops, startOf, withoutUnreachedSeeds, type StartableNode } from "./forceGraphScope";
+import { componentLandmarks, componentMembers, connectedNeighbours, defaultSpatialLayout, directoryHubOf, directoryMembersWithinHops, spatialScope, startHops, startOf, structureSeeds, withoutUnreachedSeeds, type StartableNode } from "./forceGraphScope";
 
 const node = (id: string, more: Partial<StartableNode> = {}): StartableNode => ({ id, publicSymbols: [], ...more });
 const link = (source: string, target: string, kind = "dependency"): SpatialLink<StartableNode> => ({ source, target, count: 1, kind });
@@ -112,6 +112,34 @@ describe("what the picture shows around what was asked about", () => {
     expect(spatialScope(nodes, links, new Set(["src/a"]), 2, structure).hops).toEqual(new Map([["src/a", 0], ["directory:src", 1], ["directory:", 2], ["src/b", 2], ["lib/c", 3]]));
     // The root with its children in full and its grandchildren one hop further: the structure start.
     expect(spatialScope(nodes, links, new Set(["directory:"]), 2, structure).hops).toEqual(new Map([["directory:", 0], ["directory:src", 1], ["src/a", 2], ["src/b", 2], ["lib/c", 3]]));
+  });
+
+  it("expands file seeds in Structure to their immediate parent hub so 1 hop reaches siblings and child folders", () => {
+    const nodes = [
+      node("directory:", { directoryPath: "" }),
+      node("directory:PaymentService", { directoryPath: "PaymentService" }),
+      node("directory:PaymentService/Data", { directoryPath: "PaymentService/Data" }),
+      node("PaymentService/PaymentService.cs"),
+      node("PaymentService/App.config"),
+      node("PaymentService/Data/Payment.cs")
+    ];
+    const links = [
+      link("directory:", "directory:PaymentService", "containment"),
+      link("directory:PaymentService", "PaymentService/PaymentService.cs", "containment"),
+      link("directory:PaymentService", "PaymentService/App.config", "containment"),
+      link("directory:PaymentService", "directory:PaymentService/Data", "containment"),
+      link("directory:PaymentService/Data", "PaymentService/Data/Payment.cs", "containment")
+    ];
+    const seeds = structureSeeds(nodes, links, new Set(["PaymentService/PaymentService.cs"]));
+    expect([...seeds].sort()).toEqual(["PaymentService/PaymentService.cs", "directory:PaymentService"]);
+    const oneHop = spatialScope(nodes, links, seeds, 1, structure);
+    expect([...oneHop.hops.keys()].sort()).toEqual([
+      "PaymentService/App.config",
+      "PaymentService/PaymentService.cs",
+      "directory:",
+      "directory:PaymentService",
+      "directory:PaymentService/Data"
+    ]);
   });
 
   it("stands a tree by its top hub when the hops reach nothing of it, as a group stands by its seed", () => {

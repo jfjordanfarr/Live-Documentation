@@ -1016,6 +1016,25 @@ export class WorldMapController {
       return [s[0] + left, s[1] + top];
     })]));
     const outlines = [...outlineOf.values()];
+    // Interior sample points of visible call wires in client coordinates: used as a soft tie-breaker so piece labels
+    // nudge off dense wire crossings when a collision-free slot exists, without ever disturbing already-clear boards.
+    const wirePoints: Point2[] = [];
+    for (const curve of this.roadCurves.values()) {
+      for (let i = 1; i <= 15; i += 1) {
+        const p = bezierAt(curve, i / 16);
+        const s = toScreen(this.screen, project(this.camera, this.pivot, p[0], p[1], p[2]));
+        wirePoints.push([s[0] + left, s[1] + top]);
+      }
+    }
+    const wireHits = (box: ScreenBox): number => {
+      let hits = 0;
+      for (const [wx, wy] of wirePoints) {
+        if (wx >= box.left - 3 && wx <= box.right + 3 && wy >= box.top - 3 && wy <= box.bottom + 3) {
+          hits += 1;
+        }
+      }
+      return hits;
+    };
     // How far below its outline a piece's strands hang on the screen, which a label below the piece keeps clear of.
     const strands = LONGEST_STRAND * Math.cos(this.camera.phi) * this.screen.k;
     // Visible HUD chrome (title crumbs, top toolbar, help button) is treated as hard obstacles with 6 px breathing room
@@ -1039,12 +1058,14 @@ export class WorldMapController {
       + outlines.reduce((sum, outline) => sum + coveredArea(box, outline), 0);
     const moved = (box: ScreenBox, dx: number, dy: number): ScreenBox => ({ left: box.left + dx, right: box.right + dx, top: box.top + dy, bottom: box.bottom + dy });
     // A region's name labels an area, not a point, so it may travel further along the region's side than the others.
-    const steps: Record<string, number[]> = { "w-zone": [0, -18, 18, -36, 36, -54, 54, -72, 72], "w-tag": [0, -20, 20, -40, 40, -60, 60], "w-tokenlabel": [0, -52, 18, -70, 36, -88, 54, -106, 72], "w-doorlabel": [0, -14, 14, -28, 28, -42, 42, -56, 56, -70, 70] };
+    // Door labels include fine vertical steps so dense multi-door walls (e.g. live-docs) stack with 0 px² overlap.
+    const steps: Record<string, number[]> = { "w-zone": [0, -18, 18, -36, 36, -54, 54, -72, 72], "w-tag": [0, -20, 20, -40, 40, -60, 60], "w-tokenlabel": [0, -52, 18, -70, 36, -88, 54, -106, 72], "w-doorlabel": [0, -4, 4, -8, 8, -14, 14, -20, 20, -28, 28, -42, 42, -56, 56, -70, 70, -84, 84] };
     const doorBoxes: ScreenBox[] = [];
     const subsShown = new Map<SVGElement, ScreenBox>();
     // A piece's name takes the smallest move where it covers nothing and the line under it, at the same height, has a
-    // place that covers nothing, under the name or aside by up to half the label's width; failing that, the name alone
-    // where it covers nothing, and the line under it goes; failing that, the name where it covers least.
+    // place that covers nothing, under the name or aside by up to half the label's width (preferring a move clear of
+    // passing wires when one exists); failing that, the name alone where it covers nothing, and the line under it goes;
+    // failing that, the name where it covers least.
     for (const { group, name, sub } of nearestFirst) {
       const nameBox = name ? rests.get(name) : undefined;
       if (!name || !nameBox) {
@@ -1058,13 +1079,38 @@ export class WorldMapController {
       const below = own.length ? Math.max(...own.map((p) => p[1])) + strands + 4 - nameBox.top : 0;
       const drop = (move: LabelMove): number => move.rise + (move.below ? below : 0);
       const nameCover = (move: LabelMove): number => covered(moved(nameBox, move.shift * span, drop(move)));
-      // The line under the name, at the name's height: under the name first, then aside.
-      const subPlace = (move: LabelMove): number | undefined =>
-        subBox ? [move.shift, ...SHIFTS.filter((shift) => shift !== move.shift)].find((shift) => covered(moved(subBox, shift * span, drop(move))) === 0) : undefined;
-      let move = LABEL_MOVES.find((candidate) => nameCover(candidate) === 0 && (!subBox || subPlace(candidate) !== undefined));
-      let subShift = move ? subPlace(move) : undefined;
+      // The line under the name, at the name's height: under the name first, then aside (wire-clear shifts first).
+      const subPlace = (move: LabelMove): number | undefined => {
+        if (!subBox) {
+          return undefined;
+        }
+        const candidates = [move.shift, ...SHIFTS.filter((shift) => shift !== move.shift)]
+          .filter((shift) => covered(moved(subBox, shift * span, drop(move))) === 0);
+        if (!candidates.length) {
+          return undefined;
+        }
+        return candidates.reduce((best, shift) => (
+          wireHits(moved(subBox, shift * span, drop(move))) < wireHits(moved(subBox, best * span, drop(move))) ? shift : best
+        ));
+      };
+      const clearPairs = LABEL_MOVES
+        .map((candidate) => ({ candidate, subShift: subPlace(candidate) }))
+        .filter(({ candidate, subShift }) => nameCover(candidate) === 0 && (!subBox || subShift !== undefined));
+      let move: LabelMove | undefined;
+      let subShift: number | undefined;
+      if (clearPairs.length) {
+        const pairWires = (entry: { candidate: LabelMove; subShift: number | undefined }): number =>
+          wireHits(moved(nameBox, entry.candidate.shift * span, drop(entry.candidate)))
+          + (subBox && entry.subShift !== undefined ? wireHits(moved(subBox, entry.subShift * span, drop(entry.candidate))) : 0);
+        const best = clearPairs.reduce((winner, entry) => (pairWires(entry) < pairWires(winner) ? entry : winner));
+        move = best.candidate;
+        subShift = best.subShift;
+      }
       if (!move) {
-        move = LABEL_MOVES.find((candidate) => nameCover(candidate) === 0) ?? LABEL_MOVES.reduce((best, candidate) => (nameCover(candidate) < nameCover(best) ? candidate : best));
+        const clearNames = LABEL_MOVES.filter((candidate) => nameCover(candidate) === 0);
+        move = clearNames.length
+          ? clearNames.reduce((best, candidate) => (wireHits(moved(nameBox, candidate.shift * span, drop(candidate))) < wireHits(moved(nameBox, best.shift * span, drop(best))) ? candidate : best))
+          : LABEL_MOVES.reduce((best, candidate) => (nameCover(candidate) < nameCover(best) ? candidate : best));
         subShift = undefined;
       }
       name.setAttribute("dx", String(move.shift * span));
@@ -1082,7 +1128,9 @@ export class WorldMapController {
       }
     }
     // A region's label, a crossing's tag, a token's label and a door's label then settle in that order: each takes the
-    // first step from where it rests that covers nothing, or else the one covering least.
+    // first step from where it rests that covers nothing, or else the one covering least. Region banners keep 6 px of
+    // breathing room from piece labels and outlines when a padded slot is clear so banners like GITHUB never kiss a
+    // neighbouring piece subtitle (2026-11-24).
     for (const { kind, nodes } of others) {
       for (const node of nodes) {
         const resting = rests.get(node);
@@ -1093,9 +1141,10 @@ export class WorldMapController {
         const sides = sidesOf(node);
         // A door's label keeps to its door; a region's banner may travel up to a full width sideways to stay clear of
         // pieces, labels, and HUD controls on narrower viewports; any other moves by up to half its width.
-        const shifts = node.dataset.anchor ? [0] : kind === "w-zone" ? [0, -0.25, 0.25, -0.5, 0.5, -0.75, 0.75, -1, 1] : SHIFTS;
-        const labelSlack = kind === "w-doorlabel" ? 1 : 0;
-        let best = { dy: rest, dx: Number(node.dataset.dx ?? "0"), cover: Number.POSITIVE_INFINITY, side: sides[0], box: resting as ScreenBox, sideDx: 0 };
+        const shifts = node.dataset.anchor ? [0] : kind === "w-zone" ? [0, -0.25, 0.25, -0.5, 0.5, -0.75, 0.75, -1, 1, -1.25, 1.25] : SHIFTS;
+        const labelSlack = 0;
+        const zonePad = kind === "w-zone" ? 6 : 0;
+        let best = { dy: rest, dx: Number(node.dataset.dx ?? "0"), cover: Number.POSITIVE_INFINITY, padded: Number.POSITIVE_INFINITY, wires: Number.POSITIVE_INFINITY, side: sides[0], box: resting as ScreenBox, sideDx: 0 };
         search: for (const [index, side] of sides.entries()) {
           const sideDx = Number(side?.dx ?? "0");
           let box: DOMRect = resting;
@@ -1113,11 +1162,16 @@ export class WorldMapController {
               const candidate = moved(box, shift * box.width, step);
               const span = own ? spanWithin(own, candidate.top, candidate.bottom) : undefined;
               const beyond = !span ? 0 : side?.anchor === "end" ? Math.min(0, span[0] - 4 - candidate.right) : Math.max(0, span[1] + 4 - candidate.left);
-              const cover = covered(moved(candidate, beyond, 0), labelSlack);
-              if (cover < best.cover) {
-                best = { dy: rest + step, dx: sideDx + shift * box.width + beyond, cover, side, box, sideDx };
+              const positioned = moved(candidate, beyond, 0);
+              const cover = covered(positioned, labelSlack);
+              const padded = zonePad > 0
+                ? covered({ left: positioned.left - zonePad, right: positioned.right + zonePad, top: positioned.top - zonePad, bottom: positioned.bottom + zonePad }, 0)
+                : cover;
+              const wires = kind === "w-zone" ? wireHits(positioned) : 0;
+              if (cover < best.cover || (cover === best.cover && (padded < best.padded || (padded === best.padded && wires < best.wires)))) {
+                best = { dy: rest + step, dx: sideDx + shift * box.width + beyond, cover, padded, wires, side, box, sideDx };
               }
-              if (cover === 0) {
+              if (cover === 0 && padded === 0 && wires === 0) {
                 break search;
               }
             }
@@ -1395,9 +1449,9 @@ export class WorldMapController {
   }
 
   /**
-   * Where the panel stands. A piece's panel, pinned or peeking at the keyboard's piece, stands beside the piece, never
-   * on it, inside the view below the tools, and as clear as it can be of the pieces wired to it; any other panel, and a
-   * peek at the pointer's piece, follows the pointer.
+   * Where the panel stands. A piece's panel, pinned or peeking at the keyboard's piece, and any wire's panel stand
+   * beside their subject, never on it, inside the view below the tools, and as clear as they can be of wired pieces
+   * and visible board labels; any other panel, and a peek at the pointer's piece, follows the pointer.
    */
   private placeEvidence(h: Hover, pinned: boolean): void {
     const box = this.evidence;
@@ -1408,23 +1462,76 @@ export class WorldMapController {
     const rect = box.getBoundingClientRect();
     if (h.kind === "piece" && (pinned || this.focused === h.id)) {
       const wired = new Set(this.model.roads.filter((road) => road.from === h.id || road.to === h.id).flatMap((road) => [road.from, road.to]));
-      const avoid: Avoid[] = this.model.pieces
-        .filter((piece) => piece.name !== h.id)
-        .map((piece) => ({ box: this.pieceBox(piece.name), weight: wired.has(piece.name) ? 1 : 0.2 }));
-      // The piece's doors' names, shown while it is pinned, are part of what the panel explains.
-      for (const label of this.layers.labels.querySelectorAll<SVGElement>(`text.w-doorlabel[data-piece="${CSS.escape(h.id)}"]`)) {
-        const rect = label.getBoundingClientRect();
-        if (label.style.display !== "none" && rect.width > 0) {
-          avoid.push({ box: { left: rect.left - this.svgLeft(), top: rect.top - this.svgTop(), right: rect.right - this.svgLeft(), bottom: rect.bottom - this.svgTop() }, weight: 1 });
-        }
-      }
+      const avoid = this.panelAvoid(h.id, wired);
       const at = panelBeside(this.pieceBox(h.id), { width: rect.width, height: rect.height }, this.panelRoom(), avoid);
       box.style.left = `${at.left}px`;
       box.style.top = `${at.top}px`;
       return;
     }
+    if (h.kind === "road") {
+      const road = this.model.roads.find((candidate) => candidate.id === h.id);
+      if (road) {
+        const endpoints = new Set([road.from, road.to]);
+        const avoid = this.panelAvoid(undefined, endpoints, 3);
+        const at = panelBeside(this.roadBox(road), { width: rect.width, height: rect.height }, this.panelRoom(), avoid);
+        box.style.left = `${at.left}px`;
+        box.style.top = `${at.top}px`;
+        return;
+      }
+    }
     box.style.left = `${clamp(this.lastPointer[0] + 18, 12, width - rect.width - 12)}px`;
     box.style.top = `${clamp(this.lastPointer[1] + 18, 12, height - rect.height - 12)}px`;
+  }
+
+  /**
+   * Obstacles an evidence panel avoids, in view pixels: every other piece's footprint and every visible piece, door,
+   * crossing, and region label on the board, weighted so the panel never slices through a visible name or endpoint
+   * when open board space exists (2026-11-24).
+   */
+  private panelAvoid(excludePiece: string | undefined, priorityPieces: ReadonlySet<string>, priorityWeight = 1): Avoid[] {
+    const avoid: Avoid[] = this.model.pieces
+      .filter((piece) => piece.name !== excludePiece)
+      .map((piece) => ({ box: this.pieceBox(piece.name), weight: priorityPieces.has(piece.name) ? priorityWeight : 0.25 }));
+    const left = this.svgLeft();
+    const top = this.svgTop();
+    for (const text of this.layers.labels.querySelectorAll<SVGElement>("text")) {
+      if (text.style.display === "none") {
+        continue;
+      }
+      const owner = text.dataset.piece ?? text.closest<SVGElement>("[data-piece]")?.dataset.piece;
+      if (excludePiece && owner === excludePiece && !text.classList.contains("w-doorlabel")) {
+        continue;
+      }
+      const r = text.getBoundingClientRect();
+      if (r.width > 0 && r.height > 0) {
+        const weight = text.classList.contains("w-doorlabel") || (owner !== undefined && priorityPieces.has(owner)) ? 2 : 1.5;
+        avoid.push({ box: { left: r.left - left - 4, top: r.top - top - 3, right: r.right - left + 4, bottom: r.bottom - top + 3 }, weight });
+      }
+    }
+    return avoid;
+  }
+
+  /** A wire's screen bounds, in view pixels: its projected curve when drawn, or the midpoint between its two endpoints. */
+  private roadBox(road: WorldRoad): ScreenBox {
+    const curve = this.roadCurves.get(road.id);
+    if (curve) {
+      const pts: Point2[] = [];
+      for (let i = 0; i <= 8; i += 1) {
+        const p = bezierAt(curve, i / 8);
+        pts.push(toScreen(this.screen, project(this.camera, this.pivot, p[0], p[1], p[2])));
+      }
+      return {
+        left: Math.min(...pts.map((p) => p[0])) - 8,
+        top: Math.min(...pts.map((p) => p[1])) - 8,
+        right: Math.max(...pts.map((p) => p[0])) + 8,
+        bottom: Math.max(...pts.map((p) => p[1])) + 8
+      };
+    }
+    const a = this.pieceBox(road.from);
+    const b = this.pieceBox(road.to);
+    const cx = ((a.left + a.right) / 2 + (b.left + b.right) / 2) / 2;
+    const cy = ((a.top + a.bottom) / 2 + (b.top + b.bottom) / 2) / 2;
+    return { left: cx - 12, top: cy - 12, right: cx + 12, bottom: cy + 12 };
   }
 
   /** The room a panel has, in the view's pixels: inside the view, below the board's title and tools. */
@@ -1474,9 +1581,13 @@ export class WorldMapController {
       const over = road.over ? `<div><span class="k">over</span> ${escapeHtml(road.over)}</div>` : "";
       const meaning = road.kind === "stands" ? `<div class="k">its code built in; no call crosses this while they run</div>` : "";
       const shown = full ? road.lines : road.lines.slice(0, 6);
-      const lines = shown.map((line) => `<div class="via">${escapeHtml(line.label)}</div><div class="f">${this.fileLink(line.from)} &rarr; ${this.fileLink(line.to)}</div>`).join("");
+      const lines = shown.map((line) => {
+        // When the door heading already names this exact symbol/procedure, avoid repeating it directly beneath itself.
+        const via = road.door && line.label === road.door.name ? "" : `<div class="via">${escapeHtml(line.label)}</div>`;
+        return `${via}<div class="f">${this.fileLink(line.from)} &rarr; ${this.fileLink(line.to)}</div>`;
+      }).join("");
       const more = road.lines.length > shown.length ? `<div class="src">and ${road.lines.length - shown.length} more; click to pin and see them all</div>` : "";
-      const source = road.basis === "declared" ? `<div class="src">declared on the board</div>` : `<div class="src">${road.count} edge${road.count === 1 ? "" : "s"} in the docs</div>`;
+      const source = road.basis === "declared" ? `<div class="src">declared on the board</div>` : `<div class="src">${road.count} reference${road.count === 1 ? "" : "s"} in the docs</div>`;
       // The wire's own way down (Tuning's Way Down, a trial of 2026-11-22): the files at its two ends, both kept. A
       // declared wire has no file behind it and offers none.
       const open = full && road.lines.length && this.onOpenWire && this.carriesQuestion()

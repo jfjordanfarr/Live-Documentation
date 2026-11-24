@@ -287,3 +287,15 @@ for (const representation of ["bare spheres", "default Skin"] as const) {
     expect(Math.hypot(zoomed.x - beforeZoom.x, zoomed.y - beforeZoom.y)).toBeLessThan(.1);
   });
 }
+
+test("switching from a single file into 3D Structure at 1 hop shows its parent directory, siblings, and child folder bubble", async ({ page }) => {
+  test.setTimeout(60_000);
+  await observeGraph(page);
+  await page.goto(entry("structure", { selectedNodeId: "PaymentService/PaymentService.cs" }));
+  await expect(page.locator("#graph-svg")).toHaveAttribute("aria-busy", "false", { timeout: 25_000 });
+  const ids = (await renderedNodes(page)).map(node => node.id);
+  expect(ids).toContain("PaymentService/PaymentService.cs");
+  expect(ids).toContain("directory:PaymentService");
+  expect(ids).toContain("PaymentService/App.config");
+  expect(ids).toContain("directory:PaymentService/Data");
+});

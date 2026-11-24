@@ -215,11 +215,12 @@ export function createScrubber(options: ScrubberOptions): Scrubber {
   notice.hidden = true;
 
   const details = iconButton("Step details", DETAILS_ICON);
+  details.title = "Show or hide step details";
   details.className = "history-details";
   details.setAttribute("aria-pressed", "true");
 
   const authors = iconButton("Authors", AUTHORS_ICON);
-  authors.title = "The commits' authors";
+  authors.title = "Show or hide commit authors";
   authors.className = "history-authors";
   authors.setAttribute("aria-pressed", "false");
 

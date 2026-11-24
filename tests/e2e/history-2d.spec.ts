@@ -189,3 +189,39 @@ test("a page narrowed while the scrubber is open keeps the controls clear of it"
   await page.setViewportSize({ width: 390, height: 844 });
   await expect.poll(() => controlsClearOfScrubber(page)).toEqual([]);
 });
+
+test("under default dim, 2D changed cards carry a visible rim, unchanged cards stay legible, and unchanged views soften the dim floor", async ({ page }) => {
+  // Pin src/app/main.ts and step to commit 5 (which resized src/engine/util.ts, visible in main.ts's neighborhood)
+  // vs commit 4 (which deleted lib/legacy.ts; when viewing only src/app/screen.ts, 0 visible cards changed).
+  await page.goto(at({ pinSet: { entries: [{ nodeId: MAIN, symbol: "*" }] } }));
+  await localMapSettled(page);
+  await openHistory(page);
+  await stepTo(page, 5);
+  await expect(page.locator("#map-container")).toHaveClass(/history-dims/u);
+  const changed = await card(page, "src/engine/util.ts").evaluate(el => ({
+    changed: el.classList.contains("is-history-changed"),
+    shadow: getComputedStyle(el).boxShadow,
+    opacity: parseFloat(getComputedStyle(el).opacity)
+  }));
+  expect(changed.changed).toBe(true);
+  expect(changed.shadow).not.toBe("none");
+  expect(changed.opacity).toBeCloseTo(1, 2);
+  const unchangedOpacity = await card(page, "src/engine/model.ts").evaluate(el => parseFloat(getComputedStyle(el).opacity));
+  expect(unchangedOpacity).toBeCloseTo(0.46, 2);
+
+  // Step 5 touched only src/engine/util.ts; viewing tests/main.test.ts shows src/app/main.ts with 0 visible changes.
+  await page.goto(at({ selectedNodeId: "tests/main.test.ts" }));
+  await localMapSettled(page);
+  await openHistory(page);
+  await stepTo(page, 5);
+  const quiet = await page.evaluate(() => {
+    const container = document.querySelector<HTMLElement>("#map-container")!;
+    const count = container.dataset.historyVisibleChanges;
+    const cards = [...container.querySelectorAll<HTMLElement>(".node-card:not(.is-history-changed):not(.is-history-asked)")]
+      .map(el => parseFloat(getComputedStyle(el).opacity));
+    return { count, cards };
+  });
+  expect(quiet.count).toBe("0");
+  expect(quiet.cards.length).toBeGreaterThan(0);
+  for (const opacity of quiet.cards) expect(opacity).toBeCloseTo(0.72, 2);
+});

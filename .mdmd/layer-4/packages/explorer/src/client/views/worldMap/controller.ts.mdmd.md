@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/explorer/src/client/views/worldMap/controller.ts`
-- Generated At: 2026-11-24T04:28:06.473Z
+- Generated At: 2026-11-24T19:00:59.531Z
 
 ## Authored
 ### Purpose
@@ -73,7 +73,7 @@ Draws a board and answers the pointer.
 
 #### `WorldMapApi` {#symbol-worldmapapi}
 - Type: interface
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/worldMap/controller.ts#L2372)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/worldMap/controller.ts#L2483)
 
 ##### `WorldMapApi` — Summary
 The handle a test or a screenshot script drives, at `window.__worldMap`.

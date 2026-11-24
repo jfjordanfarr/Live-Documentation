@@ -372,7 +372,20 @@ export function panelBeside(subject: ScreenBox, size: { width: number; height: n
     hold(subject.right + gap, subject.bottom - size.height),
     hold(subject.left - gap - size.width, subject.bottom - size.height),
     hold(subject.right - size.width, subject.bottom + gap),
-    hold(subject.right - size.width, subject.top - gap - size.height)
+    hold(subject.right - size.width, subject.top - gap - size.height),
+    // Diagonal and room-edge fallbacks tried only when every tight edge-aligned spot covers an obstacle (2026-11-24).
+    hold(subject.left - gap - size.width, subject.bottom + gap),
+    hold(subject.right + gap, subject.bottom + gap),
+    hold(subject.left - gap - size.width, subject.top - gap - size.height),
+    hold(subject.right + gap, subject.top - gap - size.height),
+    hold(room.left, subject.bottom + gap),
+    hold(room.right - size.width, subject.bottom + gap),
+    hold(room.left, subject.top - gap - size.height),
+    hold(room.right - size.width, subject.top - gap - size.height),
+    hold(room.left, room.bottom - size.height),
+    hold(room.right - size.width, room.bottom - size.height),
+    hold(room.left, room.top),
+    hold(room.right - size.width, room.top)
   ];
   let best = { at: candidates[0], own: Number.POSITIVE_INFINITY, others: Number.POSITIVE_INFINITY };
   for (const at of candidates) {

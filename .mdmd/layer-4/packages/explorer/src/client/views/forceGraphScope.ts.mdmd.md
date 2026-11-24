@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/explorer/src/client/views/forceGraphScope.ts`
-- Generated At: 2026-11-19T21:10:15.310Z
+- Generated At: 2026-11-24T18:30:17.303Z
 
 ## Authored
 ### Purpose
@@ -142,6 +142,18 @@ no start.
 
 ##### `startHops` — Summary
 How many hops a layout's start shows around itself: a tree's root with its children, an archipelago's seeds alone.
+
+#### `structureSeeds` {#symbol-structureseeds}
+- Type: function
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphScope.ts#L234)
+- Parameters: `asked`: `ReadonlySet`
+- Constraints: [`StartableNode`](#symbol-startablenode)
+
+##### `structureSeeds` — Summary
+Expand file attention seeds to their immediate containment parent hub in the Structure layout (2026-11-24):
+a file is a leaf in the containment tree whose only 1-hop neighbour is its parent folder, so at 1 hop a lone file
+otherwise shows two isolated dots. Including its parent hub at hop 0 lets 1 hop reach its sibling files, immediate
+subfolders, and parent directory without inflating what the user explicitly asked about.
 <!-- LIVE-DOC:END Public Symbols -->
 
 <!-- LIVE-DOC:BEGIN Dependencies -->

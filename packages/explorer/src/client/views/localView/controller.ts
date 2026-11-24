@@ -367,9 +367,12 @@ export class LocalViewController implements LocalViewApi {
     this.container.classList.toggle("history-glows", mode === "glow" || mode === "both");
     this.container.classList.toggle("history-dims", mode === "dim" || mode === "both");
     const asked = new Set([...this.pins.entries.map(pin => pin.nodeId), this.subject?.id ?? ""]);
+    let visibleChanges = 0;
     for (const card of this.container.querySelectorAll<HTMLElement>(".node-card[data-id]")) {
       const id = card.dataset.id!;
-      card.classList.toggle("is-history-changed", !!changes?.changed.has(id));
+      const changed = !!changes?.changed.has(id);
+      if (changed) visibleChanges++;
+      card.classList.toggle("is-history-changed", changed);
       card.classList.toggle("is-history-asked", asked.has(id));
     }
     // A change is shown at the innermost thing the picture draws for it, as in 3D: a file the map draws no card for,
@@ -377,8 +380,13 @@ export class LocalViewController implements LocalViewApi {
     const touched = changes ? [...changes.changed, ...changes.deletedFiles] : [];
     for (const box of this.container.querySelectorAll<HTMLElement>(".local-directory-closed[data-directory]")) {
       const directory = box.dataset.directory!, under = directory ? `${directory}/` : "";
-      box.classList.toggle("is-history-changed", touched.some(path => path.startsWith(under)));
+      const changed = touched.some(path => path.startsWith(under));
+      if (changed) visibleChanges++;
+      box.classList.toggle("is-history-changed", changed);
     }
+    // Track how many changed items are visible on the current 2D map so Dim softens its floor when 0 changes are in view.
+    if (mode === "dim" || mode === "both") this.container.dataset.historyVisibleChanges = String(visibleChanges);
+    else delete this.container.dataset.historyVisibleChanges;
   }
   /** Files kept available only to read; they add no neighborhood pin. */
   get readingFiles(): ReadonlySet<string> { return readingFiles(this.options.state.reading ?? []); }

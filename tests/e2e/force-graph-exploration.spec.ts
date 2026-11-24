@@ -53,8 +53,8 @@ test("whole overview finds isolated files and returns to the independent directo
   await settled(page);
   const before = await renderedNodes(page);
   const local = before.map(node => node.id).sort();
-  // The lone file stands in the local picture as its own group's seed, dimmed beyond the frontier (2026-11-02).
-  expect(before.find(node => node.id === LONE)?.opacity).toBeLessThan(0.5);
+  // Under the default next-step horizon, an unreached isolated component stands outside the local picture until Whole is opened.
+  expect(before.find(node => node.id === LONE)).toBeUndefined();
   const whole = page.getByRole("button", { name: "Whole", exact: true });
   await expect(whole).toHaveAttribute("aria-pressed", "false");
   await whole.click();
@@ -74,9 +74,9 @@ test("whole overview finds isolated files and returns to the independent directo
   await expect(whole).toHaveAttribute("aria-pressed", "false");
   await settled(page);
   expect(currentSnapshot(page)).toMatchObject({ selectedNodeId: null, openDirectories: new Set([LONE_DIRECTORY]), pinSet: { entries: [{ nodeId: LONE, symbol: "*" }] } });
-  // Back in the local picture the pinned lone file stands in full; the picture's members are the same, since its seed was already there.
+  // Back in the local picture the pinned lone file stands in full alongside the directory's local members.
   const returned = await renderedNodes(page);
-  expect(returned.map(node => node.id).sort()).toEqual(local);
+  expect(returned.map(node => node.id).sort()).toEqual([...local, LONE].sort());
   expect(returned.find(node => node.id === LONE)?.opacity).toBeGreaterThan(0.6);
   // A portable pin set retains its independent directory and the newly discovered orphan after reload.
   await page.reload();
@@ -139,14 +139,12 @@ test("a lone file settles, small body jitter pins it, and a moving name releases
   await observeGraph(page);
   await page.goto(`${LONE_SAMPLE}?view=local&mode=3d&node=${LONE}`);
   await settled(page);
-  // The lone file in full, and the other groups' seeds dimmed beside it, since 2026-11-02 no group is out of reach.
+  // Under the default next-step horizon, a lone file stands in full with no unreached unrelated group seeds beside it.
   const nodes = await renderedNodes(page);
   const only = nodes.find(node => node.id === LONE)!;
   expect(only.opacity).toBeGreaterThan(0.6);
   const seeds = nodes.filter(node => node.id !== LONE);
-  // The program's other files are one group (twelve C# files), so one seed stands beside the lone file.
-  expect(seeds.length, "one seed for each of the program's other groups").toBe(1);
-  for (const seed of seeds) expect(seed.opacity, `${seed.id} stands dimmed`).toBeLessThan(0.5);
+  expect(seeds.length, "next-step horizon omits unreached disconnected components").toBe(0);
   await page.mouse.move(only.x, only.y);
   await page.mouse.down();
   await page.mouse.move(only.x + 3, only.y + 1, { steps: 3 });

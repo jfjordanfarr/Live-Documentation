@@ -224,3 +224,21 @@ export function startOf<N extends StartableNode>(nodes: readonly N[], links: rea
 export function startHops(layout: SpatialLayout, hops: number): number {
   return layout === "structure" ? hops : 0;
 }
+
+/**
+ * Expand file attention seeds to their immediate containment parent hub in the Structure layout (2026-11-24):
+ * a file is a leaf in the containment tree whose only 1-hop neighbour is its parent folder, so at 1 hop a lone file
+ * otherwise shows two isolated dots. Including its parent hub at hop 0 lets 1 hop reach its sibling files, immediate
+ * subfolders, and parent directory without inflating what the user explicitly asked about.
+ */
+export function structureSeeds<N extends StartableNode>(nodes: readonly N[], links: readonly SpatialLink<N>[], asked: ReadonlySet<string>): Set<string> {
+  const seeds = new Set(asked);
+  const files = new Set(nodes.filter(node => node.directoryPath === undefined && seeds.has(node.id)).map(node => node.id));
+  if (!files.size) return seeds;
+  for (const link of links) {
+    if (link.kind !== "containment") continue;
+    const child = endpointId(link.target);
+    if (files.has(child)) seeds.add(endpointId(link.source));
+  }
+  return seeds;
+}

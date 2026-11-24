@@ -102,24 +102,63 @@ test.describe("The estate on the World Map", () => {
   });
 
   // A newcomer pinned the hub and its panel covered payments, sqlserver and oracle, the next links of the chain it
-  // explained (2026-11-12, the first visit's finding 7).
-  test("the hub's pinned panel stands clear of the hub and of the things it is wired to, inside the view", async ({ page }) => {
-    await page.setViewportSize({ width: 1440, height: 900 });
+  // explained (2026-11-12, the first visit's finding 7; extended 2026-11-24 to verify visible labels stay clear too).
+  for (const viewport of [{ width: 1440, height: 900 }, { width: 1280, height: 800 }] as const) {
+    test(`the hub's pinned panel stands clear of wired pieces and visible labels at ${viewport.width}x${viewport.height}`, async ({ page }) => {
+      await page.setViewportSize(viewport);
+      await openEstate(page);
+      const [sx, sy] = await page.evaluate(() => window.__worldMap!.screenPointOf("hub"));
+      await page.mouse.click(sx, sy);
+      const evidence = page.locator("#view-world .world-evidence");
+      await expect(evidence).toHaveClass(/pinned/);
+      const box = (await evidence.boundingBox())!;
+      const view = (await page.locator("#view-world").boundingBox())!;
+      const panel: TextBox = { text: "the pinned panel", tag: "div", x: box.x, y: box.y, w: box.width, h: box.height };
+      const wired = new Set(["hub", "gateway", "payments", "contracts"]);
+      const covered = textOverShapes([panel], (await outlines(page, "#view-world .w-piece .w-face", "data-piece")).filter((outline) => wired.has(outline.owner)));
+      expect(covered.map((strike) => strike.outline.owner)).toEqual([]);
+      const labelHits = await page.evaluate(() => {
+        const p = document.querySelector("#view-world .world-evidence")!.getBoundingClientRect();
+        return [...document.querySelectorAll<SVGElement>("#view-world svg text")]
+          .filter(el => el.style.display !== "none" && el.getBoundingClientRect().width > 0)
+          .map(el => ({ text: el.textContent ?? "", r: el.getBoundingClientRect() }))
+          .filter(({ r }) => Math.min(p.right, r.right) - Math.max(p.left, r.left) > 1 && Math.min(p.bottom, r.bottom) - Math.max(p.top, r.top) > 1)
+          .map(({ text }) => text);
+      });
+      expect(labelHits, "hub pinned panel must not slice visible piece or door labels").toEqual([]);
+      expect(box.x).toBeGreaterThanOrEqual(view.x);
+      expect(box.y).toBeGreaterThanOrEqual(view.y);
+      expect(box.x + box.width).toBeLessThanOrEqual(view.x + view.width);
+      expect(box.y + box.height).toBeLessThanOrEqual(view.y + view.height);
+    });
+  }
+
+  test("hovering a wire places its panel clear of endpoints and door labels, deduplicates the door name, and uses plain reference wording", async ({ page }) => {
+    await page.setViewportSize({ width: 1280, height: 800 });
     await openEstate(page);
-    const [sx, sy] = await page.evaluate(() => window.__worldMap!.screenPointOf("hub"));
-    await page.mouse.click(sx, sy);
+    const roadId = await page.evaluate(() => window.__worldMap!.roads().find(r => r.startsWith("payments>sqlserver") && r.includes("usp_PostPayment"))!);
+    expect(roadId).toBeTruthy();
+    await page.evaluate((id) => window.__worldMap!.hover("road", id), roadId);
     const evidence = page.locator("#view-world .world-evidence");
-    await expect(evidence).toHaveClass(/pinned/);
+    await expect(evidence).toBeVisible();
+    await expect(evidence).toContainText("1 reference in the docs");
+    await expect(evidence).not.toContainText("edge in the docs");
+    // The door heading names dbo.usp_PostPayment once; the matching .via line is not duplicated beneath it.
+    await expect(evidence.locator(".via")).toHaveCount(0);
     const box = (await evidence.boundingBox())!;
-    const view = (await page.locator("#view-world").boundingBox())!;
-    const panel: TextBox = { text: "the pinned panel", tag: "div", x: box.x, y: box.y, w: box.width, h: box.height };
-    const wired = new Set(["hub", "gateway", "payments", "contracts"]);
-    const covered = textOverShapes([panel], (await outlines(page, "#view-world .w-piece .w-face", "data-piece")).filter((outline) => wired.has(outline.owner)));
+    const panel: TextBox = { text: "wire evidence panel", tag: "div", x: box.x, y: box.y, w: box.width, h: box.height };
+    const endpoints = new Set(["payments", "sqlserver"]);
+    const covered = textOverShapes([panel], (await outlines(page, "#view-world .w-piece .w-face", "data-piece")).filter((outline) => endpoints.has(outline.owner)));
     expect(covered.map((strike) => strike.outline.owner)).toEqual([]);
-    expect(box.x).toBeGreaterThanOrEqual(view.x);
-    expect(box.y).toBeGreaterThanOrEqual(view.y);
-    expect(box.x + box.width).toBeLessThanOrEqual(view.x + view.width);
-    expect(box.y + box.height).toBeLessThanOrEqual(view.y + view.height);
+    const labelHits = await page.evaluate(() => {
+      const p = document.querySelector("#view-world .world-evidence")!.getBoundingClientRect();
+      return [...document.querySelectorAll<SVGElement>("#view-world svg text")]
+        .filter(el => el.style.display !== "none" && el.getBoundingClientRect().width > 0)
+        .map(el => ({ text: el.textContent ?? "", r: el.getBoundingClientRect() }))
+        .filter(({ r }) => Math.min(p.right, r.right) - Math.max(p.left, r.left) > 1 && Math.min(p.bottom, r.bottom) - Math.max(p.top, r.top) > 1)
+        .map(({ text }) => text);
+    });
+    expect(labelHits, "wire evidence panel must not smother endpoints or door labels").toEqual([]);
   });
 
   test("its labels stay off each other at rest and with the built-on layer showing", async ({ page }) => {

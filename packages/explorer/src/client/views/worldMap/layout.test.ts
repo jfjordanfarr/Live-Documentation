@@ -232,4 +232,23 @@ describe("a panel beside its subject", () => {
     expect(covers(at, subject)).toBe(false);
     expect(at.left + size.width).toBeLessThanOrEqual(subject.left);
   });
+
+  it("steps diagonally into open board space when all eight edge-aligned sides hit neighbours or door labels", () => {
+    const subject = { left: 600, top: 300, right: 680, bottom: 380 };
+    const obstacles = [
+      // Right of subject (payments)
+      { left: 690, top: 280, right: 980, bottom: 460 },
+      // Left of subject at its own height (gateway/contracts)
+      { left: 260, top: 120, right: 590, bottom: 385 },
+      // Directly under subject (door label)
+      { left: 560, top: 390, right: 710, bottom: 420 },
+      // Above subject
+      { left: 500, top: 50, right: 900, bottom: 295 }
+    ];
+    const at = panelBeside(subject, size, room, obstacles.map((box) => ({ box, weight: 1 })));
+    expect(covers(at, subject)).toBe(false);
+    for (const box of obstacles) {
+      expect(covers(at, box)).toBe(false);
+    }
+  });
 });
