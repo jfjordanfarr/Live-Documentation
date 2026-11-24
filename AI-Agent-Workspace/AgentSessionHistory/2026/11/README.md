@@ -59,7 +59,15 @@ Source inventory, maintained by the root agent. The October 31 session that ende
 
 ## November 24, session 1 — Antigravity, Gemini 4 Neon
 
-- [Maintained root record](2026-11-24/2026-11-24.1.record.md): opened by the owner at 22:35 UTC on November 23 (5:35 PM on November 23 by their clock) as "the 11/24 dev day", trying Gemini 4 Neon in Antigravity for the first time with a soft cap of one subagent unless stated otherwise. On branch `day/2026-11-24`, cut from `main` at `8f96de5de`. Begins with the startup read, finishing the November 23 close-out (committing the final save of the November 23 export, filing its closing messages from that export, removing the merged leftover worktree `agent-a4251ee95568c0f7d`), hands-on CLI and visual Explorer testing, and an audit of `AGENTS.md` for vendor-specific drift. Session open.
+- [Maintained root record](2026-11-24/2026-11-24.1.record.md): opened by the owner at 22:35 UTC on November 23 (5:35 PM on November 23 by their clock) as "the 11/24 dev day", trying Gemini 4 Neon in Antigravity with an initial 1-subagent cap, and closed at their Turn 16 wrap-up request at ~23:55 UTC on November 24. Sixteen owner turns on `day/2026-11-24` (cut from `main` at `8f96de5de`), **landed twice onto `main`** by fast-forward: Phase 1 at `b7401c967` (16 commits — Nov 23 close-out, Memory/AGENTS rules, `Unconnected = Folded` default, Flow Option C, README gallery + standalone PowerShell/Tidepool samples + Layer-1 audit, Flow & Directory trial, transition perf & `:has()` removal, mirrored routes, and Engine Steps 5–9 deleting all 11 browser stand-ins with 51/51 Chromium `page-scan.spec.ts` green) and Phase 2 at `23cfa2caa` (6 commits — Visual Polish Passes 1–3 driven by `0.2×`-slowed `.webm` captures, 6 Tier-1 Tuning defaults, Work Item sync, cross-model Opus 5.5 / Neon 4 −61-line hardening pass, three OKLab holistic palettes with linear-light "Change is Golden" Fresnel rim & 2D glow, and Landing Gate 3 product mends).
+- [Linked summary](Summarized/2026-11-24.1.SUMMARIZED.md): written by the session's root at close from a full read of all 1,561 lines of the maintained record plus verbatim recovery of three root/owner turns from the session's Antigravity transcript (`content` only).
+- Probes of the day, each with a README:
+  - [the Flow & Directory reshuffle and 3D Structure file-wire diagnostic](2026-11-24/Probes/flow-and-directory/README.md): reproducing transitive ancestor contagion in 2D Flow (`20/21` outside items moved, `churn = 0`) and all four 3D Structure file-wire cases (including Case 2's GPU ghost-wire & lying legend bugs).
+  - [perspective transition copy cost, style invalidation, and 3D `cloud-rim` hover inspection](2026-11-24/Probes/transition-perf/README.md): `firstFrame` −85.7% / −75.3%, `capture-copies` −72%, zero `body:has`/`#main:has`, zero differing copy pixels, and reproduced `contact-sheet` More shift.
+  - [the 2026-11-24 landing gates](2026-11-24/Probes/landing/README.md): `gate-1` (`fa12c2c85`) and `gate-2` (`b7401c967`) across 767 browser tests, with exact root-cause triage of all findings.
+  - [the 5-area visual & `0.2×`-slowed motion polish sweep](2026-11-24/Probes/visual-polish-sweep/README.md): 29 stills + 4 slowed `.webm` clips across Estate, Repo, World Map, 3D, History, desktop and `390×844` mobile.
+  - [the Tuning defaults permutation sweep](2026-11-24/Probes/tuning-defaults-sweep/README.md): 67 matched PNGs + 3 slowed Arrival `.webm` clips + native `1.0×` rAF timing behind the six promoted Tier-1 defaults.
+- Pictures of the built Explorer: listed under [Pictures of the Explorer](#2026-11-24).
 
 ## November 23, session 1 — Claude Code, Fable 5.2
 
@@ -212,6 +220,20 @@ The evidence collections are [tap reading](2026-11-05/Screenshots/tap-reading/RE
 ## Pictures of the Explorer
 
 Each day's pictures of the built Explorer, as the index `Screenshots/README.md` listed them until 2026-11-18, when it was carried into the month inventories. The convention, and the owner's standing request behind it, are in [the archive's README](../../README.md#where-things-are). Newest first.
+
+### 2026-11-24
+
+[The Flow & Directory matched trial](2026-11-24/Screenshots/flow-directory-trial/README.md): calm 2D `Structure` with shared amber `Connections` cue and zero-wire hover, `Flow Ancestors = local`, and 3D `Structure Lines = None (Pure Tree)` across pinned, path, and hover states (`4e6d60101`).
+
+[Routes drawn from their asked start by mirror](2026-11-24/Screenshots/route-mirror/README.md): Estate page-to-table, table-to-page, Way Down, Fit, and manual unmirror at `k = 1`, with colliding hop disambiguation and mirrored hidden-file cell alignment (`fa12c2c85`).
+
+[Visual Polish Pass 1](2026-11-24/Screenshots/polish-pass-1/README.md): 2D↔3D settle & pseudo-element copy fidelity (`0.2×` slowed `.webm`s), dimmed `.test-backed` purple halo suppression, `390×844` mobile toolbar fit, Reader drawer `1280`/`900` spacing + subject reveal pan, and scroll-overflow fade masks (`e66aba281`).
+
+[Visual Polish Pass 2 & six Tier-1 Tuning defaults](2026-11-24/Screenshots/polish-pass-2/README.md): collapsed empty Purpose voids, hidden redundant `.node-directory` footers with zero-footer `Internals` scale preserved, top-anchored `+138 symbols` expand, segment-aware directory handles, and the six promoted Tuning defaults (`1e6bed7bc`).
+
+[Visual Polish Pass 3](2026-11-24/Screenshots/polish-pass-3/README.md): World Map obstacle-aware panels and wire/label settling, 3D shell `[📁]` and sphere affordance clearance, 3D `Structure` 1-hop `structureSeeds` framing, and 2D History `dim` legibility & scrubber framing (`fb34ad1a8`).
+
+[Holistic palette candidates & "Change is Golden" trial](2026-11-24/Screenshots/holistic-palette-trial/README.md): eight stitched 5-palette contact sheets (`Today`, `Proposed`, `Graphite Vivid`, `Moonlit Ink`, `Slate Structure`) across 2D, 3D, History, and World Map light/dark plus nine full-resolution 3D History hero captures showing the linear-light Fresnel golden rim shader preserving kind interiors and marble veins (`af46b0ea1`).
 
 ### 2026-11-22
 
