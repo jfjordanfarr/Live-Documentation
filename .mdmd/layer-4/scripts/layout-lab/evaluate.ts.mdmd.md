@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `scripts/layout-lab/evaluate.ts`
-- Generated At: 2026-11-22T07:12:57.526Z
+- Generated At: 2026-11-24T01:00:16.216Z
 
 ## Authored
 ### Purpose
@@ -28,14 +28,14 @@ November 4’s cross-width browser check compares a capture’s prediction at a 
 ### Public Symbols
 #### `LabConfig` {#symbol-labconfig}
 - Type: interface
-- Source: [source](../../../../scripts/layout-lab/evaluate.ts#L29)
+- Source: [source](../../../../scripts/layout-lab/evaluate.ts#L30)
 
 ##### `LabConfig` — Summary
 The levers: the Local Map tuning the layout reads.
 
 #### `LEVERS` {#symbol-levers}
 - Type: const
-- Source: [source](../../../../scripts/layout-lab/evaluate.ts#L53)
+- Source: [source](../../../../scripts/layout-lab/evaluate.ts#L54)
 - Returns: `ReadonlyArray`
 
 ##### `LEVERS` — Summary
@@ -43,7 +43,7 @@ The levers in the order the reports name them.
 
 #### `baselineConfig` {#symbol-baselineconfig}
 - Type: function
-- Source: [source](../../../../scripts/layout-lab/evaluate.ts#L56)
+- Source: [source](../../../../scripts/layout-lab/evaluate.ts#L57)
 - Returns: [`LabConfig`](#symbol-labconfig)
 - Parameters: `preset`: [`LayoutPreset`](../../packages/explorer/src/client/layout-presets.ts.mdmd.md#symbol-layoutpreset)
 
@@ -52,28 +52,28 @@ The page's own tuning: the configuration the picture was designed at.
 
 #### `Evaluation` {#symbol-evaluation}
 - Type: interface
-- Source: [source](../../../../scripts/layout-lab/evaluate.ts#L62)
+- Source: [source](../../../../scripts/layout-lab/evaluate.ts#L63)
 
 ##### `Evaluation` — Summary
 A configuration laid out and scored, with the exploration, the scene and the routes behind the signals.
 
 #### `CycleTerms` {#symbol-cycleterms}
 - Type: interface
-- Source: [source](../../../../scripts/layout-lab/evaluate.ts#L85)
+- Source: [source](../../../../scripts/layout-lab/evaluate.ts#L88)
 
 ##### `CycleTerms` — Summary
 A cycle trial's terms: the page's signals against the standing picture, the wires' horizontal length, the returning links.
 
 #### `CycleSearch` {#symbol-cyclesearch}
 - Type: interface
-- Source: [source](../../../../scripts/layout-lab/evaluate.ts#L92)
+- Source: [source](../../../../scripts/layout-lab/evaluate.ts#L95)
 
 ##### `CycleSearch` — Summary
 The search's cycle trials on a picture: every trial with its prices, and what stands after them.
 
 #### `scopePins` {#symbol-scopepins}
 - Type: function
-- Source: [source](../../../../scripts/layout-lab/evaluate.ts#L104)
+- Source: [source](../../../../scripts/layout-lab/evaluate.ts#L107)
 - Returns: [`PinSet`](../../packages/explorer/src/client/views/pin-state.ts.mdmd.md#symbol-pinset)
 - Parameters: `run`: [`ScopeRun`](./scopes.ts.mdmd.md#symbol-scoperun)
 
@@ -82,7 +82,7 @@ The scope's pins, every file retained whole, and its subject.
 
 #### `includeNode` {#symbol-includenode}
 - Type: function
-- Source: [source](../../../../scripts/layout-lab/evaluate.ts#L112)
+- Source: [source](../../../../scripts/layout-lab/evaluate.ts#L115)
 - Parameters: `pins`: [`PinSet`](../../packages/explorer/src/client/views/pin-state.ts.mdmd.md#symbol-pinset); `node`: [`ExplorerNodePayload`](../../packages/explorer/src/shared/types.ts.mdmd.md#symbol-explorernodepayload)
 
 ##### `includeNode` — Summary
@@ -91,7 +91,7 @@ version 1 payload without filters, which means both shown); a pinned or selected
 
 #### `evaluate` {#symbol-evaluate}
 - Type: function
-- Source: [source](../../../../scripts/layout-lab/evaluate.ts#L136)
+- Source: [source](../../../../scripts/layout-lab/evaluate.ts#L140)
 - Returns: [`Evaluation`](#symbol-evaluation)
 - Parameters: `capture`: [`Capture`](./capture.ts.mdmd.md#symbol-capture); `graph`: [`ExplorerGraphPayload`](../../packages/explorer/src/shared/types.ts.mdmd.md#symbol-explorergraphpayload); `run`: [`ScopeRun`](./scopes.ts.mdmd.md#symbol-scoperun); `config`: [`LabConfig`](#symbol-labconfig); `orders`: `ReadonlyMap`
 
@@ -101,7 +101,7 @@ order or the orders given (the page's session memory), and beside it what the se
 
 #### `evaluateAlignment` {#symbol-evaluatealignment}
 - Type: function
-- Source: [source](../../../../scripts/layout-lab/evaluate.ts#L201)
+- Source: [source](../../../../scripts/layout-lab/evaluate.ts#L208)
 - Returns: [`Evaluation`](#symbol-evaluation)
 - Parameters: `previous`: [`Evaluation`](#symbol-evaluation); `capture`: [`Capture`](./capture.ts.mdmd.md#symbol-capture); `run`: [`ScopeRun`](./scopes.ts.mdmd.md#symbol-scoperun)
 
@@ -110,7 +110,7 @@ Re-solves a shown order with explicit alignment constraints, preserving its sour
 
 #### `driftOf` {#symbol-driftof}
 - Type: function
-- Source: [source](../../../../scripts/layout-lab/evaluate.ts#L215)
+- Source: [source](../../../../scripts/layout-lab/evaluate.ts#L222)
 - Parameters: `capture`: [`Capture`](./capture.ts.mdmd.md#symbol-capture); `evaluation`: [`Evaluation`](#symbol-evaluation)
 
 ##### `driftOf` — Summary
@@ -125,6 +125,7 @@ Where the baseline evaluation differs from what the page showed at capture: noth
 - [`local-storage.getDefaultTuning`](../../packages/explorer/src/client/persistence/local-storage.ts.mdmd.md#symbol-getdefaulttuning)
 - [`types.LocalMapTuning`](../../packages/explorer/src/client/types.ts.mdmd.md#symbol-localmaptuning) (type-only)
 - [`types.SymbolOrder`](../../packages/explorer/src/client/types.ts.mdmd.md#symbol-symbolorder) (type-only)
+- [`types.UnconnectedRows`](../../packages/explorer/src/client/types.ts.mdmd.md#symbol-unconnectedrows) (type-only)
 - [`branch-placement.BoundaryAlignment`](../../packages/explorer/src/client/views/localView/branch-placement.ts.mdmd.md#symbol-boundaryalignment) (type-only)
 - [`branch-restarts.StartSignals`](../../packages/explorer/src/client/views/localView/branch-restarts.ts.mdmd.md#symbol-startsignals) (type-only)
 - [`branch-restarts.candidateStarts`](../../packages/explorer/src/client/views/localView/branch-restarts.ts.mdmd.md#symbol-candidatestarts)
@@ -144,6 +145,7 @@ Where the baseline evaluation differs from what the page showed at capture: noth
 - [`cycle-trials.returningLinks`](../../packages/explorer/src/client/views/localView/cycle-trials.ts.mdmd.md#symbol-returninglinks)
 - [`cycle-trials.standingOrders`](../../packages/explorer/src/client/views/localView/cycle-trials.ts.mdmd.md#symbol-standingorders)
 - [`cycle-trials.walkCycleTrials`](../../packages/explorer/src/client/views/localView/cycle-trials.ts.mdmd.md#symbol-walkcycletrials)
+- [`unconnected-symbols.unconnectedSymbols`](../../packages/explorer/src/client/views/localView/unconnected-symbols.ts.mdmd.md#symbol-unconnectedsymbols)
 - [`pin-state.EMPTY_PIN_SET`](../../packages/explorer/src/client/views/pin-state.ts.mdmd.md#symbol-empty_pin_set)
 - [`pin-state.PinSet`](../../packages/explorer/src/client/views/pin-state.ts.mdmd.md#symbol-pinset) (type-only)
 - [`pin-state.addPin`](../../packages/explorer/src/client/views/pin-state.ts.mdmd.md#symbol-addpin)

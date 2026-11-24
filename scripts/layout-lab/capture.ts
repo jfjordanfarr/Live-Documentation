@@ -17,7 +17,7 @@ import path from "node:path";
 
 import { LAYOUT_PRESETS, type LayoutPreset } from "../../packages/explorer/src/client/layout-presets";
 import { PERSISTED_UI_KEY, PERSISTED_UI_VERSION } from "../../packages/explorer/src/client/persistence/local-storage";
-import type { ExplorerFilters } from "../../packages/explorer/src/client/types";
+import type { ExplorerFilters, UnconnectedRows } from "../../packages/explorer/src/client/types";
 import { localRetainUrl } from "../../tests/e2e/still-picture";
 import { TEXT_TOLERANCE, titleHeight, type TitleRoom } from "./card-model";
 import type { ReadingFlow } from "./reading-model";
@@ -98,6 +98,8 @@ export interface CardCapture {
   purpose?: ReadingFlow;
   overflow?: ReadingFlow;
   directoryHidden?: boolean;
+  /** Extra zoom-independent bottom padding on `.node-directory` (`--foot-gap`) keeping held footer counts clear of Internals. */
+  footGap?: number;
   /** Relationship counts; older captures place them after the rows. */
   footer?: { items: ChipCapture[]; gap: number; top: number; marginTop: number; bottom?: number; position?: "after-path" };
   hubY?: number;
@@ -160,6 +162,8 @@ export interface Capture {
   warnings: string[];
   /** The page's filters; older retained-scope captures used the compressed URL's default filters. */
   filters?: Pick<ExplorerFilters, "showTests" | "showAssets">;
+  /** The page's Unconnected setting at capture; absent in older captures (when Shown was the default). */
+  unconnected?: UnconnectedRows;
 }
 
 const PRETEXT_DIST = path.join(path.dirname(require.resolve("@chenglou/pretext/package.json")), "dist");
@@ -210,7 +214,7 @@ export async function captureFromPage(page: Page, run: ScopeRun): Promise<Captur
   return { bundle: run.bundle, base: run.base, scopeName: run.scopeName, subject: run.subject, files: [...run.scope], capturedAt: new Date().toISOString(), ...read };
 }
 
-type PageCapture = Pick<Capture, "userAgent" | "fonts" | "constants" | "cards" | "truth" | "warnings" | "filters">;
+type PageCapture = Pick<Capture, "userAgent" | "fonts" | "constants" | "cards" | "truth" | "warnings" | "filters" | "unconnected">;
 
 /** A card's title as the page laid it out, for the drift check in node by the card model's own rule (`titleHeight`). */
 interface TitleCheck { text: string; width: number; own: number; lineWidths: number[]; lineHeight: number; room: TitleRoom | null }
@@ -584,6 +588,7 @@ function readCapture(page: Page): Promise<PageCapture & { titleChecks: TitleChec
           return shownFlows.get(button)!;
         })(),
         directoryHidden: getComputedStyle(directory).display === "none",
+        footGap: px(getComputedStyle(directory).paddingBottom) || undefined,
         // The hub's centre as laid out, at the name's first line since 2026-11-19 (half way down a slot card before).
         hubY: px(getComputedStyle(hub!).top) + px(cardStyle.borderTopWidth) + hub!.offsetHeight / 2,
         footer: (() => {
@@ -630,7 +635,8 @@ function readCapture(page: Page): Promise<PageCapture & { titleChecks: TitleChec
       filters: {
         showTests: document.querySelector<HTMLInputElement>("#filter-toggle-tests")!.checked,
         showAssets: document.querySelector<HTMLInputElement>("#filter-toggle-assets")!.checked
-      }
+      },
+      unconnected: (document.querySelector<HTMLSelectElement>("#tuning-unconnected")?.value as UnconnectedRows | undefined) ?? "folded"
     };
   }, { tolerance: TEXT_TOLERANCE });
 }

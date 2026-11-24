@@ -40,14 +40,14 @@ const withReading = (reading: { nodeId: string; symbol?: string; open: boolean }
   `/?s=${compressSnapshot({ ...DEFAULT_SNAPSHOT, view: "map", perspective: "2d", selectedNodeId: SUBJECT, reading,
     // The arrival is among those defaults since 2026-11-22: a link that carries the choice says too that the case begins
     // at reading size, as the stored state says it for the link that carries nothing.
-    ...(choice === "hidden" ? {} : { layout: { localMap: { descriptionsZoomedOut: choice, arrival: "reading" as const } } }) })}`;
+    ...(choice === "hidden" ? {} : { layout: { localMap: { descriptionsZoomedOut: choice, arrival: "reading" as const, unconnected: "shown" as const } } }) })}`;
 
 async function visit(browser: Browser, choice: Choice, lines: "fallback" | "segoe", presses: number, address = `/?view=local&node=${SUBJECT}`) {
   const context = await browser.newContext({ viewport: { width: 1440, height: 900 }, deviceScaleFactor: 1 });
   await context.addInitScript(({ key, value }) => localStorage.setItem(key, value), {
     // Zoomed Out Fully is chosen as "Cards keep their size", so that the case of the overview look reads rows: files only,
-    // its default since 2026-11-15, lays none out there.
-    key: PERSISTED_UI_KEY, value: JSON.stringify({ version: PERSISTED_UI_VERSION, tuning: { localMap: { ...AT_READING_SIZE, searchStarts: 0, descriptionsZoomedOut: choice, overviewFiles: "keep" } } })
+    // its default since 2026-11-15, lays none out there. Unconnected is Shown so all 12 long symbol names are studied.
+    key: PERSISTED_UI_KEY, value: JSON.stringify({ version: PERSISTED_UI_VERSION, tuning: { localMap: { ...AT_READING_SIZE, searchStarts: 0, descriptionsZoomedOut: choice, overviewFiles: "keep", unconnected: "shown" } } })
   });
   if (lines === "segoe") await context.addInitScript(css => {
     const add = (): void => { const style = document.createElement("style"); style.textContent = css; document.documentElement.appendChild(style); };

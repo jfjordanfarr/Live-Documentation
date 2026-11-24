@@ -562,11 +562,11 @@ export type MirrorTurn = "turn" | "slide" | "cut";
  */
 export const MIRROR_TURNS: readonly MirrorTurn[] = ["turn", "slide", "cut"];
 
-/** What a card that draws every row does with its unconnected symbols' rows: shows them, fades them, or folds them into its count (a trial, 2026-11-23). */
+/** What a card that draws every row does with its unconnected symbols' rows: folds them into its count, fades them, or shows them (default Folded since 2026-11-24). */
 export type UnconnectedRows = "shown" | "dimmed" | "folded";
 
-/** Every Unconnected choice, in the order the control offers them; the first, shown, is today's and the default until the owner has seen the others. */
-export const UNCONNECTED_ROWS: readonly UnconnectedRows[] = ["shown", "dimmed", "folded"];
+/** Every Unconnected choice, in the order the control offers them; the first, folded, is the default (owner, 2026-11-23). */
+export const UNCONNECTED_ROWS: readonly UnconnectedRows[] = ["folded", "dimmed", "shown"];
 
 /**
  * Which way a 2D picture reads (2026-11-22): what offers first from the left, the rule since December 2025, or what

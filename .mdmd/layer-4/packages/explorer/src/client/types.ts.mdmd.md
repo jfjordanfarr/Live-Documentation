@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/explorer/src/client/types.ts`
-- Generated At: 2026-11-23T16:13:09.547Z
+- Generated At: 2026-11-23T23:35:39.319Z
 
 ## Authored
 ### Purpose
@@ -526,14 +526,14 @@ three quarters of a second, which the design system's motion rule records.
 - Source: [source](../../../../../../packages/explorer/src/client/types.ts#L566)
 
 ##### `UnconnectedRows` — Summary
-What a card that draws every row does with its unconnected symbols' rows: shows them, fades them, or folds them into its count (a trial, 2026-11-23).
+What a card that draws every row does with its unconnected symbols' rows: folds them into its count, fades them, or shows them (default Folded since 2026-11-24).
 
 #### `UNCONNECTED_ROWS` {#symbol-unconnected_rows}
 - Type: const
 - Source: [source](../../../../../../packages/explorer/src/client/types.ts#L569)
 
 ##### `UNCONNECTED_ROWS` — Summary
-Every Unconnected choice, in the order the control offers them; the first, shown, is today's and the default until the owner has seen the others.
+Every Unconnected choice, in the order the control offers them; the first, folded, is the default (owner, 2026-11-23).
 
 #### `MapReads` {#symbol-mapreads}
 - Type: type

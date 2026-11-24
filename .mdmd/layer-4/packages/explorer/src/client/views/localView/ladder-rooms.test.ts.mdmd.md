@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: `packages/explorer/src/client/views/localView/ladder-rooms.test.ts`
-- Generated At: 2026-11-19T21:10:16.810Z
+- Generated At: 2026-11-23T23:35:39.962Z
 
 ## Authored
 ### Purpose
@@ -37,7 +37,7 @@ _No public symbols detected_
 - [`ladder-rooms.fileLineRoom`](./ladder-rooms.ts.mdmd.md#symbol-filelineroom)
 - [`ladder-rooms.fitKept`](./ladder-rooms.ts.mdmd.md#symbol-fitkept)
 - [`ladder-rooms.fitLines`](./ladder-rooms.ts.mdmd.md#symbol-fitlines)
-- [`ladder-rooms.footHold`](./ladder-rooms.ts.mdmd.md#symbol-foothold)
+- [`ladder-rooms.footHold`](./ladder-rooms.ts.mdmd.md#symbol-foothold-function)
 - [`ladder-rooms.headHeight`](./ladder-rooms.ts.mdmd.md#symbol-headheight)
 - [`ladder-rooms.layoutTopOf`](./ladder-rooms.ts.mdmd.md#symbol-layouttopof)
 - [`ladder-rooms.linesOf`](./ladder-rooms.ts.mdmd.md#symbol-linesof)

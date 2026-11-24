@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `scripts/layout-lab/measurer.ts`
-- Generated At: 2026-11-22T07:12:57.557Z
+- Generated At: 2026-11-24T01:00:16.234Z
 
 ## Authored
 ### Purpose
@@ -36,14 +36,14 @@ A reference end with no row of its own, no symbol or one the card does not list,
 ### Public Symbols
 #### `MeasurerOptions` {#symbol-measureroptions}
 - Type: interface
-- Source: [source](../../../../scripts/layout-lab/measurer.ts#L24)
+- Source: [source](../../../../scripts/layout-lab/measurer.ts#L25)
 
 ##### `MeasurerOptions` — Summary
 What the measurer needs to know of the page's state beyond the exploration: the pins, the subject and the collapse tuning.
 
 #### `cardViews` {#symbol-cardviews}
 - Type: function
-- Source: [source](../../../../scripts/layout-lab/measurer.ts#L33)
+- Source: [source](../../../../scripts/layout-lab/measurer.ts#L36)
 - Parameters: `capture`: [`Capture`](./capture.ts.mdmd.md#symbol-capture); `branches`: [`BranchGraph`](../../packages/explorer/src/client/views/localView/branches.ts.mdmd.md#symbol-branchgraph); `options`: [`MeasurerOptions`](#symbol-measureroptions)
 
 ##### `cardViews` — Summary
@@ -51,7 +51,7 @@ Every card's view under an exploration, as `dressCards` would dress it.
 
 #### `capturedMeasurer` {#symbol-capturedmeasurer}
 - Type: function
-- Source: [source](../../../../scripts/layout-lab/measurer.ts#L107)
+- Source: [source](../../../../scripts/layout-lab/measurer.ts#L116)
 - Returns: [`SceneMeasurer`](../../packages/explorer/src/client/views/localView/branch-scene.ts.mdmd.md#symbol-scenemeasurer)
 - Parameters: `capture`: [`Capture`](./capture.ts.mdmd.md#symbol-capture); `branches`: [`BranchGraph`](../../packages/explorer/src/client/views/localView/branches.ts.mdmd.md#symbol-branchgraph); `options`: [`MeasurerOptions`](#symbol-measureroptions)
 
@@ -62,6 +62,7 @@ A measurer over the capture for one exploration.
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
 - [`types.SymbolOrder`](../../packages/explorer/src/client/types.ts.mdmd.md#symbol-symbolorder) (type-only)
+- [`types.UnconnectedRows`](../../packages/explorer/src/client/types.ts.mdmd.md#symbol-unconnectedrows) (type-only)
 - [`branch-scene.SceneMeasurer`](../../packages/explorer/src/client/views/localView/branch-scene.ts.mdmd.md#symbol-scenemeasurer) (type-only)
 - [`branches.BranchGraph`](../../packages/explorer/src/client/views/localView/branches.ts.mdmd.md#symbol-branchgraph) (type-only)
 - [`branches.compareSymbolNames`](../../packages/explorer/src/client/views/localView/branches.ts.mdmd.md#symbol-comparesymbolnames)
@@ -70,6 +71,7 @@ A measurer over the capture for one exploration.
 - [`returning-connections.connectionCount`](../../packages/explorer/src/client/views/localView/returning-connections.ts.mdmd.md#symbol-connectioncount)
 - [`returning-connections.returningConnections`](../../packages/explorer/src/client/views/localView/returning-connections.ts.mdmd.md#symbol-returningconnections-function)
 - [`types.LocalEdge`](../../packages/explorer/src/client/views/localView/types.ts.mdmd.md#symbol-localedge) (type-only)
+- [`unconnected-symbols.unconnectedRow`](../../packages/explorer/src/client/views/localView/unconnected-symbols.ts.mdmd.md#symbol-unconnectedrow-function)
 - [`word-seams.countOf`](../../packages/explorer/src/client/views/localView/word-seams.ts.mdmd.md#symbol-countof)
 - [`pin-state.PinSet`](../../packages/explorer/src/client/views/pin-state.ts.mdmd.md#symbol-pinset) (type-only)
 - [`symbolAnchors.normalizeSymbolIdentifier`](../../packages/explorer/src/client/views/symbolAnchors.ts.mdmd.md#symbol-normalizesymbolidentifier)

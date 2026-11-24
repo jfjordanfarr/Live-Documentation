@@ -19,8 +19,9 @@ import { AT_READING_SIZE, localMapStill } from "./still-picture";
 const stillPicture = "tests/e2e/still-picture.ts";
 const payment = "tests/integration/programs/csharp/estate/PaymentService/PaymentService.cs";
 const rosetta = "tests/integration/programs/rosetta-manifest.json";
-const url = (subject: string, pinnedWhole = false): string => `/?s=${compressSnapshot({ ...DEFAULT_SNAPSHOT, view: "map", perspective: "2d", selectedNodeId: subject,
-  ...(pinnedWhole ? { pinSet: { entries: [{ nodeId: subject, symbol: "*" }] } } : {}) })}`;
+const url = (subject: string, pinnedWhole = false, unconnected?: "shown"): string => `/?s=${compressSnapshot({ ...DEFAULT_SNAPSHOT, view: "map", perspective: "2d", selectedNodeId: subject,
+  ...(pinnedWhole ? { pinSet: { entries: [{ nodeId: subject, symbol: "*" }] } } : {}),
+  ...(unconnected ? { layout: { localMap: { ...AT_READING_SIZE, zoomLooks: "stepped", unconnected } } } : {}) })}`;
 
 /**
  * The reading sizes in the map's own units of a symbol's name line, a file's name line and a directory's name line: on screen
@@ -579,8 +580,9 @@ test("walking back in from the last step, every press shows the band, the step a
 test("on a file pinned whole, every row highlighted, the same, each highlight holding its row's head, and the overview silencing its rows", async ({ page }) => {
   test.setTimeout(120_000);
   // The owner's picture of 2026-11-06: rosetta-manifest.json pinned whole, at large zoom-outs, "places where elements are
-  // whacking into each other" and "buttons interesecting the blue highlight border".
-  await page.goto(url(rosetta, true));
+  // whacking into each other" and "buttons interesecting the blue highlight border". Request Unconnected = Shown so all
+  // rows of this unwired JSON manifest stand highlighted for the box audit.
+  await page.goto(url(rosetta, true, "shown"));
   const subject = page.locator(`.node-card[data-id="${rosetta}"]`);
   await subject.waitFor();
   await localMapStill(page);

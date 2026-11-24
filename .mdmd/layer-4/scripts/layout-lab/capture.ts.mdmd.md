@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `scripts/layout-lab/capture.ts`
-- Generated At: 2026-11-22T20:12:49.828Z
+- Generated At: 2026-11-24T01:00:16.184Z
 
 ## Authored
 ### Purpose
@@ -88,21 +88,21 @@ One card, as the page built it.
 
 #### `CardConstants` {#symbol-cardconstants}
 - Type: interface
-- Source: [source](../../../../scripts/layout-lab/capture.ts#L124)
+- Source: [source](../../../../scripts/layout-lab/capture.ts#L126)
 
 ##### `CardConstants` — Summary
 The page's constants the card model composes with, read from computed styles.
 
 #### `Capture` {#symbol-capture}
 - Type: interface
-- Source: [source](../../../../scripts/layout-lab/capture.ts#L146)
+- Source: [source](../../../../scripts/layout-lab/capture.ts#L148)
 
 ##### `Capture` — Summary
 A scope's capture: the fonts, the constants, every card, every label, the page's truth and the warnings.
 
 #### `captureScope` {#symbol-capturescope}
 - Type: function
-- Source: [source](../../../../scripts/layout-lab/capture.ts#L170)
+- Source: [source](../../../../scripts/layout-lab/capture.ts#L174)
 - Parameters: `run`: [`ScopeRun`](./scopes.ts.mdmd.md#symbol-scoperun); `preset`: [`LayoutPreset`](../../packages/explorer/src/client/layout-presets.ts.mdmd.md#symbol-layoutpreset)
 
 ##### `captureScope` — Summary
@@ -110,7 +110,7 @@ Opens the scope in a browser of the lab's own over the built bundle and reads th
 
 #### `captureFromPage` {#symbol-capturefrompage}
 - Type: function
-- Source: [source](../../../../scripts/layout-lab/capture.ts#L191)
+- Source: [source](../../../../scripts/layout-lab/capture.ts#L195)
 - Parameters: `page`: `Page`; `run`: [`ScopeRun`](./scopes.ts.mdmd.md#symbol-scoperun)
 
 ##### `captureFromPage` — Summary
@@ -122,7 +122,7 @@ page's Content-Security-Policy runs no script written into it.
 
 #### `writeCapture` {#symbol-writecapture}
 - Type: function
-- Source: [source](../../../../scripts/layout-lab/capture.ts#L639)
+- Source: [source](../../../../scripts/layout-lab/capture.ts#L645)
 - Parameters: `capture`: [`Capture`](#symbol-capture)
 
 ##### `writeCapture` — Summary
@@ -130,7 +130,7 @@ Writes a capture as compact JSON.
 
 #### `readCaptureFile` {#symbol-readcapturefile}
 - Type: function
-- Source: [source](../../../../scripts/layout-lab/capture.ts#L645)
+- Source: [source](../../../../scripts/layout-lab/capture.ts#L651)
 
 ##### `readCaptureFile` — Summary
 Reads a capture written by `writeCapture`.
@@ -148,6 +148,7 @@ Reads a capture written by `writeCapture`.
 - [`local-storage.PERSISTED_UI_KEY`](../../packages/explorer/src/client/persistence/local-storage.ts.mdmd.md#symbol-persisted_ui_key)
 - [`local-storage.PERSISTED_UI_VERSION`](../../packages/explorer/src/client/persistence/local-storage.ts.mdmd.md#symbol-persisted_ui_version)
 - [`types.ExplorerFilters`](../../packages/explorer/src/client/types.ts.mdmd.md#symbol-explorerfilters) (type-only)
+- [`types.UnconnectedRows`](../../packages/explorer/src/client/types.ts.mdmd.md#symbol-unconnectedrows) (type-only)
 - [`card-model.TEXT_TOLERANCE`](./card-model.ts.mdmd.md#symbol-text_tolerance)
 - [`card-model.TitleRoom`](./card-model.ts.mdmd.md#symbol-titleroom) (type-only)
 - [`card-model.titleHeight`](./card-model.ts.mdmd.md#symbol-titleheight)

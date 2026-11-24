@@ -186,17 +186,18 @@ export async function localMapSettled(page: Page, timeout = 30_000): Promise<voi
     const map = document.querySelector<HTMLElement>("#map-container");
     const root = map?.querySelector<HTMLElement>(".local-placed");
     if (!map || !(root || map.querySelector(".empty-hint"))) return false;
-    return map.dataset.camera !== "moving" && (!root || (root.dataset.moving !== "true" && root.dataset.searchStatus !== "running"));
+    return map.dataset.camera !== "moving"
+      && !map.classList.contains("local-look-fading")
+      && (!root || (root.dataset.moving !== "true" && root.dataset.searchStatus !== "running"));
   }, undefined, { timeout });
 }
 
 /**
  * Waits until the Local Map is still on screen: {@link localMapSettled}, then frames until every card's box has stood
- * unchanged for 150 ms, within five seconds. The camera's own motion, such as the fit that eases on after a branch move
- * and moved a card by some 40 px on the navigation reveal case, is now in `localMapSettled`'s wait (2026-11-06: of 133
- * waits in the ladder, card reading, navigation and keyboard specs, none saw a card move after it, where the bundle
- * without the camera's state moved the navigation reveal's card for 14 frames and the keyboard case's for 6); the
- * frames remain for what no flag reports, a resize's reflow, which moved the card reading's phone case for 26 frames.
+ * unchanged for 150 ms with no look-change opacity/visibility transition still running, within five seconds. The
+ * camera's own motion, such as the fit that eases on after a branch move and moved a card by some 40 px on the
+ * navigation reveal case, and the look-change cross-fade (`local-look-fading`, 2026-11-24) are in `localMapSettled`'s
+ * wait; the frames remain for what no flag reports, a resize's reflow or a slow-frame CSS transition tail.
  */
 export async function localMapStill(page: Page): Promise<void> {
   await localMapSettled(page);
@@ -205,6 +206,14 @@ export async function localMapStill(page: Page): Promise<void> {
     const deadline = since + 5000;
     while (performance.now() < deadline) {
       await new Promise(requestAnimationFrame);
+      const map = document.querySelector<HTMLElement>("#map-container");
+      const fading = !!map?.classList.contains("local-look-fading")
+        || !!map?.getAnimations({ subtree: true }).some(animation =>
+          animation instanceof CSSTransition
+          && (animation.transitionProperty === "opacity" || animation.transitionProperty === "visibility")
+          && animation.playState === "running"
+        );
+      if (fading) { since = performance.now(); continue; }
       const picture = [...document.querySelectorAll(".node-card")].map(element => {
         const rect = element.getBoundingClientRect();
         return [rect.x, rect.y, rect.width, rect.height];

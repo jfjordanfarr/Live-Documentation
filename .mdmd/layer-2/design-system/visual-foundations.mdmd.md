@@ -81,7 +81,7 @@ Six principles stand over every foundation. Each foundation's rules apply one or
   - Checked by: `tests/e2e/history-2d.spec.ts`.
   - Status: holds at file level, the first of the history's three rungs in 2D; the rows as they were and that day's words come with the history that carries them.
 
-**5. Nothing shrinks to make room; held sizes stay held.** On the 2D map a name keeps its size on screen across a zoom step. Where room runs out, the name is cut with an ellipsis or leaves the picture; it is never drawn smaller.
+**5. Nothing shrinks to make room; held sizes stay held.** On the 2D map a name or footer count keeps its size on screen across a zoom step. Where room runs out across a card, a name is cut with an ellipsis and a count wider than the card leaves the picture; it is never drawn smaller. Since 2026-11-24 a card's zoom-independent layout reserves the exact vertical room needed (`--foot-gap`, `footHold` in `views/localView/ladder-rooms.ts`) so `+N symbols`, `−N symbols` and `+N connections` stay held at the connections look's 2.2× clear of `Internals` rather than shrinking, colliding or vanishing.
 
 - **Why.** This is the principle of **perceived size constancy**: a thing seen at one size is recognised as the same thing.
   - Owner, 2026-11-05: "hold font sizes relatively steady ... allowing more `...`-like cutoffs to keep the card the same size".

@@ -48,25 +48,57 @@ describe("nameLinesHeld", () => {
 
 describe("footHold", () => {
   // The foot of `documentationLinks.ts` with `scripts/doc-tools` opened, as measured on 2026-11-13 in map units from the
-  // card's top and left: "+14 symbols" from 163 to 175, the framed "+16 connections" from 183 to 195, both from 13 across,
-  // the card's content ending at 372; its file's name, from 13, held on one line at the connections look (33).
-  const counts = [{ top: 163, bottom: 175, left: 13, width: 62.1 }, { top: 183, bottom: 195, left: 13, width: 107.4 }];
+  // card's top and left: "+14 symbols" (unframed) from 163 to 175, the framed "+16 connections" from 183 to 195, both
+  // from 13 across, the card's content ending at 372; its file's name, from 13, held on one line at the connections look (33).
+  const counts = [
+    { top: 163, bottom: 175, left: 13, width: 62.1, frame: 0 },
+    { top: 183, bottom: 195, left: 13, width: 107.4, frame: 3 }
+  ];
 
-  it("holds the counts at the connections look's scale about the last one's foot where a card that draws no row has room", () => {
+  it("holds the counts at the connections look's scale about the last one's foot with no extra gap where room already fits", () => {
     const hold = footHold(counts, 13 + 33, 372, LOOK_SCALES.connections, 3, 4);
-    expect(hold.held).toBe(true);
-    expect(hold.above).toEqual([20, 0]);
+    expect(hold).toEqual({ held: [true, true], above: [20, 0], extraGap: 0 });
     // Lifted by its distance above the foot times the growth, the first stands clear above the second as it is held.
     const firstBottom = 175 - 20 * (LOOK_SCALES.connections - 1), secondTop = 195 - (195 - 183) * LOOK_SCALES.connections;
     expect(firstBottom).toBeLessThan(secondTop);
   });
 
-  it("draws none where they do not all fit at that scale, below what stands above them or across the card", () => {
-    // Drawn rows ending at 140: the room is 51 units for a group of 35, its frame included, 77 at 2.2.
-    expect(footHold(counts, 140, 372, LOOK_SCALES.connections, 3, 4).held).toBe(false);
-    // A card whose content ends at 240 holds "+16 connections" (236 units at 2.2) from 13 no more.
-    expect(footHold(counts, 46, 240, LOOK_SCALES.connections, 3, 4).held).toBe(false);
-    expect(footHold([], 46, 372, LOOK_SCALES.connections, 3, 4)).toEqual({ held: false, above: [] });
+  it("computes the exact extra vertical gap so folded counts stand clear of Internals without shrinking", () => {
+    // powershell-ast.json folded: Internals held head ends at 155.5; "+138 symbols" unframed at 159..171.64.
+    const folded = [{ top: 159, bottom: 171.64, left: 14, width: 68.19, frame: 0 }];
+    const hold = footHold(folded, 155.5, 343, LOOK_SCALES.connections, 3, 4);
+    expect(hold.held).toEqual([true]);
+    expect(hold.above).toEqual([0]);
+    expect(hold.extraGap).toBeGreaterThan(0);
+    // Shifted down by extraGap, the held top clears Internals plus the 4 px gap.
+    const drawnTop = (171.64 + hold.extraGap) - (171.64 - 159) * LOOK_SCALES.connections;
+    expect(drawnTop).toBeGreaterThanOrEqual(155.5 + 4 - 1e-6);
+    expect(drawnTop).toBeLessThan(155.5 + 4 + 1);
+  });
+
+  it("computes extraGap when both +N symbols and framed +N connections follow Internals", () => {
+    // rows.ts: Internals held head ends at 154.5; "+16 symbols" at 183.5..196.15 and "+47 connections" at 204.15..216.8.
+    const pair = [
+      { top: 183.5, bottom: 196.15, left: 13, width: 65, frame: 0 },
+      { top: 204.15, bottom: 216.8, left: 13, width: 107.4, frame: 3 }
+    ];
+    const hold = footHold(pair, 154.5, 360, LOOK_SCALES.connections, 3, 4);
+    expect(hold.held).toEqual([true, true]);
+    expect(hold.extraGap).toBeGreaterThan(0);
+    const firstTop = (216.8 + hold.extraGap) - (216.8 - 183.5) * LOOK_SCALES.connections;
+    expect(firstTop).toBeGreaterThanOrEqual(154.5 + 4 - 1e-6);
+  });
+
+  it("holds each count that fits across on a narrow card without hiding +N symbols behind a wider +N connections", () => {
+    // Content right 200 (187 px room from left 13): "+14 symbols" (136.6 px at 2.2) fits; "+16 connections" (236.3 px) does not.
+    const narrow = footHold(counts, 140, 200, LOOK_SCALES.connections, 3, 4);
+    expect(narrow.held).toEqual([true, false]);
+    expect(narrow.above).toEqual([0, 0]);
+    const drawnTop = (175 + narrow.extraGap) - (175 - 163) * LOOK_SCALES.connections;
+    expect(drawnTop).toBeGreaterThanOrEqual(140 + 4 - 1e-6);
+    // When no count fits across, no extra gap is requested.
+    expect(footHold([counts[1]], 140, 200, LOOK_SCALES.connections, 3, 4)).toEqual({ held: [false], above: [0], extraGap: 0 });
+    expect(footHold([], 46, 372, LOOK_SCALES.connections, 3, 4)).toEqual({ held: [], above: [], extraGap: 0 });
   });
 });
 

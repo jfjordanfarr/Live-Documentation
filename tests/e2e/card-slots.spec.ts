@@ -446,7 +446,8 @@ test("exact symbol arrivals reveal their heading, while refreshing the same targ
   await atHeading("walk (function)");
 
   const context = "PaymentService/Data/PaymentsContext.cs";
-  await page.goto(`/samples/estate${url({ selectedNodeId: context })}`);
+  // PaymentsContext (constructor) is unconnected, so ask for Unconnected = Shown to click its row directly.
+  await page.goto(`/samples/estate${url({ selectedNodeId: context, layout: { localMap: { ...AT_READING_SIZE, unconnected: "shown" } } })}`);
   await card(page, context).waitFor();
   await still(page);
   const constructor = card(page, context).locator('.symbol-row[data-symbol="PaymentsContext (constructor)"] .symbol-label');

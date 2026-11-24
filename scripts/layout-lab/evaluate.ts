@@ -10,12 +10,13 @@
 import { applyLayoutPreset, type LayoutPreset } from "../../packages/explorer/src/client/layout-presets";
 import { payloadToSnapshot } from "../../packages/explorer/src/client/persistence/compressed-url-state";
 import { getDefaultTuning } from "../../packages/explorer/src/client/persistence/local-storage";
-import type { LocalMapTuning, SymbolOrder } from "../../packages/explorer/src/client/types";
+import type { LocalMapTuning, SymbolOrder, UnconnectedRows } from "../../packages/explorer/src/client/types";
 import type { BoundaryAlignment } from "../../packages/explorer/src/client/views/localView/branch-placement";
 import { candidateStarts, layoutStarts, pictureScore, signalsOf, startName, startOrder, type StartSignals } from "../../packages/explorer/src/client/views/localView/branch-restarts";
 import { layoutScene, planBranches, type Scene } from "../../packages/explorer/src/client/views/localView/branch-scene";
 import { exploreBranches, orderExploration, type BranchGraph, type Exploration } from "../../packages/explorer/src/client/views/localView/branches";
 import { horizontalWire, returningLinks, standingOrders, walkCycleTrials } from "../../packages/explorer/src/client/views/localView/cycle-trials";
+import { unconnectedSymbols } from "../../packages/explorer/src/client/views/localView/unconnected-symbols";
 import { addPin, EMPTY_PIN_SET, type PinSet } from "../../packages/explorer/src/client/views/pin-state";
 import type { ExplorerGraphPayload, ExplorerNodePayload } from "../../packages/explorer/src/shared/types";
 import type { Capture } from "./capture";
@@ -79,6 +80,8 @@ export interface Evaluation {
    * picture with no cycle to try.
    */
   cycleSearch: CycleSearch | null;
+  /** Unconnected-symbol state computed from the full graph at evaluate(), reused by evaluateAlignment. */
+  unconnected?: { choice: UnconnectedRows; alone: ReadonlyMap<string, ReadonlySet<string>> };
 }
 
 /** A cycle trial's terms: the page's signals against the standing picture, the wires' horizontal length, the returning links. */
@@ -119,9 +122,10 @@ export function includeNode(pins: PinSet, subject: string, filters = payloadToSn
 }
 
 /** A fresh scene for one fixed order, with optional equalities for an alignment trial. */
-function placeConfiguration(capture: Capture, run: ScopeRun, config: LabConfig, branches: BranchGraph, alignments: readonly BoundaryAlignment[] = []): { scene: Scene; metrics: Map<string, CardMetrics> } {
+function placeConfiguration(capture: Capture, run: ScopeRun, config: LabConfig, branches: BranchGraph, alignments: readonly BoundaryAlignment[] = [],
+  unconnected?: { choice: UnconnectedRows; alone: ReadonlyMap<string, ReadonlySet<string>> }): { scene: Scene; metrics: Map<string, CardMetrics> } {
   const plan = planBranches(branches, config.membranePadding);
-  const measurer = capturedMeasurer(capture, branches, { pins: scopePins(run), selected: retainedSubject(run), collapseOnPin: getDefaultTuning().localMap.collapseOnPin, symbolOrder: config.symbolOrder });
+  const measurer = capturedMeasurer(capture, branches, { pins: scopePins(run), selected: retainedSubject(run), collapseOnPin: getDefaultTuning().localMap.collapseOnPin, symbolOrder: config.symbolOrder, unconnected });
   const scene = layoutScene(plan, branches, measurer, {
     columnGap: config.columnGap, itemGap: config.itemGap, bandGap: config.bandGap, neck: config.membraneNeck, bandPadding: config.membranePadding, cardMaxWidth: config.cardMaxWidth,
     evenness: config.membraneEvenness, levelness: config.rowLevelness
@@ -139,6 +143,8 @@ export function evaluate(capture: Capture, graph: ExplorerGraphPayload, run: Sco
   const center = byId.get(retainedSubject(run));
   if (!center) throw new Error(`The bundle has no file ${JSON.stringify(retainedSubject(run))}.`);
   const pins = scopePins(run);
+  const unconnected = capture.unconnected && capture.unconnected !== "shown"
+    ? { choice: capture.unconnected, alone: unconnectedSymbols(graph) } : undefined;
   const explore = (orders?: ReadonlyMap<string, readonly string[]>): Exploration => exploreBranches(center, graph, pins, includeNode(pins, retainedSubject(run), capture.filters), {
     symbolOrder: config.symbolOrder,
     ranking: { pull: config.rankingPull, tie: config.rankingTie, orders },
@@ -151,7 +157,7 @@ export function evaluate(capture: Capture, graph: ExplorerGraphPayload, run: Sco
   const metricsOf = new Map<Scene, Map<string, CardMetrics>>();
   const { chosen, outcomes } = layoutStarts(starts, start => {
     const branches = orderExploration(exploration, { sweeps: config.orderSweeps, ...startOrder(start) });
-    const { scene, metrics } = placeConfiguration(capture, run, config, branches);
+    const { scene, metrics } = placeConfiguration(capture, run, config, branches, [], unconnected);
     metricsOf.set(scene, metrics);
     return { branches, scene };
   }, { crossing: config.crossingCost, height: config.heightCost, width: config.widthCost, churn: 0, evenness: config.membraneEvenness, levelness: config.rowLevelness, steps: config.membraneSimplicity }, config.returnCost, null);
@@ -160,12 +166,12 @@ export function evaluate(capture: Capture, graph: ExplorerGraphPayload, run: Sco
   const routes = routeScene(scene, branches, capture, metrics, getDefaultTuning().bezier);
   const signals = measureScene(scene, branches, routes);
   const cycleSearch = exploration.ranking.cycles.some(cycle => cycle.candidates.length > 1)
-    ? searchCycles(capture, run, config, explore, exploration, branches, scene, chosen.score) : null;
+    ? searchCycles(capture, run, config, explore, exploration, branches, scene, chosen.score, unconnected) : null;
   return {
     config, signals, ms: performance.now() - started, branches, scene, routes, metrics, alignments: [],
     start: startName(chosen.start),
     starts: outcomes.map(outcome => ({ name: startName(outcome.start), signals: outcome.signals, score: outcome.score })),
-    cycleSearch
+    cycleSearch, unconnected
   };
 }
 
@@ -175,7 +181,8 @@ export function evaluate(capture: Capture, graph: ExplorerGraphPayload, run: Sco
  * and priced by the page's price with its churn against the standing picture, the ranking's two terms added.
  */
 function searchCycles(capture: Capture, run: ScopeRun, config: LabConfig, explore: (orders?: ReadonlyMap<string, readonly string[]>) => Exploration,
-  exploration: Exploration, branches: BranchGraph, scene: Scene, score: number): CycleSearch {
+  exploration: Exploration, branches: BranchGraph, scene: Scene, score: number,
+  unconnected?: { choice: UnconnectedRows; alone: ReadonlyMap<string, ReadonlySet<string>> }): CycleSearch {
   const costs = { crossing: config.crossingCost, height: config.heightCost, width: config.widthCost, churn: getDefaultTuning().localMap.churnCost,
     evenness: config.membraneEvenness, levelness: config.rowLevelness, steps: config.membraneSimplicity };
   // The first draw's price is already the search's: `layoutStarts` priced it by `pictureScore`, churn aside.
@@ -186,7 +193,7 @@ function searchCycles(capture: Capture, run: ScopeRun, config: LabConfig, explor
     const trial = explore(orders);
     const starts = candidateStarts(0, null, standing.scene.tops, trial.ranking.columns.map(column => column.map(node => node.id)));
     const trialBranches = orderExploration(trial, { sweeps: config.orderSweeps, ...startOrder(starts[starts.length - 1]) });
-    const { scene: trialScene } = placeConfiguration(capture, run, config, trialBranches);
+    const { scene: trialScene } = placeConfiguration(capture, run, config, trialBranches, [], unconnected);
     const signals = signalsOf(trialBranches, trialScene, standing.scene.tops);
     terms.push({ signals, horizontal: horizontalWire(trialScene, trialBranches), returns: returningLinks(trialBranches) });
     return {
@@ -200,14 +207,14 @@ function searchCycles(capture: Capture, run: ScopeRun, config: LabConfig, explor
 /** Re-solves a shown order with explicit alignment constraints, preserving its source scene and reporting the same shape price as the page. */
 export function evaluateAlignment(previous: Evaluation, capture: Capture, run: ScopeRun, alignments: readonly BoundaryAlignment[]): Evaluation {
   const started = performance.now();
-  const { config, branches } = previous;
-  const { scene, metrics } = placeConfiguration(capture, run, config, branches, alignments);
+  const { config, branches, unconnected } = previous;
+  const { scene, metrics } = placeConfiguration(capture, run, config, branches, alignments, unconnected);
   const routes = routeScene(scene, branches, capture, metrics, getDefaultTuning().bezier);
   const signals = signalsOf(branches, scene, previous.scene.tops);
   const score = pictureScore(signals, { crossing: config.crossingCost, height: config.heightCost, width: config.widthCost, churn: 0, evenness: config.membraneEvenness, levelness: config.rowLevelness, steps: config.membraneSimplicity }, config.returnCost, scene, branches);
   return {
     config, signals: measureScene(scene, branches, routes), ms: performance.now() - started, branches, scene, routes, metrics,
-    start: previous.start, starts: [{ name: previous.start, signals, score }], alignments: [...alignments], cycleSearch: previous.cycleSearch
+    start: previous.start, starts: [{ name: previous.start, signals, score }], alignments: [...alignments], cycleSearch: previous.cycleSearch, unconnected
   };
 }
 

@@ -113,8 +113,8 @@ Where each is held: the 2D press, hold and menu in `views/localView/controller.t
 
 **A click acts on what it names, and a second identical click undoes it** (*reversibility*).
 - Why: the owner's decisions of 2026-10-15 and 2026-11-02, which [direction](../../../AI-Agent-Workspace/Memory/direction.md#what-it-shows-discovery-groups-and-hops) heads "A click pins, a second releases" (a heading's words, not the owner's); Nielsen's heuristic *user control and freedom*.
-- Where: `views/pin-state.ts`; `views/forceGraphView.ts` `activateNode`; the World Map's Reset layout, whose second press puts back what the first discarded until a piece is next moved (`views/worldMap/controller.ts:2032-2059`); Tuning's Reset to defaults, the same act for the viewer's settings, whose second press puts them back as they were until a lever is next moved (`panels/tuning-reset.ts`).
-- Checked by: `tests/e2e/pin-clicks.spec.ts`, `force-graph-focus.spec.ts` ("direct labels release independent pins"; "a second directory click withdraws discovery"), `world-map.spec.ts` ("a reset keeps what it discarded until a piece is next moved …"), `tuning-reset.spec.ts` ("… Reset to defaults puts them all back").
+- Where: `views/pin-state.ts`; `views/forceGraphView.ts` `activateNode`; a 2D card's `+N symbols` disclosure, which turns into `−N symbols` (accessible name `Fold N symbols`, keyboard focus kept) while expanded so folded rows fold back in one press (`views/localView/branch-renderer.ts`, since 2026-11-24); the World Map's Reset layout, whose second press puts back what the first discarded until a piece is next moved (`views/worldMap/controller.ts:2032-2059`); Tuning's Reset to defaults, the same act for the viewer's settings, whose second press puts them back as they were until a lever is next moved (`panels/tuning-reset.ts`).
+- Checked by: `tests/e2e/pin-clicks.spec.ts`, `tests/e2e/unconnected-symbols.spec.ts` (expand and refold round-trip), `force-graph-focus.spec.ts` ("direct labels release independent pins"; "a second directory click withdraws discovery"), `world-map.spec.ts` ("a reset keeps what it discarded until a piece is next moved …"), `tuning-reset.spec.ts` ("… Reset to defaults puts them all back").
 - Status: holds. The World Map's reset joined it on 2026-11-19; before, it threw every moved position away with no way back. Tuning's reset was built to it the same night.
 
 **Inspecting, pinning and moving the subject are three separate acts, each with its own control.** In 2D a click inspects, Pin retains, Centre moves the subject; none of the three does another's work.
@@ -544,6 +544,7 @@ How each was judged: **code** means read from the source here, which can show a 
 
 | Condition | What changes | Source |
 | --- | --- | --- |
+| `#main` width ≤ 1015 (≤ 1100 in bare frame) with reader open | zoom controls and pin tray lift above the map toolbar; wider windows keep all three on the bottom bar beside the reader | `styles/shell.css:416-442` |
 | width ≤ 850 | the map's toolbar rises above the bottom controls | `styles/local.css:359-361` |
 | width ≤ 768, ≤ 480 | Knowledge Sources' padding narrows | `styles/sources.css:14-24` |
 | width ≤ 760 | the sidebar overlays the page; the main area keeps a 48 px strip | `styles/shell.css:429-432`; `index.ts:275` |

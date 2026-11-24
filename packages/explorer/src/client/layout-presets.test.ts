@@ -291,20 +291,20 @@ describe("shared packing preferences", () => {
     expect(applyLayoutSettings(chosen, unsaid.layout).localMap.wayDown).toBe("alone");
   });
 
-  it("carries Unconnected only when it dims or folds, and reads its absence as shown (2026-11-23)", () => {
+  it("carries Unconnected only when it dims or shows, and reads its absence as folded (2026-11-24)", () => {
     const plain = getDefaultTuning();
-    expect(plain.localMap.unconnected).toBe("shown");
+    expect(plain.localMap.unconnected).toBe("folded");
     expect(layoutSettingsOf(plain).localMap).not.toHaveProperty("unconnected");
-    expect(readLayoutSettings({ localMap: { unconnected: "shown" } })).toBeUndefined();
+    expect(readLayoutSettings({ localMap: { unconnected: "folded" } })).toBeUndefined();
     expect(readLayoutSettings({ localMap: { unconnected: "hidden" } })).toBeUndefined();
-    for (const choice of ["dimmed", "folded"] as const) {
+    for (const choice of ["dimmed", "shown"] as const) {
       const chosen = getDefaultTuning();
       chosen.localMap.unconnected = choice;
       const carried = decompressSnapshot(compressSnapshot({ ...DEFAULT_SNAPSHOT, layout: layoutSettingsOf(chosen) }));
       expect(carried.layout?.localMap?.unconnected).toBe(choice);
       expect(applyLayoutSettings(getDefaultTuning(), carried.layout).localMap.unconnected).toBe(choice);
       const unsaid = decompressSnapshot(compressSnapshot({ ...DEFAULT_SNAPSHOT, layout: layoutSettingsOf(plain) }));
-      expect(applyLayoutSettings(chosen, unsaid.layout).localMap.unconnected).toBe("shown");
+      expect(applyLayoutSettings(chosen, unsaid.layout).localMap.unconnected).toBe("folded");
     }
   });
 

@@ -248,7 +248,7 @@ test("closing a retained file keeps only symbols needed elsewhere and removes it
   await page.goto("/?view=local&node=scripts/slopcop/symbolReferences.ts");
   await file("symbolReferences.ts").locator(".local-file-pin").click();
   await file("check-symbols.ts").locator(".local-file-pin").click();
-  await expect(file("symbolReferences.ts").locator('.symbol-row[data-symbol="SymbolIssueKind"] .symbol-label-wrapper')).toBeVisible();
+  await expect(file("symbolReferences.ts").locator('.symbol-row[data-symbol="SymbolIssueSeverity"] .symbol-label-wrapper')).toBeVisible();
   await localMapSettled(page);
   // The picture outgrew the frame when the SlopCop scripts gained a dependency on the engine's tooling (2026-10-16),
   // and the map holds its camera after a pin rather than re-fitting; a person pans until the card is in view, so does
@@ -282,7 +282,7 @@ test("closing a retained file keeps only symbols needed elsewhere and removes it
   await file("symbolReferences.ts").locator(".local-file-pin").click();
   await expect(file("markdownShared.ts")).toBeVisible();
   await expect(file("symbolReferences.ts").locator(".local-file-pin")).toHaveAttribute("aria-pressed", "true");
-  await expect(file("symbolReferences.ts").locator('.symbol-row[data-symbol="SymbolIssueKind"]')).toHaveClass(/symbol-pinned/);
+  await expect(file("symbolReferences.ts").locator('.symbol-row[data-symbol="SymbolIssueSeverity"]')).toHaveClass(/symbol-pinned/);
 });
 
 test("a retained exploration threads skipped references through lanes: nothing over the top, nothing across a card, every wire forward", { tag: "@alone" }, async ({ page }) => {

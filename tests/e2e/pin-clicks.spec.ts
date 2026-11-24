@@ -49,7 +49,8 @@ test("a neighbour's direct symbol Pin retains only that symbol; the subject stay
   expect(await subject(page)).toBe(MAIN);
   await expect(page.locator(".pin-tray-toggle")).toHaveText("1 pin");
   await expect(symbolPin(page, MODELS, "Report")).toHaveAttribute("aria-pressed", "true");
-  await expect(row(page, MAIN, "main"), "the subject's own rows stay disclosed").toBeVisible();
+  await expect(row(page, MAIN, "__internals__"), "the subject stays drawn with its connected rows").toBeVisible();
+  await expect(card(page, MAIN).locator(":scope > button.local-disclosure[data-symbol-disclosure]"), "and counts its folded unconnected symbol").toHaveText("+1\u00a0symbol");
   expect(await page.locator(`#map-connections .connection-path[data-source-id="${MAIN}"]`).count(), "and its wires drawn").toBeGreaterThan(0);
   await expect(page.locator("#detail-panel")).not.toHaveClass(/visible/);
 });

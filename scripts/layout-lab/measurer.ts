@@ -8,12 +8,13 @@
  *
  * @module layout-lab/measurer
  */
-import type { SymbolOrder } from "../../packages/explorer/src/client/types";
+import type { SymbolOrder, UnconnectedRows } from "../../packages/explorer/src/client/types";
 import type { SceneMeasurer } from "../../packages/explorer/src/client/views/localView/branch-scene";
 import { compareSymbolNames, edgeKey, type BranchGraph } from "../../packages/explorer/src/client/views/localView/branches";
 import { HANDLE_STRIP } from "../../packages/explorer/src/client/views/localView/directory-handle";
 import { connectionCount, returningConnections } from "../../packages/explorer/src/client/views/localView/returning-connections";
 import type { LocalEdge } from "../../packages/explorer/src/client/views/localView/types";
+import { unconnectedRow } from "../../packages/explorer/src/client/views/localView/unconnected-symbols";
 import { countOf } from "../../packages/explorer/src/client/views/localView/word-seams";
 import type { PinSet } from "../../packages/explorer/src/client/views/pin-state";
 import { normalizeSymbolIdentifier } from "../../packages/explorer/src/client/views/symbolAnchors";
@@ -27,6 +28,8 @@ export interface MeasurerOptions {
   /** The page's `collapseOnPin` tuning: whether a card not retained whole hides the rows no pin needs. */
   collapseOnPin: boolean;
   symbolOrder: SymbolOrder;
+  /** The page's Unconnected setting and the whole graph's unconnected symbols; absent for older captures (Shown). */
+  unconnected?: { choice: UnconnectedRows; alone: ReadonlyMap<string, ReadonlySet<string>> };
 }
 
 /** Every card's view under an exploration, as `dressCards` would dress it. */
@@ -68,7 +71,13 @@ export function cardViews(capture: Capture, branches: BranchGraph, options: Meas
     const internals = ordered.filter(row => row.symbol === "__internals__");
     const rows = [...ordered.filter(row => row.symbol !== "__internals__"), ...internals];
     const all = pinnedWhole.has(card.id) || card.id === options.selected;
-    const visible = (row: RowCapture): boolean => all || !options.collapseOnPin || connected.has(key(card.id, row.symbol));
+    const choice = options.unconnected?.choice ?? "shown";
+    const alone = choice === "shown" ? null : options.unconnected?.alone ?? null;
+    const visible = (row: RowCapture): boolean => {
+      const name = normalizeSymbolIdentifier(row.symbol);
+      const folded = unconnectedRow(choice, { unconnected: !!name && !!alone?.get(card.id)?.has(name), wholeCard: all, asked: false, revealed: false }) === "folded";
+      return !folded && (all || !options.collapseOnPin || connected.has(key(card.id, row.symbol)));
+    };
     const shown = rows.filter(visible);
     const collapsed = rows.filter(row => !visible(row));
     // The page's reveal counts the public symbols it folded, never the Internals row (2026-10-16).

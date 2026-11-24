@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/explorer/src/client/views/localView/ladder-rooms.ts`
-- Generated At: 2026-11-19T21:10:16.825Z
+- Generated At: 2026-11-23T23:35:39.967Z
 
 ## Authored
 ### Purpose
@@ -91,29 +91,38 @@ the result for the look's 2.2.
 - Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/ladder-rooms.ts#L57)
 
 ##### `FootCount` — Summary
-A count at a card's foot as laid out, in the map's own units on one vertical axis: its top, bottom, left and width.
+A count at a card's foot as laid out, in the map's own units on one vertical axis: its top, bottom, left, width and optional outer frame.
 
-#### `footHold` {#symbol-foothold}
+#### `FootHold (interface)` {#symbol-foothold-interface}
+- Type: interface
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/ladder-rooms.ts#L67)
+
+##### `FootHold (interface)` — Summary
+What the counts at a card's foot need in the connections look: which fit across, each held count's lift above the foot, and any extra vertical gap needed below what stands above them.
+
+#### `footHold (function)` {#symbol-foothold-function}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/ladder-rooms.ts#L71)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/ladder-rooms.ts#L81)
+- Returns: [`FootHold`](#symbol-foothold-interface)
 
-##### `footHold` — Summary
-Whether the counts at a card's foot stand at a held scale (2026-11-13, the connections look), and each one's distance
-above the last one's foot, about which they are held together, so that each is lifted by that distance times the
-scale's growth and stays above the one below it. They stand only where all of them fit at that scale between the top
-of the room left free above them and their foot, with `frame` of each count's frame above the first and `gap` of air
-under what stands above, and across between each one's left and the card's content right; otherwise none is held.
+##### `footHold (function)` — Summary
+The counts at a card's foot at a held scale (2026-11-13, the connections look; revised 2026-11-24 so folded cards and
+cards with Internals never drop or collide with their footer counts): every count whose held width fits across the
+card stands at `scale` about the last held count's foot, lifted by its distance above that foot (`above`) times the
+scale's growth. Where the existing room below `free` (with `gap` of clear air and each count's outer `frame`) is too
+short for the held counts at `scale`, `extraGap` gives the exact whole map units of room to add above them in the
+card's fixed layout so that they always stand clear without shrinking and without changing with zoom.
 
 #### `FragmentBox` {#symbol-fragmentbox}
 - Type: interface
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/ladder-rooms.ts#L81)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/ladder-rooms.ts#L95)
 
 ##### `FragmentBox` — Summary
 A text fragment's box as the page gives it, for counting lines.
 
 #### `linesOf` {#symbol-linesof}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/ladder-rooms.ts#L93)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/ladder-rooms.ts#L107)
 
 ##### `linesOf` — Summary
 How many lines a text's fragments stand on (2026-11-13): the empty boxes of its word breaks (`<wbr>`) left out, and two
@@ -123,7 +132,7 @@ rounded top as a line had read one line as two where a font's metrics put a word
 
 #### `nameWraps` {#symbol-namewraps}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/ladder-rooms.ts#L108)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/ladder-rooms.ts#L122)
 
 ##### `nameWraps` — Summary
 Whether a symbol's name wraps at the reading width, read in whichever band the map shows: across more than one line
@@ -132,14 +141,14 @@ reading band, since holding it would mean cutting lines and moving its descripti
 
 #### `DotSpan` {#symbol-dotspan}
 - Type: interface
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/ladder-rooms.ts#L113)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/ladder-rooms.ts#L127)
 
 ##### `DotSpan` — Summary
 An anchor dot's layout box across its card and the inner edges of the card it may not cross, in one unit.
 
 #### `dotRoom` {#symbol-dotroom}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/ladder-rooms.ts#L124)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/ladder-rooms.ts#L138)
 - Parameters: `dot`: [`DotSpan`](#symbol-dotspan)
 
 ##### `dotRoom` — Summary
@@ -149,7 +158,7 @@ that edge to the card's edge on its side, over the dot's width. A dot with no ro
 
 #### `layoutTopOf` {#symbol-layouttopof}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/ladder-rooms.ts#L135)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/ladder-rooms.ts#L149)
 
 ##### `layoutTopOf` — Summary
 The layout top of an element drawn with `translateY(shift) scale(scale)` about its vertical centre, from the top it is
@@ -157,14 +166,14 @@ drawn at: the measurement at render reads the box the layout gave, whatever the 
 
 #### `RowMark` {#symbol-rowmark}
 - Type: interface
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/ladder-rooms.ts#L140)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/ladder-rooms.ts#L154)
 
 ##### `RowMark` — Summary
 A symbol row as the title's room sees it: whether it is laid out at all, whether it is pinned, and its height.
 
 #### `rowsBeforeFirstPin` {#symbol-rowsbeforefirstpin}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/ladder-rooms.ts#L155)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/ladder-rooms.ts#L169)
 
 ##### `rowsBeforeFirstPin` — Summary
 How many shown rows stand above a card's first pinned row, in the rows' order, or null when no shown row is pinned:
@@ -172,7 +181,7 @@ at the overview band the file's name may wrap down over the silent rows only as 
 
 #### `pinDepth` {#symbol-pindepth}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/ladder-rooms.ts#L171)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/ladder-rooms.ts#L185)
 
 ##### `pinDepth` — Summary
 How far below the rows' top the first pinned shown row's top stands, less the row gap, or null when none is: the room
@@ -182,14 +191,14 @@ zoom looks draw them.
 
 #### `HeadBand` {#symbol-headband}
 - Type: interface
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/ladder-rooms.ts#L190)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/ladder-rooms.ts#L204)
 
 ##### `HeadBand` — Summary
 A drawn row's band as laid out, its top and its height, and its head's height in the far looks, in one unit.
 
 #### `evenRows` {#symbol-evenrows}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/ladder-rooms.ts#L205)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/ladder-rooms.ts#L219)
 
 ##### `evenRows` — Summary
 The rows' heads spaced evenly over their card's row room in the far looks (2026-11-13): with short rows beside slot
@@ -202,7 +211,7 @@ move.
 
 #### `fitLines` {#symbol-fitlines}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/ladder-rooms.ts#L222)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/ladder-rooms.ts#L236)
 
 ##### `fitLines` — Summary
 How many lines each drawn row's name takes in the far looks: as many as it wants, until the heads they make are taller
@@ -210,7 +219,7 @@ than the rows' room; then one fewer at a time, from the name that takes the most
 
 #### `fitKept` {#symbol-fitkept}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/ladder-rooms.ts#L241)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/ladder-rooms.ts#L255)
 
 ##### `fitKept` — Summary
 The Descriptions Zoomed Out trial's heads in the connections look (2026-11-13): which rows keep their description's
@@ -221,7 +230,7 @@ is left do the names give up lines, as {@link fitLines} has them do. So no name 
 
 #### `headHeight` {#symbol-headheight}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/ladder-rooms.ts#L256)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/ladder-rooms.ts#L270)
 
 ##### `headHeight` — Summary
 A row's head's height in the far looks at a held scale: the taller of its More, held at the scale from its top, and
@@ -229,14 +238,14 @@ its name's lines, held about the row's top, with the highlight's air.
 
 #### `FILE_KEPT_AIR` {#symbol-file_kept_air}
 - Type: const
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/ladder-rooms.ts#L261)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/ladder-rooms.ts#L275)
 
 ##### `FILE_KEPT_AIR` — Summary
 The air a file's kept line keeps below the held name and its controls, in the map's own units.
 
 #### `fileLineRoom` {#symbol-filelineroom}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/ladder-rooms.ts#L269)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/ladder-rooms.ts#L283)
 
 ##### `fileLineRoom` — Summary
 Whether the header holds the file's own kept line in the connections look (Descriptions Zoomed Out, 2026-11-15), and
@@ -249,3 +258,8 @@ controls (`below`). The line is never drawn smaller to fit.
 ### Dependencies
 _No dependencies documented yet_
 <!-- LIVE-DOC:END Dependencies -->
+
+<!-- LIVE-DOC:BEGIN Cited By -->
+### Cited By
+- [`.mdmd/layer-3/live-documentation-explorer.mdmd.md`](../../../../../../../layer-3/live-documentation-explorer.mdmd.md)
+<!-- LIVE-DOC:END Cited By -->

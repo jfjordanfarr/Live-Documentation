@@ -266,7 +266,7 @@ function sameMap<T>(before: ReadonlyMap<string, T>, after: ReadonlyMap<string, T
 }
 
 /** The canonical row disclosure and emphasis, shared by structural rendering and text-only reading refreshes. */
-function rowPresentation(controller: LocalViewController, exploration: Exploration): (id: string, symbol?: string) => { hidden: boolean; muted: boolean } {
+function rowPresentation(controller: LocalViewController, exploration: Exploration): (id: string, symbol?: string) => { hidden: boolean; muted: boolean; foldable: boolean } {
   const { state } = controller.options;
   const path = controller.getActivePath();
   const connected = new Set<string>();
@@ -284,15 +284,21 @@ function rowPresentation(controller: LocalViewController, exploration: Explorati
     const read = controller.reading?.showsRow(id, symbol ?? "__internals__");
     const joined = connected.has(key(id, symbol));
     const name = normalizeSymbolIdentifier(symbol);
-    const unconnected = unconnectedRow(choice, {
+    const rowFacts = {
       unconnected: !!name && !!alone?.get(id)?.has(name),
       wholeCard: whole,
-      asked: !!read || (!!symbol && isSymbolPinned(controller.pins, id, symbol)) || (inspected?.nodeId === id && normalizeSymbolIdentifier(inspected.symbol) === name),
-      revealed: expanded || wholeFile
-    });
+      asked: !!read || (!!symbol && isSymbolPinned(controller.pins, id, symbol)) || (inspected?.nodeId === id && normalizeSymbolIdentifier(inspected.symbol) === name)
+    };
+    const unconnected = unconnectedRow(choice, { ...rowFacts, revealed: expanded || wholeFile });
+    const hidden = unconnected === "folded" || (!all && Boolean(path || !read) && Boolean(path || state.tuning.localMap.collapseOnPin) && !joined);
+    // Whether this row would fold back if the card's "+N symbols" expansion were undone.
+    const unconnectedIfFolded = expanded ? unconnectedRow(choice, { ...rowFacts, revealed: wholeFile }) : unconnected;
+    const hiddenIfFolded = expanded && (unconnectedIfFolded === "folded"
+      || (!(wholeFile || whole) && Boolean(path || !read) && Boolean(path || state.tuning.localMap.collapseOnPin) && !joined));
     return {
-      hidden: unconnected === "folded" || (!all && Boolean(path || !read) && Boolean(path || state.tuning.localMap.collapseOnPin) && !joined),
-      muted: unconnected === "dimmed" || (!controller.isPinned(id, "*") && !read && !joined)
+      hidden,
+      muted: unconnected === "dimmed" || (!controller.isPinned(id, "*") && !read && !joined),
+      foldable: expanded && !hidden && hiddenIfFolded
     };
   };
 }
@@ -359,6 +365,7 @@ export function renderBranches(controller: LocalViewController, stage: BranchSta
   // takes a wrapper of the same kind, by its path, and no card.
   const entering: HTMLElement[] = [];
   const kept = new Set<string>();
+  const refocusDisclosure = new Set<string>();
   for (const node of explored.subgraph.nodes) {
     let wrapper = stage.wrappers.get(node.id);
     if (!wrapper) {
@@ -377,6 +384,7 @@ export function renderBranches(controller: LocalViewController, stage: BranchSta
       wrapper.replaceChildren(createClosedDirectory(controller.cardContext, explored.closed.get(node.id)!));
       if (focused) wrapper.querySelector<HTMLElement>(focused.classList.contains("local-directory-actions") ? ".local-directory-actions" : ".local-directory-handle")?.focus({ preventScroll: true });
     } else {
+      if (wrapper.contains(document.activeElement) && (document.activeElement as HTMLElement | null)?.matches("[data-symbol-disclosure]")) refocusDisclosure.add(node.id);
       const card = createNodeCard(controller.cardContext, node, "center");
       card.classList.add("focus-node");
       card.classList.toggle("branch-member", explored.members.has(node.id));
@@ -460,6 +468,9 @@ export function renderBranches(controller: LocalViewController, stage: BranchSta
   const moveMs = reduced ? 0 : Math.max(0, tuning.moveMs);
   const measuredRows = rowsOf(controller, stage, scale, branches);
   showScene(controller, stage, scene, sceneTuning, previous ? moveMs : 0, leaving, entering, oldRows);
+  for (const id of refocusDisclosure) {
+    stage.wrappers.get(id)?.querySelector<HTMLElement>("[data-symbol-disclosure]")?.focus({ preventScroll: true });
+  }
   stage.rowsPicture = rowsPicture;
 
   // The search over the seeds the first paint did not try, priced from the page's answers and each card's rows as they
@@ -1608,7 +1619,7 @@ function shiftRow(motion: RowMotion, by: number | null): void {
  */
 function footKeys(card: HTMLElement): Array<[HTMLElement, string]> {
   return [...card.children].filter((child): child is HTMLElement => child instanceof HTMLElement
-    && child.matches(".node-tests, .node-directory, .local-disclosure")).map((element, index) => [element, `\0foot\0${index}`]);
+    && child.matches(".node-tests, .node-directory, .local-disclosure:not(.local-refold-symbols)")).map((element, index) => [element, `\0foot\0${index}`]);
 }
 
 /**
@@ -1681,33 +1692,57 @@ function dressCards(controller: LocalViewController, cards: readonly HTMLElement
   const presentRow = rowPresentation(controller, exploration);
   // Every card's rows are disclosed or hidden before any card counts its returns, since a return has a row on two cards.
   const hiddenRows = new Map<HTMLElement, number>();
+  const foldableRows = new Map<HTMLElement, number>();
   for (const card of cards) {
     // A closed directory's box has no rows and no notes.
     if (!card.classList.contains("node-card")) continue;
     const id = card.dataset.id!;
     let hidden = 0;
+    let foldable = 0;
     card.querySelectorAll<HTMLElement>(".symbol-row").forEach(row => {
       const state = presentRow(id, row.dataset.symbol);
       row.classList.toggle("branch-symbol-hidden", state.hidden);
       row.classList.toggle("branch-symbol-muted", state.muted);
       // The Internals row stands for the file's private contents, not for a symbol: it is not counted on the reveal.
-      if (state.hidden && !row.classList.contains("internals-row")) hidden++;
+      if (!row.classList.contains("internals-row")) {
+        if (state.hidden) hidden++;
+        if (state.foldable) foldable++;
+      }
     });
     hiddenRows.set(card, hidden);
+    foldableRows.set(card, foldable);
   }
   for (const card of cards) {
     if (!card.classList.contains("node-card")) continue;
     const id = card.dataset.id!;
     const hidden = hiddenRows.get(card) ?? 0;
+    const foldable = foldableRows.get(card) ?? 0;
     if (hidden) {
       const reveal = document.createElement("button");
+      reveal.type = "button";
       reveal.className = "local-disclosure";
+      reveal.dataset.symbolDisclosure = "expand";
       reveal.textContent = `+${countOf(hidden, "symbol")}`;
       reveal.title = "Show the other symbols in this file";
       reveal.addEventListener("click", event => {
-        event.stopPropagation(); controller.lastInteracted = id; controller.lastInteractedSymbol = null; controller.expandedCards.add(id); controller.render();
+        event.stopPropagation(); controller.toggleCardExpansion(id, true);
       });
       card.append(reveal);
+    } else if (foldable) {
+      const refold = document.createElement("button");
+      refold.type = "button";
+      refold.className = "local-disclosure local-refold-symbols";
+      refold.dataset.symbolDisclosure = "fold";
+      refold.textContent = `\u2212${countOf(foldable, "symbol")}`;
+      refold.setAttribute("aria-label", `Fold ${countOf(foldable, "symbol")}`);
+      refold.title = "Fold the other symbols in this file";
+      refold.addEventListener("click", event => {
+        event.stopPropagation(); controller.toggleCardExpansion(id, false);
+      });
+      // Place the refold control right above the symbol grid so even on a 138-row expanded card it stays in view beside the header.
+      const symbols = card.querySelector(":scope > .node-symbols");
+      if (symbols) card.insertBefore(refold, symbols);
+      else card.append(refold);
     }
     const outside = exploration.hiddenConnections.get(id) ?? 0;
     if (outside) {

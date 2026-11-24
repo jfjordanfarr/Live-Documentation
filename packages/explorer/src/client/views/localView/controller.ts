@@ -1103,6 +1103,30 @@ export class LocalViewController implements LocalViewApi {
     return this.captureExplorationFrame(`${card} .node-title`, focus, ".local-file-name");
   }
 
+  /**
+   * Expand or fold a card's unconnected symbol rows in place: keeps the current camera scale and anchors the card's
+   * title where the person pressed the disclosure, without letting `render()` treat the taller card as a fresh arrival
+   * fit, and returns keyboard focus to the toggled disclosure control.
+   */
+  toggleCardExpansion(nodeId: string, expand: boolean): void {
+    this.endArrivalByHand();
+    this.lastInteracted = nodeId;
+    this.lastInteractedSymbol = null;
+    this.readingHold = true;
+    if (this.isShown() && this.stage) {
+      this.focusRequest = null;
+      this.mapHasInitialFit = true;
+      this.mapUserAdjusted = true;
+    }
+    const card = `.node-card[data-id="${CSS.escape(nodeId)}"]`;
+    const frame = this.captureExplorationFrame(`${card} .node-title`, `${card} [data-symbol-disclosure]`, ".local-file-name");
+    if (expand) this.expandedCards.add(nodeId);
+    else this.expandedCards.delete(nodeId);
+    this.render();
+    frame.afterRender();
+    if (!this.stage?.move) this.readingHold = false;
+  }
+
   private configureReadingFrame(frame: Frame): void {
     const view = this.viewport.getBoundingClientRect();
     this.readingViewportSize = { width: view.width, windowHeight: window.innerHeight };
@@ -2075,7 +2099,7 @@ export class LocalViewController implements LocalViewApi {
     this.lookFade = window.setTimeout(() => {
       container.classList.remove("local-look-fading");
       if (this.stage && this.isShown()) this.drawConnections();
-    }, 200);
+    }, from === "overview" && this.look === "connections" ? 360 : 200);
   }
 
 

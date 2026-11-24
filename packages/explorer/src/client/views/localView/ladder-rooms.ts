@@ -53,28 +53,42 @@ export function shortRowHeight(scale: number): number {
   return Math.ceil(headHeight({ nameTop: (ROW_MORE - NAME_LINE) / 2, line: NAME_LINE, moreTop: 0, moreHeight: ROW_MORE }, 1, scale) + HEAD_SPACE);
 }
 
-/** A count at a card's foot as laid out, in the map's own units on one vertical axis: its top, bottom, left and width. */
+/** A count at a card's foot as laid out, in the map's own units on one vertical axis: its top, bottom, left, width and optional outer frame. */
 export interface FootCount {
   top: number;
   bottom: number;
   left: number;
   width: number;
+  /** Extra room drawn outside the count's box by a frame (e.g. 3 px for `.local-reveal-connections`); defaults to `footHold`'s `frame` argument. */
+  frame?: number;
+}
+
+/** What the counts at a card's foot need in the connections look: which fit across, each held count's lift above the foot, and any extra vertical gap needed below what stands above them. */
+export interface FootHold {
+  held: boolean[];
+  above: number[];
+  extraGap: number;
 }
 
 /**
- * Whether the counts at a card's foot stand at a held scale (2026-11-13, the connections look), and each one's distance
- * above the last one's foot, about which they are held together, so that each is lifted by that distance times the
- * scale's growth and stays above the one below it. They stand only where all of them fit at that scale between the top
- * of the room left free above them and their foot, with `frame` of each count's frame above the first and `gap` of air
- * under what stands above, and across between each one's left and the card's content right; otherwise none is held.
+ * The counts at a card's foot at a held scale (2026-11-13, the connections look; revised 2026-11-24 so folded cards and
+ * cards with Internals never drop or collide with their footer counts): every count whose held width fits across the
+ * card stands at `scale` about the last held count's foot, lifted by its distance above that foot (`above`) times the
+ * scale's growth. Where the existing room below `free` (with `gap` of clear air and each count's outer `frame`) is too
+ * short for the held counts at `scale`, `extraGap` gives the exact whole map units of room to add above them in the
+ * card's fixed layout so that they always stand clear without shrinking and without changing with zoom.
  */
-export function footHold(counts: readonly FootCount[], free: number, right: number, scale: number, frame: number, gap: number): { held: boolean; above: number[] } {
-  if (!counts.length || !(scale > 0)) return { held: false, above: [] };
-  const foot = Math.max(...counts.map(count => count.bottom));
-  const top = Math.min(...counts.map(count => count.top)) - frame;
-  const tall = (foot - top) * scale <= foot - free - gap + 1e-6;
-  const wide = counts.every(count => count.width * scale <= right - count.left + 1e-6);
-  return { held: tall && wide, above: counts.map(count => foot - count.bottom) };
+export function footHold(counts: readonly FootCount[], free: number, right: number, scale: number, frame: number, gap: number): FootHold {
+  if (!counts.length || !(scale > 0)) return { held: [], above: [], extraGap: 0 };
+  const held = counts.map(count => count.width * scale <= right - count.left + 1e-6);
+  const shown = counts.filter((_, index) => held[index]);
+  if (!shown.length) return { held, above: counts.map(() => 0), extraGap: 0 };
+  const foot = Math.max(...shown.map(count => count.bottom));
+  const top = Math.min(...shown.map(count => count.top - (count.frame ?? frame)));
+  const above = counts.map((count, index) => (held[index] ? foot - count.bottom : 0));
+  const short = (foot - top) * scale - (foot - free - gap);
+  const extraGap = short > 1e-6 ? Math.ceil(short - 1e-6) : 0;
+  return { held, above, extraGap };
 }
 
 /** A text fragment's box as the page gives it, for counting lines. */

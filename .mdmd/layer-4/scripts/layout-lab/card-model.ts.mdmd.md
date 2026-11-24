@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `scripts/layout-lab/card-model.ts`
-- Generated At: 2026-11-19T21:10:18.539Z
+- Generated At: 2026-11-24T01:00:16.197Z
 
 ## Authored
 ### Purpose
@@ -136,7 +136,7 @@ the capture read them.
 
 #### `hubCentre` {#symbol-hubcentre}
 - Type: function
-- Source: [source](../../../../scripts/layout-lab/card-model.ts#L211)
+- Source: [source](../../../../scripts/layout-lab/card-model.ts#L216)
 - Parameters: `capture`: [`Capture`](./capture.ts.mdmd.md#symbol-capture); `card`: [`CardCapture`](./capture.ts.mdmd.md#symbol-cardcapture)
 
 ##### `hubCentre` — Summary
@@ -149,7 +149,7 @@ fallback: both as the capture read them.
 
 #### `registerPins` {#symbol-registerpins}
 - Type: function
-- Source: [source](../../../../scripts/layout-lab/card-model.ts#L220)
+- Source: [source](../../../../scripts/layout-lab/card-model.ts#L225)
 - Returns: [`CardMetrics`](#symbol-cardmetrics-interface)
 - Parameters: `centres`: `ReadonlyMap`
 
@@ -158,7 +158,7 @@ Registers row endpoints in construction order, retaining exact and normalized na
 
 #### `resolvePin` {#symbol-resolvepin}
 - Type: function
-- Source: [source](../../../../scripts/layout-lab/card-model.ts#L250)
+- Source: [source](../../../../scripts/layout-lab/card-model.ts#L255)
 - Parameters: `metrics`: [`CardMetrics`](#symbol-cardmetrics-interface)
 
 ##### `resolvePin` — Summary
@@ -169,7 +169,7 @@ card's middle. A row the page collapses resolves to no offset at all.
 
 #### `pinOffset` {#symbol-pinoffset}
 - Type: const
-- Source: [source](../../../../scripts/layout-lab/card-model.ts#L268)
+- Source: [source](../../../../scripts/layout-lab/card-model.ts#L273)
 
 ##### `pinOffset` — Summary
 A pin's offset, or null where the page would place no wire.

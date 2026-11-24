@@ -172,9 +172,14 @@ export function cardMetrics(capture: Capture, card: CardCapture, width: number, 
   } else if (!card.directoryHidden) {
     y += c.directoryMarginTop;
   }
-  if (!card.directoryHidden) y += text(card.directory, content);
-  if (card.footer && card.footer.position !== "after-path") y += card.footer.top + chipsHeight(card.footer.items, content, card.footer.gap) + (card.footer.bottom ?? 0)
-    - (card.directoryHidden && card.tests ? Math.min(c.testsMarginBottom, card.footer.marginTop) : 0);
+  if (!card.directoryHidden) y += text(card.directory, content) + (card.footGap ?? 0);
+  const hasBottomFooter = !!card.footer && card.footer.position !== "after-path";
+  if (hasBottomFooter) y += card.footer!.top + chipsHeight(card.footer!.items, content, card.footer!.gap) + (card.footer!.bottom ?? 0)
+    - (card.directoryHidden && card.tests ? Math.min(c.testsMarginBottom, card.footer!.marginTop) : 0);
+  // When .node-directory is hidden (growing reading cards), .node-tests' bottom margin collapses with the first disclosure's top margin.
+  if (view.notes.length && card.directoryHidden && card.tests && !hasBottomFooter) {
+    y -= Math.min(c.testsMarginBottom, c.disclosureMarginTop);
+  }
   for (const note of view.notes) y += c.disclosureMarginTop + note(content);
   y += card.borderWidth + (card.paddingBottom ?? card.padding);
   if (Math.round(y - 2 * card.borderWidth) > (card.readingFrameHeight ?? Infinity)) {

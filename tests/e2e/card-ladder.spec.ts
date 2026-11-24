@@ -322,7 +322,7 @@ const stepReading = (page: Page, id: string, pinned: string) => page.evaluate(({
   const textScale = number(map, "--text-scale"), growth = number(map, "--name-growth");
   const broken: string[] = [];
   let truncated = 0;
-  for (const row of card.querySelectorAll<HTMLElement>(".symbol-row")) {
+  for (const row of card.querySelectorAll<HTMLElement>(".symbol-row:not(.branch-symbol-hidden)")) {
     const span = row.querySelector<HTMLElement>(".symbol-label-text")!, text = span.getBoundingClientRect(), box = row.getBoundingClientRect();
     const symbol = row.dataset.symbol!;
     // The overview band is the file's own: a row goes silent but for a symbol pinned by name, its name and its More no
@@ -390,7 +390,7 @@ test("at every step a dot never covers its name, More stands on every drawn row 
   await localMapStill(page);
   // The subject's first symbol row, which the arrival frames at the card's title whatever the picture holds: a named
   // symbol lower down (readPicture until 2026-11-06) leaves the frame when the Live Docs gain a card.
-  const pinned = (await subject.locator(".symbol-row:not(.internals-row)").first().getAttribute("data-symbol"))!;
+  const pinned = (await subject.locator(".symbol-row:not(.internals-row):not(.branch-symbol-hidden)").first().getAttribute("data-symbol"))!;
   await subject.locator(`.symbol-row[data-symbol="${pinned}"] .local-symbol-pin`).click();
   await localMapStill(page);
   await expect(subject.locator(`.symbol-row[data-symbol="${pinned}"]`)).toHaveClass(/symbol-pinned/u);
@@ -484,7 +484,7 @@ for (const looks of ["stepped", "three"] as const) test(looks === "stepped"
   await localMapStill(page);
   // The subject's first symbol row, which the arrival frames at the card's title whatever the picture holds: a named
   // symbol lower down (readPicture until 2026-11-06) leaves the frame when the Live Docs gain a card.
-  const pinned = (await subject.locator(".symbol-row:not(.internals-row)").first().getAttribute("data-symbol"))!;
+  const pinned = (await subject.locator(".symbol-row:not(.internals-row):not(.branch-symbol-hidden)").first().getAttribute("data-symbol"))!;
   const row = subject.locator(`.symbol-row[data-symbol="${pinned}"]`);
   await row.locator(".local-symbol-pin").click();
   await localMapStill(page);

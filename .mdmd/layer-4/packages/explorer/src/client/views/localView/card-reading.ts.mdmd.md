@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/explorer/src/client/views/localView/card-reading.ts`
-- Generated At: 2026-11-22T15:16:55.251Z
+- Generated At: 2026-11-24T01:00:15.455Z
 
 ## Authored
 ### Purpose
@@ -96,7 +96,7 @@ while names open full descriptions in the reader.
 
 #### `markFirstPin` {#symbol-markfirstpin}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/card-reading.ts#L1009)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/card-reading.ts#L1066)
 
 ##### `markFirstPin` — Summary
 Write the pin depths for a card whose rows were just ordered, and its held name's lines at the overview band, whose
@@ -141,12 +141,13 @@ room they bound, from the card's last reading: no layout is read.
 - [`ladder-rooms.FootCount`](./ladder-rooms.ts.mdmd.md#symbol-footcount) (type-only)
 - [`ladder-rooms.HEAD_SPACE`](./ladder-rooms.ts.mdmd.md#symbol-head_space)
 - [`ladder-rooms.HIGHLIGHT_BELOW`](./ladder-rooms.ts.mdmd.md#symbol-highlight_below)
+- [`ladder-rooms.NAME_LINE`](./ladder-rooms.ts.mdmd.md#symbol-name_line)
 - [`ladder-rooms.dotRoom`](./ladder-rooms.ts.mdmd.md#symbol-dotroom)
 - [`ladder-rooms.evenRows`](./ladder-rooms.ts.mdmd.md#symbol-evenrows)
 - [`ladder-rooms.fileLineRoom`](./ladder-rooms.ts.mdmd.md#symbol-filelineroom)
 - [`ladder-rooms.fitKept`](./ladder-rooms.ts.mdmd.md#symbol-fitkept)
 - [`ladder-rooms.fitLines`](./ladder-rooms.ts.mdmd.md#symbol-fitlines)
-- [`ladder-rooms.footHold`](./ladder-rooms.ts.mdmd.md#symbol-foothold)
+- [`ladder-rooms.footHold`](./ladder-rooms.ts.mdmd.md#symbol-foothold-function)
 - [`ladder-rooms.headHeight`](./ladder-rooms.ts.mdmd.md#symbol-headheight)
 - [`ladder-rooms.layoutTopOf`](./ladder-rooms.ts.mdmd.md#symbol-layouttopof)
 - [`ladder-rooms.linesOf`](./ladder-rooms.ts.mdmd.md#symbol-linesof)

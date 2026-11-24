@@ -301,6 +301,13 @@
 /* The compact card is as tall as its name needs whole at the look's size (the card reading's --files-card-h); its name
    is held at the card reading's scale for it, as every card's is in the overview look (below). */
 [data-overview-files] .node-card.local-slot-card { min-height: calc(var(--files-card-h, 0) * 1px); }
+[data-overview-files] .node-card.local-slot-card .node-directory { padding-bottom: 0; }
+[data-overview-files] .node-card.local-slot-card > .local-refold-symbols { display: none; }
+/* Extra zoom-independent room above held footer counts so "+N symbols" and "+N connections" stand clear of Internals
+   and the header at the connections look's 2.2x without shrinking or colliding (2026-11-24). Padding never collapses
+   with the disclosure button's 8 px top margin; the expanded card's refold control sits above .node-symbols. */
+.local-slot-card .node-directory { padding-bottom: calc(var(--foot-gap, 0) * 1px); }
+.local-slot-card > .local-refold-symbols { margin-top: calc(8px + var(--refold-gap, 0) * 1px); }
 
 /* The card's header from the middle band out, ordered under six principles (the header round of 2026-11-08, the
    November 7 record's Turns 3 and 4; held-lines.ts states them): the file's name leads on the header's first line, held
@@ -622,12 +629,11 @@
     transform-origin: left top;
     pointer-events: none;
 }
-/* The counts at a card's foot in the connections look, "+N symbols" and the framed "+N connections" (2026-11-13): in a
-   look made for connections they are what a card without drawn rows has to say, and the second reveals them. Where the
-   card's room below what it draws holds them at the look's scale they stand there, held together about the last one's
-   foot, at the card's bottom left (the card reading marks the card local-foot-held and writes each one's distance above
-   that foot, --foot-y, and the scale, --foot-scale); elsewhere they are not drawn, as before. */
-[data-looks="three"][data-lod="far"] .local-slot-card.local-foot-held > button.local-disclosure:not(.local-back-references) {
+/* The counts at a card's foot in the connections look, "+N symbols" (or "−N symbols") and the framed "+N connections"
+   (2026-11-13; revised 2026-11-24): every count that fits across the card stands at the look's held size, held together
+   about the last held one's foot at the card's bottom left (the card reading marks each held count local-foot-held and
+   writes its distance above that foot, --foot-y, the scale, --foot-scale, and any needed --foot-gap above them). */
+[data-looks="three"][data-lod="far"] .local-slot-card > button.local-disclosure.local-foot-held {
     visibility: visible;
     opacity: 1;
     transform: translateY(calc(var(--foot-y, 0) * (1 - var(--foot-scale, 1)) * 1px)) scale(var(--foot-scale, 1));
@@ -729,9 +735,9 @@
     }
     /* The counts held at a card's foot travel too, from the size they had on screen, between reading and connections; out
        to the overview they fade at the size they had, as the rows' silent parts do. */
-    .local-look-fading[data-looks="three"][data-look-from="reading"][data-lod="far"] .local-slot-card.local-foot-held > button.local-disclosure:not(.local-back-references) { --foot-from: var(--look-zoom, 1); animation: local-look-foot 160ms ease-out; }
-    .local-look-fading[data-looks="three"][data-look-from="connections"][data-lod="reading"] .local-slot-card.local-foot-held > button.local-disclosure:not(.local-back-references) { --foot-from: calc(var(--foot-scale, 1) * var(--look-zoom, 1)); transform-origin: left bottom; animation: local-look-foot 160ms ease-out; }
-    .local-look-fading[data-looks="three"][data-look-from="connections"][data-lod="overview"] .local-slot-card.local-foot-held > button.local-disclosure:not(.local-back-references) {
+    .local-look-fading[data-looks="three"][data-look-from="reading"][data-lod="far"] .local-slot-card > button.local-disclosure.local-foot-held { --foot-from: var(--look-zoom, 1); animation: local-look-foot 160ms ease-out; }
+    .local-look-fading[data-looks="three"][data-look-from="connections"][data-lod="reading"] .local-slot-card > button.local-disclosure.local-foot-held { --foot-from: calc(var(--foot-scale, 1) * var(--look-zoom, 1)); transform-origin: left bottom; animation: local-look-foot 160ms ease-out; }
+    .local-look-fading[data-looks="three"][data-look-from="connections"][data-lod="overview"] .local-slot-card > button.local-disclosure.local-foot-held {
         transform: translateY(calc(var(--foot-y, 0) * (1 - var(--foot-scale, 1)) * 1px)) scale(var(--foot-scale, 1));
         transform-origin: left bottom;
         scale: var(--look-keep, 1);
