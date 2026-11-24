@@ -1,10 +1,8 @@
-// Stands in for `node:fs` in the scanning page: a file system held in memory, which the page fills with the folder a
-// person hands it and from which it reads back the docs the scan wrote. Paths are POSIX and absolute; the page puts
-// the folder at `/ws`. Each function answers as Node's does on Linux, failures included: the same `code`, `syscall`
-// and `path` on the error, since the engine tells a file's absence from a failure of the machine by them
-// (`machineFailure`, `live-docs/processMark.ts`). There are no links, and a folder holds what was put under it.
+// Stands in for `node:fs` in the scanning page: a read-only in-memory input tree holding the folder a person hands the
+// page at `/ws`, answering the remaining Node disk fallback functions in `nodeHost.ts` until Step 9 removes standalone
+// no-run adapter calls. Generated docs and the index no longer touch `fs.mjs` (Step 6 `OutputSink` in `page-entry.mjs`).
 //
-// Only what the scan's path calls is here; `node-needs.json` lists it, and its test holds this module to that list.
+// Only what the scan's path names is here; `node-needs.json` lists it, and its test holds this module to that list.
 // The page's own access to the tree is `tree`, which is not counted, so that the tally holds the scan's calls alone.
 import { counted } from "./calls.mjs";
 import { rules } from "./path.mjs";
@@ -16,13 +14,11 @@ const folders = new Set(["/"]);
 /** How many times the scan read each file, by its absolute path. */
 const reads = new Map();
 
-const ERRNO = { ENOENT: -2, ENOTDIR: -20, EISDIR: -21, EEXIST: -17, ENOTEMPTY: -39 };
+const ERRNO = { ENOENT: -2, ENOTDIR: -20, EISDIR: -21 };
 const DESCRIPTION = {
   ENOENT: "no such file or directory",
   ENOTDIR: "not a directory",
-  EISDIR: "illegal operation on a directory",
-  EEXIST: "file already exists",
-  ENOTEMPTY: "directory not empty"
+  EISDIR: "illegal operation on a directory"
 };
 
 /** A failure as Node gives it: `ENOENT: no such file or directory, open '/ws/a.ts'`, with `errno`, `code`, `syscall` and `path`. */
@@ -118,59 +114,6 @@ function text(bytes, options) {
   return new TextDecoder().decode(bytes);
 }
 
-function writeTo(path, data, syscall) {
-  const at = absolute(path);
-  const parent = lookUp(rules.dirname(at));
-  if (parent !== "folder") throw failure(parent === "file" ? "ENOTDIR" : parent, syscall, String(path));
-  if (folders.has(at)) throw failure("EISDIR", syscall, String(path));
-  files.set(at, { bytes: typeof data === "string" ? new TextEncoder().encode(data) : new Uint8Array(data), mtimeMs: Date.now() });
-}
-
-function makeFolder(path, options) {
-  const at = absolute(path);
-  const kind = lookUp(at);
-  if (kind === "folder") {
-    if (options?.recursive) return undefined;
-    throw failure("EEXIST", "mkdir", String(path));
-  }
-  if (kind === "file") throw failure(options?.recursive ? "ENOTDIR" : "EEXIST", "mkdir", String(path));
-  if (!options?.recursive && lookUp(rules.dirname(at)) !== "folder") throw failure("ENOENT", "mkdir", String(path));
-  let first = at;
-  for (let above = rules.dirname(at); !folders.has(above); above = rules.dirname(above)) {
-    if (files.has(above)) throw failure("ENOTDIR", "mkdir", String(path));
-    first = above;
-  }
-  folders.add(at);
-  addFolders(at);
-  return options?.recursive ? first : undefined;
-}
-
-function remove(path, options) {
-  const at = absolute(path);
-  const kind = lookUp(at);
-  if (kind === "file") {
-    files.delete(at);
-    return;
-  }
-  if (kind === "folder") {
-    if (!options?.recursive) throw Object.assign(new Error(`Path is a directory: rm returned EISDIR (is a directory) ${path}`), { code: "ERR_FS_EISDIR", errno: 21, syscall: "rm", path: String(path) });
-    for (const file of [...files.keys()]) if (file.startsWith(`${at}/`)) files.delete(file);
-    for (const folder of [...folders]) if (folder === at || folder.startsWith(`${at}/`)) folders.delete(folder);
-    folders.add("/");
-    return;
-  }
-  if (!options?.force) throw failure(kind, "stat", String(path));
-}
-
-function removeFolder(path) {
-  const at = absolute(path);
-  const kind = lookUp(at);
-  if (kind === "file") throw failure("ENOTDIR", "rmdir", String(path));
-  if (kind !== "folder") throw failure(kind, "rmdir", String(path));
-  if (entriesOf(at).length > 0) throw failure("ENOTEMPTY", "rmdir", String(path));
-  folders.delete(at);
-}
-
 /** A handle on an open file, for the reads of its first bytes. */
 function handleOn(path) {
   const bytes = bytesOf(path, "open");
@@ -184,15 +127,11 @@ function handleOn(path) {
   };
 }
 
-/** `node:fs/promises`, and `promises` of `node:fs`. */
+/** `promises` of `node:fs` (retained only for `nodeHost.ts` fallbacks until Step 9). */
 export const promises = {
   readFile: counted("fs.promises.readFile", async (path, options) => text(bytesOf(path, "open"), options)),
-  writeFile: counted("fs.promises.writeFile", async (path, data) => writeTo(path, data, "open")),
   stat: counted("fs.promises.stat", async (path) => statOf(path, "stat")),
-  mkdir: counted("fs.promises.mkdir", async (path, options) => makeFolder(path, options)),
   readdir: counted("fs.promises.readdir", async (path, options) => entriesOf(path, options)),
-  rm: counted("fs.promises.rm", async (path, options) => remove(path, options)),
-  rmdir: counted("fs.promises.rmdir", async (path) => removeFolder(path)),
   open: counted("fs.promises.open", async (path) => handleOn(path))
 };
 
@@ -209,7 +148,7 @@ function statOrNothing(path, options, syscall) {
 }
 export const statSync = counted("fs.statSync", (path, options) => statOrNothing(path, options, "stat"));
 
-/** The page's own hand on the tree, uncounted: to fill it, empty it, and read back what the scan wrote and read. */
+/** The page's own hand on the tree, uncounted: to fill it, empty it, and read the input folder. */
 export const tree = {
   put(path, bytes, mtimeMs = 0) {
     const at = absolute(path);
@@ -218,7 +157,12 @@ export const tree = {
   },
   /** Removes a folder and everything in it, when it is there. */
   drop(path) {
-    remove(path, { recursive: true, force: true });
+    const at = absolute(path);
+    files.delete(at);
+    const prefix = at === "/" ? "/" : `${at}/`;
+    for (const file of [...files.keys()]) if (file.startsWith(prefix)) files.delete(file);
+    for (const folder of [...folders]) if (folder === at || folder.startsWith(prefix)) folders.delete(folder);
+    folders.add("/");
   },
   resetReads() {
     reads.clear();

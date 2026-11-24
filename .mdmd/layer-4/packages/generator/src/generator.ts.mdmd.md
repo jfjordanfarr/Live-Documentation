@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: `packages/generator/src/generator.ts`
 - Entry: module of [`packages/generator/package.json`](../package.json.mdmd.md)
-- Generated At: 2026-11-24T07:54:06.084Z
+- Generated At: 2026-11-24T10:03:08.241Z
 
 ## Authored
 ### Purpose
@@ -34,23 +34,23 @@ Coordinates Live Documentation generation: analyzes source files, carries author
 ### Public Symbols
 #### `GenerateLiveDocsOptions` {#symbol-generatelivedocsoptions}
 - Type: type (type-only)
-- Source: [source](../../../../../packages/generator/src/generator.ts#L32)
+- Source: [source](../../../../../packages/generator/src/generator.ts#L33)
 
 #### `LiveDocGeneratorLogger` {#symbol-livedocgeneratorlogger}
 - Type: type (type-only)
-- Source: [source](../../../../../packages/generator/src/generator.ts#L32)
+- Source: [source](../../../../../packages/generator/src/generator.ts#L33)
 
 #### `LiveDocGeneratorResult` {#symbol-livedocgeneratorresult}
 - Type: type (type-only)
-- Source: [source](../../../../../packages/generator/src/generator.ts#L32)
+- Source: [source](../../../../../packages/generator/src/generator.ts#L33)
 
 #### `SourceReadings` {#symbol-sourcereadings}
 - Type: type (type-only)
-- Source: [source](../../../../../packages/generator/src/generator.ts#L32)
+- Source: [source](../../../../../packages/generator/src/generator.ts#L33)
 
 #### `generateLiveDocs` {#symbol-generatelivedocs}
 - Type: function
-- Source: [source](../../../../../packages/generator/src/generator.ts#L56)
+- Source: [source](../../../../../packages/generator/src/generator.ts#L57)
 - Parameters: `options`: [`GenerateLiveDocsOptions`](./generatorCore.ts.mdmd.md#symbol-generatelivedocsoptions)
 
 ##### `generateLiveDocs` — Summary
@@ -86,6 +86,7 @@ scans (2026-11-24).
 - [`nodeGitHost.NODE_GIT_HOST`](../../engine/src/tooling/nodeGitHost.ts.mdmd.md#symbol-node_git_host)
 - [`nodeGrammars.NODE_GRAMMAR_HOST`](../../engine/src/tooling/nodeGrammars.ts.mdmd.md#symbol-node_grammar_host)
 - [`nodeHost.NODE_FILE_HOST`](../../engine/src/tooling/nodeHost.ts.mdmd.md#symbol-node_file_host)
+- [`nodeOutputSink.createNodeOutputSink`](../../engine/src/tooling/nodeOutputSink.ts.mdmd.md#symbol-createnodeoutputsink)
 - [`pathUtils.normalizeWorkspacePath`](../../engine/src/tooling/pathUtils.ts.mdmd.md#symbol-normalizeworkspacepath)
 - [`sourceText.throwIfMachineFailure`](../../engine/src/tooling/sourceText.ts.mdmd.md#symbol-throwifmachinefailure)
 - [`workspaceFiles.FileHost`](../../engine/src/tooling/workspaceFiles.ts.mdmd.md#symbol-filehost) (type-only)

@@ -1,11 +1,4 @@
 {
   "differences": [],
-  "readMoreThanOnce": [
-    { "fixture": "fixtures/link-targets", "file": ".live-documentation/source/src/plan.ts.md", "times": 2, "why": "A doc, not a source file: the generator reads the doc already there for its authored words, and the index is then built by reading every doc back. Both are the sink's business, step 6 of the road (.mdmd/layer-3/engine-and-hosts.mdmd.md)." },
-    { "fixture": "typescript/tidepool", "file": ".live-documentation/source/src/audio/sounds.ts.md", "times": 2, "why": "A doc, not a source file: the generator reads the doc already there for its authored words, and the index is then built by reading every doc back. Both are the sink's business, step 6 of the road (.mdmd/layer-3/engine-and-hosts.mdmd.md)." },
-    { "fixture": "typescript/tidepool", "file": ".live-documentation/source/src/creatures.ts.md", "times": 2, "why": "A doc, not a source file: the generator reads the doc already there for its authored words, and the index is then built by reading every doc back. Both are the sink's business, step 6 of the road (.mdmd/layer-3/engine-and-hosts.mdmd.md)." },
-    { "fixture": "typescript/tidepool", "file": ".live-documentation/source/src/game.ts.md", "times": 2, "why": "A doc, not a source file: the generator reads the doc already there for its authored words, and the index is then built by reading every doc back. Both are the sink's business, step 6 of the road (.mdmd/layer-3/engine-and-hosts.mdmd.md)." },
-    { "fixture": "typescript/tidepool", "file": ".live-documentation/source/src/render/canvas.ts.md", "times": 2, "why": "A doc, not a source file: the generator reads the doc already there for its authored words, and the index is then built by reading every doc back. Both are the sink's business, step 6 of the road (.mdmd/layer-3/engine-and-hosts.mdmd.md)." },
-    { "fixture": "typescript/tidepool", "file": ".live-documentation/source/src/tide.ts.md", "times": 2, "why": "A doc, not a source file: the generator reads the doc already there for its authored words, and the index is then built by reading every doc back. Both are the sink's business, step 6 of the road (.mdmd/layer-3/engine-and-hosts.mdmd.md)." }
-  ]
+  "readMoreThanOnce": []
 }

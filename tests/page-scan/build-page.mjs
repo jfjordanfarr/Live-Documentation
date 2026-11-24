@@ -30,7 +30,6 @@ export const REPO = path.resolve(here, "..", "..");
  */
 export const STAND_INS = {
   fs: "fs.mjs",
-  "fs/promises": "fs-promises.mjs",
   path: "path.mjs"
 };
 

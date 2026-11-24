@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/engine/src/tooling/workspaceFiles.ts`
-- Generated At: 2026-11-24T07:54:04.590Z
+- Generated At: 2026-11-24T10:03:06.702Z
 
 ## Authored
 ### Purpose
@@ -64,9 +64,18 @@ Why git gave no listing of what it ignores in a folder that lies in a repository
 ##### `GitHost` — Summary
 Optional version-control port supplied by hosts that can run git (such as Node); omitted in browser pages.
 
+#### `OutputSink` {#symbol-outputsink}
+- Type: interface
+- Source: [source](../../../../../../packages/engine/src/tooling/workspaceFiles.ts#L89)
+
+##### `OutputSink` — Summary
+Host port for reading, listing, writing, and pruning generated Live Docs and the derived graph index
+(Step 6 of `.mdmd/layer-3/engine-and-hosts.mdmd.md`). Under Node, backed by disk (`NODE_OUTPUT_SINK`);
+in a browser page, backed by an in-memory map without touching any `node:fs` stand-in.
+
 #### `ScansAboveFn` {#symbol-scansabovefn}
 - Type: type
-- Source: [source](../../../../../../packages/engine/src/tooling/workspaceFiles.ts#L88)
+- Source: [source](../../../../../../packages/engine/src/tooling/workspaceFiles.ts#L106)
 
 ##### `ScansAboveFn` — Summary
 Checks ancestor folders above `workspaceRoot` for outer scans. Returns the outer scan folders when the host can
@@ -74,22 +83,22 @@ inspect ancestors (Node), or `undefined` when the host cannot see above the work
 
 #### `FileHost` {#symbol-filehost}
 - Type: interface
-- Source: [source](../../../../../../packages/engine/src/tooling/workspaceFiles.ts#L97)
+- Source: [source](../../../../../../packages/engine/src/tooling/workspaceFiles.ts#L115)
 
 ##### `FileHost` — Summary
 What runs the engine gives it of a workspace: a file's bytes, its first bytes, a folder's entries, and optional
-ports for grammars, git, and ancestor scans. Paths are absolute, as the readers hold them.
+ports for grammars, git, ancestor scans, and generated-doc output. Paths are absolute, as the readers hold them.
 
 #### `WorkspaceReads (interface)` {#symbol-workspacereads-interface}
 - Type: interface
-- Source: [source](../../../../../../packages/engine/src/tooling/workspaceFiles.ts#L113)
+- Source: [source](../../../../../../packages/engine/src/tooling/workspaceFiles.ts#L133)
 
 ##### `WorkspaceReads (interface)` — Summary
 A run's reads: each file read once through the host, decoded once, and kept for the run.
 
 #### `workspaceReads (function)` {#symbol-workspacereads-function}
 - Type: function
-- Source: [source](../../../../../../packages/engine/src/tooling/workspaceFiles.ts#L133)
+- Source: [source](../../../../../../packages/engine/src/tooling/workspaceFiles.ts#L153)
 - Returns: [`WorkspaceReads`](#symbol-workspacereads-interface)
 
 ##### `workspaceReads (function)` — Summary

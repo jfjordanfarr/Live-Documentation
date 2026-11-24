@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/generator/src/generatorCore.ts`
-- Generated At: 2026-11-24T07:54:06.099Z
+- Generated At: 2026-11-24T10:03:08.256Z
 
 ## Authored
 ### Purpose
@@ -89,7 +89,6 @@ public symbols and dependencies, renders deterministic markdown docs, prunes sta
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
-- `node:fs/promises`
 - `node:path` - `path`
 - [`LiveDocumentationConfig`](../../engine/src/config/liveDocumentationConfig.ts.mdmd.md#symbol-livedocumentationconfig) (type-only)
 - [`liveDocumentationConfig.hasReader`](../../engine/src/config/liveDocumentationConfig.ts.mdmd.md#symbol-hasreader)
@@ -123,8 +122,8 @@ public symbols and dependencies, renders deterministic markdown docs, prunes sta
 - [`document.authoredBlockOf`](../../engine/src/live-docs/document.ts.mdmd.md#symbol-authoredblockof)
 - [`document.parseLiveDoc`](../../engine/src/live-docs/document.ts.mdmd.md#symbol-parselivedoc)
 - [`document.renderLiveDoc`](../../engine/src/live-docs/document.ts.mdmd.md#symbol-renderlivedoc)
-- [`graphFiles.readLiveDocGraph`](../../engine/src/live-docs/graphFiles.ts.mdmd.md#symbol-readlivedocgraph)
-- [`graphFiles.writeLiveDocGraph`](../../engine/src/live-docs/graphFiles.ts.mdmd.md#symbol-writelivedocgraph)
+- [`graphFilesCore.readLiveDocGraphWithHost`](../../engine/src/live-docs/graphFilesCore.ts.mdmd.md#symbol-readlivedocgraphwithhost)
+- [`graphFilesCore.writeLiveDocGraphWithHost`](../../engine/src/live-docs/graphFilesCore.ts.mdmd.md#symbol-writelivedocgraphwithhost)
 - [`processMark.markProcess`](../../engine/src/live-docs/processMark.ts.mdmd.md#symbol-markprocess)
 - [`relatedDocs.DocumentText`](../../engine/src/live-docs/relatedDocs.ts.mdmd.md#symbol-documenttext) (type-only)
 - [`relatedDocs.citingDocuments`](../../engine/src/live-docs/relatedDocs.ts.mdmd.md#symbol-citingdocuments)
@@ -136,12 +135,11 @@ public symbols and dependencies, renders deterministic markdown docs, prunes sta
 - [`pathUtils.toWorkspaceRelativePath`](../../engine/src/tooling/pathUtils.ts.mdmd.md#symbol-toworkspacerelativepath)
 - [`sourceText.SourceTextReading`](../../engine/src/tooling/sourceText.ts.mdmd.md#symbol-sourcetextreading) (type-only)
 - [`sourceText.readSourceReading`](../../engine/src/tooling/sourceText.ts.mdmd.md#symbol-readsourcereading)
-- [`sourceText.throwIfMachineFailure`](../../engine/src/tooling/sourceText.ts.mdmd.md#symbol-throwifmachinefailure)
 - [`workspaceFiles.FileHost`](../../engine/src/tooling/workspaceFiles.ts.mdmd.md#symbol-filehost) (type-only)
+- [`workspaceFiles.OutputSink`](../../engine/src/tooling/workspaceFiles.ts.mdmd.md#symbol-outputsink) (type-only)
 - [`workspaceFiles.WorkspaceReads`](../../engine/src/tooling/workspaceFiles.ts.mdmd.md#symbol-workspacereads-interface) (type-only)
 - [`workspaceFiles.workspaceReads`](../../engine/src/tooling/workspaceFiles.ts.mdmd.md#symbol-workspacereads-function)
 - [`workspaceListing`](../../engine/src/tooling/workspaceListing.ts.mdmd.md#symbol-workspacelisting-function)
-- [`workspaceWalk.walkWorkspace`](../../engine/src/tooling/workspaceWalk.ts.mdmd.md#symbol-walkworkspace)
 <!-- LIVE-DOC:END Dependencies -->
 
 <!-- LIVE-DOC:BEGIN Cited By -->

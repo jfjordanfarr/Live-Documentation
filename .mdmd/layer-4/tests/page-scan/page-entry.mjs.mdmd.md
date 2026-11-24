@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: `tests/page-scan/page-entry.mjs`
-- Generated At: 2026-11-24T07:54:08.470Z
+- Generated At: 2026-11-24T10:03:10.578Z
 
 ## Authored
 ### Purpose
@@ -27,6 +27,7 @@ _No public symbols detected_
 - [`calls.callCounts`](./stand-ins/calls.mjs.mdmd.md#symbol-callcounts)
 - [`calls.resetCalls`](./stand-ins/calls.mjs.mdmd.md#symbol-resetcalls)
 - [`fs.tree`](./stand-ins/fs.mjs.mdmd.md#symbol-tree)
+- [`path.rules`](./stand-ins/path.mjs.mdmd.md#symbol-rules)
 <!-- LIVE-DOC:END Dependencies -->
 
 <!-- LIVE-DOC:BEGIN Cited By -->

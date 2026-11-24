@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: `packages/generator/src/generator.test.ts`
-- Generated At: 2026-11-24T07:54:06.079Z
+- Generated At: 2026-11-24T10:03:08.236Z
 
 ## Authored
 ### Purpose
@@ -43,7 +43,10 @@ _No public symbols detected_
 - [`processMark.machineFailure`](../../engine/src/live-docs/processMark.ts.mdmd.md#symbol-machinefailure)
 - [`nodeGrammars.NODE_GRAMMAR_HOST`](../../engine/src/tooling/nodeGrammars.ts.mdmd.md#symbol-node_grammar_host)
 - [`nodeHost.NODE_FILE_HOST`](../../engine/src/tooling/nodeHost.ts.mdmd.md#symbol-node_file_host)
+- [`nodeOutputSink.NODE_OUTPUT_SINK`](../../engine/src/tooling/nodeOutputSink.ts.mdmd.md#symbol-node_output_sink)
 - [`workspaceFiles.FileHost`](../../engine/src/tooling/workspaceFiles.ts.mdmd.md#symbol-filehost) (type-only)
+- [`workspaceFiles.FolderEntries`](../../engine/src/tooling/workspaceFiles.ts.mdmd.md#symbol-folderentries) (type-only)
+- [`workspaceFiles.OutputSink`](../../engine/src/tooling/workspaceFiles.ts.mdmd.md#symbol-outputsink) (type-only)
 - [`generator.generateLiveDocs`](./generator.ts.mdmd.md#symbol-generatelivedocs)
 - [`generatorCore.runLiveDocs`](./generatorCore.ts.mdmd.md#symbol-runlivedocs)
 - `vitest` - `afterEach`, `beforeEach`, `describe`, `expect`, `it`, `vi`

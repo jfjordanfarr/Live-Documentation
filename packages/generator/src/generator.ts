@@ -16,6 +16,7 @@ import { gitIgnored } from "@live-documentation/engine/tooling/gitIgnored";
 import { NODE_GIT_HOST } from "@live-documentation/engine/tooling/nodeGitHost";
 import { NODE_GRAMMAR_HOST } from "@live-documentation/engine/tooling/nodeGrammars";
 import { NODE_FILE_HOST } from "@live-documentation/engine/tooling/nodeHost";
+import { createNodeOutputSink } from "@live-documentation/engine/tooling/nodeOutputSink";
 import { normalizeWorkspacePath } from "@live-documentation/engine/tooling/pathUtils";
 import { throwIfMachineFailure } from "@live-documentation/engine/tooling/sourceText";
 import type { FileHost } from "@live-documentation/engine/tooling/workspaceFiles";
@@ -61,7 +62,8 @@ export async function generateLiveDocs(
     ...baseHost,
     grammars: baseHost.grammars ?? NODE_GRAMMAR_HOST,
     git: options.host && "git" in options.host ? options.host.git : NODE_GIT_HOST,
-    scansAbove: options.host && "scansAbove" in options.host ? options.host.scansAbove : nodeScansAbove
+    scansAbove: options.host && "scansAbove" in options.host ? options.host.scansAbove : nodeScansAbove,
+    output: baseHost.output ?? createNodeOutputSink(baseHost)
   };
   return runLiveDocs({ ...options, host, analyze: analyzeSourceFile });
 }

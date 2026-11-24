@@ -221,16 +221,8 @@
         "resolve"
       ]
     },
-    "packages/engine/src/live-docs/graphFiles.ts": {
-      "node:fs": [
-        "promises.mkdir",
-        "promises.readFile",
-        "promises.stat",
-        "promises.writeFile"
-      ],
+    "packages/engine/src/live-docs/graphFilesCore.ts": {
       "node:path": [
-        "dirname",
-        "join",
         "posix.join",
         "relative",
         "resolve",
@@ -287,15 +279,6 @@
       ]
     },
     "packages/generator/src/generatorCore.ts": {
-      "node:fs/promises": [
-        "mkdir",
-        "readFile",
-        "readdir",
-        "rm",
-        "rmdir",
-        "stat",
-        "writeFile"
-      ],
       "node:path": [
         "dirname",
         "join",
@@ -307,23 +290,12 @@
   },
   "standIns": {
     "node:fs": [
-      "promises.mkdir",
       "promises.open",
       "promises.readFile",
       "promises.readdir",
       "promises.stat",
-      "promises.writeFile",
       "readdirSync",
       "statSync"
-    ],
-    "node:fs/promises": [
-      "mkdir",
-      "readFile",
-      "readdir",
-      "rm",
-      "rmdir",
-      "stat",
-      "writeFile"
     ],
     "node:path": [
       "basename",
@@ -354,7 +326,7 @@
       "perf_hooks": "unresolved: a call throws in the page"
     },
     "web-tree-sitter": {
-      "fs/promises": "the stand-in fs-promises.mjs",
+      "fs/promises": "unresolved: a call throws in the page",
       "module": "unresolved: a call throws in the page"
     }
   },

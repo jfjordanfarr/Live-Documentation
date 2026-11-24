@@ -18,7 +18,8 @@ import { summarizeGraph } from "@live-documentation/engine/live-docs/history/sum
 import { machineFailure } from "@live-documentation/engine/live-docs/processMark";
 import { NODE_GRAMMAR_HOST } from "@live-documentation/engine/tooling/nodeGrammars";
 import { NODE_FILE_HOST } from "@live-documentation/engine/tooling/nodeHost";
-import type { FileHost } from "@live-documentation/engine/tooling/workspaceFiles";
+import { NODE_OUTPUT_SINK } from "@live-documentation/engine/tooling/nodeOutputSink";
+import type { FileHost, FolderEntries, OutputSink } from "@live-documentation/engine/tooling/workspaceFiles";
 
 import { generateLiveDocs } from "./generator";
 import { runLiveDocs } from "./generatorCore";
@@ -1040,7 +1041,8 @@ describe("runLiveDocs without git or scansAbove ports (browser host shape)", () 
         read: (file) => NODE_FILE_HOST.read(file),
         head: (file, limit) => NODE_FILE_HOST.head(file, limit),
         entries: (folder) => NODE_FILE_HOST.entries(folder),
-        grammars: NODE_GRAMMAR_HOST
+        grammars: NODE_GRAMMAR_HOST,
+        output: NODE_OUTPUT_SINK
       };
 
       const result = await runLiveDocs({ workspaceRoot: root, config, host: pageShapedHost, logger });
@@ -1056,5 +1058,117 @@ describe("runLiveDocs without git or scansAbove ports (browser host shape)", () 
     } finally {
       await fs.rm(root, { recursive: true, force: true });
     }
+  });
+
+  it("runs completely in memory over a pure FileHost and OutputSink with zero disk access, and requires host.output", async () => {
+    const virtualRoot = path.resolve(path.sep, "virtual-mem-workspace");
+    const encoder = new TextEncoder();
+    const sourceFiles = new Map<string, Uint8Array>([
+      [path.join(virtualRoot, "src", "greeter.ts"), encoder.encode("export function greet(name: string): string { return name; }\n")],
+      [path.join(virtualRoot, "src", "index.ts"), encoder.encode('import { greet } from "./greeter";\nexport const hello = greet("world");\n')],
+      [path.join(virtualRoot, "README.md"), encoder.encode("See [greeter](src/greeter.ts) for details.\n")]
+    ]);
+    const staleDocPath = path.join(virtualRoot, ".mdmd", "layer-4", "src", "deleted.ts.mdmd.md");
+    const docs = new Map<string, string>([
+      [
+        staleDocPath,
+        [
+          "# `src/deleted.ts`",
+          "",
+          "## Purpose",
+          "",
+          "Purpose content pending.",
+          "",
+          "## Notes",
+          "",
+          "Notes content pending.",
+          ""
+        ].join("\n")
+      ]
+    ]);
+    const byCodeUnit = (a: string, b: string): number => (a < b ? -1 : a > b ? 1 : 0);
+    const normalize = (p: string): string => path.resolve(p);
+
+    const memorySink: OutputSink = {
+      readText: async (absolutePath) => docs.get(normalize(absolutePath)),
+      writeText: async (absolutePath, content) => {
+        docs.set(normalize(absolutePath), content);
+      },
+      removeFile: async (absolutePath) => {
+        docs.delete(normalize(absolutePath));
+      },
+      hasDirectory: async (absolutePath) => {
+        const prefix = `${normalize(absolutePath)}${path.sep}`;
+        return [...docs.keys()].some((file) => file.startsWith(prefix));
+      },
+      listFiles: async (baseLayerRoot, extension) => {
+        const prefix = `${normalize(baseLayerRoot)}${path.sep}`;
+        return [...docs.keys()]
+          .filter((file) => file.startsWith(prefix) && file.endsWith(extension))
+          .sort(byCodeUnit);
+      }
+    };
+
+    const memoryHost: FileHost = {
+      read: async (absolutePath) => {
+        const bytes = sourceFiles.get(normalize(absolutePath));
+        if (!bytes) throw Object.assign(new Error(`ENOENT: ${absolutePath}`), { code: "ENOENT", syscall: "open" });
+        return bytes;
+      },
+      head: async (absolutePath, bytes) => (await memoryHost.read(absolutePath)).subarray(0, bytes),
+      entries: async (absoluteFolder): Promise<FolderEntries> => {
+        const folder = normalize(absoluteFolder);
+        const prefix = folder.endsWith(path.sep) ? folder : `${folder}${path.sep}`;
+        const files = new Set<string>();
+        const folders = new Set<string>();
+        let matched = folder === virtualRoot;
+        for (const file of sourceFiles.keys()) {
+          if (!file.startsWith(prefix)) continue;
+          matched = true;
+          const rest = file.slice(prefix.length);
+          const sep = rest.indexOf(path.sep);
+          if (sep === -1) files.add(rest);
+          else folders.add(rest.slice(0, sep));
+        }
+        if (!matched) throw Object.assign(new Error(`ENOENT: ${absoluteFolder}`), { code: "ENOENT", syscall: "scandir" });
+        return { files: [...files].sort(byCodeUnit), folders: [...folders].sort(byCodeUnit) };
+      },
+      grammars: NODE_GRAMMAR_HOST,
+      output: memorySink
+    };
+
+    const config = normalizeLiveDocumentationConfig({ root: ".mdmd", baseLayer: "layer-4", extension: ".mdmd.md" });
+    const quiet = (): undefined => undefined;
+    const logger = { info: quiet, warn: quiet, error: quiet };
+
+    await expect(
+      runLiveDocs({ workspaceRoot: virtualRoot, config, host: { ...memoryHost, output: undefined }, logger })
+    ).rejects.toThrow(/host\.output is required/u);
+
+    const result = await runLiveDocs({
+      workspaceRoot: virtualRoot,
+      config,
+      host: memoryHost,
+      now: () => new Date("2026-01-01T00:00:00.000Z"),
+      logger
+    });
+
+    expect(result.failed).toEqual([]);
+    expect(result.files.map((file) => file.sourcePath)).toEqual(["src/greeter.ts", "src/index.ts"]);
+    expect(result.deletedFiles).toEqual([".mdmd/layer-4/src/deleted.ts.mdmd.md"]);
+    expect(result.index).toBe(".mdmd/index.json");
+    expect(docs.has(staleDocPath)).toBe(false);
+
+    const greeterDoc = docs.get(path.join(virtualRoot, ".mdmd", "layer-4", "src", "greeter.ts.mdmd.md"));
+    expect(greeterDoc).toContain("#### `greet`");
+    expect(greeterDoc).toContain("## Cited By");
+    expect(greeterDoc).toContain("README.md");
+
+    const indexJson = docs.get(path.join(virtualRoot, ".mdmd", "index.json"));
+    expect(indexJson).toBeDefined();
+    const parsedIndex = JSON.parse(indexJson!) as { files: Record<string, { dependencies: Array<{ link?: string }> }> };
+    expect(Object.keys(parsedIndex.files).sort()).toEqual(["src/greeter.ts", "src/index.ts"]);
+    expect(parsedIndex.files["src/index.ts"].dependencies.some((dep) => dep.link?.includes("greeter.ts.mdmd.md"))).toBe(true);
+    expect(nodeFs.existsSync(virtualRoot)).toBe(false);
   });
 });

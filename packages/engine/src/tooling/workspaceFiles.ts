@@ -82,6 +82,24 @@ export interface GitHost {
 }
 
 /**
+ * Host port for reading, listing, writing, and pruning generated Live Docs and the derived graph index
+ * (Step 6 of `.mdmd/layer-3/engine-and-hosts.mdmd.md`). Under Node, backed by disk (`NODE_OUTPUT_SINK`);
+ * in a browser page, backed by an in-memory map without touching any `node:fs` stand-in.
+ */
+export interface OutputSink {
+  /** Read an existing generated document as UTF-8 text, or `undefined` when absent (`ENOENT`). Throws machine failures and path-limit errors. */
+  readText(absolutePath: string): Promise<string | undefined>;
+  /** Write UTF-8 text to `absolutePath`, creating parent directories as needed. */
+  writeText(absolutePath: string, content: string): Promise<void>;
+  /** Remove `absolutePath` if present (ignoring absence), and when `stopDir` is supplied, tidy empty parent directories strictly beneath `stopDir`. */
+  removeFile(absolutePath: string, stopDir?: string): Promise<void>;
+  /** Whether a generated-doc directory exists; throws machine failures (`throwIfMachineFailure`), returns `false` on absence. */
+  hasDirectory(absolutePath: string): Promise<boolean>;
+  /** Sorted absolute paths of existing generated files ending with `extension` under `baseLayerRoot`. Throws on unreadable folders. */
+  listFiles(baseLayerRoot: string, extension: string): Promise<string[]>;
+}
+
+/**
  * Checks ancestor folders above `workspaceRoot` for outer scans. Returns the outer scan folders when the host can
  * inspect ancestors (Node), or `undefined` when the host cannot see above the workspace (a browser page).
  */
@@ -92,7 +110,7 @@ export type ScansAboveFn = (
 
 /**
  * What runs the engine gives it of a workspace: a file's bytes, its first bytes, a folder's entries, and optional
- * ports for grammars, git, and ancestor scans. Paths are absolute, as the readers hold them.
+ * ports for grammars, git, ancestor scans, and generated-doc output. Paths are absolute, as the readers hold them.
  */
 export interface FileHost {
   /** A file's bytes. A failure is thrown as the host met it, so that it is read as the machine's or the file's. */
@@ -107,6 +125,8 @@ export interface FileHost {
   git?: GitHost;
   /** Optional check for outer scans above `workspaceRoot`; absent or returning `undefined` in browser hosts. */
   scansAbove?: ScansAboveFn;
+  /** Optional output sink for generated Live Docs and the derived graph index. */
+  output?: OutputSink;
 }
 
 /** A run's reads: each file read once through the host, decoded once, and kept for the run. */

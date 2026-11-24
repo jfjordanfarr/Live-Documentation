@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: `tests/page-scan/node-needs.json`
-- Generated At: 2026-11-24T07:54:08.458Z
+- Generated At: 2026-11-24T10:03:10.566Z
 
 ## Authored
 ### Purpose
@@ -194,13 +194,10 @@ The committed list of what of Node the scanning page's bundle needs: by engine a
 #### `engine:packages/engine/src/live-docs/discoveryCore.ts:node:path` {#symbol-enginepackagesenginesrclive-docsdiscoverycoretsnodepath}
 - Type: key
 
-#### `engine:packages/engine/src/live-docs/graphFiles.ts` {#symbol-enginepackagesenginesrclive-docsgraphfilests}
+#### `engine:packages/engine/src/live-docs/graphFilesCore.ts` {#symbol-enginepackagesenginesrclive-docsgraphfilescorets}
 - Type: key
 
-#### `engine:packages/engine/src/live-docs/graphFiles.ts:node:fs` {#symbol-enginepackagesenginesrclive-docsgraphfilestsnodefs}
-- Type: key
-
-#### `engine:packages/engine/src/live-docs/graphFiles.ts:node:path` {#symbol-enginepackagesenginesrclive-docsgraphfilestsnodepath}
+#### `engine:packages/engine/src/live-docs/graphFilesCore.ts:node:path` {#symbol-enginepackagesenginesrclive-docsgraphfilescoretsnodepath}
 - Type: key
 
 #### `engine:packages/engine/src/live-docs/heuristics/dom.ts` {#symbol-enginepackagesenginesrclive-docsheuristicsdomts}
@@ -245,9 +242,6 @@ The committed list of what of Node the scanning page's bundle needs: by engine a
 #### `engine:packages/generator/src/generatorCore.ts` {#symbol-enginepackagesgeneratorsrcgeneratorcorets}
 - Type: key
 
-#### `engine:packages/generator/src/generatorCore.ts:node:fs/promises` {#symbol-enginepackagesgeneratorsrcgeneratorcoretsnodefspromises}
-- Type: key
-
 #### `engine:packages/generator/src/generatorCore.ts:node:path` {#symbol-enginepackagesgeneratorsrcgeneratorcoretsnodepath}
 - Type: key
 
@@ -255,9 +249,6 @@ The committed list of what of Node the scanning page's bundle needs: by engine a
 - Type: key
 
 #### `standIns:node:fs` {#symbol-standinsnodefs}
-- Type: key
-
-#### `standIns:node:fs/promises` {#symbol-standinsnodefspromises}
 - Type: key
 
 #### `standIns:node:path` {#symbol-standinsnodepath}

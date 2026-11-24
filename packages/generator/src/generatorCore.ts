@@ -2,9 +2,11 @@
  * Pure host-driven Live Documentation generator core.
  *
  * @remarks
- * Written 2026-11-24 for Steps 7 & 8 of the road to one engine for a page and a command line
+ * Written 2026-11-24 for Steps 6, 7 & 8 of the road to one engine for a page and a command line
  * (`.mdmd/layer-3/engine-and-hosts.mdmd.md`, section 6). Runs the full generation pipeline over an explicit
- * {@link FileHost} without importing Node's disk host, grammar loader, or git subprocess wrappers:
+ * {@link FileHost} without importing `node:fs`, `node:fs/promises`, or Node's disk, grammar, output, or git wrappers:
+ * - generated Live Docs and the derived graph index are read, listed, written, and pruned through `host.output`;
+ * - markdown documents for `Cited By` are read through `host.read`;
  * - grammars are registered from `host.grammars` when supplied;
  * - git ignore listings and `--changed` status come from `host.git` when supplied, otherwise falling back cleanly
  *   to the root `.gitignore` (through `leaveOut.ts`) or an explicit `options.leaveOut` list;
@@ -15,7 +17,6 @@
  *
  * @module
  */
-import * as fs from "node:fs/promises";
 import path from "node:path";
 
 import {
@@ -57,16 +58,15 @@ import {
   renderLiveDoc,
   type LiveDoc
 } from "@live-documentation/engine/live-docs/document";
-import { readLiveDocGraph, writeLiveDocGraph } from "@live-documentation/engine/live-docs/graphFiles";
+import { readLiveDocGraphWithHost, writeLiveDocGraphWithHost } from "@live-documentation/engine/live-docs/graphFilesCore";
 import { markProcess } from "@live-documentation/engine/live-docs/processMark";
 import { citingDocuments, isMarkdownDocument, type DocumentText } from "@live-documentation/engine/live-docs/relatedDocs";
 import { analyzeSourceFile as defaultAnalyzeSourceFile } from "@live-documentation/engine/live-docs/sourceAnalysis";
 import { leaveOut, type LeaveOutInput } from "@live-documentation/engine/tooling/leaveOut";
 import { normalizeWorkspacePath, toWorkspaceRelativePath } from "@live-documentation/engine/tooling/pathUtils";
-import { readSourceReading, throwIfMachineFailure, type SourceTextReading } from "@live-documentation/engine/tooling/sourceText";
-import { type FileHost, type WorkspaceReads, workspaceReads } from "@live-documentation/engine/tooling/workspaceFiles";
+import { readSourceReading, type SourceTextReading } from "@live-documentation/engine/tooling/sourceText";
+import { type FileHost, type OutputSink, type WorkspaceReads, workspaceReads } from "@live-documentation/engine/tooling/workspaceFiles";
 import { workspaceListing } from "@live-documentation/engine/tooling/workspaceListing";
-import { walkWorkspace } from "@live-documentation/engine/tooling/workspaceWalk";
 
 /** Options for the Node-defaulted generator entry point (`generateLiveDocs`). */
 export interface GenerateLiveDocsOptions {
@@ -185,6 +185,10 @@ export async function runLiveDocs(
 
   const includeSet = new Set<string>((options.include ?? []).map((entry) => normalizeWorkspacePath(entry)));
   const host = options.host;
+  const output = host.output;
+  if (!output) {
+    throw new Error(`Cannot run Live Documentation in ${workspaceRoot}: host.output is required.`);
+  }
   if (host.grammars) {
     setGrammarHost(host.grammars);
   }
@@ -338,7 +342,7 @@ export async function runLiveDocs(
         normalizedSourcePath,
         docExtension
       );
-      const existingContent = await readFileIfExists(docPaths.absolute);
+      const existingContent = await output.readText(docPaths.absolute);
       const existing = readExisting(existingContent, noReaderHandles(normalizedSourcePath) ? UNREAD_AUTHORED_BLOCK : DEFAULT_AUTHORED_BLOCK);
       const timestampNow = now().toISOString();
       const initialGeneratedAt = existing.generatedAt ?? timestampNow;
@@ -399,8 +403,7 @@ export async function runLiveDocs(
         continue;
       }
 
-      await fs.mkdir(path.dirname(docPaths.absolute), { recursive: true });
-      await fs.writeFile(docPaths.absolute, rendered, "utf8");
+      await output.writeText(docPaths.absolute, rendered);
       written += 1;
     } catch (error) {
       // Whatever was thrown, a stack run short among it, a process that lives across generations may have read the file
@@ -410,8 +413,8 @@ export async function runLiveDocs(
       const docAbsolutePath = resolveLiveDocPaths(workspaceRoot, normalizedConfig, normalizedSourcePath, docExtension).absolute;
       // Where no stale doc is kept for its words (the history's scratch tree), no doc written on another day stands in
       // for a file this run could not map; a person's workspace keeps it, for its words, and the command says so.
-      if (options.keepAuthoredStaleDocs === false && !options.dryRun) await removeDocOfUnmapped(docAbsolutePath);
-      else await removeRefusedDoc(docAbsolutePath, options.dryRun ?? false);
+      if (options.keepAuthoredStaleDocs === false && !options.dryRun) await removeDocOfUnmapped(docAbsolutePath, output);
+      else await removeRefusedDoc(docAbsolutePath, options.dryRun ?? false, output);
     }
   }
 
@@ -425,14 +428,14 @@ export async function runLiveDocs(
       candidateSourcePaths: changedPaths,
       dryRun: options.dryRun ?? false,
       keepAuthored: options.keepAuthoredStaleDocs ?? true,
-      host,
+      output,
       logger
     });
   }
 
   let index: string | undefined;
   if (!options.dryRun) {
-    index = await writeLiveDocGraph(await readLiveDocGraph({ workspaceRoot, config: normalizedConfig, host }), workspaceRoot);
+    index = await writeLiveDocGraphWithHost(await readLiveDocGraphWithHost({ workspaceRoot, config: normalizedConfig, output }), workspaceRoot, output);
     logger.info(`Wrote the graph index to ${index}`);
   }
 
@@ -466,10 +469,10 @@ function noteReading(readings: SourceReadings, sourcePath: string, reading: Sour
  * person's: the leftover of an earlier run that stopped on that file, which would otherwise stop the index's read.
  * A doc the reader reads, or one that holds authored words, is left as it is.
  */
-async function removeRefusedDoc(docAbsolutePath: string, dryRun: boolean): Promise<void> {
+async function removeRefusedDoc(docAbsolutePath: string, dryRun: boolean, output: OutputSink): Promise<void> {
   // A doc path longer than the disk holds holds no doc: the file is named as one that could not be mapped, and the run
   // goes on (until 2026-11-20 this read's failure stopped the whole run).
-  const text = await readFileIfExists(docAbsolutePath).catch((error: unknown) => {
+  const text = await output.readText(docAbsolutePath).catch((error: unknown) => {
     if ((error as NodeJS.ErrnoException).code === "ENAMETOOLONG") return undefined;
     throw error;
   });
@@ -480,7 +483,7 @@ async function removeRefusedDoc(docAbsolutePath: string, dryRun: boolean): Promi
     parseLiveDoc(text);
   } catch (error) {
     if (error instanceof LiveDocSyntaxError && !hasMeaningfulAuthoredContent(authoredBlockOf(text))) {
-      await fs.rm(docAbsolutePath, { force: true });
+      await output.removeFile(docAbsolutePath);
     }
   }
 }
@@ -489,13 +492,16 @@ async function removeRefusedDoc(docAbsolutePath: string, dryRun: boolean): Promi
  * Removes the doc of a file this run could not map, where no stale doc is kept for its words: a doc written on another
  * day must not stand in for it. A doc path longer than the disk holds holds no doc, so there is nothing to remove.
  */
-async function removeDocOfUnmapped(docAbsolutePath: string): Promise<void> {
+async function removeDocOfUnmapped(docAbsolutePath: string, output: OutputSink): Promise<void> {
   try {
-    await fs.rm(docAbsolutePath, { force: true });
+    await output.removeFile(docAbsolutePath);
   } catch (error) {
     if ((error as NodeJS.ErrnoException).code !== "ENAMETOOLONG") throw error;
   }
 }
+
+/** UTF-8 decoder keeping any leading byte-order mark intact, matching Node's `fs.readFile(..., "utf8")` byte-for-byte. */
+const utf8KeepingBom = new TextDecoder("utf-8", { ignoreBOM: true });
 
 /** The workspace's markdown documents with their text, as discovery finds them; another kind of document has no markdown links. */
 async function readMarkdownDocuments(
@@ -507,7 +513,10 @@ async function readMarkdownDocuments(
   warn: (message: string) => void
 ): Promise<DocumentText[]> {
   const documents = (await discoverDocumentsWithHost({ workspaceRoot, config, host, reads, leaveOut: leaveOutInput, warn })).filter(isMarkdownDocument);
-  return Promise.all(documents.map(async (relative) => ({ path: relative, text: await fs.readFile(path.join(workspaceRoot, relative), "utf8") })));
+  return Promise.all(documents.map(async (relative) => ({
+    path: relative,
+    text: utf8KeepingBom.decode(await host.read(path.join(workspaceRoot, relative)))
+  })));
 }
 
 /** The folders below the workspace that are scans of their own, as workspace-relative paths. */
@@ -592,24 +601,16 @@ async function pruneStaleLiveDocs(args: {
   candidateSourcePaths?: Set<string>;
   dryRun: boolean;
   keepAuthored: boolean;
-  host: FileHost;
+  output: OutputSink;
   logger: LiveDocGeneratorLogger;
 }): Promise<string[]> {
   const baseLayerRoot = path.resolve(args.workspaceRoot, args.config.root, args.config.baseLayer);
-  const exists = await directoryExists(baseLayerRoot);
+  const exists = await args.output.hasDirectory(baseLayerRoot);
   if (!exists) {
     return [];
   }
 
-  const walked = await walkWorkspace({ workspaceRoot: baseLayerRoot, host: args.host });
-  if (walked.unreadable.length > 0) {
-    throw walked.unreadable[0].error;
-  }
-  const files = walked.files
-    .filter((entry) => entry.relative.endsWith(args.config.extension))
-    .map((entry) => entry.absolute)
-    .sort();
-
+  const files = await args.output.listFiles(baseLayerRoot, args.config.extension);
   const removed: string[] = [];
 
   for (const absolute of files) {
@@ -622,7 +623,10 @@ async function pruneStaleLiveDocs(args: {
       continue;
     }
 
-    const content = await fs.readFile(absolute, "utf8");
+    const content = await args.output.readText(absolute);
+    if (content === undefined) {
+      continue;
+    }
     if (args.keepAuthored && hasMeaningfulAuthoredContent(authoredBlockOf(content))) {
       args.logger.info(`Preserving ${workspaceRelative} (authored content detected)`);
       continue;
@@ -635,62 +639,11 @@ async function pruneStaleLiveDocs(args: {
       continue;
     }
 
-    await fs.rm(absolute, { force: true });
-    await cleanupEmptyParents(path.dirname(absolute), baseLayerRoot);
+    await args.output.removeFile(absolute, baseLayerRoot);
     args.logger.info(`Deleted stale Live Doc ${workspaceRelative}`);
   }
 
   return removed;
-}
-
-/**
- * Whether the generated-doc directory exists before pruning it. A probe that fails for a cause of the machine's is not
- * a folder that is gone: the run stops with it, so that no pruning is skipped or done on a guess (since 2026-11-20).
- */
-async function directoryExists(candidate: string): Promise<boolean> {
-  try {
-    const stats = await fs.stat(candidate);
-    return stats.isDirectory();
-  } catch (error) {
-    throwIfMachineFailure(error);
-    return false;
-  }
-}
-
-/**
- * Removes empty folders left by a deleted doc, stopping before the docs root, or at a folder that is gone, holds
- * something or cannot be read or removed. A failure of any kind, the machine's among them, leaves the folder: this is
- * tidying, no doc and no fact is read from an empty folder, and a run stopped here would pass on a plain second try
- * with nothing mended, since the stale doc is already gone and its folder never visited again; on Windows a folder
- * another program holds (`EBUSY`, `EPERM`) is an ordinary thing to meet (the root's ruling, 2026-11-20).
- */
-async function cleanupEmptyParents(startDir: string, stopDir: string): Promise<void> {
-  const stop = path.resolve(stopDir);
-  let current = path.resolve(startDir);
-
-  while (current.startsWith(stop) && current !== stop) {
-    try {
-      const entries = await fs.readdir(current);
-      if (entries.length > 0) {
-        break;
-      }
-      await fs.rmdir(current);
-      current = path.dirname(current);
-    } catch {
-      break;
-    }
-  }
-}
-
-async function readFileIfExists(filePath: string): Promise<string | undefined> {
-  try {
-    return await fs.readFile(filePath, "utf8");
-  } catch (error) {
-    if ((error as NodeJS.ErrnoException).code === "ENOENT") {
-      return undefined;
-    }
-    throw error;
-  }
 }
 
 /** Composes the generated parts of a doc from its source analysis and the documents that cite it: the Entry lines and the sections. */

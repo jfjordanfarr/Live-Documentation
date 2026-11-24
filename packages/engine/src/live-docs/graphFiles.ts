@@ -9,14 +9,14 @@ import { promises as fs } from "node:fs";
 import path from "node:path";
 
 import { NODE_FILE_HOST } from "../tooling/nodeHost";
+import { createNodeOutputSink, NODE_OUTPUT_SINK } from "../tooling/nodeOutputSink";
 import { throwIfMachineFailure } from "../tooling/sourceText";
-import type { FileHost } from "../tooling/workspaceFiles";
-import { walkWorkspace } from "../tooling/workspaceWalk";
+import type { FileHost, OutputSink } from "../tooling/workspaceFiles";
 import type { Board } from "./board";
 import { folderOf } from "./boardGraph";
-import { LiveDocSyntaxError, parseLiveDoc } from "./document";
 import { contains, deriveEstateGraph, type EstateScan } from "./estateGraph";
-import { GRAPH_INDEX_FILE, deriveLiveDocGraph, type DocLocation, type LiveDocGraph } from "./graph";
+import type { DocLocation, LiveDocGraph } from "./graph";
+import { readLiveDocGraphWithHost, writeLiveDocGraphWithHost } from "./graphFilesCore";
 
 /**
  * Reads every Live Doc under the configured root and derives the graph.
@@ -25,28 +25,8 @@ import { GRAPH_INDEX_FILE, deriveLiveDocGraph, type DocLocation, type LiveDocGra
  * nobody may hand-edit can only be malformed by a generator bug.
  */
 export async function readLiveDocGraph(args: { workspaceRoot: string; config: DocLocation; host?: FileHost }): Promise<LiveDocGraph> {
-  const workspaceRoot = path.resolve(args.workspaceRoot);
-  const baseLayerRoot = path.resolve(workspaceRoot, args.config.root, args.config.baseLayer);
-  const walked = await walkWorkspace({ workspaceRoot: baseLayerRoot, host: args.host ?? NODE_FILE_HOST });
-  if (walked.unreadable.length > 0) {
-    throw walked.unreadable[0].error;
-  }
-  const absolutePaths = walked.files
-    .filter((entry) => entry.relative.endsWith(args.config.extension))
-    .map((entry) => entry.absolute);
-  const docs = await Promise.all(
-    absolutePaths.map(async (absolutePath) => {
-      const docPath = path.relative(workspaceRoot, absolutePath).split(path.sep).join("/");
-      const text = await fs.readFile(absolutePath, "utf8");
-      try {
-        return { docPath, doc: parseLiveDoc(text) };
-      } catch (error) {
-        // One form for each value: a doc written before this version of the generator can hold one it no longer writes.
-        throw error instanceof LiveDocSyntaxError ? new Error(`${docPath}: ${error.message}. The grammar reads one form of each value; if the doc was written by an earlier version of the generator, \`live-docs:generate\` rewrites it.`) : error;
-      }
-    })
-  );
-  return deriveLiveDocGraph(docs, args.config);
+  const output = args.host?.output ?? createNodeOutputSink(args.host ?? NODE_FILE_HOST);
+  return readLiveDocGraphWithHost({ workspaceRoot: args.workspaceRoot, config: args.config, output });
 }
 
 /** What reading an estate found: its graph, the scans it read, and what it found wanting. */
@@ -117,10 +97,6 @@ export async function readEstateGraph(args: { workspaceRoot: string; config: Doc
  *
  * @returns The workspace-relative path written.
  */
-export async function writeLiveDocGraph(graph: LiveDocGraph, workspaceRoot: string): Promise<string> {
-  const relative = path.posix.join(graph.root, GRAPH_INDEX_FILE);
-  const absolute = path.resolve(workspaceRoot, relative);
-  await fs.mkdir(path.dirname(absolute), { recursive: true });
-  await fs.writeFile(absolute, `${JSON.stringify(graph, null, 2)}\n`, "utf8");
-  return relative;
+export async function writeLiveDocGraph(graph: LiveDocGraph, workspaceRoot: string, output: OutputSink = NODE_OUTPUT_SINK): Promise<string> {
+  return writeLiveDocGraphWithHost(graph, workspaceRoot, output);
 }
