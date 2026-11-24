@@ -2336,18 +2336,10 @@ export class LocalViewController implements LocalViewApi {
     this.cancelArrival();
     this.arrivalPending = false;
     this.readingFrameTarget = null;
-    this.cancelInertia();
-    const current = this.runtime.mapAnimationTarget ?? this.mapTransform;
-    const next = { ...current, x: current.x - shift };
-    if (prefersReducedMotion()) {
-      cancelAnimationFrame(this.runtime.mapAnimationFrame);
-      this.runtime.mapAnimationTarget = null;
-      this.mapTransform = next;
-      this.updateMapTransform();
-      this.drawConnections();
-      return;
-    }
-    this.animateCamera(next);
+    // The box was measured where the camera stands now, so a move in flight ends there and the shift is taken from it.
+    cancelAnimationFrame(this.runtime.mapAnimationFrame);
+    this.runtime.mapAnimationTarget = null;
+    this.easeFollowing({ ...this.mapTransform, x: this.mapTransform.x - shift }, this.frameRect());
   }
 
   /**

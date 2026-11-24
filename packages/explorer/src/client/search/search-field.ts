@@ -85,6 +85,21 @@ function rowKey(row: FieldRow): string {
   }
 }
 
+/**
+ * Keep a scrolling list's `data-scroll-start` and `data-scroll-end` saying whether more of it lies before or after what
+ * shows on its axis, for its fades; both false while it is hidden. Returns the sync, for a change of content to call.
+ */
+export function scrollFades(list: HTMLElement, axis: "x" | "y"): () => void {
+  const sync = (): void => {
+    const [at, shown, whole] = axis === "x" ? [list.scrollLeft, list.clientWidth, list.scrollWidth] : [list.scrollTop, list.clientHeight, list.scrollHeight];
+    list.dataset.scrollStart = String(!list.hidden && at > 2);
+    list.dataset.scrollEnd = String(!list.hidden && at + shown < whole - 2);
+  };
+  list.addEventListener("scroll", sync, { passive: true });
+  if (typeof ResizeObserver === "function") new ResizeObserver(sync).observe(list);
+  return sync;
+}
+
 /** Make a search field over an input and a results element: typing searches the scope, the arrows walk the rows, Enter or a click chooses, Escape settles. */
 export function createSearchField(options: SearchFieldOptions): SearchField {
   const { input, results, onChoose } = options;
@@ -106,14 +121,7 @@ export function createSearchField(options: SearchFieldOptions): SearchField {
   input.setAttribute("aria-expanded", "false");
   results.setAttribute("role", "listbox");
 
-  const syncResultsFade = (): void => {
-    const start = !results.hidden && results.scrollTop > 2;
-    const end = !results.hidden && results.scrollTop + results.clientHeight < results.scrollHeight - 2;
-    results.dataset.scrollStart = String(start);
-    results.dataset.scrollEnd = String(end);
-  };
-  results.addEventListener("scroll", syncResultsFade, { passive: true });
-  if (typeof ResizeObserver === "function") new ResizeObserver(syncResultsFade).observe(results);
+  const syncResultsFade = scrollFades(results, "y");
 
   /** A row; `words` marks a badge that is a sentence of the scope's, drawn as words rather than as a kind's capitals. */
   const row = (kind: string, name: string, badge: string, context: string, apart = false, words = false): string =>
@@ -215,8 +223,7 @@ export function createSearchField(options: SearchFieldOptions): SearchField {
     if (emptyShown) withdraw(NOTHING_FOUND);
     emptyShown = false;
     results.hidden = true;
-    results.dataset.scrollStart = "false";
-    results.dataset.scrollEnd = "false";
+    syncResultsFade();
     results.innerHTML = "";
     rows = [];
     selected = -1;

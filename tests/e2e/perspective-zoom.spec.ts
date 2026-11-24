@@ -325,50 +325,51 @@ test("2D connections-look transition materializes held titles and settles an off
   await page.goto(`/samples/estate/?view=local&node=${encodeURIComponent(service)}`);
   await expect(page.locator(`#map-container .node-card[data-id="${service}"]`)).toBeVisible();
   await localMapSettled(page);
+  // Out to the connections look, where a card draws its held title from `::after`.
+  const map = page.locator("#map-container");
+  for (let press = 0; press < 6 && await map.getAttribute("data-look") !== "connections"; press += 1) {
+    await page.getByRole("button", { name: "Zoom Out", exact: true }).click();
+  }
+  await expect(map).toHaveAttribute("data-look", "connections");
+  await localMapSettled(page);
   await page.waitForTimeout(300);
 
-  // Sample the frozen card copy as soon as the transition layer mounts: held titles from ::after must be present as text.
-  const copyProbe = page.evaluate(async () => {
-    return await new Promise<{ found: boolean; nonEmptyTitle: boolean; sample: string }>(resolve => {
+  // Sample the frozen card copy as soon as the transition layer mounts. A live element's text never holds its `::after`
+  // content, so the held title's lines (`data-lines-*`, joined by line breaks) standing more often in the copy's text than
+  // in the live card's prove that the copy materialized the pseudo-element, not merely kept the plain name.
+  const copyProbe = page.evaluate(async (id: string) => {
+    const live = document.querySelector<HTMLElement>(`#map-container .node-card[data-id="${CSS.escape(id)}"]`)!;
+    const held = live.querySelector<HTMLElement>(".local-file-name-held")!;
+    const lines = held.getAttributeNames().filter(name => name.startsWith("data-lines-")).map(name => held.getAttribute(name)!).filter(Boolean);
+    const liveText = live.textContent ?? "";
+    const times = (text: string, part: string): number => text.split(part).length - 1;
+    return await new Promise<{ found: boolean; materialized: string | null; sample: string }>(resolve => {
       const deadline = performance.now() + 8000;
       const poll = (): void => {
-        const layer = document.querySelector<HTMLElement>(".perspective-transition[data-graph-files]");
-        if (layer) {
-          const card = layer.querySelector<HTMLElement>('[data-node-id="PaymentService/PaymentService.cs"]');
-          const text = card?.textContent?.replace(/\s+/gu, " ").trim() ?? "";
-          resolve({ found: Boolean(card), nonEmptyTitle: text.includes("Payment") && text.includes("Service"), sample: text.slice(0, 120) });
+        // The file's frozen card stands just before its morphing name label (which carries the id, and only the plain name).
+        const label = document.querySelector<HTMLElement>(`.perspective-transition[data-graph-files] .perspective-file-name[data-node-id="${CSS.escape(id)}"]`);
+        const card = label?.previousElementSibling?.matches(".perspective-card") ? label.previousElementSibling : null;
+        if (label || performance.now() > deadline) {
+          const text = card?.textContent ?? "";
+          resolve({ found: Boolean(card), materialized: lines.find(each => times(text, each) > times(liveText, each)) ?? null, sample: text.slice(0, 160) });
           return;
         }
-        if (performance.now() > deadline) { resolve({ found: false, nonEmptyTitle: false, sample: "" }); return; }
         requestAnimationFrame(poll);
       };
       requestAnimationFrame(poll);
     });
-  });
+  }, service);
 
   await page.getByRole("button", { name: "3D", exact: true }).click();
   const copied = await copyProbe;
   expect(copied.found, "frozen copy of PaymentService.cs mounted in transition layer").toBe(true);
-  expect(copied.nonEmptyTitle, `frozen copy carries materialized ::after held title (got: ${copied.sample})`).toBe(true);
+  expect(copied.materialized, `frozen copy carries the materialized ::after held title (got: ${JSON.stringify(copied.sample)})`).not.toBeNull();
   await expect(page.locator("#view-graph")).toHaveClass(/active/);
   await expect(page.locator(".perspective-transition")).toHaveCount(0);
   await expect(page.locator("#graph-svg")).toHaveAttribute("aria-busy", "false", { timeout: 25_000 });
 
   // After the 2D -> 3D morph completes, the camera releases the 2D corner anchor and settles the subject cleanly into the center band.
   const canvas = (await page.locator("#graph-svg").boundingBox())!;
-  await expect.poll(async () => {
-    const subject = (await renderedNodes(page)).find(node => node.id === service);
-    if (!subject) return null;
-    return {
-      nx: (subject.x - canvas.x) / canvas.width,
-      ny: (subject.y - canvas.y) / canvas.height
-    };
-  }, { timeout: 10_000, message: "3D subject settles out of the top-right corner into the viewport center" }).toEqual(
-    expect.objectContaining({
-      nx: expect.any(Number),
-      ny: expect.any(Number)
-    })
-  );
   await expect.poll(async () => {
     const subject = (await renderedNodes(page)).find(node => node.id === service);
     if (!subject) return false;

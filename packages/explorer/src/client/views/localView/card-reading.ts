@@ -690,18 +690,14 @@ function measureRooms(card: HTMLElement, resistances: LadderResistances, looks: 
       const header = connectionsHeaderHeight(name);
       const kept = fileKeptWrites(card, name, keep, { x: (titleRect.left - cardRect.left) / k - card.clientLeft, y: (titleRect.top - cardRect.top) / k - card.clientTop });
       const keptOn = kept.some(([, prop, val]) => prop === "local-file-kept-on" && val === true);
-      const primaryDrawn = [...grid.querySelectorAll<HTMLElement>(".symbol-row")].some(row => row.offsetHeight > 0);
-      const refoldFree = primaryDrawn
-        ? Math.max((grid.getBoundingClientRect().bottom - cardRect.top) / k, internalsBottom) + headGap
-        : (titleRect.top - cardRect.top) / k + header + (keptOn ? FILE_KEPT_AIR + NAME_LINE * LOOK_SCALES.connections : 0);
-      const refoldOut = refoldWrites(card, refold, { k, cardRect, free: refoldFree, shift: headGap });
+      const below = { k, top: cardRect.top, titleTop: titleRect.top, header, keptOn };
+      const refoldOut = refoldWrites(card, refold, { k, cardRect, free: freeBelow(grid, internalsBottom, headGap, below), shift: headGap });
       const lastGrid = [...card.querySelectorAll<HTMLElement>(".symbol-grid")].at(-1) ?? grid;
+      const shift = headGap + refoldOut.extraGap;
       const foot = footWrites(card, footCounts, {
-        k, cardRect, grid: lastGrid,
-        internalsBottom: lastGrid === grid ? internalsBottom : 0,
-        internalsExtraGap: lastGrid === grid ? internalsExtraGap : 0,
-        titleTop: titleRect.top, header,
-        shift: headGap + refoldOut.extraGap
+        k, cardRect, shift,
+        free: freeBelow(lastGrid, lastGrid === grid ? internalsBottom : 0, shift, below),
+        internalsExtraGap: lastGrid === grid ? internalsExtraGap : 0
       });
       const added = refoldOut.extraGap + foot.extraGap;
       if (added > 0 && !filesOnly) rooms.cardH = fixed(rooms.cardH + added);
@@ -929,6 +925,17 @@ function connectionsHeaderHeight(name: HeldName): number {
 }
 
 /**
+ * Where the room for a card's held foot controls begins in the connections look, in the map's own units from the card's
+ * top: below a grid's drawn rows (and Internals' held height), moved by `shift`; or, on a card that draws none, below
+ * its held name and, where it keeps one, its kept line.
+ */
+function freeBelow(grid: HTMLElement, internalsBottom: number, shift: number, at: { k: number; top: number; titleTop: number; header: number; keptOn: boolean }): number {
+  return [...grid.querySelectorAll<HTMLElement>(".symbol-row")].some(row => row.offsetHeight > 0)
+    ? Math.max((grid.getBoundingClientRect().bottom - at.top) / at.k, internalsBottom) + shift
+    : (at.titleTop - at.top) / at.k + at.header + (at.keptOn ? FILE_KEPT_AIR + NAME_LINE * LOOK_SCALES.connections : 0);
+}
+
+/**
  * An expanded card's refold control ("−N symbols", between the connected rows + Internals and `.node-symbols-unconnected`)
  * in the connections look: held at the look's scale about its own foot so it stays clear of the unconnected rows below,
  * with `--refold-gap` adding any extra room needed above it to clear Internals (or the held header when no primary rows stand).
@@ -962,7 +969,7 @@ function refoldWrites(card: HTMLElement, refold: HTMLElement | null, at: { k: nu
  * leaves less room than the held counts need, `--foot-gap` adds the exact whole pixels to the last `.node-symbols` in the
  * card's zoom-independent layout so every count that fits across stands clear.
  */
-function footWrites(card: HTMLElement, counts: readonly HTMLElement[], at: { k: number; cardRect: DOMRect; grid: HTMLElement; internalsBottom: number; internalsExtraGap: number; titleTop: number; header: number; shift: number }): { writes: RoomWrite[]; extraGap: number } {
+function footWrites(card: HTMLElement, counts: readonly HTMLElement[], at: { k: number; cardRect: DOMRect; free: number; internalsExtraGap: number; shift: number }): { writes: RoomWrite[]; extraGap: number } {
   if (!counts.length) {
     return {
       writes: [[card, "--foot-gap", at.internalsExtraGap > 0 ? String(at.internalsExtraGap) : ""]],
@@ -985,9 +992,7 @@ function footWrites(card: HTMLElement, counts: readonly HTMLElement[], at: { k: 
       frame: count.classList.contains("local-reveal-connections") ? 3 : 2
     };
   });
-  const drawnRows = [...at.grid.querySelectorAll<HTMLElement>(".symbol-row")].some(row => row.offsetHeight > 0);
-  const free = drawnRows ? Math.max((at.grid.getBoundingClientRect().bottom - top) / k, at.internalsBottom) + at.shift : (at.titleTop - top) / k + at.header;
-  const { held, above, extraGap } = footHold(boxes, free, right, scale, 3, CONTROLS_GAP);
+  const { held, above, extraGap } = footHold(boxes, at.free, right, scale, 3, CONTROLS_GAP);
   const writes: RoomWrite[] = [[card, "--foot-scale", String(scale)], [card, "--foot-gap", extraGap > 0 ? String(extraGap) : ""]];
   for (const [index, count] of counts.entries()) writes.push([count, "local-foot-held", held[index]], [count, "--foot-y", above[index].toFixed(2)]);
   return { writes, extraGap };
@@ -1054,7 +1059,7 @@ const HELD_LOOKS: readonly ZoomLook[] = ["connections", "overview"];
  * which are the name's own units. Widths are kept per font, since every card's name is measured again for each band
  * and step, mostly in the same pieces.
  */
-function textMeasure(style: CSSStyleDeclaration): (text: string) => number {
+export function textMeasure(style: CSSStyleDeclaration): (text: string) => number {
   const font = `${style.fontStyle} ${style.fontWeight} ${style.fontSize} ${style.fontFamily}`;
   const spacing = style.letterSpacing === "normal" ? "0px" : style.letterSpacing;
   const key = `${font}|${spacing}`;

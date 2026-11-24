@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/explorer/src/client/views/localView/branch-renderer.ts`
-- Generated At: 2026-11-24T17:39:08.120Z
+- Generated At: 2026-11-24T19:42:48.362Z
 
 ## Authored
 ### Purpose
@@ -163,11 +163,13 @@ competition begins from the new picture.
 
 #### `syncHandleParents` {#symbol-synchandleparents}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/branch-renderer.ts#L829)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/branch-renderer.ts#L760)
 - Parameters: `stage`: [`BranchStage`](#symbol-branchstage)
 
 ##### `syncHandleParents` — Summary
-Re-fit every directory handle's segment-aware parent path after a zoom look or LOD scale change.
+Keep each directory handle's parent path cut on whole segments (`…/engine/src/`), never mid-word (`…rer/`), in the
+room its line leaves, from the row's own unscaled width so that zooming back in restores the whole path. Every label is
+read before any path is written, so that a pass lays the page out once rather than once a label.
 <!-- LIVE-DOC:END Public Symbols -->
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
@@ -225,6 +227,7 @@ Re-fit every directory handle's segment-aware parent path after a zoom look or L
 - [`card-factory.createNodeCard`](./card-factory.ts.mdmd.md#symbol-createnodecard)
 - [`card-factory.hasCloseAction`](./card-factory.ts.mdmd.md#symbol-hascloseaction)
 - [`card-reading.markFirstPin`](./card-reading.ts.mdmd.md#symbol-markfirstpin)
+- [`card-reading.textMeasure`](./card-reading.ts.mdmd.md#symbol-textmeasure)
 - [`connections.drawsReference`](./connections.ts.mdmd.md#symbol-drawsreference)
 - [`controller.LocalViewController`](./controller.ts.mdmd.md#symbol-localviewcontroller) (type-only)
 - [`cycle-trials.CycleTrial`](./cycle-trials.ts.mdmd.md#symbol-cycletrial) (type-only)

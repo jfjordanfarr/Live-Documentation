@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/explorer/src/client/views/localView/card-reading.ts`
-- Generated At: 2026-11-24T17:53:45.000Z
+- Generated At: 2026-11-24T19:42:48.524Z
 
 ## Authored
 ### Purpose
@@ -94,9 +94,19 @@ prose fades (the owner, 2026-11-05: "I really would prefer that the cards don't 
 out"). With fixed slots every symbol keeps the same allotment of text lines; books fold or restore their text,
 while names open full descriptions in the reader.
 
+#### `textMeasure` {#symbol-textmeasure}
+- Type: function
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/card-reading.ts#L1062)
+- Parameters: `style`: `CSSStyleDeclaration`
+
+##### `textMeasure` — Summary
+A text's width in its element's font, without laying anything out: a canvas measures it in the font's own pixels,
+which are the name's own units. Widths are kept per font, since every card's name is measured again for each band
+and step, mostly in the same pieces.
+
 #### `markFirstPin` {#symbol-markfirstpin}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/card-reading.ts#L1119)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/card-reading.ts#L1124)
 
 ##### `markFirstPin` — Summary
 Write the pin depths for a card whose rows were just ordered, and its held name's lines at the overview band, whose

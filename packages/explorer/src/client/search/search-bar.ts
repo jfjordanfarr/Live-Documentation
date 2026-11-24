@@ -14,7 +14,7 @@ import { requireElement } from "../dom";
 import type { PathHop, Reach } from "../pathfind";
 import { destinationScope, type SearchHit, type SearchIndex, type SearchScope } from "./graph-search";
 import { disambiguateHopContexts } from "./path-hops";
-import { createSearchField } from "./search-field";
+import { createSearchField, scrollFades } from "./search-field";
 
 /** The words a field shows for a pinned thing or a destination: its name, and where it stands for the tooltip. */
 export interface SearchWords {
@@ -88,14 +88,7 @@ export function createSearchBar(options: SearchBarOptions): SearchBar {
   const localMap = requireElement("view-map");
   const askWords = destinationInput.placeholder;
 
-  const syncStripFade = (): void => {
-    const start = !strip.hidden && strip.scrollLeft > 2;
-    const end = !strip.hidden && strip.scrollLeft + strip.clientWidth < strip.scrollWidth - 2;
-    strip.dataset.scrollStart = String(start);
-    strip.dataset.scrollEnd = String(end);
-  };
-  strip.addEventListener("scroll", syncStripFade, { passive: true });
-  if (typeof ResizeObserver === "function") new ResizeObserver(syncStripFade).observe(strip);
+  const syncStripFade = scrollFades(strip, "x");
 
   let everything: SearchScope = { index: options.index };
   let reachShown: Reach | null = null;
@@ -251,8 +244,7 @@ export function createSearchBar(options: SearchBarOptions): SearchBar {
       note = null;
       strip.innerHTML = "";
       strip.hidden = true;
-      strip.dataset.scrollStart = "false";
-      strip.dataset.scrollEnd = "false";
+      syncStripFade();
       localMap.classList.remove("has-path");
     },
 

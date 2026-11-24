@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: `tests/e2e/local-map-search.spec.ts`
-- Generated At: 2026-11-22T02:10:45.828Z
+- Generated At: 2026-11-24T20:28:39.060Z
 
 ## Authored
 ### Purpose
@@ -28,7 +28,6 @@ _No public symbols detected_
 - [`local-storage.PERSISTED_UI_KEY`](../../packages/explorer/src/client/persistence/local-storage.ts.mdmd.md#symbol-persisted_ui_key)
 - [`local-storage.PERSISTED_UI_VERSION`](../../packages/explorer/src/client/persistence/local-storage.ts.mdmd.md#symbol-persisted_ui_version)
 - [`scopes.FIVE_ESTATE`](./scopes.ts.mdmd.md#symbol-five_estate)
-- [`scopes.FIVE_REPOSITORY`](./scopes.ts.mdmd.md#symbol-five_repository)
 - [`still-picture.AT_READING_SIZE`](./still-picture.ts.mdmd.md#symbol-at_reading_size)
 - [`still-picture.localMapSettled`](./still-picture.ts.mdmd.md#symbol-localmapsettled)
 - [`still-picture.localRetainUrl`](./still-picture.ts.mdmd.md#symbol-localretainurl)

@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/explorer/src/client/search/search-bar.ts`
-- Generated At: 2026-11-24T11:19:16.147Z
+- Generated At: 2026-11-24T19:42:47.883Z
 
 ## Authored
 ### Purpose
@@ -64,6 +64,7 @@ The words a field shows for a pinned thing or a destination: its name, and where
 - [`graph-search.destinationScope`](./graph-search.ts.mdmd.md#symbol-destinationscope)
 - [`path-hops.disambiguateHopContexts`](./path-hops.ts.mdmd.md#symbol-disambiguatehopcontexts)
 - [`search-field.createSearchField`](./search-field.ts.mdmd.md#symbol-createsearchfield)
+- [`search-field.scrollFades`](./search-field.ts.mdmd.md#symbol-scrollfades)
 - [`types.ExplorerNodePayload`](../../shared/types.ts.mdmd.md#symbol-explorernodepayload) (type-only)
 <!-- LIVE-DOC:END Dependencies -->
 

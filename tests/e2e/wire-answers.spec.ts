@@ -249,16 +249,16 @@ test.describe("Wire Answers", () => {
     await page.mouse.down();
     await page.mouse.up();
     expect((await answer(page))?.pinned).toBe(true);
-    // A press elsewhere: on a card's directory line, which is no control and no wire.
+    // A press elsewhere: on a card's path line, which is no control and no wire.
     const elsewhere = await page.evaluate(() => {
       const view = document.querySelector("#view-map")!.getBoundingClientRect();
-      for (const line of document.querySelectorAll("#map-container .node-card .node-directory")) {
+      for (const line of document.querySelectorAll("#map-container .node-card .node-path")) {
         const box = line.getBoundingClientRect(), x = box.left + 4, y = box.top + box.height / 2;
         if (box.width > 8 && x > view.left && x < view.right && y > view.top + 60 && y < view.bottom - 80 && line.contains(document.elementFromPoint(x, y))) return { x, y };
       }
       return null;
     });
-    expect(elsewhere, "a card's directory line in view").not.toBeNull();
+    expect(elsewhere, "a card's path line in view").not.toBeNull();
     await page.mouse.move(elsewhere!.x, elsewhere!.y);
     await page.mouse.down();
     await page.mouse.up();

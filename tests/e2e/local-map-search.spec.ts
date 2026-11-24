@@ -1,7 +1,7 @@
 import { expect, test, type Page } from "@playwright/test";
 
 import { PERSISTED_UI_KEY, PERSISTED_UI_VERSION } from "../../packages/explorer/src/client/persistence/local-storage";
-import { FIVE_ESTATE, FIVE_REPOSITORY } from "./scopes";
+import { FIVE_ESTATE } from "./scopes";
 import { AT_READING_SIZE, localMapSettled, localRetainUrl, panIntoView } from "./still-picture";
 
 /**
@@ -18,7 +18,7 @@ test.use({ viewport: { width: 1600, height: 1000 } });
 
 interface SearchReading { status: string; tried: number; next: number; adopted: number; shown: number; score: number; start: string; starts: number; priced: number | null }
 
-async function open(page: Page, localMap: Record<string, number>, base = "/", files: readonly string[] = FIVE_REPOSITORY): Promise<void> {
+async function open(page: Page, localMap: Record<string, number>, base = "/samples/estate/", files: readonly string[] = FIVE_ESTATE): Promise<void> {
   await page.addInitScript(({ key, value }) => { window.localStorage.setItem(key, value); }, { key: PERSISTED_UI_KEY, value: JSON.stringify({ version: PERSISTED_UI_VERSION, tuning: { localMap: { ...AT_READING_SIZE, ...localMap } } }) });
   await page.goto(localRetainUrl(base, files));
   await page.waitForSelector("#map-container .branch-mode", { timeout: 20_000 });
@@ -63,13 +63,10 @@ test("after the first picture the search tries further starts in idle time and m
 });
 
 test("a change of pins starts the search afresh, from the seed after the first paint's last", async ({ page }) => {
-  // Two complete competitions include boundary alignment after the four ordering seeds. The first took 27.7 s
-  // and 203 alignment trials with reading cards; the default 30 s cannot also cover the second competition.
-  test.setTimeout(90_000);
-  // The first paint takes the ranking's order alone; four starts and a patience of four then end capped, or settled when
-  // none of the four bettered the seed, which this picture does since document.ts grew its Entry lines (2026-10-15).
-  // Either way the search is over, which is what the change of pins must start afresh.
-  await open(page, { orderStarts: 0, searchStarts: 4, searchPatience: 4, moveMs: 0 });
+  // Held on the estate sample like the other two cases: on this repository's five files, folding unconnected rows exposed
+  // DEFAULT_LIVE_DOCUMENTATION_CONFIG as the first visible symbol row, whose fan-out pushed the second competition past 90 s (2026-11-24).
+  test.setTimeout(60_000);
+  await open(page, { orderStarts: 0, searchStarts: 4, searchPatience: 4, moveMs: 0 }, "/samples/estate/", FIVE_ESTATE);
   await localMapSettled(page, 45_000);
   const before = await readSearch(page);
   expect(["capped", "settled"]).toContain(before.status);

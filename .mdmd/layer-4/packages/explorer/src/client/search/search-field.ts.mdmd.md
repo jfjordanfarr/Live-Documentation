@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/explorer/src/client/search/search-field.ts`
-- Generated At: 2026-11-22T07:12:54.397Z
+- Generated At: 2026-11-24T19:42:47.891Z
 
 ## Authored
 ### Purpose
@@ -47,9 +47,17 @@ A search field as the bar drives it: show words while nobody types, take focus, 
 The words of a fold for a screen reader and a resting pointer: what it counts, and what a press shows. On the
 screen it is an arrow and the count, and the kind's glyph where its place does not say the kind.
 
+#### `scrollFades` {#symbol-scrollfades}
+- Type: function
+- Source: [source](../../../../../../../packages/explorer/src/client/search/search-field.ts#L92)
+
+##### `scrollFades` — Summary
+Keep a scrolling list's `data-scroll-start` and `data-scroll-end` saying whether more of it lies before or after what
+shows on its axis, for its fades; both false while it is hidden. Returns the sync, for a change of content to call.
+
 #### `createSearchField` {#symbol-createsearchfield}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/search/search-field.ts#L89)
+- Source: [source](../../../../../../../packages/explorer/src/client/search/search-field.ts#L104)
 - Returns: [`SearchField`](#symbol-searchfield)
 - Parameters: `options`: [`SearchFieldOptions`](#symbol-searchfieldoptions)
 

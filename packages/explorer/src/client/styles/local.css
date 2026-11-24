@@ -604,6 +604,8 @@ span.local-disclosure { cursor: default; }
 .local-placed .local-directory-band .local-column, .local-placed .local-directory-band .local-pass-through { position: absolute; display: block; margin: 0; }
 .local-placed .local-column .node-card { margin: 0; }
 .local-directory-band .local-column-label { display: none; }
+/* History 2D cards carry .node-path and their directory membrane; hide the redundant italic footer as slot cards do. */
+#map-container:is(.history-dims, .history-glows) .node-directory { display: none; }
 .local-map-host:not(.symbol-hover-active) .branch-symbol-muted > * { opacity: var(--hover-dim-symbols, .5); }
 /* The directory flow trial's hover (2026-11-12): while a card of a picture whose opened directories stand in flow order
    is hovered or holds the keyboard's focus, its lines and the cards at their far ends keep their look and everything else
@@ -613,20 +615,12 @@ span.local-disclosure { cursor: default; }
 .flow-hover:not(.symbol-hover-active) .node-card:not(.flow-lit),
 .flow-hover:not(.symbol-hover-active) .local-directory-closed { opacity: var(--hover-dim-symbols, 0.5); }
 /* Dimmed cards shed their purple test-backed border and outer halo so non-partner cards do not glow brighter than the
-   hovered pair across Structure hover, symbol hover, and returning-wire hover (2026-11-24). */
-.flow-hover:not(.symbol-hover-active) .node-card.test-backed:not(.flow-lit),
-.connections-lit.symbol-hover-active .node-card.test-backed:not(.card-highlighted),
-.symbol-hover-active .local-column[data-position="left"] .node-card.test-backed:not(.card-highlighted),
-.symbol-hover-active .local-column[data-position="right"] .node-card.test-backed:not(.card-highlighted) {
-    border-color: var(--line-interactive);
-}
-.flow-hover:not(.symbol-hover-active) .node-card.test-backed:not(.flow-lit)::before,
-.connections-lit.symbol-hover-active .node-card.test-backed:not(.card-highlighted)::before,
-.symbol-hover-active .local-column[data-position="left"] .node-card.test-backed:not(.card-highlighted)::before,
-.symbol-hover-active .local-column[data-position="right"] .node-card.test-backed:not(.card-highlighted)::before {
-    opacity: 0;
-    box-shadow: none;
-}
+   hovered pair across Structure hover, symbol hover, and returning-wire hover (2026-11-24); the halo fades out by its
+   opacity alone, so that it fades as it comes back. */
+:is(.flow-hover:not(.symbol-hover-active) .node-card:not(.flow-lit), .connections-lit.symbol-hover-active .node-card:not(.card-highlighted),
+    .symbol-hover-active .local-column:is([data-position="left"], [data-position="right"]) .node-card:not(.card-highlighted)).test-backed { border-color: var(--line-interactive); }
+:is(.flow-hover:not(.symbol-hover-active) .node-card:not(.flow-lit), .connections-lit.symbol-hover-active .node-card:not(.card-highlighted),
+    .symbol-hover-active .local-column:is([data-position="left"], [data-position="right"]) .node-card:not(.card-highlighted)).test-backed::before { opacity: 0; }
 .local-directory-closed { transition: opacity 0.15s ease-out; }
 /* The room between two cards through which threaded wires pass; the router reads its place from the page. */
 .local-pass-through { flex: none; width: 100%; pointer-events: none; }

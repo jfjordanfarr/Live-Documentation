@@ -10,7 +10,7 @@ import { BAND_BORDER, hostOf, layoutScene, planBranches, type Scene, type SceneB
 import { beginSearch, endpointKey, judgeAlignment, judgeStart, nextTrialKind, pinFor, rowBounds, type CardRows, type ResolvedPin, type RowMeasure, type SearchState } from "./branch-search";
 import { arrangeExploration, edgeKey, exploreBranches, isClosedDirectory, orderExploration, type BranchGraph, type DirectoryDisclosure, type Exploration } from "./branches";
 import { countsOf, createClosedDirectory, createHiddenCells, createHiddenField, createNodeCard, hasCloseAction, PIN_GLYPH } from "./card-factory";
-import { markFirstPin } from "./card-reading";
+import { markFirstPin, textMeasure } from "./card-reading";
 import { drawsReference } from "./connections";
 import type { LocalViewController } from "./controller";
 import { cycleOrdersOf, horizontalWire, nextCycleTrial, returningLinks, standingOrders, type CycleTrial } from "./cycle-trials";
@@ -753,6 +753,34 @@ function fillLabel(controller: LocalViewController, label: HTMLElement, director
 }
 
 /**
+ * Keep each directory handle's parent path cut on whole segments (`…/engine/src/`), never mid-word (`…rer/`), in the
+ * room its line leaves, from the row's own unscaled width so that zooming back in restores the whole path. Every label is
+ * read before any path is written, so that a pass lays the page out once rather than once a label.
+ */
+export function syncHandleParents(stage: BranchStage): void {
+  const fits = [...stage.labels.values()].map(parentFit);
+  for (const fit of fits) if (fit && fit.path.textContent !== fit.text) fit.path.textContent = fit.text;
+}
+
+/**
+ * The parent's path a handle's line holds: the row's width less More and the name, and less what stands beside them on
+ * the name's line, the count where the wrapping kept it there or the marks at the basis local.css gives them.
+ */
+function parentFit(label: HTMLElement): { path: HTMLElement; text: string } | null {
+  const path = label.querySelector<HTMLElement>(".local-directory-parent"), full = path?.dataset.fullParent;
+  const row = label.querySelector<HTMLElement>(".local-directory-row"), controls = label.querySelector<HTMLElement>(".local-directory-controls");
+  if (!path || !full || !row || !controls) return null;
+  const rowWidth = parseFloat(getComputedStyle(row).width);
+  if (!(rowWidth > 0)) return null;
+  let room = rowWidth - controls.offsetWidth - 4 - (parseFloat(label.style.getPropertyValue("--dir-name")) || 0);
+  const count = label.querySelector<HTMLElement>(".local-directory-more"), leaf = label.querySelector<HTMLElement>(".local-directory-leaf");
+  const cells = label.querySelector<HTMLElement>(".local-directory-cells"), cellsStyle = cells && getComputedStyle(cells);
+  if (count?.offsetWidth && count.offsetTop === leaf?.offsetTop) room -= count.offsetWidth + (parseFloat(getComputedStyle(count).marginLeft) || 0);
+  else if (cellsStyle && cellsStyle.display !== "none") room -= Math.min(parseFloat(cellsStyle.flexBasis) || 0, parseFloat(cellsStyle.maxWidth) || Infinity);
+  return { path, text: fitParentPath(full, room, textMeasure(getComputedStyle(path))) };
+}
+
+/**
  * What a handle's line needs across, in the line's own units, read once from the label as laid out, after it is filled,
  * and written for the stylesheet. `--dir-name`: the chevron and the directory's own name whole, from which the
  * stylesheet brings the held line down in size before the name is cut, as a closed box's name is (2026-11-16, when
@@ -764,87 +792,26 @@ function fillLabel(controller: LocalViewController, label: HTMLElement, director
  * parent's path (the root's rule of 2026-11-17: the marks stand in the count's room, and cost the path no more than its
  * words did; local.css).
  */
-let handleCanvas: CanvasRenderingContext2D | undefined;
-const handleWidths = new Map<string, Map<string, number>>();
-
-/** Cached canvas width measurer for directory handle parent paths (no layout reads). */
-function handleTextMeasure(style: CSSStyleDeclaration): (text: string) => number {
-  const font = `${style.fontStyle} ${style.fontWeight} ${style.fontSize} ${style.fontFamily}`;
-  const spacing = style.letterSpacing === "normal" ? "0px" : style.letterSpacing;
-  const key = `${font}|${spacing}`;
-  let widths = handleWidths.get(key);
-  if (!widths) handleWidths.set(key, widths = new Map<string, number>());
-  const known = widths;
-  return text => {
-    let width = known.get(text);
-    if (width === undefined) {
-      handleCanvas ??= document.createElement("canvas").getContext("2d")!;
-      handleCanvas.font = font;
-      handleCanvas.letterSpacing = spacing;
-      known.set(text, width = handleCanvas.measureText(text).width);
+function writeHandleNeeds(labels: readonly HTMLElement[]): void {
+  const writes: Array<[HTMLElement, string, string]> = [];
+  for (const label of labels) {
+    const needName = !label.style.getPropertyValue("--dir-name"), needWords = !label.style.getPropertyValue("--cells-words"), needCount = !label.style.getPropertyValue("--dir-need");
+    const count = needCount ? label.querySelector<HTMLElement>(".local-directory-more") : null;
+    const words = needWords ? label.querySelector<HTMLElement>(".local-directory-cells-words") : null;
+    if (!needName && !words && !count) continue;
+    const leaf = label.querySelector<HTMLElement>(".local-directory-leaf");
+    if (!leaf || !leaf.scrollWidth) continue;
+    const nameWidth = HANDLE_INDENT + leaf.scrollWidth;
+    if (needName) writes.push([label, "--dir-name", String(nameWidth)]);
+    const row = words ? label.querySelector<HTMLElement>(".local-directory-row") : null;
+    if (words && row) {
+      // Read in the line's own units: the drawn width over the scale the row and the camera draw it at.
+      const drawn = row.getBoundingClientRect().width, own = parseFloat(getComputedStyle(row).width);
+      if (drawn > 0 && own > 0) writes.push([label, "--cells-words", (words.getBoundingClientRect().width * own / drawn + (parseFloat(getComputedStyle(words).marginLeft) || 0)).toFixed(3)]);
     }
-    return width;
-  };
-}
-
-/**
- * Keep a directory handle's parent path cleanly truncated on whole path segments (`…/engine/src/`)
- * instead of chopping mid-word (`…rer/`, `…owershell/`). Computes available width directly from
- * the row's own unscaled width so zooming back in always restores full parent segments.
- */
-function syncHandleParent(label: HTMLElement): void {
-  const path = label.querySelector<HTMLElement>(".local-directory-parent");
-  const full = path?.dataset.fullParent;
-  if (!path || !full) return;
-  const row = label.querySelector<HTMLElement>(".local-directory-row");
-  const controls = label.querySelector<HTMLElement>(".local-directory-controls");
-  if (!row || !controls) return;
-  const rowWidth = parseFloat(getComputedStyle(row).width);
-  if (!(rowWidth > 0)) return;
-  const controlsWidth = controls.offsetWidth + 4;
-  const nameWidth = parseFloat(label.style.getPropertyValue("--dir-name")) || 0;
-  const budget = Math.max(0, rowWidth - controlsWidth - nameWidth);
-  const measure = handleTextMeasure(getComputedStyle(path));
-  const count = label.querySelector<HTMLElement>(".local-directory-more");
-  const cells = label.querySelector<HTMLElement>(".local-directory-cells");
-  let available = budget;
-  if (count && count.offsetWidth) {
-    const need = parseFloat(label.style.getPropertyValue("--dir-need")) || 0;
-    if (rowWidth - controlsWidth >= need + 1) {
-      const countWidth = count.offsetWidth + (parseFloat(getComputedStyle(count).marginLeft) || 0);
-      available = Math.max(0, budget - countWidth);
-    }
-  } else if (cells && getComputedStyle(cells).display !== "none") {
-    const cellsWords = parseFloat(label.style.getPropertyValue("--cells-words")) || 0;
-    const cellsMax = parseFloat(cells.style.maxWidth) || Infinity;
-    const cellsBasis = Math.min(cellsWords, 56, cellsMax);
-    const fullWidth = measure(full);
-    available = Math.max(0, Math.min(fullWidth, rowWidth - controlsWidth - cellsBasis - nameWidth));
+    if (count && count.offsetWidth) writes.push([label, "--dir-need", String(Math.ceil(nameWidth + count.offsetWidth + (parseFloat(getComputedStyle(count).marginLeft) || 0)))]);
   }
-  const nextText = fitParentPath(full, available, measure);
-  if (path.textContent !== nextText) path.textContent = nextText;
-}
-
-/** Re-fit every directory handle's segment-aware parent path after a zoom look or LOD scale change. */
-export function syncHandleParents(stage: BranchStage): void {
-  for (const label of stage.labels.values()) syncHandleParent(label);
-}
-
-function writeHandleNeeds(label: HTMLElement): void {
-  const count = label.querySelector<HTMLElement>(".local-directory-more"), leaf = label.querySelector<HTMLElement>(".local-directory-leaf");
-  if (!leaf || !leaf.scrollWidth) return;
-  const nameWidth = HANDLE_INDENT + leaf.scrollWidth;
-  if (!label.style.getPropertyValue("--dir-name")) label.style.setProperty("--dir-name", String(nameWidth));
-  const words = label.querySelector<HTMLElement>(".local-directory-cells-words"), row = label.querySelector<HTMLElement>(".local-directory-row");
-  if (words && row && !label.style.getPropertyValue("--cells-words")) {
-    // Read in the line's own units: the drawn width over the scale the row and the camera draw it at.
-    const drawn = row.getBoundingClientRect().width, own = parseFloat(getComputedStyle(row).width);
-    if (drawn > 0 && own > 0) label.style.setProperty("--cells-words", (words.getBoundingClientRect().width * own / drawn + (parseFloat(getComputedStyle(words).marginLeft) || 0)).toFixed(3));
-  }
-  if (!label.style.getPropertyValue("--dir-need") && count && count.offsetWidth) {
-    label.style.setProperty("--dir-need", String(Math.ceil(nameWidth + count.offsetWidth + (parseFloat(getComputedStyle(count).marginLeft) || 0))));
-  }
-  syncHandleParent(label);
+  for (const [label, prop, value] of writes) label.style.setProperty(prop, value);
 }
 
 /**
@@ -1121,6 +1088,7 @@ function applyPose(stage: BranchStage, pose: Pose, bandPadding: number): void {
     const box = host ? pose.boxes.get(host) : undefined;
     return box ? { left: box.left, top: box.top } : { left: 0, top: 0 };
   };
+  const labels: HTMLElement[] = [];
   for (const box of pose.boxes.values()) {
     const element = stage.boxes.get(box.key);
     if (!element) continue;
@@ -1138,7 +1106,7 @@ function applyPose(stage: BranchStage, pose: Pose, bandPadding: number): void {
       label.style.width = `${width}px`;
       label.style.setProperty("--dir-inset", String(box.inset));
       label.style.setProperty("--dir-room", String(width));
-      writeHandleNeeds(label);
+      labels.push(label);
     }
   }
   for (const item of pose.items.values()) {
@@ -1148,6 +1116,9 @@ function applyPose(stage: BranchStage, pose: Pose, bandPadding: number): void {
     Object.assign(wrapper.style, { left: `${item.left - at.left}px`, width: `${item.width}px`, top: `${item.top - at.top}px` });
   }
   Object.assign(stage.root.style, { width: `${pose.pictureWidth}px`, height: `${pose.pictureHeight}px` });
+  // The labels' needs and paths are read once every place is written, so that the page is laid out for them once.
+  writeHandleNeeds(labels);
+  syncHandleParents(stage);
 }
 
 /**
@@ -1603,6 +1574,7 @@ function rowsOf(controller: LocalViewController, stage: BranchStage, scale: numb
     let internals: string | null = null;
     let header = 0;
     for (const [row, key] of rowKeys(card)) {
+      // A folded-away row is never a wire's end (never among the relevant or joined symbols), so it carries no pin to read.
       if (row.closest(".node-symbols-unconnected")) continue;
       // A row with a box of its own is read by that box, which is its allotment whatever stands in it: a slot row is as
       // tall as its slot lines and a short row as its head (2026-11-13), while their children may be hidden, taken out

@@ -189,8 +189,8 @@ export interface ShellSource<N extends ShellCandidate, T extends string = string
   /** Whether a link is a reference a shell's wire bundles: never containment nor a document's citation. */
   bundles: (link: FileConnection<T>) => boolean;
   /**
-   * What stands beyond the hops (a trial, 2026-11-18): everything, the default, every file of `hidden` held or lone; or
-   * the next step, only those `nextStepFiles` brings to the edge of what stands.
+   * What stands beyond the hops (a trial, 2026-11-18): the next step, Tuning's default, only those `nextStepFiles` brings
+   * to the edge of what stands; or everything, every file of `hidden` held or lone, which an absent reach also gives.
    */
   reach?: BeyondHops;
 }

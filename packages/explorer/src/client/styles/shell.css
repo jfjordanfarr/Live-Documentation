@@ -535,8 +535,6 @@
     outline: none;
 }
 .item-menu button:focus-visible {
-    background: var(--selected-subtle);
-    color: var(--text-strong);
     outline: 1px solid var(--state-selected);
     outline-offset: -1px;
 }

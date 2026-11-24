@@ -833,33 +833,41 @@ function buildPseudoCopy(
 ): HTMLSpanElement {
   const span = catalog.doc.createElement("span");
   if (pseudo.text) span.textContent = pseudo.text;
-  const baseline = tagBaseline(catalog, span);
+  // Its text is the span's own: a `content` declaration on an element would replace it.
+  const declarations = sparseDeclarations(pseudo.style, catalog, tagBaseline(catalog, span), parentValues).filter(declaration => !declaration.startsWith("content:"));
+  if (declarations.length > 0) span.style.cssText = declarations.join("");
+  return span;
+}
+
+/**
+ * The declarations a copy needs to look as `style` does: each that differs from a bare tag's baseline (non-inherited),
+ * the parent copy's value (inherited) or the colour (currentColor), each the copy also keeps as an attribute, a zero
+ * width whose border or outline style still draws, and no live animation. `own`, where given, takes every value read,
+ * for the copy's children to compare against.
+ */
+function sparseDeclarations(style: CSSStyleDeclaration, catalog: CopyStyleCatalog, baseline: TagBaseline, parentValues: readonly string[],
+  own: string[] | null = null, presentAttrs: ReadonlySet<string> | null = null): string[] {
   const { propNames, colorIndex, interactivityIndex, widthGuardIndices } = catalog;
   const { modes, values: refValues } = baseline;
-  const ps = pseudo.style;
-  const elColor = colorIndex >= 0 ? ps.getPropertyValue("color") : "";
+  const elColor = colorIndex >= 0 ? style.getPropertyValue("color") : "";
   const declarations: string[] = [];
   for (let i = 0; i < propNames.length; i++) {
     const name = propNames[i];
-    if (name === "content") continue;
-    const val = i === interactivityIndex ? "auto" : ps.getPropertyValue(name);
+    // A card is copied from the view shown or the view held, neither of them inert since 2026-11-22, but behind the modal
+    // reader every view is; the copy is of the picture as it was pressed, live, and stands in a layer that is inert itself.
+    const val = i === interactivityIndex ? "auto" : style.getPropertyValue(name);
+    if (own) own[i] = val;
     const mode = modes[i];
-    let emit: boolean;
-    if (mode === MODE_CONSTANT) emit = val !== refValues[i];
-    else if (mode === MODE_INHERIT) emit = val !== parentValues[i];
-    else if (mode === MODE_CURRENT_COLOR) emit = val !== elColor;
-    else emit = true;
+    let emit = presentAttrs?.has(name) || (mode === MODE_CONSTANT ? val !== refValues[i] : mode === MODE_INHERIT ? val !== parentValues[i] : mode === MODE_CURRENT_COLOR ? val !== elColor : true);
     if (!emit) {
       const styleIdx = widthGuardIndices[i];
-      if (styleIdx >= 0 && val === "0px" && ps.getPropertyValue(propNames[styleIdx]) !== "none") emit = true;
+      emit = styleIdx >= 0 && val === "0px" && style.getPropertyValue(propNames[styleIdx]) !== "none";
     }
     if (emit) declarations.push(`${name}: ${val};`);
   }
-  if (baseline.hasAnimation || ps.getPropertyValue("animation-name") !== "none") {
-    declarations.push("animation-name: none;");
-  }
-  if (declarations.length > 0) span.style.cssText = declarations.join("");
-  return span;
+  // Never replay live keyframe animations (such as local-look-* during .local-look-fading) on a frozen copy.
+  if (baseline.hasAnimation || style.getPropertyValue("animation-name") !== "none") declarations.push("animation-name: none;");
+  return declarations;
 }
 
 function* visualCopyStepsWithStyle(
@@ -897,34 +905,9 @@ function* visualCopyStepsWithStyle(
   // Emit only declarations that differ from a bare tag-matched baseline (non-inherited) or the parent copy's computed
   // style (inherited), skipping custom properties and active animations so copies stay pixel-identical while cutting
   // inline declarations ~15x (2026-11-24).
-  const baseline = tagBaseline(catalog, root);
-  const { propNames, colorIndex, interactivityIndex, widthGuardIndices } = catalog;
-  const { modes, values: refValues } = baseline;
-  const count = propNames.length;
   const needOwn = (deep && (root.childNodes.length > 0 || beforePseudo !== null || afterPseudo !== null)) || !deep;
-  const ownValues = needOwn ? new Array<string>(count) : parentValues;
-  const elColor = colorIndex >= 0 ? style.getPropertyValue("color") : "";
-  const declarations: string[] = [];
-  for (let i = 0; i < count; i++) {
-    const name = propNames[i];
-    // A card is copied from the view shown or the view held, neither of them inert since 2026-11-22, but behind the modal
-    // reader every view is; the copy is of the picture as it was pressed, live, and stands in a layer that is inert itself.
-    const val = i === interactivityIndex ? "auto" : style.getPropertyValue(name);
-    if (needOwn) (ownValues as string[])[i] = val;
-    let emit = presentAttrs !== null && presentAttrs.has(name);
-    if (!emit) {
-      const mode = modes[i];
-      if (mode === MODE_CONSTANT) emit = val !== refValues[i];
-      else if (mode === MODE_INHERIT) emit = val !== parentValues[i];
-      else if (mode === MODE_CURRENT_COLOR) emit = val !== elColor;
-      else emit = true;
-    }
-    if (!emit) {
-      const styleIdx = widthGuardIndices[i];
-      if (styleIdx >= 0 && val === "0px" && style.getPropertyValue(propNames[styleIdx]) !== "none") emit = true;
-    }
-    if (emit) declarations.push(`${name}: ${val};`);
-  }
+  const ownValues = needOwn ? new Array<string>(catalog.propNames.length) : parentValues;
+  const declarations = sparseDeclarations(style, catalog, tagBaseline(catalog, root), parentValues, needOwn ? ownValues as string[] : null, presentAttrs);
   // Preserve any inline-style or presentation-attribute property outside the stylesheet catalog (e.g. ad-hoc inline SVG rules).
   const inlineStyle = root.style;
   if (inlineStyle && inlineStyle.length > 0) {
@@ -941,10 +924,6 @@ function* visualCopyStepsWithStyle(
       const val = style.getPropertyValue(attr);
       if (val) declarations.push(`${attr}: ${val};`);
     }
-  }
-  // Never replay live keyframe animations (such as local-look-* during .local-look-fading) on a frozen copy.
-  if (baseline.hasAnimation || style.getPropertyValue("animation-name") !== "none") {
-    declarations.push("animation-name: none;");
   }
   if (declarations.length > 0) copy.style.cssText = declarations.join("");
   if (root instanceof HTMLCanvasElement && copy instanceof HTMLCanvasElement) copy.getContext("2d")?.drawImage(root, 0, 0);
