@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/explorer/src/client/views/perspectiveTransition.ts`
-- Generated At: 2026-11-24T09:10:39.640Z
+- Generated At: 2026-11-24T15:35:03.411Z
 
 ## Authored
 ### Purpose
@@ -115,11 +115,13 @@ zoom controls kept below it, which would otherwise grow the held map into that r
 - [`perspectiveGeometry.directoryOpacity`](./perspectiveGeometry.ts.mdmd.md#symbol-directoryopacity)
 - [`perspectiveGeometry.gatherWire`](./perspectiveGeometry.ts.mdmd.md#symbol-gatherwire)
 - [`perspectiveGeometry.outlineLength`](./perspectiveGeometry.ts.mdmd.md#symbol-outlinelength)
+- [`perspectiveGeometry.parseCssContent`](./perspectiveGeometry.ts.mdmd.md#symbol-parsecsscontent)
 - [`perspectiveGeometry.pathOutline`](./perspectiveGeometry.ts.mdmd.md#symbol-pathoutline)
 - [`perspectiveGeometry.perspectiveCorrespondences`](./perspectiveGeometry.ts.mdmd.md#symbol-perspectivecorrespondences)
 - [`perspectiveGeometry.perspectivePhases`](./perspectiveGeometry.ts.mdmd.md#symbol-perspectivephases)
 - [`perspectiveGeometry.polygonOutline`](./perspectiveGeometry.ts.mdmd.md#symbol-polygonoutline)
 - [`perspectiveGeometry.sampleOutline`](./perspectiveGeometry.ts.mdmd.md#symbol-sampleoutline)
+- [`perspectiveGeometry.tokenLabelPresence`](./perspectiveGeometry.ts.mdmd.md#symbol-tokenlabelpresence)
 <!-- LIVE-DOC:END Dependencies -->
 
 <!-- LIVE-DOC:BEGIN Cited By -->

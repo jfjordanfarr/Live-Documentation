@@ -2,7 +2,7 @@ import { settleViews } from "../dom";
 import { activePalette, mix, whenPaletteChanges } from "../palette";
 import { directoryNodeId } from "./forceGraphData";
 import type { SceneBody } from "./perspectiveBodies";
-import { directoryOpacity, gatherWire, outlineLength, pathOutline, perspectiveCorrespondences, perspectivePhases, polygonOutline, sampleOutline, type TransitionPoint } from "./perspectiveGeometry";
+import { directoryOpacity, gatherWire, outlineLength, parseCssContent, pathOutline, perspectiveCorrespondences, perspectivePhases, polygonOutline, sampleOutline, tokenLabelPresence, type TransitionPoint } from "./perspectiveGeometry";
 
 /** Screen-space correspondence between native cards and native force positions. */
 export interface SceneFile {
@@ -370,7 +370,7 @@ export function animatePerspective(
         wrapper.style.opacity = String(1 - fold);
       }
       label.style.left = `${x}px`; label.style.top = `${y + destination.radius + 10}px`;
-      label.style.opacity = String(counterpart ? fold * (card.file.id === focusId ? 1 : 1 - background) : 0);
+      label.style.opacity = String(counterpart ? tokenLabelPresence(fold) * (card.file.id === focusId ? 1 : 1 - background) : 0);
     }
     layer.dataset.progress = String(elapsed);
     if (elapsed < 1) frameId = requestAnimationFrame(frame);
@@ -485,7 +485,7 @@ const ALWAYS_CHECK_PROPS = [
   "overflow-x", "overflow-y", "overflow-block", "overflow-inline", "text-overflow",
   "fill", "stroke", "stroke-width", "fill-opacity", "stroke-opacity", "stroke-dasharray", "stroke-linecap", "stroke-linejoin",
   "clip-path", "mask", "mask-image", "background-color", "background-image", "box-shadow",
-  "z-index", "pointer-events", "cursor", "user-select", "contain",
+  "z-index", "pointer-events", "cursor", "user-select", "contain", "isolation",
   "border-top-width", "border-right-width", "border-bottom-width", "border-left-width",
   "border-block-start-width", "border-block-end-width", "border-inline-start-width", "border-inline-end-width",
   "border-top-style", "border-right-style", "border-bottom-style", "border-left-style",
@@ -804,6 +804,64 @@ function* visualCopySteps(
   return (yield* visualCopyStepsWithStyle(root, catalog, parentValues, deep, seen, anchor)).copy;
 }
 
+/** Check whether a live element's `::before` or `::after` pseudo-element draws visible text or paint. */
+function visiblePseudoStyle(root: Element, pseudo: "::before" | "::after"): { style: CSSStyleDeclaration; text: string } | null {
+  if (root instanceof SVGElement) return null;
+  const ps = getComputedStyle(root, pseudo);
+  const text = parseCssContent(ps.content);
+  if (text === null || ps.display === "none" || ps.visibility === "hidden" || Number(ps.opacity) === 0) return null;
+  if (text === "") {
+    const bg = ps.backgroundColor;
+    const paints = (bg !== "" && bg !== "transparent" && !bg.endsWith(", 0)"))
+      || ps.backgroundImage !== "none"
+      || ps.boxShadow !== "none"
+      || ps.borderTopStyle !== "none"
+      || ps.borderRightStyle !== "none"
+      || ps.borderBottomStyle !== "none"
+      || ps.borderLeftStyle !== "none"
+      || ps.outlineStyle !== "none";
+    if (!paints) return null;
+  }
+  return { style: ps, text };
+}
+
+/** Materialize a visible CSS `::before` or `::after` pseudo-element as a sparse-styled `<span>` inside the frozen copy. */
+function buildPseudoCopy(
+  pseudo: { style: CSSStyleDeclaration; text: string },
+  catalog: CopyStyleCatalog,
+  parentValues: readonly string[]
+): HTMLSpanElement {
+  const span = catalog.doc.createElement("span");
+  if (pseudo.text) span.textContent = pseudo.text;
+  const baseline = tagBaseline(catalog, span);
+  const { propNames, colorIndex, interactivityIndex, widthGuardIndices } = catalog;
+  const { modes, values: refValues } = baseline;
+  const ps = pseudo.style;
+  const elColor = colorIndex >= 0 ? ps.getPropertyValue("color") : "";
+  const declarations: string[] = [];
+  for (let i = 0; i < propNames.length; i++) {
+    const name = propNames[i];
+    if (name === "content") continue;
+    const val = i === interactivityIndex ? "auto" : ps.getPropertyValue(name);
+    const mode = modes[i];
+    let emit: boolean;
+    if (mode === MODE_CONSTANT) emit = val !== refValues[i];
+    else if (mode === MODE_INHERIT) emit = val !== parentValues[i];
+    else if (mode === MODE_CURRENT_COLOR) emit = val !== elColor;
+    else emit = true;
+    if (!emit) {
+      const styleIdx = widthGuardIndices[i];
+      if (styleIdx >= 0 && val === "0px" && ps.getPropertyValue(propNames[styleIdx]) !== "none") emit = true;
+    }
+    if (emit) declarations.push(`${name}: ${val};`);
+  }
+  if (baseline.hasAnimation || ps.getPropertyValue("animation-name") !== "none") {
+    declarations.push("animation-name: none;");
+  }
+  if (declarations.length > 0) span.style.cssText = declarations.join("");
+  return span;
+}
+
 function* visualCopyStepsWithStyle(
   root: HTMLElement,
   catalog: CopyStyleCatalog,
@@ -832,6 +890,10 @@ function* visualCopyStepsWithStyle(
   // display:none contributes neither layout nor pixels to this frozen picture. Do not expand an invisible subtree.
   // visibility:hidden and opacity:0 still occupy layout, so they retain the sparse copy below.
   if (style.display === "none") { copy.style.cssText = "display:none"; return { copy, ownValues: parentValues }; }
+  // Capture visible CSS ::before / ::after boxes (held zoom-look card titles, test-backed halos, +N connections frames,
+  // Internals dashed boxes) before stripping live classes and data-* attributes.
+  const beforePseudo = deep ? visiblePseudoStyle(root, "::before") : null;
+  const afterPseudo = deep ? visiblePseudoStyle(root, "::after") : null;
   // Emit only declarations that differ from a bare tag-matched baseline (non-inherited) or the parent copy's computed
   // style (inherited), skipping custom properties and active animations so copies stay pixel-identical while cutting
   // inline declarations ~15x (2026-11-24).
@@ -839,7 +901,7 @@ function* visualCopyStepsWithStyle(
   const { propNames, colorIndex, interactivityIndex, widthGuardIndices } = catalog;
   const { modes, values: refValues } = baseline;
   const count = propNames.length;
-  const needOwn = (deep && root.childNodes.length > 0) || !deep;
+  const needOwn = (deep && (root.childNodes.length > 0 || beforePseudo !== null || afterPseudo !== null)) || !deep;
   const ownValues = needOwn ? new Array<string>(count) : parentValues;
   const elColor = colorIndex >= 0 ? style.getPropertyValue("color") : "";
   const declarations: string[] = [];
@@ -887,8 +949,10 @@ function* visualCopyStepsWithStyle(
   if (declarations.length > 0) copy.style.cssText = declarations.join("");
   if (root instanceof HTMLCanvasElement && copy instanceof HTMLCanvasElement) copy.getContext("2d")?.drawImage(root, 0, 0);
   yield;
+  if (beforePseudo) copy.append(buildPseudoCopy(beforePseudo, catalog, ownValues));
   if (deep) for (const child of [...root.childNodes]) {
     copy.append(child instanceof Element ? yield* visualCopySteps(child as HTMLElement, catalog, ownValues, true, seen, anchor) : child.cloneNode(true));
   }
+  if (afterPseudo) copy.append(buildPseudoCopy(afterPseudo, catalog, ownValues));
   return { copy, ownValues };
 }

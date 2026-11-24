@@ -87,6 +87,13 @@
     display: none;
 }
 
+/* On touch devices and narrow windows, drop the desktop keyboard hint so it never competes with the placeholder (2026-11-24). */
+@media (pointer: coarse), (max-width: 600px) {
+    .search-shortcut {
+        display: none;
+    }
+}
+
 /* The map marker before the destination: where the path ends */
 .search-marker {
     flex: none;
@@ -152,6 +159,32 @@
     box-shadow: 0 10px 40px rgba(var(--ground-shade-rgb), 0.5);
     overflow-y: auto;
     overflow-x: hidden;
+    scroll-padding-block: 28px;
+}
+
+/* Soft edge fades whenever more results lie above or below the scroll box, keeping the rounded border and shadow crisp (2026-11-24). */
+.search-results[data-scroll-start="true"]::before,
+.search-results[data-scroll-end="true"]::after {
+    content: "";
+    position: sticky;
+    left: 0;
+    right: 0;
+    display: block;
+    height: 28px;
+    pointer-events: none;
+    z-index: 2;
+}
+
+.search-results[data-scroll-start="true"]::before {
+    top: 0;
+    margin-bottom: -28px;
+    background: linear-gradient(to bottom, var(--ground-raised) 15%, transparent);
+}
+
+.search-results[data-scroll-end="true"]::after {
+    bottom: 0;
+    margin-top: -28px;
+    background: linear-gradient(to top, var(--ground-raised) 15%, transparent);
 }
 
 .search-results[hidden] {
@@ -400,6 +433,22 @@
     flex-wrap: nowrap;
 }
 
+/* Soft horizontal fade masks whenever hops extend past either edge of the route strip (2026-11-24). */
+.pathfind-path[data-scroll-end="true"] {
+    -webkit-mask-image: linear-gradient(to right, var(--ground-deep) calc(100% - 36px), transparent);
+    mask-image: linear-gradient(to right, var(--ground-deep) calc(100% - 36px), transparent);
+}
+
+.pathfind-path[data-scroll-start="true"] {
+    -webkit-mask-image: linear-gradient(to right, transparent, var(--ground-deep) 36px);
+    mask-image: linear-gradient(to right, transparent, var(--ground-deep) 36px);
+}
+
+.pathfind-path[data-scroll-start="true"][data-scroll-end="true"] {
+    -webkit-mask-image: linear-gradient(to right, transparent, var(--ground-deep) 36px, var(--ground-deep) calc(100% - 36px), transparent);
+    mask-image: linear-gradient(to right, transparent, var(--ground-deep) 36px, var(--ground-deep) calc(100% - 36px), transparent);
+}
+
 .pathfind-path[hidden] {
     display: none;
 }
@@ -426,7 +475,7 @@
     box-sizing: border-box;
     width: max-content;
     max-width: min(240px, 65vw);
-    scroll-margin-inline: 8px;
+    scroll-margin-inline: 24px;
 }
 
 .pathfind-path-hop:hover,

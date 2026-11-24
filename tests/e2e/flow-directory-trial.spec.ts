@@ -163,7 +163,9 @@ test("2D Structure card hover highlights connected partner cards and fades unrel
     const cards = [...document.querySelectorAll<HTMLElement>("#map-container .node-card")].map(el => ({
       id: el.dataset.id ?? "",
       lit: el.classList.contains("flow-lit"),
-      opacity: Number(getComputedStyle(el).opacity)
+      testBacked: el.classList.contains("test-backed"),
+      opacity: Number(getComputedStyle(el).opacity),
+      haloOpacity: el.classList.contains("test-backed") ? Number(getComputedStyle(el, "::before").opacity) : null
     }));
     const boxes = [...document.querySelectorAll<HTMLElement>("#map-container .local-directory-closed")].map(el => Number(getComputedStyle(el).opacity));
     const paths = document.querySelectorAll("#map-connections .connection-path").length;
@@ -182,7 +184,11 @@ test("2D Structure card hover highlights connected partner cards and fades unrel
   expect(hoverState.litPartners.length, "connected partner cards remain lit").toBeGreaterThan(0);
   for (const partner of hoverState.litPartners) expect(partner.opacity, partner.id).toBe(1);
   expect(hoverState.dimmedCards.length, "unrelated cards fade").toBeGreaterThan(0);
-  for (const dimmed of hoverState.dimmedCards) expect(dimmed.opacity, dimmed.id).toBeLessThan(0.8);
+  for (const dimmed of hoverState.dimmedCards) {
+    expect(dimmed.opacity, dimmed.id).toBeLessThan(0.8);
+    if (dimmed.testBacked) expect(dimmed.haloOpacity, `${dimmed.id} suppresses purple test-backed halo while dimmed`).toBe(0);
+  }
+  expect(hoverState.dimmedCards.some(card => card.testBacked), "at least one dimmed card is test-backed to exercise halo suppression").toBe(true);
   for (const boxOpacity of hoverState.boxes) expect(boxOpacity).toBeLessThan(0.8);
 
   await page.mouse.move(0, 0);

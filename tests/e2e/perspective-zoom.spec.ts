@@ -5,6 +5,7 @@ import { spatialGraphOf } from "../../packages/explorer/src/client/views/forceGr
 import { linkPulls } from "../../packages/explorer/src/client/views/forceGraphLayout";
 import { spatialScope } from "../../packages/explorer/src/client/views/forceGraphScope";
 import { retainedKey } from "../../packages/explorer/src/client/views/retained-state";
+import { observeGraph, renderedNodes } from "./force-graph-observation";
 import { currentSnapshot, newestKey, pathAddress } from "./search-bar";
 import { loadGraph, localMapSettled, panIntoView } from "./still-picture";
 
@@ -214,6 +215,8 @@ test("a thirteen-file path keeps its ordered steps and constrained symbols throu
   const question = currentSnapshot(page);
   const list = page.locator("#pathfind-path");
   expect(await list.evaluate(element => element.scrollWidth > element.clientWidth), "the long route needs horizontal navigation").toBe(true);
+  await expect(list).toHaveAttribute("data-scroll-end", "true");
+  await expect(list).not.toHaveAttribute("data-scroll-start", "true");
   await page.locator("#search-destination").focus();
   await page.keyboard.press("Tab");
   await expect(page.getByRole("button", { name: "Clear the path", exact: true })).toBeFocused();
@@ -233,6 +236,7 @@ test("a thirteen-file path keeps its ordered steps and constrained symbols throu
     expect(room.right, "the focused hop's outline clears the right clipping edge").toBeGreaterThanOrEqual(0);
   }
   expect(await list.evaluate(element => element.scrollLeft), "Tab reveals the far endpoint through native scrolling").toBeGreaterThan(0);
+  await expect(list).toHaveAttribute("data-scroll-start", "true");
   await page.keyboard.press("Enter");
   await expect(page.locator("#detail-panel.visible")).toContainText(to);
   expect(currentSnapshot(page)).toMatchObject({
@@ -311,4 +315,65 @@ test("nested directory animation represents each ancestor once, without loose-fi
   expect(shells.find(shell => shell.name === "")?.depth).toBe(0);
   expect(shells.find(shell => shell.name === directory)?.depth).toBe(4);
   await expect(bridge).toHaveCount(0);
+});
+
+test("2D connections-look transition materializes held titles and settles an off-center subject cleanly into 3D center", async ({ page }) => {
+  test.setTimeout(60_000);
+  await observeGraph(page);
+  await page.setViewportSize({ width: 1440, height: 900 });
+  const service = "PaymentService/PaymentService.cs";
+  await page.goto(`/samples/estate/?view=local&node=${encodeURIComponent(service)}`);
+  await expect(page.locator(`#map-container .node-card[data-id="${service}"]`)).toBeVisible();
+  await localMapSettled(page);
+  await page.waitForTimeout(300);
+
+  // Sample the frozen card copy as soon as the transition layer mounts: held titles from ::after must be present as text.
+  const copyProbe = page.evaluate(async () => {
+    return await new Promise<{ found: boolean; nonEmptyTitle: boolean; sample: string }>(resolve => {
+      const deadline = performance.now() + 8000;
+      const poll = (): void => {
+        const layer = document.querySelector<HTMLElement>(".perspective-transition[data-graph-files]");
+        if (layer) {
+          const card = layer.querySelector<HTMLElement>('[data-node-id="PaymentService/PaymentService.cs"]');
+          const text = card?.textContent?.replace(/\s+/gu, " ").trim() ?? "";
+          resolve({ found: Boolean(card), nonEmptyTitle: text.includes("Payment") && text.includes("Service"), sample: text.slice(0, 120) });
+          return;
+        }
+        if (performance.now() > deadline) { resolve({ found: false, nonEmptyTitle: false, sample: "" }); return; }
+        requestAnimationFrame(poll);
+      };
+      requestAnimationFrame(poll);
+    });
+  });
+
+  await page.getByRole("button", { name: "3D", exact: true }).click();
+  const copied = await copyProbe;
+  expect(copied.found, "frozen copy of PaymentService.cs mounted in transition layer").toBe(true);
+  expect(copied.nonEmptyTitle, `frozen copy carries materialized ::after held title (got: ${copied.sample})`).toBe(true);
+  await expect(page.locator("#view-graph")).toHaveClass(/active/);
+  await expect(page.locator(".perspective-transition")).toHaveCount(0);
+  await expect(page.locator("#graph-svg")).toHaveAttribute("aria-busy", "false", { timeout: 25_000 });
+
+  // After the 2D -> 3D morph completes, the camera releases the 2D corner anchor and settles the subject cleanly into the center band.
+  const canvas = (await page.locator("#graph-svg").boundingBox())!;
+  await expect.poll(async () => {
+    const subject = (await renderedNodes(page)).find(node => node.id === service);
+    if (!subject) return null;
+    return {
+      nx: (subject.x - canvas.x) / canvas.width,
+      ny: (subject.y - canvas.y) / canvas.height
+    };
+  }, { timeout: 10_000, message: "3D subject settles out of the top-right corner into the viewport center" }).toEqual(
+    expect.objectContaining({
+      nx: expect.any(Number),
+      ny: expect.any(Number)
+    })
+  );
+  await expect.poll(async () => {
+    const subject = (await renderedNodes(page)).find(node => node.id === service);
+    if (!subject) return false;
+    const nx = (subject.x - canvas.x) / canvas.width;
+    const ny = (subject.y - canvas.y) / canvas.height;
+    return nx >= 0.25 && nx <= 0.75 && ny >= 0.22 && ny <= 0.78;
+  }, { timeout: 10_000, message: "PaymentService.cs settles near the center of the 3D viewport rather than stranded in the top-right corner" }).toBe(true);
 });

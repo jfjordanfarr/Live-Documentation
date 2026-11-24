@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/explorer/src/client/views/perspectiveGeometry.ts`
-- Generated At: 2026-11-19T21:10:17.283Z
+- Generated At: 2026-11-24T15:35:03.391Z
 
 ## Authored
 ### Purpose
@@ -42,23 +42,41 @@ Match each destination once, preferring its exact card over directory aliases de
 ##### `transitionEase` — Summary
 Smooth a bounded phase without overshoot.
 
+#### `tokenLabelPresence` {#symbol-tokenlabelpresence}
+- Type: function
+- Source: [source](../../../../../../../packages/explorer/src/client/views/perspectiveGeometry.ts#L32)
+
+##### `tokenLabelPresence` — Summary
+Opacity ramp for a travelling file-name pill during the card fold/unfold phase:
+stays invisible while the 2D card itself is legible (`fold <= 0.55`, where card opacity >= 0.45)
+so the floating pill never double-prints over the unfolding 2D card title on 3D -> 2D, and
+reaches full opacity by the end of the fold (`fold = 1`) for the travel phase.
+
+#### `parseCssContent` {#symbol-parsecsscontent}
+- Type: function
+- Source: [source](../../../../../../../packages/explorer/src/client/views/perspectiveGeometry.ts#L40)
+
+##### `parseCssContent` — Summary
+Decode a CSSOM `getComputedStyle(el, "::before" | "::after").content` string into plain text.
+Returns `null` when the pseudo-element generates no string box (`none`, `normal`, or non-string syntax).
+
 #### `perspectivePhases` {#symbol-perspectivephases}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/views/perspectiveGeometry.ts#L27)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/perspectiveGeometry.ts#L66)
 
 ##### `perspectivePhases` — Summary
 Outward phase: remove containment, gather interfaces, then move file tokens.
 
 #### `directoryOpacity` {#symbol-directoryopacity}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/views/perspectiveGeometry.ts#L36)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/perspectiveGeometry.ts#L75)
 
 ##### `directoryOpacity` — Summary
 Peel ancestors before children; running progress backward builds from leaves outward.
 
 #### `gatherWire` {#symbol-gatherwire}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/views/perspectiveGeometry.ts#L42)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/perspectiveGeometry.ts#L81)
 - Returns: [`TransitionPoint`](#symbol-transitionpoint)[]
 - Parameters: `provider`: [`TransitionPoint`](#symbol-transitionpoint); `consumer`: [`TransitionPoint`](#symbol-transitionpoint)
 
@@ -67,7 +85,7 @@ Gather a sampled native curve onto one file wire, preserving its exact endpoints
 
 #### `pathOutline` {#symbol-pathoutline}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/views/perspectiveGeometry.ts#L60)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/perspectiveGeometry.ts#L99)
 - Returns: [`TransitionPoint`](#symbol-transitionpoint)[]
 
 ##### `pathOutline` — Summary
@@ -79,7 +97,7 @@ through the browser instead. Until 2026-11-07 every wire was sampled by `getPoin
 
 #### `polygonOutline` {#symbol-polygonoutline}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/views/perspectiveGeometry.ts#L110)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/perspectiveGeometry.ts#L149)
 - Returns: [`TransitionPoint`](#symbol-transitionpoint)[]
 
 ##### `polygonOutline` — Summary
@@ -87,14 +105,14 @@ A polygon's outline, closed, from its `points` attribute; null for an attribute 
 
 #### `outlineLength` {#symbol-outlinelength}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/views/perspectiveGeometry.ts#L118)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/perspectiveGeometry.ts#L157)
 
 ##### `outlineLength` — Summary
 An outline's length.
 
 #### `sampleOutline` {#symbol-sampleoutline}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/views/perspectiveGeometry.ts#L125)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/perspectiveGeometry.ts#L164)
 - Returns: [`TransitionPoint`](#symbol-transitionpoint)[]
 
 ##### `sampleOutline` — Summary

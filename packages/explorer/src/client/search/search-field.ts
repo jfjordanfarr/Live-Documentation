@@ -106,6 +106,15 @@ export function createSearchField(options: SearchFieldOptions): SearchField {
   input.setAttribute("aria-expanded", "false");
   results.setAttribute("role", "listbox");
 
+  const syncResultsFade = (): void => {
+    const start = !results.hidden && results.scrollTop > 2;
+    const end = !results.hidden && results.scrollTop + results.clientHeight < results.scrollHeight - 2;
+    results.dataset.scrollStart = String(start);
+    results.dataset.scrollEnd = String(end);
+  };
+  results.addEventListener("scroll", syncResultsFade, { passive: true });
+  if (typeof ResizeObserver === "function") new ResizeObserver(syncResultsFade).observe(results);
+
   /** A row; `words` marks a badge that is a sentence of the scope's, drawn as words rather than as a kind's capitals. */
   const row = (kind: string, name: string, badge: string, context: string, apart = false, words = false): string =>
     `<div class="search-row search-row--${kind}${apart ? " is-apart" : ""}" role="option" aria-selected="false">`
@@ -199,12 +208,15 @@ export function createSearchField(options: SearchFieldOptions): SearchField {
     results.hidden = false;
     input.setAttribute("aria-expanded", "true");
     mark();
+    syncResultsFade();
   };
 
   const hide = (): void => {
     if (emptyShown) withdraw(NOTHING_FOUND);
     emptyShown = false;
     results.hidden = true;
+    results.dataset.scrollStart = "false";
+    results.dataset.scrollEnd = "false";
     results.innerHTML = "";
     rows = [];
     selected = -1;

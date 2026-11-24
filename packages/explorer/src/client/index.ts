@@ -692,11 +692,12 @@ function startExplorer(bundle: StaticExplorerData, initialSnapshot: UrlStateSnap
   graphButton.addEventListener("animationend", () => graphButton.classList.remove("backward-rising"));
   // Connections vs Structure (unified across 2D and 3D on 2026-11-24, after the owner's Turn 12–13 request of 2026-11-22):
   // in 3D toggles spatialLayout ("connections" / "structure"); in 2D toggles directoryLayout ("flow" / "grid"), synced with Tuning.
-  const connectionsButton = iconButton("Connections", '<circle cx="12" cy="6" r="2.5"/><circle cx="6" cy="17" r="2.5"/><circle cx="18" cy="17" r="2.5"/><path d="m10.8 8.3-3.6 6.4M13.2 8.3l3.6 6.4M8.5 17h7"/>');
+  // Visually distinct silhouettes at 18 px: flowing curved circular network (Connections) vs orthogonal boxed folder tree (Structure).
+  const connectionsButton = iconButton("Connections", '<circle cx="5" cy="12" r="2.5"/><circle cx="18.5" cy="6" r="2.5"/><circle cx="18.5" cy="18" r="2.5"/><path d="M7.5 12c4 0 4-6 8.5-6M7.5 12c4 0 4 6 8.5 6M18.5 8.5v7"/>');
   connectionsButton.title = "Connections: files placed by their analyzed references";
   connectionsButton.dataset.spatialLayout = "connections";
   connectionsButton.addEventListener("animationend", () => connectionsButton.classList.remove("unshown-rising"));
-  const structureButton = iconButton("Structure", '<circle cx="12" cy="5" r="2.5"/><circle cx="6" cy="18" r="2.5"/><circle cx="18" cy="18" r="2.5"/><path d="M12 7.5v4M12 11.5l-6 4M12 11.5l6 4"/>');
+  const structureButton = iconButton("Structure", '<rect x="3.5" y="3.5" width="7" height="5" rx="1.2"/><rect x="13.5" y="9.5" width="7" height="4.5" rx="1.2"/><rect x="13.5" y="16.5" width="7" height="4.5" rx="1.2"/><path d="M7 8.5V18.75h6.5M7 11.75h6.5"/>');
   structureButton.title = "Structure: files placed by their declared directories";
   structureButton.dataset.spatialLayout = "structure";
   for (const button of [connectionsButton, structureButton]) {
@@ -1504,7 +1505,9 @@ function startExplorer(bundle: StaticExplorerData, initialSnapshot: UrlStateSnap
           forceGraphView.setActive(state.view === "map" && state.perspective === "3d");
           // Back in 2D, the subject was held where its sphere stood through the motion; the picture now slides into
           // the frame where it fits, one motion the eye can follow (the owner's choice, 2026-10-30).
+          // In 3D, release the 2D screen anchor and smoothly frame the subject and its neighborhood in the viewport.
           if (perspective === "2d") localView.settleIntoFrame();
+          else if (perspective === "3d") forceGraphView.settleIntoFrame();
           const pending = pendingPerspective; pendingPerspective = null; pending?.();
         });
         performance.measure("live-docs:switch-animation-setup", { start: starting });
@@ -2080,6 +2083,8 @@ function startExplorer(bundle: StaticExplorerData, initialSnapshot: UrlStateSnap
       forceGraphView.render();
       if (validated.kind === "directory") forceGraphView.fit();
       else forceGraphView.keepInspectionVisible();
+    } else if (state.view === "map" && state.perspective === "2d" && !readingDialog()) {
+      localView.keepInspectionVisible(validated);
     }
     persistExploration();
   }

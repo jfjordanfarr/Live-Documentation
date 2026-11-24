@@ -427,3 +427,78 @@ test("3D Pin keeps the camera, inspection preserves its bearing and stays clear 
     pinSet: { entries: [{ nodeId: B, symbol: "*" }] }
   });
 });
+
+test("2D reader drawer reveals a covered subject card without chrome collisions at 1280x800 and 900x700, and mobile keeps toolbar inside frame", async ({ page }) => {
+  test.setTimeout(60_000);
+  const service = "PaymentService/PaymentService.cs";
+  // 1. At 1280x800, PaymentService.cs stands near the right edge of its 2D frame; opening the reader drawer pans it clear
+  //    of the drawer and lifts #controls / .pin-tray cleanly above the bottom toolbar.
+  await page.setViewportSize({ width: 1280, height: 800 });
+  await page.goto(`/samples/estate/?view=local&node=${encodeURIComponent(service)}`);
+  await expect(card(page, service)).toBeVisible();
+  await localMapSettled(page);
+  await page.waitForTimeout(300);
+  await card(page, service).locator(".local-file-more").click();
+  await page.getByRole("menuitem", { name: "Inspect PaymentService.cs", exact: true }).click();
+  await expect(page.locator("#detail-panel.visible")).toContainText(service);
+  await page.waitForTimeout(550);
+
+  const layout1280 = await page.evaluate(id => {
+    const box = (sel: string) => {
+      const el = document.querySelector<HTMLElement>(sel);
+      if (!el) return null;
+      const r = el.getBoundingClientRect();
+      return { left: r.left, right: r.right, top: r.top, bottom: r.bottom };
+    };
+    const panel = document.getElementById("detail-panel")!;
+    const readerLeft = (panel.offsetParent ?? document.body).getBoundingClientRect().left + panel.offsetLeft;
+    return {
+      readerLeft,
+      card: box(`.node-card[data-id="${id}"]`),
+      controls: box("#controls"),
+      toolbar: box(".perspective-controls"),
+      pins: box(".pin-tray")
+    };
+  }, service);
+  expect(layout1280.card!.right, "inspected card clears the open reader drawer").toBeLessThanOrEqual(layout1280.readerLeft + 1);
+  expect(layout1280.controls!.bottom, "#controls sits clear above .perspective-controls").toBeLessThanOrEqual(layout1280.toolbar!.top);
+  expect(layout1280.pins!.bottom, ".pin-tray sits clear above .perspective-controls").toBeLessThanOrEqual(layout1280.toolbar!.top);
+
+  // 2. At 900x700 with drawer open, wrapped toolbar groups drop left divider pipes and clear #controls / .pin-tray.
+  await page.setViewportSize({ width: 900, height: 700 });
+  await page.waitForTimeout(200);
+  const layout900 = await page.evaluate(() => {
+    const controls = document.getElementById("controls")!.getBoundingClientRect();
+    const toolbar = document.querySelector<HTMLElement>(".perspective-controls")!.getBoundingClientRect();
+    const pins = document.querySelector<HTMLElement>(".pin-tray")!.getBoundingClientRect();
+    const leftBorders = [...document.querySelectorAll<HTMLElement>(".perspective-controls .perspective-group")]
+      .map(el => parseFloat(getComputedStyle(el).borderLeftWidth));
+    return { controlsBottom: controls.bottom, pinsBottom: pins.bottom, toolbarTop: toolbar.top, leftBorders };
+  });
+  expect(layout900.controlsBottom, "#controls clears wrapped toolbar at 900x700").toBeLessThanOrEqual(layout900.toolbarTop);
+  expect(layout900.pinsBottom, ".pin-tray clears wrapped toolbar at 900x700").toBeLessThanOrEqual(layout900.toolbarTop);
+  expect(layout900.leftBorders.every(w => w === 0), "wrapped toolbar groups draw no orphaned divider pipes").toBe(true);
+
+  // 3. At mobile 390x844, the bottom toolbar fits inside #main with zero horizontal clip and hides Ctrl+P.
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.goto(`/samples/estate/?view=local&node=${encodeURIComponent(service)}`);
+  await expect(card(page, service)).toBeVisible();
+  await localMapSettled(page);
+  const mobile = await page.evaluate(() => {
+    const main = document.getElementById("main")!.getBoundingClientRect();
+    const toolbar = document.querySelector<HTMLElement>(".perspective-controls")!.getBoundingClientRect();
+    const shortcut = document.querySelector<HTMLElement>(".search-shortcut");
+    return {
+      mainLeft: main.left,
+      mainRight: main.right,
+      toolbarLeft: toolbar.left,
+      toolbarRight: toolbar.right,
+      toolbarHeight: toolbar.height,
+      shortcutDisplay: shortcut ? getComputedStyle(shortcut).display : "none"
+    };
+  });
+  expect(mobile.toolbarLeft, "mobile toolbar left clears #main").toBeGreaterThanOrEqual(mobile.mainLeft);
+  expect(mobile.toolbarRight, "mobile toolbar right clears #main").toBeLessThanOrEqual(mobile.mainRight + 0.5);
+  expect(mobile.toolbarHeight, "mobile toolbar fits on one clean row without wrapping").toBeLessThanOrEqual(46);
+  expect(mobile.shortcutDisplay, "Ctrl+P shortcut badge is hidden on mobile widths").toBe("none");
+});

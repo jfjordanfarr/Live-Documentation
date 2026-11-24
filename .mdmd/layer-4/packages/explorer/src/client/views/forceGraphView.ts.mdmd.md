@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/explorer/src/client/views/forceGraphView.ts`
-- Generated At: 2026-11-24T05:59:36.101Z
+- Generated At: 2026-11-24T15:35:02.728Z
 
 ## Authored
 ### Purpose
@@ -135,7 +135,7 @@ Public API surface of the Force Graph view.
 
 #### `createForceGraphView` {#symbol-createforcegraphview}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphView.ts#L225)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphView.ts#L227)
 - Returns: [`ForceGraphViewApi`](#symbol-forcegraphviewapi)
 - Parameters: `options`: [`ForceGraphViewOptions`](#symbol-forcegraphviewoptions)
 

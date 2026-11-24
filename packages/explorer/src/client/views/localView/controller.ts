@@ -6,6 +6,7 @@ import { requireElement } from "../../dom";
 import type { HistoryChanges, HistoryMoment } from "../../history/moment";
 import { syncLocalGatheredLegend } from "../../panels/spatial-legend";
 import { readingFiles } from "../../reading-state";
+import type { InspectionTarget } from "../../types";
 import { EMPTY_PIN_SET, isSymbolPinned as isExplorationPin, type PinSet } from "../pin-state";
 import {
   buildNormalizedAnchorKey,
@@ -2288,6 +2289,48 @@ export class LocalViewController implements LocalViewApi {
     this.cancelInertia();
     if (newcomer && prefersReducedMotion()) {
       // Where the person prefers reduced motion the step's pan is a cut.
+      cancelAnimationFrame(this.runtime.mapAnimationFrame);
+      this.runtime.mapAnimationTarget = null;
+      this.mapTransform = next;
+      this.updateMapTransform();
+      this.drawConnections();
+      return;
+    }
+    this.animateCamera(next);
+  }
+
+  /**
+   * When the side reader drawer opens over the right edge of the 2D Local Map and covers the inspected file card or
+   * directory handle, pan left by the least distance that reveals it beside the drawer (never pushing its left edge
+   * off-screen). When the inspected card is already clear of the drawer, or when the reader is modal / full-width,
+   * move nothing.
+   */
+  keepInspectionVisible(target: InspectionTarget): void {
+    if (!this.isShown() || target.kind === "bundled-doc") return;
+    const layer = this.container.parentElement ?? this.viewport;
+    const place = this.framePlace();
+    if (place.width >= layer.offsetWidth) return;
+    const view = this.viewport.getBoundingClientRect();
+    const selector = target.kind === "file"
+      ? `.node-card[data-id="${CSS.escape(target.nodeId)}"]`
+      : `.local-directory-label[data-directory="${CSS.escape(target.directory)}"], .local-directory-closed[data-directory="${CSS.escape(target.directory)}"]`;
+    const element = this.container.querySelector<HTMLElement>(selector);
+    if (!element) return;
+    const box = element.getBoundingClientRect();
+    if (!box.width || !box.height) return;
+    const pad = 16;
+    const visibleLeft = view.left + place.left + pad;
+    const visibleRight = view.left + place.left + place.width - pad;
+    if (box.right <= visibleRight) return;
+    const shift = Math.min(box.right - visibleRight, Math.max(0, box.left - visibleLeft));
+    if (shift < 0.5) return;
+    this.cancelArrival();
+    this.arrivalPending = false;
+    this.readingFrameTarget = null;
+    this.cancelInertia();
+    const current = this.runtime.mapAnimationTarget ?? this.mapTransform;
+    const next = { ...current, x: current.x - shift };
+    if (prefersReducedMotion()) {
       cancelAnimationFrame(this.runtime.mapAnimationFrame);
       this.runtime.mapAnimationTarget = null;
       this.mapTransform = next;

@@ -427,17 +427,75 @@
 }
 /* The history's scrubber ends at the reader's edge, its ticks and readout in the visible room (2026-10-20). */
 #main[data-detail-drawer="open"] .history-scrubber { right: calc(var(--detail-panel-width) + 12px); }
-@container main (max-width: 1015px) {
+/* When #main is too narrow for zoom controls, the bottom toolbar, and the pin tray to share one row beside the 360 px
+   drawer (1280×800 leaves #main = 1020 px, uncovered = 660 px), lift the zoom controls and pin tray cleanly above the
+   single-row toolbar (2026-11-24). */
+@container main (max-width: 1120px) {
     #main[data-detail-drawer="open"] .pin-tray,
     #main[data-detail-drawer="open"] #controls {
-        bottom: calc(110px + var(--history-room));
+        bottom: calc(74px + var(--history-room));
     }
 }
-/* The bare frame adds Key and Tuning to the bottom toolbar (~410 px wide), so it lifts slightly earlier. */
-@container main (max-width: 1100px) {
+/* The bare frame adds Key and Tuning to the bottom toolbar (~470 px wide), so it lifts slightly earlier. */
+@container main (max-width: 1200px) {
     :root[data-frame="bare"] #main[data-detail-drawer="open"] .pin-tray,
     :root[data-frame="bare"] #main[data-detail-drawer="open"] #controls {
-        bottom: calc(110px + var(--history-room));
+        bottom: calc(74px + var(--history-room));
+    }
+}
+/* Where the uncovered strip beside the drawer is narrower than the single-row toolbar (e.g. 900×700 leaves 280 px),
+   wrap the groups cleanly without orphaned left-edge divider pipes: each group gets a subtle pill surface instead of a
+   leading border-left, and the zoom controls / pin tray lift above the two-row height (2026-11-24). */
+@container main (max-width: 800px) {
+    #main[data-detail-drawer="open"] .perspective-controls {
+        padding: 4px;
+        gap: 4px;
+    }
+    #main[data-detail-drawer="open"] .perspective-group {
+        gap: 2px;
+        padding: 2px;
+        border-radius: 5px;
+        background: rgba(var(--ground-sheen-rgb), 0.04);
+    }
+    #main[data-detail-drawer="open"] .perspective-group:has(button:not([hidden])) ~ .perspective-group {
+        margin-left: 0;
+        padding-left: 2px;
+        border-left: 0;
+    }
+    #main[data-detail-drawer="open"] .perspective-controls button {
+        min-width: 28px;
+        padding: 5px;
+        font-size: 12px;
+    }
+    #main[data-detail-drawer="open"] .pin-tray,
+    #main[data-detail-drawer="open"] #controls {
+        bottom: calc(114px + var(--history-room));
+    }
+}
+@container main (max-width: 880px) {
+    :root[data-frame="bare"] #main[data-detail-drawer="open"] .perspective-controls {
+        padding: 4px;
+        gap: 4px;
+    }
+    :root[data-frame="bare"] #main[data-detail-drawer="open"] .perspective-group {
+        gap: 2px;
+        padding: 2px;
+        border-radius: 5px;
+        background: rgba(var(--ground-sheen-rgb), 0.04);
+    }
+    :root[data-frame="bare"] #main[data-detail-drawer="open"] .perspective-group:has(button:not([hidden])) ~ .perspective-group {
+        margin-left: 0;
+        padding-left: 2px;
+        border-left: 0;
+    }
+    :root[data-frame="bare"] #main[data-detail-drawer="open"] .perspective-controls button {
+        min-width: 28px;
+        padding: 5px;
+        font-size: 12px;
+    }
+    :root[data-frame="bare"] #main[data-detail-drawer="open"] .pin-tray,
+    :root[data-frame="bare"] #main[data-detail-drawer="open"] #controls {
+        bottom: calc(114px + var(--history-room));
     }
 }
 

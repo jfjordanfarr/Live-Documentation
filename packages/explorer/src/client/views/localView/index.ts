@@ -21,6 +21,7 @@ export function createLocalView(options: LocalViewOptions): LocalViewApi {
     placeSubjectAnchor: (nodeId, anchor) => controller.placeSubjectAnchor(nodeId, anchor),
     placeReturnedSubject: (nodeId, anchor) => controller.placeReturnedSubject(nodeId, anchor),
     settleIntoFrame: () => controller.settleIntoFrame(),
+    keepInspectionVisible: target => controller.keepInspectionVisible(target),
     drawConnections: () => controller.drawConnections(),
     highlightSelection: () => controller.highlightSelection(),
     zoomIn: () => controller.zoomIn(),

@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: `tests/e2e/perspective-zoom.spec.ts`
-- Generated At: 2026-11-19T21:10:23.461Z
+- Generated At: 2026-11-24T15:35:05.062Z
 
 ## Authored
 ### Purpose
@@ -42,6 +42,8 @@ _No public symbols detected_
 - [`forceGraphLayout.linkPulls`](../../packages/explorer/src/client/views/forceGraphLayout.ts.mdmd.md#symbol-linkpulls)
 - [`forceGraphScope.spatialScope`](../../packages/explorer/src/client/views/forceGraphScope.ts.mdmd.md#symbol-spatialscope-function)
 - [`retained-state.retainedKey`](../../packages/explorer/src/client/views/retained-state.ts.mdmd.md#symbol-retainedkey)
+- [`force-graph-observation.observeGraph`](./force-graph-observation.ts.mdmd.md#symbol-observegraph)
+- [`force-graph-observation.renderedNodes`](./force-graph-observation.ts.mdmd.md#symbol-renderednodes)
 - [`search-bar.currentSnapshot`](./search-bar.ts.mdmd.md#symbol-currentsnapshot)
 - [`search-bar.newestKey`](./search-bar.ts.mdmd.md#symbol-newestkey)
 - [`search-bar.pathAddress`](./search-bar.ts.mdmd.md#symbol-pathaddress)

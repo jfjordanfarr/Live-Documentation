@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 
-import { directoryOpacity, gatherWire, outlineLength, pathOutline, perspectiveCorrespondences, perspectivePhases, polygonOutline, sampleOutline } from "./perspectiveGeometry";
+import { directoryOpacity, gatherWire, outlineLength, parseCssContent, pathOutline, perspectiveCorrespondences, perspectivePhases, polygonOutline, sampleOutline, tokenLabelPresence } from "./perspectiveGeometry";
 
 describe("native perspective correspondence", () => {
   it("matches real cell hubs and single-file directory representatives without inventing absent destinations", () => {
@@ -51,6 +51,26 @@ describe("native perspective correspondence", () => {
     expect(perspectivePhases(.22).fold).toBe(0);
     expect(perspectivePhases(.4).move).toBe(0);
     expect(perspectivePhases(1)).toEqual({ fold: 1, move: 1, background: 1 });
+  });
+
+  it("hides the travelling file-name pill while the unfolding 2D card is legible and reveals it smoothly for travel", () => {
+    expect(tokenLabelPresence(0)).toBe(0);
+    expect(tokenLabelPresence(0.5)).toBe(0);
+    expect(tokenLabelPresence(0.55)).toBe(0);
+    expect(tokenLabelPresence(0.75)).toBeGreaterThan(0);
+    expect(tokenLabelPresence(0.75)).toBeLessThan(1);
+    expect(tokenLabelPresence(1)).toBe(1);
+  });
+
+  it("decodes CSSOM pseudo-element content strings including multi-line escapes and rejects none/normal", () => {
+    expect(parseCssContent("none")).toBeNull();
+    expect(parseCssContent("normal")).toBeNull();
+    expect(parseCssContent("")).toBeNull();
+    expect(parseCssContent('""')).toBe("");
+    expect(parseCssContent('"PaymentService.cs"')).toBe("PaymentService.cs");
+    expect(parseCssContent('"Payment\\a Service.cs"')).toBe("Payment\nService.cs");
+    expect(parseCssContent('"Payment\\00000aService.cs"')).toBe("Payment\nService.cs");
+    expect(parseCssContent('"a\\"b\\\\c"')).toBe('a"b\\c');
   });
 });
 

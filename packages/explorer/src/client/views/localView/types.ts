@@ -6,8 +6,7 @@ import type {
 } from "../../../shared/types";
 import type { HistoryChanges, HistoryMoment } from "../../history/moment";
 import type { ReaderLinkContext } from "../../reader-links";
-import type { ExplorerState, TestCoverageMap } from "../../types";
-import type { InspectionTarget } from "../../types";
+import type { ExplorerState, InspectionTarget, TestCoverageMap } from "../../types";
 import type { LocalMapState, PathResult, StateStore } from "./state";
 
 /**
@@ -104,6 +103,8 @@ export interface LocalViewApi {
   placeReturnedSubject(nodeId: string, anchor: { x: number; y: number }): void;
   /** After a hold, slide the picture the least that brings it into the frame at its scale; nothing moves when it is in. */
   settleIntoFrame(): void;
+  /** Keep a newly opened side reader drawer from covering the inspected 2D file card or directory handle. */
+  keepInspectionVisible(target: InspectionTarget): void;
   drawConnections(): void;
   highlightSelection(): void;
   zoomIn(): void;

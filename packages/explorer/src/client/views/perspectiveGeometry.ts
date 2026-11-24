@@ -23,6 +23,45 @@ export function transitionEase(value: number): number {
   return t * t * (3 - 2 * t);
 }
 
+/**
+ * Opacity ramp for a travelling file-name pill during the card fold/unfold phase:
+ * stays invisible while the 2D card itself is legible (`fold <= 0.55`, where card opacity >= 0.45)
+ * so the floating pill never double-prints over the unfolding 2D card title on 3D -> 2D, and
+ * reaches full opacity by the end of the fold (`fold = 1`) for the travel phase.
+ */
+export function tokenLabelPresence(fold: number): number {
+  return transitionEase((fold - 0.55) / 0.45);
+}
+
+/**
+ * Decode a CSSOM `getComputedStyle(el, "::before" | "::after").content` string into plain text.
+ * Returns `null` when the pseudo-element generates no string box (`none`, `normal`, or non-string syntax).
+ */
+export function parseCssContent(raw: string): string | null {
+  const trimmed = raw.trim();
+  if (!trimmed || trimmed === "none" || trimmed === "normal") return null;
+  const quote = trimmed[0];
+  if ((quote !== '"' && quote !== "'") || trimmed[trimmed.length - 1] !== quote || trimmed.length < 2) return null;
+  let out = "";
+  for (let i = 1; i < trimmed.length - 1; i++) {
+    const ch = trimmed[i];
+    if (ch !== "\\") { out += ch; continue; }
+    i++;
+    if (i >= trimmed.length - 1) break;
+    const next = trimmed[i];
+    if (/[0-9a-fA-F]/u.test(next)) {
+      let hex = next;
+      while (hex.length < 6 && i + 1 < trimmed.length - 1 && /[0-9a-fA-F]/u.test(trimmed[i + 1])) hex += trimmed[++i];
+      if (i + 1 < trimmed.length - 1 && (trimmed[i + 1] === " " || trimmed[i + 1] === "\t")) i++;
+      const code = Number.parseInt(hex, 16);
+      if (Number.isFinite(code) && code > 0) out += String.fromCodePoint(code);
+    } else {
+      out += next;
+    }
+  }
+  return out;
+}
+
 /** Outward phase: remove containment, gather interfaces, then move file tokens. */
 export function perspectivePhases(progress: number): { fold: number; move: number; background: number } {
   return {

@@ -187,6 +187,8 @@ export interface ForceGraphViewApi {
   setActive(active: boolean): void;
   getSubjectAnchor(nodeId: string): { x: number; y: number } | null;
   placeSubjectAnchor(nodeId: string, anchor: { x: number; y: number }): void;
+  /** Release a transition screen anchor and smoothly frame the 3D subject and neighborhood in the viewport. */
+  settleIntoFrame(): void;
   /** Frame a file explicitly, for the retained-item tray, without changing the selected subject. */
   focusNode(nodeId: string): void;
   focusDirectory(directory: string): void;
@@ -741,6 +743,20 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
     }
     // Track a still-running simulation without introducing a second camera flight.
     if (focusLabel) { focusLabel.style.left = `${anchor.x - rect.left}px`; focusLabel.style.top = `${anchor.y - rect.top}px`; }
+  }
+
+  /**
+   * Release a 2D -> 3D transition screen anchor and smoothly frame the 3D subject and neighborhood in the viewport,
+   * symmetric with `localView.settleIntoFrame()` on 3D -> 2D so off-center 2D cards never strand the 3D graph in a corner.
+   */
+  function settleIntoFrame(): void {
+    subjectAnchor = null;
+    if (!forceGraphInstance) return;
+    focusMotion = null;
+    framedPicture = "";
+    fittingScope = false;
+    following = true;
+    if (active) updateFocus(performance.now());
   }
 
   function setActive(value: boolean): void {
@@ -2735,5 +2751,5 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
     container.setAttribute("aria-busy", "true");
   }
 
-  return { render, setActive, focusNode, focusDirectory, fit, keepInspectionVisible, cameraRoom, getSubjectAnchor, placeSubjectAnchor, captureScene, revealForTransition, setMoment, setArrived, packing: () => packing.size > 0, settle, poppedGroups, keepPoppedGroups, groupHolding, wrapGroup: wrapShell, whenReady: () => ready && !packing.size ? Promise.resolve() : new Promise(resolve => readyWaiters.push(resolve)) };
+  return { render, setActive, focusNode, focusDirectory, fit, keepInspectionVisible, cameraRoom, getSubjectAnchor, placeSubjectAnchor, settleIntoFrame, captureScene, revealForTransition, setMoment, setArrived, packing: () => packing.size > 0, settle, poppedGroups, keepPoppedGroups, groupHolding, wrapGroup: wrapShell, whenReady: () => ready && !packing.size ? Promise.resolve() : new Promise(resolve => readyWaiters.push(resolve)) };
 }

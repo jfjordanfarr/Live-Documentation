@@ -101,6 +101,7 @@
     pointer-events: none;
     box-shadow: 0 12px 24px var(--has-tests-glow);
     z-index: -1;
+    transition: opacity 0.15s ease-out;
 }
 
 .node-title {

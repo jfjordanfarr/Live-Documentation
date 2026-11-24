@@ -304,7 +304,7 @@ span.local-disclosure { cursor: default; }
 
 /* The open history scrubber takes the bottom of the map; the controls and the tray stand above it by the room it asks for. */
 #main { --history-room: 0px; }
-.perspective-controls { position: absolute; bottom: calc(18px + var(--history-room)); left: 50%; transform: translateX(-50%); z-index: 105; display: flex; gap: 4px; padding: 5px; border: 1px solid var(--line-border); border-radius: 6px; background: var(--ground-deep); }
+.perspective-controls { position: absolute; bottom: calc(18px + var(--history-room)); left: 50%; transform: translateX(-50%); z-index: 105; display: flex; gap: 4px; padding: 5px; box-sizing: border-box; width: max-content; max-width: calc(100% - 16px); border: 1px solid var(--line-border); border-radius: 6px; background: var(--ground-deep); }
 .perspective-controls[hidden], .perspective-controls :is(button, select)[hidden] { display: none; }
 .perspective-controls select { font: inherit; font-size: 13px; color: var(--text-normal); background: var(--ground-deep); border: 1px solid var(--line-border); border-radius: 4px; padding: 5px; }
 .perspective-controls button { display: inline-flex; align-items: center; justify-content: center; min-width: 34px; padding: 7px 8px; border: 1px solid transparent; border-radius: 4px; background: transparent; color: var(--text-normal); cursor: pointer; font: inherit; font-size: 13px; }
@@ -378,6 +378,20 @@ span.local-disclosure { cursor: default; }
 }
 @container main (max-width: 850px) {
   :root[data-frame="bare"] #main:not([data-detail-drawer="open"]) .perspective-controls { bottom: calc(72px + var(--history-room)); }
+}
+/* At phone widths (#main <= 480 px, e.g. 342 px beside the collapsed 48 px rail on a 390 px screen), tighten the toolbar
+   padding and inter-group gaps so all buttons stay inside the frame without clipping while keeping >= 28 px targets
+   (2026-11-24). */
+@container main (max-width: 480px) {
+  .perspective-controls { padding: 4px; gap: 2px; flex-wrap: wrap; justify-content: center; }
+  .perspective-group { gap: 2px; }
+  .perspective-group:has(button:not([hidden])) ~ .perspective-group { margin-left: 1px; padding-left: 4px; }
+  .perspective-controls button { min-width: 28px; padding: 6px 4px; font-size: 12px; }
+}
+/* Below 320 px container width, drop vertical divider pipes in favor of subtle group pills so wrapped rows never carry an orphaned leading pipe. */
+@container main (max-width: 320px) {
+  .perspective-group { padding: 2px; border-radius: 5px; background: rgba(var(--ground-sheen-rgb), 0.04); }
+  .perspective-group:has(button:not([hidden])) ~ .perspective-group { margin-left: 0; padding-left: 2px; border-left: 0; }
 }
 
 /* Directory containment and dependency rank are independent in the reading view. */
@@ -593,6 +607,21 @@ span.local-disclosure { cursor: default; }
 .flow-hover:not(.symbol-hover-active) .connection-path:not(.flow-lit) { opacity: var(--hover-dim-connections, 0.1); }
 .flow-hover:not(.symbol-hover-active) .node-card:not(.flow-lit),
 .flow-hover:not(.symbol-hover-active) .local-directory-closed { opacity: var(--hover-dim-symbols, 0.5); }
+/* Dimmed cards shed their purple test-backed border and outer halo so non-partner cards do not glow brighter than the
+   hovered pair across Structure hover, symbol hover, and returning-wire hover (2026-11-24). */
+.flow-hover:not(.symbol-hover-active) .node-card.test-backed:not(.flow-lit),
+.connections-lit.symbol-hover-active .node-card.test-backed:not(.card-highlighted),
+.symbol-hover-active .local-column[data-position="left"] .node-card.test-backed:not(.card-highlighted),
+.symbol-hover-active .local-column[data-position="right"] .node-card.test-backed:not(.card-highlighted) {
+    border-color: var(--line-interactive);
+}
+.flow-hover:not(.symbol-hover-active) .node-card.test-backed:not(.flow-lit)::before,
+.connections-lit.symbol-hover-active .node-card.test-backed:not(.card-highlighted)::before,
+.symbol-hover-active .local-column[data-position="left"] .node-card.test-backed:not(.card-highlighted)::before,
+.symbol-hover-active .local-column[data-position="right"] .node-card.test-backed:not(.card-highlighted)::before {
+    opacity: 0;
+    box-shadow: none;
+}
 .local-directory-closed { transition: opacity 0.15s ease-out; }
 /* The room between two cards through which threaded wires pass; the router reads its place from the page. */
 .local-pass-through { flex: none; width: 100%; pointer-events: none; }
